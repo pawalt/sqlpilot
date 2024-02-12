@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "Smart Cities"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (sensor_id INT PRIMARY KEY, sensor_type TEXT, location TEXT, status TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE readings (reading_id INT PRIMARY KEY, sensor_id INT, value FLOAT, timestamp TIMESTAMP)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_streetlights (\n    id INT PRIMARY KEY,\n    location VARCHAR(255),\n    status VARCHAR(50),\n    brightness INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_cameras (\n    camera_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    camera_type VARCHAR(50),\n    status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_sensors (\n    sensor_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    temperature FLOAT,\n    humidity FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE city (\n    city_id INT PRIMARY KEY,\n    city_name VARCHAR(255) NOT NULL,\n    population INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_type VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    city_id INT,\n    FOREIGN KEY (city_id) REFERENCES city(city_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE,\n    city_id INT,\n    FOREIGN KEY (city_id) REFERENCES city(city_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE weather (\n    weather_id INT PRIMARY KEY,\n    temperature INT,\n    humidity FLOAT,\n    city_id INT,\n    FOREIGN KEY (city_id) REFERENCES city(city_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (user_id UUID PRIMARY KEY, name STRING, age INT, city STRING)"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (device_id UUID PRIMARY KEY, device_name STRING, user_id UUID REFERENCES users(user_id), location STRING)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensors (sensor_id UUID PRIMARY KEY, sensor_type STRING, device_id UUID REFERENCES devices(device_id), status STRING)"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (location_id UUID PRIMARY KEY, location_name STRING, city STRING)"
+      },
+      {
+        "table_schema": "CREATE TABLE events (event_id UUID PRIMARY KEY, event_name STRING, sensor_id UUID REFERENCES sensors(sensor_id), event_type STRING)"
+      }
+    ]
+  }
+]

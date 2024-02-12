@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FitnessData ( \n id INT PRIMARY KEY, \n user_id INT, \n workout_type VARCHAR(50), \n workout_duration INT, \n calories_burned INT \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FitnessUser ( user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, age INT, gender VARCHAR(10) NOT NULL, height FLOAT, weight FLOAT )"
+      },
+      {
+        "table_schema": "CREATE TABLE FitnessActivity ( activity_id INT PRIMARY KEY, user_id INT, activity_name VARCHAR(50) NOT NULL, activity_date DATE, duration_minutes INT, calories_burned FLOAT, FOREIGN KEY (user_id) REFERENCES FitnessUser(user_id) )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE workout_plan (plan_id INT PRIMARY KEY, plan_name VARCHAR(255) NOT NULL, plan_description TEXT, plan_duration INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE exercise (exercise_id INT PRIMARY KEY, exercise_name VARCHAR(255) NOT NULL, muscle_group VARCHAR(100), difficulty_level ENUM('Beginner', 'Intermediate', 'Advanced'));"
+      },
+      {
+        "table_schema": "CREATE TABLE user_statistics (user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, age INT, height FLOAT, weight FLOAT, workout_days INT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE workouts (\n  id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(id),\n  workout_type VARCHAR(50) NOT NULL,\n  duration INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE exercises (\n  id UUID PRIMARY KEY,\n  exercise_name VARCHAR(50) NOT NULL,\n  muscle_group VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fitness_logs (\n  id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(id),\n  workout_id UUID REFERENCES workouts(id),\n  exercise_id UUID REFERENCES exercises(id),\n  date DATE NOT NULL,\n  sets INT,\n  reps INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE activities (\n    activity_id SERIAL PRIMARY KEY,\n    activity_name VARCHAR(50) NOT NULL,\n    description TEXT,\n    difficulty_level INT,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE workouts (\n    workout_id SERIAL PRIMARY KEY,\n    user_id UUID NOT NULL,\n    activity_id INT NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    duration INTERVAL,\n    calories_burned INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (activity_id) REFERENCES activities(activity_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE goals (\n    goal_id SERIAL PRIMARY KEY,\n    user_id UUID NOT NULL,\n    goal_name VARCHAR(50) NOT NULL,\n    target INT,\n    deadline DATE,\n    created_at TIMESTAMP NOT NULL,\n    completed BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE progress (\n    progress_id SERIAL PRIMARY KEY,\n    goal_id INT NOT NULL,\n    progress INT,\n    date DATE NOT NULL,\n    FOREIGN KEY (goal_id) REFERENCES goals(goal_id)\n);"
+      }
+    ]
+  }
+]

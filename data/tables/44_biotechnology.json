@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiotechnologyLab (id INT PRIMARY KEY, name VARCHAR(255), location VARCHAR(255))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (gene_id INT PRIMARY KEY, gene_name VARCHAR(255) NOT NULL, function VARCHAR(255) NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE proteins (protein_id INT PRIMARY KEY, protein_name VARCHAR(255) NOT NULL, molecular_weight DECIMAL(10,2) NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id UUID PRIMARY KEY,\n    researcher_name VARCHAR(255) NOT NULL,\n    expertise VARCHAR(255),\n    email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id UUID PRIMARY KEY,\n    experiment_name VARCHAR(255) NOT NULL,\n    project_id UUID REFERENCES research_projects(project_id),\n    researcher_id UUID REFERENCES researchers(researcher_id),\n    start_date TIMESTAMP,\n    end_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Gene ( id INT PRIMARY KEY, name VARCHAR(255) NOT NULL, sequence TEXT NOT NULL, location VARCHAR(100) )"
+      },
+      {
+        "table_schema": "CREATE TABLE Protein ( id INT PRIMARY KEY, name VARCHAR(255) NOT NULL, sequence TEXT NOT NULL, function VARCHAR(100) )"
+      },
+      {
+        "table_schema": "CREATE TABLE DNA ( id INT PRIMARY KEY, sequence TEXT NOT NULL, type VARCHAR(50) )"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneExpression ( id INT PRIMARY KEY, gene_id INT NOT NULL, level FLOAT NOT NULL, FOREIGN KEY (gene_id) REFERENCES Gene(id) )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Gene (gene_id INT PRIMARY KEY, gene_name VARCHAR(255) NOT NULL, gene_sequence TEXT NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Protein (protein_id INT PRIMARY KEY, protein_name VARCHAR(255) NOT NULL, protein_sequence TEXT NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiment (experiment_id INT PRIMARY KEY, gene_id INT NOT NULL, protein_id INT NOT NULL, result VARCHAR(255) NOT NULL, FOREIGN KEY (gene_id) REFERENCES Gene(gene_id), FOREIGN KEY (protein_id) REFERENCES Protein(protein_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE Researcher (researcher_id INT PRIMARY KEY, researcher_name VARCHAR(255) NOT NULL, affiliation VARCHAR(255) NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Lab (lab_id INT PRIMARY KEY, lab_name VARCHAR(255) NOT NULL, director_id INT NOT NULL, FOREIGN KEY (director_id) REFERENCES Researcher(researcher_id))"
+      }
+    ]
+  }
+]

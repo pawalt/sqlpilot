@@ -3,6 +3,8 @@ from openai import OpenAI
 from pydantic import BaseModel
 from typing import List
 from dotenv import load_dotenv
+import json
+import os
 
 load_dotenv()
 
@@ -14,7 +16,7 @@ client = instructor.patch(OpenAI())
 SCHEMA_COUNT = 1
 MAX_TABLES = 5
 
-TOPICS_FILE = "topics.json"
+TOPICS_FILE = "data/topics.json"
 
 class Topics(BaseModel):
     topics: List[str]
@@ -42,21 +44,46 @@ class TableSchema(BaseModel):
 class DatabaseSchema(BaseModel):
     tables: List[TableSchema]
 
+TABLE_DIR = "data/tables"
+
 def generate_tables(topics: List[str]):
+    topic_index = -1
     for topic in topics:
+        topic_index += 1
+        topic_filename = f"{TABLE_DIR}/{topic_index}_{topic.lower().replace(' ', '_')}.json"
+
+        # shit fails sometimes, so resume from our last savepoint
+        if os.path.exists(topic_filename):
+            continue
+
+        print(f"Generating tables for topic: {topic} ({topic_index + 1}/{len(topics)})")
+
+        schemas = []
         for i in range(1, MAX_TABLES + 1):
-            schemas = client.chat.completions.create(
+            print(i)
+            schema = client.chat.completions.create(
                 model=GPT_3,
+                # limit max tokens to fail early if the model is going haywire
+                max_tokens=512,
                 response_model=DatabaseSchema,
                 messages=[
                     {
                         "role": "user",
                         "content": f"""Generate an example CockroachDB database schema which has exactly {i} tables.
-    The schema should be related the following topic: {topic}.
-    Schemas should be formatted as the output of SHOW CREATE TABLE"""
+The schema must be related the following topic: {topic}.
+Schemas must be formatted as the output of SHOW CREATE TABLE."""
                     },
                 ]
             )
-            print(schemas.model_dump_json(indent=2))
+            schemas.append(schema.dict())
 
-generate_topics()
+        with open(topic_filename, "w") as f:
+            f.write(json.dumps(schemas, indent=2))
+
+def read_topics():
+    with open(TOPICS_FILE, "r") as f:
+        topics = Topics.model_validate_json(f.read())
+        return topics.topics
+
+toppy = read_topics()
+generate_tables(toppy)

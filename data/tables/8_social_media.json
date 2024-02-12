@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (id INT PRIMARY KEY, username VARCHAR(50), email VARCHAR(50), date_joined TIMESTAMP)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) NOT NULL, created_at TIMESTAMP NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (post_id INT PRIMARY KEY, user_id INT NOT NULL, post_content TEXT NOT NULL, created_at TIMESTAMP NOT NULL, FOREIGN KEY (user_id) REFERENCES users(user_id))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT,\n    post_content TEXT NOT NULL,\n    created_at TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    post_id INT,\n    user_id INT,\n    comment_text TEXT NOT NULL,\n    created_at TIMESTAMP,\n    FOREIGN KEY (post_id) REFERENCES posts(post_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    date_joined DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    post_content TEXT,\n    post_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    post_id INT REFERENCES posts(post_id),\n    user_id INT REFERENCES users(user_id),\n    comment_text TEXT,\n    comment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE likes (\n    like_id INT PRIMARY KEY,\n    post_id INT REFERENCES posts(post_id),\n    user_id INT REFERENCES users(user_id),\n    like_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) UNIQUE, bio TEXT, created_at TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE Posts (post_id INT PRIMARY KEY, user_id INT, post_content TEXT, created_at TIMESTAMP, FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE)"
+      },
+      {
+        "table_schema": "CREATE TABLE Comments (comment_id INT PRIMARY KEY, post_id INT, user_id INT, comment_content TEXT, created_at TIMESTAMP, FOREIGN KEY (post_id) REFERENCES Posts(post_id) ON DELETE CASCADE, FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE)"
+      },
+      {
+        "table_schema": "CREATE TABLE Likes (like_id INT PRIMARY KEY, post_id INT, user_id INT, created_at TIMESTAMP, FOREIGN KEY (post_id) REFERENCES Posts(post_id) ON DELETE CASCADE, FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE)"
+      },
+      {
+        "table_schema": "CREATE TABLE Followers (follower_id INT PRIMARY KEY, user_id INT, follower_user_id INT, created_at TIMESTAMP, FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE, FOREIGN KEY (follower_user_id) REFERENCES Users(user_id) ON DELETE CASCADE)"
+      }
+    ]
+  }
+]

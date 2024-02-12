@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_devices ( device_id SERIAL PRIMARY KEY, device_name VARCHAR(50), device_type VARCHAR(50), room_name VARCHAR(50), owner_id INT, active BOOLEAN default TRUE );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "Smart Home Devices"
+      },
+      {
+        "table_schema": "Rooms"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users ( user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(50) NOT NULL, password VARCHAR(50) NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT NOW() )"
+      },
+      {
+        "table_schema": "CREATE TABLE devices ( device_id INT PRIMARY KEY, device_name VARCHAR(50) NOT NULL, device_type VARCHAR(50) NOT NULL, user_id INT NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT NOW(), FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE )"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs ( log_id INT PRIMARY KEY, device_id INT NOT NULL, log_timestamp TIMESTAMP NOT NULL DEFAULT NOW(), log_message TEXT NOT NULL, FOREIGN KEY (device_id) REFERENCES devices(device_id) ON DELETE CASCADE )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS houses (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL, location VARCHAR(255) NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    user_id INT REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rooms (\n    room_id INT PRIMARY KEY,\n    room_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n    log_id INT PRIMARY KEY,\n    device_id INT REFERENCES devices(device_id),\n    log_timestamp TIMESTAMP,\n    log_message TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id INT PRIMARY KEY,\n    schedule_name VARCHAR(50) NOT NULL,\n    device_id INT REFERENCES devices(device_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

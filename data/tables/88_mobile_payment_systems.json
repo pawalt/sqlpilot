@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mobile_paymentsystem (payment_id SERIAL PRIMARY KEY, user_id INT NOT NULL, amount DECIMAL NOT NULL, payment_date DATE NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) UNIQUE, phone_number VARCHAR(15) NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (id INT PRIMARY KEY, username STRING, email STRING, phone_number STRING, balance DECIMAL);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (id INT PRIMARY KEY, user_id INT, amount DECIMAL, transaction_date TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (id INT PRIMARY KEY, transaction_id INT, payment_method STRING, status STRING, amount DECIMAL);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    mobile_number VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n    wallet_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    balance DECIMAL(10,2) DEFAULT 0.00\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    from_wallet_id INT REFERENCES wallets(wallet_id),\n    to_wallet_id INT REFERENCES wallets(wallet_id),\n    amount DECIMAL(10,2) NOT NULL,\n    transaction_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n    method_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    method_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) UNIQUE, phone_number VARCHAR(20) NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT NOW());"
+      },
+      {
+        "table_schema": "CREATE TABLE Wallets (wallet_id INT PRIMARY KEY, user_id INT NOT NULL, balance DECIMAL(10,2) NOT NULL DEFAULT 0.00, created_at TIMESTAMP NOT NULL DEFAULT NOW(), FOREIGN KEY (user_id) REFERENCES Users(user_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (transaction_id INT PRIMARY KEY, sender_wallet_id INT NOT NULL, receiver_wallet_id INT NOT NULL, amount DECIMAL(10,2) NOT NULL, transaction_date DATE NOT NULL, FOREIGN KEY (sender_wallet_id) REFERENCES Wallets(wallet_id), FOREIGN KEY (receiver_wallet_id) REFERENCES Wallets(wallet_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (payment_id INT PRIMARY KEY, transaction_id INT NOT NULL, status VARCHAR(20) NOT NULL, payment_date DATE NOT NULL, FOREIGN KEY (transaction_id) REFERENCES Transactions(transaction_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Cards (card_id INT PRIMARY KEY, user_id INT NOT NULL, card_number VARCHAR(16) NOT NULL, expiry_date DATE NOT NULL, cvv VARCHAR(3) NOT NULL, card_type VARCHAR(20) NOT NULL, FOREIGN KEY (user_id) REFERENCES Users(user_id));"
+      }
+    ]
+  }
+]

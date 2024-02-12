@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media (id INT PRIMARY KEY, title STRING, type STRING)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Media (id SERIAL PRIMARY KEY, title VARCHAR(255) NOT NULL, type VARCHAR(50) NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT now(), updated_at TIMESTAMPTZ, PRIMARY KEY (id));"
+      },
+      {
+        "table_schema": "CREATE TABLE MediaContent (content_id SERIAL PRIMARY KEY, media_id INT NOT NULL, content BYTEA NOT NULL, content_type VARCHAR(50) NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT now(), updated_at TIMESTAMPTZ, FOREIGN KEY (media_id) REFERENCES Media(id), PRIMARY KEY (content_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Media (media_id INT PRIMARY KEY, title VARCHAR(255), type VARCHAR(50), published_date DATE)"
+      },
+      {
+        "table_schema": "CREATE TABLE MediaAuthors (media_id INT, author_id INT, FOREIGN KEY (media_id) REFERENCES Media(media_id), FOREIGN KEY (author_id) REFERENCES Authors(author_id)"
+      },
+      {
+        "table_schema": "CREATE TABLE MediaReviews (review_id INT PRIMARY KEY, media_id INT, user_id INT, rating INT, review_text TEXT, FOREIGN KEY (media_id) REFERENCES Media(media_id)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Media (id INT PRIMARY KEY, title VARCHAR(255), type VARCHAR(50), release_year INT)"
+      },
+      {
+        "table_schema": "CREATE TABLE Media_Actors (media_id INT, actor_name VARCHAR(255), FOREIGN KEY (media_id) REFERENCES Media(id))"
+      },
+      {
+        "table_schema": "CREATE TABLE Media_Directors (media_id INT, director_name VARCHAR(255), FOREIGN KEY (media_id) REFERENCES Media(id))"
+      },
+      {
+        "table_schema": "CREATE TABLE Media_Genres (media_id INT, genre_name VARCHAR(50), FOREIGN KEY (media_id) REFERENCES Media(id))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_content (\n    id UUID PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    publish_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE media_category (\n    id UUID PRIMARY KEY,\n    category_name VARCHAR(50) UNIQUE NOT NULL,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE media_type (\n    id UUID PRIMARY KEY,\n    type_name VARCHAR(50) UNIQUE NOT NULL,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE media_files (\n    id UUID PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_size INT NOT NULL,\n    content_id UUID REFERENCES media_content(id),\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE media_tags (\n    id UUID PRIMARY KEY,\n    tag_name VARCHAR(50) UNIQUE NOT NULL,\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HumanitarianAid (id INT PRIMARY KEY, organization_name STRING, donation_amount DECIMAL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE beneficiaries (\n    id INT PRIMARY KEY,\n    name STRING,\n    age INT,\n    address STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE donations (\n    donation_id INT PRIMARY KEY,\n    donor_name STRING,\n    amount DECIMAL,\n    donation_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE organizations (org_id INT PRIMARY KEY, org_name TEXT, org_type TEXT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE aid_agencies (\n  agency_id INT,\n  agency_name VARCHAR(255),\n  country VARCHAR(100),\n  PRIMARY KEY (agency_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE aid_workers (\n  worker_id INT,\n  worker_name VARCHAR(255),\n  skills VARCHAR(255),\n  agency_id INT,\n  PRIMARY KEY (worker_id),\n  FOREIGN KEY (agency_id) REFERENCES aid_agencies(agency_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE aid_requests (\n  request_id INT,\n  request_date DATE,\n  requester_name VARCHAR(255),\n  request_description TEXT,\n  worker_id INT,\n  PRIMARY KEY (request_id),\n  FOREIGN KEY (worker_id) REFERENCES aid_workers(worker_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE aid_deliveries (\n  delivery_id INT,\n  delivery_date DATE,\n  request_id INT,\n  delivered_quantity INT,\n  PRIMARY KEY (delivery_id),\n  FOREIGN KEY (request_id) REFERENCES aid_requests(request_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE organizations (\n  org_id INT PRIMARY KEY,\n  org_name VARCHAR(255) NOT NULL,\n  org_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE volunteers (\n  vol_id INT PRIMARY KEY,\n  vol_name VARCHAR(255) NOT NULL,\n  vol_email VARCHAR(255) NOT NULL,\n  org_id INT,\n  FOREIGN KEY (org_id) REFERENCES organizations(org_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE donations (\n  donation_id INT PRIMARY KEY,\n  donation_date TIMESTAMP NOT NULL,\n  donation_amount DECIMAL(10, 2) NOT NULL,\n  vol_id INT,\n  FOREIGN KEY (vol_id) REFERENCES volunteers(vol_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE supplies (\n  supply_id INT PRIMARY KEY,\n  supply_name VARCHAR(255) NOT NULL,\n  supply_quantity INT NOT NULL,\n  supply_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution (\n  dist_id INT PRIMARY KEY,\n  dist_date DATE NOT NULL,\n  org_id INT,\n  supply_id INT,\n  donation_id INT,\n  FOREIGN KEY (org_id) REFERENCES organizations(org_id),\n  FOREIGN KEY (supply_id) REFERENCES supplies(supply_id),\n  FOREIGN KEY (donation_id) REFERENCES donations(donation_id)\n);\n"
+      }
+    ]
+  }
+]

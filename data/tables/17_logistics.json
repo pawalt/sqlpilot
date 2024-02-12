@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE logistics.shipments (\n  shipment_id UUID PRIMARY KEY,\n  shipment_date DATE,\n  origin_address TEXT,\n  destination_address TEXT,\n  total_weight DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipments (shipment_id INT PRIMARY KEY, shipment_date DATE, shipment_location VARCHAR(255), shipment_status VARCHAR(50))"
+      },
+      {
+        "table_schema": "CREATE TABLE products (product_id INT PRIMARY KEY, product_name VARCHAR(255), product_description TEXT, product_price DECIMAL(10, 2))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipments (\n    shipment_id INT PRIMARY KEY,\n    shipment_date DATE,\n    recipient_name VARCHAR(50),\n    address VARCHAR(100),\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50),\n    description TEXT,\n    price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id INT PRIMARY KEY,\n    location VARCHAR(100),\n    capacity INT,\n    manager_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse (\n    warehouse_id INT PRIMARY KEY,\n    location VARCHAR(255) NOT NULL,\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee (\n    employee_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    role VARCHAR(100) NOT NULL,\n    warehouse_id INT,\n    FOREIGN KEY (warehouse_id) REFERENCES warehouse (warehouse_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment (\n    shipment_id INT PRIMARY KEY,\n    delivery_date DATE NOT NULL,\n    warehouse_id INT,\n    employee_id INT,\n    FOREIGN KEY (warehouse_id) REFERENCES warehouse (warehouse_id),\n    FOREIGN KEY (employee_id) REFERENCES employee (employee_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product (\n    product_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    shipment_id INT,\n    FOREIGN KEY (shipment_id) REFERENCES shipment (shipment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Customers (customer_id INT PRIMARY KEY, customer_name STRING, customer_email STRING, customer_phone STRING);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Orders (order_id INT PRIMARY KEY, customer_id INT REFERENCES Customers(customer_id), order_date DATE, order_status STRING);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Products (product_id INT PRIMARY KEY, product_name STRING, product_price DECIMAL);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Warehouses (warehouse_id INT PRIMARY KEY, warehouse_location STRING, warehouse_capacity INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Shipments (shipment_id INT PRIMARY KEY, order_id INT REFERENCES Orders(order_id), product_id INT REFERENCES Products(product_id), warehouse_id INT REFERENCES Warehouses(warehouse_id), shipment_date DATE);"
+      }
+    ]
+  }
+]

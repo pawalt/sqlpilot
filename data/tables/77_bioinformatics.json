@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BioinformaticsData (id INT PRIMARY KEY, sequence VARCHAR(255), organism VARCHAR(100), gene_name VARCHAR(100))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Genes (id INT PRIMARY KEY, name VARCHAR(255), sequence TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE Proteins (id INT PRIMARY KEY, gene_id INT, sequence TEXT, FOREIGN KEY (gene_id) REFERENCES Genes(id))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Gene (id INT PRIMARY KEY, name VARCHAR(255), sequence TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE Mutation (id INT PRIMARY KEY, gene_id INT, type VARCHAR(50), position INT, FOREIGN KEY (gene_id) REFERENCES Gene(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Variant (id INT PRIMARY KEY, gene_id INT, mutation_id INT, name VARCHAR(255), effect VARCHAR(255), FOREIGN KEY (gene_id) REFERENCES Gene(id), FOREIGN KEY (mutation_id) REFERENCES Mutation(id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (gene_id INT PRIMARY KEY, gene_name VARCHAR(255) NOT NULL, organism VARCHAR(255) NOT NULL, chromosome VARCHAR(10) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE transcripts (transcript_id INT PRIMARY KEY, gene_id INT NOT NULL, transcript_name VARCHAR(255) NOT NULL, sequence TEXT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE mutations (mutation_id INT PRIMARY KEY, transcript_id INT NOT NULL, mutation_type VARCHAR(10) NOT NULL, position INT NOT NULL, new_base CHAR(1) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (patient_id INT PRIMARY KEY, patient_name VARCHAR(255) NOT NULL, gender CHAR(1) NOT NULL, dob DATE NOT NULL, diagnosis VARCHAR(255) NOT NULL);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_info (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(50),\n    chromosome VARCHAR(10),\n    start_position INT,\n    end_position INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE protein_info (\n    protein_id INT PRIMARY KEY,\n    protein_name VARCHAR(50),\n    gene_id INT REFERENCES gene_info(gene_id),\n    length INT,\n    sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mutation_info (\n    mutation_id INT PRIMARY KEY,\n    gene_id INT REFERENCES gene_info(gene_id),\n    mutation_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phenotype_info (\n    phenotype_id INT PRIMARY KEY,\n    gene_id INT REFERENCES gene_info(gene_id),\n    phenotype_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_info (\n    sequence_id INT PRIMARY KEY,\n    gene_id INT REFERENCES gene_info(gene_id),\n    sequence TEXT\n);"
+      }
+    ]
+  }
+]
