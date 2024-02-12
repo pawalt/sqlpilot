@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO Machine_Learning_Models (model_id, model_name, algorithm, accuracy) VALUES (1, 'Linear Regression', 'Regression', 0.85) ON DUPLICATE KEY UPDATE model_name='Linear Regression', algorithm='Regression', accuracy=0.85;",
+      "UPSERT INTO Machine_Learning_Models (model_id, model_name, algorithm, accuracy) VALUES (2, 'Decision Tree', 'Classification', 0.78) ON DUPLICATE KEY UPDATE model_name='Decision Tree', algorithm='Classification', accuracy=0.78;",
+      "UPSERT INTO Machine_Learning_Models (model_id, model_name, algorithm, accuracy) VALUES (3, 'K-Means Clustering', 'Clustering', 0.92) ON DUPLICATE KEY UPDATE model_name='K-Means Clustering', algorithm='Clustering', accuracy=0.92;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO models (id, model_name, algorithm, accuracy) VALUES (1, 'Decision Tree', 'DT', 0.85) ON CONFLICT (id) DO UPDATE SET model_name = 'Decision Tree', algorithm = 'DT', accuracy = 0.85;",
+      "UPSERT INTO datasets (id, dataset_name, num_records, num_features) VALUES (1, 'Census Data', 10000, 5) ON CONFLICT (id) DO UPDATE SET dataset_name = 'Census Data', num_records = 10000, num_features = 5;",
+      "UPSERT INTO models (id, model_name, algorithm, accuracy) VALUES (2, 'Random Forest', 'RF', 0.92) ON CONFLICT (id) DO UPDATE SET model_name = 'Random Forest', algorithm = 'RF', accuracy = 0.92;"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO model_training_data (id, data) VALUES (1, '{\"name\": \"John\", \"age\": 25}') ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data;",
+      "INSERT INTO model_results (id, result) VALUES (1, '{\"prediction\": \"success\"}') ON CONFLICT (id) DO UPDATE SET result = EXCLUDED.result;",
+      "INSERT INTO model_evaluation (id, evaluation) VALUES (1, '{\"accuracy\": 0.85}') ON CONFLICT (id) DO UPDATE SET evaluation = EXCLUDED.evaluation;"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO features (id, name, data, created_at) VALUES (1, 'feature1', ARRAY[1.2, 3.4, 5.6], NOW()) ON CONFLICT (id) DO UPDATE SET name = excluded.name, data = excluded.data, created_at = excluded.created_at",
+      "INSERT INTO models (id, model_name, accuracy, parameters, created_at) VALUES (1, 'model1', 0.85, '{\"param1\": 10, \"param2\": 20}', NOW()) ON CONFLICT (id) DO UPDATE SET model_name = excluded.model_name, accuracy = excluded.accuracy, parameters = excluded.parameters, created_at = excluded.created_at",
+      "INSERT INTO training_data (id, data_id, label, features, created_at) VALUES (1, 1, 0, ARRAY[1.2, 2.3, 3.4], NOW()) ON CONFLICT (id) DO UPDATE SET data_id = excluded.data_id, label = excluded.label, features = excluded.features, created_at = excluded.created_at"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO predictions (prediction_id, model_id, dataset_id, prediction_result, prediction_date) VALUES (1, 101, 201, 0.85, '2022-10-15') ON CONFLICT (prediction_id) DO UPDATE SET model_id = excluded.model_id, dataset_id = excluded.dataset_id, prediction_result = excluded.prediction_result, prediction_date = excluded.prediction_date;",
+      "INSERT INTO predictions (prediction_id, model_id, dataset_id, prediction_result, prediction_date) VALUES (2, 102, 202, 0.75, '2022-10-16') ON CONFLICT (prediction_id) DO UPDATE SET model_id = excluded.model_id, dataset_id = excluded.dataset_id, prediction_result = excluded.prediction_result, prediction_date = excluded.prediction_date;",
+      "INSERT INTO training_data (record_id, dataset_id, feature_id, feature_value) VALUES (1, 201, 301, 0.5) ON CONFLICT (record_id) DO UPDATE SET dataset_id = excluded.dataset_id, feature_id = excluded.feature_id, feature_value = excluded.feature_value;"
+    ]
+  }
+]

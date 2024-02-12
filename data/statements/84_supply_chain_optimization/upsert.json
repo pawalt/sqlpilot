@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "INSERT INTO shipment (supplier_id, product_id, quantity, shipment_date) VALUES (1, 101, 20, '2022-01-15') ON CONFLICT (shipment_id) DO UPDATE SET supplier_id = EXCLUDED.supplier_id, product_id = EXCLUDED.product_id, quantity = EXCLUDED.quantity, shipment_date = EXCLUDED.shipment_date;",
+      "INSERT INTO shipment (supplier_id, product_id, quantity, shipment_date) VALUES (2, 102, 30, '2022-01-20') ON CONFLICT (shipment_id) DO UPDATE SET supplier_id = EXCLUDED.supplier_id, product_id = EXCLUDED.product_id, quantity = EXCLUDED.quantity, shipment_date = EXCLUDED.shipment_date;",
+      "INSERT INTO shipment (supplier_id, product_id, quantity, shipment_date) VALUES (3, 103, 25, '2022-01-25') ON CONFLICT (shipment_id) DO UPDATE SET supplier_id = EXCLUDED.supplier_id, product_id = EXCLUDED.product_id, quantity = EXCLUDED.quantity, shipment_date = EXCLUDED.shipment_date;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO warehouses (id, name, location) VALUES (1, 'Warehouse A', 'New York')",
+      "UPSERT INTO products (id, name, price, quantity, warehouse_id) VALUES (1, 'Product A', 10.99, 100, 1)",
+      "UPSERT INTO products (id, name, price, quantity, warehouse_id) VALUES (2, 'Product B', 15.50, 50, 1)"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO products (name, price) VALUES ('Product1', 20.50) ON CONFLICT (name) DO UPDATE SET price = EXCLUDED.price",
+      "INSERT INTO orders (product_id, quantity, order_date) VALUES (1, 10, '2022-01-01') ON CONFLICT (product_id, order_date) DO UPDATE SET quantity = orders.quantity + EXCLUDED.quantity",
+      "INSERT INTO suppliers (name, address, phone_number) VALUES ('Supplier1', '123 Main St', '555-123-4567') ON CONFLICT (name) DO UPDATE SET address = EXCLUDED.address, phone_number = EXCLUDED.phone_number"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO products (id, name, price, stock_quantity) VALUES (1, 'Product A', 50.00, 100) ON DUPLICATE KEY UPDATE name = 'Product A', price = 50.00, stock_quantity = 100;",
+      "UPSERT INTO suppliers (id, name, location) VALUES (1, 'Supplier X', 'Location A') ON DUPLICATE KEY UPDATE name = 'Supplier X', location = 'Location A';",
+      "UPSERT INTO orders (order_id, product_id, supplier_id, quantity, order_date) VALUES (1, 1, 1, 10, '2022-01-01 12:00:00') ON DUPLICATE KEY UPDATE product_id = 1, supplier_id = 1, quantity = 10, order_date = '2022-01-01 12:00:00';"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO Products (product_id, product_name, quantity, price) VALUES (1, 'Laptop', 10, 800)",
+      "UPSERT INTO Suppliers (supplier_id, supplier_name, location) VALUES (1, 'SupplierA', 'New York')",
+      "UPSERT INTO Orders (order_id, product_id, supplier_id, quantity, order_date) VALUES (1, 1, 1, 2, '2022-10-15')"
+    ]
+  }
+]

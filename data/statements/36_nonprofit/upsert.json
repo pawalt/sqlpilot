@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO Nonprofit (id, name, mission, established_date) VALUES (1, 'ABC Nonprofit', 'Mission ABC', '2022-01-01')",
+      "UPSERT INTO Nonprofit (id, name, mission, established_date) VALUES (2, 'XYZ Nonprofit', 'Mission XYZ', '2021-12-15')",
+      "UPSERT INTO Nonprofit (id, name, mission, established_date) VALUES (3, '123 Nonprofit', 'Mission 123', '2021-11-30')"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO nonprofit_organization (nonprofit_id, name, mission, established_date) VALUES (1, 'ABC Charity', 'Supporting underprivileged children', '2021-01-01') ON CONFLICT (nonprofit_id) DO UPDATE SET name = excluded.name, mission = excluded.mission, established_date = excluded.established_date;",
+      "UPSERT INTO donations (donation_id, nonprofit_id, amount, donation_date) VALUES (1, 1, 100.00, '2021-05-15') ON CONFLICT (donation_id) DO UPDATE SET nonprofit_id = excluded.nonprofit_id, amount = excluded.amount, donation_date = excluded.donation_date;",
+      "UPSERT INTO nonprofit_organization (nonprofit_id, name, mission, established_date) VALUES (2, 'XYZ Foundation', 'Providing healthcare services', '2019-07-20') ON CONFLICT (nonprofit_id) DO UPDATE SET name = excluded.name, mission = excluded.mission, established_date = excluded.established_date;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO Nonprofit.Organization (org_id, org_name, org_type) VALUES (1, 'Charity Foundation', 'Charity') ON DUPLICATE KEY UPDATE org_name = 'Charity Foundation', org_type = 'Charity';",
+      "UPSERT INTO Nonprofit.Project (project_id, project_name, org_id) VALUES (1, 'Clean Water Project', 1) ON DUPLICATE KEY UPDATE project_name = 'Clean Water Project', org_id = 1;",
+      "UPSERT INTO Nonprofit.Donation (donation_id, donor_name, donation_amount, project_id) VALUES (1, 'John Doe', 1000.00, 1) ON DUPLICATE KEY UPDATE donor_name = 'John Doe', donation_amount = 1000.00, project_id = 1;"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO nonprofit.organization (organization_id, name, mission_statement) VALUES (1, 'Organization A', 'Mission statement A') ON DUPLICATE KEY UPDATE name = 'Organization A updated', mission_statement = 'Updated mission statement A';",
+      "INSERT INTO nonprofit.donor (donor_id, name, email) VALUES (1, 'John Doe', 'john.doe@example.com') ON DUPLICATE KEY UPDATE name = 'John Doe updated', email = 'john.doe.updated@example.com';",
+      "INSERT INTO nonprofit.donation (donation_id, donor_id, organization_id, amount, donation_date) VALUES (1, 1, 1, 100.00, '2022-01-01') ON DUPLICATE KEY UPDATE amount = 150.00, donation_date = '2022-02-01';"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO nonprofit.organization (id, name, location, established_date) VALUES (1, 'Charity One', 'New York', '2021-01-15') ON CONFLICT (id) DO UPDATE SET name = 'Charity One', location = 'New York', established_date = '2021-01-15';",
+      "UPSERT INTO nonprofit.member (id, name, email, organization_id) VALUES (1, 'John Doe', 'john@example.com', 1) ON CONFLICT (id) DO NOTHING;",
+      "UPSERT INTO nonprofit.donation (id, amount, donation_date, member_id) VALUES (1, 100.00, '2021-03-20', 1) ON CONFLICT (id) DO UPDATE SET amount = 100.00, donation_date = '2021-03-20', member_id = 1;"
+    ]
+  }
+]

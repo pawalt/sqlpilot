@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "INSERT INTO BioinformaticsData (id, sequence, organism, gene_name) VALUES (1, 'ATGCATGC', 'Human', 'GeneA') ON CONFLICT (id) DO UPDATE SET sequence = excluded.sequence, organism = excluded.organism, gene_name = excluded.gene_name",
+      "INSERT INTO BioinformaticsData (id, sequence, organism, gene_name) VALUES (2, 'GCTAGCTA', 'Mouse', 'GeneB') ON CONFLICT (id) DO UPDATE SET sequence = excluded.sequence, organism = excluded.organism, gene_name = excluded.gene_name",
+      "INSERT INTO BioinformaticsData (id, sequence, organism, gene_name) VALUES (3, 'CTAGCTAG', 'Rat', 'GeneC') ON CONFLICT (id) DO UPDATE SET sequence = excluded.sequence, organism = excluded.organism, gene_name = excluded.gene_name"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO Genes (id, name, sequence) VALUES (1, 'Gene1', 'ATCG') ON DUPLICATE KEY UPDATE name = 'Gene1', sequence = 'ATCG'",
+      "UPSERT INTO Proteins (id, gene_id, sequence) VALUES (1, 1, 'Protein1') ON DUPLICATE KEY UPDATE gene_id = 1, sequence = 'Protein1'",
+      "UPSERT INTO Proteins (id, gene_id, sequence) VALUES (2, 2, 'Protein2') ON DUPLICATE KEY UPDATE gene_id = 2, sequence = 'Protein2'"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO Gene (id, name, sequence) VALUES (1, 'Gene1', 'ATCG') ON CONFLICT (id) DO UPDATE SET name='Gene1_updated', sequence='ATCG_updated';",
+      "UPSERT INTO Mutation (id, gene_id, type, position) VALUES (1, 1, 'SNP', 100) ON CONFLICT (id) DO NOTHING;",
+      "UPSERT INTO Variant (id, gene_id, mutation_id, name, effect) VALUES (1, 1, 1, 'Variant1', 'Effect1') ON CONFLICT (id) DO UPDATE SET effect='Effect1_updated';"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO genes (gene_id, gene_name, organism, chromosome) VALUES (1, 'Gene1', 'Human', '1');",
+      "INSERT INTO transcripts (transcript_id, gene_id, transcript_name, sequence) VALUES (1, 1, 'Transcript1', 'ATCG');",
+      "INSERT INTO mutations (mutation_id, transcript_id, mutation_type, position, new_base) VALUES (1, 1, 'SNP', 10, 'A');"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO gene_info (gene_id, gene_name, chromosome, start_position, end_position) VALUES (1, 'Gene1', 'Chr1', 1000, 2000) ON DUPLICATE KEY UPDATE gene_name='Gene1_updated', start_position=1001, end_position=2001;",
+      "UPSERT INTO protein_info (protein_id, protein_name, gene_id, length, sequence) VALUES (1, 'Protein1', 1, 300, 'AAGCTAGC') ON DUPLICATE KEY UPDATE protein_name='Protein1_updated', length=301, sequence='AAGCTAGCAG';",
+      "UPSERT INTO mutation_info (mutation_id, gene_id, mutation_description) VALUES (1, 2, 'Mutation in gene2') ON DUPLICATE KEY UPDATE mutation_description='Mutation in gene2_updated';"
+    ]
+  }
+]

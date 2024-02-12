@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO remote_work_schedule (employee_id, start_date, end_date, remote_location) VALUES (1, '2022-01-01', '2022-03-31', 'New York')",
+      "UPSERT INTO remote_work_schedule (employee_id, start_date, end_date, remote_location) VALUES (2, '2022-02-15', '2022-04-30', 'Los Angeles')",
+      "UPSERT INTO remote_work_schedule (employee_id, start_date, end_date, remote_location) VALUES (3, '2022-03-10', '2022-05-15', 'Chicago')"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO remote_teams (team_id, team_name, team_leader) VALUES (1, 'Team A', 'John Doe') ON DUPLICATE KEY UPDATE team_name = VALUES(team_name), team_leader = VALUES(team_leader);",
+      "INSERT INTO remote_teams (team_id, team_name, team_leader) VALUES (2, 'Team B', 'Jane Smith') ON DUPLICATE KEY UPDATE team_name = VALUES(team_name), team_leader = VALUES(team_leader);",
+      "INSERT INTO remote_employees (employee_id, employee_name, team_id, role) VALUES (1, 'Alice Johnson', 1, 'Developer') ON DUPLICATE KEY UPDATE employee_name = VALUES(employee_name), team_id = VALUES(team_id), role = VALUES(role);"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO remote_teams (team_id, team_name, team_lead) VALUES (1, 'Team A', 'John Doe') ON CONFLICT (team_id) DO UPDATE SET team_name = 'Team A', team_lead = 'John Doe';",
+      "UPSERT INTO remote_employees (employee_id, employee_name, team_id, role) VALUES (1, 'Alice Smith', 1, 'Developer') ON CONFLICT (employee_id) DO UPDATE SET employee_name = 'Alice Smith', team_id = 1, role = 'Developer';",
+      "UPSERT INTO remote_tasks (task_id, task_name, task_description, employee_id, deadline) VALUES (1, 'Task 1', 'Description for Task 1', 1, '2023-01-01') ON CONFLICT (task_id) DO UPDATE SET task_name = 'Task 1', task_description = 'Description for Task 1', employee_id = 1, deadline = '2023-01-01';"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO employees (id, first_name, last_name, department) VALUES ('1cbb3886-867b-4c7d-a664-2f0db349b292', 'John', 'Doe', 'Engineering') ON CONFLICT (id) DO UPDATE SET first_name = excluded.first_name, last_name = excluded.last_name, department = excluded.department",
+      "INSERT INTO teams (team_id, team_name, team_lead) VALUES ('4077d58e-9ee3-48b5-921d-d792e6b62192', 'Engineering Team', '1cbb3886-867b-4c7d-a664-2f0db349b292') ON CONFLICT (team_id) DO UPDATE SET team_name = excluded.team_name, team_lead = excluded.team_lead",
+      "INSERT INTO projects (project_id, project_name, team_id) VALUES ('ecae8474-4f5b-4d75-8486-0667df38b27a', 'Project X', '4077d58e-9ee3-48b5-921d-d792e6b62192') ON CONFLICT (project_id) DO UPDATE SET project_name = excluded.project_name, team_id = excluded.team_id"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO users (id, name, email, role) VALUES (1, 'Alice', 'alice@example.com', 'manager') ON CONFLICT (id) DO UPDATE SET name = 'Alice', email = 'alice@example.com', role = 'manager';",
+      "INSERT INTO teams (team_id, team_name, team_lead, team_members) VALUES (1, 'TeamA', 1, ARRAY[1,2,3]) ON CONFLICT (team_id) DO UPDATE SET team_name = 'TeamA', team_lead = 1, team_members = ARRAY[1,2,3];",
+      "INSERT INTO projects (project_id, project_name, project_manager, team_assigned) VALUES (1, 'ProjectA', 1, 1) ON CONFLICT (project_id) DO UPDATE SET project_name = 'ProjectA', project_manager = 1, team_assigned = 1;"
+    ]
+  }
+]

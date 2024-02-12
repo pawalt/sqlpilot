@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO Hotel (hotel_id, name, location, rating) VALUES (1, 'Hotel ABC', 'New York', 4.5) ON CONFLICT (hotel_id) DO UPDATE SET name = EXCLUDED.name, location = EXCLUDED.location, rating = EXCLUDED.rating;",
+      "UPSERT INTO Room (room_id, hotel_id, room_type, price, capacity) VALUES (1, 1, 'Single', 100.00, 1) ON CONFLICT (room_id) DO UPDATE SET room_type = EXCLUDED.room_type, price = EXCLUDED.price, capacity = EXCLUDED.capacity;",
+      "UPSERT INTO Booking (booking_id, room_id, guest_name, check_in_date, check_out_date, total_price) VALUES (1, 1, 'John Doe', '2023-01-15', '2023-01-17', 200.00) ON CONFLICT (booking_id) DO UPDATE SET room_id = EXCLUDED.room_id, guest_name = EXCLUDED.guest_name, check_in_date = EXCLUDED.check_in_date, check_out_date = EXCLUDED.check_out_date, total_price = EXCLUDED.total_price;"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO hotels (id, name, location, rating) VALUES (1, 'Hotel A', 'Location A', 4.5) ON CONFLICT (id) DO UPDATE SET name = 'Hotel A', location = 'Location A', rating = 4.5;",
+      "INSERT INTO guests (id, name, email, phone) VALUES (1, 'John Doe', 'johndoe@example.com', '123-456-7890') ON CONFLICT (id) DO UPDATE SET name = 'John Doe', email = 'johndoe@example.com', phone = '123-456-7890';",
+      "INSERT INTO hotels (id, name, location, rating) VALUES (2, 'Hotel B', 'Location B', 4.0) ON CONFLICT (id) DO UPDATE SET name = 'Hotel B', location = 'Location B', rating = 4.0;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO hotels (hotel_id, name, location, rating) VALUES (1, 'Hotel A', 'City A', 4.5) ON DUPLICATE KEY UPDATE name='Hotel A', location='City A', rating=4.5;",
+      "UPSERT INTO rooms (room_id, hotel_id, type, price, capacity) VALUES (101, 1, 'Single', 100.00, 1) ON DUPLICATE KEY UPDATE hotel_id=1, type='Single', price=100.00, capacity=1;",
+      "UPSERT INTO bookings (booking_id, room_id, check_in_date, check_out_date, customer_name) VALUES (201, 101, '2023-10-15', '2023-10-20', 'John Doe') ON DUPLICATE KEY UPDATE room_id=101, check_in_date='2023-10-15', check_out_date='2023-10-20', customer_name='John Doe';"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO hotels (hotel_id, name, location) VALUES (1, 'Hotel A', 'Location A') ON CONFLICT (hotel_id) DO UPDATE SET name = 'Hotel A', location = 'Location A';",
+      "UPSERT INTO rooms (room_id, hotel_id, room_number, capacity) VALUES (1, 1, 101, 2) ON CONFLICT (room_id) DO UPDATE SET hotel_id = 1, room_number = 101, capacity = 2;",
+      "UPSERT INTO bookings (booking_id, room_id, guest_name, check_in_date, check_out_date) VALUES (1, 1, 'John Doe', '2023-01-15', '2023-01-20') ON CONFLICT (booking_id) DO UPDATE SET room_id = 1, guest_name = 'John Doe', check_in_date = '2023-01-15', check_out_date = '2023-01-20';"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO Hotel(id, name, location) VALUES (1, 'Hotel A', 'Location A') ON CONFLICT (id) DO UPDATE SET name = 'Hotel A', location = 'Location A';",
+      "INSERT INTO Room(id, room_number, hotel_id, description) VALUES (1, 101, 1, 'Description 1') ON CONFLICT (id) DO UPDATE SET room_number = 101, hotel_id = 1, description = 'Description 1';",
+      "INSERT INTO Guest(id, name, email) VALUES (1, 'John Doe', 'john.doe@example.com') ON CONFLICT (id) DO UPDATE SET name = 'John Doe', email = 'john.doe@example.com';"
+    ]
+  }
+]

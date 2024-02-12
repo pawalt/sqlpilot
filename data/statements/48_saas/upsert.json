@@ -1,0 +1,39 @@
+[
+  {
+    "statements": [
+      "INSERT INTO SaaS (id, name, description, created_at, updated_at) VALUES (1, 'SaaS Product 1', 'Description for SaaS Product 1', '2023-01-01 00:00:00', '2023-01-01 00:00:00') ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, description = EXCLUDED.description, updated_at = EXCLUDED.updated_at",
+      "INSERT INTO SaaS (id, name, description, created_at, updated_at) VALUES (2, 'SaaS Product 2', 'Description for SaaS Product 2', '2023-01-02 00:00:00', '2023-01-02 00:00:00') ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, description = EXCLUDED.description, updated_at = EXCLUDED.updated_at",
+      "INSERT INTO SaaS (id, name, description, created_at, updated_at) VALUES (3, 'SaaS Product 3', 'Description for SaaS Product 3', '2023-01-03 00:00:00', '2023-01-03 00:00:00') ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, description = EXCLUDED.description, updated_at = EXCLUDED.updated_at"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO customers (customer_id, customer_name, email, created_at) VALUES (1, 'John Doe', 'john.doe@example.com', '2022-01-01') ON CONFLICT (customer_id) DO UPDATE SET customer_name = excluded.customer_name, email = excluded.email, created_at = excluded.created_at;",
+      "UPSERT INTO customers (customer_id, customer_name, email, created_at) VALUES (2, 'Jane Smith', 'jane.smith@example.com', '2022-01-15') ON CONFLICT (customer_id) DO UPDATE SET customer_name = excluded.customer_name, email = excluded.email, created_at = excluded.created_at;",
+      "UPSERT INTO subscriptions (subscription_id, customer_id, start_date, end_date) VALUES (1, 1, '2022-01-01', '2023-01-01') ON CONFLICT (subscription_id) DO UPDATE SET customer_id = excluded.customer_id, start_date = excluded.start_date, end_date = excluded.end_date;"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO users (username, email) VALUES ('john_doe', 'john@example.com') ON CONFLICT (username) DO UPDATE SET email = 'john.doe@example.com';",
+      "INSERT INTO subscriptions (user_id, plan_name, price, start_date) VALUES (1, 'premium', 29.99, '2022-01-01') ON CONFLICT (user_id, plan_name) DO UPDATE SET price = 39.99, start_date = '2022-02-01';",
+      "INSERT INTO invoices (sub_id, amount, invoice_date) VALUES (1, 29.99, '2022-01-15') ON CONFLICT (sub_id, invoice_date) DO UPDATE SET amount = 39.99, paid = TRUE;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO customers (id, name, email) VALUES (1, 'John Doe', 'john.doe@example.com')",
+      "UPSERT INTO products (id, name, price) VALUES (1, 'Product A', 10.99)",
+      "UPSERT INTO orders (id, customer_id, product_id, quantity, total_price) VALUES (1, 1, 1, 2, 21.98)"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO users (user_id, username, email, created_at, updated_at) VALUES (1, 'john.doe', 'john.doe@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) ON CONFLICT (user_id) DO UPDATE SET username = 'john.doe', email = 'john.doe@example.com', updated_at = CURRENT_TIMESTAMP",
+      "INSERT INTO organizations (org_id, org_name, created_at, updated_at) VALUES (1, 'ACME Corp', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) ON CONFLICT (org_id) DO UPDATE SET org_name = 'ACME Corp', updated_at = CURRENT_TIMESTAMP",
+      "INSERT INTO products (product_id, product_name, price) VALUES (1, 'Laptop', 999.99) ON CONFLICT (product_id) DO UPDATE SET product_name = 'Laptop', price = 999.99",
+      "INSERT INTO subscriptions (subscription_id, user_id, org_id, product_id, start_date, end_date) VALUES (1, 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) ON CONFLICT (subscription_id) DO UPDATE SET user_id = 1, org_id = 1, product_id = 1, start_date = CURRENT_TIMESTAMP, end_date = CURRENT_TIMESTAMP",
+      "INSERT INTO payments (payment_id, subscription_id, amount, payment_date) VALUES (1, 1, 99.99, CURRENT_TIMESTAMP) ON CONFLICT (payment_id) DO UPDATE SET subscription_id = 1, amount = 99.99, payment_date = CURRENT_TIMESTAMP"
+    ]
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO Patients (patient_id, name, gender, age, address, phone_number, email, medical_history, appointment_date) VALUES (1, 'John Doe', 'Male', 30, '123 Example St', '123-456-7890', 'johndoe@example.com', 'No major issues', '2022-12-31 10:00:00')",
+      "UPSERT INTO Patients (patient_id, name, gender, age, address, phone_number, email, medical_history, appointment_date) VALUES (2, 'Jane Smith', 'Female', 25, '456 Test Rd', '987-654-3210', 'janesmith@example.com', 'Allergies to peanuts', '2022-11-30 09:30:00')",
+      "UPSERT INTO Patients (patient_id, name, gender, age, address, phone_number, email, medical_history, appointment_date) VALUES (3, 'Sam Johnson', 'Male', 40, '789 New Ave', '555-123-4567', 'samjohnson@example.com', 'High blood pressure', '2022-10-15 11:15:00')"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO patients (patient_name, age, gender, phone_number, address) VALUES ('Alice', 30, 'Female', '123-456-7890', '123 Main St') ON CONFLICT (patient_name) DO UPDATE SET age = EXCLUDED.age, gender = EXCLUDED.gender, phone_number = EXCLUDED.phone_number, address = EXCLUDED.address;",
+      "INSERT INTO appointments (patient_id, doctor_name, appointment_date, appointment_time, appointment_purpose) VALUES (1, 'Dr. Smith', '2022-10-15', '09:00:00', 'Routine checkup') ON CONFLICT (appointment_id) DO UPDATE SET patient_id = EXCLUDED.patient_id, doctor_name = EXCLUDED.doctor_name, appointment_date = EXCLUDED.appointment_date, appointment_time = EXCLUDED.appointment_time, appointment_purpose = EXCLUDED.appointment_purpose;",
+      "INSERT INTO patients (patient_name, age, gender, phone_number, address) VALUES ('Bob', 25, 'Male', '987-654-3210', '456 Elm St') ON CONFLICT (patient_name) DO NOTHING;"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO Patients (patient_id, patient_name, patient_age, patient_gender, patient_address) VALUES (1, 'John Doe', 30, 'Male', '123 Main Street') ON DUPLICATE KEY UPDATE patient_name = VALUES(patient_name), patient_age = VALUES(patient_age), patient_gender = VALUES(patient_gender), patient_address = VALUES(patient_address);",
+      "INSERT INTO Doctors (doctor_id, doctor_name, doctor_specialty, doctor_experience, doctor_address) VALUES (1, 'Dr. Smith', 'Cardiology', 10, '456 Elm Avenue') ON DUPLICATE KEY UPDATE doctor_name = VALUES(doctor_name), doctor_specialty = VALUES(doctor_specialty), doctor_experience = VALUES(doctor_experience), doctor_address = VALUES(doctor_address);",
+      "INSERT INTO Appointments (appointment_id, patient_id, doctor_id, appointment_date, appointment_time, appointment_notes) VALUES (1, 1, 1, '2022-09-30', '10:00:00', 'Follow up appointment') ON DUPLICATE KEY UPDATE patient_id = VALUES(patient_id), doctor_id = VALUES(doctor_id), appointment_date = VALUES(appointment_date), appointment_time = VALUES(appointment_time), appointment_notes = VALUES(appointment_notes);"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO doctors (doctor_id, name, specialty, location) VALUES (1, 'Dr. John Doe', 'Cardiology', 'New York') ON DUPLICATE KEY UPDATE name = 'Dr. John Doe', specialty = 'Cardiology', location = 'New York'",
+      "UPSERT INTO patients (patient_id, name, age, gender, address) VALUES (1, 'Alice Smith', 30, 'Female', '123 Main St') ON DUPLICATE KEY UPDATE name = 'Alice Smith', age = 30, gender = 'Female', address = '123 Main St'",
+      "UPSERT INTO appointments (appointment_id, patient_id, doctor_id, appointment_date, appointment_time, status) VALUES (1, 1, 1, '2022-10-15', '10:00:00', 'Scheduled') ON DUPLICATE KEY UPDATE patient_id = 1, doctor_id = 1, appointment_date = '2022-10-15', appointment_time = '10:00:00', status = 'Scheduled'"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO doctors (doctor_id, doctor_name, specialty, location) VALUES (1, 'Dr. John Doe', 'Cardiology', 'Hospital A') ON DUPLICATE KEY UPDATE doctor_name='Dr. John Doe', specialty='Cardiology', location='Hospital A'",
+      "UPSERT INTO patients (patient_id, patient_name, age, gender, contact) VALUES (1, 'Alice', 35, 'Female', '123-456-7890') ON DUPLICATE KEY UPDATE patient_name='Alice', age=35, gender='Female', contact='123-456-7890'",
+      "UPSERT INTO appointments (app_id, doctor_id, patient_id, appointment_date, appointment_time) VALUES (1, 1, 1, '2023-01-15', '08:00:00') ON DUPLICATE KEY UPDATE doctor_id=1, patient_id=1, appointment_date='2023-01-15', appointment_time='08:00:00'"
+    ]
+  }
+]

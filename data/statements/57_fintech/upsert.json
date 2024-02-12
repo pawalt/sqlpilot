@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO fintech_transactions (transaction_id, amount, transaction_date, description) VALUES (1, 100.00, '2022-01-01', 'Payment for groceries')",
+      "UPSERT INTO fintech_transactions (transaction_id, amount, transaction_date, description) VALUES (2, 50.00, '2022-01-02', 'Purchase of clothes')",
+      "UPSERT INTO fintech_transactions (transaction_id, amount, transaction_date, description) VALUES (3, 200.00, '2022-01-03', 'Payment for utilities')"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO users (user_id, username, email, password) VALUES (1, 'john_doe', 'john.doe@example.com', 'password123') ON CONFLICT (user_id) DO UPDATE SET username = 'johndoe'",
+      "UPSERT INTO users (user_id, username, email, password) VALUES (2, 'jane_smith', 'jane.smith@example.com', 'password456') ON CONFLICT (user_id) DO UPDATE SET email = 'jane.smith@newemail.com'",
+      "UPSERT INTO users (user_id, username, email, password) VALUES (3, 'robert_jackson', 'robert.jackson@example.com', 'password789') ON CONFLICT (user_id) DO UPDATE SET password = 'newpassword'"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO users (user_id, username, email, password_hash) VALUES (1, 'john_doe', 'john_doe@example.com', 'abc123') ON CONFLICT (user_id) DO UPDATE SET username = excluded.username, email = excluded.email, password_hash = excluded.password_hash",
+      "INSERT INTO accounts (account_id, user_id, account_type, balance) VALUES (1, 1, 'savings', 1000.00) ON CONFLICT (account_id) DO UPDATE SET user_id = excluded.user_id, account_type = excluded.account_type, balance = excluded.balance",
+      "INSERT INTO transactions (transaction_id, account_id, amount, transaction_type, transaction_date) VALUES (1, 1, 500.00, 'deposit', '2022-01-01 10:00:00') ON CONFLICT (transaction_id) DO UPDATE SET account_id = excluded.account_id, amount = excluded.amount, transaction_type = excluded.transaction_type, transaction_date = excluded.transaction_date"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO users (user_id, username, email, password) VALUES (1, 'JohnDoe', 'johndoe@example.com', 'pass123') ON DUPLICATE KEY UPDATE username = 'JohnDoe', email = 'johndoe@example.com', password = 'pass123';",
+      "UPSERT INTO accounts (account_id, user_id, account_type, balance) VALUES (1, 1, 'Savings', 1000.00) ON DUPLICATE KEY UPDATE user_id = 1, account_type = 'Savings', balance = 1000.00;",
+      "UPSERT INTO transactions (transaction_id, account_id, amount, transaction_type, transaction_date) VALUES (1, 1, 500.00, 'Deposit', '2022-01-15') ON DUPLICATE KEY UPDATE account_id = 1, amount = 500.00, transaction_type = 'Deposit', transaction_date = '2022-01-15';"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO Users (user_id, username, email, password) VALUES (1, 'john_doe', 'john@example.com', 'password123') ON DUPLICATE KEY UPDATE username = 'john_doe', email = 'john@example.com', password = 'password123';",
+      "UPSERT INTO Accounts (account_id, user_id, account_type, balance) VALUES (1, 1, 'Savings', 1000.50) ON DUPLICATE KEY UPDATE user_id = 1, account_type = 'Savings', balance = 1000.50;",
+      "UPSERT INTO Loans (loan_id, user_id, loan_amount, interest_rate, loan_status) VALUES (1, 1, 5000.00, 5.5, 'Approved') ON DUPLICATE KEY UPDATE user_id = 1, loan_amount = 5000.00, interest_rate = 5.5, loan_status = 'Approved';"
+    ]
+  }
+]

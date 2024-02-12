@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "INSERT INTO mobile_paymentsystem (user_id, amount, payment_date) VALUES (1, 50.00, '2022-10-01') ON CONFLICT (user_id) DO UPDATE SET amount = excluded.amount, payment_date = excluded.payment_date;",
+      "INSERT INTO mobile_paymentsystem (user_id, amount, payment_date) VALUES (2, 100.00, '2022-10-05') ON CONFLICT (user_id) DO UPDATE SET amount = excluded.amount, payment_date = excluded.payment_date;",
+      "INSERT INTO mobile_paymentsystem (user_id, amount, payment_date) VALUES (3, 75.50, '2022-10-10') ON CONFLICT (user_id) DO UPDATE SET amount = excluded.amount, payment_date = excluded.payment_date;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO users (user_id, username, email, phone_number) VALUES (1, 'john_doe', 'john@example.com', '123456789')",
+      "UPSERT INTO users (user_id, username, email, phone_number) VALUES (2, 'jane_smith', 'jane@example.com', '987654321')",
+      "UPSERT INTO users (user_id, username, email, phone_number) VALUES (3, 'alice_jones', 'alice@example.com', '555555555')"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO users (id, username, email, phone_number, balance) VALUES (1, 'user1', 'user1@example.com', '1234567890', 1000) ON CONFLICT (id) DO UPDATE SET username=excluded.username, email=excluded.email, phone_number=excluded.phone_number, balance=excluded.balance;",
+      "INSERT INTO transactions (id, user_id, amount, transaction_date) VALUES (1, 1, 500, '2022-01-01 08:00:00') ON CONFLICT (id) DO NOTHING;",
+      "INSERT INTO payments (id, transaction_id, payment_method, status, amount) VALUES (1, 1, 'credit card', 'completed', 500) ON CONFLICT (id) DO UPDATE SET transaction_id=excluded.transaction_id, payment_method=excluded.payment_method, status=excluded.status, amount=excluded.amount;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO users (user_id, username, mobile_number) VALUES (1, 'JohnDoe', '123456789') ON DUPLICATE KEY UPDATE username='JohnDoe', mobile_number='123456789';",
+      "UPSERT INTO wallets (wallet_id, user_id, balance) VALUES (1, 1, 100.00) ON CONFLICT (wallet_id) DO UPDATE SET balance = 100.00;",
+      "UPSERT INTO payment_methods (method_id, user_id, method_name) VALUES (1, 1, 'Credit Card') ON CONFLICT (method_id) DO UPDATE SET method_name = 'Credit Card';"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO Users (user_id, username, email, phone_number) VALUES (1, 'john_doe', 'john.doe@example.com', '123-456-7890') ON CONFLICT (user_id) DO UPDATE SET username = 'john_doe_updated', email = 'john.doe@example.com', phone_number = '123-456-7890';",
+      "INSERT INTO Wallets (wallet_id, user_id) VALUES (1, 1) ON CONFLICT (wallet_id) DO UPDATE SET user_id = 1;",
+      "INSERT INTO Transactions (transaction_id, sender_wallet_id, receiver_wallet_id, amount, transaction_date) VALUES (1, 1, 2, 100.00, '2023-01-15') ON CONFLICT (transaction_id) DO UPDATE SET sender_wallet_id = 1, receiver_wallet_id = 2, amount = 100.00, transaction_date = '2023-01-15';"
+    ]
+  }
+]

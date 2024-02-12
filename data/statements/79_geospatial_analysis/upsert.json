@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO geospatial_data (id, location, value) VALUES (1, 'POINT(1 1)', 10.5)",
+      "UPSERT INTO geospatial_data (id, location, value) VALUES (2, 'POINT(2 2)', 20.7)",
+      "UPSERT INTO geospatial_data (id, location, value) VALUES (3, 'POINT(3 3)', 30.2)"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO locations (location_id, location_name, latitude, longitude) VALUES (1, 'New York City', 40.7128, -74.0060) ON DUPLICATE KEY UPDATE location_name = 'New York City', latitude = 40.7128, longitude = -74.0060;",
+      "UPSERT INTO spatial_data (data_id, location_id, data_value) VALUES (1, 1, 50.0) ON DUPLICATE KEY UPDATE data_value = 50.0;",
+      "UPSERT INTO locations (location_id, location_name, latitude, longitude) VALUES (2, 'Los Angeles', 34.0522, -118.2437) ON DUPLICATE KEY UPDATE location_name = 'Los Angeles', latitude = 34.0522, longitude = -118.2437;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO locations (location_id, street_address, city, state, zip_code, location) VALUES ('c5da4996-732f-4c5e-b464-174d211e5f71', '123 Main St', 'Los Angeles', 'CA', 90001, 'POINT (-118.2437 34.0522)' ) ON CONFLICT (location_id) DO UPDATE SET street_address = EXCLUDED.street_address, city = EXCLUDED.city, state = EXCLUDED.state, zip_code = EXCLUDED.zip_code, location = EXCLUDED.location",
+      "UPSERT INTO users (user_id, first_name, last_name, email, location_id) VALUES ('277b2991-9524-4c78-9364-443c030a6854', 'John', 'Doe', 'john.doe@example.com', 'c5da4996-732f-4c5e-b464-174d211e5f71' ) ON CONFLICT (user_id) DO UPDATE SET first_name = EXCLUDED.first_name, last_name = EXCLUDED.last_name, email = EXCLUDED.email, location_id = EXCLUDED.location_id",
+      "UPSERT INTO geo_analysis (analysis_id, user_id, timestamp, area_covered, analysis_result) VALUES ('bf75e7e1-5b56-4977-8e33-2c391a2e299c', '277b2991-9524-4c78-9364-443c030a6854', '2022-01-01 12:00:00', 'POLYGON ((-118.2909 34.0806, -118.2867 34.0616, -118.2470 34.0488, -118.2406 34.0645, -118.2909 34.0806))', 'Successful analysis' ) ON CONFLICT (analysis_id) DO UPDATE SET user_id = EXCLUDED.user_id, timestamp = EXCLUDED.timestamp, area_covered = EXCLUDED.area_covered, analysis_result = EXCLUDED.analysis_result"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO locations (location_id, name, address, coordinates) VALUES (1, 'Store A', '123 Main St', ST_GeomFromText('POINT(0 0)')) ON CONFLICT (location_id) DO UPDATE SET name = 'Store A', address = '123 Main St', coordinates = ST_GeomFromText('POINT(0 0)');",
+      "UPSERT INTO regions (region_id, region_name, area) VALUES (1, 'North Region', ST_GeomFromText('POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))')) ON CONFLICT (region_id) DO UPDATE SET region_name = 'North Region', area = ST_GeomFromText('POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))');",
+      "UPSERT INTO customers (customer_id, name, email, location_id) VALUES (1, 'John Doe', 'john.doe@example.com', 1) ON CONFLICT (customer_id) DO UPDATE SET name = 'John Doe', email = 'john.doe@example.com', location_id = 1;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO locations (location_id, location_name, coordinates) VALUES (1, 'City Center', ST_GeomFromText('POINT(40.7128 -74.0060)')) ON DUPLICATE KEY UPDATE location_name = 'City Center', coordinates = ST_GeomFromText('POINT(40.7128 -74.0060)')",
+      "UPSERT INTO regions (region_id, region_name, boundary) VALUES (1, 'Downtown', ST_GeomFromText('POLYGON((40.7128 -74.0060, 40.7128 -74.0055, 40.7133 -74.0055, 40.7133 -74.0060, 40.7128 -74.0060))')) ON DUPLICATE KEY UPDATE region_name = 'Downtown', boundary = ST_GeomFromText('POLYGON((40.7128 -74.0060, 40.7128 -74.0055, 40.7133 -74.0055, 40.7133 -74.0060, 40.7128 -74.0060))'",
+      "UPSERT INTO points_of_interest (poi_id, poi_name, location_id) VALUES (1, 'Museum', 1) ON DUPLICATE KEY UPDATE poi_name = 'Museum', location_id = 1"
+    ]
+  }
+]

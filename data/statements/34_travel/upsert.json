@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO TravelInformation (id, destination, departure_date, distance) VALUES (1, 'New York', '2022-10-15', 2000)",
+      "UPSERT INTO TravelInformation (id, destination, departure_date, distance) VALUES (2, 'Los Angeles', '2022-11-20', 3000)",
+      "UPSERT INTO TravelInformation (id, destination, departure_date, distance) VALUES (3, 'Chicago', '2022-12-05', 1500)"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO locations (location_id, location_name) VALUES (1, 'New York') ON CONFLICT (location_id) DO UPDATE SET location_name = 'New York';",
+      "INSERT INTO locations (location_id, location_name) VALUES (2, 'Los Angeles') ON CONFLICT (location_id) DO UPDATE SET location_name = 'Los Angeles';",
+      "INSERT INTO trips (trip_id, trip_name, location_id) VALUES (101, 'Trip to New York', 1) ON CONFLICT (trip_id) DO UPDATE SET trip_name = 'Trip to New York', location_id = 1;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO destinations (id, name, location) VALUES (1, 'Paris', 'France') ON CONFLICT (id) DO UPDATE SET name = 'Paris', location = 'France';",
+      "UPSERT INTO trips (trip_id, destination_id, trip_date, duration) VALUES (101, 1, '2022-09-15', 7) ON CONFLICT (trip_id) DO UPDATE SET destination_id = 1, trip_date = '2022-09-15', duration = 7;",
+      "UPSERT INTO travelers (traveler_id, name, age, gender) VALUES (1001, 'Alice', 30, 'Female') ON CONFLICT (traveler_id) DO UPDATE SET name = 'Alice', age = 30, gender = 'Female';"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO destinations (id, name, country) VALUES (1, 'Paris', 'France') ON DUPLICATE KEY UPDATE name='Paris', country='France';",
+      "UPSERT INTO trips (id, destination_id, start_date, end_date) VALUES (1, 1, '2022-10-01', '2022-10-10') ON DUPLICATE KEY UPDATE destination_id=1, start_date='2022-10-01', end_date='2022-10-10';",
+      "UPSERT INTO travelers (id, name, age) VALUES (1, 'John Doe', 30) ON DUPLICATE KEY UPDATE name='John Doe', age=30;"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO destinations (id, name, country, description) VALUES ('b10c2d3c-5018-4fc5-8452-3905f7a57c14', 'Paris', 'France', 'City of Love') ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, country = EXCLUDED.country, description = EXCLUDED.description;",
+      "INSERT INTO flights (id, destination_id, flight_number, departure_date, departure_time, arrival_date, arrival_time) VALUES ('f687c290-6c32-4ee5-b440-781f7e183a22', 'b10c2d3c-5018-4fc5-8452-3905f7a57c14', 'AF123', '2023-06-15', '12:00', '2023-06-15', '15:00') ON CONFLICT (id) DO NOTHING;",
+      "INSERT INTO bookings (id, flight_id, passenger_name, passenger_email, booking_date) VALUES ('f2c397b6-1c0e-4de1-bd4d-629c06d170cf', 'f687c290-6c32-4ee5-b440-781f7e183a22', 'Alice Smith', 'alice@example.com', '2023-06-10') ON CONFLICT (id) DO UPDATE SET flight_id = EXCLUDED.flight_id, passenger_name = EXCLUDED.passenger_name, passenger_email = EXCLUDED.passenger_email, booking_date = EXCLUDED.booking_date;"
+    ]
+  }
+]

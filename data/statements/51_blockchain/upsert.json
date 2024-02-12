@@ -1,0 +1,23 @@
+[
+  {
+    "statements": [
+      "INSERT INTO Block (block_id, block_hash, previous_block_hash, timestamp, transactions) VALUES (1, 'hash1', 'previous_hash1', '2022-01-01 00:00:00', '{}') ON CONFLICT (block_id) DO UPDATE SET block_hash = 'hash1', previous_block_hash = 'previous_hash1', timestamp = '2022-01-01 00:00:00', transactions = '{}'",
+      "INSERT INTO Block (block_id, block_hash, previous_block_hash, timestamp, transactions) VALUES (2, 'hash2', 'previous_hash2', '2022-02-01 00:00:00', '{}' ) ON CONFLICT (block_id) DO UPDATE SET block_hash = 'hash2', previous_block_hash = 'previous_hash2', timestamp = '2022-02-01 00:00:00', transactions = '{}'",
+      "INSERT INTO Block (block_id, block_hash, previous_block_hash, timestamp, transactions) VALUES (3, 'hash3', 'previous_hash3', '2022-03-01 00:00:00', '{}' ) ON CONFLICT (block_id) DO UPDATE SET block_hash = 'hash3', previous_block_hash = 'previous_hash3', timestamp = '2022-03-01 00:00:00', transactions = '{}'"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO blockchain_transactions (transaction_id, sender_address, receiver_address, amount, timestamp) VALUES (1, 'address1', 'address2', 100.00, '2022-01-01') ON CONFLICT (transaction_id) DO UPDATE SET sender_address = 'address1', receiver_address = 'address2', amount = 100.00, timestamp = '2022-01-01';",
+      "UPSERT INTO blockchain_blocks (block_id, previous_block_id, timestamp) VALUES (1, 0, '2022-01-01') ON CONFLICT (block_id) DO UPDATE SET previous_block_id = 0, timestamp = '2022-01-01';",
+      "UPSERT INTO blockchain_wallets (wallet_id, address, balance, last_transaction_timestamp) VALUES (1, 'address1', 1000.00, '2022-01-01') ON CONFLICT (wallet_id) DO UPDATE SET address = 'address1', balance = 1000.00, last_transaction_timestamp = '2022-01-01';"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO Block (block_id, hash, timestamp) VALUES (1, 'abc123', '2022-01-01') ON DUPLICATE KEY UPDATE hash = 'abc123', timestamp = '2022-01-01';",
+      "UPSERT INTO Transaction (tx_id, block_id, from_addr, to_addr, amount) VALUES (1, 1, 'addr1', 'addr2', 10.5) ON DUPLICATE KEY UPDATE block_id = 1, from_addr = 'addr1', to_addr = 'addr2', amount = 10.5;",
+      "UPSERT INTO Address (addr_id, address) VALUES (1, 'addr1') ON DUPLICATE KEY UPDATE address = 'addr1';"
+    ]
+  }
+]

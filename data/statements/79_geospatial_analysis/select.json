@@ -1,0 +1,103 @@
+[
+  {
+    "statements": [
+      "SELECT id, location, value FROM geospatial_data LIMIT 10",
+      "SELECT * FROM geospatial_data WHERE id = 1",
+      "SELECT id, ST_AsText(location) AS location_text, value FROM geospatial_data WHERE value > 100",
+      "SELECT id, location, value FROM geospatial_data WHERE ST_DWithin(location, 'POINT(0 0)', 1000)",
+      "SELECT id, location, value FROM geospatial_data WHERE ST_Contains(location, ST_GeomFromText('POLYGON((0 0, 1 0, 1 1, 0 1, 0 0))'))",
+      "SELECT id, location, value FROM geospatial_data ORDER BY value DESC",
+      "SELECT id, location, AVG(value) AS avg_value FROM geospatial_data GROUP BY location",
+      "SELECT id, ST_X(location) AS latitude, ST_Y(location) AS longitude, value FROM geospatial_data",
+      "SELECT COUNT(id) AS total_records FROM geospatial_data WHERE value < 50",
+      "SELECT SUM(value) AS total_value FROM geospatial_data"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM locations",
+      "SELECT location_name, latitude, longitude FROM locations",
+      "SELECT location_id, location_name FROM locations",
+      "SELECT * FROM spatial_data",
+      "SELECT data_id, location_id, data_value FROM spatial_data",
+      "SELECT location_name, data_value FROM locations INNER JOIN spatial_data ON locations.location_id = spatial_data.location_id",
+      "SELECT location_name, latitude, longitude, data_value FROM locations INNER JOIN spatial_data ON locations.location_id = spatial_data.location_id",
+      "SELECT location_name FROM locations WHERE location_id = 1",
+      "SELECT data_id, data_value FROM spatial_data WHERE location_id = 2",
+      "SELECT * FROM locations WHERE location_id = 3",
+      "SELECT SUM(data_value) FROM spatial_data",
+      "SELECT AVG(data_value) FROM spatial_data",
+      "SELECT MAX(data_value) FROM spatial_data",
+      "SELECT MIN(data_value) FROM spatial_data",
+      "SELECT COUNT(data_id) FROM spatial_data",
+      "SELECT AVG(latitude), AVG(longitude) FROM locations",
+      "SELECT location_name, AVG(data_value) FROM locations INNER JOIN spatial_data ON locations.location_id = spatial_data.location_id",
+      "SELECT location_name, MAX(data_value) FROM locations INNER JOIN spatial_data ON locations.location_id = spatial_data.location_id",
+      "SELECT AVG(data_value) FROM spatial_data GROUP BY location_id",
+      "SELECT location_id, COUNT(data_id) FROM spatial_data GROUP BY location_id"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM locations;",
+      "SELECT location_id, city FROM locations;",
+      "SELECT user_id, first_name, last_name FROM users;",
+      "SELECT email FROM users WHERE location_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT analysis_id, area_covered FROM geo_analysis;",
+      "SELECT user_id, timestamp FROM geo_analysis;",
+      "SELECT user_id, analysis_result FROM geo_analysis WHERE analysis_result = 'successful';",
+      "SELECT * FROM locations JOIN users ON locations.location_id = users.location_id;",
+      "SELECT * FROM users JOIN geo_analysis ON users.user_id = geo_analysis.user_id;",
+      "SELECT first_name, last_name, city, state FROM users JOIN locations ON users.location_id = locations.location_id;",
+      "SELECT analysis_id, area_covered, analysis_result, first_name FROM geo_analysis JOIN users ON geo_analysis.user_id = users.user_id;",
+      "SELECT user_id, city, state FROM users JOIN locations ON users.location_id = locations.location_id WHERE city = 'New York';",
+      "SELECT analysis_id, timestamp, first_name, last_name FROM geo_analysis JOIN users ON geo_analysis.user_id = users.user_id WHERE timestamp > '2022-01-01';",
+      "SELECT user_id, street_address, city, zip_code FROM locations WHERE state = 'California';",
+      "SELECT analysis_id, area_covered, analysis_result FROM geo_analysis ORDER BY analysis_id DESC;",
+      "SELECT user_id, first_name, last_name, city, state FROM users JOIN locations ON users.location_id = locations.location_id ORDER BY city, state;",
+      "SELECT user_id, timestamp, area_covered, analysis_result FROM geo_analysis WHERE area_covered IS NOT NULL;",
+      "SELECT COUNT(*) FROM locations;",
+      "SELECT COUNT(*) FROM users;",
+      "SELECT AVG(zip_code) FROM locations;",
+      "SELECT MAX(timestamp) FROM geo_analysis;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM locations;",
+      "SELECT location_id, name, address FROM locations;",
+      "SELECT * FROM regions;",
+      "SELECT region_id, region_name FROM regions;",
+      "SELECT * FROM customers;",
+      "SELECT customer_id, name, email FROM customers;",
+      "SELECT * FROM sales;",
+      "SELECT sale_id, customer_id, total_sales FROM sales;",
+      "SELECT s.sale_id, c.name, s.total_sales FROM sales s JOIN customers c ON s.customer_id = c.customer_id;",
+      "SELECT s.sale_id, c.name, l.address, s.total_sales FROM sales s JOIN customers c ON s.customer_id = c.customer_id JOIN locations l ON c.location_id = l.location_id;",
+      "SELECT DISTINCT r.region_id, r.region_name, l.name FROM regions r JOIN locations l ON ST_Within(l.coordinates, r.area);",
+      "SELECT c.name, SUM(s.total_sales) AS total_sales FROM sales s JOIN customers c ON s.customer_id = c.customer_id GROUP BY c.name;",
+      "SELECT r.region_name, SUM(s.total_sales) AS total_sales FROM sales s JOIN customers c ON s.customer_id = c.customer_id JOIN locations l ON c.location_id = l.location_id JOIN regions r ON ST_Within(l.coordinates, r.area) GROUP BY r.region_id;",
+      "SELECT * FROM locations WHERE name LIKE 'A%';",
+      "SELECT * FROM customers WHERE email LIKE '%gmail.com';",
+      "SELECT * FROM sales WHERE sale_date BETWEEN '2022-01-01' AND '2022-06-30';",
+      "SELECT name, email FROM customers ORDER BY name ASC;",
+      "SELECT region_id, region_name FROM regions ORDER BY region_name DESC;",
+      "SELECT name, total_sales FROM (SELECT c.name, SUM(s.total_sales) AS total_sales FROM sales s JOIN customers c ON s.customer_id = c.customer_id GROUP BY c.name) AS sales_summary WHERE total_sales > 1000;",
+      "SELECT r.region_name, AVG(s.total_sales) AS avg_sales FROM sales s JOIN customers c ON s.customer_id = c.customer_id JOIN locations l ON c.location_id = l.location_id JOIN regions r ON ST_Within(l.coordinates, r.area) GROUP BY r.region_name HAVING avg_sales > 50000;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM locations LIMIT 10",
+      "SELECT location_id, location_name FROM locations WHERE location_id BETWEEN 1 AND 10",
+      "SELECT * FROM regions LIMIT 10",
+      "SELECT region_id, region_name FROM regions WHERE region_id BETWEEN 1 AND 10",
+      "SELECT * FROM points_of_interest LIMIT 10",
+      "SELECT poi_id, poi_name FROM points_of_interest WHERE poi_id BETWEEN 1 AND 10",
+      "SELECT * FROM routes LIMIT 10",
+      "SELECT route_id, route_name FROM routes WHERE route_id BETWEEN 1 AND 10",
+      "SELECT * FROM geospatial_data LIMIT 10",
+      "SELECT data_id, data_name FROM geospatial_data WHERE data_id BETWEEN 1 AND 10"
+    ]
+  }
+]

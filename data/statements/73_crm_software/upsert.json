@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO customers (customer_id, customer_name, email, phone_number) VALUES (1, 'John Doe', 'john.doe@example.com', '123-456-7890')",
+      "UPSERT INTO customers (customer_id, customer_name, email, phone_number) VALUES (2, 'Jane Smith', 'jane.smith@example.com', '234-567-8901')",
+      "UPSERT INTO customers (customer_id, customer_name, email, phone_number) VALUES (3, 'Alice Johnson', 'alice.johnson@example.com', '345-678-9012')"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO customers (customer_id, name, email, phone_number) VALUES (1, 'John Doe', 'john.doe@example.com', '123-456-7890') ON DUPLICATE KEY UPDATE name = VALUES(name), email = VALUES(email), phone_number = VALUES(phone_number);",
+      "UPSERT INTO customers (customer_id, name, email, phone_number) VALUES (2, 'Jane Smith', 'jane.smith@example.com', '987-654-3210') ON DUPLICATE KEY UPDATE name = VALUES(name), email = VALUES(email), phone_number = VALUES(phone_number);",
+      "UPSERT INTO customers (customer_id, name, email, phone_number) VALUES (3, 'Alice Brown', 'alice.brown@example.com', '555-123-4567') ON DUPLICATE KEY UPDATE name = VALUES(name), email = VALUES(email), phone_number = VALUES(phone_number);"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO Customers (customer_id, customer_name, email, phone_number, address) VALUES (1, 'John Doe', 'john.doe@example.com', '1234567890', '123 Main Street') ON CONFLICT (customer_id) DO UPDATE SET customer_name = 'John Doe', email = 'john.doe@example.com', phone_number = '1234567890', address = '123 Main Street';",
+      "UPSERT INTO Orders (order_id, customer_id, order_date, total_amount, status) VALUES (1, 1, '2022-01-01', 100.00, 'Pending') ON CONFLICT (order_id) DO UPDATE SET customer_id = 1, order_date = '2022-01-01', total_amount = 100.00, status = 'Pending';",
+      "UPSERT INTO Products (product_id, product_name, price, stock_quantity) VALUES (1, 'Product A', 50.00, 100) ON CONFLICT (product_id) DO UPDATE SET product_name = 'Product A', price = 50.00, stock_quantity = 100;"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO Customers (customer_id, customer_name, email, phone_number) VALUES (1, 'John Doe', 'johndoe@example.com', '123-456-7890') ON CONFLICT (customer_id) DO UPDATE SET customer_name = excluded.customer_name, email = excluded.email, phone_number = excluded.phone_number",
+      "INSERT INTO Products (product_id, product_name, price, quantity) VALUES (1, 'Laptop', 1000.00, 10) ON CONFLICT (product_id) DO UPDATE SET product_name = excluded.product_name, price = excluded.price, quantity = excluded.quantity",
+      "INSERT INTO Orders (order_id, customer_id, product_id, order_date, quantity, total_price) VALUES (1, 1, 1, '2022-01-01', 2, 2000.00) ON CONFLICT (order_id) DO UPDATE SET customer_id = excluded.customer_id, product_id = excluded.product_id, order_date = excluded.order_date, quantity = excluded.quantity, total_price = excluded.total_price"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO customers (customer_id, customer_name, customer_email) VALUES (1, 'John Doe', 'john.doe@example.com') ON DUPLICATE KEY UPDATE customer_name = 'John Doe', customer_email = 'john.doe@example.com';",
+      "UPSERT INTO orders (order_id, order_date, customer_id) VALUES (1, '2022-01-15', 1) ON DUPLICATE KEY UPDATE order_date = '2022-01-15', customer_id = 1;",
+      "UPSERT INTO products (product_id, product_name, product_price) VALUES (1, 'Product A', 10.99) ON DUPLICATE KEY UPDATE product_name = 'Product A', product_price = 10.99;"
+    ]
+  }
+]

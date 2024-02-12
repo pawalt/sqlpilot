@@ -1,0 +1,30 @@
+[
+  {
+    "statements": [
+      "INSERT INTO campaigns (campaign_id, campaign_name, start_date, end_date, budget, status) VALUES ('a1b2c3', 'Campaign 1', '2022-01-01', '2022-12-31', 10000.00, 'Active') ON CONFLICT (campaign_id) DO UPDATE SET campaign_name = 'Campaign 1 Updated', start_date = '2022-01-01', end_date = '2022-12-31', budget = 15000.00, status = 'Active';",
+      "INSERT INTO campaigns (campaign_id, campaign_name, start_date, end_date, budget, status) VALUES ('d4e5f6', 'Campaign 2', '2022-03-15', '2022-11-30', 8000.00, 'Inactive') ON CONFLICT (campaign_id) DO UPDATE SET campaign_name = 'Campaign 2 Updated', start_date = '2022-03-15', end_date = '2022-11-30', budget = 10000.00, status = 'Active';",
+      "INSERT INTO ads (ad_id, ad_name, campaign_id, ad_type, bid_amount, status) VALUES ('x1y2z3', 'Ad 1', 'a1b2c3', 'Banner', 500.00, 'Active') ON CONFLICT (ad_id) DO UPDATE SET ad_name = 'Ad 1 Updated', campaign_id = 'a1b2c3', ad_type = 'Banner', bid_amount = 700.00, status = 'Active';"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO customers (customer_id, customer_name, email, phone_number) VALUES (1, 'John Doe', 'john.doe@example.com', '123-456-7890') ON DUPLICATE KEY UPDATE customer_name='John Doe', email='john.doe@example.com', phone_number='123-456-7890';",
+      "INSERT INTO campaigns (campaign_id, campaign_name, start_date, end_date, budget) VALUES (1, 'Summer Sale', '2022-07-01', '2022-07-31', 10000.00) ON DUPLICATE KEY UPDATE campaign_name='Summer Sale', start_date='2022-07-01', end_date='2022-07-31', budget=10000.00;",
+      "INSERT INTO interactions (interaction_id, customer_id, campaign_id, interaction_type, interaction_date) VALUES (1, 1, 1, 'click', '2022-07-15 09:00:00') ON DUPLICATE KEY UPDATE interaction_type='click', interaction_date='2022-07-15 09:00:00';"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO campaigns (campaign_id, campaign_name, start_date, end_date) VALUES (1, 'Campaign A', '2021-01-01', '2021-12-31') ON DUPLICATE KEY UPDATE campaign_name = 'Campaign A', start_date = '2021-01-01', end_date = '2021-12-31';",
+      "UPSERT INTO ads (ad_id, ad_name, campaign_id, ad_type, ad_status) VALUES (1, 'Ad X', 1, 'Banner', 'Active') ON DUPLICATE KEY UPDATE ad_name = 'Ad X', campaign_id = 1, ad_type = 'Banner', ad_status = 'Active';",
+      "UPSERT INTO customers (customer_id, customer_name, email, phone_number) VALUES (1, 'John Doe', 'john.doe@example.com', '123-456-7890') ON DUPLICATE KEY UPDATE customer_name = 'John Doe', email = 'john.doe@example.com', phone_number = '123-456-7890';"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO campaigns (campaign_id, campaign_name, start_date, end_date) VALUES (1, 'Summer Sale', '2023-06-01', '2023-08-31') ON CONFLICT (campaign_id) DO UPDATE SET campaign_name = 'Summer Sale', start_date = '2023-06-01', end_date = '2023-08-31';",
+      "UPSERT INTO ad_groups (ad_group_id, ad_group_name, campaign_id) VALUES (1, 'Ad Group 1', 1) ON CONFLICT (ad_group_id) DO UPDATE SET ad_group_name = 'Ad Group 1', campaign_id = 1;",
+      "UPSERT INTO ads (ad_id, ad_name, ad_group_id) VALUES (1, 'Ad 1', 1) ON CONFLICT (ad_id) DO UPDATE SET ad_name = 'Ad 1', ad_group_id = 1;"
+    ]
+  }
+]

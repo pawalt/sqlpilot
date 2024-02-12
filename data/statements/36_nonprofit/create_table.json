@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "CREATE TABLE Nonprofit (id INT PRIMARY KEY, name VARCHAR(255), mission TEXT, established_date DATE);",
+      "CREATE TABLE Donor (id INT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), donation_amount DECIMAL(10,2), donation_date DATE);",
+      "CREATE TABLE Volunteer (id INT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), volunteer_date DATE);"
+    ]
+  },
+  {
+    "statements": [
+      "CREATE TABLE employees (   employee_id SERIAL PRIMARY KEY,   first_name VARCHAR(50) NOT NULL,   last_name VARCHAR(50) NOT NULL,   position VARCHAR(50) NOT NULL,   start_date DATE NOT NULL,   salary DECIMAL(10, 2) NOT NULL );",
+      "CREATE TABLE projects (   project_id SERIAL PRIMARY KEY,   project_name VARCHAR(100) NOT NULL,   start_date DATE NOT NULL,   end_date DATE NOT NULL,   status VARCHAR(50) NOT NULL );",
+      "CREATE TABLE clients (   client_id SERIAL PRIMARY KEY,   first_name VARCHAR(50) NOT NULL,   last_name VARCHAR(50) NOT NULL,   email VARCHAR(100) NOT NULL,   phone_number VARCHAR(15) NOT NULL,   company_name VARCHAR(100) NOT NULL );"
+    ]
+  },
+  {
+    "statements": [
+      "CREATE TABLE Nonprofit.Volunteer (\n    volunteer_id INT PRIMARY KEY,\n    volunteer_name VARCHAR(255) NOT NULL,\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES Nonprofit.Project(project_id)\n);",
+      "CREATE TABLE Nonprofit.Event (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    org_id INT,\n    FOREIGN KEY (org_id) REFERENCES Nonprofit.Organization(org_id)\n);",
+      "CREATE TABLE Nonprofit.VolunteerSchedule (\n    schedule_id INT PRIMARY KEY,\n    volunteer_id INT,\n    event_id INT,\n    start_time DATETIME NOT NULL,\n    end_time DATETIME NOT NULL,\n    FOREIGN KEY (volunteer_id) REFERENCES Nonprofit.Volunteer(volunteer_id),\n    FOREIGN KEY (event_id) REFERENCES Nonprofit.Event(event_id)\n);"
+    ]
+  },
+  {
+    "statements": [
+      "CREATE TABLE nonprofit.event (\n    event_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    date DATE NOT NULL,\n    location VARCHAR(255),\n    organization_id INT,\n    FOREIGN KEY (organization_id) REFERENCES nonprofit.organization(organization_id)\n);",
+      "CREATE TABLE nonprofit.report (\n    report_id INT PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    report_date DATE,\n    description TEXT,\n    organization_id INT,\n    FOREIGN KEY (organization_id) REFERENCES nonprofit.organization(organization_id)\n);",
+      "CREATE TABLE nonprofit.staff (\n    staff_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    role VARCHAR(50) NOT NULL,\n    organization_id INT,\n    FOREIGN KEY (organization_id) REFERENCES nonprofit.organization(organization_id)\n);"
+    ]
+  },
+  {
+    "statements": [
+      "CREATE TABLE nonprofit.organization (id INT PRIMARY KEY, name VARCHAR, location VARCHAR, established_date DATE);",
+      "CREATE TABLE nonprofit.project (id INT PRIMARY KEY, name VARCHAR, description TEXT, organization_id INT REFERENCES nonprofit.organization(id));",
+      "CREATE TABLE nonprofit.member (id INT PRIMARY KEY, name VARCHAR, email VARCHAR, organization_id INT REFERENCES nonprofit.organization(id));"
+    ]
+  }
+]

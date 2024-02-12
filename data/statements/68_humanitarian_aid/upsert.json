@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO HumanitarianAid (id, organization_name, donation_amount) VALUES (1, 'Red Cross', 500.00)",
+      "UPSERT INTO HumanitarianAid (id, organization_name, donation_amount) VALUES (2, 'UNICEF', 1000.00)",
+      "UPSERT INTO HumanitarianAid (id, organization_name, donation_amount) VALUES (3, 'Save the Children', 750.50)"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO beneficiaries (id, name, age, address) VALUES (1, 'Alice', 25, '123 Main St') ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, age = EXCLUDED.age, address = EXCLUDED.address",
+      "UPSERT INTO beneficiaries (id, name, age, address) VALUES (2, 'Bob', 30, '456 Pine Ave') ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, age = EXCLUDED.age, address = EXCLUDED.address",
+      "UPSERT INTO donations (donation_id, donor_name, amount, donation_date) VALUES (1, 'Alice', 100.00, '2022-05-10') ON CONFLICT (donation_id) DO UPDATE SET donor_name = EXCLUDED.donor_name, amount = EXCLUDED.amount, donation_date = EXCLUDED.donation_date"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO organizations (org_id, org_name, org_type) VALUES (1, 'Company A', 'Public') ON CONFLICT (org_id) DO UPDATE SET org_name = 'Company A', org_type = 'Public';",
+      "INSERT INTO organizations (org_id, org_name, org_type) VALUES (2, 'Company B', 'Private') ON CONFLICT (org_id) DO UPDATE SET org_name = 'Company B', org_type = 'Private';",
+      "INSERT INTO organizations (org_id, org_name, org_type) VALUES (3, 'Company C', 'Non-Profit') ON CONFLICT (org_id) DO UPDATE SET org_name = 'Company C', org_type = 'Non-Profit';"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO aid_agencies (agency_id, agency_name, country) VALUES (1, 'UNICEF', 'USA') ON DUPLICATE KEY UPDATE agency_name='UNICEF', country='USA';",
+      "UPSERT INTO aid_workers (worker_id, worker_name, skills, agency_id) VALUES (1, 'John Doe', 'Medical, Logistics', 1) ON DUPLICATE KEY UPDATE worker_name='John Doe', skills='Medical, Logistics', agency_id=1;",
+      "UPSERT INTO aid_requests (request_id, request_date, requester_name, request_description, worker_id) VALUES (1, '2022-08-01', 'Jane Smith', 'Emergency Medical Supplies', 1) ON DUPLICATE KEY UPDATE request_date='2022-08-01', requester_name='Jane Smith', request_description='Emergency Medical Supplies', worker_id=1;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO organizations (org_id, org_name, org_type) VALUES (1, 'Organization A', 'Non-Profit') ON DUPLICATE KEY UPDATE org_name='Organization A Updated', org_type='Non-Profit', org_id=1;",
+      "UPSERT INTO volunteers (vol_id, vol_name, vol_email, org_id) VALUES (1, 'Volunteer X', 'volunteer@example.com', 1) ON DUPLICATE KEY UPDATE vol_name='Volunteer X Updated', vol_email='volunteer@example.com', org_id=1;",
+      "UPSERT INTO donations (donation_id, donation_date, donation_amount, vol_id) VALUES (1, CURRENT_TIMESTAMP, 100.00, 1) ON DUPLICATE KEY UPDATE donation_date=CURRENT_TIMESTAMP, donation_amount=100.00, vol_id=1;"
+    ]
+  }
+]

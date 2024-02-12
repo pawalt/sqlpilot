@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO iot_sensors (sensor_id, sensor_name, location, status) VALUES (1, 'Sensor1', 'Room1', 'Active')",
+      "UPSERT INTO iot_sensors (sensor_id, sensor_name, location, status) VALUES (2, 'Sensor2', 'Room2', 'Inactive')",
+      "UPSERT INTO iot_sensors (sensor_id, sensor_name, location, status) VALUES (3, 'Sensor3', 'Room3', 'Active')"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO sensors (sensor_id, sensor_name, location, status) VALUES (1, 'Temperature Sensor', 'Room 1', 'Active') ON CONFLICT(sensor_id) DO UPDATE SET sensor_name = 'Temperature Sensor', location = 'Room 1', status = 'Active';",
+      "UPSERT INTO sensors (sensor_id, sensor_name, location, status) VALUES (2, 'Humidity Sensor', 'Room 2', 'Active') ON CONFLICT(sensor_id) DO UPDATE SET sensor_name = 'Humidity Sensor', location = 'Room 2', status = 'Active';",
+      "UPSERT INTO sensor_data (data_id, sensor_id, timestamp, value) VALUES (1, 1, '2022-01-01 12:00:00', 23.5) ON CONFLICT DO NOTHING;"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO sensors (sensor_id, location, type, status) VALUES (1, 'Living Room', 'Temperature', TRUE) ON CONFLICT ON CONSTRAINT sensors_pkey DO UPDATE SET location = 'Living Room', type = 'Temperature', status = TRUE;",
+      "INSERT INTO sensor_data (data_id, sensor_id, value, timestamp) VALUES (1, 1, 25.5, CURRENT_TIMESTAMP) ON CONFLICT ON CONSTRAINT sensor_data_pkey DO UPDATE SET value = 25.5, timestamp = CURRENT_TIMESTAMP;",
+      "INSERT INTO sensor_logs (log_id, sensor_id, message, log_timestamp) VALUES (1, 1, 'Temperature too high', CURRENT_TIMESTAMP) ON CONFLICT ON CONSTRAINT sensor_logs_pkey DO UPDATE SET message = 'Temperature too high', log_timestamp = CURRENT_TIMESTAMP;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO sensors (sensor_id, sensor_name, location, timestamp, value) VALUES (1, 'Temperature Sensor', 'Room 1', '2022-01-01 10:00:00', 25.5) ON DUPLICATE KEY UPDATE sensor_name='Temperature Sensor', location='Room 1', timestamp='2022-01-01 10:00:00', value=25.5;",
+      "UPSERT INTO sensor_data (data_id, sensor_id, timestamp, value) VALUES (1, 1, '2022-01-01 10:00:00', 25.5) ON DUPLICATE KEY UPDATE sensor_id=1, timestamp='2022-01-01 10:00:00', value=25.5;",
+      "UPSERT INTO locations (location_id, location_name) VALUES (1, 'Room 1') ON DUPLICATE KEY UPDATE location_name='Room 1';"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO sensor_data (sensor_id, value, timestamp) VALUES (1, 25.0, '2021-10-01 12:00:00') ON CONFLICT (sensor_id) DO UPDATE SET value = EXCLUDED.value, timestamp = EXCLUDED.timestamp",
+      "INSERT INTO sensor_location (sensor_id, location) VALUES (1, 'Room A') ON CONFLICT (sensor_id) DO UPDATE SET location = EXCLUDED.location",
+      "INSERT INTO sensor_type (type_id, type_name) VALUES (1, 'Temperature Sensor') ON CONFLICT (type_id) DO UPDATE SET type_name = EXCLUDED.type_name"
+    ]
+  }
+]

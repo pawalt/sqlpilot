@@ -101,5 +101,98 @@ def read_topics():
     with open(TOPICS_FILE, "r") as f:
         topics = Topics.model_validate_json(f.read())
         return topics.topics
-    
-clean_tables()
+
+NUM_BIG_STATEMENTS = 20
+BIG_STATEMENT_TYPES = [
+    "SELECT",
+    "INSERT SELECT FROM",
+]
+
+# we don't need much ddl
+NUM_SMALL_STATEMENTS = 3
+SMALL_STATEMENT_TYPES = [
+    "UPSERT",
+    "DELETE",
+    "UPDATE",
+    "INSERT",
+    "TRUNCATE",
+    "CREATE TABLE",
+    "ALTER",
+    "DROP",
+    "GRANT",
+    "REVOKE",
+    "SHOW",
+]
+
+STATEMENTS_DIR = "data/statements"
+
+class SQLStatements(BaseModel):
+    statements: List[str]
+
+def generate_statements():
+    topic_files = os.listdir(TABLE_DIR)
+    # sort so we move up
+    topic_files.sort()
+
+    for topic_file in topic_files:
+        topic_header = topic_file.replace(".json", "")
+
+        with open(f"{TABLE_DIR}/{topic_file}", "r") as f:
+            schemas = json.loads(f.read())
+
+        table_creates = []
+        for schema in schemas:
+            # build header with all the table schemas
+            creates = "\n\n".join(map(lambda jawn: jawn["table_schema"], schema["tables"]))
+            table_creates.append(creates)
+
+        topic_dir = f"{STATEMENTS_DIR}/{topic_header}"
+        if not os.path.exists(topic_dir):
+            os.makedirs(topic_dir)
+
+        for statement_type in BIG_STATEMENT_TYPES + SMALL_STATEMENT_TYPES:
+            num_statements = NUM_BIG_STATEMENTS if statement_type in BIG_STATEMENT_TYPES else NUM_SMALL_STATEMENTS
+
+            statement_filename = f"{topic_dir}/{statement_type.lower().replace(' ', '_')}.json"
+
+            if os.path.exists(statement_filename):
+                continue
+
+            print(f"Generating {statement_type} statements for {topic_header}")
+
+            max_tokens = 2048 if statement_type in BIG_STATEMENT_TYPES else 512
+            timeout = 60 if statement_type in BIG_STATEMENT_TYPES else 10
+
+            created_statements = []
+            for create_stmt in table_creates:
+                max_attempts = 5
+
+                for attempt in range(max_attempts):
+                    try:
+                        statements = client.chat.completions.create(
+                            timeout=timeout,
+                            # limit max tokens to fail early if the model is going haywire
+                            max_tokens=max_tokens,
+                            model=GPT_3,
+                            response_model=SQLStatements,
+                            messages=[
+                                {
+                                    "role": "user",
+                                    "content": f"""Generate {num_statements} example {statement_type} SQL statements for the following database schema:
+{create_stmt}"""
+                                }
+                            ]
+                        )
+                        
+                        created_statements.append(statements.dict())
+                        break
+                    except Exception as e:
+                        print(f"Error generating {statement_type} statements for {topic_header}: {e}")
+                        if attempt == max_attempts - 1:
+                            print(f"Failed to generate {statement_type} statements for {topic_header} after {max_attempts} attempts")
+                            raise e
+
+            with open(statement_filename, "w") as f:
+                f.write(json.dumps(created_statements, indent=2))
+
+generate_statements()

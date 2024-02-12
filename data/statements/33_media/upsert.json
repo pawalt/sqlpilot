@@ -1,0 +1,37 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO media (id, title, type) VALUES (1, 'Example Title 1', 'Example Type 1')",
+      "UPSERT INTO media (id, title, type) VALUES (2, 'Example Title 2', 'Example Type 2')",
+      "UPSERT INTO media (id, title, type) VALUES (3, 'Example Title 3', 'Example Type 3')"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO Media (title, type) VALUES ('Movie', 'Video') ON CONFLICT (title) DO UPDATE SET type = EXCLUDED.type, updated_at = now();",
+      "INSERT INTO Media (title, type) VALUES ('Song', 'Audio') ON CONFLICT (title) DO UPDATE SET type = EXCLUDED.type, updated_at = now();",
+      "INSERT INTO Media (title, type) VALUES ('Book', 'Text') ON CONFLICT (title) DO UPDATE SET type = EXCLUDED.type, updated_at = now();"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO Media (media_id, title, type, published_date) VALUES (1, 'Example Media 1', 'Book', '2022-01-01') ON CONFLICT (media_id) DO UPDATE SET title = 'Updated Example Media 1', type = 'Book', published_date = '2022-01-01';",
+      "INSERT INTO MediaAuthors (media_id, author_id) VALUES (1, 1) ON CONFLICT ON CONSTRAINT MediaAuthors_media_id_author_id_key DO NOTHING;",
+      "INSERT INTO MediaReviews (review_id, media_id, user_id, rating, review_text) VALUES (1, 1, 1, 5, 'Great book!') ON CONFLICT (review_id) DO UPDATE SET rating = 5, review_text = 'Great book!'"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO Media (id, title, type, release_year) VALUES (1, 'Movie ABC', 'Movie', 2021) ON CONFLICT (id) DO UPDATE SET title = excluded.title, type = excluded.type, release_year = excluded.release_year",
+      "UPSERT INTO Media_Actors (media_id, actor_name) VALUES (1, 'John Doe') ON CONFLICT (media_id, actor_name) DO NOTHING",
+      "UPSERT INTO Media_Genres (media_id, genre_name) VALUES (1, 'Action') ON CONFLICT (media_id, genre_name) DO NOTHING"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO media_content (id, title, description, publish_date) VALUES ('1f6f8b71-75c0-49fe-b674-61d3b60b1809', 'Sample Title 1', 'Sample Description 1', '2022-01-01') ON CONFLICT (id) DO UPDATE SET title = excluded.title, description = excluded.description, publish_date = excluded.publish_date;",
+      "INSERT INTO media_category (id, category_name) VALUES ('33feb40b-69b0-4f77-96e2-59e1bbecfa60', 'Music') ON CONFLICT (id) DO UPDATE SET category_name = excluded.category_name;",
+      "INSERT INTO media_type (id, type_name) VALUES ('8674f8d6-3b69-4ec0-bb70-92a8e20a3cf9', 'Video') ON CONFLICT (id) DO UPDATE SET type_name = excluded.type_name;"
+    ]
+  }
+]

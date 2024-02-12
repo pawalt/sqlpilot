@@ -1,0 +1,30 @@
+[
+  {
+    "statements": [
+      "INSERT INTO sensors (sensor_id, sensor_type, location, status) VALUES (1, 'Temperature', 'Living Room', 'Active') ON CONFLICT (sensor_id) DO UPDATE SET sensor_type = excluded.sensor_type, location = excluded.location, status = excluded.status",
+      "INSERT INTO readings (reading_id, sensor_id, value, timestamp) VALUES (1, 1, 22.5, '2022-01-01 08:00:00') ON CONFLICT (reading_id) DO UPDATE SET sensor_id = excluded.sensor_id, value = excluded.value, timestamp = excluded.timestamp",
+      "INSERT INTO readings (reading_id, sensor_id, value, timestamp) VALUES (2, 2, 18.9, '2022-01-01 09:00:00') ON CONFLICT (reading_id) DO UPDATE SET sensor_id = excluded.sensor_id, value = excluded.value, timestamp = excluded.timestamp"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO smart_streetlights (id, location, status, brightness) VALUES (1, 'Main Street', 'ON', 80) ON DUPLICATE KEY UPDATE status='ON', brightness=80;",
+      "UPSERT INTO traffic_cameras (camera_id, location, camera_type, status) VALUES (1, 'Intersection A', 'PTZ', 'Active') ON DUPLICATE KEY UPDATE camera_type='PTZ', status='Active';",
+      "UPSERT INTO weather_sensors (sensor_id, location, temperature, humidity) VALUES (1, 'Central Park', 25.7, 60.5) ON DUPLICATE KEY UPDATE temperature=25.7, humidity=60.5;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO city (city_id, city_name, population) VALUES (1, 'New York', 8000000) ON DUPLICATE KEY UPDATE city_name = 'New York', population = 8000000;",
+      "UPSERT INTO sensors (sensor_id, sensor_type, location, city_id) VALUES (1, 'Temperature', 'Room A', 1) ON DUPLICATE KEY UPDATE sensor_type = 'Temperature', location = 'Room A';",
+      "UPSERT INTO events (event_id, event_name, event_date, city_id) VALUES (1, 'Music Festival', '2022-09-10', 1) ON DUPLICATE KEY UPDATE event_name = 'Music Festival', event_date = '2022-09-10';"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO users(user_id, name, age, city) VALUES ('1', 'John Doe', 30, 'New York') ON CONFLICT (user_id) DO UPDATE SET name = 'John Doe', age = 30, city = 'New York';",
+      "INSERT INTO devices(device_id, device_name, user_id, location) VALUES ('1', 'Mobile Phone', '1', 'Home') ON CONFLICT (device_id) DO UPDATE SET device_name = 'Mobile Phone', user_id = '1', location = 'Home';",
+      "INSERT INTO sensors(sensor_id, sensor_type, device_id, status) VALUES ('1', 'Temperature Sensor', '1', 'Active') ON CONFLICT (sensor_id) DO UPDATE SET sensor_type = 'Temperature Sensor', device_id = '1', status = 'Active';"
+    ]
+  }
+]

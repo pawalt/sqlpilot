@@ -1,0 +1,23 @@
+[
+  {
+    "statements": [
+      "UPSERT INTO compliance_regulations (regulation_id, regulation_name, description) VALUES (1, 'Regulation 1', 'Description 1') ON DUPLICATE KEY UPDATE regulation_name = 'Regulation 1', description = 'Updated Description 1';",
+      "UPSERT INTO compliance_records (record_id, regulation_id, timestamp, document) VALUES (1, 1, '2022-06-30 12:00:00', 'Sample Document 1') ON CONFLICT (record_id) DO UPDATE SET timestamp = '2022-06-30 13:00:00', document = 'Updated Document 1';",
+      "UPSERT INTO compliance_records (record_id, regulation_id, timestamp, document) VALUES (2, 2, '2022-07-01 10:00:00', 'Sample Document 2') ON CONFLICT (record_id) DO NOTHING;"
+    ]
+  },
+  {
+    "statements": [
+      "UPSERT INTO compliance_regulations (regulation_id, regulation_name) VALUES (1, 'HIPAA') ON CONFLICT (regulation_id) DO UPDATE SET regulation_name = 'HIPAA';",
+      "UPSERT INTO compliance_documents (document_id, document_name, regulation_id) VALUES (1, 'HIPAA Documentation', 1) ON CONFLICT (document_id) DO UPDATE SET document_name = 'HIPAA Documentation', regulation_id = 1;",
+      "UPSERT INTO compliance_issues (issue_id, issue_description, document_id) VALUES (1, 'HIPAA Compliance Issue', 1) ON CONFLICT (issue_id) DO UPDATE SET issue_description = 'HIPAA Compliance Issue', document_id = 1;"
+    ]
+  },
+  {
+    "statements": [
+      "INSERT INTO audit_logs (id, event_time, user_id, event_description) VALUES (1, '2022-01-01 10:00:00', 1, 'User login') ON CONFLICT (id) DO NOTHING;",
+      "INSERT INTO user_profiles (user_id, full_name, email, phone_number) VALUES (1, 'John Doe', 'john.doe@example.com', '123-456-7890') ON CONFLICT (user_id) DO UPDATE SET full_name = excluded.full_name, email = excluded.email, phone_number = excluded.phone_number;",
+      "INSERT INTO compliance_policies (policy_id, policy_name, description) VALUES (1, 'Policy 1', 'Description of Policy 1') ON CONFLICT (policy_id) DO NOTHING;"
+    ]
+  }
+]
