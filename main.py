@@ -80,10 +80,26 @@ Schemas must be formatted as the output of SHOW CREATE TABLE."""
         with open(topic_filename, "w") as f:
             f.write(json.dumps(schemas, indent=2))
 
+def clean_tables():
+    for filename in os.listdir(TABLE_DIR):
+        to_keep = []
+        with open(f"{TABLE_DIR}/{filename}", "r") as f:
+            schema_data = json.loads(f.read())
+            for schema in schema_data:
+                schema_valid = True
+                for table in schema["tables"]:
+                    if not "CREATE TABLE" in table["table_schema"]:
+                        schema_valid = False
+                        break
+                if schema_valid:
+                    to_keep.append(schema)
+
+        with open(f"{TABLE_DIR}/{filename}", "w") as f:
+            f.write(json.dumps(to_keep, indent=2))
+
 def read_topics():
     with open(TOPICS_FILE, "r") as f:
         topics = Topics.model_validate_json(f.read())
         return topics.topics
-
-toppy = read_topics()
-generate_tables(toppy)
+    
+clean_tables()
