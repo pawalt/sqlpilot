@@ -5,6 +5,7 @@ from typing import List
 from dotenv import load_dotenv
 import json
 import os
+from itertools import permutations
 
 load_dotenv()
 
@@ -195,4 +196,72 @@ def generate_statements():
             with open(statement_filename, "w") as f:
                 f.write(json.dumps(created_statements, indent=2))
 
-generate_statements()
+def generate_training_str(tables: List[str], statement: str) -> str:
+    table_perms = permutations(tables)
+
+    ret = ""
+    for perm in table_perms:
+        joined_tables = "\n\n".join(perm)
+        # support both upper and lower case sql
+        for stmt in [statement, statement.lower()]:
+            ret += f"<t>{joined_tables}</t><s>{stmt}</s>\n"
+
+    return ret
+
+TRAINING_DATA_DIR = "data/training_data"
+def generate_training_data():
+    topic_files = os.listdir(TABLE_DIR)
+    # sort so we move up
+    topic_files.sort()
+
+    for topic_file in topic_files:
+        topic_header = topic_file.replace(".json", "")
+
+        topic_data_dir = f"{TRAINING_DATA_DIR}/{topic_header}"
+        if not os.path.exists(topic_data_dir):
+            os.makedirs(topic_data_dir)
+
+        # get all table schemas for this topic
+        topic_table_filepath = f"{TABLE_DIR}/{topic_file}"
+        with open(topic_table_filepath, "r") as f:
+            table_schemas_raw = json.loads(f.read())
+        # generate list of table schemas
+        table_schemas = list(map(
+            lambda tab: list(map(
+                lambda jawn: jawn["table_schema"],
+                tab["tables"],
+            )),
+            table_schemas_raw,
+        ))
+
+        topic_statement_dir = f"{STATEMENTS_DIR}/{topic_header}"
+
+        statement_files = os.listdir(topic_statement_dir)
+        statement_files.sort()
+
+        for statement_file in statement_files:
+            statement_type = statement_file.replace(".json", "")
+
+            # skip if we already have training data for this statement type
+            if os.path.exists(f"{topic_data_dir}/{statement_type}.txt"):
+                continue
+
+            print(f"Generating training data for {topic_header} {statement_type}")
+
+            statement_filepath = f"{topic_statement_dir}/{statement_file}"
+
+            with open(statement_filepath, "r") as f:
+                statements_raw = json.loads(f.read())
+
+            file_to_write = ""
+            for i, table_statements in enumerate(statements_raw):
+                # match up each statement with the schema it was generated against
+                matched_table = table_schemas[i]
+                for individual_statement in table_statements["statements"]:
+                    file_to_write += generate_training_str(matched_table, individual_statement)
+
+            with open(f"{topic_data_dir}/{statement_type}.txt", "w") as f:
+                f.write(file_to_write)
+
+
+generate_training_data()
