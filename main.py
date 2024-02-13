@@ -199,12 +199,12 @@ def generate_statements():
 def generate_training_str(tables: List[str], statement: str) -> str:
     table_perms = permutations(tables)
 
-    ret = ""
+    ret = []
     for perm in table_perms:
         joined_tables = "\n\n".join(perm)
         # support both upper and lower case sql
         for stmt in [statement, statement.lower()]:
-            ret += f"<t>{joined_tables}</t><s>{stmt}</s>\n"
+            ret.append(f"<t>{joined_tables}</t><stat>{stmt}</stat>")
 
     return ret
 
@@ -253,15 +253,15 @@ def generate_training_data():
             with open(statement_filepath, "r") as f:
                 statements_raw = json.loads(f.read())
 
-            file_to_write = ""
+            training_strs = []
             for i, table_statements in enumerate(statements_raw):
                 # match up each statement with the schema it was generated against
                 matched_table = table_schemas[i]
                 for individual_statement in table_statements["statements"]:
-                    file_to_write += generate_training_str(matched_table, individual_statement)
+                    training_strs += generate_training_str(matched_table, individual_statement)
 
             with open(f"{topic_data_dir}/{statement_type}.txt", "w") as f:
-                f.write(file_to_write)
+                f.write("<divider>".join(training_strs))
 
 
 generate_training_data()
