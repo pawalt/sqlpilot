@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_health_data (\n  id INT PRIMARY KEY,\n  patient_id INT NOT NULL,\n  disease_name VARCHAR(50) NOT NULL,\n  date_reported DATE NOT NULL,\n  location VARCHAR(100) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Disease_Report (\n    report_id UUID PRIMARY KEY,\n    report_date DATE,\n    disease_name VARCHAR,\n    patient_id UUID,\n    location TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Patient_Information (\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR,\n    date_of_birth DATE,\n    gender VARCHAR,\n    address TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_health_facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(100) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE disease_cases (\n    case_id INT PRIMARY KEY,\n    case_date DATE NOT NULL,\n    disease_type VARCHAR(50) NOT NULL,\n    facility_id INT,\n    FOREIGN KEY (facility_id) REFERENCES public_health_facilities(facility_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE surveillance_data (\n    data_id INT PRIMARY KEY,\n    case_id INT,\n    surveillance_date DATE,\n    temperature DECIMAL,\n    FOREIGN KEY (case_id) REFERENCES disease_cases(case_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient (\n    patient_id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    dob DATE,\n    gender CHAR(1),\n    phone_number VARCHAR(20),\n    address VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Disease (\n    disease_id SERIAL PRIMARY KEY,\n    disease_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Patient_Disease (\n    patient_id INT REFERENCES Patient(patient_id),\n    disease_id INT REFERENCES Disease(disease_id),\n    diagnosis_date DATE,\n    severity VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Surveillance (\n    surveillance_id SERIAL PRIMARY KEY,\n    disease_id INT REFERENCES Disease(disease_id),\n    reported_cases INT,\n    report_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_health_facilities (\n  facility_id INT PRIMARY KEY,\n  facility_name VARCHAR(100) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  contact_number VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE diseases (\n  disease_id INT PRIMARY KEY,\n  disease_name VARCHAR(100) NOT NULL,\n  symptoms TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(100) NOT NULL,\n  age INT NOT NULL,\n  gender VARCHAR(10) NOT NULL,\n  location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cases (\n  case_id INT PRIMARY KEY,\n  patient_id INT NOT NULL,\n  disease_id INT NOT NULL,\n  diagnosis_date DATE NOT NULL,\n  FOREIGN KEY (patient_id) REFERENCES patients(patient_id),\n  FOREIGN KEY (disease_id) REFERENCES diseases(disease_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE surveillance_data (\n  data_id INT PRIMARY KEY,\n  case_id INT NOT NULL,\n  observation TEXT,\n  FOREIGN KEY (case_id) REFERENCES cases(case_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,49 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys ( id INT PRIMARY KEY, key_name VARCHAR(50), encryption_key VARCHAR(100) );"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs ( log_id INT PRIMARY KEY, message TEXT, timestamp TIMESTAMP );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  id INT PRIMARY KEY,\n  key_name TEXT,\n  key_value TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  id SERIAL PRIMARY KEY,\n  key_name VARCHAR(255) NOT NULL,\n  key_value BYTEA NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(100) NOT NULL,\n  password_hash BYTEA NOT NULL,\n  encryption_key_id INT NOT NULL,\n  FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE messages (\n  message_id SERIAL PRIMARY KEY,\n  sender_id INT NOT NULL,\n  receiver_id INT NOT NULL,\n  message_text TEXT NOT NULL,\n  encryption_key_id INT NOT NULL,\n  FOREIGN KEY (sender_id) REFERENCES users(user_id),\n  FOREIGN KEY (receiver_id) REFERENCES users(user_id),\n  FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n  log_id SERIAL PRIMARY KEY,\n  log_message TEXT NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id SERIAL PRIMARY KEY,\n    key_name TEXT NOT NULL,\n    key_value BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL DEFAULT NOW()\n);\n\nCREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username TEXT UNIQUE NOT NULL,\n    password_hash TEXT NOT NULL\n);\n\nCREATE TABLE communications (\n    communication_id SERIAL PRIMARY KEY,\n    sender_id INT REFERENCES users(user_id),\n    receiver_id INT REFERENCES users(user_id),\n    message TEXT NOT NULL,\n    encrypted BOOLEAN DEFAULT FALSE\n);\n\nCREATE TABLE communication_logs (\n    log_id SERIAL PRIMARY KEY,\n    communication_id INT REFERENCES communications(communication_id),\n    log_text TEXT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL DEFAULT NOW()\n);\n\nCREATE TABLE encryption_metadata (\n    metadata_id SERIAL PRIMARY KEY,\n    key_id INT REFERENCES encryption_keys(id),\n    encryption_type TEXT NOT NULL,\n    encryption_details JSONB\n);"
+      }
+    ]
+  }
+]

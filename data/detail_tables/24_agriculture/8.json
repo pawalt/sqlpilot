@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field_maintenance_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    assigned_to VARCHAR(100),\n    scheduled_date DATE,\n    completion_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    task_status ENUM('pending', 'completed'),\n    task_due_date DATE\n);\n\nCREATE TABLE schedules (\n    schedule_id INT PRIMARY KEY,\n    task_id INT,\n    schedule_date DATE,\n    schedule_notes TEXT,\n    FOREIGN KEY (task_id) REFERENCES tasks(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FieldMaintenanceTasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    task_status VARCHAR(50) DEFAULT 'Pending',\n    task_due_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskSchedules (\n    schedule_id INT PRIMARY KEY,\n    task_id INT,\n    schedule_date DATE,\n    schedule_time TIME,\n    schedule_location VARCHAR(100),\n    FOREIGN KEY (task_id) REFERENCES FieldMaintenanceTasks(task_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceWorkers (\n    worker_id INT PRIMARY KEY,\n    worker_name VARCHAR(100) NOT NULL,\n    worker_phone VARCHAR(15) UNIQUE,\n    worker_email VARCHAR(255),\n    worker_specialty VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    start_date DATE,\n    due_date DATE,\n    assigned_to VARCHAR(50),\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id INT PRIMARY KEY,\n    schedule_name VARCHAR(255) NOT NULL,\n    frequency VARCHAR(50),\n    start_time TIME,\n    end_time TIME,\n    recurring BOOLEAN,\n    task_id INT REFERENCES tasks(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_logs (\n    log_id INT PRIMARY KEY,\n    task_id INT REFERENCES tasks(task_id),\n    log_date DATE,\n    log_time TIME,\n    notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(100) NOT NULL,\n    position VARCHAR(50),\n    department VARCHAR(50),\n    email VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field_maintenance_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(50),\n    task_description TEXT,\n    task_due_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE field_maintenance_schedule (\n    schedule_id INT PRIMARY KEY,\n    task_id INT,\n    scheduled_date DATE,\n    schedule_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE field_maintenance_workers (\n    worker_id INT PRIMARY KEY,\n    worker_name VARCHAR(50),\n    worker_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE field_equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(50),\n    equipment_type VARCHAR(50),\n    equipment_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    log_id INT PRIMARY KEY,\n    task_id INT,\n    worker_id INT,\n    log_date DATE,\n    log_description TEXT\n);"
+      }
+    ]
+  }
+]

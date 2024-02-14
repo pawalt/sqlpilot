@@ -1,6 +1,8 @@
 import instructor
+import sys
 from openai import OpenAI
 from pydantic import BaseModel
+import re
 from typing import List
 from dotenv import load_dotenv
 import json
@@ -45,13 +47,16 @@ class TableSchema(BaseModel):
 class DatabaseSchema(BaseModel):
     tables: List[TableSchema]
 
+def slugify_topic(ind: int, topic: str) -> str:
+    return f"{ind}_{topic.lower().replace(' ', '_')}"
+
 TABLE_DIR = "data/tables"
 
 def generate_tables(topics: List[str]):
     topic_index = -1
     for topic in topics:
         topic_index += 1
-        topic_filename = f"{TABLE_DIR}/{topic_index}_{topic.lower().replace(' ', '_')}.json"
+        topic_filename = f"{TABLE_DIR}/{slugify_topic(topic_index, topic)}.json"
 
         # shit fails sometimes, so resume from our last savepoint
         if os.path.exists(topic_filename):
@@ -263,5 +268,190 @@ def generate_training_data():
             with open(f"{topic_data_dir}/{statement_type}.txt", "w") as f:
                 f.write("<divider>".join(training_strs))
 
+def retry_loop(func, max_attempts=5):
+    for attempt in range(max_attempts):
+        try:
+            return func()
+        except Exception as e:
+            print(f"Error: {e}")
+            if attempt == max_attempts - 1:
+                print(f"Failed after {max_attempts} attempts")
+                raise e
 
-generate_training_data()
+class TopicExamples(BaseModel):
+    examples: List[str]
+
+def generate_topic_detail():
+    topics = read_topics()
+    
+    topic_detail_map = {}
+    for i, topic in enumerate(topics):
+            NUM_TOPIC_EXAMPLES = 10
+
+            max_attempts = 5
+
+            for attempt in range(max_attempts):
+                try:
+                    schema = client.chat.completions.create(
+                        model=GPT_3,
+                        max_tokens=1024,
+                        response_model=TopicExamples,
+                        messages=[
+                            {
+                                "role": "user",
+                                "content": f"""Generate {NUM_TOPIC_EXAMPLES} examples of how a SQL database could
+        be used in the context of {topic}. Write exactly one sentence for each example."""
+                            },
+                        ]
+                    )
+                    print(f"Generated examples for {topic} ({i + 1}/{len(topics)})")
+                    print(schema.examples)
+                    topic_detail_map[slugify_topic(i, topic)] = schema.examples
+                    break
+                except Exception as e:
+                    print(f"Error generating examples for {topic}: {e}")
+                    if attempt == max_attempts - 1:
+                        print(f"Failed to generate examples for {topic} after {max_attempts} attempts")
+                        raise e
+    
+    with open("data/topic_detail.json", "w") as f:
+        f.write(json.dumps(topic_detail_map, indent=2))
+
+def clean_topic_detail():
+    with open("data/topic_detail.json", "r") as f:
+        topic_detail = json.loads(f.read())
+
+    for topic, examples in topic_detail.items():
+        topic_detail[topic] = list(map(lambda ex: re.sub(r'^\d+\.\s+', '', ex), examples))
+
+    with open("data/topic_detail.json", "w") as f:
+        f.write(json.dumps(topic_detail, indent=2))
+
+DETAIL_TABLE_DIR = "data/detail_tables"
+
+def generate_topic_tables(start_ind: int, num_topics: int):
+    with open('data/topic_detail.json', 'r') as f:
+        raw_details = json.loads(f.read())
+
+    # go through the keys of topic detail and only include the ones that are in the range
+    # start_ind to start_ind + num_topics
+    topic_deets = {
+        key: value for key, value in raw_details.items()
+        if start_ind <= int(key.split('_')[0]) < start_ind + num_topics
+    }
+
+    for topic, details in topic_deets.items():
+        topic_basedir = f"{DETAIL_TABLE_DIR}/{topic}"
+        if not os.path.exists(topic_basedir):
+            os.makedirs(topic_basedir)
+
+        for i, detail in enumerate(details):
+            detail_filename = f"{topic_basedir}/{i}.json"
+            if os.path.exists(detail_filename):
+                continue
+
+            print(f"Generating tables for {topic} ({i})")
+
+            schemas = []
+            for i in range(1, MAX_TABLES + 1):
+                schema = retry_loop(lambda: client.chat.completions.create(
+                    model=GPT_3,
+                    max_tokens=1024,
+                    response_model=DatabaseSchema,
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": f"""Generate an example CockroachDB database schema which has exactly {i} tables.
+The schema must be related the following theme: {detail}.
+Schemas must be formatted as the output of SHOW CREATE TABLE. The should all start with CREATE TABLE.
+Table schemas should be formatted with newlines between each column definition."""
+                        },
+                    ]
+                ))
+                schemas.append(schema.dict())
+
+            with open(detail_filename, "w") as f:
+                f.write(json.dumps(schemas, indent=2))
+
+DETAIL_STATEMENT_DIR = "data/detail_statements"
+
+NUM_BIG_STATEMENTS = 20
+DEETBIG_STATEMENT_TYPES = [
+    "SELECT",
+    "INSERT",
+    "UPSERT",
+]
+
+# we don't need much ddl
+NUM_SMALL_STATEMENTS = 3
+DEETSMALL_STATEMENT_TYPES = [
+    "DELETE",
+    "UPDATE",
+    "TRUNCATE",
+]
+
+def generate_detail_statements(start_ind: int, num_topics: int):
+    topic_files = os.listdir(DETAIL_TABLE_DIR)
+    # sort so we move up
+    topic_files.sort()
+    topic_files = topic_files[start_ind:start_ind + num_topics]
+
+    for topic_dir in topic_files:
+        to_list = f"{DETAIL_TABLE_DIR}/{topic_dir}"
+        listed_files = os.listdir(to_list)
+
+        for listed in listed_files:
+            stripped = listed.replace('.json', '')
+
+            topic_basedir = f"{DETAIL_STATEMENT_DIR}/{topic_dir}/{stripped}"
+            if not os.path.exists(topic_basedir):
+                os.makedirs(topic_basedir)
+
+            with open(f"{DETAIL_TABLE_DIR}/{topic_dir}/{listed}", "r") as f:
+                schemas = json.loads(f.read())
+
+            table_creates = []
+            for schema in schemas:
+                # build header with all the table schemas
+                creates = "\n\n".join(map(lambda jawn: jawn["table_schema"], schema["tables"]))
+                table_creates.append(creates)
+
+            for statement_type in DEETBIG_STATEMENT_TYPES + DEETSMALL_STATEMENT_TYPES:
+                num_statements = NUM_BIG_STATEMENTS if statement_type in DEETBIG_STATEMENT_TYPES else NUM_SMALL_STATEMENTS
+
+                statement_filename = f"{topic_basedir}/{statement_type.lower().replace(' ', '_')}.json"
+
+                if os.path.exists(statement_filename):
+                    continue
+
+                print(f"Generating {statement_type} statements for {topic_dir} ({stripped})")
+
+                max_tokens = 2048 if statement_type in DEETBIG_STATEMENT_TYPES else 512
+                timeout = 60 if statement_type in DEETBIG_STATEMENT_TYPES else 10
+
+                created_statements = []
+                for create_stmt in table_creates:
+                    individual = []
+                    for stmt_type in ["simple", "complex"]:
+                        stmts = retry_loop(lambda: client.chat.completions.create(
+                            timeout=timeout,
+                            # limit max tokens to fail early if the model is going haywire
+                            max_tokens=max_tokens,
+                            model=GPT_3,
+                            response_model=SQLStatements,
+                            messages=[
+                                {
+                                    "role": "user",
+                                    "content": f"""Generate {num_statements} example {statement_type} SQL statements.
+These should be {stmt_type} statements for the following database schema:
+{create_stmt}"""
+                                }
+                            ]
+                        ))
+                        individual += stmts.statements
+                    created_statements.append({
+                        "statements": individual,
+                    })
+
+                with open(statement_filename, "w") as f:
+                    f.write(json.dumps(created_statements, indent=2))

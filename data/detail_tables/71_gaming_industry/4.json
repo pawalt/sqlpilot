@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_authentication (\n    player_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    player_id INT,\n    attempt_datetime TIMESTAMP NOT NULL,\n    FOREIGN KEY (player_id) REFERENCES players(player_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    player_id INT REFERENCES players(player_id) NOT NULL,\n    login_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokens (\n    token_id SERIAL PRIMARY KEY,\n    session_id UUID REFERENCES sessions(session_id) NOT NULL,\n    token_value VARCHAR(200) UNIQUE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PlayerInfo (\n    id INT PRIMARY KEY,\n    username TEXT NOT NULL,\n    password TEXT NOT NULL,\n    email TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PlayerStats (\n    player_id INT REFERENCES PlayerInfo(id),\n    level INT,\n    score INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SessionInfo (\n    session_id INT PRIMARY KEY,\n    player_id INT REFERENCES PlayerInfo(id),\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessToken (\n    token_id INT PRIMARY KEY,\n    player_id INT REFERENCES PlayerInfo(id),\n    access_token TEXT,\n    expiry_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n  player_id INT PRIMARY KEY,\n  player_username VARCHAR(50) UNIQUE,\n  player_password VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE player_sessions (\n  session_id INT PRIMARY KEY,\n  player_id INT REFERENCES players(player_id),\n  session_token VARCHAR(100) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE player_logs (\n  log_id INT PRIMARY KEY,\n  player_id INT REFERENCES players(player_id),\n  log_date TIMESTAMP,\n  log_message TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE player_settings (\n  setting_id INT PRIMARY KEY,\n  player_id INT REFERENCES players(player_id),\n  setting_key VARCHAR(50) UNIQUE,\n  setting_value TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE player_stats (\n  stat_id INT PRIMARY KEY,\n  player_id INT REFERENCES players(player_id),\n  stat_name VARCHAR(50),\n  stat_value INT\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_irrigation_schedule (\n    crop_id INT,\n    crop_name VARCHAR(255),\n    irrigation_schedule JSON,\n    water_usage DECIMAL(10, 2),\n    PRIMARY KEY (crop_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Crop (\n    crop_id UUID PRIMARY KEY,\n    crop_name STRING,\n    crop_type STRING,\n    irrigated_area DOUBLE PRECISION\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterUsage (\n    usage_id UUID PRIMARY KEY,\n    crop_id UUID,\n    usage_date TIMESTAMP,\n    water_used DOUBLE PRECISION,\n    FOREIGN KEY (crop_id) REFERENCES Crop(crop_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Crop (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(255) NOT NULL,\n    irrigation_schedule TEXT,\n    water_usage DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Farm (\n    farm_id INT PRIMARY KEY,\n    farm_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    total_land_area DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FarmCropMapping (\n    farm_id INT,\n    crop_id INT,\n    planting_date DATE,\n    harvesting_date DATE,\n    FOREIGN KEY (farm_id) REFERENCES Farm(farm_id),\n    FOREIGN KEY (crop_id) REFERENCES Crop(crop_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CropDetails (\n   crop_id INT PRIMARY KEY,\n   crop_name VARCHAR(255) NOT NULL,\n   irrigation_requirements FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IrrigationSchedule (\n   schedule_id INT PRIMARY KEY,\n   crop_id INT,\n   date DATE,\n   amount_water_used FLOAT,\n   FOREIGN KEY (crop_id) REFERENCES CropDetails(crop_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterUsage (\n   usage_id INT PRIMARY KEY,\n   crop_id INT,\n   date DATE,\n   amount_water_used FLOAT,\n   FOREIGN KEY (crop_id) REFERENCES CropDetails(crop_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CropLocation (\n   location_id INT PRIMARY KEY,\n   crop_id INT,\n   location_name VARCHAR(255) NOT NULL,\n   latitude DECIMAL(9,6),\n   longitude DECIMAL(9,6),\n   FOREIGN KEY (crop_id) REFERENCES CropDetails(crop_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_data (\n    crop_id SERIAL PRIMARY KEY,\n    crop_name VARCHAR(50),\n    crop_type VARCHAR(50),\n    water_usage FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (\n    schedule_id SERIAL PRIMARY KEY,\n    crop_id INT,\n    start_date DATE,\n    end_date DATE,\n    water_amount FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_location (\n    location_id SERIAL PRIMARY KEY,\n    crop_id INT,\n    latitude DECIMAL,\n    longitude DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_source (\n    source_id SERIAL PRIMARY KEY,\n    source_name VARCHAR(50),\n    source_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage_log (\n    log_id SERIAL PRIMARY KEY,\n    crop_id INT,\n    date DATE,\n    amount FLOAT,\n    source_id INT\n);\n"
+      }
+    ]
+  }
+]

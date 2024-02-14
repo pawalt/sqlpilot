@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction_details (\n    transaction_id UUID PRIMARY KEY,\n    sender_address STRING,\n    receiver_address STRING,\n    amount DECIMAL,\n    transaction_date TIMESTAMP,\n    blockchain_hash STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    sender_address VARCHAR(255),\n    receiver_address VARCHAR(255),\n    amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blocks (\n    block_id INT PRIMARY KEY,\n    block_hash VARCHAR(255) UNIQUE,\n    previous_block_hash VARCHAR(255),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction_details (\n    transaction_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    sender_address VARCHAR(255),\n    receiver_address VARCHAR(255),\n    asset_type VARCHAR(50),\n    amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_blocks (\n    block_id SERIAL PRIMARY KEY,\n    block_hash VARCHAR(64),\n    block_timestamp TIMESTAMP,\n    num_transactions INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE block_transactions (\n    block_id INT,\n    transaction_id UUID,\n    FOREIGN KEY (block_id) REFERENCES blockchain_blocks(block_id),\n    FOREIGN KEY (transaction_id) REFERENCES transaction_details(transaction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction_details (\n    transaction_id UUID PRIMARY KEY,\n    amount DECIMAL,\n    sender_address VARCHAR(255),\n    receiver_address VARCHAR(255),\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE block_details (\n    block_id UUID PRIMARY KEY,\n    block_hash VARCHAR(255),\n    previous_block_id UUID,\n    transaction_count INT,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_details (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255),\n    total_supply DECIMAL,\n    owner_address VARCHAR(255),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_network (\n    network_id UUID PRIMARY KEY,\n    network_name VARCHAR(255),\n    node_count INT,\n    consensus_algorithm VARCHAR(50),\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP,\n  sender_address VARCHAR(255),\n  receiver_address VARCHAR(255),\n  amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blocks (\n  block_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP,\n  block_hash VARCHAR(255),\n  block_height INT,\n  miner_address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n  address_id UUID PRIMARY KEY,\n  address VARCHAR(255),\n  balance DECIMAL,\n  transactions_count INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE holders (\n  holder_id UUID PRIMARY KEY,\n  holder_name VARCHAR(255),\n  address_id UUID,\n  FOREIGN KEY (address_id) REFERENCES addresses(address_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assets (\n  asset_id UUID PRIMARY KEY,\n  asset_name VARCHAR(255),\n  asset_type VARCHAR(255),\n  owner_id UUID,\n  FOREIGN KEY (owner_id) REFERENCES holders(holder_id)\n);\n"
+      }
+    ]
+  }
+]

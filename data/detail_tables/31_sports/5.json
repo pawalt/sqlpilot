@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamSchedule (\n    team_id INT,\n    schedule_id INT,\n    training_session_date DATE,\n    training_session_time TIME,\n    travel_arrangement VARCHAR(255),\n    PRIMARY KEY (schedule_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_schedule (\n    schedule_id UUID PRIMARY KEY,\n    team_id UUID,\n    training_session_id UUID,\n    event_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE travel_arrangements (\n    travel_id UUID PRIMARY KEY,\n    team_id UUID,\n    travel_date DATE,\n    destination VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_schedule (\n  id INT PRIMARY KEY,\n  team_name VARCHAR,\n  schedule_date DATE,\n  schedule_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_sessions (\n  session_id INT PRIMARY KEY,\n  team_name VARCHAR,\n  trainer_name VARCHAR,\n  session_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE travel_arrangements (\n  travel_id INT PRIMARY KEY,\n  team_name VARCHAR,\n  departure_date DATE,\n  departure_location VARCHAR,\n  arrival_date DATE,\n  arrival_location VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team (\n team_id INT PRIMARY KEY,\n team_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE schedule (\n schedule_id INT PRIMARY KEY,\n team_id INT NOT NULL,\n date DATE NOT NULL,\n session_time TIME NOT NULL,\n CONSTRAINT fk_team_schedule FOREIGN KEY (team_id) REFERENCES team(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_session (\n session_id INT PRIMARY KEY,\n team_id INT NOT NULL,\n coach_id INT NOT NULL,\n location VARCHAR(100) NOT NULL,\n session_date DATE NOT NULL,\n CONSTRAINT fk_team_training FOREIGN KEY (team_id) REFERENCES team(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE travel_arrangement (\n arrangement_id INT PRIMARY KEY,\n team_id INT NOT NULL,\n departure_date DATE NOT NULL,\n arrival_date DATE NOT NULL,\n destination VARCHAR(100) NOT NULL,\n CONSTRAINT fk_team_travel FOREIGN KEY (team_id) REFERENCES team(team_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    team_role VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_sessions (\n    session_id INT PRIMARY KEY,\n    session_date DATE NOT NULL,\n    session_time TIME NOT NULL,\n    session_location VARCHAR(100) NOT NULL,\n    session_trainer VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE travel_details (\n    travel_id INT PRIMARY KEY,\n    travel_date DATE NOT NULL,\n    travel_destination VARCHAR(100) NOT NULL,\n    travel_mode VARCHAR(50) NOT NULL,\n    travel_cost DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_schedule (\n    schedule_id INT PRIMARY KEY,\n    session_id INT REFERENCES training_sessions(session_id),\n    member_id INT REFERENCES team_members(member_id),\n    travel_id INT REFERENCES travel_details(travel_id),\n    schedule_status VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

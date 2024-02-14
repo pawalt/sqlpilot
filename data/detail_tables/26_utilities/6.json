@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE utilities_regulatory_compliance (\n  id INT PRIMARY KEY,\n  utility_name VARCHAR(50),\n  regulator_name VARCHAR(50),\n  compliance_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE utilities_regulations (\n    regulation_id INT PRIMARY KEY,\n    regulation_name VARCHAR(255),\n    description TEXT,\n    enforcement_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_compliance (\n    compliance_id INT PRIMARY KEY,\n    regulation_id INT,\n    utility_name VARCHAR(255),\n    compliance_status VARCHAR(50),\n    FOREIGN KEY (regulation_id) REFERENCES utilities_regulations(regulation_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE utilities (\n    id SERIAL PRIMARY KEY,\n    utility_name VARCHAR(50) NOT NULL,\n    regulatory_compliance_level VARCHAR(20) NOT NULL,\n    date_of_audit DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_issues (\n    issue_id SERIAL PRIMARY KEY,\n    utility_id INT REFERENCES utilities(id),\n    issue_description TEXT,\n    status VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n    audit_id SERIAL PRIMARY KEY,\n    utility_id INT REFERENCES utilities(id),\n    audit_date DATE,\n    auditor_name VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance (\n  compliance_id UUID PRIMARY KEY,\n  utility_id UUID NOT NULL,\n  regulation_type VARCHAR(50) NOT NULL,\n  compliance_date DATE,\n  CONSTRAINT fk_utility_id FOREIGN KEY (utility_id) REFERENCES utilities (utility_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE utilities (\n  utility_id UUID PRIMARY KEY,\n  utility_name VARCHAR(100) NOT NULL,\n  region VARCHAR(50),\n  regulatory_body VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents (\n  document_id UUID PRIMARY KEY,\n  compliance_id UUID NOT NULL,\n  document_name VARCHAR(100) NOT NULL,\n  document_type VARCHAR(50),\n  document_url TEXT,\n  CONSTRAINT fk_compliance_id FOREIGN KEY (compliance_id) REFERENCES regulatory_compliance (compliance_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_agencies (\n  agency_id UUID PRIMARY KEY,\n  agency_name VARCHAR(100) NOT NULL,\n  jurisdiction VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE utilities_regulatory_compliance (\n  id INT PRIMARY KEY,\n  utility_name VARCHAR(255),\n  compliance_status BOOLEAN,\n  compliance_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_agencies (\n  agency_id INT PRIMARY KEY,\n  agency_name VARCHAR(255),\n  contact_person VARCHAR(255),\n  contact_email VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_reports (\n  report_id INT PRIMARY KEY,\n  utility_id INT,\n  reporting_date DATE,\n  findings TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE violations (\n  violation_id INT PRIMARY KEY,\n  report_id INT,\n  violation_description TEXT,\n  fine_amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_audit_logs (\n  log_id INT PRIMARY KEY,\n  action_taken VARCHAR(255),\n  audit_timestamp TIMESTAMP,\n  user_id INT\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumComputingExperiments (\n  experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR(255),\n  experiment_date TIMESTAMP,\n  experiment_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_simulation (\n    simulation_id INT PRIMARY KEY,\n    experiment_name VARCHAR(50),\n    qubits_used INT,\n    gate_operations VARCHAR(100),\n    execution_time DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE visualization_data (\n    visualization_id INT PRIMARY KEY,\n    simulation_id INT REFERENCES quantum_simulation(simulation_id),\n    visualization_type VARCHAR(50),\n    visual_data BYTEA,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumComputingData (\n  experiment_id SERIAL PRIMARY KEY,\n  experiment_name VARCHAR(100) NOT NULL,\n  experiment_date DATE NOT NULL,\n  qubit_count INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumComputingResults (\n  result_id SERIAL PRIMARY KEY,\n  experiment_id INT NOT NULL,\n  result_data JSONB NOT NULL,\n  result_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExecutionLog (\n  log_id SERIAL PRIMARY KEY,\n  log_timestamp TIMESTAMP NOT NULL,\n  log_message TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ExperimentData (\n    experiment_id INT PRIMARY KEY,\n    experiment_name TEXT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentResults (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    quantum_result JSON,\n    result_time TIMESTAMP,\n    FOREIGN KEY (experiment_id) REFERENCES ExperimentData(experiment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE VisualizationData (\n    vis_id INT PRIMARY KEY,\n    experiment_id INT,\n    visualization_type TEXT,\n    visualization_data JSON,\n    FOREIGN KEY (experiment_id) REFERENCES ExperimentData(experiment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentLogs (\n    log_id INT PRIMARY KEY,\n    experiment_id INT,\n    log_message TEXT,\n    log_time TIMESTAMP,\n    FOREIGN KEY (experiment_id) REFERENCES ExperimentData(experiment_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id UUID PRIMARY KEY,\n    experiment_name STRING,\n    experiment_date TIMESTAMP,\n    experiment_status STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_devices (\n    device_id UUID PRIMARY KEY,\n    device_name STRING,\n    device_type STRING,\n    location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_data (\n    data_id UUID PRIMARY KEY,\n    experiment_id UUID REFERENCES experiments(experiment_id),\n    device_id UUID REFERENCES quantum_devices(device_id),\n    data_values JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_processing (\n    processing_id UUID PRIMARY KEY,\n    data_id UUID REFERENCES experiment_data(data_id),\n    processing_date TIMESTAMP,\n    processing_status STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE visualization (\n    visualization_id UUID PRIMARY KEY,\n    data_id UUID REFERENCES experiment_data(data_id),\n    visualization_type STRING,\n    visualization_data JSONB\n);"
+      }
+    ]
+  }
+]

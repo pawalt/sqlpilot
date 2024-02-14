@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislative_records (\n    record_id UUID PRIMARY KEY,\n    document_title STRING,\n    document_type STRING,\n    author_name STRING,\n    date_created TIMESTAMP,\n    voting_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislative_records (\n  record_id INT PRIMARY KEY,\n  record_title VARCHAR(255),\n  record_date DATE,\n  author_id INT,\n  votes_received INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_data (\n  vote_id INT PRIMARY KEY,\n  voter_id INT,\n  record_id INT,\n  vote_choice ENUM('yes', 'no', 'abstain'),\n  vote_date DATETIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislative_records (\n    record_id SERIAL PRIMARY KEY,\n    record_title VARCHAR(255) NOT NULL,\n    record_content TEXT,\n    record_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_data (\n    vote_id SERIAL PRIMARY KEY,\n    voter_name VARCHAR(255) NOT NULL,\n    vote_decision VARCHAR(10) NOT NULL,\n    vote_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE member_info (\n    member_id SERIAL PRIMARY KEY,\n    member_name VARCHAR(255) NOT NULL,\n    member_position VARCHAR(50),\n    member_party VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LegislativeRecords (\n  record_id UUID PRIMARY KEY,\n  record_title TEXT,\n  record_type TEXT,\n  record_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Legislators (\n  legislator_id UUID PRIMARY KEY,\n  legislator_name TEXT,\n  legislator_party TEXT,\n  date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VotingRecords (\n  voting_id UUID PRIMARY KEY,\n  record_id UUID,\n  legislator_id UUID,\n  vote_decision TEXT,\n  vote_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Committees (\n  committee_id UUID PRIMARY KEY,\n  committee_name TEXT,\n  committee_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LegislativeCouncil (\n    council_id UUID PRIMARY KEY,\n    council_name TEXT NOT NULL,\n    session_dates DATE[],\n    council_members INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Legislation (\n    bill_id UUID PRIMARY KEY,\n    bill_name TEXT NOT NULL,\n    bill_text TEXT,\n    sponsor_id UUID REFERENCES LegislativeCouncil(council_id),\n    proposed_date DATE,\n    status TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Votes (\n    vote_id UUID PRIMARY KEY,\n    bill_id UUID REFERENCES Legislation(bill_id),\n    voter_id UUID REFERENCES LegislativeCouncil(council_id),\n    vote_date DATE,\n    decision TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Committees (\n    committee_id UUID PRIMARY KEY,\n    committee_name TEXT NOT NULL,\n    chair_id UUID REFERENCES LegislativeCouncil(council_id),\n    committee_members INT[],\n    meeting_dates DATE[]\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingMinutes (\n    minutes_id UUID PRIMARY KEY,\n    meeting_date DATE,\n    committee_id UUID REFERENCES Committees(committee_id),\n    minutes_text TEXT\n)"
+      }
+    ]
+  }
+]

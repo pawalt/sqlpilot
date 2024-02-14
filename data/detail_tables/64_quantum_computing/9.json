@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumOptimization (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    circuit_id INT,\n    circuit_name VARCHAR(255),\n    optimization_level INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithms (\n  id INT,\n  name VARCHAR(255),\n  description TEXT,\n  created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n  id INT,\n  algorithm_id INT,\n  circuit_description TEXT,\n  gate_count INT,\n  is_optimized BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumAlgorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    algorithm_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumCircuits (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(255),\n    circuit_description TEXT,\n    algorithm_id INT,\n    FOREIGN KEY (algorithm_id) REFERENCES QuantumAlgorithms(algorithm_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OptimizationRecords (\n    record_id INT PRIMARY KEY,\n    circuit_id INT,\n    optimization_type VARCHAR(50),\n    optimization_result TEXT,\n    FOREIGN KEY (circuit_id) REFERENCES QuantumCircuits(circuit_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(50) NOT NULL,\n    description TEXT,\n    optimization_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(50) NOT NULL,\n    gate_count INT,\n    qubit_count INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_circuit_mapping (\n    mapping_id INT PRIMARY KEY,\n    algorithm_id INT REFERENCES quantum_algorithms(algorithm_id),\n    circuit_id INT REFERENCES quantum_circuits(circuit_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE optimization_history (\n    history_id INT PRIMARY KEY,\n    algorithm_id INT REFERENCES quantum_algorithms(algorithm_id),\n    optimization_steps INT,\n    optimization_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumCircuits (\n    circuit_id UUID PRIMARY KEY,\n    circuit_name VARCHAR(255),\n    qubit_count INT,\n    gate_count INT,\n    optimization_level INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumGateLibrary (\n    gate_id UUID PRIMARY KEY,\n    gate_name VARCHAR(100),\n    gate_type VARCHAR(50),\n    gate_matrix TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CircuitExecutionLogs (\n    log_id UUID PRIMARY KEY,\n    circuit_id UUID REFERENCES QuantumCircuits(circuit_id),\n    execution_time FLOAT,\n    success BOOLEAN,\n    execution_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE AlgorithmOptimizationHistory (\n    optimization_id UUID PRIMARY KEY,\n    circuit_id UUID REFERENCES QuantumCircuits(circuit_id),\n    optimization_date TIMESTAMP,\n    optimization_steps INT,\n    execution_time FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumOptimizerConfig (\n    config_id UUID PRIMARY KEY,\n    optimizer_name VARCHAR(100),\n    optimization_strategy TEXT,\n    max_iterations INT,\n    learning_rate FLOAT\n)"
+      }
+    ]
+  }
+]

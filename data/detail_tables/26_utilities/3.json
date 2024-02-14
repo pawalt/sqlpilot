@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UtilityBillingInfo ( \n  account_id UUID PRIMARY KEY, \n  customer_name VARCHAR(255), \n  service_address VARCHAR(255), \n  billing_date DATE, \n  amount_due DECIMAL(10, 2) \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_info (\n    billing_id INT PRIMARY KEY,\n    customer_id INT,\n    billing_date DATE,\n    amount DECIMAL\n);\n\nCREATE TABLE payment_info (\n    payment_id INT PRIMARY KEY,\n    customer_id INT,\n    payment_date DATE,\n    payment_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_information (\n    billing_id INT PRIMARY KEY,\n    customer_id INT,\n    bill_amount DECIMAL(10,2),\n    bill_date DATE,\n    payment_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id INT PRIMARY KEY,\n    customer_id INT,\n    payment_date DATE,\n    amount_paid DECIMAL(10,2),\n    payment_method VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_details (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    address VARCHAR(100),\n    contact_number VARCHAR(15)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_info (\n  billing_id INT NOT NULL,\n  customer_id INT NOT NULL,\n  utility_service_id INT NOT NULL,\n  amount DECIMAL NOT NULL,\n  payment_date DATE,\n  PRIMARY KEY (billing_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_info (\n  customer_id INT NOT NULL,\n  customer_name VARCHAR(50) NOT NULL,\n  phone_number VARCHAR(15),\n  email VARCHAR(50),\n  PRIMARY KEY (customer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_service (\n  utility_service_id INT NOT NULL,\n  service_type VARCHAR(50) NOT NULL,\n  service_provider VARCHAR(50) NOT NULL,\n  tariff DECIMAL NOT NULL,\n  PRIMARY KEY (utility_service_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_info (\n  payment_id INT NOT NULL,\n  billing_id INT NOT NULL,\n  payment_amount DECIMAL NOT NULL,\n  payment_date DATE NOT NULL,\n  payment_status VARCHAR(20),\n  PRIMARY KEY (payment_id),\n  FOREIGN KEY (billing_id) REFERENCES billing_info(billing_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR(50) NOT NULL,\n    account_type VARCHAR(20) NOT NULL,\n    account_balance DECIMAL(10, 2) NOT NULL,\n    last_payment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    customer_email VARCHAR(50) UNIQUE,\n    customer_phone VARCHAR(15),\n    billing_address VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(50) NOT NULL,\n    service_type VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE invoices (\n    invoice_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    service_id INT REFERENCES services(service_id),\n    invoice_date DATE NOT NULL,\n    amount_due DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    invoice_id INT REFERENCES invoices(invoice_id),\n    payment_date DATE NOT NULL,\n    payment_amount DECIMAL(10, 2) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

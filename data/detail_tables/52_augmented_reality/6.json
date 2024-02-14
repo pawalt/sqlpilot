@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HistoricalDataForTours (\n  tour_id INT PRIMARY KEY,\n  tour_name VARCHAR(255) NOT NULL,\n  tour_date DATE NOT NULL,\n  tour_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tours (\n  tour_id UUID PRIMARY KEY,\n  tour_name VARCHAR(255) NOT NULL,\n  tour_description TEXT,\n  tour_duration INTERVAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tour_locations (\n  location_id SERIAL PRIMARY KEY,\n  location_name VARCHAR(255) NOT NULL,\n  location_description TEXT,\n  location_coordinates GEOMETRY(POINT)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tours (\n    tour_id INT PRIMARY KEY,\n    tour_name VARCHAR(50) NOT NULL,\n    tour_description TEXT,\n    tour_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tour_guides (\n    guide_id INT PRIMARY KEY,\n    guide_name VARCHAR(50) NOT NULL,\n    guide_phone VARCHAR(15) NOT NULL,\n    tour_id INT REFERENCES tours(tour_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tour_logs (\n    log_id SERIAL PRIMARY KEY,\n    log_datetime timestamp,\n    tour_id INT REFERENCES tours(tour_id),\n    guide_id INT REFERENCES tour_guides(guide_id),\n    log_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tour_guides (\n    id INT PRIMARY KEY,\n    name TEXT,\n    email TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tours (\n    tour_id INT PRIMARY KEY,\n    tour_name TEXT,\n    start_date DATE,\n    end_date DATE,\n    guide_id INT,\n    FOREIGN KEY (guide_id) REFERENCES tour_guides(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tour_locations (\n    location_id INT PRIMARY KEY,\n    location_name TEXT,\n    longitude FLOAT,\n    latitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tour_history (\n    history_id INT PRIMARY KEY,\n    tour_id INT,\n    location_id INT,\n    visit_date DATE,\n    FOREIGN KEY (tour_id) REFERENCES tours(tour_id),\n    FOREIGN KEY (location_id) REFERENCES tour_locations(location_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE guided_tours (\n  tour_id INT PRIMARY KEY,\n  tour_name VARCHAR(255),\n  tour_description TEXT,\n  tour_location VARCHAR(100),\n  tour_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tour_stops (\n  stop_id INT PRIMARY KEY,\n  tour_id INT,\n  stop_name VARCHAR(255),\n  stop_description TEXT,\n  stop_location VARCHAR(100),\n  stop_order INT,\n  FOREIGN KEY (tour_id) REFERENCES guided_tours(tour_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE visitors (\n  visitor_id INT PRIMARY KEY,\n  visitor_name VARCHAR(255),\n  visitor_age INT,\n  visitor_email VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tours_visited (\n  visit_id INT PRIMARY KEY,\n  visitor_id INT,\n  tour_id INT,\n  visit_date TIMESTAMP,\n  FOREIGN KEY (visitor_id) REFERENCES visitors(visitor_id),\n  FOREIGN KEY (tour_id) REFERENCES guided_tours(tour_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tour_feedback (\n  feedback_id INT PRIMARY KEY,\n  visit_id INT,\n  feedback_rating INT,\n  feedback_comment TEXT,\n  FOREIGN KEY (visit_id) REFERENCES tours_visited(visit_id)\n)"
+      }
+    ]
+  }
+]

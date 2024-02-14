@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE membership_info (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50),\n    member_email VARCHAR(100),\n    membership_type VARCHAR(20),\n    join_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n    member_id UUID PRIMARY KEY,\n    member_name VARCHAR(50),\n    member_email VARCHAR(100),\n    member_phone VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id UUID PRIMARY KEY,\n    member_id UUID,\n    payment_amount DECIMAL(10, 2),\n    payment_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50),\n    member_email VARCHAR(100),\n    membership_start_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    member_id INT REFERENCES members(member_id),\n    payment_date DATE,\n    payment_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE memberships (\n    membership_id INT PRIMARY KEY,\n    member_id INT REFERENCES members(member_id),\n    membership_type VARCHAR(20),\n    membership_status VARCHAR(10)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members ( \n    id INT PRIMARY KEY, \n    name VARCHAR(255) NOT NULL, \n    email VARCHAR(255) UNIQUE, \n    join_date DATE \n); \n"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions ( \n    subscription_id INT PRIMARY KEY, \n    member_id INT REFERENCES members(id), \n    start_date DATE, \n    end_date DATE, \n    payment_status VARCHAR(50) \n); \n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments ( \n    payment_id INT PRIMARY KEY, \n    subscription_id INT REFERENCES subscriptions(subscription_id), \n    amount DECIMAL(10, 2), \n    payment_date DATE \n); \n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_logs ( \n    log_id INT PRIMARY KEY, \n    payment_id INT REFERENCES payments(payment_id), \n    log_date TIMESTAMP, \n    log_message TEXT \n); \n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n    member_id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE membership_levels (\n    level_id SERIAL PRIMARY KEY,\n    level_name VARCHAR(50) NOT NULL,\n    monthly_fee DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id SERIAL PRIMARY KEY,\n    member_id INT NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    payment_date DATE NOT NULL,\n    FOREIGN KEY (member_id) REFERENCES members (member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE invoices (\n    invoice_id SERIAL PRIMARY KEY,\n    member_id INT NOT NULL,\n    amount_due DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(20) NOT NULL,\n    due_date DATE NOT NULL,\n    FOREIGN KEY (member_id) REFERENCES members (member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE registration_history (\n    history_id SERIAL PRIMARY KEY,\n    member_id INT NOT NULL,\n    registration_date DATE NOT NULL,\n    status VARCHAR(20) NOT NULL,\n    FOREIGN KEY (member_id) REFERENCES members (member_id)\n);"
+      }
+    ]
+  }
+]

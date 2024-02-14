@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE peer_to_peer_lending_platform (\n    user_id INT,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    loan_amount DECIMAL(10,2),\n    interest_rate DECIMAL(5,2),\n    loan_duration INT,\n    status ENUM('pending', 'approved', 'rejected'),\n    PRIMARY KEY (user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE borrowers (\n  borrower_id UUID PRIMARY KEY,\n  borrower_name TEXT,\n  borrowed_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lenders (\n  lender_id UUID PRIMARY KEY,\n  lender_name TEXT,\n  available_funds DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE peer_to_peer_lending_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    registration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE peer_to_peer_lending_loans (\n    loan_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    loan_amount DECIMAL(10, 2) NOT NULL,\n    loan_date DATE,\n    FOREIGN KEY (user_id) REFERENCES peer_to_peer_lending_users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE peer_to_peer_lending_transactions (\n    transaction_id INT PRIMARY KEY,\n    loan_id INT NOT NULL,\n    borrower_id INT NOT NULL,\n    lender_id INT NOT NULL,\n    transaction_amount DECIMAL(10, 2) NOT NULL,\n    transaction_date DATE,\n    FOREIGN KEY (loan_id) REFERENCES peer_to_peer_lending_loans(loan_id),\n    FOREIGN KEY (borrower_id) REFERENCES peer_to_peer_lending_users(user_id),\n    FOREIGN KEY (lender_id) REFERENCES peer_to_peer_lending_users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n  loan_id INT PRIMARY KEY,\n  borrower_id INT NOT NULL,\n  amount DECIMAL(10,2) NOT NULL,\n  status VARCHAR(20) DEFAULT 'pending'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  loan_id INT NOT NULL,\n  sender_id INT NOT NULL,\n  receiver_id INT NOT NULL,\n  amount DECIMAL(10,2) NOT NULL,\n  transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n  wallet_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  balance DECIMAL(10,2) DEFAULT 0.00\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE borrowers (\n    borrower_id INT PRIMARY KEY,\n    borrower_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE,\n    address VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lenders (\n    lender_id INT PRIMARY KEY,\n    lender_name VARCHAR(50) NOT NULL,\n    bank_account VARCHAR(20) UNIQUE,\n    contact_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    borrower_id INT,\n    lender_id INT,\n    amount DECIMAL(10, 2),\n    transaction_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n    loan_id INT PRIMARY KEY,\n    borrower_id INT,\n    lender_id INT,\n    loan_amount DECIMAL(10, 2),\n    loan_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    borrower_id INT,\n    lender_id INT,\n    payment_amount DECIMAL(10, 2),\n    payment_date DATE\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE workout_classes_schedule (\n    class_id INT PRIMARY KEY,\n    class_name VARCHAR(50),\n    instructor_name VARCHAR(50),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    max_capacity INT,\n    current_attendance INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE workout_classes_schedule (\n    class_id INT,\n    class_name VARCHAR(255),\n    class_date DATE,\n    start_time TIME,\n    end_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendance_tracking (\n    attendance_id INT,\n    class_id INT,\n    participant_id INT,\n    attendance_date DATE,\n    attendance_status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE workout_classes (\n  class_id UUID PRIMARY KEY,\n  class_name VARCHAR(50) NOT NULL,\n  class_time TIMESTAMP NOT NULL,\n  instructor_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE class_attendance (\n  attendance_id UUID PRIMARY KEY,\n  class_id UUID REFERENCES workout_classes(class_id),\n  attendee_name VARCHAR(50) NOT NULL,\n  attendance_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE instructors (\n  instructor_id UUID PRIMARY KEY,\n  instructor_name VARCHAR(50) NOT NULL,\n  instructor_email VARCHAR(50) UNIQUE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WorkoutClasses (\n    class_id INT PRIMARY KEY,\n    class_name VARCHAR(50) NOT NULL,\n    instructor_name VARCHAR(50) NOT NULL,\n    class_schedule TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ClassParticipants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(50) NOT NULL,\n    participant_email VARCHAR(100),\n    class_id INT REFERENCES WorkoutClasses(class_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ClassAttendance (\n    attendance_id INT PRIMARY KEY,\n    participant_id INT REFERENCES ClassParticipants(participant_id) ON DELETE CASCADE,\n    class_id INT REFERENCES WorkoutClasses(class_id) ON DELETE CASCADE,\n    attendance_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Instructors (\n    instructor_id INT PRIMARY KEY,\n    instructor_name VARCHAR(50) NOT NULL,\n    instructor_email VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE workout_classes_schedule (\n    class_id SERIAL PRIMARY KEY,\n    class_name VARCHAR(50) NOT NULL,\n    class_description TEXT,\n    class_date TIMESTAMP NOT NULL,\n    class_duration INTERVAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE class_attendance (\n    attendance_id SERIAL PRIMARY KEY,\n    class_id INT NOT NULL,\n    student_id INT NOT NULL,\n    attendance_status BOOLEAN NOT NULL,\n    attended_on TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id SERIAL PRIMARY KEY,\n    student_name VARCHAR(50) NOT NULL,\n    student_email VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE instructors (\n    instructor_id SERIAL PRIMARY KEY,\n    instructor_name VARCHAR(50) NOT NULL,\n    instructor_email VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE class_instructors (\n    class_id INT NOT NULL,\n    instructor_id INT NOT NULL,\n    PRIMARY KEY (class_id, instructor_id)\n);"
+      }
+    ]
+  }
+]

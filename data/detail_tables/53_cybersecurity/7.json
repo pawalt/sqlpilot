@@ -1,0 +1,73 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityIncidentForensics (\n    id INT PRIMARY KEY,\n    case_number VARCHAR(50) NOT NULL,\n    incident_date DATE NOT NULL,\n    description TEXT,\n    affected_systems JSON,\n    analyst_id INT,\n    FOREIGN KEY (analyst_id) REFERENCES Analyst(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Analyst (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    specialization VARCHAR(50),\n    clearance_level VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Evidence (\n    id INT PRIMARY KEY,\n    case_number VARCHAR(50) NOT NULL,\n    evidence_type VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    description TEXT,\n    evidence_details JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE forensic_cases (\n  case_id INT PRIMARY KEY,\n  case_name VARCHAR(255),\n  case_description TEXT,\n  incident_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE forensic_analysis (\n  analysis_id INT PRIMARY KEY,\n  case_id INT,\n  investigator_id INT,\n  analysis_results TEXT,\n  analysis_date TIMESTAMP,\n  FOREIGN KEY (case_id) REFERENCES forensic_cases(case_id),\n  FOREIGN KEY (investigator_id) REFERENCES investigators(investigator_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incident_reports ( \n    id UUID PRIMARY KEY, \n    timestamp TIMESTAMP, \n    description TEXT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE forensic_evidence ( \n    evidence_id UUID PRIMARY KEY, \n    incident_id UUID, \n    evidence_type TEXT, \n    collected_by TEXT, \n    collected_timestamp TIMESTAMP \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results ( \n    result_id UUID PRIMARY KEY, \n    incident_id UUID, \n    findings TEXT, \n    analyst TEXT, \n    analysis_timestamp TIMESTAMP \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n    incident_id INT PRIMARY KEY,\n    incident_type VARCHAR(50),\n    incident_date DATE,\n    incident_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE forensic_investigators (\n    investigator_id INT PRIMARY KEY,\n    investigator_name VARCHAR(50),\n    investigator_role VARCHAR(50),\n    investigator_department VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE evidence_collection (\n    evidence_id INT PRIMARY KEY,\n    evidence_type VARCHAR(50),\n    evidence_description TEXT,\n    incident_id INT,\n    FOREIGN KEY (incident_id) REFERENCES security_incidents(incident_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_reports (\n    report_id INT PRIMARY KEY,\n    report_date DATE,\n    findings TEXT,\n    investigator_id INT,\n    incident_id INT,\n    FOREIGN KEY (investigator_id) REFERENCES forensic_investigators(investigator_id),\n    FOREIGN KEY (incident_id) REFERENCES security_incidents(incident_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityIncident ( \n  incident_id INT PRIMARY KEY, \n  incident_date DATE, \n  description TEXT, \n  severity INT\n )"
+      },
+      {
+        "table_schema": "CREATE TABLE ForensicInvestigator ( \n  investigator_id INT PRIMARY KEY, \n  name VARCHAR(50), \n  specialization VARCHAR(50), \n  location VARCHAR(50)\n )"
+      },
+      {
+        "table_schema": "CREATE TABLE EvidenceCollection ( \n  evidence_id INT PRIMARY KEY, \n  collected_date DATE, \n  collected_by INT, \n  description TEXT\n )"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentLocation ( \n  location_id INT PRIMARY KEY, \n  city VARCHAR(50), \n  country VARCHAR(50), \n incident_id INT\n )"
+      },
+      {
+        "table_schema": "CREATE TABLE DataQuery ( \n  query_id INT PRIMARY KEY, \n  query_date DATE, \n query TEXT\n )"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LoyaltyPrograms (\n    user_id UUID PRIMARY KEY,\n    user_name TEXT NOT NULL,\n    points INTEGER DEFAULT 0,\n    discount DECIMAL(10, 2) DEFAULT 0\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id INT PRIMARY KEY,\n    reward_name VARCHAR(50) NOT NULL,\n    points_required INT NOT NULL,\n    discount_rate DECIMAL(5,2) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  name TEXT,\n  email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_points (\n  user_id INT,\n  points INT,\n  PRIMARY KEY (user_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE discounts (\n  discount_id INT PRIMARY KEY,\n  user_id INT,\n  discount_amount DECIMAL,\n  expiration_date DATE,\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_points (\n    points_id SERIAL PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    points INTEGER NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE discounts (\n    discount_id SERIAL PRIMARY KEY,\n    discount_code VARCHAR(20) UNIQUE NOT NULL,\n    discount_amount DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    points_used INTEGER,\n    discount_applied DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(50) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_points (\n    point_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    points INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE discount_coupons (\n    coupon_id INT PRIMARY KEY,\n    coupon_code VARCHAR(20) UNIQUE NOT NULL,\n    discount_amount DECIMAL(5,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_discounts (\n    user_id INT REFERENCES users(user_id),\n    discount_id INT REFERENCES discount_coupons(coupon_id)\n);\n"
+      }
+    ]
+  }
+]

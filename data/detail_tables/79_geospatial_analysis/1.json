@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geospatial_data (\n    id INT PRIMARY KEY,\n    location GEOMETRY,\n    name VARCHAR(50),\n    description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Locations (location_id INT PRIMARY KEY, latitude DECIMAL, longitude DECIMAL, name TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE Services (service_id INT PRIMARY KEY, location_id INT, service_name TEXT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  latitude DECIMAL,\n  longitude DECIMAL,\n  city VARCHAR,\n  country VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE geofences (\n  geofence_id INT PRIMARY KEY,\n  name VARCHAR,\n  area GEOGRAPHY,\n  center_latitude DECIMAL,\n  center_longitude DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR,\n  email VARCHAR,\n  location_id INT REFERENCES locations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Location ({\n    location_id INT PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    location_name VARCHAR\n});"
+      },
+      {
+        "table_schema": "CREATE TABLE Address ({\n    address_id INT PRIMARY KEY,\n    street VARCHAR,\n    city VARCHAR,\n    state VARCHAR,\n    zip_code VARCHAR,\n    location_id INT,\n    FOREIGN KEY (location_id) REFERENCES Location(location_id)\n});"
+      },
+      {
+        "table_schema": "CREATE TABLE User ({\n    user_id INT PRIMARY KEY,\n    username VARCHAR,\n    full_name VARCHAR,\n    address_id INT,\n    FOREIGN KEY (address_id) REFERENCES Address(address_id)\n});"
+      },
+      {
+        "table_schema": "CREATE TABLE Business ({\n    business_id INT PRIMARY KEY,\n    business_name VARCHAR,\n    address_id INT,\n    FOREIGN KEY (address_id) REFERENCES Address(address_id)\n});"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  latitude DECIMAL(9,6),\n  longitude DECIMAL(9,6),\n  city VARCHAR(50),\n  country VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(100),\n  location_id INT,\n  FOREIGN KEY (location_id) REFERENCES locations(location_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n  service_id INT PRIMARY KEY,\n  service_name VARCHAR(50),\n  provider_id INT,\n  location_id INT,\n  FOREIGN KEY (provider_id) REFERENCES users(user_id),\n  FOREIGN KEY (location_id) REFERENCES locations(location_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE providers (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR(50),\n  email VARCHAR(100),\n  phone VARCHAR(20),\n  location_id INT,\n  FOREIGN KEY (location_id) REFERENCES locations(location_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n  review_id INT PRIMARY KEY,\n  service_id INT,\n  user_id INT,\n  rating INT,\n  comment TEXT,\n  FOREIGN KEY (service_id) REFERENCES services(service_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      }
+    ]
+  }
+]

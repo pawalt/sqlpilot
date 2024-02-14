@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mapping_tiles (\n  tile_id UUID PRIMARY KEY,\n  tile_data BYTES\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mapping_tiles (\n    tile_id SERIAL PRIMARY KEY,\n    tile_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tile_metadata (\n    tile_id SERIAL PRIMARY KEY,\n    tile_name VARCHAR(255),\n    created_at TIMESTAMP,\n    last_updated_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mapping_tiles (\n    tile_id INT PRIMARY KEY,\n    tile_data BYTEA,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tile_metadata (\n    tile_id INT PRIMARY KEY,\n    tile_name TEXT,\n    created_by TEXT,\n    created_on DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tile_usage (\n    usage_id INT PRIMARY KEY,\n    tile_id INT REFERENCES mapping_tiles(tile_id),\n    app_name TEXT,\n    usage_count INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mapping_tiles (\n    tile_id UUID PRIMARY KEY,\n    tile_data BYTEA NOT NULL\n);\n\nCREATE TABLE tile_metadata (\n    tile_id UUID PRIMARY KEY,\n    creation_timestamp TIMESTAMP NOT NULL,\n    creator_name VARCHAR(50)\n);\n\nCREATE TABLE tile_images (\n    image_id UUID PRIMARY KEY,\n    tile_id UUID REFERENCES mapping_tiles(tile_id),\n    image_data BYTEA NOT NULL\n);\n\nCREATE TABLE tile_hierarchy (\n    hierarchy_id UUID PRIMARY KEY,\n    tile_id UUID REFERENCES mapping_tiles(tile_id),\n    parent_tile_id UUID REFERENCES mapping_tiles(tile_id),\n    level INTEGER NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mapping_tiles (\n    tile_id INT PRIMARY KEY,\n    tile_data BYTEA,\n    tile_metadata JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tilesets (\n    tileset_id INT PRIMARY KEY,\n    tileset_name VARCHAR(100),\n    tileset_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tile_usage (\n    usage_id INT PRIMARY KEY,\n    tile_id INT REFERENCES mapping_tiles (tile_id),\n    user_id INT REFERENCES users (user_id),\n    usage_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    preference_id INT PRIMARY KEY,\n    user_id INT REFERENCES users (user_id),\n    preference_key VARCHAR(50),\n    preference_value VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

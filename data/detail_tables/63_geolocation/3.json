@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regions (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(50) NOT NULL,\n    boundary POLYGON NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE region_boundaries (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(100) NOT NULL,\n  boundary POLYGON NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_listings (\n  listing_id INT PRIMARY KEY,\n  region_id INT REFERENCES region_boundaries(region_id),\n  property_type VARCHAR(50) NOT NULL,\n  price DECIMAL(10,2) NOT NULL,\n  property_address VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regions (\n  region_id INT PRIMARY KEY,\n  region_name TEXT NOT NULL,\n  boundary POLYGON NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE properties (\n  property_id INT PRIMARY KEY,\n  property_name TEXT NOT NULL,\n  region_id INT REFERENCES regions(region_id),\n  price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username TEXT NOT NULL,\n  email TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regions (\n    region_id UUID PRIMARY KEY,\n    region_name STRING,\n    boundary GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE properties (\n    property_id UUID PRIMARY KEY,\n    property_name STRING,\n    region_id UUID REFERENCES regions(region_id),\n    address STRING,\n    price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id UUID PRIMARY KEY,\n    agent_name STRING,\n    contact_number STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE listings (\n    listing_id UUID PRIMARY KEY,\n    property_id UUID REFERENCES properties(property_id),\n    agent_id UUID REFERENCES agents(agent_id),\n    listing_date DATE,\n    status STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Regions (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(255),\n    area DECIMAL,\n    boundary_geom GEOMETRY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Countries (\n    country_id INT PRIMARY KEY,\n    country_name VARCHAR(255),\n    currency VARCHAR(3),\n    language VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE States (\n    state_id INT PRIMARY KEY,\n    state_name VARCHAR(255),\n    population INT,\n    region_id INT REFERENCES Regions(region_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Cities (\n    city_id INT PRIMARY KEY,\n    city_name VARCHAR(255),\n    state_id INT REFERENCES States(state_id),\n    area DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Neighborhoods (\n    neighborhood_id INT PRIMARY KEY,\n    neighborhood_name VARCHAR(255),\n    city_id INT REFERENCES Cities(city_id),\n    population INT\n);"
+      }
+    ]
+  }
+]

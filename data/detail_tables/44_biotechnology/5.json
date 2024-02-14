@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_interactions (\n   drug_id INT NOT NULL,\n   interaction_id INT NOT NULL,\n   side_effect VARCHAR(255) NOT NULL,\n   PRIMARY KEY (drug_id, interaction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DrugInteractions (\n    drug_id INT PRIMARY KEY,\n    interaction_id INT,\n    interaction_description TEXT\n);\n\nCREATE TABLE SideEffects (\n    effect_id INT PRIMARY KEY,\n    drug_id INT,\n    effect_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DrugInteractions (\n    drug_id INT PRIMARY KEY,\n    drug_name VARCHAR(255),\n    interaction_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SideEffects (\n    effect_id INT PRIMARY KEY,\n    effect_name VARCHAR(255),\n    effect_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DrugSideEffects (\n    drug_id INT,\n    effect_id INT,\n    severity VARCHAR(50),\n    FOREIGN KEY (drug_id) REFERENCES DrugInteractions(drug_id),\n    FOREIGN KEY (effect_id) REFERENCES SideEffects(effect_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drugs (\n\tdrug_id INT PRIMARY KEY,\n\tdrug_name VARCHAR(255),\n\tdrug_category VARCHAR(255),\n\tdrug_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n\tuser_id INT PRIMARY KEY,\n\tuser_name VARCHAR(255),\n\tuser_email VARCHAR(255),\n\tuser_age INT,\n\tuser_gender VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n\tinteraction_id INT PRIMARY KEY,\n\tdrug_id_1 INT,\n\tdrug_id_2 INT,\n\tinteraction_description TEXT,\n\tFOREIGN KEY (drug_id_1) REFERENCES drugs(drug_id),\n\tFOREIGN KEY (drug_id_2) REFERENCES drugs(drug_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE side_effects (\n\tside_effect_id INT PRIMARY KEY,\n\tdrug_id INT,\n\tside_effect_name VARCHAR(255),\n\tside_effect_description TEXT,\n\tFOREIGN KEY (drug_id) REFERENCES drugs(drug_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drugs_interactions (\n  drug_id INT PRIMARY KEY,\n  drug_name VARCHAR(255),\n  interaction_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_side_effects (\n  side_effect_id INT PRIMARY KEY,\n  side_effect_name VARCHAR(255),\n  drug_id INT,\n  FOREIGN KEY (drug_id) REFERENCES drugs_interactions(drug_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_categories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_category_mapping (\n  drug_id INT,\n  category_id INT,\n  PRIMARY KEY (drug_id, category_id),\n  FOREIGN KEY (drug_id) REFERENCES drugs_interactions(drug_id),\n  FOREIGN KEY (category_id) REFERENCES drug_categories(category_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_dosage (\n  dosage_id INT PRIMARY KEY,\n  dosage_amount INT,\n  dosage_unit VARCHAR(50),\n  drug_id INT,\n  FOREIGN KEY (drug_id) REFERENCES drugs_interactions(drug_id)\n);"
+      }
+    ]
+  }
+]

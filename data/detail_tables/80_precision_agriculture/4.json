@@ -1,0 +1,52 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (\n    id INT PRIMARY KEY,\n    date DATE,\n    time TIME,\n    duration_minutes INT,\n    water_usage FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (\n    id INT PRIMARY KEY,\n    schedule_date DATE,\n    irrigation_duration INT,\n    crop_type VARCHAR(50),\n    water_source VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage_data (\n    id INT PRIMARY KEY,\n    date DATE,\n    liters_used INT,\n    irrigation_schedule_id INT,\n    CONSTRAINT fk_irrigation_schedule_id FOREIGN KEY (irrigation_schedule_id) REFERENCES irrigation_schedule(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (\n    id INT PRIMARY KEY,\n    date DATE,\n    time TIME,\n    duration INTERVAL,\n    sensor_id INT\n);\n\nCREATE TABLE water_usage_data (\n    id INT PRIMARY KEY,\n    date DATE,\n    time TIME,\n    gallons_used DECIMAL,\n    sensor_id INT\n);\n\nCREATE TABLE sensor_data (\n    id INT PRIMARY KEY,\n    sensor_name VARCHAR(50),\n    location VARCHAR(100),\n    type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (\n    schedule_id INT PRIMARY KEY,\n    schedule_day DATE,\n    start_time TIME,\n    end_time TIME,\n    water_usage DECIMAL\n);\n\nCREATE TABLE water_source (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(50),\n    source_type VARCHAR(50),\n    location VARCHAR(100),\n    flow_rate DECIMAL\n);\n\nCREATE TABLE irrigation_zone (\n    zone_id INT PRIMARY KEY,\n    zone_name VARCHAR(50),\n    area DECIMAL,\n    soil_type VARCHAR(50),\n    water_requirement DECIMAL\n);\n\nCREATE TABLE irrigation_log (\n    log_id INT PRIMARY KEY,\n    schedule_id INT,\n    zone_id INT,\n    date DATE,\n    duration TIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterSources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(50),\n    location VARCHAR(100),\n    capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE IrrigationSystems (\n    system_id INT PRIMARY KEY,\n    system_name VARCHAR(50),\n    area_covered DECIMAL,\n    irrigation_type VARCHAR(50),\n    source_id INT REFERENCES WaterSources(source_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE IrrigationSchedule (\n    schedule_id INT PRIMARY KEY,\n    system_id INT REFERENCES IrrigationSystems(system_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    frequency INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterUsage (\n    record_id INT PRIMARY KEY,\n    system_id INT REFERENCES IrrigationSystems(system_id),\n    date DATE,\n    amount_used DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterEfficiency (\n    efficiency_id INT PRIMARY KEY,\n    system_id INT REFERENCES IrrigationSystems(system_id),\n    date DATE,\n    efficiency_rating DECIMAL\n)"
+      }
+    ]
+  }
+]

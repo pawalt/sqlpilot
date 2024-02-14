@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE machine_learning_models (\n   model_id INT PRIMARY KEY,\n   model_name TEXT,\n   model_type TEXT,\n   trained_on TIMESTAMP,\n   accuracy FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_metadata (\n    model_id UUID PRIMARY KEY,\n    model_name TEXT,\n    model_description TEXT,\n    model_version INT,\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_configuration (\n    config_id UUID PRIMARY KEY,\n    model_id UUID REFERENCES model_metadata(model_id),\n    config_name TEXT,\n    config_value JSONB,\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MachineLearningModels (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(100) NOT NULL,\n    model_type VARCHAR(50) NOT NULL,\n    model_version INT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelConfigurations (\n    config_id UUID PRIMARY KEY,\n    model_id UUID REFERENCES MachineLearningModels(model_id),\n    config_name VARCHAR(100) NOT NULL,\n    config_value JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingLogs (\n    log_id UUID PRIMARY KEY,\n    model_id UUID REFERENCES MachineLearningModels(model_id),\n    log_text TEXT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_configuration (\n    id UUID PRIMARY KEY,\n    model_name VARCHAR(255),\n    version INT,\n    hyperparameters JSONB,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metadata (\n    id UUID PRIMARY KEY,\n    model_id UUID REFERENCES model_configuration(id),\n    description TEXT,\n    trained_on TIMESTAMP,\n    accuracy FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_information (\n    id UUID PRIMARY KEY,\n    dataset_name VARCHAR(255),\n    columns JSONB,\n    uploaded_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    id UUID PRIMARY KEY,\n    experiment_id UUID REFERENCES model_metadata(id),\n    evaluation_metrics JSONB,\n    completed_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MachineLearningModel (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255) NOT NULL,\n    hyperparameters JSONB,\n    training_data_path VARCHAR(255),\n    model_artifact BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelMetrics (\n    metric_id INT PRIMARY KEY,\n    model_id INT REFERENCES MachineLearningModel(model_id),\n    accuracy FLOAT,\n    precision FLOAT,\n    recall FLOAT,\n    f1_score FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelRuns (\n    run_id INT PRIMARY KEY,\n    model_id INT REFERENCES MachineLearningModel(model_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelParameters (\n    param_id INT PRIMARY KEY,\n    model_id INT REFERENCES MachineLearningModel(model_id),\n    param_name VARCHAR(50) NOT NULL,\n    param_value JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelConfigurations (\n    config_id INT PRIMARY KEY,\n    model_id INT REFERENCES MachineLearningModel(model_id),\n    config_name VARCHAR(50) NOT NULL,\n    config_details JSONB\n);\n"
+      }
+    ]
+  }
+]

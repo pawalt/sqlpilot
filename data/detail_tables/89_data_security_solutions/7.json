@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP DEFAULT NOW()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(100) UNIQUE,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    content TEXT NOT NULL,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Employees (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(255) NOT NULL,\n  department_id INT,\n  CONSTRAINT fk_department_id FOREIGN KEY (department_id) REFERENCES Departments(department_id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Departments (\n  department_id INT PRIMARY KEY,\n  department_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  department_id INT,\n  start_date DATE,\n  end_date DATE,\n  CONSTRAINT fk_department_id FOREIGN KEY (department_id) REFERENCES Departments(department_id) ON DELETE CASCADE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    created_at TIMESTAMP DEFAULT now()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    post_content TEXT NOT NULL,\n    created_at TIMESTAMP DEFAULT now(),\n    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    post_id INT NOT NULL,\n    comment_text TEXT NOT NULL,\n    created_at TIMESTAMP DEFAULT now(),\n    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,\n    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE likes (\n    like_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    post_id INT NOT NULL,\n    created_at TIMESTAMP DEFAULT now(),\n    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,\n    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL UNIQUE,\n    email VARCHAR(100) NOT NULL UNIQUE,\n    created_at TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders (\n    order_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL REFERENCES Users(user_id),\n    order_date DATE NOT NULL,\n    total_amount DECIMAL(10,2) NOT NULL CHECK (total_amount >= 0)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    price DECIMAL(10,2) NOT NULL CHECK (price >= 0),\n    stock_quantity INT NOT NULL CHECK (stock_quantity >= 0)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Categories (\n    category_id UUID PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductCategories (\n    product_id UUID NOT NULL REFERENCES Products(product_id),\n    category_id UUID NOT NULL REFERENCES Categories(category_id),\n    PRIMARY KEY (product_id, category_id)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marketing_channels (\n    id INT PRIMARY KEY,\n    channel_name VARCHAR(255),\n    sales_amount DECIMAL(10, 2),\n    conversions INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marketing_channels (channel_id INT PRIMARY KEY, channel_name VARCHAR(50), monthly_cost DECIMAL(10, 2), target_audience VARCHAR(100));\n\nCREATE TABLE sales_conversions (conversion_id INT PRIMARY KEY, channel_id INT, conversion_date DATE, conversion_amount DECIMAL(10, 2), FOREIGN KEY (channel_id) REFERENCES marketing_channels(channel_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sales_data (\n    sale_id UUID PRIMARY KEY,\n    customer_id UUID,\n    sale_amount DECIMAL,\n    sale_date DATE,\n    marketing_channel VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conversion_data (\n    conversion_id SERIAL PRIMARY KEY,\n    customer_id UUID,\n    conversion_date DATE,\n    marketing_channel VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_channels (\n    channel_id SERIAL PRIMARY KEY,\n    channel_name VARCHAR,\n    channel_type VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marketing_channels (\n    channel_id INT PRIMARY KEY,\n    channel_name VARCHAR(255) NOT NULL,\n    channel_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (\n    sale_id INT PRIMARY KEY,\n    sale_amount DECIMAL(10,2) NOT NULL,\n    channel_id INT,\n    sale_date DATE,\n    FOREIGN KEY (channel_id) REFERENCES marketing_channels(channel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions (\n    conversion_id INT PRIMARY KEY,\n    conversion_date DATE,\n    channel_id INT,\n    conversion_type VARCHAR(50),\n    FOREIGN KEY (channel_id) REFERENCES marketing_channels(channel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roi_analysis (\n    analysis_id INT PRIMARY KEY,\n    sale_id INT,\n    conversion_id INT,\n    roi DECIMAL(10,2),\n    FOREIGN KEY (sale_id) REFERENCES sales(sale_id),\n    FOREIGN KEY (conversion_id) REFERENCES conversions(conversion_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marketing_channels (\n    channel_id UUID PRIMARY KEY,\n    channel_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sales_data (\n    sale_id UUID PRIMARY KEY,\n    sale_amount DECIMAL NOT NULL,\n    sale_date DATE NOT NULL,\n    channel_id UUID NOT NULL,\n    FOREIGN KEY (channel_id) REFERENCES marketing_channels(channel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions_data (\n    conversion_id UUID PRIMARY KEY,\n    conversion_date DATE NOT NULL,\n    channel_id UUID NOT NULL,\n    FOREIGN KEY (channel_id) REFERENCES marketing_channels(channel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roi_analysis (\n    roi_id UUID PRIMARY KEY,\n    roi_value DECIMAL NOT NULL,\n    conversion_id UUID NOT NULL,\n    FOREIGN KEY (conversion_id) REFERENCES conversions_data(conversion_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

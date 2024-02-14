@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneticData (\n    id INT PRIMARY KEY,\n    sample_id INT,\n    chromosome VARCHAR(50),\n    position INT,\n    genotype VARCHAR(10),\n    quality FLOAT,\n    CONSTRAINT fk_sample_id FOREIGN KEY (sample_id) REFERENCES Samples(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Genes (\n  id INT PRIMARY KEY,\n  name STRING,\n  sequence STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Variants (\n  id INT PRIMARY KEY,\n  gene_id INT,\n  type STRING,\n  allele_frequency FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DNA_Sequences (\n    id SERIAL PRIMARY KEY,\n    sequence TEXT NOT NULL,\n    quality_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genetic_Variants (\n    id SERIAL PRIMARY KEY,\n    variant_name VARCHAR(50) NOT NULL,\n    gene_name VARCHAR(50),\n    allele_frequency FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Phenotype_Information (\n    id SERIAL PRIMARY KEY,\n    sample_id INTEGER UNIQUE,\n    trait VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient (\n    patient_id UUID PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    age INT,\n    sex CHAR,\n    genetic_data BYTES\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Genetic_Test (\n    test_id UUID PRIMARY KEY,\n    patient_id UUID REFERENCES Patient(patient_id),\n    test_date DATE,\n    test_result VARCHAR(100),\n    test_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Variant (\n    variant_id UUID PRIMARY KEY,\n    gene_name VARCHAR(50),\n    chromosome VARCHAR(10),\n    position INT,\n    variant_type VARCHAR(20),\n    allele_freq FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Analysis_Result (\n    result_id UUID PRIMARY KEY,\n    test_id UUID REFERENCES Genetic_Test(test_id),\n    variant_id UUID REFERENCES Variant(variant_id),\n    analysis_date DATE,\n    analysis_result VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  age INT,\n  gender VARCHAR(10),\n  date_of_birth DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE samples (\n  sample_id INT PRIMARY KEY,\n  patient_id INT,\n  sample_type VARCHAR(50),\n  collection_date DATE,\n  quantity FLOAT,\n  CONSTRAINT fk_patient_id FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE variants (\n  variant_id INT PRIMARY KEY,\n  sample_id INT,\n  chromosome VARCHAR(10),\n  position INT,\n  variant_type VARCHAR(50),\n  CONSTRAINT fk_sample_id FOREIGN KEY (sample_id) REFERENCES samples(sample_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE genes (\n  gene_id INT PRIMARY KEY,\n  gene_symbol VARCHAR(20),\n  gene_name VARCHAR(100),\n  chromosome VARCHAR(10),\n  start_position INT,\n  end_position INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE interpretations (\n  interpretation_id INT PRIMARY KEY,\n  variant_id INT,\n  gene_id INT,\n  interpretation_text TEXT,\n  CONSTRAINT fk_variant_id FOREIGN KEY (variant_id) REFERENCES variants(variant_id),\n  CONSTRAINT fk_gene_id FOREIGN KEY (gene_id) REFERENCES genes(gene_id)\n)"
+      }
+    ]
+  }
+]

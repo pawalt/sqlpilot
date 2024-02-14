@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_limits (\n    id SERIAL PRIMARY KEY,\n    policy_id INT NOT NULL,\n    coverage_limit INT NOT NULL,\n    deductible_amount INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_coverage_limits (\n    policy_id INT,\n    coverage_limit DECIMAL,\n    deductible DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_regulations (\n    regulation_id INT,\n    regulation_description TEXT,\n    compliance_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PolicyLimits (\n\tpolicy_id INT PRIMARY KEY,\n\tcoverage_limit INT NOT NULL,\n\tdeductible INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Regulations (\n\tregulation_id INT PRIMARY KEY,\n\tregulation_name VARCHAR(50) NOT NULL,\n\tcompliance_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyRegulations (\n\tpolicy_id INT,\n\tregulation_id INT,\n\tFOREIGN KEY (policy_id) REFERENCES PolicyLimits(policy_id),\n\tFOREIGN KEY (regulation_id) REFERENCES Regulations(regulation_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_limits (\nid INT PRIMARY KEY,\ncustomer_id INT,\ncoverage_limit DECIMAL,\ndeductible DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulations (\nregulation_id INT PRIMARY KEY,\nregulation_name TEXT,\nrequirement TEXT,\npenalty DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE coverage_types (\ncov_type_id INT PRIMARY KEY,\ncov_type_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_coverage (\npolicy_id INT PRIMARY KEY,\ncov_type_id INT,\nid INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_coverage_limits (\n    policy_id INT PRIMARY KEY,\n    coverage_limit DECIMAL,\n    deductible DECIMAL\n);\n\nCREATE TABLE regulatory_compliance (\n    regulatory_id INT PRIMARY KEY,\n    regulation_name VARCHAR(50),\n    compliance_status BOOLEAN\n);\n\nCREATE TABLE policy_regulations (\n    policy_id INT,\n    regulatory_id INT,\n    FOREIGN KEY (policy_id) REFERENCES policy_coverage_limits (policy_id),\n    FOREIGN KEY (regulatory_id) REFERENCES regulatory_compliance (regulatory_id)\n);\n\nCREATE TABLE claims (\n    claim_id INT PRIMARY KEY,\n    policy_id INT,\n    claim_amount DECIMAL,\n    claim_date DATE,\n    FOREIGN KEY (policy_id) REFERENCES policy_coverage_limits (policy_id)\n);\n\nCREATE TABLE policy_holders (\n    holder_id INT PRIMARY KEY,\n    holder_name VARCHAR(50),\n    holder_address VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

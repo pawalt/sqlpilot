@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_data_replication (\n    id INT PRIMARY KEY,\n    region_name VARCHAR(50),\n    data_center VARCHAR(50),\n    last_sync TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_replication (\n    id INT PRIMARY KEY,\n    region VARCHAR(50),\n    data_center VARCHAR(50),\n    replicated_data TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE replication_status (\n    id INT PRIMARY KEY,\n    replication_id INT,\n    status VARCHAR(20),\n    last_sync TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_regions (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(255) NOT NULL,\n  data_center VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_replication (\n  replication_id INT PRIMARY KEY,\n  replication_type VARCHAR(50) NOT NULL,\n  replication_frequency INT NOT NULL,\n  region_id INT NOT NULL,\n  FOREIGN KEY (region_id) REFERENCES cloud_regions(region_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE disaster_recovery (\n  recovery_id INT PRIMARY KEY,\n  recovery_plan TEXT NOT NULL,\n  replication_id INT NOT NULL,\n  FOREIGN KEY (replication_id) REFERENCES data_replication(replication_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE synchronization_config (\n    id SERIAL PRIMARY KEY,\n    region VARCHAR(50) NOT NULL,\n    data_center VARCHAR(50) NOT NULL,\n    replication_method VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE region_data (\n    id SERIAL PRIMARY KEY,\n    region_name VARCHAR(50) NOT NULL,\n    data_replication_factor INT NOT NULL,\n    data_sync_delay INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cloud_data_center (\n    id SERIAL PRIMARY KEY,\n    data_center_name VARCHAR(50) NOT NULL,\n    data_center_location VARCHAR(100) NOT NULL,\n    region_id INT NOT NULL,\n    FOREIGN KEY (region_id) REFERENCES region_data(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_replication_logs (\n    log_id SERIAL PRIMARY KEY,\n    operation_type VARCHAR(50) NOT NULL,\n    operation_time TIMESTAMP NOT NULL,\n    data_center_id INT NOT NULL,\n    FOREIGN KEY (data_center_id) REFERENCES cloud_data_center(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_regions (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(50) NOT NULL,\n    data_center_count INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_centers (\n    data_center_id INT PRIMARY KEY,\n    data_center_name VARCHAR(50) NOT NULL,\n    region_id INT REFERENCES cloud_regions(region_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_replication (\n    replication_id INT PRIMARY KEY,\n    data_replication_name VARCHAR(50) NOT NULL,\n    data_center_id INT REFERENCES data_centers(data_center_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE replication_jobs (\n    job_id INT PRIMARY KEY,\n    job_name VARCHAR(50) NOT NULL,\n    replication_id INT REFERENCES data_replication(replication_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE replication_logs (\n    log_id INT PRIMARY KEY,\n    log_message TEXT NOT NULL,\n    job_id INT REFERENCES replication_jobs(job_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  }
+]

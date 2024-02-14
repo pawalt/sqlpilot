@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_diagnostic_results (\n    patient_id INT PRIMARY KEY,\n    diagnostic_test_id INT,\n    test_date DATE,\n    test_result FLOAT,\n    diagnosis VARCHAR(255),\n    treatment_plan TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PatientTests (\n    patient_id INT,\n    test_date DATE,\n    test_name VARCHAR(50),\n    test_result FLOAT,\n    PRIMARY KEY(patient_id, test_date)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrendAnalysis (\n    trend_id SERIAL,\n    patient_id INT,\n    trend_date DATE,\n    trend_description TEXT,\n    PRIMARY KEY(trend_id),\n    FOREIGN KEY(patient_id) REFERENCES PatientTests(patient_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PatientDiagnosticTests (\n  patient_id INT PRIMARY KEY,\n  test_date DATE,\n  test_name VARCHAR(50),\n  test_result VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TestTrends (\n  trend_id INT PRIMARY KEY,\n  test_name VARCHAR(50),\n  trend_value DECIMAL,\n  trend_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TreatmentPlans (\n  plan_id INT PRIMARY KEY,\n  patient_id INT,\n  treatment_description TEXT,\n  treatment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_demographics (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(255),\n  date_of_birth DATE,\n  gender VARCHAR(10),\n  address VARCHAR(255),\n  contact_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE test_results (\n  result_id INT PRIMARY KEY,\n  patient_id INT,\n  test_date DATE,\n  test_type VARCHAR(50),\n  result_value FLOAT,\n  result_units VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trend_analysis (\n  analysis_id INT PRIMARY KEY,\n  result_id INT,\n  trend_type VARCHAR(50),\n  trend_value FLOAT,\n  trend_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE treatment_plans (\n  plan_id INT PRIMARY KEY,\n  patient_id INT,\n  treatment_details TEXT,\n  prescription VARCHAR(255),\n  plan_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient (\n  patient_id INT PRIMARY KEY,\n  patient_name TEXT,\n  age INT,\n  gender TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Test (\n  test_id INT PRIMARY KEY,\n  test_name TEXT,\n  test_description TEXT,\n  test_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TestResult (\n  result_id INT PRIMARY KEY,\n  test_id INT REFERENCES Test(test_id),\n  patient_id INT REFERENCES Patient(patient_id),\n  result_value FLOAT,\n  result_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrendAnalysis (\n  analysis_id INT PRIMARY KEY,\n  result_id INT REFERENCES TestResult(result_id),\n  trend_value FLOAT,\n  trend_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TreatmentPlan (\n  plan_id INT PRIMARY KEY,\n  analysis_id INT REFERENCES TrendAnalysis(analysis_id),\n  plan_description TEXT,\n  plan_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

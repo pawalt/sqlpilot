@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_authentication ( \n    user_id INT PRIMARY KEY, \n    username VARCHAR(50) NOT NULL, \n    password_hash VARCHAR(100) NOT NULL, \n    last_login TIMESTAMP \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    last_login TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_auth (\n    user_id INT REFERENCES users(user_id),\n    role_id INT REFERENCES user_roles(role_id),\n    last_login TIMESTAMP DEFAULT current_timestamp\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username VARCHAR(255),\n  password_hash VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  id INT PRIMARY KEY,\n  role_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n  id INT PRIMARY KEY,\n  user_id INT,\n  session_token VARCHAR(255),\n  expiration_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n  id INT PRIMARY KEY,\n  data_content TEXT,\n  owner_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n user_id INT PRIMARY KEY,\n username VARCHAR(50) NOT NULL,\n password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n user_id INT,\n role_id INT,\n FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n role_id INT PRIMARY KEY,\n role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n log_id INT PRIMARY KEY,\n user_id INT,\n access_time TIMESTAMP,\n FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n attempt_id INT PRIMARY KEY,\n user_id INT,\n attempt_time TIMESTAMP,\n result VARCHAR(20) NOT NULL,\n FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  }
+]

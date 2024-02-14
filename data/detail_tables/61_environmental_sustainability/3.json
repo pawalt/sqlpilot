@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollection (\n  pick_up_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  waste_type VARCHAR(50),\n  pickup_date DATE,\n  pickup_time TIME,\n  is_recurring BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionSchedule (\n    id INT PRIMARY KEY,\n    pickup_date DATE,\n    pickup_time TIME,\n    pickup_location TEXT,\n    status TEXT\n);\n\nCREATE TABLE RecyclingPickups (\n    id INT PRIMARY KEY,\n    pickup_date DATE,\n    pickup_time TIME,\n    pickup_location TEXT,\n    recycle_items TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionSchedule (\n    id INT PRIMARY KEY,\n    pickup_date DATE NOT NULL,\n    pickup_time TIME NOT NULL,\n    truck_id INT NOT NULL,\n    waste_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclingPickups (\n    id INT PRIMARY KEY,\n    pickup_date DATE NOT NULL,\n    pickup_time TIME NOT NULL,\n    recycled_material VARCHAR(50) NOT NULL,\n    pickup_location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PickupHistory (\n    id INT PRIMARY KEY,\n    pickup_id INT NOT NULL,\n    pickup_date DATE NOT NULL,\n    pickup_status VARCHAR(20) NOT NULL,\n    pickup_notes TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_collection_schedule (\n    schedule_id INT PRIMARY KEY,\n    pickup_location TEXT,\n    pickup_date DATE,\n    pickup_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_pickups (\n    pickup_id INT PRIMARY KEY,\n    recycling_bin_id INT,\n    pickup_date DATE,\n    pickup_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pickup_vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type TEXT,\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes_optimization (\n    route_id INT PRIMARY KEY,\n    pickup_schedule_id INT,\n    optimization_date DATE,\n    optimization_time TIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionLocations (\n    location_id INT PRIMARY KEY,\n    street_address VARCHAR(255),\n    city VARCHAR(100),\n    zip_code VARCHAR(10),\n    location_type ENUM('residential', 'commercial'),\n    collection_schedule JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionTrucks (\n    truck_id INT PRIMARY KEY,\n    truck_model VARCHAR(255),\n    current_location VARCHAR(255),\n    last_maintenance_date DATE,\n    is_active BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteCollectionSchedule (\n    schedule_id INT PRIMARY KEY,\n    location_id INT,\n    truck_id INT,\n    collection_date DATE,\n    collection_status ENUM('pending', 'completed'),\n    CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES WasteCollectionLocations(location_id),\n    CONSTRAINT fk_truck FOREIGN KEY (truck_id) REFERENCES CollectionTrucks(truck_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclingPickupLocations (\n    pickup_id INT PRIMARY KEY,\n    location_id INT,\n    pickup_date DATE,\n    pickup_status ENUM('scheduled', 'completed', 'cancelled'),\n    CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES WasteCollectionLocations(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclableMaterials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    material_type ENUM('plastic', 'glass', 'metal', 'paper'),\n    disposal_method ENUM('recycle', 'landfill'),\n    is_recyclable BOOLEAN\n);\n"
+      }
+    ]
+  }
+]

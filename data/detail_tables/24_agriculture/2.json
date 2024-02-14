@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SoilNutrientAnalysisResults (\n  field_id UUID PRIMARY KEY,\n  nitrogen float,\n  phosphorus float,\n  potassium float,\n  calcium float,\n  magnesium float\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FieldNutrientAnalysis (\n    field_id INT PRIMARY KEY,\n    nitrate_content FLOAT,\n    phosphate_content FLOAT,\n    potassium_content FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldDetails (\n    field_id INT PRIMARY KEY,\n    field_name VARCHAR(255),\n    owner_name VARCHAR(255),\n    location VARCHAR(255),\n    crop_name VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fields (\n field_id INT PRIMARY KEY,\n field_name VARCHAR(50) NOT NULL,\n soil_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE nutrient_analysis (\n analysis_id INT PRIMARY KEY,\n field_id INT,\n nitrogen DECIMAL,\n phosphorus DECIMAL,\n potassium DECIMAL,\n FOREIGN KEY (field_id) REFERENCES fields(field_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n result_id INT PRIMARY KEY,\n analysis_id INT,\n sample_date DATE,\n ph DECIMAL,\n organic_matter DECIMAL,\n FOREIGN KEY (analysis_id) REFERENCES nutrient_analysis(analysis_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Soil_Nutrient_Results (\n id SERIAL PRIMARY KEY,\n field_name VARCHAR(50),\n nitrogen FLOAT,\n phosphorus FLOAT,\n potassium FLOAT\n )"
+      },
+      {
+        "table_schema": "CREATE TABLE Field_Information (\n id SERIAL PRIMARY KEY,\n field_name VARCHAR(50),\n location VARCHAR(50),\n size FLOAT\n )"
+      },
+      {
+        "table_schema": "CREATE TABLE Nutrient_Categories (\n id SERIAL PRIMARY KEY,\n nutrient_name VARCHAR(50),\n optimal_range_min FLOAT,\n optimal_range_max FLOAT\n )"
+      },
+      {
+        "table_schema": "CREATE TABLE Analysis_Results (\n id SERIAL PRIMARY KEY,\n field_id INTEGER,\n nutrient_id INTEGER,\n value FLOAT,\n analysis_date DATE\n )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Fields (\n    field_id INT,\n    field_name VARCHAR,\n    field_location VARCHAR,\n    PRIMARY KEY (field_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NutrientTests (\n    test_id INT,\n    test_date DATE,\n    field_id INT,\n    test_type VARCHAR,\n    nutrient_level DECIMAL,\n    PRIMARY KEY (test_id),\n    FOREIGN KEY (field_id) REFERENCES Fields(field_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Nutrients (\n    nutrient_id INT,\n    nutrient_name VARCHAR,\n    PRIMARY KEY (nutrient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldNutrientLevels (\n    field_id INT,\n    nutrient_id INT,\n    nutrient_level DECIMAL,\n    PRIMARY KEY (field_id, nutrient_id),\n    FOREIGN KEY (field_id) REFERENCES Fields(field_id),\n    FOREIGN KEY (nutrient_id) REFERENCES Nutrients(nutrient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldReports (\n    report_id INT,\n    field_id INT,\n    report_date DATE,\n    summary TEXT,\n    PRIMARY KEY (report_id),\n    FOREIGN KEY (field_id) REFERENCES Fields(field_id)\n);\n"
+      }
+    ]
+  }
+]

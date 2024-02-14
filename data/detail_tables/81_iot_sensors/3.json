@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensor_readings (\n  reading_id INT PRIMARY KEY,\n  sensor_id INT,\n  reading_value FLOAT,\n  reading_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensor_readings (\n    id INT PRIMARY KEY,\n    sensor_id INT,\n    reading_value FLOAT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    sensor_id INT,\n    alert_message TEXT,\n    alert_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensor_data (sensor_id INT, sensor_reading FLOAT, timestamp TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (alert_id INT, sensor_id INT, threshold FLOAT, message TEXT, alerted_at TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensors (sensor_id INT, sensor_name TEXT, location TEXT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_name VARCHAR(50),\n    sensor_location VARCHAR(50),\n    sensor_reading FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE triggers (\n    trigger_id INT PRIMARY KEY,\n    trigger_name VARCHAR(50),\n    trigger_condition VARCHAR(100),\n    alert_recipients VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_readings (\n    reading_id INT PRIMARY KEY,\n    sensor_id INT REFERENCES sensors(sensor_id),\n    reading_value FLOAT,\n    reading_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    trigger_id INT REFERENCES triggers(trigger_id),\n    alert_timestamp TIMESTAMP,\n    alert_message VARCHAR(200)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensor_readings (\n  sensor_id INT NOT NULL,\n  reading_value FLOAT NOT NULL,\n  reading_time TIMESTAMP NOT NULL,\n  PRIMARY KEY (sensor_id, reading_time)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE triggers (\n  trigger_id INT NOT NULL,\n  sensor_id INT NOT NULL,\n  min_threshold FLOAT NOT NULL,\n  max_threshold FLOAT NOT NULL,\n  alert_message VARCHAR(255) NOT NULL,\n  PRIMARY KEY (trigger_id),\n  FOREIGN KEY (sensor_id) REFERENCES sensor_readings(sensor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n  alert_id INT NOT NULL,\n  trigger_id INT NOT NULL,\n  alert_time TIMESTAMP NOT NULL,\n  alert_message VARCHAR(255) NOT NULL,\n  PRIMARY KEY (alert_id),\n  FOREIGN KEY (trigger_id) REFERENCES triggers(trigger_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT NOT NULL,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  PRIMARY KEY (user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n  log_id INT NOT NULL,\n  log_time TIMESTAMP NOT NULL,\n  log_message TEXT NOT NULL,\n  PRIMARY KEY (log_id)\n);"
+      }
+    ]
+  }
+]

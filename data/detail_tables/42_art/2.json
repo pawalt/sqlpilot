@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE art_collectors (\n  collector_id SERIAL PRIMARY KEY,\n  collector_name STRING NOT NULL,\n  email STRING UNIQUE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE collectors (\n    collector_id INT PRIMARY KEY,\n    collector_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    location VARCHAR(50)\n);\n\nCREATE TABLE collections (\n    collection_id INT PRIMARY KEY,\n    collector_id INT REFERENCES collectors(collector_id),\n    artwork_name VARCHAR(50) NOT NULL,\n    artist_name VARCHAR(50),\n    purchase_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE art_collectors (\n collector_id INT PRIMARY KEY,\n collector_name VARCHAR(50) NOT NULL,\n location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE art_collections (\n collection_id INT PRIMARY KEY,\n collector_id INT,\n title VARCHAR(100) NOT NULL,\n artist VARCHAR(50),\n year_created INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE art_pieces (\n piece_id INT PRIMARY KEY,\n collection_id INT,\n title VARCHAR(100) NOT NULL,\n artist VARCHAR(50),\n year_created INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE collectors (\n    collector_id INT PRIMARY KEY,\n    name STRING,\n    location STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collections (\n    collection_id INT PRIMARY KEY,\n    collector_id INT,\n    artwork_title STRING,\n    artist_name STRING,\n    year_created INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE artists (\n    artist_id INT PRIMARY KEY,\n    name STRING,\n    nationality STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE artworks (\n    artwork_id INT PRIMARY KEY,\n    artist_id INT,\n    title STRING,\n    year_created INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE art_collectors (\n  collector_id INT PRIMARY KEY,\n  collector_name VARCHAR(50) NOT NULL,\n  birth_date DATE,\n  email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE art_collections (\n  collection_id INT PRIMARY KEY,\n  collection_name VARCHAR(100) NOT NULL,\n  creator_id INT,\n  FOREIGN KEY (creator_id) REFERENCES art_collectors(collector_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE artworks (\n  artwork_id INT PRIMARY KEY,\n  artwork_name VARCHAR(100) NOT NULL,\n  artist_name VARCHAR(50),\n  year_created INT,\n  collection_id INT,\n  FOREIGN KEY (collection_id) REFERENCES art_collections(collection_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE exhibitions (\n  exhibition_id INT PRIMARY KEY,\n  exhibition_name VARCHAR(100) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  curator_id INT,\n  FOREIGN KEY (curator_id) REFERENCES art_collectors(collector_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n  loan_id INT PRIMARY KEY,\n  artwork_id INT,\n  borrower_id INT,\n  loan_date DATE,\n  return_date DATE,\n  FOREIGN KEY (artwork_id) REFERENCES artworks(artwork_id),\n  FOREIGN KEY (borrower_id) REFERENCES art_collectors(collector_id)\n);"
+      }
+    ]
+  }
+]

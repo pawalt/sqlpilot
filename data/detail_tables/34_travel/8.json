@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE travel_inventory (\n  package_id INT PRIMARY KEY,\n  package_name VARCHAR(255),\n  destination VARCHAR(255),\n  availability BOOLEAN,\n  price DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE package_deals (\n    deal_id INT PRIMARY KEY,\n    deal_name TEXT,\n    destination TEXT,\n    price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE availability (\n    availability_id INT PRIMARY KEY,\n    deal_id INT,\n    start_date DATE,\n    end_date DATE,\n    available_quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE package_deals (\n\tdeal_id INT PRIMARY KEY,\n\tdeal_name VARCHAR(255) NOT NULL,\n\tdestination VARCHAR(255) NOT NULL,\n\tstart_date DATE NOT NULL,\n\tend_date DATE NOT NULL,\n\tprice DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE availability (\n\tavailability_id INT PRIMARY KEY,\n\tdeal_id INT NOT NULL,\n\tavailable_date DATE NOT NULL,\n\tavailable_seats INT NOT NULL,\n\tFOREIGN KEY (deal_id) REFERENCES package_deals(deal_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE pricing (\n\tpricing_id INT PRIMARY KEY,\n\tdeal_id INT NOT NULL,\n\tprice DECIMAL(10, 2) NOT NULL,\n\tdiscount DECIMAL(5, 2) DEFAULT 0.00,\n\tFOREIGN KEY (deal_id) REFERENCES package_deals(deal_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE package_deals (\n    package_id UUID PRIMARY KEY,\n    package_name TEXT,\n    destination TEXT,\n    price DECIMAL\n);\n\nCREATE TABLE availability (\n    availability_id UUID PRIMARY KEY,\n    package_id UUID,\n    available_date DATE,\n    available_qty INT\n);\n\nCREATE TABLE pricing (\n    pricing_id UUID PRIMARY KEY,\n    package_id UUID,\n    base_price DECIMAL,\n    discount DECIMAL\n);\n\nCREATE TABLE bookings (\n    booking_id UUID PRIMARY KEY,\n    package_id UUID,\n    booking_date DATE,\n    customer_name TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE package_deals (\n\tdeal_id INT PRIMARY KEY,\n\tdeal_name VARCHAR(255),\n\tdescription TEXT,\n\tprice DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE availability (\n\tavailability_id INT PRIMARY KEY,\n\tdeal_id INT,\n\tdate DATE,\n\tavailable_quantity INT,\n\tFOREIGN KEY (deal_id) REFERENCES package_deals(deal_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pricing (\n\tpricing_id INT PRIMARY KEY,\n\tdeal_id INT,\n\tdate DATE,\n\tprice DECIMAL(10, 2),\n\tFOREIGN KEY (deal_id) REFERENCES package_deals(deal_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE travel_agencies (\n\tagency_id INT PRIMARY KEY,\n\tagency_name VARCHAR(255),\n\tlocation VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agency_inventory (\n\tinventory_id INT PRIMARY KEY,\n\tagency_id INT,\n\tdeal_id INT,\n\tquantity INT,\n\tFOREIGN KEY (agency_id) REFERENCES travel_agencies(agency_id),\n\tFOREIGN KEY (deal_id) REFERENCES package_deals(deal_id)\n);"
+      }
+    ]
+  }
+]

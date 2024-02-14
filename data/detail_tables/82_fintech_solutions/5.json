@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_reports (\n  id INT PRIMARY KEY,\n  report_date DATE,\n  company_name VARCHAR(255),\n  industry_standard VARCHAR(100),\n  compliance_status BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE company (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    industry VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_report (\n    report_id INT PRIMARY KEY,\n    company_id INT NOT NULL,\n    report_date DATE,\n    compliance_status VARCHAR(50) NOT NULL,\n    FOREIGN KEY (company_id) REFERENCES company(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ComplianceReports (\n  report_id UUID PRIMARY KEY,\n  company_id UUID,\n  reporting_date DATE,\n  compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Companies (\n  company_id UUID PRIMARY KEY,\n  company_name VARCHAR(255),\n  industry VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceLogs (\n  log_id UUID PRIMARY KEY,\n  report_id UUID,\n  log_date TIMESTAMP,\n  log_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulations (\n   id INT PRIMARY KEY,\n   name VARCHAR(50) NOT NULL,\n   description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE companies (\n   id INT PRIMARY KEY,\n   name VARCHAR(50) NOT NULL,\n   industry VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n   id INT PRIMARY KEY,\n   company_id INT REFERENCES companies(id),\n   date DATE,\n   submitted BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE violations (\n   id INT PRIMARY KEY,\n   report_id INT REFERENCES reports(id),\n   description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Company (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Employee (\n    employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(255) NOT NULL,\n    company_id INT NOT NULL,\n    position VARCHAR(255) NOT NULL,\n    FOREIGN KEY (company_id) REFERENCES Company(company_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Report (\n    report_id INT PRIMARY KEY,\n    employee_id INT NOT NULL,\n    report_date DATE NOT NULL,\n    report_text TEXT NOT NULL,\n    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceStandard (\n    standard_id INT PRIMARY KEY,\n    standard_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceReport (\n    report_id INT NOT NULL,\n    standard_id INT NOT NULL,\n    compliance_level INT NOT NULL,\n    FOREIGN KEY (report_id) REFERENCES Report(report_id),\n    FOREIGN KEY (standard_id) REFERENCES ComplianceStandard(standard_id)\n);"
+      }
+    ]
+  }
+]

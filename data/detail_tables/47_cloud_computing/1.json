@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_resource_metrics (\n    instance_id UUID PRIMARY KEY,\n    instance_name VARCHAR(50),\n    service_name VARCHAR(50),\n    cpu_usage DECIMAL,\n    memory_usage DECIMAL,\n    disk_usage DECIMAL,\n    network_traffic DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE resource_usage_metrics (\n    instance_id UUID PRIMARY KEY,\n    cpu_usage FLOAT,\n    memory_usage FLOAT,\n    storage_usage FLOAT,\n    network_throughput FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    service_id UUID PRIMARY KEY,\n    latency FLOAT,\n    throughput FLOAT,\n    error_rate FLOAT,\n    availability FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_instances (\n    instance_id UUID PRIMARY KEY,\n    instance_name VARCHAR(100),\n    instance_type VARCHAR(50),\n    region VARCHAR(50),\n    usage_metrics JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id UUID PRIMARY KEY,\n    service_name VARCHAR(100),\n    service_type VARCHAR(50),\n    service_status VARCHAR(20),\n    service_metrics JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id UUID PRIMARY KEY,\n    instance_id UUID REFERENCES cloud_instances(instance_id),\n    service_id UUID REFERENCES services(service_id),\n    metric_name VARCHAR(100),\n    metric_value DOUBLE PRECISION,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_instances (\n    instance_id INT PRIMARY KEY,\n    instance_name VARCHAR(255),\n    provider VARCHAR(50),\n    region VARCHAR(50),\n    storage_used DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_metrics (\n    metric_id INT PRIMARY KEY,\n    service_name VARCHAR(100),\n    timestamp TIMESTAMP,\n    cpu_usage DECIMAL(5,2),\n    memory_usage DECIMAL(5,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_traffic (\n    traffic_id INT PRIMARY KEY,\n    service_name VARCHAR(100),\n    timestamp TIMESTAMP,\n    inbound_traffic DECIMAL(10,2),\n    outbound_traffic DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE storage_metrics (\n    storage_id INT PRIMARY KEY,\n    storage_name VARCHAR(100),\n    timestamp TIMESTAMP,\n    used_capacity DECIMAL(10,2),\n    total_capacity DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_instances (\n    instance_id UUID PRIMARY KEY,\n    instance_type VARCHAR(50),\n    region VARCHAR(50),\n    uptime TIMESTAMP,\n    cpu_usage FLOAT,\n    memory_usage FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id UUID PRIMARY KEY,\n    service_name VARCHAR(50),\n    provider VARCHAR(50),\n    status VARCHAR(20),\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id UUID PRIMARY KEY,\n    instance_id UUID REFERENCES cloud_instances(instance_id),\n    metric_name VARCHAR(50),\n    value FLOAT,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id UUID PRIMARY KEY,\n    instance_id UUID REFERENCES cloud_instances(instance_id),\n    alert_type VARCHAR(50),\n    severity VARCHAR(10),\n    message TEXT,\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(50),\n    created_at TIMESTAMP,\n    last_login TIMESTAMP\n)"
+      }
+    ]
+  }
+]

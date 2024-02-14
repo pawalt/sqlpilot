@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_performance_reports (\n  report_id INT PRIMARY KEY,\n  report_name VARCHAR(255),\n  report_date DATE,\n  total_trades INT,\n  total_volume DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_reports (\n    report_id UUID PRIMARY KEY,\n    report_name VARCHAR(255),\n    report_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_dashboards (\n    dashboard_id UUID PRIMARY KEY,\n    dashboard_name VARCHAR(255),\n    dashboard_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trades (\n  trade_id INT PRIMARY KEY,\n  stock_symbol VARCHAR(50) NOT NULL,\n  trade_date DATE,\n  trade_amount DECIMAL(10, 2),\n  trade_status VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stocks (\n  stock_id INT PRIMARY KEY,\n  stock_symbol VARCHAR(50) NOT NULL,\n  stock_name VARCHAR(100) NOT NULL,\n  stock_price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n  report_id INT PRIMARY KEY,\n  report_name VARCHAR(100) NOT NULL,\n  report_date DATE,\n  report_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trades (\n    trade_id UUID PRIMARY KEY,\n    trader_id UUID NOT NULL,\n    symbol VARCHAR(50) NOT NULL,\n    trade_type VARCHAR(10) NOT NULL,\n    trade_amount DECIMAL NOT NULL,\n    trade_date DATE NOT NULL,\n    FOREIGN KEY (trader_id) REFERENCES traders(trader_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE traders (\n    trader_id UUID PRIMARY KEY,\n    trader_name VARCHAR(100) NOT NULL,\n    trader_location VARCHAR(50) NOT NULL,\n    trader_email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n    report_id UUID PRIMARY KEY,\n    trader_id UUID NOT NULL,\n    report_date DATE NOT NULL,\n    report_data JSONB NOT NULL,\n    FOREIGN KEY (trader_id) REFERENCES traders(trader_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboards (\n    dashboard_id UUID PRIMARY KEY,\n    dashboard_name VARCHAR(100) NOT NULL,\n    dashboard_layout JSONB NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE traders (\n  trader_id INT PRIMARY KEY,\n  trader_name STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trades (\n  trade_id INT PRIMARY KEY,\n  trader_id INT,\n  trade_date DATE,\n  trade_symbol STRING,\n  trade_quantity INT,\n  trade_price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE positions (\n  position_id INT PRIMARY KEY,\n  trader_id INT,\n  symbol STRING,\n  quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n  metric_id INT PRIMARY KEY,\n  trader_id INT,\n  metric_name STRING,\n  metric_value DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n  report_id INT PRIMARY KEY,\n  trader_id INT,\n  report_date DATE,\n  report_type STRING,\n  report_description TEXT\n);"
+      }
+    ]
+  }
+]

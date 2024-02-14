@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_time TIME,\n    event_location VARCHAR(255)\n)\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_time TIME,\n    event_location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id UUID PRIMARY KEY,\n    attendee_name VARCHAR(255),\n    attendee_email VARCHAR(255),\n    events_attending JSON,\n    registration_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    attendee_name VARCHAR(255),\n    attendee_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_attendees (\n    event_id INT,\n    attendee_id INT,\n    FOREIGN KEY (event_id) REFERENCES events(event_id),\n    FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    attendee_name VARCHAR(255),\n    attendee_email VARCHAR(255),\n    event_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tickets (\n    ticket_id INT PRIMARY KEY,\n    ticket_type VARCHAR(255),\n    ticket_price DECIMAL(10, 2),\n    event_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_attendees (\n    event_id INT,\n    attendee_id INT,\n    ticket_id INT,\n    PRIMARY KEY (event_id, attendee_id),\n    FOREIGN KEY (event_id) REFERENCES events(event_id),\n    FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id),\n    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n  event_id SERIAL PRIMARY KEY,\n  event_name VARCHAR(255) NOT NULL,\n  event_date DATE NOT NULL,\n  event_time TIME NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n  attendee_id SERIAL PRIMARY KEY,\n  attendee_name VARCHAR(255) NOT NULL,\n  attendee_email VARCHAR(255) UNIQUE NOT NULL,\n  attending_event_id INT REFERENCES events(event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_tickets (\n  ticket_id SERIAL PRIMARY KEY,\n  ticket_type VARCHAR(50) NOT NULL,\n  ticket_price DECIMAL(10, 2) NOT NULL,\n  event_id INT REFERENCES events(event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_sessions (\n  session_id SERIAL PRIMARY KEY,\n  session_title VARCHAR(255) NOT NULL,\n  session_date DATE NOT NULL,\n  session_time TIME NOT NULL,\n  event_id INT REFERENCES events(event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_feedback (\n  feedback_id SERIAL PRIMARY KEY,\n  event_id INT REFERENCES events(event_id),\n  attendee_id INT REFERENCES attendees(attendee_id),\n  rating INT NOT NULL,\n  feedback_text TEXT\n);"
+      }
+    ]
+  }
+]

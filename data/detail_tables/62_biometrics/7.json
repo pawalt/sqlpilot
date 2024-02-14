@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    id INT PRIMARY KEY,\n    biometric_type VARCHAR(50),\n    biometric_data BYTEA,\n    encryption_key VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    user_id INT PRIMARY KEY,\n    fingerprint BLOB,\n    face_scan BLOB,\n    encrypted_data TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50),\n    security_question VARCHAR(100),\n    security_answer VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiometricData (\n  id SERIAL PRIMARY KEY,\n  fingerprint VARCHAR(100) NOT NULL,\n  face_data TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  password_hash VARCHAR(100) NOT NULL,\n  biometric_id INTEGER REFERENCES BiometricData(id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SecurityLogs (\n  log_id SERIAL PRIMARY KEY,\n  timestamp TIMESTAMP DEFAULT NOW() NOT NULL,\n  activity TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    id INT PRIMARY KEY,\n    user_id INT,\n    biometric_type VARCHAR(50),\n    biometric_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    id INT PRIMARY KEY,\n    user_id INT,\n    role_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    user_id INT,\n    encryption_key UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    access_time TIMESTAMP,\n    access_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    id INT PRIMARY KEY,\n    biometric_type VARCHAR(50),\n    biometric_data BINARY,\n    encrypted_data BINARY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    biometric_id INT,\n    FOREIGN KEY (biometric_id) REFERENCES biometric_data(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    access_time TIMESTAMP,\n    access_type VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_clearance (\n    clearance_id INT PRIMARY KEY,\n    level VARCHAR(20),\n    biometric_id INT,\n    FOREIGN KEY (biometric_id) REFERENCES biometric_data(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    encryption_key VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

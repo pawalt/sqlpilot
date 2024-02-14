@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_invoices (\n  invoice_id INT PRIMARY KEY,\n  customer_id INT,\n  invoice_date DATE,\n  total_amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_invoices (\n    invoice_id UUID PRIMARY KEY,\n    customer_id UUID,\n    invoice_date TIMESTAMP,\n    amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_transactions (\n    transaction_id UUID PRIMARY KEY,\n    invoice_id UUID,\n    transaction_date TIMESTAMP,\n    transaction_amount DECIMAL,\n    payment_method VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_invoices (\n  invoice_id INT PRIMARY KEY,\n  invoice_number VARCHAR(255),\n  invoice_date DATE,\n  amount DECIMAL)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255),\n  customer_email VARCHAR(255),\n  customer_address TEXT)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_transactions (\n  transaction_id INT PRIMARY KEY,\n  invoice_id INT,\n  customer_id INT,\n  transaction_date DATE,\n  transaction_amount DECIMAL)\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255) NOT NULL,\n  customer_email VARCHAR(255) UNIQUE,\n  customer_address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE invoices (\n  invoice_id INT PRIMARY KEY,\n  customer_id INT,\n  invoice_date DATE,\n  total_amount DECIMAL(10,2),\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  product_price DECIMAL(10,2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  invoice_id INT,\n  product_id INT,\n  quantity INT,\n  transaction_date TIMESTAMP,\n  FOREIGN KEY (invoice_id) REFERENCES invoices(invoice_id),\n  FOREIGN KEY (product_id) REFERENCES products(product_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers ( \n    customer_id UUID PRIMARY KEY, \n    customer_name STRING, \n    customer_email STRING, \n    customer_phone STRING \n  )"
+      },
+      {
+        "table_schema": "CREATE TABLE invoices ( \n    invoice_id UUID PRIMARY KEY, \n    customer_id UUID REFERENCES customers(customer_id), \n  )"
+      },
+      {
+        "table_schema": "CREATE TABLE invoice_items ( \n    item_id UUID PRIMARY KEY, \n    invoice_id UUID REFERENCES invoices(invoice_id), \n    item_name STRING, \n    item_quantity INTEGER, \n    item_price DECIMAL \n  )"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions ( \n    transaction_id UUID PRIMARY KEY, \n    invoice_id UUID REFERENCES invoices(invoice_id), \n    transaction_date DATE, \n    transaction_amount DECIMAL \n  )"
+      },
+      {
+        "table_schema": "CREATE TABLE payments ( \n    payment_id UUID PRIMARY KEY, \n    invoice_id UUID REFERENCES invoices(invoice_id), \n    payment_date DATE, \n    payment_amount DECIMAL \n  )"
+      }
+    ]
+  }
+]

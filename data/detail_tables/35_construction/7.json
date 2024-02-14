@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_budget ( project_id INT PRIMARY KEY, project_name STRING, total_budget DECIMAL, expense DECIMAL, cost_overrun DECIMAL )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n project_id UUID PRIMARY KEY,\n project_name STRING,\n project_budget DECIMAL,\n start_date DATE,\n end_date DATE\n);\n\nCREATE TABLE expenses (\n expense_id UUID PRIMARY KEY,\n project_id UUID,\n expense_category STRING,\n expense_amount DECIMAL,\n expense_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id SERIAL PRIMARY KEY,\n    project_name TEXT NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10,2) NOT NULL\n);\n\nCREATE TABLE expenses (\n    expense_id SERIAL PRIMARY KEY,\n    project_id INT REFERENCES projects(project_id),\n    expense_type TEXT,\n    expense_amount DECIMAL(10,2) NOT NULL,\n    expense_date DATE\n);\n\nCREATE TABLE cost_overruns (\n    overrun_id SERIAL PRIMARY KEY,\n    project_id INT REFERENCES projects(project_id),\n    overrun_reason TEXT,\n    overrun_amount DECIMAL(10,2) NOT NULL,\n    overrun_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n    expense_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES projects(project_id),\n    expense_amount DECIMAL(10, 2) NOT NULL,\n    expense_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cost_overruns (\n    overrun_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES projects(project_id),\n    overrun_amount DECIMAL(10, 2) NOT NULL,\n    overrun_reason TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE allocations (\n    allocation_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES projects(project_id),\n    allocation_amount DECIMAL(10, 2) NOT NULL,\n    allocation_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Projects (\n project_id INT PRIMARY KEY,\n project_name STRING,\n start_date DATE,\n end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Expenses (\n expense_id INT PRIMARY KEY,\n project_id INT,\n expense_category STRING,\n amount DECIMAL,\n FOREIGN KEY (project_id) REFERENCES Projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CostOverruns (\n overrun_id INT PRIMARY KEY,\n project_id INT,\n reason STRING,\n amount DECIMAL,\n FOREIGN KEY (project_id) REFERENCES Projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectAllocations (\n allocation_id INT PRIMARY KEY,\n project_id INT,\n department STRING,\n allocated_amount DECIMAL,\n FOREIGN KEY (project_id) REFERENCES Projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Departments (\n department_id INT PRIMARY KEY,\n department_name STRING\n);\n"
+      }
+    ]
+  }
+]

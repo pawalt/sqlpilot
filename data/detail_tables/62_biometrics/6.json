@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_login (\n    user_id INT,\n    username VARCHAR(50),\n    fingerprint_data BYTEA,\n    security_level VARCHAR(10)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  fingerprint BYTEA NOT NULL,\n  security_level INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n  attempt_id SERIAL PRIMARY KEY,\n  user_id INTEGER REFERENCES biometric_users(user_id),\n  login_time TIMESTAMP,\n  login_success BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password_hash VARCHAR(100),\n    fingerprint_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fingerprints (\n    fingerprint_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    fingerprint_template BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    login_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    login_timestamp TIMESTAMP,\n    login_success BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password_hash VARCHAR(100) NOT NULL,\n  fingerprint_data BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n  session_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  session_token VARCHAR(100) NOT NULL,\n  login_time TIMESTAMP,\n  logout_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fingerprints (\n  fingerprint_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  fingerprint_data BLOB NOT NULL,\n  fingerprint_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n  attempt_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  attempt_time TIMESTAMP,\n  success BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    user_id INT PRIMARY KEY,\n    fingerprint_data BLOB,\n    face_data BLOB,\n    voice_data BLOB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT,\n    login_timestamp TIMESTAMP,\n    success BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_questions (\n    question_id INT PRIMARY KEY,\n    question_text VARCHAR(255) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_security_answers (\n    user_id INT,\n    question_id, INT,\n    answer TEXT\n);\n"
+      }
+    ]
+  }
+]

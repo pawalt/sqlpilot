@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_program (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  total_spent DECIMAL(10, 2),\n  loyalty_points INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_program_customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255) NOT NULL,\n  loyalty_points INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_rewards (\n  reward_id INT PRIMARY KEY,\n  reward_name VARCHAR(255) NOT NULL,\n  required_points INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_program (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    loyalty_points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n    purchase_id INT PRIMARY KEY,\n    customer_id INT,\n    purchase_amount DECIMAL,\n    purchase_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id INT PRIMARY KEY,\n    customer_id INT,\n    reward_description VARCHAR(100),\n    reward_points_required INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_program.customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    loyalty_points INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_program.orders (\n    order_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES loyalty_program.customers(customer_id),\n    order_total DECIMAL(10,2) NOT NULL,\n    order_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_program.rewards (\n    reward_id UUID PRIMARY KEY,\n    reward_name VARCHAR(255) NOT NULL,\n    loyalty_points_required INT NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_program.customer_rewards (\n    customer_id UUID REFERENCES loyalty_program.customers(customer_id),\n    reward_id UUID REFERENCES loyalty_program.rewards(reward_id),\n    redeemed BOOLEAN DEFAULT FALSE,\n    received_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n   customer_id INT PRIMARY KEY,\n   customer_name VARCHAR(50) NOT NULL,\n   loyalty_points INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n   purchase_id INT PRIMARY KEY,\n   customer_id INT,\n   purchase_date DATE,\n   total_amount FLOAT,\n   FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n   reward_id INT PRIMARY KEY,\n   reward_name VARCHAR(50) NOT NULL,\n   point_cost INT,\n   expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_rewards (\n   customer_id INT,\n   reward_id INT,\n   claimed_date DATE,\n   FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n   FOREIGN KEY (reward_id) REFERENCES rewards(reward_id),\n   PRIMARY KEY (customer_id, reward_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_tiers (\n   tier_id INT PRIMARY KEY,\n   tier_name VARCHAR(50) NOT NULL,\n   point_threshold INT\n);"
+      }
+    ]
+  }
+]

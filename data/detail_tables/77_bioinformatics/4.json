@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genomic_data (\n  id INT PRIMARY KEY,\n  species_name VARCHAR(50),\n  sequence TEXT,\n  gene_name VARCHAR(50),\n  chromosome VARCHAR(10),\n  start_position INT,\n  end_position INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomicData (\n    Id INT PRIMARY KEY,\n    OrganismName VARCHAR(255),\n    GenomeSize INT,\n    SequencingPlatform VARCHAR(100),\n    SequencingDepth FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ComparativeGenomics (\n    ComparisonId INT PRIMARY KEY,\n    ReferenceOrganism VARCHAR(255),\n    TargetOrganism VARCHAR(255),\n    NumSharedGenes INT,\n    EvolutionaryDistance FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE species (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(255) NOT NULL,\n    genome_size FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255) NOT NULL,\n    gene_location VARCHAR(50) NOT NULL,\n    gene_sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mutations (\n    mutation_id INT PRIMARY KEY,\n    gene_id INT NOT NULL,\n    mutation_type VARCHAR(50) NOT NULL,\n    mutation_position INT,\n    mutation_effect VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(255) NOT NULL,\n  genome_size INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genes (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255) NOT NULL,\n  species_id INT,\n  chromosome_id INT,\n  sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Chromosomes (\n  chromosome_id INT PRIMARY KEY,\n  chromosome_name VARCHAR(255) NOT NULL,\n  species_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alignments (\n  alignment_id INT PRIMARY KEY,\n  gene_id INT,\n  chromosome_id INT,\n  alignment_score FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(50) NOT NULL,\n    genome_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(50) NOT NULL,\n    chromosome VARCHAR(10),\n    species_id INT REFERENCES Species(species_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Mutations (\n    mutation_id INT PRIMARY KEY,\n    gene_id INT REFERENCES Genes(gene_id),\n    mutation_type VARCHAR(20),\n    mutation_position INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alignments (\n    alignment_id INT PRIMARY KEY,\n    alignment_score FLOAT,\n    mutation_id INT REFERENCES Mutations(mutation_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sequences (\n    sequence_id INT PRIMARY KEY,\n    sequence_data TEXT,\n    alignment_id INT REFERENCES Alignments(alignment_id)\n);"
+      }
+    ]
+  }
+]

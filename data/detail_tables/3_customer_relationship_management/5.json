@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crm_third_party_integration (\n    id INT,\n    app_name VARCHAR(255),\n    connection_type VARCHAR(50),\n    synchronization_frequency INT,\n    last_sync_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThirdPartyApplications (\n    id UUID NOT NULL,\n    app_name VARCHAR(255) NOT NULL,\n    connection_string TEXT NOT NULL,\n    sync_interval INTERVAL NOT NULL,\n    PRIMARY KEY (id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CRMData (\n    entry_id UUID NOT NULL,\n    data_category VARCHAR(100) NOT NULL,\n    data_value TEXT NOT NULL,\n    last_sync TIMESTAMP NOT NULL,\n    PRIMARY KEY (entry_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThirdPartyApplications (\n  app_id UUID PRIMARY KEY,\n  app_name VARCHAR(255) NOT NULL,\n  app_description TEXT,\n  crm_api_key VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CRMData (\n  record_id SERIAL PRIMARY KEY,\n  customer_id UUID,\n  data_field VARCHAR(50) NOT NULL,\n  data_value TEXT,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataIntegrationLogs (\n  log_id SERIAL PRIMARY KEY,\n  integration_type VARCHAR(50) NOT NULL,\n  status VARCHAR(20),\n  error_message TEXT,\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThirdPartyApplications (\n    app_id INT PRIMARY KEY,\n    app_name VARCHAR(255) NOT NULL,\n    app_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CRMSystem (\n    crm_id INT PRIMARY KEY,\n    crm_name VARCHAR(255) NOT NULL,\n    crm_address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IntegrationLogs (\n    log_id INT PRIMARY KEY,\n    app_id INT,\n    crm_id INT,\n    sync_status VARCHAR(50) DEFAULT 'Pending',\n    sync_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataMappings (\n    mapping_id INT PRIMARY KEY,\n    app_id INT,\n    crm_id INT,\n    mapping_details JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crm_applications (\n    id SERIAL PRIMARY KEY,\n    app_name VARCHAR(50) NOT NULL,\n    app_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crm_connections (\n    id SERIAL PRIMARY KEY,\n    connection_id VARCHAR(50) NOT NULL,\n    connection_type VARCHAR(20) NOT NULL,\n    last_sync TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crm_data_sync (\n    id SERIAL PRIMARY KEY,\n    connection_id VARCHAR(50) NOT NULL,\n    data_table VARCHAR(50) NOT NULL,\n    sync_status BOOLEAN,\n    sync_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crm_sync_logs (\n    id SERIAL PRIMARY KEY,\n    sync_id SERIAL,\n    log_message TEXT,\n    log_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crm_sync_errors (\n    id SERIAL PRIMARY KEY,\n    sync_id SERIAL,\n    error_message TEXT,\n    error_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

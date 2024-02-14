@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE surveys (\n    survey_id UUID PRIMARY KEY,\n    beneficiary_id UUID,\n    survey_date DATE,\n    satisfaction_score INT,\n    feedback TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SurveyResponses (\n    response_id INT PRIMARY KEY,\n    beneficiary_id INT,\n    survey_date DATE,\n    survey_score INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BeneficiaryInformation (\n    beneficiary_id INT PRIMARY KEY,\n    beneficiary_name VARCHAR(50),\n    contact_number VARCHAR(15),\n    address VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Beneficiaries (\n    beneficiary_id INT PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    age INT,\n    gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Surveys (\n    survey_id INT PRIMARY KEY,\n    survey_name VARCHAR(100) NOT NULL,\n    survey_date DATE,\n    beneficiary_id INT,\n    FOREIGN KEY (beneficiary_id) REFERENCES Beneficiaries(beneficiary_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Feedback (\n    feedback_id INT PRIMARY KEY,\n    survey_id INT,\n    feedback_text TEXT,\n    feedback_date TIMESTAMP,\n    FOREIGN KEY (survey_id) REFERENCES Surveys(survey_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SurveyResponses (\n    survey_id INT PRIMARY KEY,\n    beneficiary_id INT NOT NULL,\n    question TEXT,\n    response TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Beneficiaries (\n    beneficiary_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    location TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Surveys (\n    survey_id INT PRIMARY KEY,\n    survey_name VARCHAR(100) NOT NULL,\n    survey_date DATE,\n    completed BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AidPrograms (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(100) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE beneficiaries (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  age INT,\n  gender VARCHAR(10),\n  email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE surveys (\n  survey_id SERIAL PRIMARY KEY,\n  question TEXT NOT NULL,\n  created_at TIMESTAMP,\n  closed BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE responses (\n  response_id SERIAL PRIMARY KEY,\n  survey_id INT REFERENCES surveys(survey_id),\n  beneficiary_id INT REFERENCES beneficiaries(id),\n  answer TEXT,\n  submitted_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE aid_programs (\n  program_id SERIAL PRIMARY KEY,\n  program_name VARCHAR(100) UNIQUE,\n  description TEXT,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n  feedback_id SERIAL PRIMARY KEY,\n  response_id INT REFERENCES responses(response_id),\n  feedback_text TEXT,\n  rating INT CHECK (rating >= 1 AND rating <= 5),\n  created_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]

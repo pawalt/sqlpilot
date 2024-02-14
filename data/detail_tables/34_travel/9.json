@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Payments (\n  payment_id UUID PRIMARY KEY,\n  amount DECIMAL,\n  payment_date DATE,\n  card_number VARCHAR(16),\n  cvv VARCHAR(3),\n  card_expiration DATE,\n  booking_id UUID,\n  FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id SERIAL PRIMARY KEY,\n    payment_date DATE,\n    amount DECIMAL(10, 2),\n    booking_id INTEGER\n);\n\nCREATE TABLE bookings (\n    booking_id SERIAL PRIMARY KEY,\n    customer_id INTEGER,\n    booking_date DATE,\n    destination TEXT,\n    total_amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    booking_id INT NOT NULL,\n    payment_amount DECIMAL(10, 2) NOT NULL,\n    payment_date TIMESTAMP NOT NULL,\n    payment_method VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bookings (\n    booking_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    booking_date DATE NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL,\n    payment_status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(100) NOT NULL,\n    customer_email VARCHAR(100) NOT NULL,\n    customer_phone VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_info (\n    payment_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    payment_method VARCHAR(50) NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE booking_details (\n    booking_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    flight_id INT NOT NULL,\n    booking_date TIMESTAMP NOT NULL,\n    payment_id INT NOT NULL,\n    FOREIGN KEY (payment_id) REFERENCES payment_info(payment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_info (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name VARCHAR(100) NOT NULL,\n    email VARCHAR(50) NOT NULL,\n    phone_number VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flight_details (\n    flight_id SERIAL PRIMARY KEY,\n    flight_number VARCHAR(20) NOT NULL,\n    departure_city VARCHAR(50) NOT NULL,\n    arrival_city VARCHAR(50) NOT NULL,\n    departure_time TIMESTAMP NOT NULL,\n    arrival_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id UUID PRIMARY KEY,\n    booking_id UUID,\n    payment_amount DECIMAL,\n    payment_status VARCHAR(20),\n    payment_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bookings (\n    booking_id UUID PRIMARY KEY,\n    customer_id UUID,\n    booking_date TIMESTAMP,\n    booking_amount DECIMAL,\n    payment_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(50),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    booking_id UUID,\n    payment_id UUID,\n    transaction_date TIMESTAMP,\n    transaction_type VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cards (\n    card_id UUID PRIMARY KEY,\n    customer_id UUID,\n    card_number VARCHAR(16),\n    card_expiry_date DATE,\n    card_cvv VARCHAR(3)\n);"
+      }
+    ]
+  }
+]

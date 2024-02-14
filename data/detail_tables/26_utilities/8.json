@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE utility_infrastructure (\n    id INT PRIMARY KEY,\n    location VARCHAR(255),\n    type VARCHAR(50),\n    status VARCHAR(50),\n    maintenance_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE infrastructure_data (\n    id INT PRIMARY KEY,\n    name STRING,\n    location POINT,\n    utility_type STRING\n);\n\nCREATE TABLE maintenance_logs (\n    log_id INT PRIMARY KEY,\n    infrastructure_id INT,\n    maintenance_date DATE,\n    maintenance_description STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE utility_poles (\n    pole_id INT PRIMARY KEY,\n    location GEOGRAPHY,\n    height INT,\n    condition VARCHAR(50),\n    installation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE power_lines (\n    line_id INT PRIMARY KEY,\n    start_pole_id INT,\n    end_pole_id INT,\n    voltage INT,\n    material VARCHAR(50),\n    length FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_pipes (\n    pipe_id INT PRIMARY KEY,\n    start_location GEOGRAPHY,\n    end_location GEOGRAPHY,\n    diameter INT,\n    material VARCHAR(50),\n    installation_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE utility_companies (\n    company_id INT PRIMARY KEY,\n    company_name TEXT,\n    industry_sector TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_assets (\n    asset_id INT PRIMARY KEY,\n    asset_name TEXT,\n    location_lat DECIMAL,\n    location_long DECIMAL,\n    company_id INT REFERENCES utility_companies(company_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_records (\n    record_id INT PRIMARY KEY,\n    asset_id INT REFERENCES utility_assets(asset_id),\n    maintenance_date DATE,\n    maintenance_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_jobs (\n    job_id INT PRIMARY KEY,\n    job_description TEXT,\n    job_status TEXT,\n    asset_id INT REFERENCES utility_assets(asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE power_lines (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    length INT,\n    voltage INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transformers (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    installed_date DATE,\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE substations (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    location VARCHAR(100),\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pole_locations (\n    id INT PRIMARY KEY,\n    latitude DECIMAL(10,8),\n    longitude DECIMAL(11,8),\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    description TEXT,\n    completed BOOLEAN\n);"
+      }
+    ]
+  }
+]

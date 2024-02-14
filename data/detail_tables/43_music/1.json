@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE favorite_songs (\n    song_id INT PRIMARY KEY,\n    song_name VARCHAR(255),\n    artist_name VARCHAR(255),\n    genre VARCHAR(100),\n    release_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE song_details (\n  song_id INT PRIMARY KEY,\n  song_title VARCHAR,\n  artist_name VARCHAR,\n  release_year INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE playlist (\n  playlist_id INT PRIMARY KEY,\n  playlist_name VARCHAR,\n  creator_name VARCHAR,\n  creation_date DATE,\n  FOREIGN KEY (creator_name) REFERENCES song_details(artist_name)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE song_details (\n    song_id INT PRIMARY KEY,\n    song_title VARCHAR(255),\n    artist VARCHAR(255),\n    album VARCHAR(255),\n    release_year INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE playlists (\n    playlist_id INT PRIMARY KEY,\n    playlist_name VARCHAR(255),\n    creator VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE playlist_songs (\n    playlist_id INT,\n    song_id INT,\n    FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id),\n    FOREIGN KEY (song_id) REFERENCES song_details(song_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE favorite_songs (\n    song_id UUID PRIMARY KEY,\n    title VARCHAR(255),\n    artist VARCHAR(255),\n    genre VARCHAR(50),\n    release_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE playlists (\n    playlist_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    playlist_name VARCHAR(100),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE song_details (\n    song_id UUID PRIMARY KEY REFERENCES favorite_songs(song_id),\n    duration INT,\n    album VARCHAR(100),\n    lyrics TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE songs (\n    song_id UUID PRIMARY KEY,\n    title VARCHAR(100) NOT NULL,\n    artist VARCHAR(50) NOT NULL,\n    album VARCHAR(50),\n    genre VARCHAR(30),\n    release_year INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE playlists (\n    playlist_id UUID PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    description VARCHAR(100),\n    created_on TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE song_playlist (\n    song_id UUID REFERENCES songs(song_id),\n    playlist_id UUID REFERENCES playlists(playlist_id),\n    added_on TIMESTAMP,\n    PRIMARY KEY (song_id, playlist_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_favorites (\n    user_id UUID REFERENCES users(user_id),\n    song_id UUID REFERENCES songs(song_id),\n    added_on TIMESTAMP,\n    PRIMARY KEY (user_id, song_id)\n);"
+      }
+    ]
+  }
+]

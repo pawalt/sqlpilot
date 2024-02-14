@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE distributions ( \n    distribution_id INT PRIMARY KEY, \n    distribution_date DATE, \n    food_supply VARCHAR(255), \n    medical_supply VARCHAR(255), \n    beneficiary_id INT, \n    location VARCHAR(255) \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE food_distribution (\n    id UUID PRIMARY KEY,\n    item_name TEXT,\n    quantity INT,\n    distribution_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_distribution (\n    id UUID PRIMARY KEY,\n    item_name TEXT,\n    quantity INT,\n    distribution_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE food_distribution (\n  id INT PRIMARY KEY,\n  item_name VARCHAR(255),\n  quantity INT,\n  distribution_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_supply_distribution (\n  id INT PRIMARY KEY,\n  item_name VARCHAR(255),\n  quantity INT,\n  distribution_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE refugee_tracking (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  age INT,\n  nationality VARCHAR(255),\n  location VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE distribution_centers (\n\tcenter_id INT PRIMARY KEY,\n\tcenter_name VARCHAR(255),\n\tlocation VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supplies (\n\tsupply_id INT PRIMARY KEY,\n\tsupply_name VARCHAR(255),\n\tquantity INT,\n\tcenter_id INT,\n\tFOREIGN KEY (center_id) REFERENCES distribution_centers(center_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE refugees (\n\trefugee_id INT PRIMARY KEY,\n\trefugee_name VARCHAR(255),\n\tage INT,\n\tlocation VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution_records (\n\trecord_id INT PRIMARY KEY,\n\tdate DATE,\n\tsupply_id INT,\n\trefugee_id INT,\n\tquantity INT,\n\tFOREIGN KEY (supply_id) REFERENCES supplies(supply_id),\n\tFOREIGN KEY (refugee_id) REFERENCES refugees(refugee_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE distribution_centers (\n  center_id INT PRIMARY KEY,\n  center_name TEXT NOT NULL,\n  location TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name TEXT NOT NULL,\n  location TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n  shipment_id INT PRIMARY KEY,\n  supplier_id INT NOT NULL,\n  center_id INT NOT NULL,\n  delivery_date DATE,\n  FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id),\n  FOREIGN KEY (center_id) REFERENCES distribution_centers(center_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE supplies (\n  supply_id INT PRIMARY KEY,\n  supply_name TEXT NOT NULL,\n  quantity INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE distributions (\n  distribution_id INT PRIMARY KEY,\n  supply_id INT NOT NULL,\n  shipment_id INT NOT NULL,\n  quantity_received INT NOT NULL,\n  FOREIGN KEY (supply_id) REFERENCES supplies(supply_id),\n  FOREIGN KEY (shipment_id) REFERENCES shipments(shipment_id)\n)"
+      }
+    ]
+  }
+]

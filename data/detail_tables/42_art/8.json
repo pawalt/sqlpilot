@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE art_events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    event_location VARCHAR(255) NOT NULL,\n    organizer_name VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE art_events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    event_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendee_registrations (\n    registration_id INT PRIMARY KEY,\n    event_id INT,\n    attendee_name VARCHAR(255) NOT NULL,\n    registration_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (event_id) REFERENCES art_events(event_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ArtEvents (\n    event_id SERIAL PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    event_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Attendees (\n    attendee_id SERIAL PRIMARY KEY,\n    attendee_name VARCHAR(255) NOT NULL,\n    attendee_email VARCHAR(255) UNIQUE NOT NULL,\n    registration_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Registration (\n    registration_id SERIAL PRIMARY KEY,\n    event_id INT NOT NULL,\n    attendee_id INT NOT NULL,\n    registration_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (event_id) REFERENCES ArtEvents(event_id),\n    FOREIGN KEY (attendee_id) REFERENCES Attendees(attendee_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\nevent_id INT PRIMARY KEY,\nevent_name VARCHAR(255),\nevent_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\nattendee_id INT PRIMARY KEY,\nattendee_name VARCHAR(255),\nattendee_email VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE registrations (\nregistration_id INT PRIMARY KEY,\nevent_id INT,\nattendee_id INT,\nregistration_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE event_attendees (\nevent_id INT,\nattendee_id INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    event_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id UUID PRIMARY KEY,\n    attendee_name VARCHAR(255) NOT NULL,\n    attendee_email VARCHAR(255) NOT NULL,\n    attendee_phone VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE registrations (\n    registration_id UUID PRIMARY KEY,\n    event_id UUID REFERENCES events(event_id),\n    attendee_id UUID REFERENCES attendees(attendee_id),\n    registration_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tickets (\n    ticket_id UUID PRIMARY KEY,\n    event_id UUID REFERENCES events(event_id),\n    attendee_id UUID REFERENCES attendees(attendee_id),\n    ticket_type VARCHAR(50) NOT NULL,\n    ticket_price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_artists (\n    event_id UUID REFERENCES events(event_id),\n    artist_name VARCHAR(255) NOT NULL,\n    artist_specialty VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  }
+]

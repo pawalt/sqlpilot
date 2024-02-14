@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_iot_data (\n    id INT PRIMARY KEY,\n    sensor_id INT NOT NULL,\n    data VARCHAR(255) ENCRYPTED,\n    timestamp TIMESTAMP NOT NULL,\n    access_level ENUM('admin', 'user')\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_data (\n    device_id INT PRIMARY KEY,\n    data VARCHAR(255) NOT NULL,\n    encryption_key VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    user_id INT PRIMARY KEY,\n    device_id INT,\n    access_level VARCHAR(50) NOT NULL,\n    FOREIGN KEY (device_id) REFERENCES device_data(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_name VARCHAR(255),\n    location VARCHAR(255),\n    encryption_key VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE readings (\n    reading_id INT PRIMARY KEY,\n    sensor_id INT,\n    value FLOAT,\n    timestamp TIMESTAMP,\n    CONSTRAINT fk_sensor FOREIGN KEY (sensor_id) REFERENCES sensors(sensor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    password VARCHAR(255),\n    role VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    encryption_key BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password_hash BYTEA,\n    access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_records (\n    record_id UUID PRIMARY KEY,\n    device_id UUID,\n    record_timestamp TIMESTAMP,\n    data_payload JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID,\n    device_id UUID,\n    accessed_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SensorData (\n    sensor_id INT PRIMARY KEY,\n    data TIMESTAMP,\n    encrypted_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(50),\n    role VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControls (\n    access_id INT PRIMARY KEY,\n    user_id INT REFERENCES Users(user_id),\n    device_id INT REFERENCES Devices(device_id),\n    access_type VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EncryptionKeys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    encryption_key BYTEA\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_usage_in_smart_buildings (\n  building_id INT PRIMARY KEY,\n  energy_consumed DECIMAL,\n  room_id INT,\n  sensor_id INT,\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE buildings (\n  building_id INT PRIMARY KEY,\n  building_name VARCHAR(255),\n  location VARCHAR(255),\n  total_energy_usage DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_meters (\n  meter_id INT PRIMARY KEY,\n  building_id INT,\n  meter_location VARCHAR(255),\n  energy_reading DECIMAL,\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE buildings (\n    building_id INT PRIMARY KEY,\n    building_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    total_energy_usage DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rooms (\n    room_id INT PRIMARY KEY,\n    room_name VARCHAR(255) NOT NULL,\n    building_id INT NOT NULL,\n    area DECIMAL(8,2) NOT NULL,\n    energy_usage DECIMAL(10,2) NOT NULL,\n    CONSTRAINT fk_building_id FOREIGN KEY(building_id) REFERENCES buildings(building_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appliances (\n    appliance_id INT PRIMARY KEY,\n    appliance_name VARCHAR(255) NOT NULL,\n    room_id INT NOT NULL,\n    power_consumption DECIMAL(8,2) NOT NULL,\n    CONSTRAINT fk_room_id FOREIGN KEY(room_id) REFERENCES rooms(room_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE buildings (\n    building_id INT PRIMARY KEY,\n    building_name VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rooms (\n    room_id INT PRIMARY KEY,\n    room_number INT,\n    floor_number INT,\n    building_id INT,\n    FOREIGN KEY (building_id) REFERENCES buildings(building_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    room_id INT,\n    FOREIGN KEY (room_id) REFERENCES rooms(room_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_usage (\n    usage_id INT PRIMARY KEY,\n    device_id INT,\n    energy_usage FLOAT,\n    date_of_reading DATE,\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE buildings (\n  building_id INT PRIMARY KEY,\n  building_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE rooms (\n  room_id INT PRIMARY KEY,\n  room_name VARCHAR(255) NOT NULL,\n  building_id INT REFERENCES buildings(building_id) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensors (\n  sensor_id INT PRIMARY KEY,\n  sensor_type VARCHAR(50) NOT NULL,\n  room_id INT REFERENCES rooms(room_id) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n  reading_id INT PRIMARY KEY,\n  sensor_id INT REFERENCES sensors(sensor_id) NOT NULL,\n  reading_value DECIMAL(10,2) NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n  alert_id INT PRIMARY KEY,\n  sensor_id INT REFERENCES sensors(sensor_id) NOT NULL,\n  alert_type VARCHAR(50) NOT NULL,\n  alert_message TEXT NOT NULL\n)"
+      }
+    ]
+  }
+]

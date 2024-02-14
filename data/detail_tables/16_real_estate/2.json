@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "\nCREATE TABLE real_estate_agents (\n  agent_id INT PRIMARY KEY,\n  agent_name STRING,\n  contact_number STRING,\n  email_address STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    phone_number VARCHAR(15),\n    email VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contact_info (\n    contact_id INT PRIMARY KEY,\n    agent_id INT,\n    address VARCHAR(100),\n    city VARCHAR(50),\n    state VARCHAR(2),\n    zipcode VARCHAR(10),\n    FOREIGN KEY (agent_id) REFERENCES agents(agent_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_estate_agents (\n  agent_id INT PRIMARY KEY,\n  agent_name VARCHAR(50) NOT NULL,\n  contact_number VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE properties (\n  property_id INT PRIMARY KEY,\n  agent_id INT,\n  property_name VARCHAR(50) NOT NULL,\n  property_address VARCHAR(100) NOT NULL,\n  property_price DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_contacts (\n  agent_id INT,\n  contact_type VARCHAR(50) NOT NULL,\n  contact_info VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_estate_agents (\n    agent_id INT PRIMARY KEY,\n    agent_name VARCHAR(50),\n    contact_number VARCHAR(15),\n    email_address VARCHAR(50)\n);\n\nCREATE TABLE properties (\n    property_id INT PRIMARY KEY,\n    address VARCHAR(100),\n    type VARCHAR(50),\n    price DECIMAL(10, 2),\n    agent_id INT REFERENCES real_estate_agents(agent_id)\n);\n\nCREATE TABLE clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(50),\n    contact_number VARCHAR(15),\n    email_address VARCHAR(50)\n);\n\nCREATE TABLE agent_clients (\n    agent_id INT REFERENCES real_estate_agents(agent_id),\n    client_id INT REFERENCES clients(client_id),\n    PRIMARY KEY (agent_id, client_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_estate_agents (\n  agent_id INT PRIMARY KEY,\n  agent_name VARCHAR(50) NOT NULL,\n  phone_number VARCHAR(15) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE properties (\n  property_id INT PRIMARY KEY,\n  property_address VARCHAR(100) NOT NULL,\n  agent_id INT,\n  CONSTRAINT fk_agent_id FOREIGN KEY (agent_id) REFERENCES real_estate_agents(agent_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(50) NOT NULL,\n  client_email VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE contracts (\n  contract_id INT PRIMARY KEY,\n  property_id INT,\n  client_id INT,\n  contract_date DATE,\n  CONSTRAINT fk_property_id FOREIGN KEY (property_id) REFERENCES properties(property_id),\n  CONSTRAINT fk_client_id FOREIGN KEY (client_id) REFERENCES clients(client_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id INT PRIMARY KEY,\n  contract_id INT,\n  amount DECIMAL(10, 2),\n  payment_date DATE,\n  CONSTRAINT fk_contract_id FOREIGN KEY (contract_id) REFERENCES contracts(contract_id)\n)"
+      }
+    ]
+  }
+]

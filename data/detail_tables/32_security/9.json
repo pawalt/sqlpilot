@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_certificates (\n  id INT PRIMARY KEY,\n  certificate_name VARCHAR(255),\n  certificate_type VARCHAR(50),\n  issue_date DATE,\n  expiry_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certificates (\n    id INT PRIMARY KEY,\n    certificate_name TEXT,\n    certificate_data BYTEA,\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE channels (\n    channel_id INT PRIMARY KEY,\n    channel_name TEXT,\n    encryption_key BYTEA,\n    certificate_id INT,\n    FOREIGN KEY (certificate_id) REFERENCES certificates(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certificates (\n\tid UUID PRIMARY KEY,\n\tcertificate_name VARCHAR(255),\n\tcertificate_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n\tuser_id UUID PRIMARY KEY,\n\tusername VARCHAR(50) UNIQUE,\n\tpassword VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE channels (\n\tchannel_id UUID PRIMARY KEY,\n\tchannel_name VARCHAR(50) UNIQUE,\n\tencryption_key BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certificates (\n  certificate_id UUID PRIMARY KEY,\n  certificate_name TEXT NOT NULL,\n  expiration_date TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username TEXT NOT NULL,\n  password TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE channels (\n  channel_id UUID PRIMARY KEY,\n  channel_name TEXT NOT NULL,\n  encryption_key BYTEA NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n  log_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  message TEXT NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certificates (\n  id UUID PRIMARY KEY,\n  certificate_data BYTEA,\n  issue_date TIMESTAMP,\n  expiry_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE channels (\n  channel_id SERIAL PRIMARY KEY,\n  channel_name VARCHAR(50),\n  protocol VARCHAR(20),\n  certificate_id UUID,\n  FOREIGN KEY (certificate_id) REFERENCES certificates(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(30) NOT NULL,\n  password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id SERIAL PRIMARY KEY,\n  permission_name VARCHAR(30) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n  user_id SERIAL,\n  permission_id SERIAL,\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (permission_id) REFERENCES permissions(permission_id),\n  PRIMARY KEY (user_id, permission_id)\n);\n"
+      }
+    ]
+  }
+]

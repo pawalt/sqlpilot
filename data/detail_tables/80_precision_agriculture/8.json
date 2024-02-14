@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_health_data (\n    id SERIAL PRIMARY KEY,\n    image_id INT NOT NULL,\n    image_url TEXT NOT NULL,\n    crop_type TEXT,\n    health_status TEXT,\n    area_of_concern BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    id SERIAL PRIMARY KEY,\n    satellite_id UUID NOT NULL,\n    image_url TEXT,\n    capture_date DATE,\n    crop_type VARCHAR(50),\n    health_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE areas_of_concern (\n    id SERIAL PRIMARY KEY,\n    area_id UUID NOT NULL,\n    location POINT,\n    area_size DECIMAL,\n    concern_level VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    image_id UUID PRIMARY KEY,\n    image_url TEXT,\n    date_taken DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_health (\n    crop_id UUID PRIMARY KEY,\n    image_id UUID,\n    health_status TEXT,\n    area_covered FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE areas_of_concern (\n    concern_id UUID PRIMARY KEY,\n    crop_id UUID,\n    location TEXT,\n    concern_type TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_images (\n    image_id UUID PRIMARY KEY,\n    image_name VARCHAR(50),\n    image_url TEXT,\n    capture_date TIMESTAMP,\n    pixel_resolution FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_fields (\n    field_id UUID PRIMARY KEY,\n    field_name VARCHAR(50),\n    field_type VARCHAR(20),\n    field_size FLOAT,\n    location GEOMETRY,\n    image_id UUID,\n    FOREIGN KEY (image_id) REFERENCES crop_images(image_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_conditions (\n    condition_id UUID PRIMARY KEY,\n    field_id UUID,\n    health_score FLOAT,\n    pest_presence BOOLEAN,\n    disease_presence BOOLEAN,\n    temperature FLOAT,\n    humidity FLOAT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (field_id) REFERENCES crop_fields(field_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE concern_areas (\n    area_id UUID PRIMARY KEY,\n    field_id UUID,\n    area_name VARCHAR(50),\n    area_type VARCHAR(20),\n    issue_description TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (field_id) REFERENCES crop_fields(field_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n  image_id UUID PRIMARY KEY,\n  image_location STRING,\n  capture_date DATE,\n  satellite_provider STRING,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldData (\n  field_id UUID PRIMARY KEY,\n  field_name STRING,\n  location STRING,\n  crop_type STRING,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE HealthMetrics (\n  metric_id UUID PRIMARY KEY,\n  image_id UUID REFERENCES SatelliteImages(image_id),\n  health_score FLOAT,\n  issue_detected BOOLEAN,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CropAlerts (\n  alert_id UUID PRIMARY KEY,\n  field_id UUID REFERENCES FieldData(field_id),\n  alert_date DATE,\n  alert_message STRING,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserSubscriptions (\n  subscription_id UUID PRIMARY KEY,\n  user_id UUID,\n  field_id UUID REFERENCES FieldData(field_id),\n);\n"
+      }
+    ]
+  }
+]

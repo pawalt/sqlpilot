@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE StudentTransactions (\n  transaction_id INT PRIMARY KEY,\n  student_id INT,\n  payment_amount DECIMAL(10, 2),\n  fee_amount DECIMAL(10, 2),\n  financial_aid_amount DECIMAL(10, 2),\n  transaction_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE student_payments (\n  student_id UUID,\n  payment_amount DECIMAL,\n  payment_date DATE,\n  PRIMARY KEY (student_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_transactions (\n  transaction_id UUID,\n  transaction_amount DECIMAL,\n  transaction_date DATE,\n  transaction_type VARCHAR,\n  student_id UUID,\n  PRIMARY KEY (transaction_id),\n  FOREIGN KEY (student_id) REFERENCES student_payments (student_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(255),\n    enrollment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n    payment_id INT PRIMARY KEY,\n    student_id INT,\n    payment_date DATE,\n    amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FinancialAid (\n    aid_id INT PRIMARY KEY,\n    student_id INT,\n    grant_amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Students (\n    student_id SERIAL PRIMARY KEY,\n    student_name VARCHAR(50) NOT NULL,\n    student_email VARCHAR(50) UNIQUE NOT NULL\n);\n\nCREATE TABLE Payments (\n    payment_id SERIAL PRIMARY KEY,\n    student_id INT REFERENCES Students(student_id),\n    payment_amount DECIMAL NOT NULL,\n    payment_date TIMESTAMP\n);\n\nCREATE TABLE Fees (\n    fee_id SERIAL PRIMARY KEY,\n    fee_name VARCHAR(50) NOT NULL,\n    fee_amount DECIMAL NOT NULL\n);\n\nCREATE TABLE Financial_Aid (\n    aid_id SERIAL PRIMARY KEY,\n    student_id INT REFERENCES Students(student_id),\n    aid_amount DECIMAL NOT NULL,\n    aid_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE student_payments (\n    student_id INT PRIMARY KEY,\n    payment_amount DECIMAL,\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fees (\n    fee_id SERIAL PRIMARY KEY,\n    fee_type VARCHAR,\n    amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_aid (\n    aid_id SERIAL PRIMARY KEY,\n    student_id INT,\n    aid_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    transaction_type VARCHAR,\n    amount DECIMAL,\n    transaction_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id SERIAL PRIMARY KEY,\n    student_name VARCHAR,\n    student_email VARCHAR\n);"
+      }
+    ]
+  }
+]

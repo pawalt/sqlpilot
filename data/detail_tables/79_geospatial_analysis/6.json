@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Geofencing (\n  geofence_id UUID PRIMARY KEY,\n  location_name VARCHAR(255),\n  latitude DOUBLE PRECISION,\n  longitude DOUBLE PRECISION,\n  radius DOUBLE PRECISION\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_data ( \n location_id INT PRIMARY KEY, \n latitude DECIMAL(8,6), \n longitude DECIMAL(9,6) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_data ( \n customer_id INT PRIMARY KEY, \n location_id INT, \n customer_name VARCHAR(50), \n contact_number VARCHAR(15), \n CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES location_data(location_id) \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50),\n    location_geom GEOMETRY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE proximity (\n    proximity_id INT PRIMARY KEY,\n    location_id INT,\n    customer_id INT,\n    distance_in_miles DOUBLE PRECISION\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofences (\n  id UUID PRIMARY KEY,\n  name VARCHAR(100),\n  location GEOGRAPHY,\n  radius FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  id UUID PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(100) UNIQUE,\n  location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE store_locations (\n  id UUID PRIMARY KEY,\n  name VARCHAR(100),\n  location GEOGRAPHY,\n  address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE proximity_analysis (\n  id UUID PRIMARY KEY,\n  customer_id UUID,\n  store_id UUID,\n  proximity_score FLOAT,\n  proximity_duration INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location (\n\tlocation_id INT PRIMARY KEY,\n\tlocation_name STRING,\n\tlatitude FLOAT,\n\tlongitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n\tcustomer_id INT PRIMARY KEY,\n\tcustomer_name STRING,\n\temail STRING,\n\tphone_number STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE visit (\n\tvisit_id INT PRIMARY KEY,\n\tcustomer_id INT,\n\tlocation_id INT,\n\tvisit_date DATE,\n\tFOREIGN KEY (customer_id) REFERENCES customer(customer_id),\n\tFOREIGN KEY (location_id) REFERENCES location(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE geofence (\n\tgeofence_id INT PRIMARY KEY,\n\tgeofence_name STRING,\n\tradius FLOAT,\n\tlatitude FLOAT,\n\tlongitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE proximity_analysis (\n\tanalysis_id INT PRIMARY KEY,\n\tvisit_id INT,\n\tgeofence_id INT,\n\tproximity_distance FLOAT,\n\tproximity_result BOOLEAN,\n\tFOREIGN KEY (visit_id) REFERENCES visit(visit_id),\n\tFOREIGN KEY (geofence_id) REFERENCES geofence(geofence_id)\n);"
+      }
+    ]
+  }
+]

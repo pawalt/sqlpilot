@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maintenance_schedules (\n    schedule_id INT PRIMARY KEY,\n    robot_id INT,\n    maintenance_type VARCHAR(255),\n    scheduled_date DATE,\n    completion_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotMaintenanceSchedule (\n  robot_id SERIAL PRIMARY KEY,\n  maintenance_date DATE,\n  maintenance_type VARCHAR(50),\n  maintenance_notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RobotStatus (\n  robot_id SERIAL PRIMARY KEY,\n  status VARCHAR(20),\n  last_update TIMESTAMP,\n  battery_level INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE robots (id INT PRIMARY KEY,\n robot_name VARCHAR(50),\n maintenance_schedule VARCHAR(100))"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_tasks (task_id INT PRIMARY KEY,\n task_name VARCHAR(50),\n task_description VARCHAR(255))"
+      },
+      {
+        "table_schema": "CREATE TABLE robot_maintenance (rm_id INT PRIMARY KEY,\n robot_id INT,\n task_id INT,\n due_date TIMESTAMP,\n completed_date TIMESTAMP)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Robots (\n    robot_id INT PRIMARY KEY,\n    robot_name VARCHAR(255) NOT NULL,\n    maintenance_schedule VARCHAR(255) NOT NULL,\n    last_maintenance_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Maintenance_Log (\n    log_id INT PRIMARY KEY,\n    robot_id INT,\n    maintenance_type VARCHAR(255) NOT NULL,\n    maintenance_date DATE,\n    technician_name VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Technicians (\n    technician_id INT PRIMARY KEY,\n    technician_name VARCHAR(255) NOT NULL,\n    specialization VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Maintenance_Types (\n    type_id INT PRIMARY KEY,\n    maintenance_type VARCHAR(255) NOT NULL,\n    description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE robots ( \n   robot_id INT PRIMARY KEY, \n   robot_name VARCHAR(50) NOT NULL, \n   manufacturer VARCHAR(50) NOT NULL, \n   purchase_date DATE, \n   last_maintenance_date DATE \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule ( \n   schedule_id INT PRIMARY KEY, \n   robot_id INT, \n   schedule_date DATE, \n   status VARCHAR(20) NOT NULL, \n   FOREIGN KEY(robot_id) REFERENCES robots(robot_id) \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_tasks ( \n   task_id INT PRIMARY KEY, \n   task_name VARCHAR(50) NOT NULL, \n   task_description TEXT, \n   frequency INT, \n   estimated_duration INT \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE robot_maintenance ( \n   maintenance_id INT PRIMARY KEY, \n   schedule_id INT, \n   task_id INT, \n   performed_date DATE, \n   duration_in_minutes INT, \n   FOREIGN KEY(schedule_id) REFERENCES maintenance_schedule(schedule_id), \n   FOREIGN KEY(task_id) REFERENCES maintenance_tasks(task_id) \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs ( \n   log_id INT PRIMARY KEY, \n   maintenance_id INT, \n   log_date DATE, \n   log_description TEXT, \n   FOREIGN KEY(maintenance_id) REFERENCES robot_maintenance(maintenance_id) \n );"
+      }
+    ]
+  }
+]

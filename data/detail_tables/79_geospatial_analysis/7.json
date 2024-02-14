@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE points_of_interest (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location GEOMETRY\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE points_of_interest (\n  id SERIAL PRIMARY KEY,\n  name TEXT NOT NULL,\n  location GEOMETRY NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_locations (\n  id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  location GEOMETRY NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE points_of_interest (\n    poi_id INT PRIMARY KEY,\n    poi_name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT,\n    category VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE nearest_points (\n    location_id INT,\n    poi_id INT,\n    distance FLOAT,\n    CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES locations(location_id),\n    CONSTRAINT fk_poi FOREIGN KEY (poi_id) REFERENCES points_of_interest(poi_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PointsOfInterest (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(255),\n  location GEOGRAPHY\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NearbyPoints (\n  id SERIAL PRIMARY KEY,\n  poi_id INTEGER REFERENCES PointsOfInterest(id),\n  distance FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Locations (\n  id SERIAL PRIMARY KEY,\n  address VARCHAR(255),\n  coordinates GEOGRAPHY\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NearestPointsOfInterest (\n  id SERIAL PRIMARY KEY,\n  location_id INTEGER REFERENCES Locations(id),\n  nearest_poi_id INTEGER REFERENCES PointsOfInterest(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id SERIAL PRIMARY KEY,\n  location_name VARCHAR(100) NOT NULL,\n  latitude FLOAT NOT NULL,\n  longitude FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE points_of_interest (\n  poi_id SERIAL PRIMARY KEY,\n  poi_name VARCHAR(100) NOT NULL,\n  poi_category VARCHAR(50),\n  latitude FLOAT NOT NULL,\n  longitude FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distances (\n  distance_id SERIAL PRIMARY KEY,\n  location_id INT REFERENCES locations(location_id),\n  poi_id INT REFERENCES points_of_interest(poi_id),\n  distance FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE nearest_pois (\n  nearest_poi_id SERIAL PRIMARY KEY,\n  location_id INT REFERENCES locations(location_id),\n  nearest_poi_id INT REFERENCES points_of_interest(poi_id),\n  distance FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE spatial_queries (\n  query_id SERIAL PRIMARY KEY,\n  query_name VARCHAR(100) NOT NULL,\n  location_id INT REFERENCES locations(location_id),\n  latitude FLOAT NOT NULL,\n  longitude FLOAT NOT NULL\n);"
+      }
+    ]
+  }
+]

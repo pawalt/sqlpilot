@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinStructures (\n    protein_id UUID PRIMARY KEY,\n    protein_name VARCHAR(255),\n    structure_file BYTEA,\n    interaction_partner_id UUID\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinStructures (\n    protein_id INT PRIMARY KEY,\n    structure_type VARCHAR(50),\n    resolution FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinInteractions (\n    interaction_id INT PRIMARY KEY,\n    protein_id_1 INT,\n    protein_id_2 INT,\n    interaction_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinStructure (\n    protein_id UUID PRIMARY KEY,\n    structure TEXT,\n    resolution DOUBLE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinInteractions (\n    interaction_id UUID PRIMARY KEY,\n    protein_id1 UUID,\n    protein_id2 UUID,\n    interaction_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinAnnotations (\n    annotation_id UUID PRIMARY KEY,\n    protein_id UUID,\n    annotation TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Protein {\n  ProteinID INT PRIMARY KEY,\n  ProteinName VARCHAR(255),\n  ProteinDescription TEXT\n}"
+      },
+      {
+        "table_schema": "CREATE TABLE Structure {\n  StructureID INT PRIMARY KEY,\n  StructureName VARCHAR(255),\n  ProteinID INT,\n  FOREIGN KEY (ProteinID) REFERENCES Protein(ProteinID)\n}"
+      },
+      {
+        "table_schema": "CREATE TABLE Interaction {\n  InteractionID INT PRIMARY KEY,\n  InteractionType VARCHAR(100),\n  StructureID INT,\n  FOREIGN KEY (StructureID) REFERENCES Structure(StructureID)\n}"
+      },
+      {
+        "table_schema": "CREATE TABLE InteractionDetail {\n  DetailID INT PRIMARY KEY,\n  InteractionID INT,\n  InteractionDescription TEXT,\n  FOREIGN KEY (InteractionID) REFERENCES Interaction(InteractionID)\n}"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinStructures (\n  protein_id INT,\n  protein_name VARCHAR(255),\n  structure TEXT,\n  PRIMARY KEY (protein_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinInteractions (\n  interaction_id INT,\n  protein_id_1 INT,\n  protein_id_2 INT,\n  interaction_type VARCHAR(50),\n  PRIMARY KEY (interaction_id),\n  FOREIGN KEY (protein_id_1) REFERENCES ProteinStructures(protein_id),\n  FOREIGN KEY (protein_id_2) REFERENCES ProteinStructures(protein_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinFunctions (\n  protein_id INT,\n  function_name VARCHAR(100),\n  description TEXT,\n  PRIMARY KEY (protein_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinMutations (\n  mutation_id INT,\n  protein_id INT,\n  mutation_type VARCHAR(50),\n  mutation_description TEXT,\n  PRIMARY KEY (mutation_id),\n  FOREIGN KEY (protein_id) REFERENCES ProteinStructures(protein_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinLocalization (\n  localization_id INT,\n  protein_id INT,\n  localization_type VARCHAR(50),\n  localization_description TEXT,\n  PRIMARY KEY (localization_id),\n  FOREIGN KEY (protein_id) REFERENCES ProteinStructures(protein_id)\n)"
+      }
+    ]
+  }
+]

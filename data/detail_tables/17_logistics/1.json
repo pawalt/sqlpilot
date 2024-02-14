@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transportation_routes (\n  route_id INT PRIMARY KEY,\n  start_location VARCHAR(255),\n  end_location VARCHAR(255),\n  distance_in_miles DECIMAL,\n  delivery_schedule_time TIME\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DeliveryRoutes (\n    route_id SERIAL PRIMARY KEY,\n    from_location VARCHAR(100),\n    to_location VARCHAR(100),\n    distance DECIMAL,\n    estimated_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliverySchedule (\n    schedule_id SERIAL PRIMARY KEY,\n    route_id INT,\n    driver_id INT,\n    delivery_date DATE,\n    delivery_time TIME\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transportation_routes (\nroute_id INT PRIMARY KEY,\nsource_location TEXT,\ndestination_location TEXT,\ndistance_km FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_schedule (\nschedule_id INT PRIMARY KEY,\nroute_id INT,\ndelivery_time TIMESTAMP,\ndelivery_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_inventory (\nvehicle_id INT PRIMARY KEY,\nvehicle_type VARCHAR(50),\navailable_capacity INTEGER,\nlast_maintenance_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id INT PRIMARY KEY,\n    origin VARCHAR,\n    destination VARCHAR,\n    distance INT,\n    travel_time INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type VARCHAR,\n    capacity INT,\n    max_speed INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE deliveries (\n    delivery_id INT PRIMARY KEY,\n    route_id INT,\n    vehicle_id INT,\n    delivery_status VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id INT PRIMARY KEY,\n    delivery_id INT,\n    delivery_time TIMESTAMP,\n    driver_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transportation_routes (\n  route_id UUID PRIMARY KEY,\n  starting_location VARCHAR(100) NOT NULL,\n  destination VARCHAR(100) NOT NULL,\n  distance_km FLOAT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_schedule (\n  schedule_id UUID PRIMARY KEY,\n  route_id UUID REFERENCES transportation_routes(route_id),\n  delivery_date DATE NOT NULL,\n  delivery_time TIME NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_orders (\n  order_id UUID PRIMARY KEY,\n  route_id UUID REFERENCES transportation_routes(route_id),\n  customer_name VARCHAR(100) NOT NULL,\n  order_status VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_vehicles (\n  vehicle_id UUID PRIMARY KEY,\n  vehicle_type VARCHAR(50) NOT NULL,\n  capacity_tons FLOAT NOT NULL,\n  driver_name VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE driver_schedule (\n  driver_id UUID PRIMARY KEY,\n  vehicle_id UUID REFERENCES delivery_vehicles(vehicle_id),\n  schedule_id UUID REFERENCES delivery_schedule(schedule_id),\n  driver_availability BOOLEAN NOT NULL\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE DATABASE IF NOT EXISTS statutes;\n\nCREATE TABLE statutes.regulations (\n  id INT PRIMARY KEY,\n  title VARCHAR(255),\n  description TEXT,\n  effective_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE statutes (\n  id INT PRIMARY KEY,\n  statute_name VARCHAR(255),\n  description TEXT,\n  category VARCHAR(50),\n  enacted_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE regulations (\n  id INT PRIMARY KEY,\n  regulation_name VARCHAR(255),\n  description TEXT,\n  enforcement_date DATE,\n  related_statute_id INT,\n  FOREIGN KEY (related_statute_id) REFERENCES statutes(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_statutes (\n  statute_id INT PRIMARY KEY,\n  statute_name VARCHAR(255) NOT NULL,\n  jurisdiction VARCHAR(100) NOT NULL,\n  enactment_date DATE,\n  enforcement_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE regulations (\n  regulation_id INT PRIMARY KEY,\n  regulation_name VARCHAR(255) NOT NULL,\n  jurisdiction VARCHAR(100) NOT NULL,\n  enactment_date DATE,\n  enforcement_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_records (\n  record_id INT PRIMARY KEY,\n  statute_id INT REFERENCES legal_statutes(statute_id),\n  regulation_id INT REFERENCES regulations(regulation_id),\n  compliance_date DATE,\n  compliance_status VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_statutes (\n    id INT PRIMARY KEY,\n    statute_name VARCHAR(255),\n    statute_description TEXT,\n    effective_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_regulations (\n    id INT PRIMARY KEY,\n    regulation_name VARCHAR(255),\n    regulation_description TEXT,\n    compliance_deadline DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_checks (\n    id INT PRIMARY KEY,\n    check_name VARCHAR(255),\n    check_description TEXT,\n    due_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_history (\n    id INT PRIMARY KEY,\n    check_id INT,\n    result VARCHAR(50),\n    completion_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_standing (\n statute_id SERIAL PRIMARY KEY,\n statute_name VARCHAR(255) NOT NULL,\n statute_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_requirements (\n requirement_id SERIAL PRIMARY KEY,\n requirement_name VARCHAR(255) NOT NULL,\n requirement_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE violation_records (\n record_id SERIAL PRIMARY KEY,\n statute_id INT REFERENCES legal_standing(statute_id),\n violation_date DATE,\n violation_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_reports (\n report_id SERIAL PRIMARY KEY,\n compliance_date DATE,\n compliance_status VARCHAR(50) CHECK (compliance_status IN ('Compliant', 'Non-compliant')),\n notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n log_id SERIAL PRIMARY KEY,\n action_performed VARCHAR(50) NOT NULL,\n action_timestamp TIMESTAMP,\n performed_by VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  }
+]

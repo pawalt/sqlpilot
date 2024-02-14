@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_node_info (\n    node_id INT PRIMARY KEY,\n    node_name VARCHAR(255) NOT NULL,\n    ip_address VARCHAR(15) NOT NULL,\n    port INT NOT NULL,\n    status VARCHAR(10) DEFAULT 'Active'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_node (node_id UUID PRIMARY KEY,\nnode_name VARCHAR(255) NOT NULL,\nnode_ip VARCHAR(255) NOT NULL,\nnode_status BOOLEAN DEFAULT TRUE);"
+      },
+      {
+        "table_schema": "CREATE TABLE node_logs (log_id SERIAL PRIMARY KEY,\nnode_id UUID,\nlog_timestamp TIMESTAMP NOT NULL,\nlog_message TEXT NOT NULL,\nFOREIGN KEY (node_id) REFERENCES blockchain_node(node_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_nodes (\n    node_id INT PRIMARY KEY,\n    node_name VARCHAR(255) NOT NULL,\n    node_ip_address VARCHAR(50) NOT NULL,\n    node_location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE node_status (\n    status_id INT PRIMARY KEY,\n    node_id INT,\n    status_description TEXT,\n    status_timestamp TIMESTAMP,\n    FOREIGN KEY (node_id) REFERENCES blockchain_nodes(node_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE node_logs (\n    log_id INT PRIMARY KEY,\n    node_id INT,\n    log_message TEXT,\n    log_timestamp TIMESTAMP,\n    FOREIGN KEY (node_id) REFERENCES blockchain_nodes(node_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE node (id INTEGER PRIMARY KEY, node_name VARCHAR(255) NOT NULL, ip_address VARCHAR(255) NOT NULL, location VARCHAR(255) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE block (block_id INTEGER PRIMARY KEY, node_id INTEGER NOT NULL, timestamp TIMESTAMP NOT NULL, hash VARCHAR(255) NOT NULL, FOREIGN KEY (node_id) REFERENCES node(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction (transaction_id INTEGER PRIMARY KEY, block_id INTEGER NOT NULL, from_address VARCHAR(255) NOT NULL, to_address VARCHAR(255) NOT NULL, amount DECIMAL(18, 2) NOT NULL, FOREIGN KEY (block_id) REFERENCES block(block_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE log (log_id INTEGER PRIMARY KEY, timestamp TIMESTAMP NOT NULL, message TEXT NOT NULL, node_id INTEGER NOT NULL, FOREIGN KEY (node_id) REFERENCES node(id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_nodes (\n    node_id UUID PRIMARY KEY,\n    node_name VARCHAR(50) NOT NULL,\n    node_ip_address INET NOT NULL,\n    node_status BOOLEAN NOT NULL,\n    last_updated TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE node_blocks (\n    block_id UUID PRIMARY KEY,\n    node_id UUID NOT NULL,\n    block_hash VARCHAR(64) NOT NULL,\n    block_size INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (node_id) REFERENCES blockchain_nodes(node_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE node_transactions (\n    transaction_id UUID PRIMARY KEY,\n    block_id UUID NOT NULL,\n    transaction_hash VARCHAR(64) NOT NULL,\n    sender_address VARCHAR(50) NOT NULL,\n    receiver_address VARCHAR(50) NOT NULL,\n    amount DECIMAL(18, 2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (block_id) REFERENCES node_blocks(block_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE node_logs (\n    log_id UUID PRIMARY KEY,\n    node_id UUID NOT NULL,\n    log_message TEXT NOT NULL,\n    log_type VARCHAR(20) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (node_id) REFERENCES blockchain_nodes(node_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE node_endpoints (\n    endpoint_id UUID PRIMARY KEY,\n    node_id UUID NOT NULL,\n    endpoint_url VARCHAR(100) NOT NULL,\n    endpoint_status BOOLEAN NOT NULL,\n    last_checked TIMESTAMP NOT NULL,\n    FOREIGN KEY (node_id) REFERENCES blockchain_nodes(node_id)\n);\n"
+      }
+    ]
+  }
+]

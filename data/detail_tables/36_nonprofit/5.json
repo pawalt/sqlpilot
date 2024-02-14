@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE membership_info (\n    member_id UUID PRIMARY KEY,\n    member_name VARCHAR(255) NOT NULL,\n    member_email VARCHAR(255) NOT NULL,\n    membership_start_date DATE NOT NULL,\n    membership_end_date DATE NOT NULL,\n    membership_renewal_status BOOLEAN NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supporters (\n  supporter_id UUID PRIMARY KEY,\n  name VARCHAR(50),\n  email VARCHAR(100),\n  phone VARCHAR(15),\n  address VARCHAR(200),\n  membership_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE renewals (\n  renewal_id UUID PRIMARY KEY,\n  supporter_id UUID,\n  renewal_date DATE,\n  renewal_amount DECIMAL(10, 2),\n  payment_method VARCHAR(50),\n  FOREIGN KEY (supporter_id) REFERENCES supporters(supporter_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n    member_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(20),\n    renewal_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE membership_payments (\n    payment_id INT PRIMARY KEY,\n    member_id INT,\n    payment_amount DECIMAL(10, 2),\n    payment_date DATE,\n    FOREIGN KEY (member_id) REFERENCES members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE membership_levels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(50),\n    renewal_fee DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n    member_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100) UNIQUE,\n    join_date DATE,\n    renewal_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE memberships (\n    membership_id INT PRIMARY KEY,\n    member_id INT REFERENCES members(member_id),\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    membership_id INT REFERENCES memberships(membership_id),\n    amount DECIMAL(10, 2),\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE renewal_reminders (\n    reminder_id INT PRIMARY KEY,\n    membership_id INT REFERENCES memberships(membership_id),\n    reminder_date DATE,\n    reminder_sent BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Members (\n    member_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    membership_start_date DATE,\n    membership_end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Renewals (\n    renewal_id INT PRIMARY KEY,\n    member_id INT,\n    renewal_date DATE,\n    amount DECIMAL(10, 2),\n    FOREIGN KEY (member_id) REFERENCES Members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Supporters (\n    supporter_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MemberSupporter (\n    member_id INT,\n    supporter_id INT,\n    PRIMARY KEY (member_id, supporter_id),\n    FOREIGN KEY (member_id) REFERENCES Members(member_id),\n    FOREIGN KEY (supporter_id) REFERENCES Supporters(supporter_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n    payment_id INT PRIMARY KEY,\n    member_id INT,\n    payment_date DATE,\n    amount DECIMAL(10, 2),\n    FOREIGN KEY (member_id) REFERENCES Members(member_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_files (\n  file_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  file_content BYTEA,\n  version_number INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_files (\n    project_id SERIAL PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_content TEXT NOT NULL\n);\n\nCREATE TABLE version_history (\n    version_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    version_number INT NOT NULL,\n    changes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_files (\n    project_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_type VARCHAR(50),\n    file_content BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE version_history (\n    version_id INT PRIMARY KEY,\n    project_id INT,\n    version_date TIMESTAMP,\n    author VARCHAR(100),\n    notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(100),\n    email VARCHAR(255),\n    password_hash VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_files (\n   file_id INT PRIMARY KEY,\n   file_name VARCHAR(255),\n   file_data BYTEA,\n   project_id INT,\n   created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_versions (\n   version_id INT PRIMARY KEY,\n   project_id INT,\n   version_data BYTEA,\n   created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n   project_id SERIAL PRIMARY KEY, \n   project_name VARCHAR(255),\n   project_description TEXT,\n   created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n   user_id SERIAL PRIMARY KEY,\n   username VARCHAR(50),\n   email VARCHAR(255),\n   created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_files (\n\tfile_id INT,\n\tproject_name VARCHAR(255),\n\tfile_content TEXT,\n\tcreated_at TIMESTAMP,\n\tPRIMARY KEY (file_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE version_history (\n\tversion_id INT,\n\tfile_id INT,\n\tversion_name VARCHAR(255),\n\tchange_description TEXT,\n\tcreated_at TIMESTAMP,\n\tPRIMARY KEY (version_id),\n\tFOREIGN KEY (file_id) REFERENCES project_files(file_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n\tuser_id INT,\n\tusername VARCHAR(255),\n\temail VARCHAR(255),\n\tcreated_at TIMESTAMP,\n\tPRIMARY KEY (user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_projects (\n\tproject_id INT,\n\tuser_id INT,\n\tproject_name VARCHAR(255),\n\tcreated_at TIMESTAMP,\n\tPRIMARY KEY (project_id),\n\tFOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_permissions (\n\tpermission_id INT,\n\tproject_id INT,\n\tuser_id INT,\n\tpermission_type VARCHAR(50),\n\tcreated_at TIMESTAMP,\n\tPRIMARY KEY (permission_id),\n\tFOREIGN KEY (project_id) REFERENCES user_projects(project_id),\n\tFOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      }
+    ]
+  }
+]

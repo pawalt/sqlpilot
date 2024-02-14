@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_cases (\n  case_id UUID PRIMARY KEY,\n  case_name VARCHAR(255) NOT NULL,\n  case_type VARCHAR(50),\n  plaintiff_name VARCHAR(100),\n  defendant_name VARCHAR(100),\n  case_status VARCHAR(20) DEFAULT 'Pending',\n  resolution_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_cases (\n  case_id UUID PRIMARY KEY,\n  case_name VARCHAR(255),\n  case_status VARCHAR(50),\n  case_type VARCHAR(50),\n  case_initiation_date DATE,\n  case_resolution_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE case_parties (\n  party_id UUID PRIMARY KEY,\n  party_name VARCHAR(255),\n  party_role VARCHAR(50),\n  party_contact VARCHAR(100),\n  case_id UUID REFERENCES legal_cases(case_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cases (\n case_id INT PRIMARY KEY,\n case_name VARCHAR(255),\n case_type VARCHAR(50),\n case_status VARCHAR(50),\n case_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE case_parties (\n party_id INT PRIMARY KEY,\n party_name VARCHAR(255),\n party_role VARCHAR(50),\n party_contact VARCHAR(50),\n case_id INT,\n FOREIGN KEY (case_id) REFERENCES cases(case_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE case_updates (\n update_id INT PRIMARY KEY,\n update_date DATE,\n update_description TEXT,\n case_id INT,\n FOREIGN KEY (case_id) REFERENCES cases(case_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE case (id INT PRIMARY KEY,\n case_number VARCHAR(50),\n case_status VARCHAR(20),\n case_type VARCHAR(50),\n date_initiated DATE,\n date_resolved DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parties (id INT PRIMARY KEY,\n case_id INT,\n party_name VARCHAR(50),\n party_type VARCHAR(20),\n party_role VARCHAR(50),\n FOREIGN KEY (case_id) REFERENCES case(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (id INT PRIMARY KEY,\n case_id INT,\n document_name VARCHAR(100),\n document_type VARCHAR(50),\n date_created DATE,\n FOREIGN KEY (case_id) REFERENCES case(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE hearings (id INT PRIMARY KEY,\n case_id INT,\n hearing_date DATE,\n location VARCHAR(100),\n presiding_judge VARCHAR(50),\n FOREIGN KEY (case_id) REFERENCES case(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CaseDetails (case_id INT PRIMARY KEY, case_name VARCHAR(255), case_status VARCHAR(50), case_description TEXT, case_initiation_date TIMESTAMP, case_resolution_date TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseParties (party_id INT PRIMARY KEY, case_id INT, party_name VARCHAR(255), party_type VARCHAR(50), party_role VARCHAR(50), FOREIGN KEY (case_id) REFERENCES CaseDetails(case_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseDocuments (doc_id INT PRIMARY KEY, case_id INT, doc_name VARCHAR(255), doc_type VARCHAR(50), doc_content BYTEA, FOREIGN KEY (case_id) REFERENCES CaseDetails(case_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseNotes (note_id INT PRIMARY KEY, case_id INT, note_date TIMESTAMP, note_content TEXT, FOREIGN KEY (case_id) REFERENCES CaseDetails(case_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseStatusHistory (status_id INT PRIMARY KEY, case_id INT, status_date TIMESTAMP, status VARCHAR(50), status_description TEXT, FOREIGN KEY (case_id) REFERENCES CaseDetails(case_id));"
+      }
+    ]
+  }
+]

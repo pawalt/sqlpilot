@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_ontology (\n  gene_id INT,\n  gene_name VARCHAR(255),\n  go_term VARCHAR(255),\n  go_definition TEXT,\n  go_category VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_data (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255),\n  go_term VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE go_terms (\n  go_id INT PRIMARY KEY,\n  term_name VARCHAR(255),\n  definition TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_annotations (\n  gene_id INT PRIMARY KEY,\n  gene_symbol VARCHAR(255),\n  go_term VARCHAR(255),\n  annotation_desc TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE go_terms (\n  go_id INT PRIMARY KEY,\n  go_name VARCHAR(255),\n  go_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_go_mapping (\n  gene_id INT,\n  go_id INT,\n  FOREIGN KEY (gene_id) REFERENCES gene_annotations(gene_id),\n  FOREIGN KEY (go_id) REFERENCES go_terms(go_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneInfo (\n    gene_id UUID NOT NULL,\n    gene_name VARCHAR(255) NOT NULL,\n    gene_description TEXT,\n    PRIMARY KEY (gene_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE GoTerm (\n    go_id UUID NOT NULL,\n    go_name VARCHAR(255) NOT NULL,\n    go_description TEXT,\n    PRIMARY KEY (go_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneGoMapping (\n    mapping_id UUID NOT NULL,\n    gene_id UUID NOT NULL,\n    go_id UUID NOT NULL,\n    FOREIGN KEY (gene_id) REFERENCES GeneInfo(gene_id),\n    FOREIGN KEY (go_id) REFERENCES GoTerm(go_id),\n    PRIMARY KEY (mapping_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneGoAnnotation (\n    annotation_id UUID NOT NULL,\n    mapping_id UUID NOT NULL,\n    annotation_date DATE,\n    annotation_source VARCHAR(255),\n    annotation_confidence FLOAT,\n    PRIMARY KEY (annotation_id),\n    FOREIGN KEY (mapping_id) REFERENCES GeneGoMapping(mapping_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (gene_id INT PRIMARY KEY, gene_name TEXT, gene_description TEXT, go_term TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE go_terms (go_id INT PRIMARY KEY, term TEXT, definition TEXT, category TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_go_mapping (mapping_id INT PRIMARY KEY, gene_id INT, go_id INT, evidence TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_annotations (annotation_id INT PRIMARY KEY, gene_id INT, annotation_text TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE visualize_data (visualization_id INT PRIMARY KEY, gene_id INT, go_id INT, visualization_url TEXT)"
+      }
+    ]
+  }
+]

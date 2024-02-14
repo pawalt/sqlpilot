@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n  id UUID PRIMARY KEY,\n  user_id UUID,\n  biometric_type VARCHAR(50),\n  biometric_data BYTEA,\n  created_at TIMESTAMP,\n  updated_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AccessControlSystem (\n    id INT PRIMARY KEY,\n    user_id INT,\n    biometric_data VARCHAR(255),\n    access_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BiometricData (\n    id INT PRIMARY KEY,\n    user_id INT,\n    fingerprint_data BLOB,\n    iris_data BLOB,\n    face_data BLOB\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE User (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(100),\n    biometric_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLevel (\n    level_id SERIAL PRIMARY KEY,\n    level_name VARCHAR(50) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserAccess (\n    access_id SERIAL PRIMARY KEY,\n    user_id UUID REFERENCES User(user_id),\n    level_id INT REFERENCES AccessLevel(level_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id INT PRIMARY KEY,\n  user_id INT,\n  access_time TIMESTAMP,\n  access_type VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  password VARCHAR(50),\n  fingerprint_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n  level_id INT PRIMARY KEY,\n  level_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access (\n  user_id INT,\n  level_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (level_id) REFERENCES access_levels(level_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_control_system (\n    user_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    biometric_data BYTEA,\n    access_level ENUM('admin', 'user'),\n    access_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    action VARCHAR(100),\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    data_id INT PRIMARY KEY,\n    user_id INT,\n    fingerprint_data BYTEA,\n    iris_data BYTEA,\n    face_data BYTEA\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_groups (\n    group_id INT PRIMARY KEY,\n    group_name VARCHAR(100),\n    description TEXT\n)"
+      }
+    ]
+  }
+]

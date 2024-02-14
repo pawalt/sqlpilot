@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CitizenInformation (\n  citizen_id INT PRIMARY KEY,\n  full_name VARCHAR(100),\n  date_of_birth DATE,\n  address VARCHAR(255),\n  nationality VARCHAR(50),\n  id_card_number VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Citizens (\n  citizen_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  address VARCHAR(100),\n  date_of_birth DATE,\n  id_verification_status BOOL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE VerificationLog (\n  log_id INT PRIMARY KEY,\n  citizen_id INT,\n  verification_date DATE,\n  verification_status BOOL,\n  FOREIGN KEY (citizen_id) REFERENCES Citizens(citizen_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Citizens (\n  id SERIAL PRIMARY KEY,\n  first_name TEXT NOT NULL,\n  last_name TEXT NOT NULL,\n  date_of_birth DATE,\n  nationality TEXT,\n  address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IdentityCards (\n  card_id SERIAL PRIMARY KEY,\n  citizen_id INT REFERENCES Citizens(id),\n  card_number TEXT NOT NULL,\n  issue_date DATE,\n  expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BiometricData (\n  record_id SERIAL PRIMARY KEY,\n  citizen_id INT REFERENCES Citizens(id),\n  fingerprint_data BYTEA,\n  iris_scan_data BYTEA,\n  face_recognition_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Citizens (\n  citizen_id SERIAL PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  date_of_birth DATE NOT NULL,\n  address VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Identity (\n  identity_id SERIAL PRIMARY KEY,\n  citizen_id INT REFERENCES Citizens(citizen_id),\n  photo BYTEA NOT NULL,\n  fingerprint BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Documents (\n  document_id SERIAL PRIMARY KEY,\n  citizen_id INT REFERENCES Citizens(citizen_id),\n  document_type VARCHAR(50) NOT NULL,\n  document_number VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Verification (\n  verification_id SERIAL PRIMARY KEY,\n  document_id INT REFERENCES Documents(document_id),\n  verified_by VARCHAR(50) NOT NULL,\n  verification_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Citizens (\n    citizen_id UUID PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    date_of_birth DATE,\n    address VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Documents (\n    document_id UUID PRIMARY KEY,\n    citizen_id UUID REFERENCES Citizens(citizen_id),\n    document_type VARCHAR(50) NOT NULL,\n    document_number VARCHAR(50) NOT NULL,\n    issue_date DATE,\n    expiry_date DATE,\n    UNIQUE(document_type, document_number)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Verification (\n    verification_id UUID PRIMARY KEY,\n    citizen_id UUID REFERENCES Citizens(citizen_id),\n    verification_date DATE,\n    verifier_name VARCHAR(50) NOT NULL,\n    verification_result BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LoginHistory (\n    login_id UUID PRIMARY KEY,\n    citizen_id UUID REFERENCES Citizens(citizen_id),\n    login_time TIMESTAMP NOT NULL,\n    logout_time TIMESTAMP,\n    login_success BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLog (\n    log_id UUID PRIMARY KEY,\n    citizen_id UUID REFERENCES Citizens(citizen_id),\n    access_time TIMESTAMP NOT NULL,\n    accessed_table VARCHAR(50) NOT NULL,\n    access_type VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  }
+]

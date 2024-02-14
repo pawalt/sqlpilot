@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PlayerInteractions (\n  player_id UUID,\n  interaction_type VARCHAR(50),\n  interaction_timestamp TIMESTAMP,\n  interaction_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_interactions (player_id UUID PRIMARY KEY,\n  game_id UUID,\n  interaction_timestamp TIMESTAMP,\n  interaction_type VARCHAR);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_statistics (player_id UUID PRIMARY KEY,\n  games_won INT,\n  games_lost INT,\n  total_score INT);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    player_level INT,\n    player_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE games (\n    game_id INT PRIMARY KEY,\n    game_name VARCHAR(50) NOT NULL,\n    game_type VARCHAR(20),\n    game_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_interactions (\n    interaction_id INT PRIMARY KEY,\n    player_id INT,\n    game_id INT,\n    interaction_type VARCHAR(20),\n    interaction_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    player_level INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_sessions (\n    session_id INT PRIMARY KEY,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP,\n    player_id INT REFERENCES players(player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_events (\n    event_id INT PRIMARY KEY,\n    event_type VARCHAR(50) NOT NULL,\n    event_time TIMESTAMP NOT NULL,\n    session_id INT REFERENCES game_sessions(session_id),\n    player_id INT REFERENCES players(player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_inventory (\n    inventory_id INT PRIMARY KEY,\n    player_id INT REFERENCES players(player_id),\n    item_name VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_info (\n    player_id UUID PRIMARY KEY,\n    player_name STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_sessions (\n    session_id UUID PRIMARY KEY,\n    player_id UUID,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_actions (\n    action_id UUID PRIMARY KEY,\n    session_id UUID,\n    action_type STRING,\n    action_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_friends (\n    friend_id UUID NOT NULL,\n    player_id UUID NOT NULL,\n    PRIMARY KEY (friend_id, player_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_messages (\n    message_id UUID PRIMARY KEY,\n    sender_id UUID,\n    receiver_id UUID,\n    message TEXT\n);\n"
+      }
+    ]
+  }
+]

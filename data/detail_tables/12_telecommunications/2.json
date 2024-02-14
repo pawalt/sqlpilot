@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkConfigurations ( \n    service_id SERIAL PRIMARY KEY, \n    service_name VARCHAR(50) NOT NULL, \n    network_type VARCHAR(50) NOT NULL, \n    configuration JSONB \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_configurations (\n    id INT PRIMARY KEY,\n    service_name VARCHAR(255) NOT NULL,\n    service_type VARCHAR(50) NOT NULL,\n    configuration_json JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(255) NOT NULL,\n    provider_location VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(50) NOT NULL,\n    service_type VARCHAR(50) NOT NULL,\n    service_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_configs (\n    config_id INT PRIMARY KEY,\n    service_id INT NOT NULL,\n    config_name VARCHAR(50) NOT NULL,\n    config_details JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_subscribers (\n    subscriber_id INT PRIMARY KEY,\n    service_id INT NOT NULL,\n    subscriber_name VARCHAR(50) NOT NULL,\n    subscriber_email VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkProviders (\n    id INT PRIMARY KEY,\n    provider_name VARCHAR(100) NOT NULL,\n    service_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(100) NOT NULL,\n    provider_id INT REFERENCES NetworkProviders(id) NOT NULL,\n    configuration JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkLocations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkConnections (\n    connection_id INT PRIMARY KEY,\n    location_id INT REFERENCES NetworkLocations(location_id) NOT NULL,\n    device_id INT REFERENCES NetworkDevices(device_id) NOT NULL,\n    status VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkConfigurations ( \n    id INT PRIMARY KEY, \n    service_name VARCHAR(50), \n    ip_address VARCHAR(15), \n    subnet_mask VARCHAR(15), \n    gateway_address VARCHAR(15) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ServiceProviders ( \n    id INT PRIMARY KEY, \n    provider_name VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Subscriptions ( \n    id INT PRIMARY KEY, \n    subscription_type VARCHAR(50), \n    start_date DATE, \n    end_date DATE, \n    provider_id INT, \n    FOREIGN KEY (provider_id) REFERENCES ServiceProviders(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Devices ( \n    id INT PRIMARY KEY, \n    device_name VARCHAR(50), \n    device_type VARCHAR(50), \n    status VARCHAR(20), \n    provider_id INT, \n    FOREIGN KEY (provider_id) REFERENCES ServiceProviders(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies ( \n    id INT PRIMARY KEY, \n    policy_name VARCHAR(50), \n    description TEXT, \n    provider_id INT, \n    FOREIGN KEY (provider_id) REFERENCES ServiceProviders(id) \n);"
+      }
+    ]
+  }
+]

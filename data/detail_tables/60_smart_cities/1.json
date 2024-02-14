@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_availability (\n    area_id INT PRIMARY KEY,\n    area_name VARCHAR(50),\n    total_spaces INT,\n    available_spaces INT,\n    last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_availability (\n    location_id INT NOT NULL,\n    area_name VARCHAR(50) NOT NULL,\n    available_spaces INT NOT NULL,\n    total_spaces INT NOT NULL,\n    PRIMARY KEY (location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_history (\n    record_id INT NOT NULL,\n    location_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    occupied_spaces INT NOT NULL,\n    PRIMARY KEY (record_id),\n    FOREIGN KEY (location_id) REFERENCES parking_availability(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_areas (\n    area_id INT PRIMARY KEY,\n    area_name VARCHAR(50) NOT NULL,\n    total_spots INT,\n    available_spots INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_sensors (\n    sensor_id INT PRIMARY KEY,\n    area_id INT REFERENCES parking_areas(area_id),\n    sensor_location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_logs (\n    log_id INT PRIMARY KEY,\n    sensor_id INT REFERENCES parking_sensors(sensor_id),\n    log_datetime TIMESTAMP,\n    status VARCHAR(10)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_areas (\n    area_id SERIAL PRIMARY KEY,\n    area_name VARCHAR(50) NOT NULL,\n    total_spaces INTEGER,\n    available_spaces INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_lots (\n    lot_id SERIAL PRIMARY KEY,\n    lot_name VARCHAR(50) NOT NULL,\n    area_id INTEGER REFERENCES parking_areas(area_id),\n    total_spaces INTEGER,\n    available_spaces INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_records (\n    record_id SERIAL PRIMARY KEY,\n    lot_id INTEGER REFERENCES parking_lots(lot_id),\n    vehicle_number VARCHAR(20) NOT NULL,\n    entry_time TIMESTAMP,\n    exit_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(20) NOT NULL,\n    password VARCHAR(20) NOT NULL,\n    email VARCHAR(50) NOT NULL,\n    role VARCHAR(10) DEFAULT 'user'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_areas (\n id INT PRIMARY KEY,\n area_name VARCHAR(50),\n capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_lots (\n lot_id INT PRIMARY KEY,\n area_id INT REFERENCES parking_areas(id),\n location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_spaces (\n space_id INT PRIMARY KEY,\n lot_id INT REFERENCES parking_lots(lot_id),\n availability BOOLEAN,\n vehicle_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_logs (\n log_id INT PRIMARY KEY,\n space_id INT REFERENCES parking_spaces(space_id),\n timestamp TIMESTAMP,\n event_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_fees (\n fee_id INT PRIMARY KEY,\n log_id INT REFERENCES parking_logs(log_id),\n amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  }
+]

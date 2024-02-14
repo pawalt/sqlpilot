@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE soil_nutrient_levels (\n  field_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  nitrogen_level FLOAT,\n  phosphorus_level FLOAT,\n  potassium_level FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE soil_samples (\n  id INT PRIMARY KEY,\n  location VARCHAR,\n  sample_date DATE,\n  nitrogen_level FLOAT,\n  phosphorus_level FLOAT,\n  potassium_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fertilizer_recommendations (\n  id INT PRIMARY KEY,\n  crop_type VARCHAR,\n  nitrogen_amount FLOAT,\n  phosphorus_amount FLOAT,\n  potassium_amount FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE soil_samples (\n  sample_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  nutrient_level FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE fertilizers (\n  fertilizer_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  npk_ratio VARCHAR(20),\n  application_rate FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE fertilizer_applications (\n  application_id INT PRIMARY KEY,\n  sample_id INT,\n  fertilizer_id INT,\n  application_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SoilSamples (\n  sample_id SERIAL PRIMARY KEY,\n  location VARCHAR(100),\n  nutrient_level NUMERIC,\n  sample_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FertilizerTypes (\n  fertilizer_id SERIAL PRIMARY KEY,\n  name VARCHAR(50),\n  nutrient_components JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FarmFields (\n  field_id SERIAL PRIMARY KEY,\n  field_name VARCHAR(50),\n  area NUMERIC,\n  soil_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FertilizerApplications (\n  application_id SERIAL PRIMARY KEY,\n  field_id INT REFERENCES FarmFields(field_id),\n  fertilizer_id INT REFERENCES FertilizerTypes(fertilizer_id),\n  applied_amount NUMERIC,\n  application_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Field (\n    Field_ID INT PRIMARY KEY,\n    Field_Name VARCHAR(50) NOT NULL,\n    Location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Nutrient (\n    Nutrient_ID INT PRIMARY KEY,\n    Nutrient_Name VARCHAR(50) NOT NULL,\n    Recommended_Level FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SoilSample (\n    Sample_ID INT PRIMARY KEY,\n    Field_ID INT NOT NULL,\n    Nutrient_ID INT NOT NULL,\n    Sample_Date DATE NOT NULL,\n    Nutrient_Level FLOAT NOT NULL,\n    FOREIGN KEY (Field_ID) REFERENCES Field(Field_ID),\n    FOREIGN KEY (Nutrient_ID) REFERENCES Nutrient(Nutrient_ID)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Fertilizer (\n    Fertilizer_ID INT PRIMARY KEY,\n    Fertilizer_Name VARCHAR(50) NOT NULL,\n    Nutrient_ID INT NOT NULL,\n    Chemical_Composition VARCHAR(100) NOT NULL,\n    FOREIGN KEY (Nutrient_ID) REFERENCES Nutrient(Nutrient_ID)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ApplicationRecord (\n    Record_ID INT PRIMARY KEY,\n    Field_ID INT NOT NULL,\n    Fertilizer_ID INT NOT NULL,\n    Application_Date DATE NOT NULL,\n    Quantity FLOAT NOT NULL,\n    FOREIGN KEY (Field_ID) REFERENCES Field(Field_ID),\n    FOREIGN KEY (Fertilizer_ID) REFERENCES Fertilizer(Fertilizer_ID)\n);"
+      }
+    ]
+  }
+]

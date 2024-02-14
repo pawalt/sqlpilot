@@ -1,0 +1,52 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    id UUID PRIMARY KEY,\n    user_id UUID,\n    fingerprint_data VARCHAR,\n    face_data VARCHAR,\n    iris_data VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    fingerprint_data BLOB,\n    iris_scan_data BLOB,\n    face_recognition_data BLOB\n);\nCREATE TABLE verification_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    verification_type VARCHAR(50) NOT NULL,\n    verification_result BOOLEAN NOT NULL,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    id INT PRIMARY KEY,\n    user_id INT,\n    fingerprint_data BYTEA,\n    face_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_information (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(50),\n    date_of_birth DATE,\n    address VARCHAR(100),\n    email VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    verification_type VARCHAR(20),\n    verification_status VARCHAR(10),\n    verification_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_users (\n    user_id UUID PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    biometric_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_records (\n    record_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES biometric_users(user_id),\n    timestamp TIMESTAMP NOT NULL,\n    biometric_type VARCHAR(50) NOT NULL,\n    biometric_reading DOUBLE PRECISION\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_logs (\n    log_id UUID PRIMARY KEY,\n    record_id UUID REFERENCES biometric_records(record_id),\n    action VARCHAR(50) NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_images (\n    image_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES biometric_users(user_id),\n    image BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    biometric_type VARCHAR(50) NOT NULL,\n    biometric_data BYTEA NOT NULL,\n    created_at TIMESTAMP\n);\nCREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    full_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password BYTEA NOT NULL,\n    created_at TIMESTAMP\n);\nCREATE TABLE user_roles (\n    id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    role_name VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP\n);\nCREATE TABLE access_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    access_time TIMESTAMP NOT NULL,\n    access_result VARCHAR(20) NOT NULL,\n    created_at TIMESTAMP\n);\nCREATE TABLE locations (\n    location_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    latitude DECIMAL(10, 8) NOT NULL,\n    longitude DECIMAL(11, 8) NOT NULL,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]

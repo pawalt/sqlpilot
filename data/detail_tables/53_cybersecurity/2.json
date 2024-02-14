@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_tracking (\n    vulnerability_id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(255),\n    severity_level VARCHAR(50),\n    detection_date DATE,\n    vulnerability_description TEXT,\n    affected_system VARCHAR(100),\n    remediation_steps TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    description TEXT,\n    severity ENUM('low', 'medium', 'high'),\n    finding_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_reports (\n    id INT PRIMARY KEY,\n    vulnerability_id INT,\n    report_date DATE,\n    reported_by VARCHAR(100),\n    summary TEXT,\n    FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(50) NOT NULL,\n    vulnerability_description TEXT,\n    severity_level VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerabilities_history (\n    history_id INT PRIMARY KEY,\n    vulnerability_id INT REFERENCES vulnerabilities(vulnerability_id),\n    date_reported TIMESTAMP,\n    status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_audit (\n    audit_id INT PRIMARY KEY,\n    audit_type VARCHAR(50) NOT NULL,\n    audit_date DATE,\n    audit_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id UUID PRIMARY KEY,\n    vulnerability_name STRING,\n    severity ENUM('LOW', 'MEDIUM', 'HIGH'),\n    description STRING,\n    target_host STRING,\n    found_by STRING,\n    date_discovered DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_impact (\n    impact_id UUID PRIMARY KEY,\n    vulnerability_id UUID REFERENCES vulnerabilities(vulnerability_id),\n    impact_description STRING,\n    affected_assets ARRAY<STRING>,\n    remediation_plan STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE findings (\n    finding_id UUID PRIMARY KEY,\n    vulnerability_id UUID REFERENCES vulnerabilities(vulnerability_id),\n    finding_details STRING,\n    risk_level ENUM('LOW', 'MEDIUM', 'HIGH'),\n    finding_status ENUM('OPEN', 'CLOSED'),\n    date_reported DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username STRING UNIQUE,\n    full_name STRING,\n    email STRING UNIQUE,\n    role ENUM('ADMIN', 'ANALYST', 'ENGINEER'),\n    date_joined DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    id SERIAL PRIMARY KEY,\n    vulnerability_name TEXT NOT NULL,\n    severity TEXT DEFAULT 'Low',\n    description TEXT,\n    affected_system TEXT,\n    date_discovered DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_reports (\n    report_id SERIAL PRIMARY KEY,\n    vulnerability_id INT,\n    report_date DATE,\n    report_text TEXT,\n    reported_by TEXT,\n    FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_scanners (\n    scanner_id SERIAL PRIMARY KEY,\n    scanner_name TEXT NOT NULL,\n    scanner_type TEXT,\n    scanner_version TEXT,\n    scanner_vendor TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerable_systems (\n    system_id SERIAL PRIMARY KEY,\n    system_name TEXT NOT NULL,\n    ip_address TEXT,\n    operating_system TEXT,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_scans (\n    scan_id SERIAL PRIMARY KEY,\n    scanner_id INT,\n    system_id INT,\n    scan_date DATE,\n    scan_results TEXT,\n    FOREIGN KEY (scanner_id) REFERENCES vulnerability_scanners(scanner_id),\n    FOREIGN KEY (system_id) REFERENCES vulnerable_systems(system_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE egovernment_services (\n  service_id UUID PRIMARY KEY,\n  service_name TEXT NOT NULL,\n  department TEXT NOT NULL,\n  description TEXT,\n  price DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Citizens (\n    citizen_id UUID PRIMARY KEY,\n    first_name VARCHAR(255),\n    last_name VARCHAR(255),\n    date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Services (\n    service_id UUID PRIMARY KEY,\n    service_name VARCHAR(255),\n    department VARCHAR(255),\n    status VARCHAR(50),\n    owner_id UUID REFERENCES Citizens(citizen_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(50) NOT NULL,\n    description TEXT,\n    fee DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    service_id INT REFERENCES services(service_id),\n    interaction_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE municipalities (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  population INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE citizens (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  age INT,\n  address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  id INT PRIMARY KEY,\n  citizen_id INT,\n  service_id INT,\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Citizens (\n    citizen_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    birthdate DATE,\n    address VARCHAR(100),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(100),\n    description VARCHAR(255),\n    department VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Requests (\n    request_id INT PRIMARY KEY,\n    citizen_id INT,\n    service_id INT,\n    request_date TIMESTAMP,\n    status VARCHAR(50),\n    FOREIGN KEY (citizen_id) REFERENCES Citizens(citizen_id),\n    FOREIGN KEY (service_id) REFERENCES Services(service_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Departments (\n    department_id INT PRIMARY KEY,\n    department_name VARCHAR(50),\n    head_of_department VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n    payment_id INT PRIMARY KEY,\n    request_id INT,\n    amount DECIMAL(10, 2),\n    payment_date TIMESTAMP,\n    status VARCHAR(50),\n    FOREIGN KEY (request_id) REFERENCES Requests(request_id)\n);"
+      }
+    ]
+  }
+]

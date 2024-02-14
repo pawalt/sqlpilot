@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_sustainability_initiatives (\n  id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  stakeholder_name VARCHAR(255),\n  location VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  sustainability_rating INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stakeholders (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sustainability_data (\n    data_id INT PRIMARY KEY,\n    stakeholder_id INT,\n    data_value DECIMAL,\n    data_timestamp TIMESTAMP,\n    FOREIGN KEY (stakeholder_id) REFERENCES stakeholders(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stakeholders (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    organization VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE initiatives (\n    id SERIAL PRIMARY KEY,\n    title VARCHAR(100) NOT NULL,\n    description TEXT NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    status VARCHAR(20) NOT NULL\n);\n\nCREATE TABLE insights (\n    id SERIAL PRIMARY KEY,\n    initiative_id INTEGER REFERENCES initiatives(id) ON DELETE CASCADE,\n    stakeholder_id INTEGER REFERENCES stakeholders(id) ON DELETE CASCADE,\n    message TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stakeholders (\n\temail VARCHAR(255) PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\torganization VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE initiatives (\n\tinitiative_id SERIAL PRIMARY KEY,\n\tinitiative_name VARCHAR(255) NOT NULL,\n\tdescription TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sharing (\n\tdata_id UUID PRIMARY KEY,\n\tinitiative_id INT REFERENCES initiatives(initiative_id),\n\tshared_by VARCHAR(255) REFERENCES stakeholders(email),\n\tdata_description TEXT,\n\tshared_with VARCHAR(255) REFERENCES stakeholders(email)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE insights (\n\tinsight_id SERIAL PRIMARY KEY,\n\tdata_id UUID REFERENCES data_sharing(data_id),\n\tinsight_text TEXT,\n\tcreated_at TIMESTAMP DEFAULT NOW()\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stakeholders (\n    stakeholder_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    organization VARCHAR(255),\n    email VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE initiatives (\n    initiative_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    description TEXT,\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE insights (\n    insight_id INT PRIMARY KEY,\n    initiative_id INT,\n    stakeholder_id INT,\n    insight_text TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    document_id INT PRIMARY KEY,\n    initiative_id INT,\n    document_name VARCHAR(255),\n    document_url VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborations (\n    collaboration_id INT PRIMARY KEY,\n    initiative_id INT,\n    stakeholder_id INT,\n    collaboration_status VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

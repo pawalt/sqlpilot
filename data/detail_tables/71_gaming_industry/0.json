@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id UUID PRIMARY KEY,\n    player_name TEXT NOT NULL,\n    game_progress INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n    player_id SERIAL PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    age INT,\n    country VARCHAR(50),\n    date_joined TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_progress (\n    progress_id SERIAL PRIMARY KEY,\n    player_id INT REFERENCES player_profiles(player_id),\n    level INT,\n    score INT,\n    last_played TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(255),\n    player_email VARCHAR(255),\n    player_age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_progress (\n    game_id INT PRIMARY KEY,\n    player_id INT,\n    level INT,\n    score INT,\n    CONSTRAINT fk_player_id FOREIGN KEY (player_id) REFERENCES player_profiles(player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_inventory (\n    player_id INT,\n    item_name VARCHAR(255),\n    quantity INT,\n    CONSTRAINT fk_player_id FOREIGN KEY (player_id) REFERENCES player_profiles(player_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n  player_id INT PRIMARY KEY,\n  player_name VARCHAR(50) NOT NULL,\n  age INT,\n  email VARCHAR(100),\n  registration_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE game_progress (\n  progress_id INT PRIMARY KEY,\n  player_id INT REFERENCES player_profiles(player_id),\n  level INT,\n  score INT,\n  progress_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE achievements (\n  achievement_id INT PRIMARY KEY,\n  player_id INT REFERENCES player_profiles(player_id),\n  achievement_name VARCHAR(50) NOT NULL,\n  achievement_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE items_inventory (\n  item_id INT PRIMARY KEY,\n  player_id INT REFERENCES player_profiles(player_id),\n  item_name VARCHAR(50) NOT NULL,\n  quantity INT,\n  last_updated TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    date_of_birth DATE,\n    registration_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE games (\n    game_id INT PRIMARY KEY,\n    game_name VARCHAR(50) NOT NULL,\n    genre VARCHAR(50),\n    release_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_progress (\n    progress_id INT PRIMARY KEY,\n    player_id INT,\n    game_id INT,\n    level INT,\n    score INT,\n    last_played TIMESTAMP,\n    FOREIGN KEY (player_id) REFERENCES players(player_id),\n    FOREIGN KEY (game_id) REFERENCES games(game_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE achievements (\n    achievement_id INT PRIMARY KEY,\n    player_id INT,\n    game_id INT,\n    achievement_name VARCHAR(100),\n    achievement_date TIMESTAMP,\n    FOREIGN KEY (player_id) REFERENCES players(player_id),\n    FOREIGN KEY (game_id) REFERENCES games(game_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_inventory (\n    item_id INT PRIMARY KEY,\n    player_id INT,\n    item_name VARCHAR(100),\n    quantity INT,\n    purchase_date TIMESTAMP,\n    FOREIGN KEY (player_id) REFERENCES players(player_id)\n);\n"
+      }
+    ]
+  }
+]

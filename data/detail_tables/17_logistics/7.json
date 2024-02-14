@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WarehouseCapacity (\n  warehouse_id INT PRIMARY KEY,\n  warehouse_name VARCHAR(255),\n  total_capacity INT,\n  available_capacity INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_capacity (\n  warehouse_id INT PRIMARY KEY,\n  warehouse_location VARCHAR(100),\n  total_capacity INT,\n  available_capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_data (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(100),\n  quantity_in_stock INT,\n  unit_price DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id INT PRIMARY KEY,\n    warehouse_name VARCHAR(50),\n    total_capacity INT,\n    used_capacity INT\n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(50),\n    warehouse_id INT,\n    quantity INT\n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(50),\n    quantity_available INT,\n    location VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WarehouseCapacity (\n    warehouse_id INT PRIMARY KEY,\n    warehouse_name VARCHAR(50) NOT NULL,\n    max_capacity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InventoryData (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    warehouse_id INT,\n    FOREIGN KEY (warehouse_id) REFERENCES WarehouseCapacity(warehouse_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Allocation (\n    allocation_id INT PRIMARY KEY,\n    item_id INT,\n    quantity_allocated INT NOT NULL,\n    allocation_date DATE NOT NULL,\n    FOREIGN KEY (item_id) REFERENCES InventoryData(item_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionStatus (\n    production_id INT PRIMARY KEY,\n    item_id INT,\n    production_date DATE NOT NULL,\n    completed BOOLEAN NOT NULL,\n    FOREIGN KEY (item_id) REFERENCES InventoryData(item_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE resources_capacity (  warehouse_id INT,  warehouse_name VARCHAR(255),  capacity INT,  PRIMARY KEY (warehouse_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_data (  product_id INT,  product_name VARCHAR(255),  quantity INT,  warehouse_id INT,  FOREIGN KEY (warehouse_id) REFERENCES resources_capacity(warehouse_id),  PRIMARY KEY (product_id, warehouse_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouse_location (  warehouse_id INT,  location VARCHAR(255),  PRIMARY KEY (warehouse_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE product_categories (  category_id INT,  category_name VARCHAR(255),  PRIMARY KEY (category_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouse_inventory_status (  warehouse_id INT,  product_id INT,  inventory_status VARCHAR(50),  FOREIGN KEY (warehouse_id) REFERENCES resources_capacity(warehouse_id),  FOREIGN KEY (product_id) REFERENCES inventory_data(product_id),  PRIMARY KEY (warehouse_id, product_id) );"
+      }
+    ]
+  }
+]

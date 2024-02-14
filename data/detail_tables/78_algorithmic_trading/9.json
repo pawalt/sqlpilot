@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_trading_data (\n    id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15),\n    trading_data TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_trading_data (\n    trade_id INT PRIMARY KEY,\n    trade_date DATE,\n    stock_symbol VARCHAR(255),\n    trade_amount DECIMAL,\n    trader_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP,\n    user_id INT,\n    action VARCHAR(255),\n    ip_address VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_trading_data (\n    id SERIAL PRIMARY KEY,\n    trade_id TEXT NOT NULL,\n    trade_date DATE NOT NULL,\n    trader_name TEXT NOT NULL,\n    trade_amount DECIMAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_time TIMESTAMP NOT NULL,\n    accessed_table TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id SERIAL PRIMARY KEY,\n    username TEXT NOT NULL,\n    password TEXT NOT NULL,\n    access_level TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trades (\n    trade_id INT PRIMARY KEY,\n    client_id INT REFERENCES clients(id),\n    symbol VARCHAR(10) NOT NULL,\n    amount DECIMAL NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE brokers (\n    broker_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id INT PRIMARY KEY,\n    action VARCHAR(100) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    user_id INT REFERENCES clients(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE traders (\n  trader_id INT PRIMARY KEY,\n  trader_name VARCHAR(50) NOT NULL,\n  trader_email VARCHAR(100) UNIQUE,\n  trader_password VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id SERIAL PRIMARY KEY,\n  transaction_date DATE NOT NULL,\n  transaction_amount DECIMAL(10, 2) NOT NULL,\n  trader_id INT REFERENCES traders(trader_id) ON DELETE CASCADE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n  level_id SERIAL PRIMARY KEY,\n  level_name VARCHAR(50) UNIQUE NOT NULL,\n  level_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n  control_id SERIAL PRIMARY KEY,\n  trader_id INT REFERENCES traders(trader_id) ON DELETE CASCADE,\n  level_id INT REFERENCES access_levels(level_id) ON DELETE CASCADE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n  log_id SERIAL PRIMARY KEY,\n  log_date TIMESTAMP NOT NULL,\n  log_description TEXT NOT NULL,\n  trader_id INT REFERENCES traders(trader_id) ON DELETE CASCADE\n)"
+      }
+    ]
+  }
+]

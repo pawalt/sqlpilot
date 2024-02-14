@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE client_communications (\n  communication_id UUID PRIMARY KEY,\n  client_id UUID,\n  communication_type VARCHAR(50),\n  communication_date TIMESTAMP,\n  communication_content TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ClientInteractions (\n    interaction_id SERIAL PRIMARY KEY,\n    client_id INT NOT NULL,\n    interaction_date TIMESTAMP NOT NULL,\n    interaction_type VARCHAR(50) NOT NULL,\n    interaction_description TEXT,\n    FOREIGN KEY (client_id) REFERENCES Clients(client_id)\n);\n\nCREATE TABLE Clients (\n    client_id SERIAL PRIMARY KEY,\n    client_name VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20),\n    email VARCHAR(100),\n    address TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(255) NOT NULL,\n  email VARCHAR(255),\n  phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communications (\n  communication_id INT PRIMARY KEY,\n  client_id INT REFERENCES clients(client_id),\n  communication_date DATE,\n  communication_type VARCHAR(50),\n  communication_content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  interaction_id INT PRIMARY KEY,\n  communication_id INT REFERENCES communications(communication_id),\n  interaction_date DATE,\n  interaction_type VARCHAR(50),\n  interaction_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communications (\n    communication_id INT PRIMARY KEY,\n    client_id INT,\n    communication_date DATE,\n    communication_type VARCHAR(50),\n    communication_content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    client_id INT,\n    interaction_date DATE,\n    interaction_type VARCHAR(50),\n    interaction_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id INT PRIMARY KEY,\n    client_id INT,\n    task_name VARCHAR(100),\n    task_description TEXT,\n    task_due_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communications (\n  communication_id INT PRIMARY KEY,\n  client_id INT,\n  communication_type VARCHAR(20),\n  communication_date TIMESTAMP,\n  FOREIGN KEY (client_id) REFERENCES clients(client_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  interaction_id INT PRIMARY KEY,\n  client_id INT,\n  interaction_type VARCHAR(20),\n  interaction_date TIMESTAMP,\n  FOREIGN KEY (client_id) REFERENCES clients(client_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE notes (\n  note_id INT PRIMARY KEY,\n  interaction_id INT,\n  note_text TEXT,\n  note_date TIMESTAMP,\n  FOREIGN KEY (interaction_id) REFERENCES interactions(interaction_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n  task_id INT PRIMARY KEY,\n  client_id INT,\n  task_description TEXT,\n  task_due_date DATE,\n  task_status VARCHAR(20) DEFAULT 'Pending',\n  FOREIGN KEY (client_id) REFERENCES clients(client_id)\n);\n"
+      }
+    ]
+  }
+]

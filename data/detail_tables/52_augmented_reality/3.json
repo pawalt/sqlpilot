@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE models (\n  model_id UUID PRIMARY KEY,\n  model_name VARCHAR(255) NOT NULL,\n  model_file BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE models (model_id INT PRIMARY KEY,\n             model_name VARCHAR(255) NOT NULL,\n             model_file BYTEA NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE textures (texture_id INT PRIMARY KEY,\n               texture_name VARCHAR(255) NOT NULL,\n               texture_file BYTEA NOT NULL);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50) NOT NULL,\n    model_file BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE textures (\n    texture_id INT PRIMARY KEY,\n    texture_name VARCHAR(50) NOT NULL,\n    texture_file BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE simulations (\n    simulation_id INT PRIMARY KEY,\n    simulation_name VARCHAR(50) NOT NULL,\n    model_id INT REFERENCES models(model_id),\n    texture_id INT REFERENCES textures(texture_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Model (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(50) NOT NULL,\n    model_size INT NOT NULL,\n    model_url VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Texture (\n    texture_id UUID PRIMARY KEY,\n    texture_name VARCHAR(50) NOT NULL,\n    texture_url VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelTextureMapping (\n    mapping_id UUID PRIMARY KEY,\n    model_id UUID REFERENCES Model(model_id),\n    texture_id UUID REFERENCES Texture(texture_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Simulation (\n    simulation_id UUID PRIMARY KEY,\n    simulation_name VARCHAR(100) NOT NULL,\n    simulation_description TEXT NOT NULL,\n    model_id UUID REFERENCES Model(model_id),\n    texture_id UUID REFERENCES Texture(texture_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Models (\n    model_id UUID PRIMARY KEY,\n    model_name STRING NOT NULL,\n    model_file BYTEA NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Textures (\n    texture_id UUID PRIMARY KEY,\n    texture_name STRING NOT NULL,\n    texture_file BYTEA NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelTextures (\n    model_id UUID REFERENCES Models(model_id),\n    texture_id UUID REFERENCES Textures(texture_id),\n    PRIMARY KEY(model_id, texture_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Tags (\n    tag_id UUID PRIMARY KEY,\n    tag_name STRING NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelTags (\n    model_id UUID REFERENCES Models(model_id),\n    tag_id UUID REFERENCES Tags(tag_id),\n    PRIMARY KEY(model_id, tag_id)\n);\n"
+      }
+    ]
+  }
+]

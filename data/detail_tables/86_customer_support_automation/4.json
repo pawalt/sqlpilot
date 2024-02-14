@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE auto_responses (\n  id INT PRIMARY KEY,\n  query_text VARCHAR(255),\n  response_text VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_queries (\n  customer_id INT PRIMARY KEY,\n  query_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE response_triggers (\n  trigger_id INT PRIMARY KEY,\n  query_id INT,\n  response_text TEXT,\n  FOREIGN KEY (query_id) REFERENCES customer_queries(customer_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerQueries (\n    query_id INT PRIMARY KEY,\n    query_text TEXT,\n    response_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SQLQueries (\n    query_id INT PRIMARY KEY,\n    query_text TEXT,\n    trigger_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Triggers (\n    trigger_id INT PRIMARY KEY,\n    trigger_text TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerQueries(id SERIAL PRIMARY KEY,\n  query_text TEXT,\n  response_text TEXT,\n  is_resolved BOOLEAN DEFAULT FALSE)"
+      },
+      {
+        "table_schema": "CREATE TABLE QueryTriggers(id SERIAL PRIMARY KEY,\n  trigger_name VARCHAR(255),\n  trigger_sql TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE TriggerLogs(id SERIAL PRIMARY KEY,\n  trigger_id INT,\n  log_message TEXT,\n  log_timestamp TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE ResponseHistory(id SERIAL PRIMARY KEY,\n  query_id INT,\n  response_id INT,\n  response_timestamp TIMESTAMP)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ResponsesToQueries (\n    id INT PRIMARY KEY,\n    query_text VARCHAR(255),\n    response_text VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerQueries (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    query_text VARCHAR(255),\n    query_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PredefinedSQLQueries (\n    id INT PRIMARY KEY,\n    query_text VARCHAR(255),\n    response_text VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TriggerLogs (\n    id INT PRIMARY KEY,\n    trigger_event VARCHAR(255),\n    trigger_time TIMESTAMP,\n    response_generated BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerQueryHistory (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    query_id INT,\n    query_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

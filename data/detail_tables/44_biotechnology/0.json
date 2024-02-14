@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_sequences (\n  sequence_id SERIAL PRIMARY KEY,\n  sequence_name VARCHAR(100) NOT NULL,\n  sequence_data BYTEA NOT NULL,\n  creation_date TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_sequences (\n    id INT PRIMARY KEY,\n    sequence TEXT\n);\n\nCREATE TABLE sequence_analysis (\n    analysis_id INT PRIMARY KEY,\n    sequence_id INT,\n    analysis_result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n    id BIGINT PRIMARY KEY,\n    gene_name VARCHAR(255) NOT NULL,\n    sequence TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mutations (\n    mutation_id BIGINT PRIMARY KEY,\n    gene_id BIGINT,\n    mutation_type VARCHAR(50),\n    position INT,\n    effect VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id BIGINT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    affiliation VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_sequences (\n  ID INT PRIMARY KEY,\n  sequence TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_metadata (\n  sequence_id INT REFERENCES genetic_sequences(ID),\n  gene_name TEXT,\n  organism TEXT,\n  PRIMARY KEY (sequence_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE research_results (\n  result_id SERIAL PRIMARY KEY,\n  sequence_id INT REFERENCES genetic_sequences(ID),\n  research_data JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n  researcher_id SERIAL PRIMARY KEY,\n  name TEXT,\n  email TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_sequences (\n\tid SERIAL PRIMARY KEY,\n\tdna_sequence TEXT NOT NULL,\n\tprotein_sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_labs (\n\tlab_id SERIAL PRIMARY KEY,\n\tlab_name TEXT NOT NULL,\n\tlocation TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scientists (\n\tscientist_id SERIAL PRIMARY KEY,\n\tname TEXT NOT NULL,\n\tspecialization TEXT,\n\tlab_id INT REFERENCES research_labs(lab_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n\texperiment_id SERIAL PRIMARY KEY,\n\tstart_date DATE,\n\tend_date DATE,\n\tresearcher_id INT REFERENCES scientists(scientist_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n\tresult_id SERIAL PRIMARY KEY,\n\texperiment_id INT REFERENCES experiments(experiment_id),\n\tanalysis_data JSONB\n);"
+      }
+    ]
+  }
+]

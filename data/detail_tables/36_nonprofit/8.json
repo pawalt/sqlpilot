@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donor_communication_preferences (\n  donor_id UUID PRIMARY KEY,\n  email_preference BOOLEAN,\n  sms_preference BOOLEAN,\n  call_preference BOOLEAN,\n  last_engagement_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donors (\n  donor_id INT PRIMARY KEY,\n  donor_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(15),\n  communication_pref VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE engagement_history (\n  engagement_id INT PRIMARY KEY,\n  donor_id INT,\n  interaction_date DATE,\n  interaction_type VARCHAR(50),\n  outcome VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donor_preferences (\n    donor_id INT PRIMARY KEY,\n    email_notifications BOOLEAN,\n    sms_notifications BOOLEAN,\n    app_notifications BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE engagement_history (\n    engagement_id INT PRIMARY KEY,\n    donor_id INT,\n    communication_type VARCHAR(50),\n    communication_date DATE,\n    outcome TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donor_details (\n    donor_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donors (\n  donor_id INT PRIMARY KEY,\n  first_name VARCHAR,\n  last_name VARCHAR,\n  email VARCHAR,\n  phone_number VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_preferences (\n  preference_id INT PRIMARY KEY,\n  donor_id INT,\n  communication_channel VARCHAR,\n  is_subscribed BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE engagement_history (\n  engagement_id INT PRIMARY KEY,\n  donor_id INT,\n  timestamp TIMESTAMP,\n  action VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interaction_history (\n  interaction_id INT PRIMARY KEY,\n  donor_id INT,\n  timestamp TIMESTAMP,\n  interaction_type VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Donors (\n  donor_id SERIAL PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(15),\n  date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CommunicationPreferences (\n  preference_id SERIAL PRIMARY KEY,\n  donor_id INT REFERENCES Donors(donor_id) ON DELETE CASCADE,\n  email_opt_in BOOLEAN,\n  sms_opt_in BOOLEAN,\n  call_opt_in BOOLEAN,\n  last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EngagementHistory (\n  engagement_id SERIAL PRIMARY KEY,\n  donor_id INT REFERENCES Donors(donor_id) ON DELETE CASCADE,\n  interaction_date DATE,\n  channel VARCHAR(20),\n  outcome VARCHAR(50),\n  notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Events (\n  event_id SERIAL PRIMARY KEY,\n  event_name VARCHAR(100) NOT NULL,\n  event_date DATE,\n  location VARCHAR(100),\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EventRegistrations (\n  registration_id SERIAL PRIMARY KEY,\n  event_id INT REFERENCES Events(event_id) ON DELETE CASCADE,\n  donor_id INT REFERENCES Donors(donor_id) ON DELETE CASCADE,\n  registration_date TIMESTAMP,\n  attending BOOLEAN\n);"
+      }
+    ]
+  }
+]

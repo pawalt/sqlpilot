@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marketing_strategies (\n    id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    variation_name VARCHAR(255),\n    conversion_rate FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    experiment_id UUID PRIMARY KEY,\n    variation_id UUID,\n    user_id UUID,\n    conversion BOOLEAN,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_variations (\n    variation_id UUID PRIMARY KEY,\n    experiment_id UUID,\n    variation_name VARCHAR,\n    description VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marketing_strategies (\n    id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    variation_name VARCHAR(255),\n    conversion_rate DECIMAL,\n    revenue DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE strategy_performance (\n    id INT PRIMARY KEY,\n    strategy_id INT,\n    variation_id INT,\n    impressions INT,\n    clicks INT,\n    conversions INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    id INT PRIMARY KEY,\n    experiment_id INT,\n    strategy_id INT,\n    variation_id INT,\n    winning_variation BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment_ids (\n    exp_id UUID PRIMARY KEY,\n    exp_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    exp_id UUID,\n    user_name VARCHAR(255) NOT NULL,\n    date_joined DATE NOT NULL,\n    CONSTRAINT fk_exp_id FOREIGN KEY (exp_id) REFERENCES experiment_ids(exp_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE actions (\n    action_id UUID PRIMARY KEY,\n    user_id UUID,\n    action_name VARCHAR(255) NOT NULL,\n    action_date DATE NOT NULL,\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE variations (\n    variation_id UUID PRIMARY KEY,\n    exp_id UUID,\n    variation_name VARCHAR(255) NOT NULL,\n    CONSTRAINT fk_exp_id FOREIGN KEY (exp_id) REFERENCES experiment_ids(exp_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marketing_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(50),\n    variation_a_performance FLOAT,\n    variation_b_performance FLOAT,\n    variation_c_performance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    strategy_id INT,\n    conversion_rate FLOAT,\n    sample_size INT,\n    FOREIGN KEY (strategy_id) REFERENCES marketing_strategies (strategy_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    experiment_id INT,\n    conversion_status BOOLEAN,\n    FOREIGN KEY (experiment_id) REFERENCES experiments (experiment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_actions (\n    action_id INT PRIMARY KEY,\n    user_id INT,\n    action_type VARCHAR(50),\n    action_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users (user_id)\n);"
+      }
+    ]
+  }
+]

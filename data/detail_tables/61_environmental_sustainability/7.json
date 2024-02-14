@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE greenhouse_gas_emissions (\n  organization_id INT,\n  emission_type VARCHAR(50),\n  emission_value DECIMAL(10,2),\n  reporting_year INT,\n  PRIMARY KEY (organization_id, emission_type, reporting_year)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emissions_reports (\n  report_id SERIAL PRIMARY KEY,\n  organization_id INT NOT NULL,\n  emission_date DATE NOT NULL,\n  emission_source VARCHAR(100) NOT NULL,\n  emission_amount DECIMAL(10,2) NOT NULL\n);\n\nCREATE TABLE carbon_footprint (\n  footprint_id SERIAL PRIMARY KEY,\n  organization_id INT NOT NULL,\n  footprint_date DATE NOT NULL,\n  footprint_value DECIMAL(10,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE organizations (\n    id INT NOT NULL PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    industry VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emissions (\n    id INT NOT NULL PRIMARY KEY,\n    org_id INT NOT NULL,\n    emission_type VARCHAR(255) NOT NULL,\n    value FLOAT NOT NULL,\n    date DATE NOT NULL,\n    FOREIGN KEY (org_id) REFERENCES organizations(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE carbon_footprint (\n    id INT NOT NULL PRIMARY KEY,\n    org_id INT NOT NULL,\n    footprint_type VARCHAR(255) NOT NULL,\n    value FLOAT NOT NULL,\n    date DATE NOT NULL,\n    FOREIGN KEY (org_id) REFERENCES organizations(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Emissions (\n    id INT PRIMARY KEY,\n    organization_id INT,\n    year INT,\n    emission_type VARCHAR,\n    amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Organizations (\n    id INT PRIMARY KEY,\n    name VARCHAR,\n    location VARCHAR,\n    industry VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CarbonFootprint (\n    id INT PRIMARY KEY,\n    organization_id INT,\n    year INT,\n    total_footprint DECIMAL,\n    offset_footprint DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Reports (\n    id INT PRIMARY KEY,\n    organization_id INT,\n    year INT,\n    report_type VARCHAR,\n    report_url VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmissionsData (\n    org_name VARCHAR(255),\n    emission_date DATE,\n    emission_type VARCHAR(50),\n    emission_amount DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Organizations (\n    org_id SERIAL PRIMARY KEY,\n    org_name VARCHAR(255),\n    org_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EmissionSources (\n    source_id SERIAL PRIMARY KEY,\n    source_name VARCHAR(255),\n    source_category VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Calculations (\n    calc_id SERIAL PRIMARY KEY,\n    org_id INT REFERENCES Organizations(org_id),\n    emission_source_id INT REFERENCES EmissionSources(source_id),\n    calc_date DATE,\n    calc_result DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportingLogs (\n    log_id SERIAL PRIMARY KEY,\n    org_id INT REFERENCES Organizations(org_id),\n    log_date DATE,\n    log_message TEXT\n);\n"
+      }
+    ]
+  }
+]
