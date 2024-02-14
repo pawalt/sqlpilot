@@ -204,7 +204,7 @@ def generate_training_str(tables: List[str], statement: str) -> str:
         joined_tables = "\n\n".join(perm)
         # support both upper and lower case sql
         for stmt in [statement, statement.lower()]:
-            ret.append(f"<t>{joined_tables}</t><stat>{stmt}</stat>")
+            ret.append(f"TABLEDATA\n\n{joined_tables}\n\nSTATEMENT\n\n{stmt}")
 
     return ret
 
