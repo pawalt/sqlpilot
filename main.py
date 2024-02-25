@@ -1,4 +1,5 @@
 import instructor
+import random
 import sys
 from openai import OpenAI
 from pydantic import BaseModel
@@ -222,10 +223,6 @@ def generate_training_data():
     for topic_file in topic_files:
         topic_header = topic_file.replace(".json", "")
 
-        topic_data_dir = f"{TRAINING_DATA_DIR}/{topic_header}"
-        if not os.path.exists(topic_data_dir):
-            os.makedirs(topic_data_dir)
-
         # get all table schemas for this topic
         topic_table_filepath = f"{TABLE_DIR}/{topic_file}"
         with open(topic_table_filepath, "r") as f:
@@ -249,7 +246,7 @@ def generate_training_data():
 
             # skip if we already have training data for this statement type
             if os.path.exists(f"{topic_data_dir}/{statement_type}.txt"):
-                continue
+                continu
 
             print(f"Generating training data for {topic_header} {statement_type}")
 
@@ -475,6 +472,9 @@ def generate_detailed_training_data():
     # sort so we move up
     topic_files.sort()
 
+    RESULT_SPLITS = 10
+    result_statements = []
+
     for topic_dir in topic_files:
         listed_files = os.listdir(f"{DETAIL_STATEMENT_DIR}/{topic_dir}")
         listed_files.sort()
@@ -497,47 +497,45 @@ def generate_detailed_training_data():
             ))
 
 
-            training_basedir = f"{TRAINING_DATA_DIR}/{topic_dir}/{stripped}"
-
-            if not os.path.exists(training_basedir):
-                os.makedirs(training_basedir)
-
             statement_files = os.listdir(topic_statement_basedir)
             statement_files.sort()
 
             for statement_file in statement_files:
-                statement_type = statement_file.replace(".json", "")
-
-                training_filepath = f"{training_basedir}/{statement_type}.json"
-
-                # skip if we already have training data for this statement type
-                if os.path.exists(training_filepath):
-                    continue
-
-                print(f"Generating training data for {topic_dir} {stripped} {statement_type}")
-
                 statement_filepath = f"{topic_statement_basedir}/{statement_file}"
 
                 with open(statement_filepath, "r") as f:
                     statements_raw = json.loads(f.read())
 
-                training_strs = []
                 for i, table_statements in enumerate(statements_raw):
                     # match up each statement with the schema it was generated against
                     matched_table = table_schemas[i]
-                    for individual_statement in table_statements["statements"]:
-                        create_table_st = "\n\n".join(matched_table)
+                    create_table_st = "\n\n".join(matched_table)
 
-                        training_strs.append(f"""### TABLEDATA
+                    for individual_statement in table_statements["statements"]:
+                        training_line = f"""### TABLEDATA
 
 {create_table_st.strip()}
 
 ### STATEMENT
 
-{individual_statement}""")
+{individual_statement}"""
 
-                with open(training_filepath, "w") as f:
-                    f.write(json.dumps(training_strs, indent=2))
+                        result_statements.append(training_line)
+
+    # shuffle the result statements
+    random.shuffle(result_statements)
+
+    # split into RESULT_SPLITS
+    result_lists = [result_statements[i::RESULT_SPLITS] for i in range(RESULT_SPLITS)]
+
+    if not os.path.exists(TRAINING_DATA_DIR):
+        os.makedirs(TRAINING_DATA_DIR)
+        
+    # write out result lists to training data dir
+    for i, result_list in enumerate(result_lists):
+        with open(f"{TRAINING_DATA_DIR}/{i}.json", "w") as f:
+            f.write(json.dumps(result_list, indent=2))
+
 
 if __name__ == "__main__":
     generate_detailed_training_data()
