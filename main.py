@@ -396,9 +396,10 @@ def generate_detail_statements(start_ind: int, num_topics: int):
     topic_files.sort()
     topic_files = topic_files[start_ind:start_ind + num_topics]
 
-    for topic_dir in topic_files:
+    for topic_ind, topic_dir in enumerate(topic_files):
         to_list = f"{DETAIL_TABLE_DIR}/{topic_dir}"
         listed_files = os.listdir(to_list)
+        listed_files.sort()
 
         for listed in listed_files:
             stripped = listed.replace('.json', '')
@@ -424,9 +425,9 @@ def generate_detail_statements(start_ind: int, num_topics: int):
                 if os.path.exists(statement_filename):
                     continue
 
-                print(f"Generating {statement_type} statements for {topic_dir} ({stripped})")
+                print(f"({topic_ind + 1}/{len(topic_files)}) Generating {statement_type} statements for {topic_dir} ({stripped})")
 
-                max_tokens = 2048 if statement_type in DEETBIG_STATEMENT_TYPES else 512
+                max_tokens = 4096
                 timeout = 60 if statement_type in DEETBIG_STATEMENT_TYPES else 10
 
                 created_statements = []
@@ -455,3 +456,88 @@ These should be {stmt_type} statements for the following database schema:
 
                 with open(statement_filename, "w") as f:
                     f.write(json.dumps(created_statements, indent=2))
+
+def paralellize_statement_gen():
+    from multiprocessing import Process
+
+    processes = []
+    BATCH_SIZE = 10 
+    for i in range(0, 90, BATCH_SIZE):
+        p = Process(target=generate_detail_statements, args=(i, BATCH_SIZE))
+        p.start()
+        processes.append(p)
+    
+    for p in processes:
+        p.join()
+
+def generate_detailed_training_data():
+    topic_files = os.listdir(DETAIL_STATEMENT_DIR)
+    # sort so we move up
+    topic_files.sort()
+
+    for topic_dir in topic_files:
+        listed_files = os.listdir(f"{DETAIL_STATEMENT_DIR}/{topic_dir}")
+        listed_files.sort()
+
+        for stripped in listed_files:
+            listed = f"{stripped}.json"
+
+            topic_statement_basedir = f"{DETAIL_STATEMENT_DIR}/{topic_dir}/{stripped}"
+
+            with open(f"{DETAIL_TABLE_DIR}/{topic_dir}/{listed}", "r") as f:
+                table_schemas_raw = json.loads(f.read())
+
+            # generate list of table schemas
+            table_schemas = list(map(
+                lambda tab: list(map(
+                    lambda jawn: jawn["table_schema"],
+                    tab["tables"],
+                )),
+                table_schemas_raw,
+            ))
+
+
+            training_basedir = f"{TRAINING_DATA_DIR}/{topic_dir}/{stripped}"
+
+            if not os.path.exists(training_basedir):
+                os.makedirs(training_basedir)
+
+            statement_files = os.listdir(topic_statement_basedir)
+            statement_files.sort()
+
+            for statement_file in statement_files:
+                statement_type = statement_file.replace(".json", "")
+
+                training_filepath = f"{training_basedir}/{statement_type}.json"
+
+                # skip if we already have training data for this statement type
+                if os.path.exists(training_filepath):
+                    continue
+
+                print(f"Generating training data for {topic_dir} {stripped} {statement_type}")
+
+                statement_filepath = f"{topic_statement_basedir}/{statement_file}"
+
+                with open(statement_filepath, "r") as f:
+                    statements_raw = json.loads(f.read())
+
+                training_strs = []
+                for i, table_statements in enumerate(statements_raw):
+                    # match up each statement with the schema it was generated against
+                    matched_table = table_schemas[i]
+                    for individual_statement in table_statements["statements"]:
+                        create_table_st = "\n\n".join(matched_table)
+
+                        training_strs.append(f"""### TABLEDATA
+
+{create_table_st.strip()}
+
+### STATEMENT
+
+{individual_statement}""")
+
+                with open(training_filepath, "w") as f:
+                    f.write(json.dumps(training_strs, indent=2))
+
+if __name__ == "__main__":
+    generate_detailed_training_data()
