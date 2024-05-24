@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE templates (\n  template_id UUID PRIMARY KEY,\n  template_name VARCHAR(255) NOT NULL,\n  template_type VARCHAR(50) NOT NULL,\n  template_content TEXT,\n  created_at TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE templates (\n    template_id INT PRIMARY KEY,\n    template_name TEXT,\n    template_content TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE layouts (\n    layout_id INT PRIMARY KEY,\n    layout_name TEXT,\n    layout_content TEXT,\n    created_at TIMESTAMP,\n    template_id INT REFERENCES templates(template_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE templates (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE layouts (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    template_id INT,\n    FOREIGN KEY (template_id) REFERENCES templates(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE whiteboards (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    layout_id INT,\n    FOREIGN KEY (layout_id) REFERENCES layouts(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE templates (\n    template_id INT PRIMARY KEY,\n    template_name VARCHAR(255) NOT NULL,\n    template_description TEXT,\n    created_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE layouts (\n    layout_id INT PRIMARY KEY,\n    layout_name VARCHAR(255) NOT NULL,\n    template_id INT REFERENCES templates(template_id),\n    created_by VARCHAR(100) NOT NULL,\n    last_modified TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE whiteboards (\n    whiteboard_id INT PRIMARY KEY,\n    whiteboard_name VARCHAR(255) NOT NULL,\n    layout_id INT REFERENCES layouts(layout_id),\n    owner_id INT,\n    created_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(100) UNIQUE NOT NULL,\n    email VARCHAR(255) UNIQUE NOT NULL,\n    created_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE templates (\n    template_id INT PRIMARY KEY,\n    template_name VARCHAR(255),\n    category VARCHAR(50),\n    content TEXT,\n    created_at TIMESTAMP,\n    modified_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE layouts (\n    layout_id INT PRIMARY KEY,\n    layout_title VARCHAR(255),\n    template_id INT,\n    layout_content JSON,\n    created_by VARCHAR(100),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(100) UNIQUE,\n    email VARCHAR(255),\n    password VARCHAR(255),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) UNIQUE,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT,\n    category_id INT,\n    permission_level INT,\n    PRIMARY KEY (user_id, category_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (category_id) REFERENCES categories(category_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE template_layouts (\n    template_id INT,\n    layout_id INT,\n    PRIMARY KEY (template_id, layout_id),\n    FOREIGN KEY (template_id) REFERENCES templates(template_id),\n    FOREIGN KEY (layout_id) REFERENCES layouts(layout_id)\n);"
+      }
+    ]
+  }
+]

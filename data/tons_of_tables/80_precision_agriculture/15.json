@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n    image_id UUID PRIMARY KEY,\n    image_url TEXT NOT NULL,\n    capture_date TIMESTAMP NOT NULL,\n    location TEXT NOT NULL,\n    deforestation_detected BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE deforestation_activities (\n    id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP,\n    satellite_id INT,\n    location GEOMETRY(Point),\n    deforestation_level FLOAT\n);\n\nCREATE TABLE conservation_efforts (\n    id SERIAL PRIMARY KEY,\n    initiative_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    location GEOMETRY(Polygon),\n    conservation_budget DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE forest_regions (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(255),\n    region_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_url TEXT,\n    captured_date DATE,\n    region_id INT,\n    FOREIGN KEY (region_id) REFERENCES forest_regions(region_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE deforestation_activities (\n    activity_id INT PRIMARY KEY,\n    activity_type VARCHAR(100),\n    activity_date DATE,\n    activity_description TEXT,\n    image_id INT,\n    FOREIGN KEY (image_id) REFERENCES satellite_images(image_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n  image_id INT PRIMARY KEY,\n  image_url TEXT,\n  capture_date DATE,\n  location_geopoint GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeforestationAlerts (\n  alert_id INT PRIMARY KEY,\n  image_id INT REFERENCES SatelliteImages(image_id),\n  alert_timestamp TIMESTAMP,\n  alert_type VARCHAR(50),\n  alert_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ConservationEfforts (\n  effort_id INT PRIMARY KEY,\n  effort_name VARCHAR(100),\n  effort_description TEXT,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MonitoringTeam (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(100),\n  team_lead VARCHAR(100),\n  team_size INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n    image_id INT PRIMARY KEY,\n    image_url TEXT,\n    captured_date DATE,\n    location_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeforestationAreas (\n    area_id INT PRIMARY KEY,\n    area_name TEXT,\n    area_size FLOAT,\n    deforestation_level ENUM('Low', 'Medium', 'High'),\n    image_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ConservationEfforts (\n    conservation_id INT PRIMARY KEY,\n    effort_name TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MonitoringTeam (\n    team_id INT PRIMARY KEY,\n    team_name TEXT,\n    leader_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeforestationAlerts (\n    alert_id INT PRIMARY KEY,\n    alert_description TEXT,\n    alert_date DATE,\n    area_id INT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MealPlanner (\n    meal_id UUID PRIMARY KEY,\n    meal_name VARCHAR(255) NOT NULL,\n    meal_type VARCHAR(50) NOT NULL,\n    calories INT NOT NULL,\n    protein_g FLOAT NOT NULL,\n    carbs_g FLOAT NOT NULL,\n    fats_g FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MealPlan (\n    meal_id INT PRIMARY KEY,\n    meal_name VARCHAR(255),\n    meal_description TEXT,\n    meal_type ENUM('Breakfast', 'Lunch', 'Dinner'),\n    calories_per_serving INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NutritionalRecommendations (\n    recommendation_id INT PRIMARY KEY,\n    age_range VARCHAR(50),\n    gender ENUM('Male', 'Female'),\n    min_calories_per_day INT,\n    max_calories_per_day INT,\n    vitamin_requirements TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meal_plans (\n    meal_plan_id UUID PRIMARY KEY,\n    user_id UUID,\n    meal_plan_name VARCHAR(255),\n    total_calories INT,\n    total_protein INT,\n    total_carbs INT,\n    total_fat INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meals (\n    meal_id UUID PRIMARY KEY,\n    meal_name VARCHAR(255),\n    calories INT,\n    protein INT,\n    carbs INT,\n    fat INT,\n    meal_plan_id UUID REFERENCES meal_plans(meal_plan_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(255),\n    age INT,\n    weight_kg FLOAT,\n    height_cm INT,\n    daily_calorie_goal INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meals (\n  meal_id SERIAL PRIMARY KEY,\n  meal_name VARCHAR(50) NOT NULL,\n  calories INTEGER,\n  proteins INTEGER,\n  carbs INTEGER,\n  fats INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  age INTEGER,\n  gender VARCHAR(10),\n  weight INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE daily_meal_plan (\n  plan_id SERIAL PRIMARY KEY,\n  user_id INTEGER REFERENCES users(user_id),\n  meal_id INTEGER REFERENCES meals(meal_id),\n  meal_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE nutritional_values (\n  nutrient_id SERIAL PRIMARY KEY,\n  nutrient_name VARCHAR(50),\n  unit VARCHAR(10),\n  recommended_daily_intake INTEGER\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Meal_Plans (\n    meal_id INT PRIMARY KEY,\n    meal_name VARCHAR(255),\n    meal_type VARCHAR(50),\n    calories_per_serving INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Ingredients (\n    ingredient_id INT PRIMARY KEY,\n    ingredient_name VARCHAR(255),\n    calorie_count INT,\n    category VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE User_Profiles (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(255),\n    age INT,\n    gender VARCHAR(10),\n    height FLOAT,\n    weight FLOAT,\n    activity_level VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Meal_Ingredients (\n    meal_id INT,\n    ingredient_id INT,\n    serving_size INT,\n    CONSTRAINT fk_meal FOREIGN KEY (meal_id) REFERENCES Meal_Plans(meal_id),\n    CONSTRAINT fk_ingredient FOREIGN KEY (ingredient_id) REFERENCES Ingredients(ingredient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE User_Meal_Logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    meal_id INT,\n    date DATE,\n    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES User_Profiles(user_id),\n    CONSTRAINT fk_meal FOREIGN KEY (meal_id) REFERENCES Meal_Plans(meal_id)\n);"
+      }
+    ]
+  }
+]

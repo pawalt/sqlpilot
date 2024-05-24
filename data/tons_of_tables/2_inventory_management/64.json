@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transportation_costs (\n  shipment_id INT PRIMARY KEY,\n  carrier_name VARCHAR(50),\n  shipment_date DATE,\n  origin_location VARCHAR(100),\n  destination_location VARCHAR(100),\n  total_cost DECIMAL(10,2),\n  delivery_status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carriers (\n carrier_id INT PRIMARY KEY,\n carrier_name VARCHAR(50),\n carrier_type VARCHAR(50),\n shipping_cost DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipping_logs (\n log_id INT PRIMARY KEY,\n order_id INT,\n carrier_id INT,\n shipping_date DATE,\n delivery_date DATE,\n shipped_from VARCHAR(100),\n shipped_to VARCHAR(100),\n shipping_cost DECIMAL,\n FOREIGN KEY (carrier_id) REFERENCES carriers(carrier_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carriers (carrier_id INT PRIMARY KEY,\n                    carrier_name VARCHAR(50) NOT NULL,\n                    carrier_type VARCHAR(50) NOT NULL,\n                    cost_per_mile DECIMAL(10, 2) NOT NULL,\n                    rating INT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (route_id INT PRIMARY KEY,\n                    origin VARCHAR(100) NOT NULL,\n                    destination VARCHAR(100) NOT NULL,\n                    distance_in_miles DECIMAL(10, 2) NOT NULL,\n                    average_speed DECIMAL(5, 2),\n                    travel_time_in_hours DECIMAL(5, 2),\n                    cost_estimate DECIMAL(10, 2),\n                    best_carrier_id INT REFERENCES carriers(carrier_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (shipment_id INT PRIMARY KEY,\n                    route_id INT REFERENCES routes(route_id),\n                    shipment_date DATE NOT NULL,\n                    shipment_cost DECIMAL(10, 2) NOT NULL,\n                    payment_status VARCHAR(20) NOT NULL);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transportation_costs (\n    shipment_id INT PRIMARY KEY,\n    carrier_name VARCHAR(255),\n    shipment_cost DECIMAL(10, 2),\n    shipment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE carrier_details (\n    carrier_id INT PRIMARY KEY,\n    carrier_name VARCHAR(255),\n    carrier_location VARCHAR(255),\n    carrier_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment_tracking (\n    tracking_id INT PRIMARY KEY,\n    shipment_id INT,\n    tracking_status VARCHAR(50),\n    tracking_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cost_comparison (\n    comparison_id INT PRIMARY KEY,\n    shipment_id INT,\n    carrier_name VARCHAR(255),\n    cost_difference DECIMAL(10, 2),\n    comparison_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carriers (\n    carrier_id INT PRIMARY KEY,\n    carrier_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n    shipment_id INT PRIMARY KEY,\n    shipment_date DATE NOT NULL,\n    from_location VARCHAR(255) NOT NULL,\n    to_location VARCHAR(255) NOT NULL,\n    shipment_cost DECIMAL(10,2) NOT NULL,\n    carrier_id INT NOT NULL,\n    FOREIGN KEY (carrier_id) REFERENCES carriers(carrier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id INT PRIMARY KEY,\n    start_location VARCHAR(255) NOT NULL,\n    end_location VARCHAR(255) NOT NULL,\n    distance DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE costs (\n    cost_id INT PRIMARY KEY,\n    cost_category VARCHAR(255) NOT NULL,\n    amount DECIMAL(10,2) NOT NULL,\n    shipment_id INT NOT NULL,\n    FOREIGN KEY (shipment_id) REFERENCES shipments(shipment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE insights (\n    insight_id INT PRIMARY KEY,\n    insight_description TEXT NOT NULL,\n    generated_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

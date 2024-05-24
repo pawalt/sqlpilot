@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Green_Building_Compliance_Documents (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(255),\n    document_type VARCHAR(50),\n    created_date TIMESTAMP,\n    compliance_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenBuildingDocuments (\n    document_id SERIAL PRIMARY KEY,\n    document_name VARCHAR(100),\n    document_type VARCHAR(50),\n    date_created TIMESTAMP,\n    compliance_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BuildingOwners (\n    owner_id SERIAL PRIMARY KEY,\n    owner_name VARCHAR(100),\n    building_address VARCHAR(150),\n    contact_email VARCHAR(50),\n    contact_phone VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Building_Compliance_Documents (\n    document_id SERIAL PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    document_type VARCHAR(50) NOT NULL,\n    compliance_status BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Building_Details (\n    building_id SERIAL PRIMARY KEY,\n    building_name VARCHAR(255) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    construction_year INTEGER NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Regulatory_Agencies (\n    agency_id SERIAL PRIMARY KEY,\n    agency_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(100) NOT NULL,\n    contact_number VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Green_Building_Projects (\n project_id INT PRIMARY KEY,\n project_name VARCHAR(255),\n project_location VARCHAR(255),\n project_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance_Documents (\n document_id INT PRIMARY KEY,\n document_name VARCHAR(255),\n document_type VARCHAR(50),\n document_date DATE,\n project_id INT,\n FOREIGN KEY (project_id) REFERENCES Green_Building_Projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance_Checklist (\n checklist_id INT PRIMARY KEY,\n checklist_item VARCHAR(255),\n checklist_status VARCHAR(50),\n document_id INT,\n FOREIGN KEY (document_id) REFERENCES Compliance_Documents(document_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Building_Owners (\n owner_id INT PRIMARY KEY,\n owner_name VARCHAR(255),\n owner_email VARCHAR(255),\n project_id INT,\n FOREIGN KEY (project_id) REFERENCES Green_Building_Projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenBuildingProjects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_location VARCHAR(255),\n    total_cost DECIMAL(10, 2),\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceDocuments (\n    doc_id INT PRIMARY KEY,\n    doc_name VARCHAR(255),\n    doc_type VARCHAR(50),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES GreenBuildingProjects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Contractors (\n    contractor_id INT PRIMARY KEY,\n    contractor_name VARCHAR(255),\n    contractor_company VARCHAR(255),\n    contractor_email VARCHAR(255),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES GreenBuildingProjects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspections (\n    inspection_id INT PRIMARY KEY,\n    inspection_date DATE,\n    inspection_type VARCHAR(50),\n    inspector_name VARCHAR(255),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES GreenBuildingProjects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Violations (\n    violation_id INT PRIMARY KEY,\n    violation_date DATE,\n    violation_description TEXT,\n    inspector_name VARCHAR(255),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES GreenBuildingProjects(project_id)\n);\n"
+      }
+    ]
+  }
+]

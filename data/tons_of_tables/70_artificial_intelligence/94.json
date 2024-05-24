@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_activity_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    activity_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserHistory (\n    user_id INT NOT NULL,\n    action_time TIMESTAMP NOT NULL,\n    action_description VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ActivityLogs (\n    log_id INT NOT NULL,\n    user_id INT NOT NULL,\n    log_time TIMESTAMP NOT NULL,\n    log_description TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE activities (\n    activity_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    activity_description TEXT,\n    activity_date DATE,\n    activity_time TIME,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    log_message TEXT,\n    log_timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_assistants_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assistant_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT REFERENCES virtual_assistants_users(user_id),\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES virtual_assistants_users(user_id),\n    action VARCHAR(100) NOT NULL,\n    log_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assistant_errors (\n    error_id INT PRIMARY KEY,\n    session_id INT REFERENCES assistant_sessions(session_id),\n    error_message TEXT NOT NULL,\n    error_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    email VARCHAR(255),\n    date_joined DATE\n);\n\nCREATE TABLE assistant_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    action VARCHAR(255),\n    timestamp TIMESTAMP\n);\n\nCREATE TABLE user_history (\n    history_id INT PRIMARY KEY,\n    user_id INT,\n    action VARCHAR(255),\n    timestamp TIMESTAMP\n);\n\nCREATE TABLE assistant_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    log_text TEXT,\n    log_date DATE\n);\n\nCREATE TABLE session_logs (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      }
+    ]
+  }
+]

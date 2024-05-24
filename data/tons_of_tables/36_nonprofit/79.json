@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_writing_projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  team_member_id INT NOT NULL,\n  project_description TEXT,\n  project_status ENUM('ongoing', 'completed', 'pending')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grants (\n  grant_id INT PRIMARY KEY,\n  title VARCHAR(255),\n  agency VARCHAR(100),\n  deadline DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborators (\n  collaborator_id INT PRIMARY KEY,\n  name VARCHAR(100),\n  email VARCHAR(255),\n  role VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_writers (\n\tid INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\temail VARCHAR(255) NOT NULL,\n\trole VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_projects (\n\tproject_id INT PRIMARY KEY,\n\tproject_name VARCHAR(255) NOT NULL,\n\tdeadline DATE,\n\tstatus VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_contributors (\n\tcontributor_id INT PRIMARY KEY,\n\tproject_id INT,\n\tcontributor_name VARCHAR(255) NOT NULL,\n\trole VARCHAR(50),\n\tFOREIGN KEY (project_id) REFERENCES grant_projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_writers (\n    id SERIAL PRIMARY KEY,\n    full_name TEXT NOT NULL,\n    email TEXT NOT NULL,\n    role TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_projects (\n    project_id SERIAL PRIMARY KEY,\n    project_title TEXT NOT NULL,\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id SERIAL PRIMARY KEY,\n    member_name TEXT NOT NULL,\n    email TEXT NOT NULL,\n    role TEXT,\n    joined_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_teams (\n    team_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    member_id INT NOT NULL,\n    team_role TEXT,\n    FOREIGN KEY (project_id) REFERENCES grant_projects(project_id),\n    FOREIGN KEY (member_id) REFERENCES team_members(member_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_writers (\n  writer_id INT PRIMARY KEY,\n  writer_name VARCHAR(255) NOT NULL,\n  writer_email VARCHAR(255) NOT NULL,\n  writer_department VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_projects (\n  project_id INT PRIMARY KEY,\n  project_title VARCHAR(255) NOT NULL,\n  project_description TEXT,\n  project_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_proposals (\n  proposal_id INT PRIMARY KEY,\n  project_id INT,\n  submission_date DATE,\n  proposal_status VARCHAR(50) NOT NULL,\n  FOREIGN KEY (project_id) REFERENCES grant_projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_updates (\n  update_id INT PRIMARY KEY,\n  proposal_id INT,\n  update_date DATE,\n  update_description TEXT,\n  FOREIGN KEY (proposal_id) REFERENCES grant_proposals(proposal_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_comments (\n  comment_id INT PRIMARY KEY,\n  update_id INT,\n  commenter_name VARCHAR(255) NOT NULL,\n  comment_text TEXT,\n  FOREIGN KEY (update_id) REFERENCES grant_updates(update_id)\n);"
+      }
+    ]
+  }
+]

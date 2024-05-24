@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM email_marketing WHERE campaign_id = 1;",
+      "SELECT email_address, open_status FROM email_marketing WHERE click_status = TRUE;",
+      "SELECT customer_id, email_address FROM email_marketing WHERE open_status = FALSE;",
+      "SELECT campaign_id, customer_id, email_address FROM email_marketing ORDER BY customer_id DESC;",
+      "SELECT * FROM email_marketing WHERE open_status = TRUE AND click_status = FALSE;",
+      "SELECT * FROM email_marketing WHERE open_status = TRUE;",
+      "SELECT campaign_id, email_address FROM email_marketing WHERE open_status = TRUE AND click_status = TRUE;",
+      "SELECT DISTINCT customer_id, email_address FROM email_marketing WHERE open_status = FALSE;",
+      "SELECT email_address FROM email_marketing WHERE customer_id = 100 AND click_status = TRUE;",
+      "SELECT campaign_id, customer_id, email_address FROM email_marketing WHERE open_status = TRUE AND click_status = FALSE;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_campaigns;",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns;",
+      "SELECT campaign_id, total_recipients FROM email_campaigns WHERE total_recipients > 1000;",
+      "SELECT * FROM customer_engagement WHERE engagement_id = 1;",
+      "SELECT customer_id, open_status, engagement_date FROM customer_engagement ORDER BY engagement_date DESC;",
+      "SELECT * FROM email_campaigns ORDER BY start_date DESC, end_date ASC LIMIT 10;",
+      "SELECT campaign_name, total_recipients FROM email_campaigns WHERE total_recipients > 1000;",
+      "SELECT campaign_name, start_date, end_date, total_recipients FROM email_campaigns WHERE start_date BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT campaign_name, COUNT(customer_id) AS total_engagements FROM email_campaigns JOIN customer_engagement ON email_campaigns.campaign_id = customer_engagement.campaign_id GROUP BY campaign_id HAVING total_engagements > 5 ORDER BY total_engagements DESC;",
+      "SELECT campaign_name, AVG(total_recipients) AS average_recipients FROM email_campaigns GROUP BY campaign_name HAVING AVG(total_recipients) > 5000 ORDER BY average_recipients DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_campaigns;",
+      "SELECT campaign_name, total_recipients FROM email_campaigns;",
+      "SELECT campaign_id, start_date, end_date FROM email_campaigns WHERE total_opened > 100;",
+      "SELECT * FROM customer_engagement WHERE last_name = 'Doe';",
+      "SELECT customer_id, email FROM customer_engagement ORDER BY customer_id DESC;",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns WHERE total_opened > 100 ORDER BY start_date DESC;",
+      "SELECT email, first_name, last_name FROM customer_engagement WHERE first_name LIKE 'J%' AND last_name LIKE 'S%' ORDER BY last_name ASC;",
+      "SELECT campaign_id, campaign_type, total_recipients, total_opened, total_clicked FROM email_campaigns WHERE total_clicked / total_opened > 0.1 ORDER BY total_recipients DESC;",
+      "SELECT e.campaign_id, ec.click_id, ec.click_timestamp FROM email_campaigns e JOIN email_clicks ec ON e.campaign_id = ec.campaign_id WHERE e.end_date > CURRENT_TIMESTAMP ORDER BY ec.click_timestamp ASC;",
+      "SELECT ce.customer_id, ce.first_name, ce.last_name, ec.click_id FROM customer_engagement ce LEFT JOIN email_clicks ec ON ce.customer_id = ec.customer_id WHERE ec.click_id IS NULL ORDER BY ce.last_name, ce.first_name DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_campaigns;",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns;",
+      "SELECT recipient_id, email_address, first_name, last_name FROM email_recipients;",
+      "SELECT recipient_id, subscription_date, subscription_status FROM email_recipients ORDER BY subscription_date DESC;",
+      "SELECT click_id, click_timestamp, device_type, clicked_url FROM email_clicks WHERE device_type = 'Mobile';",
+      "SELECT * FROM email_campaigns;",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns WHERE success_rate > 0.5 ORDER BY start_date DESC;",
+      "SELECT ec.click_id, ec.click_timestamp, er.email_address, er.first_name, er.last_name FROM email_clicks ec INNER JOIN email_recipients er ON ec.recipient_id = er.recipient_id;",
+      "SELECT ec.click_id, ec.campaign_id, ec.device_type, ec.clicked_url, ec.click_timestamp, er.email_address, er.subscription_date FROM email_clicks ec INNER JOIN email_recipients er ON ec.recipient_id = er.recipient_id ORDER BY ec.click_timestamp DESC;",
+      "SELECT ec.click_id, ec.campaign_id, ec.device_type, ec.clicked_url, ec.click_timestamp, ec.recipient_id, er.email_address, ec.device_type, er.subscription_date FROM email_clicks ec INNER JOIN email_recipients er ON ec.recipient_id = er.recipient_id INNER JOIN email_campaigns ecamp ON ec.campaign_id = ecamp.campaign_id WHERE ecamp.end_date > NOW();"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_contacts;",
+      "SELECT contact_id, email_address, first_name, last_name FROM email_contacts WHERE date_subscribed >= '2022-01-01';",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns WHERE target_audience = 'Marketing';",
+      "SELECT * FROM email_interactions WHERE interaction_type = 'Open' ORDER BY interaction_date DESC;",
+      "SELECT e.contact_id, e.email_address, c.campaign_name, i.interaction_type FROM email_contacts e JOIN email_interactions i ON e.contact_id = i.contact_id JOIN email_campaigns c ON i.campaign_id = c.campaign_id ORDER BY e.contact_id, c.campaign_id;",
+      "SELECT * FROM email_contacts ORDER BY contact_id DESC;",
+      "SELECT first_name, last_name, email_address FROM email_contacts WHERE date_subscribed > '2021-01-01';",
+      "SELECT email_address, COUNT(contact_id) AS total_interactions FROM email_interactions GROUP BY email_address HAVING COUNT(contact_id) > 3;",
+      "SELECT ec.first_name, ei.interaction_type, ei.interaction_date FROM email_contacts ec JOIN email_interactions ei ON ec.contact_id = ei.contact_id WHERE ei.interaction_type = 'opened';",
+      "SELECT ec.first_name, ec.last_name, ec.email_address, ec.date_subscribed, ei.interaction_type FROM email_contacts ec LEFT JOIN email_interactions ei ON ec.contact_id = ei.contact_id WHERE ei.contact_id IS NULL ORDER BY ec.date_subscribed ASC;"
+    ]
+  }
+]

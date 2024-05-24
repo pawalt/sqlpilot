@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(255) NOT NULL,\n    severity ENUM('Low', 'Medium', 'High') NOT NULL,\n    patch_status BOOLEAN DEFAULT FALSE,\n    patch_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n  vulnerability_id INT PRIMARY KEY,\n  vulnerability_name VARCHAR(255),\n  severity_level INT,\n  patch_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n  patch_id INT PRIMARY KEY,\n  patch_name VARCHAR(255),\n  patch_description TEXT,\n  vulnerability_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability (\n    id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(255),\n    severity_level VARCHAR(50),\n    description TEXT,\n    affected_system VARCHAR(100),\n    patch_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patch (\n    patch_id INT PRIMARY KEY,\n    patch_name VARCHAR(255),\n    patch_version VARCHAR(50),\n    release_date DATE,\n    applied_system VARCHAR(100),\n    vulnerability_id INT,\n    FOREIGN KEY (vulnerability_id) REFERENCES vulnerability(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patch_management (\n    patch_manager_id INT PRIMARY KEY,\n    manager_name VARCHAR(255),\n    manager_email VARCHAR(255),\n    manager_phone VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(255),\n    severity_level VARCHAR(50),\n    description TEXT,\n    affected_system VARCHAR(100),\n    published_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    id INT PRIMARY KEY,\n    patch_name VARCHAR(255),\n    description TEXT,\n    patch_date DATE,\n    applied_system VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_patches (\n    vulnerability_id INT,\n    patch_id INT,\n    PRIMARY KEY(vulnerability_id, patch_id),\n    FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id),\n    FOREIGN KEY (patch_id) REFERENCES patches(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_tracking (\n    id INT PRIMARY KEY,\n    vulnerability_id INT,\n    patch_status VARCHAR(20),\n    assigned_team VARCHAR(50),\n    due_date DATE,\n    completed_date DATE,\n    FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(255),\n    cvss_score FLOAT,\n    description TEXT,\n    release_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id INT PRIMARY KEY,\n    patch_name VARCHAR(255),\n    vulnerability_id INT,\n    patch_date DATE,\n    applied BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    ip_address VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE devices_vulnerabilities (\n    device_id INT,\n    vulnerability_id INT,\n    PRIMARY KEY (device_id, vulnerability_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patch_history (\n    patch_id INT,\n    device_id INT,\n    patch_date DATE,\n    PRIMARY KEY (patch_id, device_id)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_level_data (\n    id INT PRIMARY KEY,\n    level_number INT,\n    level_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE level_data (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(255),\n    difficulty INT\n);\n\nCREATE TABLE tile_data (\n    tile_id INT PRIMARY KEY,\n    tile_type VARCHAR(50),\n    is_obstacle BOOLEAN,\n    level_id INT,\n    FOREIGN KEY (level_id) REFERENCES level_data(level_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_levels(\n  level_id INT PRIMARY KEY,\n  level_seed VARCHAR(255) NOT NULL,\n  level_difficulty INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE level_tiles(\n  tile_id INT PRIMARY KEY,\n  tile_type VARCHAR(50) NOT NULL,\n  tile_positionX INT,\n  tile_positionY INT,\n  level_id INT,\n  FOREIGN KEY (level_id) REFERENCES game_levels(level_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE level_entities(\n  entity_id INT PRIMARY KEY,\n  entity_name VARCHAR(100),\n  entity_type VARCHAR(50) NOT NULL,\n  entity_health INT,\n  level_id INT,\n  FOREIGN KEY (level_id) REFERENCES game_levels(level_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GameLevels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(255),\n    level_difficulty INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LevelPlayers (\n    player_id INT,\n    level_id INT,\n    player_name VARCHAR(255),\n    player_score INT,\n    FOREIGN KEY (level_id) REFERENCES GameLevels(level_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LevelEnemies (\n    enemy_id INT,\n    level_id INT,\n    enemy_type VARCHAR(50),\n    enemy_strength INT,\n    FOREIGN KEY (level_id) REFERENCES GameLevels(level_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LevelItems (\n    item_id INT,\n    level_id INT,\n    item_name VARCHAR(100),\n    item_type VARCHAR(50),\n    FOREIGN KEY (level_id) REFERENCES GameLevels(level_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GameLevels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(255),\n    difficulty_level INT,\n    level_data JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PlayerProgress (\n    player_id INT PRIMARY KEY,\n    level_id INT,\n    progress_status VARCHAR(50),\n    FOREIGN KEY (level_id) REFERENCES GameLevels(level_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE LevelsCompleted (\n    player_id INT,\n    level_id INT,\n    completion_time TIMESTAMP,\n    PRIMARY KEY (player_id, level_id),\n    FOREIGN KEY (player_id) REFERENCES PlayerProgress(player_id),\n    FOREIGN KEY (level_id) REFERENCES GameLevels(level_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE LevelEnemies (\n    enemy_id INT PRIMARY KEY,\n    level_id INT,\n    enemy_name VARCHAR(100),\n    enemy_strength INT,\n    FOREIGN KEY (level_id) REFERENCES GameLevels(level_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE LootItems (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(100),\n    item_type VARCHAR(50),\n    item_rarity VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

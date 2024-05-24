@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id SERIAL PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    encryption_key TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id UUID PRIMARY KEY,\n    key_value BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_info (\n    customer_id UUID PRIMARY KEY,\n    encrypted_card_info BYTEA NOT NULL,\n    encryption_key_id UUID NOT NULL,\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n\tid INT PRIMARY KEY,\n\tencryption_key VARCHAR(255) NOT NULL,\n\tcreated_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_info (\n\tid INT PRIMARY KEY,\n\tpayment_method VARCHAR(50) NOT NULL,\n\tencrypted_card_number VARCHAR(255) NOT NULL,\n\tcustomer_id INT NOT NULL,\n\tcreated_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_history (\n\tid INT PRIMARY KEY,\n\tencryption_key_id INT NOT NULL,\n\taction VARCHAR(50) NOT NULL,\n\ttimestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_transactions (\n    transaction_id UUID PRIMARY KEY,\n    card_number VARCHAR(16) NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    action VARCHAR(50) NOT NULL,\n    log_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EncryptionKeys (\n    key_id INT PRIMARY KEY,\n    key_value VARCHAR(255) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n    payment_id INT PRIMARY KEY,\n    payment_amount DECIMAL(10,2) NOT NULL,\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    customer_email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT REFERENCES Payments(payment_id),\n    customer_id INT REFERENCES Customers(customer_id),\n    transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EncryptionAudit (\n    audit_id INT PRIMARY KEY,\n    key_id INT REFERENCES EncryptionKeys(key_id),\n    action_type VARCHAR(50) NOT NULL,\n    audit_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

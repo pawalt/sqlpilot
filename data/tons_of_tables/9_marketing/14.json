@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_feedback (\n  feedback_id INT PRIMARY KEY,\n  customer_name VARCHAR(100),\n  feedback_text TEXT,\n  rating INT,\n  review_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feedback (\n    feedback_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    feedback_text TEXT NOT NULL,\n    rating INT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    review_text TEXT NOT NULL,\n    rating INT NOT NULL,\n    reviewed_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers_feedback (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    feedback_text TEXT,\n    rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id INT PRIMARY KEY,\n    reviewer_name VARCHAR(255),\n    review_text TEXT,\n    rating INT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    strategy_description TEXT,\n    implementation_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerFeedback (\n  feedback_id INT PRIMARY KEY,\n  customer_id INT,\n  feedback_text TEXT,\n  feedback_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerReviews (\n  review_id INT PRIMARY KEY,\n  customer_id INT,\n  review_text TEXT,\n  review_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ContentImprovement (\n  improvement_id INT PRIMARY KEY,\n  feedback_id INT,\n  improvement_text TEXT,\n  improvement_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FeedbackAnalytics (\n  analytics_id INT PRIMARY KEY,\n  feedback_id INT,\n  analytics_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n    feedback_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    feedback_text TEXT NOT NULL,\n    feedback_rating INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id INT PRIMARY KEY,\n    feedback_id INT REFERENCES feedback(feedback_id),\n    review_text TEXT NOT NULL,\n    review_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255) NOT NULL,\n    strategy_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE strategy_feedback (\n    strategy_id INT REFERENCES content_strategies(strategy_id),\n    feedback_id INT REFERENCES feedback(feedback_id),\n    PRIMARY KEY (strategy_id, feedback_id)\n);"
+      }
+    ]
+  }
+]

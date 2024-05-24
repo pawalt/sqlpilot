@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clinics ( \n    clinic_id SERIAL PRIMARY KEY, \n    clinic_name TEXT NOT NULL, \n    clinic_address TEXT NOT NULL, \n    appointment_timeslot TIMESTAMP NOT NULL, \n    patient_id SERIAL PRIMARY KEY, \n    patient_name TEXT NOT NULL, \n    patient_dob DATE NOT NULL, \n    patient_phone_number TEXT NOT NULL, \n    appointment_reminder_notification BOOLEAN NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Clinics (\n    clinic_id UUID PRIMARY KEY,\n    clinic_name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    phone_number VARCHAR(15) NOT NULL\n);\n\nCREATE TABLE Appointments (\n    appointment_id UUID PRIMARY KEY,\n    clinic_id UUID NOT NULL,\n    patient_id UUID NOT NULL,\n    appointment_date TIMESTAMP NOT NULL,\n    reminder_sent BOOLEAN DEFAULT FALSE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE appointments (\n    appointment_id SERIAL PRIMARY KEY,\n    patient_id INT NOT NULL,\n    appointment_date DATE,\n    appointment_time TIME,\n    status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    date_of_birth DATE,\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reminders (\n    reminder_id SERIAL PRIMARY KEY,\n    patient_id INT NOT NULL,\n    reminder_date DATE,\n    reminder_time TIME,\n    message TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Appointments (\n    appointment_id UUID PRIMARY KEY,\n    patient_id UUID REFERENCES Patients(patient_id),\n    clinic_id UUID REFERENCES Clinics(clinic_id),\n    appointment_date DATE,\n    appointment_time TIME,\n    status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR(50),\n    phone_number VARCHAR(15),\n    email VARCHAR(50),\n    date_of_birth DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Clinics (\n    clinic_id UUID PRIMARY KEY,\n    clinic_name VARCHAR(50),\n    clinic_address VARCHAR(100),\n    contact_person VARCHAR(50),\n    contact_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Notifications (\n    notification_id UUID PRIMARY KEY,\n    appointment_id UUID REFERENCES Appointments(appointment_id),\n    notification_type VARCHAR(20),\n    notification_content TEXT,\n    sent_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Clinics (\n\tdoctor_id UUID PRIMARY KEY,\n\tname TEXT NOT NULL,\n\tlocation TEXT,\n\tphone_number TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n\tpatient_id UUID PRIMARY KEY,\n\tfirst_name TEXT NOT NULL,\n\tlast_name TEXT,\n\tdob DATE,\n\temail TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointments (\n\tappointment_id UUID PRIMARY KEY,\n\tpatient_id UUID REFERENCES Patients,\n\tdoctor_id UUID REFERENCES Clinics,\n\tappointment_date TIMESTAMP,\n\tstatus TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Notifications (\n\tnotification_id UUID PRIMARY KEY,\n\tpatient_id UUID REFERENCES Patients,\n\tmessage TEXT NOT NULL,\n\tsent_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reminders (\n\treminder_id UUID PRIMARY KEY,\n\tpatient_id UUID REFERENCES Patients,\n\treminder_date TIMESTAMP,\n\trecipient TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LivestockFeedData (\n  ID INT PRIMARY KEY,\n  LivestockName VARCHAR(255),\n  FeedType VARCHAR(255),\n  NutritionValue FLOAT,\n  Quantity INT,\n  DateRecorded DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feed_data (\n  id INT PRIMARY KEY,\n  feed_name VARCHAR(255),\n  protein_content FLOAT,\n  carbohydrate_content FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE livestock_group (\n  group_id INT PRIMARY KEY,\n  group_name VARCHAR(255),\n  average_weight FLOAT,\n  feed_id INT REFERENCES feed_data(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LivestockGroup ( \n  group_id INT PRIMARY KEY, \n  group_name VARCHAR(50) NOT NULL \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FeedData ( \n  feed_id INT PRIMARY KEY, \n  feed_name VARCHAR(50) NOT NULL, \n  protein_content FLOAT NOT NULL, \n  moisture_content FLOAT NOT NULL, \n  energy_content FLOAT NOT NULL \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NutritionData ( \n  nutrition_id INT PRIMARY KEY, \n  feed_id INT REFERENCES FeedData(feed_id), \n  group_id INT REFERENCES LivestockGroup(group_id), \n  amount FLOAT NOT NULL, \n  timestamp TIMESTAMP NOT NULL \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feed_data (\n    id INT PRIMARY KEY,\n    feed_name VARCHAR(50),\n    protein_content DECIMAL(5, 2),\n    energy_content DECIMAL(5, 2),\n    fiber_content DECIMAL(5, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE livestock (\n    id INT PRIMARY KEY,\n    livestock_name VARCHAR(50),\n    species VARCHAR(50),\n    weight DECIMAL(6, 2),\n    age INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE group_livestock (\n    group_id INT PRIMARY KEY,\n    group_name VARCHAR(50),\n    average_weight DECIMAL(6, 2),\n    average_age DECIMAL(3, 1)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE feed_group_mapping (\n    feed_id INT,\n    group_id INT,\n    FOREIGN KEY (feed_id) REFERENCES feed_data(id),\n    FOREIGN KEY (group_id) REFERENCES group_livestock(group_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Livestock (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  age INT,\n  weight DECIMAL,\n  breed VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Feed (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  type VARCHAR(100),\n  protein DECIMAL,\n  fat DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Nutrition (\n  id SERIAL PRIMARY KEY,\n  feed_id INT REFERENCES Feed(id),\n  livestock_id INT REFERENCES Livestock(id),\n  quantity DECIMAL,\n  date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Group (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  total_livestock INT,\n  average_age DECIMAL,\n  average_weight DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Group_Nutrition (\n  group_id INT REFERENCES Group(id),\n  nutrition_id INT REFERENCES Nutrition(id),\n  recommended_quantity DECIMAL,\n  PRIMARY KEY (group_id, nutrition_id)\n);\n"
+      }
+    ]
+  }
+]

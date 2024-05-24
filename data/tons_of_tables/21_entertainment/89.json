@@ -1,0 +1,52 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Shows (\n    show_id INT PRIMARY KEY,\n    show_name VARCHAR(255) NOT NULL,\n    airing_time TIMESTAMP,\n    viewership INT,\n    advertising_revenue DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tv_shows (\n    show_id INT PRIMARY KEY,\n    show_name VARCHAR(255) NOT NULL,\n    genre VARCHAR(50),\n    viewership BIGINT,\n    rating FLOAT\n);\n\nCREATE TABLE advertising (\n    ad_id INT PRIMARY KEY,\n    ad_name VARCHAR(100) NOT NULL,\n    ad_duration INT,\n    ad_cost DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tv_show_popularity (\n    show_id INT PRIMARY KEY,\n    show_name VARCHAR(255),\n    popularity_rating FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE viewership_statistics (\n    viewer_id INT PRIMARY KEY,\n    show_id INT,\n    viewership_count INT,\n    FOREIGN KEY (show_id) REFERENCES tv_show_popularity(show_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE advertising_revenue (\n    ad_id INT PRIMARY KEY,\n    show_id INT,\n    revenue DECIMAL(10,2),\n    FOREIGN KEY (show_id) REFERENCES tv_show_popularity(show_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TV_Shows (\n    show_id UUID PRIMARY KEY,\n    show_name VARCHAR(255) NOT NULL,\n    genre VARCHAR(50),\n    release_year INT,\n    director_name VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Viewership_Stats (\n    stats_id UUID PRIMARY KEY,\n    show_id UUID REFERENCES TV_Shows(show_id),\n    viewership_count INT,\n    average_rating FLOAT,\n    viewer_demographics JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Advertising_Revenue (\n    revenue_id UUID PRIMARY KEY,\n    show_id UUID REFERENCES TV_Shows(show_id),\n    revenue_amount DECIMAL(10,2),\n    advertiser_name VARCHAR(100),\n    ad_duration INTERVAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Broadcast_Schedule (\n    schedule_id UUID PRIMARY KEY,\n    show_id UUID REFERENCES TV_Shows(show_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    channel VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Shows (\n    show_id SERIAL PRIMARY KEY,\n    show_name VARCHAR(255) NOT NULL,\n    genre VARCHAR(50),\n    release_year INT\n);\nCREATE TABLE Viewership (\n    viewership_id SERIAL PRIMARY KEY,\n    show_id INT REFERENCES Shows(show_id),\n    viewership_count INT\n);\nCREATE TABLE Advertising (\n    ad_id SERIAL PRIMARY KEY,\n    show_id INT REFERENCES Shows(show_id),\n    advertiser_name VARCHAR(100),\n    ad_revenue DECIMAL(10, 2)\n);\nCREATE TABLE Networks (\n    network_id SERIAL PRIMARY KEY,\n    network_name VARCHAR(100)\n);\nCREATE TABLE ShowNetworkMapping (\n    show_id INT REFERENCES Shows(show_id),\n    network_id INT REFERENCES Networks(network_id)\n);"
+      }
+    ]
+  }
+]

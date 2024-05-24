@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data_sets (\n    id INT PRIMARY KEY,\n    image_path VARCHAR(255),\n    label VARCHAR(50),\n    dimensions INT,\n    training_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TrainingDataSets (\n    dataset_id INT PRIMARY KEY,\n    dataset_name VARCHAR(255),\n    data_samples INT,\n    created_date DATE\n);\n\nCREATE TABLE DeepLearningModels (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_type VARCHAR(50),\n    training_dataset_id INT,\n    FOREIGN KEY (training_dataset_id) REFERENCES TrainingDataSets (dataset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TrainingDataSets (\n    dataset_id UUID PRIMARY KEY,\n    dataset_name VARCHAR(100),\n    dataset_path TEXT,\n    image_count INT\n);\n\nCREATE TABLE DeepLearningModels (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(100),\n    model_framework VARCHAR(50),\n    model_accuracy FLOAT\n);\n\nCREATE TABLE ModelTrainingHistory (\n    history_id UUID PRIMARY KEY,\n    model_id UUID,\n    training_date DATE,\n    epochs INT,\n    validation_accuracy FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TrainingDataSets (\n  id INT PRIMARY KEY,\n  data_path VARCHAR(255) NOT NULL,\n  label VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Models (\n  model_id INT PRIMARY KEY,\n  model_name VARCHAR(100) NOT NULL,\n  layers INT NOT NULL,\n  optimizer VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingProgress (\n  training_id INT PRIMARY KEY,\n  model_id INT,\n  epochs INT,\n  loss FLOAT,\n  accuracy FLOAT,\n  FOREIGN KEY (model_id) REFERENCES Models(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ValidationResults (\n  validation_id INT PRIMARY KEY,\n  model_id INT,\n  validation_loss FLOAT,\n  validation_accuracy FLOAT,\n  FOREIGN KEY (model_id) REFERENCES Models(model_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageData (\n    id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    label VARCHAR(50),\n    data_blob BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelMetadata (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(100),\n    trained_on TIMESTAMP,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelResults (\n    result_id INT PRIMARY KEY,\n    model_id INT,\n    result_data TEXT,\n    result_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingMetrics (\n    metric_id INT PRIMARY KEY,\n    model_id INT,\n    loss FLOAT,\n    accuracy FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelParameters (\n    parameter_id INT PRIMARY KEY,\n    model_id INT,\n    parameter_key VARCHAR(50),\n    parameter_value VARCHAR(255)\n);\n"
+      }
+    ]
+  }
+]

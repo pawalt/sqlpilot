@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE named_entities (\n    id SERIAL PRIMARY KEY,\n    text_data TEXT,\n    named_entity TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE named_entities (\n    id INT PRIMARY KEY,\n    entity_type VARCHAR(50),\n    entity_value TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE text_data (\n    id INT PRIMARY KEY,\n    text_content TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE named_entities (\n    id SERIAL PRIMARY KEY,\n    text_data TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entities_metadata (\n    id SERIAL PRIMARY KEY,\n    entity_id INT REFERENCES named_entities(id),\n    entity_type VARCHAR(50),\n    confidence_level DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE text_documents (\n    id SERIAL PRIMARY KEY,\n    doc_id INT,\n    text_content TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE named_entities (\n    id INT PRIMARY KEY,\n    text_data VARCHAR,\n    extracted_entity VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE text_documents (\n    id INT PRIMARY KEY,\n    document_text TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE entity_types (\n    id INT PRIMARY KEY,\n    entity_type VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE entity_mappings (\n    id INT PRIMARY KEY,\n    document_id INT,\n    entity_id INT,\n    FOREIGN KEY (document_id) REFERENCES text_documents(id),\n    FOREIGN KEY (entity_id) REFERENCES named_entities(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE named_entities (\n    id INT PRIMARY KEY,\n    entity_name TEXT,\n    entity_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE text_data (\n    id INT PRIMARY KEY,\n    text_content TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE named_entities_mapping (\n    id INT PRIMARY KEY,\n    text_id INT,\n    named_entity_id INT,\n    FOREIGN KEY (text_id) REFERENCES text_data(id),\n    FOREIGN KEY (named_entity_id) REFERENCES named_entities(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE processed_text (\n    id INT PRIMARY KEY,\n    text_id INT,\n    processed_content TEXT,\n    processed_at TIMESTAMP,\n    FOREIGN KEY (text_id) REFERENCES text_data(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entity_stats (\n    entity_id INT PRIMARY KEY,\n    appearance_count INT\n);"
+      }
+    ]
+  }
+]

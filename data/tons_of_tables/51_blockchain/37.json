@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE goods_tracking(\n    id INT,\n    product_name VARCHAR(255),\n    location VARCHAR(255),\n    RFID_tag VARCHAR(255),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE goods_tracking (\n    id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    location VARCHAR(255),\n    movement_status CHAR(1)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rfid_tags (\n    tag_id INT PRIMARY KEY,\n    goods_id INT,\n    tag_status CHAR(1),\n    tag_location VARCHAR(255),\n    FOREIGN KEY (goods_id) REFERENCES goods_tracking(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE goods (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(255),\n    rfid_tag VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    id SERIAL PRIMARY KEY,\n    location_name VARCHAR(255),\n    address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE movements (\n    id SERIAL PRIMARY KEY,\n    movement_id VARCHAR(50),\n    goods_id INT REFERENCES goods(id),\n    from_location_id INT REFERENCES locations(id),\n    to_location_id INT REFERENCES locations(id),\n    movement_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipments (\n  shipment_id INT PRIMARY KEY,\n  shipment_date DATE,\n  origin_location VARCHAR(50),\n  destination_location VARCHAR(50),\n  current_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(50),\n  weight DECIMAL(10, 2),\n  category VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tracking_tags (\n  tag_id INT PRIMARY KEY,\n  product_id INT,\n  shipment_id INT,\n  tag_code VARCHAR(50),\n  tag_location VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tracking_history (\n  history_id INT PRIMARY KEY,\n  tag_id INT,\n  movement_date DATETIME,\n  from_location VARCHAR(50),\n  to_location VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Transport_Orders (\n    order_id INT PRIMARY KEY,\n    delivery_date DATE,\n    product_name VARCHAR(50),\n    source_location VARCHAR(100),\n    destination_location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RFID_Tags (\n    tag_id INT PRIMARY KEY,\n    tag_number VARCHAR(20),\n    product_name VARCHAR(50),\n    current_location VARCHAR(100),\n    last_scan_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Shipping_Events (\n    event_id INT PRIMARY KEY,\n    event_type VARCHAR(50),\n    event_description TEXT,\n    event_timestamp TIMESTAMP,\n    tag_id INT REFERENCES RFID_Tags(tag_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Warehouse_Inventory (\n    inventory_id INT PRIMARY KEY,\n    product_name VARCHAR(50),\n    quantity INT,\n    location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Transport_Vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type VARCHAR(50),\n    route_description TEXT,\n    current_location VARCHAR(100),\n    last_update_timestamp TIMESTAMP\n)"
+      }
+    ]
+  }
+]

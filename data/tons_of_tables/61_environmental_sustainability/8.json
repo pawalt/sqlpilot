@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyConsultants (\n  consultant_id INT PRIMARY KEY,\n  consultant_name VARCHAR(50) NOT NULL,\n  experience_years INT,\n  expertise_area VARCHAR(100),\n  contact_number VARCHAR(15) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyConsultants (\n  consultant_id INT PRIMARY KEY,\n  consultant_name VARCHAR(50),\n  consultant_specialization VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consultants (\n  consultant_id INT PRIMARY KEY,\n  consultant_name VARCHAR(50),\n  consultant_specialization VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cost_benefit_analysis (\n  analysis_id INT PRIMARY KEY,\n  property_id INT,\n  analysis_date DATE,\n  estimated_cost DECIMAL(10, 2),\n  estimated_savings DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE solar_panels (\n  panel_id INT PRIMARY KEY,\n  property_id INT,\n  panel_capacity DECIMAL(5, 2),\n  panel_type VARCHAR(20),\n  installation_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanels (\n\tsolar_panel_id INT PRIMARY KEY,\n\tproperty_id INT,\n\tsolar_panel_brand VARCHAR(255),\n\tinstallation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResidentialProperties (\n\tproperty_id INT PRIMARY KEY,\n\thomeowner_name VARCHAR(255),\n\tproperty_address VARCHAR(255),\n\tproperty_size_sqft INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CostBenefitAnalysis (\n\tanalysis_id INT PRIMARY KEY,\n\tproperty_id INT,\n\ttotal_cost DECIMAL(10,2),\n\testimated_savings DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsultants (\n\tconsultant_id INT PRIMARY KEY,\n\tconsultant_name VARCHAR(255),\n\tconsultant_specialty VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS EnergyConsultants (\n  consultant_id UUID PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  email VARCHAR(50) NOT NULL,\n  phone_number VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS ResidentialProperties (\n  property_id UUID PRIMARY KEY,\n  address VARCHAR(100) NOT NULL,\n  owner_id UUID REFERENCES EnergyConsultants(consultant_id),\n  roof_area_m2 FLOAT NOT NULL,\n  electricity_consumption_kwh FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS SolarPanels (\n  panel_id UUID PRIMARY KEY,\n  manufacturer VARCHAR(50) NOT NULL,\n  wattage FLOAT NOT NULL,\n  efficiency FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS CostBenefitAnalysis (\n  analysis_id UUID PRIMARY KEY,\n  property_id UUID REFERENCES ResidentialProperties(property_id),\n  panel_id UUID REFERENCES SolarPanels(panel_id),\n  installation_cost_cents BIGINT NOT NULL,\n  annual_savings_cents BIGINT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Reports (\n  report_id UUID PRIMARY KEY,\n  analysis_id UUID REFERENCES CostBenefitAnalysis(analysis_id),\n  consultant_id UUID REFERENCES EnergyConsultants(consultant_id),\n  date_created TIMESTAMP NOT NULL,\n  comments TEXT\n);"
+      }
+    ]
+  }
+]

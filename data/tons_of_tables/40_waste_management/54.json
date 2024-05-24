@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteMaterialsInventory (\n  id INT PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  quantity DECIMAL(10, 2) NOT NULL,\n  supplier_id INT NOT NULL,\n  entry_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteMaterials (\n  material_id UUID PRIMARY KEY,\n  material_name VARCHAR(255),\n  quantity INT,\n  entry_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SupplyChainOptimization (\n  material_id UUID PRIMARY KEY,\n  supplier_name VARCHAR(255),\n  supplier_contact VARCHAR(20),\n  shipment_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_materials (\n    material_id INT PRIMARY KEY,\n    material_name TEXT NOT NULL,\n    quantity INT NOT NULL,\n    entry_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name TEXT NOT NULL,\n    contact_name TEXT,\n    contact_email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    material_id INT NOT NULL,\n    supplier_id INT NOT NULL,\n    quantity INT NOT NULL,\n    transaction_date TIMESTAMP,\n    FOREIGN KEY (material_id) REFERENCES waste_materials(material_id),\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(50),\n    entry_timestamp TIMESTAMP,\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entry_logs (\n    log_id INT PRIMARY KEY,\n    material_id INT,\n    entry_timestamp TIMESTAMP,\n    quantity INT,\n    entry_type ENUM('incoming', 'outgoing'),\n    FOREIGN KEY (material_id) REFERENCES waste_materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(100),\n    location VARCHAR(100),\n    capacity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_materials (\n  material_id UUID PRIMARY KEY,\n  material_name VARCHAR(255),\n  material_type VARCHAR(50),\n  quantity DECIMAL,\n  entry_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE material_suppliers (\n  supplier_id UUID PRIMARY KEY,\n  supplier_name VARCHAR(255),\n  contact_number VARCHAR(20),\n  email VARCHAR(100),\n  address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE material_inventory (\n  inventory_id UUID PRIMARY KEY,\n  material_id UUID REFERENCES waste_materials(material_id),\n  supplier_id UUID REFERENCES material_suppliers(supplier_id),\n  quantity DECIMAL,\n  location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE material_transactions (\n  transaction_id UUID PRIMARY KEY,\n  material_id UUID REFERENCES waste_materials(material_id),\n  quantity DECIMAL,\n  transaction_type VARCHAR(20),\n  transaction_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_history (\n  history_id UUID PRIMARY KEY,\n  inventory_id UUID REFERENCES material_inventory(inventory_id),\n  transaction_id UUID REFERENCES material_transactions(transaction_id),\n  action_type VARCHAR(20),\n  history_timestamp TIMESTAMP\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT now()\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    permission_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    permission_level VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username VARCHAR(255) UNIQUE NOT NULL,\n  password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n  id INT PRIMARY KEY,\n  role_name VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  user_id INT REFERENCES users(id),\n  role_id INT REFERENCES roles(id),\n  PRIMARY KEY (user_id, role_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username TEXT NOT NULL,\n    password TEXT NOT NULL,\n    email TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    role_name TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    token TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    expiry_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blocked_users (\n    block_id UUID PRIMARY KEY,\n    blocker_id UUID REFERENCES users(user_id),\n    blocked_user_id UUID REFERENCES users(user_id),\n    blocked_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  password_hash VARCHAR(255) NOT NULL,\n  email VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n  role_id UUID PRIMARY KEY,\n  role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  user_id UUID REFERENCES users(user_id),\n  role_id UUID REFERENCES roles(role_id),\n  PRIMARY KEY (user_id, role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n  attempt_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  attempt_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE banned_users (\n  banned_user_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  reason TEXT NOT NULL\n);"
+      }
+    ]
+  }
+]

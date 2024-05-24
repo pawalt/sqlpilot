@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_processing_jobs (\n  job_id UUID PRIMARY KEY,\n  job_name VARCHAR(255),\n  status VARCHAR(50),\n  result JSONB,\n  started_at TIMESTAMPTZ,\n  finished_at TIMESTAMPTZ\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_processing_jobs (\n    job_id SERIAL PRIMARY KEY,\n    image_url VARCHAR(255) NOT NULL,\n    job_status VARCHAR(50) NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP,\n    result JSON\n);\n\nCREATE TABLE image_processing_results (\n    result_id SERIAL PRIMARY KEY,\n    job_id INT NOT NULL,\n    result_data JSON,\n    result_status VARCHAR(50) NOT NULL,\n    result_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageProcessingJobs (\n    job_id INT PRIMARY KEY,\n    image_url TEXT NOT NULL,\n    status VARCHAR(50) NOT NULL,\n    result TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE JobLogs (\n    log_id INT PRIMARY KEY,\n    job_id INT REFERENCES ImageProcessingJobs(job_id),\n    log TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE JobMetrics (\n    metric_id INT PRIMARY KEY,\n    job_id INT REFERENCES ImageProcessingJobs(job_id),\n    metric_name VARCHAR(50) NOT NULL,\n    metric_value FLOAT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_jobs (\n    job_id SERIAL PRIMARY KEY,\n    image_url VARCHAR(255) NOT NULL,\n    job_status VARCHAR(50) NOT NULL,\n    job_result JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE job_history (\n    history_id SERIAL PRIMARY KEY,\n    job_id INT REFERENCES image_jobs(job_id),\n    start_time TIMESTAMPTZ NOT NULL,\n    end_time TIMESTAMPTZ,\n    status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_results (\n    result_id SERIAL PRIMARY KEY,\n    job_id INT REFERENCES image_jobs(job_id),\n    result_data JSONB NOT NULL,\n    result_timestamp TIMESTAMPTZ NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pipeline_logs (\n    log_id SERIAL PRIMARY KEY,\n    log_timestamp TIMESTAMPTZ NOT NULL,\n    log_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageJobs (\n    job_id UUID PRIMARY KEY,\n    job_name VARCHAR(50) NOT NULL,\n    job_status VARCHAR(20) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageResults (\n    result_id UUID PRIMARY KEY,\n    job_id UUID NOT NULL,\n    result_url VARCHAR(255) NOT NULL,\n    result_status VARCHAR(20) NOT NULL,\n    result_data JSONB,\n    created_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (job_id) REFERENCES ImageJobs(job_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProcessingLogs (\n    log_id UUID PRIMARY KEY,\n    job_id UUID NOT NULL,\n    log_message TEXT NOT NULL,\n    log_level VARCHAR(10) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (job_id) REFERENCES ImageJobs(job_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PipelineStatus (\n    status_id UUID PRIMARY KEY,\n    pipeline_name VARCHAR(50) NOT NULL,\n    pipeline_status VARCHAR(20) NOT NULL,\n    last_execution TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportHistory (\n    report_id UUID PRIMARY KEY,\n    report_name VARCHAR(50) NOT NULL,\n    pipeline_status VARCHAR(20) NOT NULL,\n    execution_date DATE NOT NULL,\n    details JSONB,\n    FOREIGN KEY (pipeline_status) REFERENCES PipelineStatus(pipeline_status)\n);\n"
+      }
+    ]
+  }
+]

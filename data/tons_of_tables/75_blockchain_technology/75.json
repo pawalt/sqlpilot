@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    token_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    resource_id UUID NOT NULL,\n    permission_type VARCHAR(50) NOT NULL,\n    granted BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    id INT PRIMARY KEY,\n    asset_id INT,\n    type VARCHAR(50),\n    access_level VARCHAR(50),\n    token VARCHAR(100),\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(100),\n    owner_id INT,\n    creation_date DATE,\n    asset_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TokenizeUsers (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    role VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DigitalAssets (\n    asset_id SERIAL PRIMARY KEY,\n    asset_name VARCHAR(50) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    owner_id INT NOT NULL,\n    FOREIGN KEY (owner_id) REFERENCES TokenizeUsers(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControl (\n    access_id SERIAL PRIMARY KEY,\n    asset_id INT NOT NULL,\n    user_id INT NOT NULL,\n    access_type VARCHAR(20) NOT NULL,\n    FOREIGN KEY (asset_id) REFERENCES DigitalAssets(asset_id),\n    FOREIGN KEY (user_id) REFERENCES TokenizeUsers(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    asset_id INT NOT NULL,\n    user_id INT NOT NULL,\n    token_id INT NOT NULL,\n    permission_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(100) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    asset_owner VARCHAR(100) NOT NULL,\n    asset_value DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(100) NOT NULL,\n    user_email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokens (\n    token_id INT PRIMARY KEY,\n    token_value VARCHAR(100) NOT NULL,\n    token_expiry_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n  id INT PRIMARY KEY,\n  asset_id INT,\n  user_id INT,\n  token VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(255),\n  email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokens (\n  token_id INT PRIMARY KEY,\n  token_key VARCHAR(255),\n  expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n  access_id INT PRIMARY KEY,\n  token_id INT,\n  permission_id INT\n);"
+      }
+    ]
+  }
+]

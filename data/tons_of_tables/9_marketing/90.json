@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE affiliates (\n    affiliate_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20),\n    website_url VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE affiliate_accounts (\n    affiliate_id INT PRIMARY KEY,\n    account_name VARCHAR(50),\n    email VARCHAR(50),\n    referral_code VARCHAR(10)\n);\n\nCREATE TABLE performance_metrics (\n    metric_id INT PRIMARY KEY,\n    affiliate_id INT,\n    clicks INT,\n    signups INT,\n    conversions INT,\n    revenue DECIMAL(10, 2),\n    FOREIGN KEY (affiliate_id) REFERENCES affiliate_accounts(affiliate_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE affiliate_accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR(255) NOT NULL,\n    affiliate_code VARCHAR(10) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    campaign_id INT PRIMARY KEY,\n    account_id INT REFERENCES affiliate_accounts(account_id),\n    impressions INT,\n    clicks INT,\n    conversions INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id INT PRIMARY KEY,\n    account_id INT REFERENCES affiliate_accounts(account_id),\n    payment_amount DECIMAL(10, 2),\n    payment_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE affiliates (\n    affiliate_id INT PRIMARY KEY,\n    affiliate_name VARCHAR(255),\n    email VARCHAR(255),\n    join_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clicks (\n    click_id INT PRIMARY KEY,\n    affiliate_id INT,\n    campaign_id INT,\n    click_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions (\n    conversion_id INT PRIMARY KEY,\n    click_id INT,\n    conversion_amount DECIMAL(10, 2),\n    conversion_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE affiliates (\n  affiliate_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(100),\n  join_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n  campaign_id INT PRIMARY KEY,\n  affiliate_id INT,\n  campaign_name VARCHAR(50),\n  start_date DATE,\n  end_date DATE,\n  budget DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE clicks (\n  click_id INT PRIMARY KEY,\n  campaign_id INT,\n  click_date DATE,\n  ip_address VARCHAR(15),\n  device_type VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions (\n  conversion_id INT PRIMARY KEY,\n  click_id INT,\n  conversion_date DATE,\n  revenue DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payouts (\n  payout_id INT PRIMARY KEY,\n  conversion_id INT,\n  payout_date DATE,\n  amount DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retirement_accounts ( \n    account_id INT PRIMARY KEY, \n    account_type VARCHAR(50), \n    account_owner VARCHAR(50), \n    balance DECIMAL(10, 2), \n    last_updated TIMESTAMP \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retirement_accounts (\n    account_id UUID PRIMARY KEY,\n    account_name STRING,\n    account_type STRING,\n    created_date TIMESTAMP,\n    balance DECIMAL\n);\n\nCREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    account_id UUID REFERENCES retirement_accounts(account_id),\n    transaction_type STRING,\n    amount DECIMAL,\n    transaction_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retirement_accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR(255),\n    account_type VARCHAR(50),\n    balance DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account_holders (\n    holder_id INT PRIMARY KEY,\n    holder_name VARCHAR(255),\n    holder_address VARCHAR(255),\n    holder_email VARCHAR(100),\n    account_id INT\n);\n\nALTER TABLE account_holders\n    ADD CONSTRAINT fk_account_id\n    FOREIGN KEY (account_id)\n    REFERENCES retirement_accounts(account_id);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    transaction_type VARCHAR(50),\n    amount DECIMAL(10, 2),\n    transaction_date TIMESTAMP,\n    account_id INT\n);\n\nALTER TABLE transactions\n    ADD CONSTRAINT fk_account_id\n    FOREIGN KEY (account_id)\n    REFERENCES retirement_accounts(account_id);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retirement_accounts (\n    account_id UUID PRIMARY KEY,\n    account_holder_name VARCHAR(255) NOT NULL,\n    account_type VARCHAR(50) NOT NULL,\n    balance DECIMAL(15, 2) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    last_updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contributions (\n    contribution_id UUID PRIMARY KEY,\n    account_id UUID NOT NULL,\n    contribution_amount DECIMAL(15, 2) NOT NULL,\n    contribution_date DATE NOT NULL,\n    FOREIGN KEY (account_id) REFERENCES retirement_accounts(account_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE withdrawals (\n    withdrawal_id UUID PRIMARY KEY,\n    account_id UUID NOT NULL,\n    withdrawal_amount DECIMAL(15, 2) NOT NULL,\n    withdrawal_date DATE NOT NULL,\n    FOREIGN KEY (account_id) REFERENCES retirement_accounts(account_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investments (\n    investment_id UUID PRIMARY KEY,\n    account_id UUID NOT NULL,\n    investment_amount DECIMAL(15, 2) NOT NULL,\n    investment_date DATE NOT NULL,\n    investment_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (account_id) REFERENCES retirement_accounts(account_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Accounts (\n\taccount_id INT PRIMARY KEY,\n\taccount_name VARCHAR(50) NOT NULL,\n\taccount_type VARCHAR(20) NOT NULL,\n\tbalance DECIMAL(10,2) NOT NULL,\n\tinterest_rate DECIMAL(5,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (\n\tcustomer_id INT PRIMARY KEY,\n\tcustomer_name VARCHAR(50) NOT NULL,\n\tcustomer_email VARCHAR(50) UNIQUE,\n\tcustomer_phone VARCHAR(15),\n\tcustomer_address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n\ttransaction_id INT PRIMARY KEY,\n\taccount_id INT NOT NULL,\n\ttransaction_type VARCHAR(20) NOT NULL,\n\tamount DECIMAL(10,2) NOT NULL,\n\ttransaction_date DATE NOT NULL,\n\tFOREIGN KEY (account_id) REFERENCES Accounts(account_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Investments (\n\tinvestment_id INT PRIMARY KEY,\n\taccount_id INT NOT NULL,\n\tinvestment_type VARCHAR(20) NOT NULL,\n\tinvestment_amount DECIMAL(10,2) NOT NULL,\n\tstart_date DATE NOT NULL,\n\tFOREIGN KEY (account_id) REFERENCES Accounts(account_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Retirements (\n\tretirement_id INT PRIMARY KEY,\n\taccount_id INT NOT NULL,\n\tretirement_plan VARCHAR(50) NOT NULL,\n\tretirement_age INT NOT NULL,\n\tmonthly_contribution DECIMAL(10,2) NOT NULL,\n\tFOREIGN KEY (account_id) REFERENCES Accounts(account_id)\n);"
+      }
+    ]
+  }
+]

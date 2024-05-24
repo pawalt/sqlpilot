@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_patterns (\n    signature_id INT PRIMARY KEY,\n    signature_image BYTEA,\n    signature_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_patterns (\n    signature_id INT PRIMARY KEY,\n    signature_image BYTEA,\n    signature_date DATE\n);\n\nCREATE TABLE signature_identifications (\n    identification_id INT PRIMARY KEY,\n    signature_id INT,\n    identification_date DATE,\n    identified_person_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SignaturePatterns (\n  signature_id INT PRIMARY KEY,\n  signature_text TEXT,\n  signature_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  user_id INT PRIMARY KEY,\n  user_name TEXT,\n  user_password TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserSignatures (\n  user_id INT,\n  signature_id INT,\n  FOREIGN KEY (user_id) REFERENCES Users(user_id),\n  FOREIGN KEY (signature_id) REFERENCES SignaturePatterns(signature_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_data (\n    id SERIAL PRIMARY KEY,\n    signature_id INT NOT NULL,\n    pattern TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user (\n    user_id SERIAL PRIMARY KEY,\n    full_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signature_identifier (\n    identifier_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    signature_id INT NOT NULL,\n    confidence_level FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signature_image (\n    image_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    image_data BYTEA NOT NULL,\n    image_format VARCHAR(10) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_patterns (\n    signature_id INT PRIMARY KEY,\n    signature_data VARCHAR(255),\n    signature_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50),\n    user_email VARCHAR(100),\n    user_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signatures (\n    signature_id INT PRIMARY KEY,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    signature_text TEXT,\n    signature_length INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n    department_id INT PRIMARY KEY,\n    department_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_departments (\n    user_id INT,\n    department_id INT,\n    PRIMARY KEY (user_id, department_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (department_id) REFERENCES departments(department_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_access (\n    user_id INT NOT NULL,\n    fingerprint_data BLOB,\n    face_data BLOB,\n    iris_data BLOB,\n    access_level ENUM('admin', 'user', 'guest')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiometricData (\n    user_id INT,\n    biometric_data BYTEA,\n    PRIMARY KEY (user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLevels (\n    user_id INT,\n    access_level VARCHAR(50),\n    FOREIGN KEY (user_id) REFERENCES BiometricData(user_id) ON DELETE CASCADE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n  user_id UUID PRIMARY KEY,\n  fingerprint_data BYTEA\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n  level_id SERIAL PRIMARY KEY,\n  access_level VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id SERIAL PRIMARY KEY,\n  user_id UUID,\n  level_id INT,\n  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES biometric_data(user_id),\n  CONSTRAINT fk_level FOREIGN KEY (level_id) REFERENCES access_levels(level_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    user_id INT PRIMARY KEY,\n    fingerprint_data VARCHAR(255),\n    face_scan_data VARCHAR(255),\n    voice_print_data VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n    user_id INT PRIMARY KEY,\n    security_clearance INT,\n    access_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT,\n    timestamp TIMESTAMP,\n    action VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id SERIAL PRIMARY KEY,\n    access_type VARCHAR(50),\n    level_required INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(50) NOT NULL,\n  biometric_data VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n  role_id INT PRIMARY KEY,\n  role_name VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id INT PRIMARY KEY,\n  permission_name VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  user_id INT,\n  role_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(id),\n  FOREIGN KEY (role_id) REFERENCES roles(role_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n  role_id INT,\n  permission_id INT,\n  FOREIGN KEY (role_id) REFERENCES roles(role_id),\n  FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)\n)"
+      }
+    ]
+  }
+]

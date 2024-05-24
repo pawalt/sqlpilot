@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id INT PRIMARY KEY,\n    contract_name VARCHAR(255),\n    contract_address VARCHAR(255),\n    creator_address VARCHAR(255),\n    creation_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name VARCHAR(255) NOT NULL,\n    contract_address VARCHAR(255) NOT NULL,\n    deployed_date DATE,\n    creator_id UUID\n);\n\nCREATE TABLE contract_data (\n    data_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    data_key VARCHAR(255) NOT NULL,\n    data_value TEXT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name TEXT NOT NULL,\n    contract_address TEXT UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_data (\n    data_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    data TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_owners (\n    owner_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    owner_name TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name VARCHAR(255) NOT NULL,\n    contract_address VARCHAR(255) NOT NULL,\n    contract_status VARCHAR(50) DEFAULT 'Active'\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_events (\n    event_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    event_type VARCHAR(100) NOT NULL,\n    event_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_owners (\n    owner_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    owner_name VARCHAR(255) NOT NULL,\n    owner_address VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_transactions (\n    transaction_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    transaction_amount DECIMAL(12, 2) NOT NULL,\n    transaction_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartContracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name TEXT,\n    contract_address TEXT,\n    contract_owner TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ContractData (\n    data_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES SmartContracts(contract_id),\n    data_key TEXT,\n    data_value TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES SmartContracts(contract_id),\n    transaction_type TEXT,\n    transaction_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Events (\n    event_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES SmartContracts(contract_id),\n    event_type TEXT,\n    event_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    username TEXT,\n    email TEXT,\n    role TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_data (\n  image_id UUID PRIMARY KEY,\n  image_data BYTEA\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id UUID PRIMARY KEY,\n    image_data BYTES,\n    image_label VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    training_id UUID PRIMARY KEY,\n    image_id UUID,\n    label_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n  id SERIAL PRIMARY KEY,\n  image_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n  id SERIAL PRIMARY KEY,\n  label_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n  image_id INT,\n  label_id INT,\n  FOREIGN KEY (image_id) REFERENCES images(id),\n  FOREIGN KEY (label_id) REFERENCES labels(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageData (\n  image_id UUID NOT NULL,\n  image_data BYTEA NOT NULL,\n  image_label TEXT,\n  PRIMARY KEY (image_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Labels (\n  label_id UUID NOT NULL,\n  label_name TEXT NOT NULL,\n  PRIMARY KEY (label_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingData (\n  training_id UUID NOT NULL,\n  image_id UUID NOT NULL,\n  label_id UUID NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  PRIMARY KEY (training_id),\n  FOREIGN KEY (image_id) REFERENCES ImageData(image_id),\n  FOREIGN KEY (label_id) REFERENCES Labels(label_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelData (\n  model_id UUID NOT NULL,\n  model_name TEXT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  accuracy FLOAT NOT NULL,\n  PRIMARY KEY (model_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_data (\n    id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id INT PRIMARY KEY,\n    label_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    id INT PRIMARY KEY,\n    image_id INT,\n    label_id INT,\n    FOREIGN KEY (image_id) REFERENCES image_data(id),\n    FOREIGN KEY (label_id) REFERENCES labels(label_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_weights (\n    model_id INT PRIMARY KEY,\n    weight_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_performance (\n    model_id INT PRIMARY KEY,\n    accuracy FLOAT,\n    loss FLOAT\n);"
+      }
+    ]
+  }
+]

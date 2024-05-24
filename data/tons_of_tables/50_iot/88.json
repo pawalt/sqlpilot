@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    fingerprint_data BYTEA NOT NULL,\n    retina_data BYTEA NOT NULL,\n    face_data BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiometricData (\n    user_id INT,\n    fingerprint_data BYTEA,\n    face_data BYTEA,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLogs (\n    log_id SERIAL,\n    user_id INT,\n    accessed_at TIMESTAMP,\n    action VARCHAR(50),\n    result VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n  id SERIAL PRIMARY KEY,\n  fingerprint_data BYTEA NOT NULL,\n  user_id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  access_timestamp TIMESTAMP NOT NULL,\n  access_type VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_users (\n    user_id UUID PRIMARY KEY,\n    username TEXT NOT NULL,\n    fingerprint_data BYTES NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES biometric_users(user_id),\n    log_time TIMESTAMP NOT NULL,\n    action TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n    level_id UUID PRIMARY KEY,\n    level_name TEXT NOT NULL,\n    access_type ENUM('admin', 'user', 'guest')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_rights (\n    user_id UUID REFERENCES biometric_users(user_id),\n    level_id UUID REFERENCES access_levels(level_id),\n    PRIMARY KEY (user_id, level_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_users (\n    user_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    fingerprint_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fingerprint_scans (\n    scan_id INT PRIMARY KEY,\n    user_id INT REFERENCES biometric_users(user_id),\n    scan_data BYTEA,\n    scan_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE facial_scans (\n    scan_id INT PRIMARY KEY,\n    user_id INT REFERENCES biometric_users(user_id),\n    image_data BYTEA,\n    scan_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE voice_recognition (\n    recording_id INT PRIMARY KEY,\n    user_id INT REFERENCES biometric_users(user_id),\n    audio_data BYTEA,\n    recording_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES biometric_users(user_id),\n    access_type VARCHAR(20),\n    access_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

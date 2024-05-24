@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE two_factor_authentication (\n  user_id INT NOT NULL,\n  username VARCHAR(50) NOT NULL,\n  password_hash VARCHAR(100) NOT NULL,\n  phone_number VARCHAR(15) NOT NULL,\n  otp_secret VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\nuser_id INT PRIMARY KEY,\nusername VARCHAR(50) NOT NULL,\npassword VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE two_factor_auth (\nuser_id INT,\ntoken VARCHAR(10) NOT NULL,\nexpires_at TIMESTAMP NOT NULL,\nPRIMARY KEY (user_id),\nFOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    expire_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    method VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    token VARCHAR(100) NOT NULL,\n    expiration_time TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sms_codes (\n    code_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    sms_code VARCHAR(6) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_codes (\n    code_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    backup_code VARCHAR(10) NOT NULL,\n    used BOOLEAN DEFAULT FALSE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    user_id INT,\n    device_type VARCHAR(50) NOT NULL,\n    serial_number VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT,\n    device_id INT,\n    login_time TIMESTAMP NOT NULL,\n    login_success BOOLEAN NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE otp_codes (\n    otp_id INT PRIMARY KEY,\n    user_id INT,\n    device_id INT,\n    otp_code VARCHAR(10) NOT NULL,\n    expiration_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE login_history (\n    history_id INT PRIMARY KEY,\n    user_id INT,\n    device_id INT,\n    login_time TIMESTAMP NOT NULL,\n    login_success BOOLEAN NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);\n"
+      }
+    ]
+  }
+]

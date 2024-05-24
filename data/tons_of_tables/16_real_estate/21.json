@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investments (\n    id INT PRIMARY KEY,\n    company_name VARCHAR(255),\n    symbol VARCHAR(10),\n    shares INT,\n    purchase_price DECIMAL,\n    purchase_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolio (\n    portfolio_id UUID PRIMARY KEY,\n    portfolio_name VARCHAR(255) NOT NULL,\n    total_investment DECIMAL(10, 2) DEFAULT 0\n);\n\nCREATE TABLE investment_holdings (\n    holding_id UUID PRIMARY KEY,\n    portfolio_id UUID NOT NULL,\n    investment_name VARCHAR(255) NOT NULL,\n    investment_amount DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (portfolio_id) REFERENCES portfolio(portfolio_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investment_holdings (\n    id SERIAL PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    purchase_price DECIMAL(12, 2) NOT NULL,\n    purchase_date DATE NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE portfolio_performance (\n    id SERIAL PRIMARY KEY,\n    portfolio_id INT NOT NULL,\n    date DATE NOT NULL,\n    value DECIMAL(12, 2) NOT NULL,\n    return DECIMAL(5, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE client_profile (\n    id SERIAL PRIMARY KEY,\n    client_id INT NOT NULL,\n    name VARCHAR(100) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone_number VARCHAR(20) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Portfolio (\n    id INT PRIMARY KEY,\n    portfolio_name VARCHAR(255),\n    total_value DECIMAL,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Investment (\n    id INT PRIMARY KEY,\n    investment_name VARCHAR(255),\n    investment_type VARCHAR(50),\n    amount_invested DECIMAL,\n    date_invested DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Asset (\n    id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    quantity INT,\n    purchase_price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transaction (\n    id INT PRIMARY KEY,\n    asset_id INT,\n    transaction_type VARCHAR(50),\n    transaction_date DATE,\n    amount DECIMAL,\n    FOREIGN KEY(asset_id) REFERENCES Asset(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investment_holdings (\n    id UUID PRIMARY KEY,\n    symbol TEXT NOT NULL,\n    quantity INT NOT NULL,\n    cost DECIMAL NOT NULL,\n    purchase_date DATE NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    id UUID PRIMARY KEY,\n    symbol TEXT NOT NULL,\n    transaction_type TEXT NOT NULL,\n    quantity INT NOT NULL,\n    price DECIMAL NOT NULL,\n    transaction_date DATE NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id UUID PRIMARY KEY,\n    username TEXT NOT NULL UNIQUE,\n    email TEXT NOT NULL UNIQUE,\n    password TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE portfolios (\n    id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    portfolio_name TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_history (\n    id UUID PRIMARY KEY,\n    portfolio_id UUID NOT NULL,\n    date DATE NOT NULL,\n    value DECIMAL NOT NULL,\n    FOREIGN KEY (portfolio_id) REFERENCES portfolios(id)\n)"
+      }
+    ]
+  }
+]

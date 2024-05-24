@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  address VARCHAR(100) NOT NULL,\n  purchase_history TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_data (\n    customer_id UUID PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    address VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(15),\n    email VARCHAR(50),\n    photo_purchase_history JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchase_history (\n    purchase_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customer_data(customer_id),\n    purchase_date TIMESTAMP NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR,\n    address VARCHAR,\n    purchase_history JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    order_date DATE,\n    total_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR,\n    price DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    customer_address VARCHAR(255) NOT NULL,\n    purchase_history JSON NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    order_date DATE NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    unit_price DECIMAL(10, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE order_details (\n    order_id INT NOT NULL,\n    product_id INT NOT NULL,\n    quantity INT NOT NULL,\n    total_price DECIMAL(10, 2) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    address VARCHAR(100),\n    purchase_history JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT,\n    order_date DATE,\n    total_amount DECIMAL(10,2),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50),\n    price DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE order_items (\n    order_id INT,\n    product_id INT,\n    quantity INT,\n    PRIMARY KEY (order_id, product_id),\n    FOREIGN KEY (order_id) REFERENCES orders(order_id),\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    order_id INT,\n    payment_date DATE,\n    amount DECIMAL(10,2),\n    FOREIGN KEY (order_id) REFERENCES orders(order_id)\n);\n"
+      }
+    ]
+  }
+]

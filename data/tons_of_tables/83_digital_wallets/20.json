@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerPayments (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    payment_method VARCHAR(50),\n    card_number VARCHAR(16),\n    expiry_date DATE,\n    cvv INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_payments (\n    customer_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    card_number VARCHAR(16),\n    card_expiry_date DATE,\n    security_code VARCHAR(3)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT,\n    transaction_date TIMESTAMP,\n    amount DECIMAL(10,2),\n    status VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255) NOT NULL,\n  email_address VARCHAR(255) UNIQUE,\n  payment_method VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  customer_id INT,\n  amount DECIMAL(10, 2) NOT NULL,\n  transaction_date TIMESTAMP,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_cards (\n  card_id INT PRIMARY KEY,\n  customer_id INT,\n  card_type VARCHAR(20) NOT NULL,\n  card_number VARCHAR(16) NOT NULL,\n  expiry_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  customer_email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  payment_date DATE NOT NULL,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n  method_id INT PRIMARY KEY,\n  method_name VARCHAR(50) NOT NULL,\n  method_description VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  payment_id INT NOT NULL,\n  transaction_date TIMESTAMP NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  FOREIGN KEY (payment_id) REFERENCES payments(payment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer (\n    id UUID,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15),\n    address TEXT,\n    PRIMARY KEY (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment (\n    payment_id SERIAL PRIMARY KEY,\n    customer_id UUID REFERENCES customer(id),\n    payment_amount DECIMAL,\n    payment_date TIMESTAMP,\n    payment_method VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction (\n    transaction_id SERIAL PRIMARY KEY,\n    payment_id INT REFERENCES payment(payment_id),\n    transaction_date TIMESTAMP,\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE card_details (\n    card_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customer(id),\n    card_number VARCHAR(16),\n    card_expiry_date DATE,\n    card_cvv INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_history (\n    transaction_id SERIAL PRIMARY KEY,\n    customer_id UUID REFERENCES customer(id),\n    transaction_date TIMESTAMP,\n    transaction_amount DECIMAL,\n    transaction_status VARCHAR(20)\n);"
+      }
+    ]
+  }
+]

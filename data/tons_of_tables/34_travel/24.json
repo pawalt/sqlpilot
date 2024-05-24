@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE task_list (\n  task_id INT PRIMARY KEY,\n  task_name VARCHAR,\n  task_description VARCHAR,\n  deadline DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TaskList (\n    task_id SERIAL PRIMARY KEY,\n    task_name TEXT NOT NULL,\n    task_description TEXT,\n    task_deadline DATE\n);\n\nCREATE TABLE ProjectDeadlines (\n    project_id SERIAL PRIMARY KEY,\n    project_name TEXT NOT NULL,\n    project_description TEXT,\n    deadline_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (task_id INT PRIMARY KEY, task_name VARCHAR(255), task_description TEXT, deadline_date DATE)"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (project_id INT PRIMARY KEY, project_name VARCHAR(255), project_description TEXT, start_date DATE, end_date DATE)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_tasks (user_id INT, task_id INT, start_date DATE, end_date DATE)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE task_lists (\n    id INT PRIMARY KEY,\n    task_name VARCHAR(50),\n    due_date DATE,\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(50),\n    deadline DATE,\n    assigned_to VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(100),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_tasks (\n    user_task_id INT PRIMARY KEY,\n    user_id INT,\n    task_id INT,\n    completed BOOLEAN,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (task_id) REFERENCES task_lists(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE daily_tasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    deadline DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id SERIAL PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks_assigned (\n    assignment_id SERIAL PRIMARY KEY,\n    task_id INT REFERENCES daily_tasks(task_id),\n    project_id INT REFERENCES projects(project_id),\n    assigned_to VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_progress (\n    progress_id SERIAL PRIMARY KEY,\n    task_id INT REFERENCES daily_tasks(task_id),\n    percentage_complete INT,\n    comments TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id SERIAL PRIMARY KEY,\n    task_id INT REFERENCES daily_tasks(task_id),\n    message TEXT,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]

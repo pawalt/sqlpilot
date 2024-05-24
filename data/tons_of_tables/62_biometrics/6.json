@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserPermissions (\n    user_id INT PRIMARY KEY,\n    access_level INT,\n    facial_data TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserPermissions (\n    user_id INT PRIMARY KEY,\n    permission_type VARCHAR(50) NOT NULL,\n    facial_data_access BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FacialRecognitionData (\n    facial_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    facial_image BYTEA,\n    captured_at TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    permission_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE facial_recognition_data (\n    id INT PRIMARY KEY,\n    image_path TEXT NOT NULL,\n    data BYTEA NOT NULL,\n    user_id INT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(100),\n    role VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id UUID PRIMARY KEY,\n    permission_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id UUID REFERENCES users(user_id),\n    permission_id UUID REFERENCES permissions(permission_id),\n    CONSTRAINT user_permissions_pk PRIMARY KEY (user_id, permission_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE facial_recognition_data (\n    data_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    image_path VARCHAR(200),\n    data BLOB,\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT,\n    role_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_id INT,\n    permission_id INT,\n    FOREIGN KEY (role_id) REFERENCES roles(role_id),\n    FOREIGN KEY (permission_id) REFERENCES permissions(permission_id),\n    PRIMARY KEY (role_id, permission_id)\n);\n"
+      }
+    ]
+  }
+]

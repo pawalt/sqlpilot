@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneticsData (id INT PRIMARY KEY,\nsource_name VARCHAR(50),\nsource_type VARCHAR(50),\nchromosome VARCHAR(10),\nposition INT,\nvariant_type VARCHAR(10),\ngene_name VARCHAR(50),\nallele_frequency FLOAT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255) NOT NULL,\n    chromosome VARCHAR(10) NOT NULL,\n    gene_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE variations (\n    variation_id INT PRIMARY KEY,\n    gene_id INT NOT NULL,\n    variation_name VARCHAR(255) NOT NULL,\n    variation_type VARCHAR(50) NOT NULL,\n    CONSTRAINT fk_gene_id FOREIGN KEY (gene_id) REFERENCES genes(gene_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SampleData (\n  sample_id UUID PRIMARY KEY,\n  sample_name VARCHAR(255),\n  genetic_data TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SourceAData (\n  sourceA_id UUID PRIMARY KEY,\n  sample_id UUID REFERENCES SampleData(sample_id),\n  sourceA_info TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SourceBData (\n  sourceB_id UUID PRIMARY KEY,\n  sample_id UUID REFERENCES SampleData(sample_id),\n  sourceB_info TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE table1 (\n  column1 INT,\n  column2 VARCHAR(50),\n  column3 DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE table2 (\n  column1 INT,\n  column2 VARCHAR(50),\n  column3 DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE table3 (\n  column1 INT,\n  column2 VARCHAR(50),\n  column3 DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE table4 (\n  column1 INT,\n  column2 VARCHAR(50),\n  column3 DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_info (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255),\n  chromosome VARCHAR(10),\n  start_position INT,\n  end_position INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_expression (\n  sample_id INT PRIMARY KEY,\n  gene_id INT,\n  expression_level FLOAT,\n  assay_type VARCHAR(50),\n  FOREIGN KEY (gene_id) REFERENCES gene_info(gene_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_variants (\n  variant_id INT PRIMARY KEY,\n  gene_id INT,\n  variant_type VARCHAR(50),\n  variant_position INT,\n  FOREIGN KEY (gene_id) REFERENCES gene_info(gene_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_annotations (\n  annotation_id INT PRIMARY KEY,\n  gene_id INT,\n  annotation_text TEXT,\n  annotation_source VARCHAR(255),\n  FOREIGN KEY (gene_id) REFERENCES gene_info(gene_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_interactions (\n  interaction_id INT PRIMARY KEY,\n  gene_id_1 INT,\n  gene_id_2 INT,\n  interaction_type VARCHAR(50),\n  FOREIGN KEY (gene_id_1) REFERENCES gene_info(gene_id),\n  FOREIGN KEY (gene_id_2) REFERENCES gene_info(gene_id)\n)"
+      }
+    ]
+  }
+]

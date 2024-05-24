@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mutations (\n    mutation_id INT PRIMARY KEY,\n    mutation_name VARCHAR(255),\n    gene_name VARCHAR(255),\n    chromosome VARCHAR(10),\n    position INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Mutation (mutation_id INT PRIMARY KEY, gene_name TEXT, mutation_type TEXT, chromosome TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE ClinicalData (clinical_id INT PRIMARY KEY, patient_id INT, mutation_id INT, diagnosis TEXT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_mutations (mutation_id INT PRIMARY KEY,\n                      gene_name VARCHAR(50),\n                      mutation_type VARCHAR(50),\n                      chromosome_number INT,\n                      mutation_position INT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE clinical_data (patient_id INT PRIMARY KEY,\n                      patient_name VARCHAR(50),\n                      age INT,\n                      gender VARCHAR(10),\n                      diagnosis VARCHAR(100));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mutation_clinical_data (mutation_id INT,\n                              patient_id INT,\n                              FOREIGN KEY (mutation_id) REFERENCES genetic_mutations(mutation_id),\n                              FOREIGN KEY (patient_id) REFERENCES clinical_data(patient_id));\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mutations (\n    mutation_id UUID PRIMARY KEY,\n    gene_name VARCHAR(50),\n    mutation_type VARCHAR(50),\n    mutation_position INT,\n    mutation_effect VARCHAR(100),\n    clinical_data_id UUID\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE clinical_data (\n    clinical_data_id UUID PRIMARY KEY,\n    patient_id UUID,\n    diagnosis VARCHAR(100),\n    age INT,\n    gender VARCHAR(10),\n    mutation_id UUID\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR(50),\n    date_of_birth DATE,\n    country VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE studies (\n    study_id UUID PRIMARY KEY,\n    study_name VARCHAR(100),\n    researcher_name VARCHAR(50),\n    mutation_id UUID,\n    clinical_data_id UUID\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mutations (\n    mutation_id INT,\n    gene_id INT,\n    mutation_type VARCHAR(50),\n    effect_on_gene VARCHAR(100),\n    PRIMARY KEY (mutation_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE genes (\n    gene_id INT,\n    gene_name VARCHAR(50),\n    chromosome_number INT,\n    start_position INT,\n    end_position INT,\n    PRIMARY KEY (gene_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT,\n    patient_name VARCHAR(50),\n    gender VARCHAR(10),\n    age INT,\n    PRIMARY KEY (patient_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE mutations_patients (\n    mutation_id INT,\n    patient_id INT,\n    mutation_status VARCHAR(20),\n    date_detected DATE,\n    FOREIGN KEY (mutation_id) REFERENCES mutations(mutation_id),\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE clinical_data (\n    clinical_data_id INT,\n    patient_id INT,\n    clinical_notes TEXT,\n    diagnosis VARCHAR(100),\n    PRIMARY KEY (clinical_data_id),\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n)"
+      }
+    ]
+  }
+]

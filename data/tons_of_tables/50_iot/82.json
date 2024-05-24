@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_location_tracking (\n    user_id UUID PRIMARY KEY,\n    latitude FLOAT,\n    longitude FLOAT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_locations (\n    user_id UUID PRIMARY KEY,\n    latitude FLOAT,\n    longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fitness_routes (\n    route_id UUID PRIMARY KEY,\n    route_name VARCHAR,\n    distance FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  user_id INT,\n  latitude DECIMAL(10, 8) NOT NULL,\n  longitude DECIMAL(11, 8) NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  user_id INT,\n  start_location_id INT,\n  end_location_id INT,\n  distance DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_locations (\n  location_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  latitude DECIMAL(9, 6) NOT NULL,\n  longitude DECIMAL(9, 6) NOT NULL,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id UUID PRIMARY KEY,\n  start_location_id UUID REFERENCES user_locations(location_id),\n  end_location_id UUID REFERENCES user_locations(location_id),\n  distance DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE route_suggestions (\n  suggestion_id UUID PRIMARY KEY,\n  route_id UUID REFERENCES routes(route_id),\n  user_id UUID REFERENCES users(user_id),\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_locations (\n    user_id INT NOT NULL,\n    location_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    latitude DECIMAL(9,6) NOT NULL,\n    longitude DECIMAL(9,6) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE location_details (\n    location_id INT NOT NULL,\n    location_name VARCHAR(255) NOT NULL,\n    city VARCHAR(100),\n    country VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT NOT NULL,\n    preference_id INT NOT NULL,\n    value VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fitness_routes (\n    route_id INT NOT NULL,\n    route_name VARCHAR(255) NOT NULL,\n    distance DECIMAL(5,2) NOT NULL,\n    start_location_id INT NOT NULL,\n    end_location_id INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_actions (\n    action_id INT NOT NULL,\n    user_id INT NOT NULL,\n    action_type VARCHAR(50) NOT NULL,\n    action_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FoodRecallSystem (\n  id INT,\n  product_name VARCHAR,\n  batch_number VARCHAR,\n  contamination_level INT,\n  recall_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    manufacturer VARCHAR(255),\n    contamination_level VARCHAR(50),\n    recall_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recalls (\n    recall_id INT PRIMARY KEY,\n    product_id INT REFERENCES products(product_id),\n    recall_reason TEXT,\n    recall_date DATE,\n    recall_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Product (\n  product_id SERIAL PRIMARY KEY,\n  product_name TEXT NOT NULL,\n  manufacturer TEXT NOT NULL,\n  production_date DATE,\n  expiration_date DATE,\n  contaminated BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Recall (\n  recall_id SERIAL PRIMARY KEY,\n  product_id INT,\n  recall_reason TEXT,\n  recall_date DATE,\n  FOREIGN KEY (product_id) REFERENCES Product(product_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecallLog (\n  log_id SERIAL PRIMARY KEY,\n  product_id INT,\n  recall_id INT,\n  log_entry TEXT,\n  log_date TIMESTAMP,\n  FOREIGN KEY (product_id) REFERENCES Product(product_id),\n  FOREIGN KEY (recall_id) REFERENCES Recall(recall_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Product (\n    product_id SERIAL PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    manufacturer VARCHAR(255) NOT NULL,\n    recall_date DATE,\n    reason TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Contaminant (\n    contaminant_id SERIAL PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Recall (\n    recall_id SERIAL PRIMARY KEY,\n    product_id INT REFERENCES Product(product_id),\n    contaminant_id INT REFERENCES Contaminant(contaminant_id),\n    recall_date DATE,\n    reason TEXT,\n    status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RecallLog (\n    log_id SERIAL PRIMARY KEY,\n    recall_id INT REFERENCES Recall(recall_id),\n    log_date TIMESTAMP NOT NULL,\n    log_info TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product (\n    id INT PRIMARY KEY,\n    name TEXT,\n    manufacturer TEXT,\n    expiration_date DATE,\n    is_contaminated BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE recall (\n    recall_id INT PRIMARY KEY,\n    product_id INT,\n    reason TEXT,\n    date_issued DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturer (\n    manufacturer_id INT PRIMARY KEY,\n    name TEXT,\n    country TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE contact_person (\n    person_id INT PRIMARY KEY,\n    name TEXT,\n    email TEXT,\n    phone_number TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE product_location (\n    location_id INT PRIMARY KEY,\n    product_id INT,\n    location_name TEXT,\n    city TEXT,\n    state TEXT\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE nano_material_stability (\n  id INT PRIMARY KEY,\n  material_name TEXT,\n  stability_condition TEXT,\n  temperature FLOAT,\n  humidity FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MaterialStability (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255),\n  stability_condition VARCHAR(255),\n  temperature FLOAT,\n  pressure FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE QualityControl (\n  qc_id INT PRIMARY KEY,\n  material_id INT,\n  test_date DATE,\n  test_result VARCHAR(50),\n  FOREIGN KEY (material_id) REFERENCES MaterialStability(material_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stability_conditions (\n    id SERIAL PRIMARY KEY,\n    material_name TEXT,\n    temperature FLOAT,\n    humidity FLOAT,\n    pressure FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stability_data (\n    id SERIAL PRIMARY KEY,\n    experiment_id INT,\n    stability_score FLOAT,\n    comments TEXT,\n    FOREIGN KEY (experiment_id) REFERENCES stability_conditions(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quality_control (\n    id SERIAL PRIMARY KEY,\n    experiment_id INT,\n    pass BOOLEAN,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (experiment_id) REFERENCES stability_conditions(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NanoMaterial (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50),\n  stability_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StorageConditions (\n  condition_id INT PRIMARY KEY,\n  condition_name VARCHAR(50),\n  temperature FLOAT,\n  humidity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QualityControl (\n  control_id INT PRIMARY KEY,\n  material_id INT,\n  condition_id INT,\n  control_date DATE,\n  control_passed BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StabilityReport (\n  report_id INT PRIMARY KEY,\n  control_id INT,\n  stability_score FLOAT,\n  stability_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NanoMaterials (\n    id INT PRIMARY KEY,\n    material_name TEXT,\n    stability_condition TEXT,\n    temperature FLOAT,\n    humidity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StabilityTests (\n    test_id INT PRIMARY KEY,\n    material_id INT,\n    test_date DATE,\n    test_result TEXT,\n    FOREIGN KEY (material_id) REFERENCES NanoMaterials(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TestConditions (\n    condition_id INT PRIMARY KEY,\n    condition_name TEXT,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialImages (\n    image_id INT PRIMARY KEY,\n    material_id INT,\n    image_url TEXT,\n    FOREIGN KEY (material_id) REFERENCES NanoMaterials(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QCReports (\n    report_id INT PRIMARY KEY,\n    report_date DATE,\n    material_id INT,\n    test_id INT,\n    comment TEXT,\n    FOREIGN KEY (material_id) REFERENCES NanoMaterials(id),\n    FOREIGN KEY (test_id) REFERENCES StabilityTests(test_id)\n);"
+      }
+    ]
+  }
+]

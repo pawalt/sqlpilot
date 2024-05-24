@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sales_notifications (\n  lead_id INT,\n  lead_name VARCHAR,\n  lead_email VARCHAR,\n  follow_up_date TIMESTAMP,\n  deal_status VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SalesLeads (\n  lead_id UUID PRIMARY KEY,\n  lead_name VARCHAR(255),\n  lead_email VARCHAR(255),\n  lead_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SalesFollowUps (\n  followup_id UUID PRIMARY KEY,\n  lead_id UUID,\n  followup_date TIMESTAMP,\n  followup_notes TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SalesLeads (\n    lead_id SERIAL PRIMARY KEY,\n    lead_name TEXT NOT NULL,\n    lead_email TEXT NOT NULL,\n    lead_status TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FollowUps (\n    followup_id SERIAL PRIMARY KEY,\n    lead_id INT REFERENCES SalesLeads (lead_id),\n    followup_date DATE,\n    followup_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DealsClosing (\n    deal_id SERIAL PRIMARY KEY,\n    lead_id INT REFERENCES SalesLeads (lead_id),\n    deal_amount DECIMAL,\n    deal_closure_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sales_leads (\n    lead_id UUID PRIMARY KEY,\n    lead_name VARCHAR(50),\n    lead_email VARCHAR(100),\n    lead_source VARCHAR(50),\n    created_at TIMESTAMP,\n    last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE follow_ups (\n    follow_up_id UUID PRIMARY KEY,\n    lead_id UUID REFERENCES sales_leads(lead_id),\n    follow_up_date DATE,\n    follow_up_type VARCHAR(50),\n    follow_up_notes TEXT,\n    created_at TIMESTAMP,\n    last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE deals_closing (\n    deal_id UUID PRIMARY KEY,\n    lead_id UUID REFERENCES sales_leads(lead_id),\n    deal_amount DECIMAL(10,2),\n    deal_status VARCHAR(50),\n    closing_date DATE,\n    created_at TIMESTAMP,\n    last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_notifications (\n    notification_id UUID PRIMARY KEY,\n    notification_message TEXT,\n    recipient_email VARCHAR(100),\n    sent_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SalesLeads (\n id INT PRIMARY KEY,\n email VARCHAR(255),\n name VARCHAR(255),\n company VARCHAR(255),\n status VARCHAR(50),\n created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FollowUps (\n id INT PRIMARY KEY,\n lead_id INT,\n follow_up_date TIMESTAMP,\n notes TEXT,\n completed BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DealsClosingStages (\n id INT PRIMARY KEY,\n lead_id INT,\n closing_date TIMESTAMP,\n amount DECIMAL(10, 2),\n closed BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Notifications (\n id INT PRIMARY KEY,\n lead_id INT,\n notification_date TIMESTAMP,\n message TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n id INT PRIMARY KEY,\n email VARCHAR(255),\n name VARCHAR(255),\n role VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

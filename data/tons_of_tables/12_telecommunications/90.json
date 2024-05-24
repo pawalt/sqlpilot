@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_configuration_data_5g (\n    id INT PRIMARY KEY,\n    site_name VARCHAR(255),\n    equipment_type VARCHAR(255),\n    frequency_band VARCHAR(255),\n    bandwidth INT,\n    tower_height FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_configuration (\n  id INT PRIMARY KEY,\n  network_name VARCHAR(255),\n  equipment_type VARCHAR(255),\n  frequency_band VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deployment_plan (\n  id INT PRIMARY KEY,\n  site_id INT,\n  planned_start_date DATE,\n  planned_end_date DATE,\n  engineer_name VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_configuration (\n  id INT PRIMARY KEY,\n  network_name VARCHAR(255),\n  frequency_band VARCHAR(50),\n  bandwidth DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cell_towers (\n  tower_id INT PRIMARY KEY,\n  location VARCHAR(100),\n  technology VARCHAR(50),\n  power_consumption DECIMAL,\n  network_id INT,\n  FOREIGN KEY (network_id) REFERENCES network_configuration(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(100),\n  type VARCHAR(50),\n  data_rate DECIMAL,\n  tower_id INT,\n  FOREIGN KEY (tower_id) REFERENCES cell_towers(tower_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_sites (\n  site_id UUID PRIMARY KEY,\n  site_name VARCHAR(255) NOT NULL,\n  site_location VARCHAR(255) NOT NULL,\n  deployment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_cells (\n  cell_id UUID PRIMARY KEY,\n  site_id UUID REFERENCES network_sites(site_id),\n  cell_name VARCHAR(255) NOT NULL,\n  cell_type VARCHAR(50) NOT NULL,\n  max_antennas INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_antennas (\n  antenna_id UUID PRIMARY KEY,\n  cell_id UUID REFERENCES network_cells(cell_id),\n  antenna_type VARCHAR(50) NOT NULL,\n  frequency_range VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_equipment (\n  equipment_id UUID PRIMARY KEY,\n  antenna_id UUID REFERENCES network_antennas(antenna_id),\n  equipment_name VARCHAR(100) NOT NULL,\n  equipment_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkConfigurations (\n   network_id INT PRIMARY KEY,\n   network_name VARCHAR(255),\n   network_type VARCHAR(50),\n   network_capacity INT,\n   deployment_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sites (\n   site_id INT PRIMARY KEY,\n   site_name VARCHAR(255),\n   site_location VARCHAR(255),\n   site_capacity INT,\n   site_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Equipment (\n   equipment_id INT PRIMARY KEY,\n   equipment_type VARCHAR(50),\n   vendor_name VARCHAR(100),\n   equipment_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Services (\n   service_id INT PRIMARY KEY,\n   service_name VARCHAR(255),\n   service_type VARCHAR(50),\n   service_capacity INT,\n   service_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n   user_id INT PRIMARY KEY,\n   user_name VARCHAR(255),\n   user_type VARCHAR(50),\n   user_email VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

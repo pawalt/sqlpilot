@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE approved_suppliers (\n  supplier_id UUID PRIMARY KEY,\n  supplier_name STRING,\n  supplier_location STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE approved_suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE approved_products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    supplier_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES approved_suppliers(supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE approved_suppliers (\n    supplier_id UUID PRIMARY KEY,\n    supplier_name VARCHAR(100) NOT NULL,\n    supplier_email VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    price DECIMAL NOT NULL,\n    supplier_id UUID REFERENCES approved_suppliers(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchase_orders (\n    order_id UUID PRIMARY KEY,\n    product_id UUID REFERENCES products(product_id),\n    quantity INT NOT NULL,\n    total_amount DECIMAL NOT NULL,\n    order_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ApprovedSuppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(255) NOT NULL,\n  address VARCHAR(255),\n  phone_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ApprovedProducts (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  category VARCHAR(50),\n  price DECIMAL(10, 2) NOT NULL,\n  supplier_id INT,\n  FOREIGN KEY (supplier_id) REFERENCES ApprovedSuppliers(supplier_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Purchases (\n  purchase_id INT PRIMARY KEY,\n  product_id INT,\n  purchase_date DATE NOT NULL,\n  quantity INT NOT NULL,\n  total_price DECIMAL(10, 2) NOT NULL,\n  FOREIGN KEY (product_id) REFERENCES ApprovedProducts(product_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(255),\n  role VARCHAR(15) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(100) NOT NULL,\n    contact_person VARCHAR(100),\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    price DECIMAL(10, 2) NOT NULL,\n    supplier_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductCategories (\n    product_id INT,\n    category_id INT,\n    PRIMARY KEY (product_id, category_id),\n    FOREIGN KEY (product_id) REFERENCES Products(product_id),\n    FOREIGN KEY (category_id) REFERENCES Categories(category_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders (\n    order_id INT PRIMARY KEY,\n    order_date DATE NOT NULL,\n    product_id INT,\n    quantity INT NOT NULL,\n    FOREIGN KEY (product_id) REFERENCES Products(product_id)\n);\n"
+      }
+    ]
+  }
+]

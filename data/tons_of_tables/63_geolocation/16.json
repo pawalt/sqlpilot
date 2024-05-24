@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofencing_alerts (\n    alert_id SERIAL PRIMARY KEY,\n    vehicle_id INT NOT NULL,\n    alert_type VARCHAR(50) NOT NULL,\n    geographic_area VARCHAR(100) NOT NULL,\n    alert_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_locations (\n   vehicle_id INT,\n   location_name TEXT,\n   latitude DECIMAL,\n   longitude DECIMAL,\n   timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE geofencing_rules (\n   rule_id INT,\n   rule_name TEXT,\n   geofence_area POLYGON,\n   alert_threshold INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_areas (\n    id SERIAL PRIMARY KEY,\n    area_name VARCHAR(50) NOT NULL,\n    area_coordinates GEOGRAPHY(POINT) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id SERIAL PRIMARY KEY,\n    vehicle_name VARCHAR(50) NOT NULL,\n    current_location GEOGRAPHY(POINT) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id SERIAL PRIMARY KEY,\n    vehicle_id INTEGER NOT NULL,\n    alert_type VARCHAR(50) NOT NULL,\n    alert_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_locations (\n    vehicle_id INT PRIMARY KEY,\n    location_name TEXT,\n    latitude DOUBLE PRECISION,\n    longitude DOUBLE PRECISION,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE geo_fence_areas (\n    area_id INT PRIMARY KEY,\n    area_name TEXT,\n    min_latitude DOUBLE PRECISION,\n    max_latitude DOUBLE PRECISION,\n    min_longitude DOUBLE PRECISION,\n    max_longitude DOUBLE PRECISION\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_tracking (\n    tracking_id INT PRIMARY KEY,\n    vehicle_id INT,\n    area_id INT,\n    is_inside BOOLEAN,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicle_locations(vehicle_id),\n    FOREIGN KEY (area_id) REFERENCES geo_fence_areas(area_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_history (\n    alert_id INT PRIMARY KEY,\n    vehicle_id INT,\n    alert_type TEXT,\n    alert_message TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicle_locations(vehicle_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle (id INT PRIMARY KEY,\n   name VARCHAR(255),\n   vehicle_type VARCHAR(50));"
+      },
+      {
+        "table_schema": "CREATE TABLE geographic_area (id INT PRIMARY KEY,\n   name VARCHAR(255),\n   area_description TEXT,\n   area_type VARCHAR(50));"
+      },
+      {
+        "table_schema": "CREATE TABLE geofence_alert (id INT PRIMARY KEY,\n   vehicle_id INT,\n   area_id INT,\n   alert_type VARCHAR(50),\n    alert_time TIMESTAMP,\n   FOREIGN KEY (vehicle_id) REFERENCES vehicle(id),\n   FOREIGN KEY (area_id) REFERENCES geographic_area(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE entry_event (id INT PRIMARY KEY,\n   geofence_alert_id INT,\n   entry_time TIMESTAMP,\n   FOREIGN KEY (geofence_alert_id) REFERENCES geofence_alert(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE exit_event (id INT PRIMARY KEY,\n   geofence_alert_id INT,\n   exit_time TIMESTAMP,\n   FOREIGN KEY (geofence_alert_id) REFERENCES geofence_alert(id));"
+      }
+    ]
+  }
+]

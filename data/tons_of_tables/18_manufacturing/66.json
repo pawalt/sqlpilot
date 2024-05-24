@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_process_inspection (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    inspection_date DATE,\n    inspector_name VARCHAR(255),\n    non_conforming_product BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n  process_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  inspector_id INT,\n  inspection_result VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE non_conforming_products (\n  product_id INT PRIMARY KEY,\n  issue_description TEXT,\n  process_id INT,\n  inspector_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inspectors (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    inspector_id INT,\n    FOREIGN KEY (inspector_id) REFERENCES inspectors(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE defects (\n    defect_id INT PRIMARY KEY,\n    defect_type VARCHAR(255),\n    product_id INT,\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE non_conforming_products (\n   id INT PRIMARY KEY,\n   product_name VARCHAR(255),\n   non_conforming_reason TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inspections (\n   id INT PRIMARY KEY,\n   inspection_date DATE,\n   inspector_name VARCHAR(255),\n   product_id INT,\n   FOREIGN KEY (product_id) REFERENCES non_conforming_products(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n   process_id INT PRIMARY KEY,\n   process_name VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n   id INT PRIMARY KEY,\n   product_name VARCHAR(255),\n   process_id INT,\n   FOREIGN KEY (process_id) REFERENCES manufacturing_processes(process_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inspectors (\n  id INT PRIMARY KEY,\n  name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  inspector_id INT,\n  FOREIGN KEY (inspector_id) REFERENCES inspectors(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_process (\n  id INT PRIMARY KEY,\n  name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE non_conforming_products (\n  id INT PRIMARY KEY,\n  product_id INT,\n  manufacturing_process_id INT,\n  reason VARCHAR(255),\n  FOREIGN KEY (product_id) REFERENCES products(id),\n  FOREIGN KEY (manufacturing_process_id) REFERENCES manufacturing_process(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspections (\n  id INT PRIMARY KEY,\n  inspector_id INT,\n  product_id INT,\n  result VARCHAR(255),\n  FOREIGN KEY (inspector_id) REFERENCES inspectors(id),\n  FOREIGN KEY (product_id) REFERENCES products(id)\n);"
+      }
+    ]
+  }
+]

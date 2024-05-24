@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ContentDistribution (\n  platform_id INT PRIMARY KEY,\n  platform_name VARCHAR,\n  audience_demographics JSON,\n  engagement_metrics JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PlatformData (\n    platform_id INT PRIMARY KEY,\n    platform_name VARCHAR(255),\n    content_type VARCHAR(50),\n    content_id INT,\n    distribution_channel VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AudienceDemographics (\n    audience_id INT PRIMARY KEY,\n    platform_id INT,\n    gender VARCHAR(10),\n    age_group VARCHAR(20),\n    location VARCHAR(100),\n    FOREIGN KEY (platform_id) REFERENCES PlatformData(platform_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE platforms (\n  platform_id INT PRIMARY KEY,\n  platform_name VARCHAR(255) NOT NULL,\n  platform_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audience_demographics (\n  audience_id INT PRIMARY KEY,\n  platform_id INT,\n  audience_age INT,\n  audience_gender VARCHAR(10),\n  FOREIGN KEY (platform_id) REFERENCES platforms(platform_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE engagement_metrics (\n  engagement_id INT PRIMARY KEY,\n  platform_id INT,\n  audience_id INT,\n  views INT,\n  likes INT,\n  shares INT,\n  FOREIGN KEY (platform_id) REFERENCES platforms(platform_id),\n  FOREIGN KEY (audience_id) REFERENCES audience_demographics(audience_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Platforms (\n    platform_id INT PRIMARY KEY,\n    platform_name VARCHAR(255) NOT NULL,\n    platform_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Audience (\n    audience_id INT PRIMARY KEY,\n    audience_name VARCHAR(255) NOT NULL,\n    audience_age INT,\n    audience_gender VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Content (\n    content_id INT PRIMARY KEY,\n    content_title VARCHAR(255) NOT NULL,\n    content_type VARCHAR(50) NOT NULL,\n    platform_id INT,\n    FOREIGN KEY (platform_id) REFERENCES Platforms(platform_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Metrics (\n    metrics_id INT PRIMARY KEY,\n    content_id INT,\n    audience_id INT,\n    views INT,\n    likes INT,\n    shares INT,\n    FOREIGN KEY (content_id) REFERENCES Content(content_id),\n    FOREIGN KEY (audience_id) REFERENCES Audience(audience_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Platform (\n  platform_id INT PRIMARY KEY,\n  platform_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Audience (\n  audience_id INT PRIMARY KEY,\n  audience_name VARCHAR(255) NOT NULL,\n  age_range VARCHAR(50),\n  location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Content (\n  content_id INT PRIMARY KEY,\n  content_title VARCHAR(255) NOT NULL,\n  content_type VARCHAR(50),\n  platform_id INT,\n  FOREIGN KEY (platform_id) REFERENCES Platform(platform_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Engagement (\n  engagement_id INT PRIMARY KEY,\n  content_id INT,\n  audience_id INT,\n  views INT,\n  likes INT,\n  comments INT,\n  shares INT,\n  FOREIGN KEY (content_id) REFERENCES Content(content_id),\n  FOREIGN KEY (audience_id) REFERENCES Audience(audience_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Metrics (\n  metric_id INT PRIMARY KEY,\n  metric_name VARCHAR(50) NOT NULL,\n  content_id INT,\n  metric_value INT,\n  FOREIGN KEY (content_id) REFERENCES Content(content_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n strategy_id INT PRIMARY KEY,\n strategy_name VARCHAR(255),\n strategy_description TEXT,\n currency_pair VARCHAR(10),\n indicators_used TEXT,\n start_date DATE,\n end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    strategy_description TEXT,\n    created_at TIMESTAMP,\n    last_updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backtesting_results (\n    result_id INT PRIMARY KEY,\n    strategy_id INT,\n    backtest_date DATE,\n    total_trades INT,\n    successful_trades INT,\n    profit DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    description TEXT,\n    author VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE backtesting_results (\n    result_id INT PRIMARY KEY,\n    strategy_id INT,\n    date DATE,\n    profit DECIMAL(10, 2),\n    trades INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id INT PRIMARY KEY,\n    strategy_id INT,\n    date DATE,\n    sharpe_ratio DECIMAL(10, 2),\n    win_rate DECIMAL(5, 2),\n    max_drawdown DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    strategy_description TEXT,\n    strategy_parameters JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backtesting_results (\n    result_id INT PRIMARY KEY,\n    strategy_id INT REFERENCES trading_strategies(strategy_id),\n    start_date DATE,\n    end_date DATE,\n    metrics JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id INT PRIMARY KEY,\n    result_id INT REFERENCES backtesting_results(result_id),\n    metric_name VARCHAR(255),\n    metric_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_history (\n    trade_id INT PRIMARY KEY,\n    result_id INT REFERENCES backtesting_results(result_id),\n    trade_date DATE,\n    trade_type VARCHAR(10),\n    trade_symbol VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  strategy_type VARCHAR(50),\n  created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE backtesting_results (\n  result_id INT PRIMARY KEY,\n  strategy_id INT,\n  start_date DATE,\n  end_date DATE,\n  total_profit DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n  metric_id INT PRIMARY KEY,\n  strategy_id INT,\n  annual_return DECIMAL(10, 2),\n  max_drawdown DECIMAL(10, 2),\n  sharpe_ratio DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trades (\n  trade_id INT PRIMARY KEY,\n  strategy_id INT,\n  symbol VARCHAR(10),\n  buy_price DECIMAL(10, 2),\n  sell_price DECIMAL(10, 2),\n  trade_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_history (\n  history_id INT PRIMARY KEY,\n  trade_id INT,\n  action VARCHAR(10),\n  execution_price DECIMAL(10, 2),\n  executed_at TIMESTAMP\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n    id INT PRIMARY KEY,\n    name TEXT,\n    location GEOGRAPHY,\n    launch_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Satellites (\n  id UUID PRIMARY KEY,\n  name VARCHAR(255),\n  location GEOGRAPHY,\n  launch_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DistanceCalculations (\n  id UUID PRIMARY KEY,\n  satellite1_id UUID REFERENCES Satellites(id),\n  satellite2_id UUID REFERENCES Satellites(id),\n  distance FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n id INT PRIMARY KEY,\n name TEXT,\n location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distances (\n id INT PRIMARY KEY,\n satellite1_id INT,\n satellite2_id INT,\n distance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE calculations (\n id INT PRIMARY KEY,\n calculation_time TIMESTAMP,\n calculation_result FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n    id INT,\n    name VARCHAR(255),\n    location GEOGRAPHY,\n    PRIMARY KEY (id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE distances (\n    id INT,\n    satellite_id INT,\n    distance_km FLOAT,\n    timestamp TIMESTAMP,\n    PRIMARY KEY (id),\n    FOREIGN KEY (satellite_id) REFERENCES satellites(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE calculations (\n    id INT,\n    distance_id INT,\n    calculation_result FLOAT,\n    calculation_date DATE,\n    PRIMARY KEY (id),\n    FOREIGN KEY (distance_id) REFERENCES distances(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis (\n    id INT,\n    calculation_id INT,\n    analysis_results JSON,\n    analysis_date DATE,\n    PRIMARY KEY (id),\n    FOREIGN KEY (calculation_id) REFERENCES calculations(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n  satellite_id INT PRIMARY KEY,\n  satellite_name VARCHAR(255) NOT NULL,\n  longitude DECIMAL(10,6) NOT NULL,\n  latitude DECIMAL(10,6) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_measurements (\n  measurement_id INT PRIMARY KEY,\n  satellite_id INT,\n  measurement_time TIMESTAMP NOT NULL,\n  measurement_value DECIMAL(10,2) NOT NULL,\n  CONSTRAINT fk_satellite_id FOREIGN KEY (satellite_id) REFERENCES satellites(satellite_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distances (\n  distance_id INT PRIMARY KEY,\n  from_satellite_id INT,\n  to_satellite_id INT,\n  distance DECIMAL(10,2) NOT NULL,\n  CONSTRAINT fk_from_satellite_id FOREIGN KEY (from_satellite_id) REFERENCES satellites(satellite_id),\n  CONSTRAINT fk_to_satellite_id FOREIGN KEY (to_satellite_id) REFERENCES satellites(satellite_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE calculations (\n  calculation_id INT PRIMARY KEY,\n  from_satellite_id INT,\n  to_satellite_id INT,\n  calculated_distance DECIMAL(10,2) NOT NULL,\n  calculation_time TIMESTAMP NOT NULL,\n  CONSTRAINT fk_from_satellite_id FOREIGN KEY (from_satellite_id) REFERENCES satellites(satellite_id),\n  CONSTRAINT fk_to_satellite_id FOREIGN KEY (to_satellite_id) REFERENCES satellites(satellite_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(255) NOT NULL,\n  password_hash VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensationalism_headlines (\n  headline_id INT PRIMARY KEY,\n  headline_text STRING,\n  sentiment_score FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensationalism_scores (\n    id SERIAL PRIMARY KEY,\n    headline TEXT,\n    score FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE headline_sentiments (\n    id SERIAL PRIMARY KEY,\n    headline TEXT,\n    sentiment TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensationalism_headlines (\n    headline_id UUID PRIMARY KEY,\n    headline_text STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE headline_sentiments (\n    sentiment_id UUID PRIMARY KEY,\n    headline_id UUID REFERENCES sensationalism_headlines(headline_id),\n    sentiment_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE headline_keywords (\n    keyword_id UUID PRIMARY KEY,\n    headline_id UUID REFERENCES sensationalism_headlines(headline_id),\n    keyword TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE headlines (headline_id INT PRIMARY KEY, headline_text TEXT, publication_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (keyword_id INT PRIMARY KEY, keyword_text TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE headline_keywords (headline_id INT, keyword_id INT, FOREIGN KEY (headline_id) REFERENCES headlines(headline_id), FOREIGN KEY (keyword_id) REFERENCES keywords(keyword_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_analysis (headline_id INT, sentiment_score FLOAT, sentiment_category TEXT, FOREIGN KEY (headline_id) REFERENCES headlines(headline_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE headlines (\n    id INT PRIMARY KEY,\n    headline TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_analysis (\n    id INT PRIMARY KEY,\n    headline_id INT,\n    sentiment_score FLOAT,\n    analyzed_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (\n    id INT PRIMARY KEY,\n    keyword TEXT,\n    headline_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entities (\n    id INT PRIMARY KEY,\n    entity_name TEXT,\n    entity_type TEXT,\n    headline_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n    id INT PRIMARY KEY,\n    headline_id INT,\n    analysis_date DATE,\n    positive_keywords INT,\n    negative_keywords INT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dashboard_data (\n    user_id INT,\n    dashboard_id INT,\n    widget_id INT,\n    widget_name VARCHAR(255),\n    data_value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE interactive_dashboards (\n    dashboard_id INT PRIMARY KEY,\n    dashboard_name VARCHAR(50) NOT NULL,\n    created_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_visualization (\n    visualization_id INT PRIMARY KEY,\n    visualization_type VARCHAR(50) NOT NULL,\n    data_source VARCHAR(100) NOT NULL,\n    visualization_query TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_visualization (\n    dashboard_id INT PRIMARY KEY,\n    dashboard_name TEXT,\n    creator_name TEXT,\n    creation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_widgets (\n    widget_id INT PRIMARY KEY,\n    widget_name TEXT,\n    widget_type TEXT,\n    widget_data JSONB,\n    dashboard_id INT REFERENCES data_visualization(dashboard_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_logs (\n    log_id SERIAL PRIMARY KEY,\n    log_timestamp TIMESTAMP,\n    log_message TEXT,\n    dashboard_id INT REFERENCES data_visualization(dashboard_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dashboard_data (\n    id SERIAL PRIMARY KEY,\n    user_id INT,\n    timestamp TIMESTAMP,\n    data JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id SERIAL PRIMARY KEY,\n    user_id INT,\n    activity_type VARCHAR(50),\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE aggregation_logs (\n    log_id SERIAL PRIMARY KEY,\n    query_id INT,\n    execution_time INT,\n    result_count INT,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE query_history (\n    query_id SERIAL PRIMARY KEY,\n    user_id INT,\n    query_text TEXT,\n    execution_time INT,\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dashboard_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    email VARCHAR(255),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_views (\n    view_id INT PRIMARY KEY,\n    user_id INT,\n    view_date DATE,\n    view_time TIME,\n    view_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_data (\n    data_id INT PRIMARY KEY,\n    view_id INT,\n    data_category VARCHAR(50),\n    data_value FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_queries (\n    query_id INT PRIMARY KEY,\n    user_id INT,\n    query_text TEXT,\n    query_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_reports (\n    report_id INT PRIMARY KEY,\n    query_id INT,\n    report_title VARCHAR(255),\n    report_description TEXT,\n    report_date DATE\n)"
+      }
+    ]
+  }
+]

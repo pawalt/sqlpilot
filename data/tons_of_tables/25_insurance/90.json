@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policyholders (\n   policy_id SERIAL PRIMARY KEY,\n   first_name VARCHAR(50) NOT NULL,\n   last_name VARCHAR(50) NOT NULL,\n   date_of_birth DATE NOT NULL,\n   address VARCHAR(255) NOT NULL,\n   city VARCHAR(100) NOT NULL,\n   state VARCHAR(2) NOT NULL,\n   zip_code VARCHAR(10) NOT NULL,\n   email VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policyholders (\n    id UUID PRIMARY KEY,\n    first_name VARCHAR,\n    last_name VARCHAR,\n    date_of_birth DATE,\n    address VARCHAR,\n    phone_number VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id UUID PRIMARY KEY,\n    policyholder_id UUID,\n    policy_type VARCHAR,\n    coverage_amount DECIMAL,\n    start_date DATE,\n    end_date DATE,\n    premium_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policyholders (\n    policyholder_id INT PRIMARY KEY,\n    first_name VARCHAR,\n    last_name VARCHAR,\n    date_of_birth DATE,\n    contact_number VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    address_id INT PRIMARY KEY,\n    policyholder_id INT REFERENCES policyholders(policyholder_id),\n    street_address VARCHAR,\n    city VARCHAR,\n    state VARCHAR,\n    zip_code VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id INT PRIMARY KEY,\n    policyholder_id INT REFERENCES policyholders(policyholder_id),\n    policy_type VARCHAR,\n    start_date DATE,\n    end_date DATE,\n    premium DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policyholder_info (\n    policyholder_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    date_of_birth DATE,\n    gender VARCHAR(10),\n    address VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contact_info (\n    contact_id INT PRIMARY KEY,\n    policyholder_id INT,\n    email VARCHAR(50),\n    home_phone VARCHAR(15),\n    work_phone VARCHAR(15),\n    FOREIGN KEY (policyholder_id) REFERENCES policyholder_info(policyholder_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE insurance_policies (\n    policy_id INT PRIMARY KEY,\n    policyholder_id INT,\n    coverage_amount DECIMAL,\n    start_date DATE,\n    end_date DATE,\n    FOREIGN KEY (policyholder_id) REFERENCES policyholder_info(policyholder_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_claims (\n    claim_id INT PRIMARY KEY,\n    policy_id INT,\n    claim_amount DECIMAL,\n    claim_date DATE,\n    claim_status VARCHAR(20),\n    FOREIGN KEY (policy_id) REFERENCES insurance_policies(policy_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policyholders (\n    id INT PRIMARY KEY,\n    first_name TEXT,\n    last_name TEXT,\n    date_of_birth DATE,\n    address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policyholder_contacts (\n    contact_id INT PRIMARY KEY,\n    policyholder_id INT REFERENCES policyholders(id),\n    email TEXT,\n    phone_number TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policyholder_liability (\n    liability_id INT PRIMARY KEY,\n    policyholder_id INT REFERENCES policyholders(id),\n    coverage_amount DECIMAL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policyholder_vehicles (\n    vehicle_id INT PRIMARY KEY,\n    policyholder_id INT REFERENCES policyholders(id),\n    vehicle_make TEXT,\n    vehicle_model TEXT,\n    vehicle_year INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policyholder_claims (\n    claim_id INT PRIMARY KEY,\n    policyholder_id INT REFERENCES policyholders(id),\n    claim_amount DECIMAL,\n    claim_date DATE\n);"
+      }
+    ]
+  }
+]

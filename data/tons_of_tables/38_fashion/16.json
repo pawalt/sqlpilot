@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fashion_designs (\n  id INT PRIMARY KEY,\n  designer_name VARCHAR(50),\n  design_sketch TEXT,\n  fabric_sample BLOB,\n  production_notes TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE designers (\n    designer_id INT PRIMARY KEY,\n    designer_name VARCHAR(255) NOT NULL,\n    design_sketches TEXT,\n    fabric_samples TEXT,\n    production_notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE designs (\n    design_id INT PRIMARY KEY,\n    designer_id INT,\n    design_name VARCHAR(255) NOT NULL,\n    design_description TEXT,\n    design_image_url VARCHAR(255),\n    FOREIGN KEY (designer_id) REFERENCES designers(designer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fashion_designers (\n    designer_id SERIAL PRIMARY KEY,\n    designer_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE design_sketches (\n    sketch_id SERIAL PRIMARY KEY,\n    designer_id INT NOT NULL,\n    sketch_description TEXT,\n    sketch_image BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fabric_samples (\n    sample_id SERIAL PRIMARY KEY,\n    designer_id INT NOT NULL,\n    fabric_name VARCHAR(255),\n    fabric_image BYTEA\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fashion_designers (\n    designer_id UUID PRIMARY KEY,\n    designer_name VARCHAR(50) NOT NULL,\n    design_sketches JSONB,\n    fabric_samples JSONB,\n    production_notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE design_sketches (\n    sketch_id UUID PRIMARY KEY,\n    designer_id UUID REFERENCES fashion_designers(designer_id),\n    sketch_title VARCHAR(100) NOT NULL,\n    sketch_image BYTEA,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fabric_samples (\n    sample_id UUID PRIMARY KEY,\n    designer_id UUID REFERENCES fashion_designers(designer_id),\n    sample_name VARCHAR(50) NOT NULL,\n    sample_image BYTEA,\n    material TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_notes (\n    note_id UUID PRIMARY KEY,\n    designer_id UUID REFERENCES fashion_designers(designer_id),\n    note_title VARCHAR(100) NOT NULL,\n    note_content TEXT,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE designers (\n    designer_id UUID PRIMARY KEY,\n    designer_name VARCHAR(100) NOT NULL,\n    design_sketches TEXT,\n    fabric_samples BYTEA,\n    production_notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE design_sketches (\n    sketch_id UUID PRIMARY KEY,\n    designer_id UUID,\n    sketch_data BYTEA,\n    FOREIGN KEY (designer_id) REFERENCES designers(designer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fabric_samples (\n    sample_id UUID PRIMARY KEY,\n    designer_id UUID,\n    sample_data BYTEA,\n    FOREIGN KEY (designer_id) REFERENCES designers(designer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE production_notes (\n    note_id UUID PRIMARY KEY,\n    designer_id UUID,\n    note_text TEXT,\n    FOREIGN KEY (designer_id) REFERENCES designers(designer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM ComplianceMonitoring",
+      "SELECT id, company_name, compliance_status FROM ComplianceMonitoring",
+      "SELECT company_name, compliance_status FROM ComplianceMonitoring WHERE compliance_status = 'Compliant'",
+      "SELECT * FROM ComplianceMonitoring WHERE regulatory_requirements IS NOT NULL",
+      "SELECT company_name AS Company, compliance_status AS Status FROM ComplianceMonitoring",
+      "SELECT id, company_name FROM ComplianceMonitoring WHERE compliance_status = 'Compliant' ORDER BY company_name DESC",
+      "SELECT * FROM ComplianceMonitoring WHERE regulatory_requirements LIKE '%audit%' OR regulatory_requirements LIKE '%report%' ORDER BY id ASC",
+      "SELECT company_name, compliance_status FROM ComplianceMonitoring WHERE compliance_status = 'Non-Compliant' LIMIT 10 OFFSET 5",
+      "SELECT company_name, regulatory_requirements FROM ComplianceMonitoring WHERE compliance_status = 'Pending' OR compliance_status = 'In Progress' ORDER BY regulatory_requirements ASC, company_name ASC",
+      "SELECT * FROM ComplianceMonitoring WHERE id > 100 ORDER BY compliance_status ASC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT id, company_name, compliance_status FROM compliance_monitoring;",
+      "SELECT company_name, compliance_status, id FROM compliance_monitoring;",
+      "SELECT * FROM regulatory_requirements;",
+      "SELECT requirement_name, deadline, description FROM regulatory_requirements;",
+      "SELECT id, deadline, requirement_name, description FROM regulatory_requirements;",
+      "SELECT * FROM compliance_monitoring WHERE compliance_status = TRUE ORDER BY company_name DESC;",
+      "SELECT id, company_name FROM compliance_monitoring WHERE compliance_status = FALSE ORDER BY id;",
+      "SELECT id, requirement_name, deadline FROM regulatory_requirements WHERE deadline > '2022-12-31' AND requirement_name LIKE '%security%';",
+      "SELECT * FROM compliance_monitoring JOIN regulatory_requirements ON compliance_monitoring.id = regulatory_requirements.id WHERE regulatory_requirements.deadline < NOW();",
+      "SELECT company_name, compliance_status FROM compliance_monitoring WHERE company_name LIKE '%Corp%' AND compliance_status = TRUE ORDER BY company_name ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM ComplianceRequirements;",
+      "SELECT id, requirement_name FROM ComplianceRequirements WHERE due_date >= '2022-01-01';",
+      "SELECT description FROM ComplianceRequirements WHERE id = 3;",
+      "SELECT * FROM ComplianceRecords ORDER BY record_date DESC LIMIT 5;",
+      "SELECT id, violation_date FROM ComplianceViolations ORDER BY violation_date ASC;",
+      "SELECT * FROM ComplianceRequirements ORDER BY requirement_name DESC;",
+      "SELECT id, description FROM ComplianceRecords WHERE record_date > '2022-01-01' ORDER BY record_date ASC;",
+      "SELECT r.requirement_name, c.record_date, v.violation_details FROM ComplianceRequirements r, ComplianceRecords c, ComplianceViolations v WHERE r.id = c.requirement_id AND c.id = v.record_id;",
+      "SELECT * FROM ComplianceViolations WHERE violation_date BETWEEN '2022-01-01' AND '2022-12-31' AND violation_details LIKE '%failed%';",
+      "SELECT r.requirement_name, COUNT(v.id) AS total_violations FROM ComplianceRequirements r LEFT JOIN (ComplianceRecords c JOIN ComplianceViolations v ON c.id = v.record_id) ON r.id = c.requirement_id GROUP BY r.requirement_name ORDER BY total_violations DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM monitoring_team;",
+      "SELECT team_name, supervisor_id, team_member_id FROM monitoring_team ORDER BY team_name ASC;",
+      "SELECT team_member_id, team_name FROM monitoring_team WHERE supervisor_id = 1;",
+      "SELECT COUNT(*) AS total_checks FROM compliance_checks;",
+      "SELECT report_id, violation_description FROM violation_reports WHERE violation_date > '2022-01-01';",
+      "SELECT * FROM monitoring_team WHERE supervisor_id = 1;",
+      "SELECT team_name, supervisor_id, team_member_id FROM monitoring_team WHERE team_name LIKE '%Compliance%';",
+      "SELECT * FROM compliance_checks ORDER BY check_id DESC;",
+      "SELECT violation_description, violation_date FROM violation_reports WHERE violation_date BETWEEN '2021-01-01' AND '2021-12-31';",
+      "SELECT agency_name, regulation_desc FROM regulatory_agencies WHERE agency_name = 'FDA';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT check_id, check_name FROM compliance_checks;",
+      "SELECT regulation_id, regulation_name, regulation_level FROM regulations;",
+      "SELECT category_id, category_name, category_description FROM compliance_categories;",
+      "SELECT entity_id, entity_name, entity_location FROM compliance_entities;",
+      "SELECT record_id, check_id, entity_id, compliance_date FROM compliance_records;",
+      "SELECT * FROM compliance_checks ORDER BY check_name ASC, regulation_id DESC;",
+      "SELECT check_name, compliance_status FROM compliance_checks WHERE regulation_id = 1 AND compliance_status = TRUE;",
+      "SELECT cc.check_name, cr.compliance_date, ce.entity_name FROM compliance_records cr JOIN compliance_checks cc ON cc.check_id = cr.check_id JOIN compliance_entities ce ON ce.entity_id = cr.entity_id WHERE cr.compliance_date >= '2022-01-01';",
+      "SELECT ce.entity_name, cc.check_name, cc.check_description, cr.compliance_date FROM compliance_entities ce JOIN compliance_records cr ON cr.entity_id = ce.entity_id JOIN compliance_checks cc ON cc.check_id = cr.check_id WHERE cc.compliance_status = FALSE ORDER BY cr.compliance_date DESC;",
+      "SELECT cr.record_id, cc.check_name, ce.entity_name FROM compliance_records cr JOIN compliance_checks cc ON cc.check_id = cr.check_id JOIN compliance_entities ce ON ce.entity_id = cr.entity_id WHERE cc.check_id IN (1, 3, 5) ORDER BY cr.record_id DESC;"
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FraudDetection ( \n    claim_id INT PRIMARY KEY, \n    claim_amount FLOAT, \n    claim_date DATE, \n    external_reference VARCHAR \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims (\n  claim_id INT PRIMARY KEY,\n  claim_amount DECIMAL,\n  claim_date DATE,\n  claim_status VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE external_databases (\n  database_id INT PRIMARY KEY,\n  database_name VARCHAR,\n  database_url VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Claims (\n    claim_id INT PRIMARY KEY,\n    claim_amount DECIMAL,\n    claim_date DATE,\n    customer_id INT,\n    is_fraud BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ExternalDatabases (\n    db_id INT PRIMARY KEY,\n    db_name VARCHAR(255),\n    db_type VARCHAR(50),\n    last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CrossReference (\n    ref_id INT PRIMARY KEY,\n    claim_id INT,\n    db_id INT,\n    match_score DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id INT PRIMARY KEY,\n    claim_amount DECIMAL,\n    claim_date DATE,\n    claim_status VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE external_databases (\n    database_id INT PRIMARY KEY,\n    database_name VARCHAR,\n    connection_string VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_detection (\n    detection_id INT PRIMARY KEY,\n    claim_id INT,\n    database_id INT,\n    detection_date DATE,\n    FOREIGN KEY (claim_id) REFERENCES claims(claim_id),\n    FOREIGN KEY (database_id) REFERENCES external_databases(database_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_warnings (\n    warning_id INT PRIMARY KEY,\n    detection_id INT,\n    warning_message VARCHAR,\n    warning_date DATE,\n    FOREIGN KEY (detection_id) REFERENCES fraud_detection(detection_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id INT PRIMARY KEY,\n    claim_amount DECIMAL,\n    customer_id INT,\n    claim_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_email VARCHAR(100),\n    customer_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE external_databases (\n    database_id INT PRIMARY KEY,\n    database_name VARCHAR(50),\n    connection_url VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_cases (\n    case_id INT PRIMARY KEY,\n    claim_id INT,\n    customer_id INT,\n    detection_date DATETIME,\n    fraud_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraudulent_claims (\n    claim_id INT PRIMARY KEY,\n    case_id INT,\n    detection_date DATE,\n    fraudulent_amount DECIMAL\n);"
+      }
+    ]
+  }
+]

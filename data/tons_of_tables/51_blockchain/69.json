@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE escrow_details (\n    id SERIAL PRIMARY KEY,\n    property_address VARCHAR(255),\n    seller_name VARCHAR(100),\n    buyer_name VARCHAR(100),\n    deposit_amount DECIMAL(10, 2),\n    contract_conditions TEXT,\n    funds_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_estate_transactions (\n  transaction_id INT PRIMARY KEY,\n  property_id INT NOT NULL,\n  buyer_name VARCHAR(50) NOT NULL,\n  seller_name VARCHAR(50) NOT NULL,\n  transaction_amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE escrow_accounts (\n  account_id INT PRIMARY KEY,\n  transaction_id INT NOT NULL,\n  account_balance DECIMAL(10, 2) NOT NULL,\n  CONSTRAINT fk_transaction_id FOREIGN KEY (transaction_id) REFERENCES real_estate_transactions(transaction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "real_estate_escrow_details"
+      },
+      {
+        "table_schema": "transactions_funds"
+      },
+      {
+        "table_schema": "contract_conditions"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_estate_transactions (\n    id INT PRIMARY KEY,\n    property_address VARCHAR(255),\n    buyer_name VARCHAR(255),\n    seller_name VARCHAR(255),\n    escrow_amount DECIMAL(10, 2),\n    contract_conditions TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE buyers (\n    id INT PRIMARY KEY,\n    buyer_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sellers (\n    id INT PRIMARY KEY,\n    seller_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE escrow_details (\n    id INT PRIMARY KEY,\n    transaction_id INT REFERENCES real_estate_transactions(id),\n    funds_amount DECIMAL(10, 2),\n    escrow_status VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_estate_escrow (\n    id UUID PRIMARY KEY,\n    buyer_name VARCHAR(50),\n    seller_name VARCHAR(50),\n    property_address VARCHAR(100),\n    escrow_amount DECIMAL(10, 2),\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE escrow_transactions (\n    transaction_id UUID PRIMARY KEY,\n    escrow_id UUID REFERENCES real_estate_escrow(id),\n    transaction_amount DECIMAL(10, 2),\n    transaction_date DATE,\n    transaction_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE escrow_documents (\n    document_id UUID PRIMARY KEY,\n    escrow_id UUID REFERENCES real_estate_escrow(id),\n    document_name VARCHAR(100),\n    document_type VARCHAR(50),\n    document_url VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE escrow_participants (\n    participant_id UUID PRIMARY KEY,\n    escrow_id UUID REFERENCES real_estate_escrow(id),\n    participant_name VARCHAR(50),\n    participant_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE escrow_history (\n    history_id UUID PRIMARY KEY,\n    escrow_id UUID REFERENCES real_estate_escrow(id),\n    action_type VARCHAR(50),\n    action_date DATE,\n    action_description TEXT\n);"
+      }
+    ]
+  }
+]

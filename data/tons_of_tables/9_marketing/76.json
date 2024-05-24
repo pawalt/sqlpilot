@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EventMarketingData (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    ticket_sales INT,\n    promotional_activities VARCHAR(255),\n    campaign_start_date DATE,\n    campaign_end_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ticket_sales (\n    event_id INT PRIMARY KEY,\n    ticket_id INT,\n    sale_date DATE,\n    ticket_price DECIMAL,\n    quantity_sold INT\n);\n\nCREATE TABLE promotional_activities (\n    activity_id INT PRIMARY KEY,\n    event_id INT,\n    activity_description TEXT,\n    activity_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR,\n    event_date DATE,\n    ticket_price DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR,\n    campaign_type VARCHAR,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_sales (\n    ticket_id INT PRIMARY KEY,\n    event_id INT,\n    campaign_id INT,\n    sale_date DATE,\n    sale_amount DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EventCampaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TicketSales (\n    ticket_id INT PRIMARY KEY,\n    campaign_id INT,\n    sale_date DATE,\n    ticket_price DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PromotionalActivities (\n    activity_id INT PRIMARY KEY,\n    campaign_id INT,\n    activity_type VARCHAR(50),\n    activity_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignResults (\n    result_id INT PRIMARY KEY,\n    campaign_id INT,\n    tickets_sold INT,\n    revenue DECIMAL(12,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_campaigns (\n    id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    budget DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_sales (\n    id SERIAL PRIMARY KEY,\n    event_campaign_id INTEGER REFERENCES event_campaigns(id),\n    ticket_type VARCHAR(50) NOT NULL,\n    sale_date DATE NOT NULL,\n    sale_amount DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE promotional_activities (\n    id SERIAL PRIMARY KEY,\n    event_campaign_id INTEGER REFERENCES event_campaigns(id),\n    activity_type VARCHAR(50) NOT NULL,\n    activity_date DATE NOT NULL,\n    cost DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n    id SERIAL PRIMARY KEY,\n    event_campaign_id INTEGER REFERENCES event_campaigns(id),\n    analysis_date DATE NOT NULL,\n    roi DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_attendees (\n    id SERIAL PRIMARY KEY,\n    event_campaign_id INTEGER REFERENCES event_campaigns(id),\n    attendee_name VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  }
+]

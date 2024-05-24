@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_field_mapping (\n    field_id UUID PRIMARY KEY,\n    field_name VARCHAR(100),\n    latitude DECIMAL,\n    longitude DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CropFields (\n    field_id UUID PRIMARY KEY,\n    field_name VARCHAR(255),\n    field_area FLOAT,\n    coordinates GEOMETRY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldOwners (\n    owner_id UUID PRIMARY KEY,\n    owner_name VARCHAR(255),\n    contact_info JSON,\n    field_id UUID REFERENCES CropFields(field_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CropFieldMapping (\n    field_id INT PRIMARY KEY,\n    latitude FLOAT,\n    longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldStatus (\n    status_id INT PRIMARY KEY,\n    field_id INT,\n    status VARCHAR(50),\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CropTypes (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(50),\n    growth_period VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CropFields (\n    id INT PRIMARY KEY,\n    field_name VARCHAR(255) NOT NULL,\n    latitude DOUBLE PRECISION NOT NULL,\n    longitude DOUBLE PRECISION NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Crops (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(255) NOT NULL,\n    crop_type VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldMapping (\n    mapping_id INT PRIMARY KEY,\n    field_id INT NOT NULL,\n    crop_id INT NOT NULL,\n    mapping_date DATE NOT NULL,\n    FOREIGN KEY (field_id) REFERENCES CropFields(id),\n    FOREIGN KEY (crop_id) REFERENCES Crops(crop_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldWorkers (\n    worker_id INT PRIMARY KEY,\n    worker_name VARCHAR(255) NOT NULL,\n    field_id INT NOT NULL,\n    designation VARCHAR(100) NOT NULL,\n    FOREIGN KEY (field_id) REFERENCES CropFields(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_fields (\n  field_id INT PRIMARY KEY,\n  field_name TEXT,\n  field_location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE field_mapping (\n  mapping_id INT PRIMARY KEY,\n  field_id INT,\n  mapping_date DATE,\n  mapping_data JSONB,\n  FOREIGN KEY (field_id) REFERENCES crop_fields(field_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n  image_id INT PRIMARY KEY,\n  mapping_id INT,\n  image_url TEXT,\n  image_date DATE,\n  FOREIGN KEY (mapping_id) REFERENCES field_mapping(mapping_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE soil_analysis (\n  analysis_id INT PRIMARY KEY,\n  field_id INT,\n  analysis_date DATE,\n  soil_type TEXT,\n  FOREIGN KEY (field_id) REFERENCES crop_fields(field_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_data (\n  data_id INT PRIMARY KEY,\n  field_id INT,\n  data_date DATE,\n  temperature FLOAT,\n  humidity FLOAT,\n  precipitation FLOAT,\n  FOREIGN KEY (field_id) REFERENCES crop_fields(field_id)\n);"
+      }
+    ]
+  }
+]

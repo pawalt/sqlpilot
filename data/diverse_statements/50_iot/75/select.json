@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM security_personnel_locations;",
+      "SELECT personnel_id, coordinate_latitude, coordinate_longitude FROM security_personnel_locations;",
+      "SELECT * FROM security_personnel_locations ORDER BY recorded_at DESC;",
+      "SELECT personnel_id, coordinate_latitude, coordinate_longitude FROM security_personnel_locations WHERE personnel_id = 123;",
+      "SELECT personnel_id, coordinate_latitude, coordinate_longitude, recorded_at FROM security_personnel_locations WHERE recorded_at > '2022-01-01';",
+      "SELECT * FROM security_personnel_locations WHERE personnel_id = 1 ORDER BY recorded_at DESC;",
+      "SELECT personnel_id, coordinate_latitude, coordinate_longitude FROM security_personnel_locations WHERE recorded_at > '2022-01-01' AND coordinate_latitude < 10 ORDER BY personnel_id ASC;",
+      "SELECT DISTINCT personnel_id, COUNT(id) AS total_records FROM security_personnel_locations GROUP BY personnel_id HAVING total_records > 5 ORDER BY total_records DESC;",
+      "SELECT personnel_id, MAX(coordinate_latitude) AS max_latitude, MIN(coordinate_latitude) AS min_latitude FROM security_personnel_locations GROUP BY personnel_id;",
+      "SELECT personnel_id, AVG(coordinate_longitude) AS avg_longitude FROM security_personnel_locations WHERE recorded_at BETWEEN '2022-01-01' AND '2022-06-30' GROUP BY personnel_id ORDER BY avg_longitude DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM security_personnel;",
+      "SELECT name, location_point FROM security_personnel WHERE id = 1;",
+      "SELECT camera_id, location_point, status FROM surveillance_system WHERE status = 'Active';",
+      "SELECT name, timestamp FROM security_personnel ORDER BY timestamp DESC;",
+      "SELECT camera_id, location_point, coverage_area FROM surveillance_system WHERE ST_Distance(location_point, POINT(0, 0)) < 100;",
+      "SELECT * FROM security_personnel ORDER BY id DESC;",
+      "SELECT name, location_point FROM security_personnel WHERE id = 1;",
+      "SELECT camera_id, ST_AsGeoJSON(location_point) AS camera_location FROM surveillance_system WHERE status = 'Active';",
+      "SELECT * FROM security_personnel WHERE ST_Distance(location_point, ST_GeomFromText('POINT(10 20)', 4326)) < 100;",
+      "SELECT id, name, timestamp FROM security_personnel WHERE location_point IS NOT NULL;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM patrols WHERE patrol_time < '2022-01-01';",
+      "SELECT patrol_name, personnel_id FROM patrols WHERE camera_id = 2;",
+      "SELECT personnel_name, latitude, longitude FROM security_personnel_locations WHERE id = 3;",
+      "SELECT patrol_name, patrol_time FROM patrols ORDER BY patrol_name DESC;",
+      "SELECT camera_name FROM security_cameras WHERE location_id = 5;",
+      "SELECT * FROM security_personnel_locations ORDER BY id DESC;",
+      "SELECT personnel_name, latitude, longitude FROM security_personnel_locations WHERE id = 1;",
+      "SELECT p.patrol_name, sp.personnel_name, c.camera_name FROM patrols p JOIN security_personnel_locations sp ON p.personnel_id = sp.id JOIN security_cameras c ON p.camera_id = c.id WHERE p.patrol_time >= '2023-01-01';",
+      "SELECT sp.personnel_name, c.camera_name FROM security_cameras c LEFT JOIN security_personnel_locations sp ON c.location_id = sp.id ORDER BY sp.personnel_name, c.camera_name;",
+      "SELECT COUNT(*), MAX(latitude), MIN(longitude) FROM security_personnel_locations;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT id, name, phone_number FROM security_personnel;",
+      "SELECT * FROM check_ins WHERE personnel_id = 1;",
+      "SELECT route_name, start_location, end_location FROM patrol_routes WHERE id = 3;",
+      "SELECT description, location, timestamp FROM incidents WHERE id = 5;",
+      "SELECT * FROM security_personnel ORDER BY name DESC;",
+      "SELECT * FROM security_personnel;",
+      "SELECT id, name, phone_number FROM security_personnel WHERE id = 1;",
+      "SELECT route_name, start_location, end_location FROM patrol_routes ORDER BY route_name DESC;",
+      "SELECT description, location, timestamp FROM incidents WHERE description LIKE '%theft%';",
+      "SELECT id, personnel_id, check_in_time FROM check_ins WHERE TIMESTAMPDIFF(HOUR, check_in_time, NOW()) > 2;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM SecurityPersonnel;",
+      "SELECT personnel_id, name, designation FROM SecurityPersonnel WHERE department = 'Security';",
+      "SELECT area_name, coverage_status FROM CoverageArea WHERE coverage_status = TRUE;",
+      "SELECT system_name, deployment_date FROM SurveillanceSystem ORDER BY deployment_date DESC;",
+      "SELECT * FROM PatrolActivity WHERE activity_date > '2022-01-01';",
+      "SELECT * FROM SecurityPersonnel WHERE department = 'Security' ORDER BY name DESC;",
+      "SELECT personnel_id, name, designation FROM SecurityPersonnel WHERE location_id = 1 AND department = 'Operations';",
+      "SELECT s.system_name, c.area_name FROM SurveillanceSystem s JOIN CoverageArea c ON s.system_id = c.location_id;",
+      "SELECT p.name, c.area_name, a.activity_date FROM SecurityPersonnel p JOIN PatrolActivity a ON p.personnel_id = a.personnel_id JOIN CoverageArea c ON a.area_id = c.area_id WHERE c.coverage_status = TRUE;",
+      "SELECT l.latitude, l.longitude FROM Location l JOIN CoverageArea c ON l.location_id = c.location_id WHERE c.area_name = 'Main Entrance';"
+    ]
+  }
+]

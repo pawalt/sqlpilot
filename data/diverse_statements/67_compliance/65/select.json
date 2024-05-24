@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM ValidationReconciliation;",
+      "SELECT validation_id, process_name FROM ValidationReconciliation WHERE validation_date > '2022-01-01';",
+      "SELECT validation_type, process_name FROM ValidationReconciliation ORDER BY process_name DESC;",
+      "SELECT validation_id, process_name, validation_type FROM ValidationReconciliation WHERE validation_type = 'Data Validation';",
+      "SELECT * FROM ValidationReconciliation WHERE validation_id IN (1, 3, 5);",
+      "SELECT validation_id, process_name, validation_type, validation_date FROM ValidationReconciliation WHERE validation_id = 1;",
+      "SELECT validation_id, process_name, validation_type, validation_date FROM ValidationReconciliation WHERE validation_date >= '2022-01-01' ORDER BY validation_date DESC;",
+      "SELECT validation_id, process_name, validation_type, validation_date FROM ValidationReconciliation WHERE validation_type = 'Data Integrity' AND process_name LIKE '%ing' ORDER BY validation_id ASC;",
+      "SELECT COUNT(validation_id) AS total_validations, validation_type FROM ValidationReconciliation GROUP BY validation_type HAVING COUNT(validation_id) > 1;",
+      "SELECT DISTINCT process_name, COUNT(validation_id) AS total_validations FROM ValidationReconciliation GROUP BY process_name HAVING COUNT(validation_id) > 3 ORDER BY total_validations DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM validation_processes;",
+      "SELECT process_name, process_description FROM validation_processes;",
+      "SELECT result_id, result, result_date FROM reconciliation_results;",
+      "SELECT process_id, process_name FROM validation_processes WHERE process_id = 1;",
+      "SELECT * FROM reconciliation_results ORDER BY result_date DESC;",
+      "SELECT * FROM validation_processes WHERE process_id = 1;",
+      "SELECT process_name, process_description FROM validation_processes WHERE process_id = 2;",
+      "SELECT result_id, result, result_date FROM reconciliation_results WHERE process_id = 1 ORDER BY result_date DESC;",
+      "SELECT * FROM validation_processes WHERE process_name LIKE '%validation%' ORDER BY process_id ASC;",
+      "SELECT process_name, COUNT(*) AS process_count FROM validation_processes GROUP BY process_name HAVING COUNT(*) > 1;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM validation_processes;",
+      "SELECT process_name, process_description FROM validation_processes;",
+      "SELECT validation_id, validation_type, validation_status FROM data_validation;",
+      "SELECT process_id, validation_type, validation_result FROM data_validation;",
+      "SELECT log_id, log_timestamp, log_details FROM reconciliation_logs;",
+      "SELECT * FROM validation_processes WHERE process_id = '7da59db1-5b38-4716-b4b7-4c6561e47aa2';",
+      "SELECT process_name, process_description FROM validation_processes ORDER BY process_name DESC;",
+      "SELECT validation_id, validation_type FROM data_validation WHERE validation_status = 'completed' AND validation_result = true;",
+      "SELECT * FROM reconciliation_logs ORDER BY log_timestamp ASC LIMIT 10;",
+      "SELECT v.process_name, r.log_timestamp FROM validation_processes v JOIN data_validation d ON v.process_id = d.process_id JOIN reconciliation_logs r ON d.validation_id = r.validation_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM validation_results;",
+      "SELECT rule_id, rule_name FROM validation_rules ORDER BY created_at DESC;",
+      "SELECT source_name, connection_string FROM data_sources WHERE source_id = 1;",
+      "SELECT rule_name, description FROM validation_rules WHERE rule_id = 2;",
+      "SELECT source_name, COUNT(*) AS total_results FROM data_sources JOIN validation_results ON data_sources.source_id = validation_results.source_id GROUP BY source_name ORDER BY total_results DESC;",
+      "SELECT * FROM validation_rules ORDER BY rule_id DESC;",
+      "SELECT rule_name, description FROM validation_rules WHERE rule_id = 3;",
+      "SELECT source_name, connection_string FROM data_sources WHERE created_at >= '2022-01-01';",
+      "SELECT result_id, validated_value, is_valid FROM validation_results WHERE source_id = 5 ORDER BY created_at ASC;",
+      "SELECT log_id, log_message FROM reconciliation_logs WHERE rule_id = 2 AND source_id = 4;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM validation_jobs;",
+      "SELECT job_id, job_name, validation_type FROM validation_jobs WHERE status = 'completed';",
+      "SELECT start_time, end_time FROM validation_jobs WHERE validation_type = 'reconciliation' ORDER BY start_time DESC;",
+      "SELECT result_text, result_status FROM validation_results WHERE result_status = 'fail';",
+      "SELECT log_id, log_text, log_timestamp FROM validation_logs WHERE job_id = '5aee05c3-8d8b-4afd-835f-91720652f8e2';",
+      "SELECT job_name, validation_type, start_time, end_time, status FROM validation_jobs;",
+      "SELECT * FROM validation_results WHERE result_status = 'fail';",
+      "SELECT job_name, status FROM validation_jobs WHERE status = 'failed';",
+      "SELECT v.job_name, r.result_text, r.result_status FROM validation_jobs v JOIN validation_results r ON v.job_id = r.job_id;",
+      "SELECT v.job_name, l.log_text, l.log_timestamp FROM validation_jobs v JOIN validation_logs l ON v.job_id = l.job_id ORDER BY l.log_timestamp DESC;"
+    ]
+  }
+]

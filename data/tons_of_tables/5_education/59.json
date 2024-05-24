@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE resource_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255),\n  course_id INT,\n  published_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE resource_materials (\n   material_id UUID PRIMARY KEY,\n   material_name VARCHAR(100) NOT NULL,\n   material_type VARCHAR(50) NOT NULL,\n   course_id UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE curriculum_resources (\n   resource_id UUID PRIMARY KEY,\n   resource_name VARCHAR(100) NOT NULL,\n   resource_type VARCHAR(50) NOT NULL,\n   course_id UUID,\n   material_id UUID\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CourseMaterials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    material_type VARCHAR(50) NOT NULL,\n    course_id INT,\n    FOREIGN KEY (course_id) REFERENCES Courses(course_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(255) NOT NULL,\n    instructor_name VARCHAR(100) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CurriculumResources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    resource_type VARCHAR(50) NOT NULL,\n    course_id INT,\n    FOREIGN KEY (course_id) REFERENCES Courses(course_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(50) NOT NULL,\n    material_type VARCHAR(50) NOT NULL,\n    material_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(50) NOT NULL,\n    resource_type VARCHAR(50) NOT NULL,\n    url VARCHAR(100),\n    material_id INT,\n    FOREIGN KEY (material_id) REFERENCES materials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(50) NOT NULL,\n    course_description TEXT,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE course_materials (\n    course_id INT,\n    material_id INT,\n    PRIMARY KEY (course_id, material_id),\n    FOREIGN KEY (course_id) REFERENCES courses(course_id),\n    FOREIGN KEY (material_id) REFERENCES materials(material_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ResourceMaterials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    material_type VARCHAR(50),\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CurriculumResources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255),\n    resource_type VARCHAR(50),\n    material_id INT,\n    FOREIGN KEY (material_id) REFERENCES ResourceMaterials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(255),\n    course_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CourseMaterials (\n    course_material_id INT PRIMARY KEY,\n    course_id INT,\n    material_id INT,\n    PRIMARY KEY (course_id, material_id),\n    FOREIGN KEY (course_id) REFERENCES Courses(course_id),\n    FOREIGN KEY (material_id) REFERENCES ResourceMaterials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Instructors (\n    instructor_id INT PRIMARY KEY,\n    instructor_name VARCHAR(255),\n    course_id INT,\n    FOREIGN KEY (course_id) REFERENCES Courses(course_id)\n);"
+      }
+    ]
+  }
+]

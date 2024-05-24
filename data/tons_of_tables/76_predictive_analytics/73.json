@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sas_user_access (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(50),\n    access_level VARCHAR(20),\n    department_name VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    role VARCHAR(20),\n    permissions JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    timestamp TIMESTAMP,\n    action VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT, \n    role_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_name VARCHAR(50), \n    permission_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT, \n    permission_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    permission_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_groups (\n    group_id INT PRIMARY KEY,\n    group_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE group_permissions (\n    group_id INT,\n    permission_id INT,\n    FOREIGN KEY (group_id) REFERENCES data_groups(group_id),\n    FOREIGN KEY (permission_id) REFERENCES user_permissions(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    action_taken VARCHAR(255),\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES user_permissions(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_roles (\n\tuser_id INT,\n\trole_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n\trole_id INT,\n\trole_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n\tpermission_id INT,\n\tpermission_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n\trole_id INT,\n\tpermission_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n\tsession_id INT,\n\tuser_id INT,\n\tsession_start TIMESTAMP,\n\tsession_end TIMESTAMP\n);"
+      }
+    ]
+  }
+]

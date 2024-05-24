@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE printable_designs (\n  design_id INT PRIMARY KEY,\n  design_name VARCHAR(50) NOT NULL,\n  designer_name VARCHAR(50) NOT NULL,\n  upload_date DATE,\n  download_count INT DEFAULT 0\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE designs(\n    design_id SERIAL PRIMARY KEY,\n    design_name VARCHAR(255) NOT NULL,\n    designer_name VARCHAR(255) NOT NULL,\n    uploaded_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments(\n    comment_id SERIAL PRIMARY KEY,\n    design_id INT REFERENCES designs(design_id),\n    comment_text TEXT,\n    commenter_name VARCHAR(255) NOT NULL,\n    comment_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE printable_designs (\n\tid INT PRIMARY KEY,\n\tdesign_name VARCHAR(255),\n\tdesign_file_path VARCHAR(255),\n\tdesigner_name VARCHAR(100),\n\tdescription TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE print_stats (\n\tprint_id INT PRIMARY KEY,\n\tprinter_model VARCHAR(100),\n\tprint_duration INT,\n\tmaterial_used VARCHAR(100),\n\tprint_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE design_tags (\n\ttag_id INT PRIMARY KEY,\n\ttag_name VARCHAR(50),\n\ttag_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE design_catalog (\n    design_id INT PRIMARY KEY,\n    design_name VARCHAR(255),\n    designer_name VARCHAR(255),\n    upload_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE design_tags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE design_printers (\n    printer_id INT PRIMARY KEY,\n    printer_name VARCHAR(100),\n    printer_type VARCHAR(50),\n    printer_build_volume VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE design_licenses (\n    license_id INT PRIMARY KEY,\n    license_name VARCHAR(100),\n    license_type VARCHAR(50),\n    allows_commercial_use BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE designs (\n    design_id UUID PRIMARY KEY,\n    design_name TEXT NOT NULL,\n    designer_name TEXT,\n    upload_date TIMESTAMP,\n    download_count INT DEFAULT 0\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tags (\n    tag_id SERIAL PRIMARY KEY,\n    tag_name TEXT NOT NULL UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE design_tags (\n    design_id UUID,\n    tag_id INT,\n    PRIMARY KEY (design_id, tag_id),\n    FOREIGN KEY (design_id) REFERENCES designs(design_id) ON DELETE CASCADE,\n    FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id SERIAL PRIMARY KEY,\n    design_id UUID,\n    commenter_name TEXT,\n    comment_text TEXT,\n    comment_date TIMESTAMP,\n    FOREIGN KEY (design_id) REFERENCES designs(design_id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ratings (\n    rating_id SERIAL PRIMARY KEY,\n    design_id UUID,\n    rating_value INT CHECK (rating_value >= 1 AND rating_value <= 5),\n    rater_name TEXT,\n    rating_date TIMESTAMP,\n    FOREIGN KEY (design_id) REFERENCES designs(design_id) ON DELETE CASCADE\n);\n"
+      }
+    ]
+  }
+]

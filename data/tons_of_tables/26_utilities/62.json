@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    meter_id INT PRIMARY KEY,\n    electricity_reading FLOAT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_meter_data (\n    meter_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    power_consumption DECIMAL,\n    voltage DECIMAL,\n    current DECIMAL,\n    PRIMARY KEY (meter_id, timestamp)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meter_location (\n    meter_id INT NOT NULL,\n    location_name VARCHAR(255),\n    street_address VARCHAR(255),\n    city VARCHAR(100),\n    state VARCHAR(50),\n    country VARCHAR(50),\n    PRIMARY KEY (meter_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_meters (\n    id INT PRIMARY KEY,\n    meter_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    energy_consumed DECIMAL,\n    voltage DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meter_readings (\n    id INT PRIMARY KEY,\n    meter_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    reading DECIMAL,\n    status VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meter_locations (\n    id INT PRIMARY KEY,\n    meter_id INT NOT NULL,\n    latitude DECIMAL,\n    longitude DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_meters (\n  meter_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  install_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n  data_id SERIAL PRIMARY KEY,\n  meter_id INT,\n  timestamp TIMESTAMP,\n  value FLOAT,\n  FOREIGN KEY (meter_id) REFERENCES energy_meters(meter_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies (\n  anomaly_id SERIAL PRIMARY KEY,\n  data_id INT,\n  issue VARCHAR(255),\n  severity INT,\n  FOREIGN KEY (data_id) REFERENCES sensor_data(data_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n  report_id SERIAL PRIMARY KEY,\n  report_date DATE,\n  generated_by VARCHAR(255),\n  data_id INT,\n  FOREIGN KEY (data_id) REFERENCES sensor_data(data_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_meters (\n    meter_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    install_date DATE,\n    manufacturer VARCHAR(100),\n    capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_readings (\n    reading_id SERIAL PRIMARY KEY,\n    meter_id INT REFERENCES energy_meters(meter_id),\n    reading_timestamp TIMESTAMP,\n    consumption DECIMAL,\n    voltage DECIMAL,\n    current DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meter_errors (\n    error_id SERIAL PRIMARY KEY,\n    meter_id INT REFERENCES energy_meters(meter_id),\n    error_code VARCHAR(50),\n    error_message TEXT,\n    error_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meter_calibrations (\n    calibration_id SERIAL PRIMARY KEY,\n    meter_id INT REFERENCES energy_meters(meter_id),\n    calibration_date DATE,\n    calibration_factor DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meter_statistics (\n    stat_id SERIAL PRIMARY KEY,\n    meter_id INT REFERENCES energy_meters(meter_id),\n    total_readings INT,\n    max_consumption DECIMAL,\n    min_consumption DECIMAL,\n    avg_consumption DECIMAL\n)"
+      }
+    ]
+  }
+]

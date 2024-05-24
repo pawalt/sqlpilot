@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumExperiments (\n  experiment_id INT PRIMARY KEY,\n  experiment_name TEXT,\n  experiment_date DATE,\n  researcher_name TEXT,\n  research_institution TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_experiments (\n  experiment_id UUID PRIMARY KEY,\n  experiment_name TEXT NOT NULL,\n  experiment_date TIMESTAMP NOT NULL,\n  experiment_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_results (\n  result_id UUID PRIMARY KEY,\n  experiment_id UUID REFERENCES quantum_experiments(experiment_id),\n  result_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_experiments (\n  experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR(255),\n  experiment_date DATE,\n  quantum_protocol VARCHAR(100),\n  research_team_id INT\n);\n\nCREATE TABLE experiment_results (\n  result_id INT PRIMARY KEY,\n  experiment_id INT,\n  result_data JSONB,\n  result_date TIMESTAMP,\n  FOREIGN KEY (experiment_id) REFERENCES quantum_experiments(experiment_id)\n);\n\nCREATE TABLE research_teams (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(255),\n  team_lead VARCHAR(100),\n  team_location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n  experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR(100) NOT NULL,\n  experiment_date DATE,\n  researcher_id INT,\n  location VARCHAR(100),\n  CONSTRAINT fk_researcher FOREIGN KEY (researcher_id)\n    REFERENCES researchers (researcher_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(100) NOT NULL,\n  researcher_email VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n  result_id INT PRIMARY KEY,\n  experiment_id INT,\n  result_data JSON,\n  CONSTRAINT fk_experiment FOREIGN KEY (experiment_id)\n    REFERENCES experiments (experiment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(100) NOT NULL,\n  device_type VARCHAR(50),\n  experiment_id INT,\n  CONSTRAINT fk_experiment FOREIGN KEY (experiment_id)\n    REFERENCES experiments (experiment_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_experiments (\n\texperiment_id SERIAL PRIMARY KEY,\n\texperiment_name VARCHAR(100),\n\texperiment_date TIMESTAMP,\n\texperiment_description TEXT,\n\tis_successful BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n\tresult_id SERIAL PRIMARY KEY,\n\texperiment_id INT,\n\tresult_value DECIMAL,\n\tresult_date TIMESTAMP,\n\tFOREIGN KEY (experiment_id) REFERENCES quantum_experiments(experiment_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n\tresearcher_id SERIAL PRIMARY KEY,\n\tresearcher_name VARCHAR(100),\n\tresearcher_email VARCHAR(100),\n\tresearcher_institution VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE equipment (\n\tequipment_id SERIAL PRIMARY KEY,\n\tequipment_name VARCHAR(100),\n\tequipment_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE research_teams (\n\tteam_id SERIAL PRIMARY KEY,\n\tteam_name VARCHAR(100),\n\tteam_leader_id INT,\n\tFOREIGN KEY (team_leader_id) REFERENCES researchers(researcher_id)\n)"
+      }
+    ]
+  }
+]

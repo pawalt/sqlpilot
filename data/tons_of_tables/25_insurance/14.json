@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DriverInformation (\n    driver_id SERIAL PRIMARY KEY,\n    license_number VARCHAR(20) NOT NULL,\n    driving_history TEXT,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n    driver_id INT PRIMARY KEY,\n    license_number VARCHAR(10) NOT NULL,\n    driving_history TEXT,\n    personal_details JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE insurance_premiums (\n    insurance_id INT PRIMARY KEY,\n    driver_id INT REFERENCES drivers(driver_id),\n    premium_amount DECIMAL(10,2),\n    coverage_details JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE driver_info (\n    license_number INT PRIMARY KEY,\n    driving_history TEXT,\n    personal_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_info (\n    vehicle_id INT PRIMARY KEY,\n    driver_license_number INT,\n    make TEXT,\n    model TEXT,\n    year INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE insurance_policies (\n    policy_id INT PRIMARY KEY,\n    driver_license_number INT,\n    policy_type TEXT,\n    premium_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DriverPersonalDetails (\n  driver_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  date_of_birth DATE,\n  gender CHAR(1)\n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE LicenseInformation (\n  license_number VARCHAR(20) PRIMARY KEY,\n  driver_id INT,\n  issue_date DATE,\n  expiration_date DATE\n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE DrivingHistory (\n  history_id INT PRIMARY KEY,\n  driver_id INT,\n  violation_date DATE,\n  violation_description VARCHAR(255)\n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE InsurancePremiums (\n  insurance_id INT PRIMARY KEY,\n  driver_id INT,\n  premium_amount DECIMAL(10, 2),\n  renewal_date DATE\n) \n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DriverInformation (\n  driver_id SERIAL PRIMARY KEY,\n  license_number VARCHAR(10) NOT NULL,\n  driving_history JSONB,\n  personal_details JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE VehicleInformation (\n  vehicle_id SERIAL PRIMARY KEY,\n  driver_id INT REFERENCES DriverInformation(driver_id),\n  vehicle_make VARCHAR(50),\n  vehicle_model VARCHAR(50),\n  vehicle_year INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE AccidentHistory (\n  accident_id SERIAL PRIMARY KEY,\n  driver_id INT REFERENCES DriverInformation(driver_id),\n  accident_date DATE,\n  accident_details JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE InsurancePolicy (\n  policy_id SERIAL PRIMARY KEY,\n  driver_id INT REFERENCES DriverInformation(driver_id),\n  policy_type VARCHAR(50),\n  policy_amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PremiumRates (\n  rate_id SERIAL PRIMARY KEY,\n  policy_type VARCHAR(50),\n  age_range VARCHAR(10),\n  base_rate DECIMAL(10, 2)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS crypto_wallet_addresses (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    wallet_address VARCHAR(50) NOT NULL,\n    currency_type VARCHAR(10) NOT NULL,\n    balance DECIMAL(18, 8) NOT NULL,\n    created_at TIMESTAMP NOT NULL DEFAULT NOW(),\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_addresses (\n  address_id UUID PRIMARY KEY,\n  wallet_address VARCHAR(255) NOT NULL,\n  user_id UUID NOT NULL,\n  tracking_enabled BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id UUID PRIMARY KEY,\n  address_id UUID NOT NULL,\n  amount DECIMAL(18, 2),\n  date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cryptocurrency_wallets (\n   wallet_id INT PRIMARY KEY,\n   wallet_address VARCHAR(255) NOT NULL,\n   owner_name VARCHAR(100),\n   balance DECIMAL(18, 2) DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n   transaction_id INT PRIMARY KEY,\n   wallet_id INT,\n   amount DECIMAL(18, 2),\n   transaction_date TIMESTAMP,\n   FOREIGN KEY (wallet_id) REFERENCES cryptocurrency_wallets(wallet_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n   alert_id INT PRIMARY KEY,\n   wallet_id INT,\n   alert_type VARCHAR(50),\n   alert_message TEXT,\n   alert_date TIMESTAMP,\n   FOREIGN KEY (wallet_id) REFERENCES cryptocurrency_wallets(wallet_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_addresses (\n    wallet_id INT PRIMARY KEY,\n    address VARCHAR(255) NOT NULL,\n    balance DECIMAL(18, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    tx_id INT PRIMARY KEY,\n    wallet_id INT REFERENCES wallet_addresses(wallet_id),\n    amount DECIMAL(18, 2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE flagged_addresses (\n    address_id INT PRIMARY KEY,\n    address VARCHAR(255) NOT NULL,\n    reason TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Address (\n    address_id INT PRIMARY KEY,\n    wallet_owner_id INT,\n    address_hash VARCHAR(255),\n    balance DECIMAL(18, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Wallet (\n    wallet_id INT PRIMARY KEY,\n    wallet_owner_id INT,\n    wallet_name VARCHAR(100),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transaction (\n    transaction_id INT PRIMARY KEY,\n    sender_address_id INT,\n    receiver_address_id INT,\n    amount DECIMAL(18, 2),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE User (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance (\n    compliance_id INT PRIMARY KEY,\n    user_id INT,\n    action VARCHAR(20),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

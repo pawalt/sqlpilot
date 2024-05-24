@@ -1,0 +1,46 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TransportationEmissions (\n  partner_id INT PRIMARY KEY,\n  partner_name VARCHAR(255),\n  emission_date DATE,\n  emission_type VARCHAR(50),\n  emission_amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE logistics_partners (\n    partner_id INT PRIMARY KEY,\n    partner_name VARCHAR(255),\n    emissions_kg FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE emissions_data (\n    data_id INT PRIMARY KEY,\n    partner_id INT,\n    timestamp TIMESTAMP,\n    emission_type VARCHAR(50),\n    emission_value FLOAT,\n    FOREIGN KEY (partner_id) REFERENCES logistics_partners(partner_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE logistics_partner (\n  partner_id UUID PRIMARY KEY,\n  partner_name VARCHAR(255) NOT NULL,\n  partner_location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE emissions_data (\n  data_id UUID PRIMARY KEY,\n  partner_id UUID REFERENCES logistics_partner(partner_id),\n  emission_date DATE NOT NULL,\n  emission_value DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sustainability_report (\n  report_id UUID PRIMARY KEY,\n  partner_id UUID REFERENCES logistics_partner(partner_id),\n  report_date DATE NOT NULL,\n  report_description TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE logistics_partners (\n    partner_id SERIAL PRIMARY KEY,\n    partner_name VARCHAR(255) NOT NULL,\n    partner_location VARCHAR(255) NOT NULL,\n    emissions_data JSONB\n);\n\nCREATE TABLE emissions_data (\n    id SERIAL PRIMARY KEY,\n    partner_id INT NOT NULL,\n    emission_date DATE NOT NULL,\n    CO2_emission DECIMAL(10, 2) NOT NULL,\n    NOx_emission DECIMAL(10, 2) NOT NULL\n);\n\nCREATE TABLE sustainability_reports (\n    report_id SERIAL PRIMARY KEY,\n    report_date DATE NOT NULL,\n    report_content TEXT NOT NULL,\n    partner_id INT NOT NULL\n);\n\nCREATE TABLE reports_history (\n    history_id SERIAL PRIMARY KEY,\n    report_id INT NOT NULL,\n    partner_id INT NOT NULL,\n    historical_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE logistics_partners (\n    partner_id INT PRIMARY KEY,\n    partner_name VARCHAR(255),\n    partner_type VARCHAR(50),\n    emissions_data DECIMAL(10,2)\n);\n\nCREATE TABLE transport_modes (\n    mode_id INT PRIMARY KEY,\n    mode_name VARCHAR(50),\n    mode_description TEXT\n);\n\nCREATE TABLE emission_factors (\n    factor_id INT PRIMARY KEY,\n    factor_type VARCHAR(50),\n    factor_value FLOAT\n);\n\nCREATE TABLE emissions_data (\n    data_id INT PRIMARY KEY,\n    partner_id INT,\n    mode_id INT,\n    factor_id INT,\n    emission_amount DECIMAL(10,2),\n    emission_date DATE,\n    FOREIGN KEY (partner_id) REFERENCES logistics_partners(partner_id),\n    FOREIGN KEY (mode_id) REFERENCES transport_modes(mode_id),\n    FOREIGN KEY (factor_id) REFERENCES emission_factors(factor_id)\n);\n\nCREATE TABLE sustainability_reports (\n    report_id INT PRIMARY KEY,\n    report_date DATE,\n    total_emissions DECIMAL(12,2),\n    report_notes TEXT\n);"
+      }
+    ]
+  }
+]

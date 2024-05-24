@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE consensus_voting_mechanisms (\n    id INT PRIMARY KEY,\n    algorithm VARCHAR(50),\n    votes INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Consensus_Algorithms (\n    id INT PRIMARY KEY,\n    algorithm_name TEXT NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Voting_Mechanisms (\n    id INT PRIMARY KEY,\n    mechanism_name TEXT NOT NULL,\n    purpose TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE consensus_algorithms (\n    id INT,\n    algorithm_name VARCHAR(255),\n    description TEXT,\n    PRIMARY KEY (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_mechanisms (\n    id INT,\n    mechanism_name VARCHAR(255),\n    voting_type VARCHAR(50),\n    PRIMARY KEY (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_network (\n    network_id INT,\n    network_name VARCHAR(255),\n    consensus_id INT,\n    voting_id INT,\n    FOREIGN KEY (consensus_id) REFERENCES consensus_algorithms(id),\n    FOREIGN KEY (voting_id) REFERENCES voting_mechanisms(id),\n    PRIMARY KEY (network_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE consensus_algorithms (\n    id SERIAL PRIMARY KEY,\n    algorithm_name TEXT NOT NULL,\n    description TEXT,\n    version FLOAT\n);\n\nCREATE TABLE voting_mechanisms (\n    id SERIAL PRIMARY KEY,\n    mechanism_name TEXT NOT NULL,\n    description TEXT,\n    quorum INTEGER\n);\n\nCREATE TABLE blockchain_networks (\n    id SERIAL PRIMARY KEY,\n    network_name TEXT NOT NULL,\n    genesis_block_hash TEXT,\n    consensus_algorithm_id INT REFERENCES consensus_algorithms(id)\n);\n\nCREATE TABLE block_transactions (\n    id SERIAL PRIMARY KEY,\n    block_id INTEGER REFERENCES blockchain_networks(id),\n    transaction_id INTEGER,\n    timestamp TIMESTAMPTZ NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE consensus_algorithm (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_member (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    member_address VARCHAR(100),\n    is_active BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vote (\n    vote_id INT PRIMARY KEY,\n    member_id INT NOT NULL,\n    algorithm_id INT NOT NULL,\n    vote_decision ENUM('approve', 'reject'),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE block (\n    block_id INT PRIMARY KEY,\n    block_hash VARCHAR(100) UNIQUE NOT NULL,\n    previous_block_hash VARCHAR(100),\n    algorithm_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain (\n    chain_id INT PRIMARY KEY,\n    chain_name VARCHAR(50) NOT NULL,\n    current_block_id INT\n);"
+      }
+    ]
+  }
+]

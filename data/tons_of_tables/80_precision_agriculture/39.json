@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IrrigationControl (\n    id SERIAL PRIMARY KEY,\n    device_id UUID,\n    device_name TEXT,\n    sensor_data JSONB,\n    irrigation_enabled BOOLEAN,\n    last_irrigation_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoTDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_location VARCHAR(255),\n    device_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IrrigationData (\n    data_id INT PRIMARY KEY,\n    device_id INT,\n    data_timestamp TIMESTAMP,\n    soil_moisture DECIMAL(5,2),\n    temperature DECIMAL(5,2),\n    humidity DECIMAL(5,2),\n    FOREIGN KEY (device_id) REFERENCES IoTDevices(device_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (\n  sensor_id INT PRIMARY KEY,\n  sensor_type VARCHAR(50),\n  location VARCHAR(100),\n  status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements (\n  measurement_id INT PRIMARY KEY,\n  sensor_id INT,\n  measurement_value FLOAT,\n  timestamp TIMESTAMP,\n  FOREIGN KEY (sensor_id) REFERENCES sensors(sensor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (\n  schedule_id INT PRIMARY KEY,\n  measurement_id INT,\n  water_required FLOAT,\n  scheduled_time TIMESTAMP,\n  FOREIGN KEY (measurement_id) REFERENCES measurements(measurement_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IrrigationSystems (\n\tsystem_id INT PRIMARY KEY,\n\tlocation VARCHAR(255),\n\tsensor_id INT,\n\tsensor_type VARCHAR(50),\n\tstatus VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sensors (\n\tsensor_id INT PRIMARY KEY,\n\tsensor_type VARCHAR(50),\n\tplacement VARCHAR(50),\n\tstatus VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SoilMoistureData (\n\tdata_id INT PRIMARY KEY,\n\tsensor_id INT,\n\tmoisture_level DECIMAL(5,2),\n\ttimestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WeatherData (\n\tdata_id INT PRIMARY KEY,\n\tsensor_id INT,\n\ttemperature DECIMAL(5,2),\n\thumidity DECIMAL(5,2),\n\ttimestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_data (\n    device_id UUID PRIMARY KEY,\n    temperature INT,\n    humidity INT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_zone (\n    zone_id UUID PRIMARY KEY,\n    name VARCHAR(255),\n    description TEXT,\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (\n    schedule_id UUID PRIMARY KEY,\n    zone_id UUID,\n    start_time TIME,\n    end_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_data (\n    data_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    temperature INT,\n    humidity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_control (\n    control_id UUID PRIMARY KEY,\n    zone_id UUID,\n    status BOOLEAN,\n    last_updated TIMESTAMP\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_deadlines (\n    tax_entity_id INT PRIMARY KEY,\n    tax_entity_name VARCHAR(50),\n    filing_deadline DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_entities_deadlines (\n    entity_id UUID PRIMARY KEY,\n    entity_name STRING,\n    filing_deadline DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_entities_contacts (\n    contact_id UUID PRIMARY KEY,\n    entity_id UUID REFERENCES tax_entities_deadlines(entity_id),\n    contact_name STRING,\n    contact_email STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_entities_deadlines (\n    tax_entity_id INT PRIMARY KEY,\n    entity_name STRING,\n    filing_deadline DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_office_contacts (\n    office_id INT PRIMARY KEY,    \n    office_name STRING,\n    contact_name STRING,\n    contact_email STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_forms_info (\n    form_id INT PRIMARY KEY,\n    form_name STRING,\n    form_description STRING,\n    deadline_extension BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_entities_deadlines (\n    id INT PRIMARY KEY,\n    entity_name TEXT NOT NULL,\n    filing_deadline DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_filings (\n    id INT PRIMARY KEY,\n    entity_id INT,\n    file_date DATE NOT NULL,\n    amount DECIMAL NOT NULL,\n    FOREIGN KEY (entity_id) REFERENCES tax_entities_deadlines(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_notifications (\n    id INT PRIMARY KEY,\n    entity_id INT,\n    notification_date DATE NOT NULL,\n    message TEXT,\n    FOREIGN KEY (entity_id) REFERENCES tax_entities_deadlines(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_entities (\n    id INT PRIMARY KEY,\n    entity_name TEXT NOT NULL,\n    business_type TEXT,\n    registered_address TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_entities (\n  tax_id SERIAL PRIMARY KEY,\n  entity_name VARCHAR(50) NOT NULL,\n  filing_deadline DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE filings (\n  filing_id SERIAL PRIMARY KEY,\n  tax_id INT NOT NULL,\n  filing_date DATE NOT NULL,\n  status VARCHAR(20) NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reminders (\n  reminder_id SERIAL PRIMARY KEY,\n  filing_id INT NOT NULL,\n  reminder_date DATE NOT NULL,\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE penalties (\n  penalty_id SERIAL PRIMARY KEY,\n  filing_id INT NOT NULL,\n  penalty_type VARCHAR(30) NOT NULL,\n  penalty_amount DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  password VARCHAR(50) NOT NULL,\n  email VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

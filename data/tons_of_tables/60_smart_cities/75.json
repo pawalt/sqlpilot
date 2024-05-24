@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sex_offenders (\n offender_id SERIAL PRIMARY KEY,\n offender_name VARCHAR(100) NOT NULL,\n gender VARCHAR(10),\n age INT,\n address VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE registered_sex_offenders (\n offender_id INT PRIMARY KEY,\n offender_name VARCHAR(255) NOT NULL,\n offender_address VARCHAR(255) NOT NULL,\n offense_description TEXT,\n registration_date DATE\n);\n\nCREATE TABLE offender_restrictions (\n restriction_id INT PRIMARY KEY,\n offender_id INT REFERENCES registered_sex_offenders(offender_id),\n restriction_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE registered_offenders (\n    offender_id UUID PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    gender CHAR(1),\n    date_of_birth DATE,\n    address VARCHAR(100),\n    crime_committed VARCHAR(100),\n    registration_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE offender_addresses (\n    address_id UUID PRIMARY KEY,\n    offender_id UUID REFERENCES registered_offenders(offender_id),\n    address_type VARCHAR(50),\n    street_address VARCHAR(100),\n    city VARCHAR(50),\n    state CHAR(2),\n    zip_code CHAR(5)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE offender_photos (\n    photo_id UUID PRIMARY KEY,\n    offender_id UUID REFERENCES registered_offenders(offender_id),\n    photo_url VARCHAR(255),\n    upload_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sex_offenders ( offender_id INT PRIMARY KEY, offender_name VARCHAR(255) NOT NULL, offender_age INT NOT NULL, offender_address VARCHAR(255) NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE offense_types ( offense_id INT PRIMARY KEY, offense_category VARCHAR(50) NOT NULL, offense_description TEXT NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE offender_victims ( victim_id INT PRIMARY KEY, victim_name VARCHAR(255) NOT NULL, victim_relation VARCHAR(50) NOT NULL, offender_id INT NOT NULL, FOREIGN KEY (offender_id) REFERENCES sex_offenders(offender_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE offender_locations ( location_id INT PRIMARY KEY, location_name VARCHAR(255) NOT NULL, location_address VARCHAR(255) NOT NULL, offender_id INT NOT NULL, FOREIGN KEY (offender_id) REFERENCES sex_offenders(offender_id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE registered_sex_offenders (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  age INT,\n  address VARCHAR(255),\n  crime VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE offender_locations (\n  location_id INT PRIMARY KEY,\n  offender_id INT,\n  location VARCHAR(255),\n  timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE offender_aliases (\n  alias_id INT PRIMARY KEY,\n  offender_id INT,\n  alias_name VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE offender_photos (\n  photo_id INT PRIMARY KEY,\n  offender_id INT,\n  photo_url VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE offender_relations (\n  relation_id INT PRIMARY KEY,\n  offender_id_1 INT,\n  offender_id_2 INT,\n  relation_type VARCHAR(255)\n)"
+      }
+    ]
+  }
+]

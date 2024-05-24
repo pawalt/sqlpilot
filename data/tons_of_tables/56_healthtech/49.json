@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Healthcare_Resource_Allocation (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    resource_type VARCHAR(50) NOT NULL,\n    location_id INT NOT NULL,\n    quantity INT,\n    cost DECIMAL(10,2) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_resources (\n  resource_id UUID PRIMARY KEY,\n  resource_name VARCHAR(255) NOT NULL,\n  resource_type VARCHAR(50) NOT NULL,\n  quantity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (\n  allocation_id UUID PRIMARY KEY,\n  resource_id UUID REFERENCES healthcare_resources(resource_id),\n  allocated_to VARCHAR(100) NOT NULL,\n  allocation_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hospitals (\n    hospital_id INT PRIMARY KEY,\n    hospital_name VARCHAR(255),\n    location VARCHAR(255),\n    capacity INT,\n    contact_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Departments (\n    department_id INT PRIMARY KEY,\n    department_name VARCHAR(255),\n    head_of_department VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255),\n    age INT,\n    gender CHAR,\n    admission_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE doctors (\n  doctor_id INT PRIMARY KEY,\n  doctor_name VARCHAR(50) NOT NULL,\n  specialty VARCHAR(50) NOT NULL,\n  location_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50) NOT NULL,\n  age INT,\n  gender VARCHAR(10),\n  doctor_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n  appointment_id INT PRIMARY KEY,\n  appointment_date DATE NOT NULL,\n  patient_id INT NOT NULL,\n  doctor_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n  resource_id INT PRIMARY KEY,\n  resource_name VARCHAR(50) NOT NULL,\n  quantity INT,\n  location_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hospital (\n    hospital_id INT PRIMARY KEY,\n    hospital_name VARCHAR(100),\n    location VARCHAR(100),\n    available_beds INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Doctor (\n    doctor_id INT PRIMARY KEY,\n    doctor_name VARCHAR(100),\n    specialization VARCHAR(100),\n    hospital_id INT,\n    FOREIGN KEY (hospital_id) REFERENCES Hospital(hospital_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Patient (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(100),\n    admission_date DATE,\n    doctor_id INT,\n    FOREIGN KEY (doctor_id) REFERENCES Doctor(doctor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointment (\n    appointment_id INT PRIMARY KEY,\n    appointment_date DATE,\n    doctor_id INT,\n    patient_id INT,\n    FOREIGN KEY (doctor_id) REFERENCES Doctor(doctor_id),\n    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Medication (\n    medication_id INT PRIMARY KEY,\n    medication_name VARCHAR(100),\n    quantity INT,\n    prescription_date DATE,\n    patient_id INT,\n    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)\n);\n"
+      }
+    ]
+  }
+]

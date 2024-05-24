@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscriber_consent (\n  id SERIAL,\n  subscriber_id INT NOT NULL,\n  consent_type VARCHAR(50) NOT NULL,\n  consent_given_at TIMESTAMP NOT NULL,\n  PRIMARY KEY (id),\n  FOREIGN KEY (subscriber_id) REFERENCES subscribers(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscriber_consent (\n    subscriber_id INT PRIMARY KEY,\n    consent_status VARCHAR(50),\n    collection_date DATE,\n    consent_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_log (\n    log_id SERIAL PRIMARY KEY,\n    subscriber_id INT,\n    consent_status VARCHAR(50),\n    log_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE consent_records (\n    id SERIAL PRIMARY KEY,\n    subscriber_id INT NOT NULL,\n    consent_type VARCHAR(50) NOT NULL,\n    consent_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriber_details (\n    subscriber_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    address VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_collection (\n    data_id SERIAL PRIMARY KEY,\n    subscriber_id INT NOT NULL,\n    data_type VARCHAR(50) NOT NULL,\n    collected_date DATE,\n    data_content TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SubscriberConsent (\n    subscriber_id INT PRIMARY KEY,\n    consent_date DATE,\n    consent_given BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataCollection (\n    data_id INT PRIMARY KEY,\n    subscriber_id INT,\n    data_type VARCHAR(50),\n    collection_date DATE,\n    FOREIGN KEY (subscriber_id) REFERENCES SubscriberConsent(subscriber_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataUsage (\n    usage_id INT PRIMARY KEY,\n    data_id INT,\n    usage_date DATE,\n    purpose VARCHAR(100),\n    FOREIGN KEY (data_id) REFERENCES DataCollection(data_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataRetention (\n    retention_id INT PRIMARY KEY,\n    data_id INT,\n    retention_period INT,\n    FOREIGN KEY (data_id) REFERENCES DataCollection(data_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscriber_consent (\n    subscriber_id INT PRIMARY KEY,\n    consent_date DATE,\n    data_collection_allowed BOOLEAN,\n    data_usage_allowed BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriber_details (\n    subscriber_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriber_location (\n    subscriber_id INT PRIMARY KEY,\n    country VARCHAR(50),\n    city VARCHAR(50),\n    postal_code VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_collection_logs (\n    log_id INT PRIMARY KEY,\n    subscriber_id INT,\n    collection_date TIMESTAMP,\n    data_collected TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_usage_logs (\n    log_id INT PRIMARY KEY,\n    subscriber_id INT,\n    usage_date TIMESTAMP,\n    data_used TEXT\n);"
+      }
+    ]
+  }
+]

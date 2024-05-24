@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patents (\n    patent_id INT PRIMARY KEY,\n    patent_title VARCHAR(255),\n    patent_description TEXT,\n    patent_inventor VARCHAR(100),\n    filing_date DATE,\n    approval_date DATE,\n    grant_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patents (\n    patent_id INT PRIMARY KEY,\n    patent_name VARCHAR(255) NOT NULL,\n    patent_description TEXT NOT NULL,\n    patent_owner VARCHAR(100) NOT NULL,\n    filing_date DATE,\n    expiration_date DATE,\n    CONSTRAINT fk_patent_owner FOREIGN KEY (patent_owner) REFERENCES owners(owner_id)\n);\n\nCREATE TABLE owners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(100) NOT NULL,\n    owner_email VARCHAR(255) NOT NULL,\n    owner_address TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patent (\n    patent_id SERIAL PRIMARY KEY,\n    patent_title VARCHAR(255) NOT NULL,\n    inventor VARCHAR(100) NOT NULL,\n    filing_date DATE,\n    patent_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PatentHolder (\n    holder_id SERIAL PRIMARY KEY,\n    holder_name VARCHAR(100) NOT NULL,\n    country VARCHAR(50) NOT NULL,\n    patent_id INT REFERENCES Patent(patent_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControl (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    role ENUM('admin', 'user') NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patents (\n    patent_id INT PRIMARY KEY,\n    patent_title VARCHAR(255),\n    patent_description TEXT,\n    inventor_name VARCHAR(100),\n    filing_date DATE,\n    filing_country VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_authors (\n    author_id INT PRIMARY KEY,\n    author_name VARCHAR(100),\n    author_email VARCHAR(255),\n    author_affiliation VARCHAR(255),\n    patent_id INT,\n    FOREIGN KEY(patent_id) REFERENCES patents(patent_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_reviews (\n    review_id INT PRIMARY KEY,\n    review_comment TEXT,\n    review_date DATE,\n    reviewer_name VARCHAR(100),\n    patent_id INT,\n    FOREIGN KEY(patent_id) REFERENCES patents(patent_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_access_controls (\n    access_id INT PRIMARY KEY,\n    access_level VARCHAR(50),\n    user_id INT,\n    patent_id INT,\n    FOREIGN KEY(user_id) REFERENCES users(user_id),\n    FOREIGN KEY(patent_id) REFERENCES patents(patent_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patent_information (\n    id INT PRIMARY KEY,\n    patent_number VARCHAR(255),\n    applicant_name VARCHAR(255),\n    filing_date DATE,\n    description TEXT,\n    access_level VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_inventors (\n    inventor_id INT PRIMARY KEY,\n    patent_id INT,\n    inventor_name VARCHAR(255),\n    inventor_email VARCHAR(255),\n    inventor_address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_owners (\n    owner_id INT PRIMARY KEY,\n    patent_id INT,\n    owner_name VARCHAR(255),\n    owner_address TEXT,\n    owner_contact VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_assignees (\n    assignee_id INT PRIMARY KEY,\n    patent_id INT,\n    assignee_name VARCHAR(255),\n    assignee_type VARCHAR(50),\n    assignee_contact VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n    access_id INT PRIMARY KEY,\n    user_id INT,\n    patent_id INT,\n    access_level VARCHAR(50),\n    access_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

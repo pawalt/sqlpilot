@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE credit_card_information (\n    id INT PRIMARY KEY,\n    card_number TEXT,\n    cardholder_name TEXT,\n    expiration_date DATE,\n    cvv TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE credit_cards (\n    id INT PRIMARY KEY,\n    card_number VARCHAR(255) NOT NULL,\n    card_holder_name VARCHAR(255) NOT NULL,\n    card_expiration_date DATE NOT NULL,\n    card_cvv INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    card_id INT NOT NULL,\n    transaction_amount DECIMAL(10,2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    transaction_status VARCHAR(50) NOT NULL,\n    FOREIGN KEY (card_id) REFERENCES credit_cards(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE credit_card (\n    id UUID PRIMARY KEY,\n    card_number VARCHAR(100),\n    encrypted_cvv VARCHAR(100),\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n    customer_id UUID PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    credit_card_id UUID,\n    FOREIGN KEY (credit_card_id) REFERENCES credit_card(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction (\n    transaction_id UUID PRIMARY KEY,\n    customer_id UUID,\n    amount DECIMAL(10, 2),\n    transaction_date TIMESTAMP,\n    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CreditCardData (\n    card_number VARCHAR(16),\n    cardholder_name VARCHAR(255),\n    expiration_date DATE,\n    cvv VARCHAR(3),\n    encrypted_data TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    card_number VARCHAR(16),\n    transaction_amount DECIMAL(10, 2),\n    transaction_date TIMESTAMP,\n    FOREIGN KEY (card_number) REFERENCES CreditCardData(card_number)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email VARCHAR(255),\n    phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n    payment_id SERIAL PRIMARY KEY,\n    transaction_id INT,\n    payment_date TIMESTAMP,\n    payment_amount DECIMAL(10, 2),\n    payment_status VARCHAR(10),\n    FOREIGN KEY (transaction_id) REFERENCES Transactions(transaction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    customer_address VARCHAR(255),\n    credit_card_number VARCHAR(16) ENCRYPTED,\n    expiration_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT,\n    order_date DATE,\n    total_amount DECIMAL,\n    payment_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    price DECIMAL,\n    stock_quantity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    order_id INT,\n    transaction_date TIMESTAMP,\n    amount_paid DECIMAL,\n    payment_method VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(255),\n    department VARCHAR(100),\n    hire_date DATE,\n    salary DECIMAL\n)"
+      }
+    ]
+  }
+]

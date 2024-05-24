@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM UserActivities WHERE user_id = 1;",
+      "SELECT user_id, activity_type FROM UserActivities WHERE activity_timestamp BETWEEN '2022-01-01 00:00:00' AND '2022-01-31 23:59:59';",
+      "SELECT activity_type, COUNT(*) AS activity_count FROM UserActivities GROUP BY activity_type;",
+      "SELECT * FROM UserActivities WHERE activity_type = 'login' ORDER BY activity_timestamp DESC;",
+      "SELECT DISTINCT user_id FROM UserActivities WHERE activity_timestamp < '2022-01-01';",
+      "SELECT user_id, activity_type, activity_timestamp FROM UserActivities WHERE user_id = 1 ORDER BY activity_timestamp DESC, activity_type ASC",
+      "SELECT user_id, activity_type, activity_timestamp FROM UserActivities WHERE activity_type LIKE 'login%' AND activity_timestamp > '2022-01-01' ORDER BY activity_timestamp ASC",
+      "SELECT COUNT(user_id), activity_type FROM UserActivities GROUP BY activity_type ORDER BY COUNT(user_id) DESC",
+      "SELECT DISTINCT user_id FROM UserActivities WHERE activity_timestamp BETWEEN '2022-01-01' AND '2022-12-31' ORDER BY user_id DESC",
+      "SELECT user_id, MAX(activity_timestamp) AS latest_activity FROM UserActivities GROUP BY user_id ORDER BY latest_activity DESC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM user_activities;",
+      "SELECT user_id, activity_timestamp FROM user_activities ORDER BY activity_timestamp DESC;",
+      "SELECT user_id, activity_timestamp FROM user_activities WHERE user_id = 123;",
+      "SELECT user_id, COUNT(*) AS total_activities FROM user_activities GROUP BY user_id;",
+      "SELECT analysis_id, analysis_result FROM forensic_analysis WHERE analysis_result = 'Suspicious' ORDER BY analysis_timestamp;",
+      "SELECT user_id, activity_timestamp FROM user_activities WHERE user_id = 123 ORDER BY activity_timestamp DESC LIMIT 10;",
+      "SELECT user_id, COUNT(activity_timestamp) AS activity_count FROM user_activities GROUP BY user_id ORDER BY activity_count DESC;",
+      "SELECT user_id, MAX(activity_timestamp) AS latest_activity FROM user_activities GROUP BY user_id HAVING COUNT(user_id) > 5;",
+      "SELECT fa.analysis_id, fa.analysis_timestamp, fa.analysis_result, ua.activity_timestamp FROM forensic_analysis fa INNER JOIN user_activities ua ON fa.user_id = ua.user_id ORDER BY fa.analysis_timestamp DESC LIMIT 5;",
+      "SELECT ua.user_id, MAX(fa.analysis_timestamp) AS latest_analysis, COUNT(fa.analysis_id) AS analysis_count FROM user_activities ua LEFT JOIN forensic_analysis fa ON ua.user_id = fa.user_id GROUP BY ua.user_id HAVING analysis_count > 3 ORDER BY latest_analysis DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT user_id, activity_timestamp, activity_description FROM user_activities;",
+      "SELECT session_id, start_time, end_time FROM user_sessions WHERE session_id = 1;",
+      "SELECT session_id, start_time, end_time FROM user_sessions ORDER BY start_time DESC;",
+      "SELECT analysis_id, session_id, analysis_timestamp, analysis_result FROM forensic_analysis WHERE analysis_timestamp > '2021-10-01';",
+      "SELECT user_id, MAX(activity_timestamp) AS latest_activity_time FROM user_activities GROUP BY user_id;",
+      "SELECT * FROM user_activities WHERE user_id = 1",
+      "SELECT activity_description, activity_timestamp FROM user_activities WHERE user_id = 2 ORDER BY activity_timestamp DESC",
+      "SELECT session_id, start_time, end_time FROM user_sessions WHERE session_id IN (1, 3, 5) ORDER BY start_time ASC",
+      "SELECT analysis_result FROM forensic_analysis WHERE session_id = 4",
+      "SELECT analysis_id, analysis_timestamp FROM forensic_analysis WHERE analysis_timestamp >= '2022-01-01'"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM user_activities;",
+      "SELECT user_id, timestamp, activity_type FROM user_activities ORDER BY timestamp DESC;",
+      "SELECT activity_id, user_id, activity_type FROM user_activities WHERE user_id = 100;",
+      "SELECT session_id, start_time, end_time FROM user_sessions WHERE session_id > 500 ORDER BY start_time DESC;",
+      "SELECT device_id, device_type, device_model FROM user_devices WHERE device_type = 'phone';",
+      "SELECT * FROM user_activities ORDER BY timestamp DESC LIMIT 5;",
+      "SELECT user_id, COUNT(activity_id) AS total_activities FROM user_activities GROUP BY user_id HAVING total_activities > 10;",
+      "SELECT user_id, MAX(timestamp) AS last_activity_time FROM user_activities GROUP BY user_id;",
+      "SELECT u.user_id, d.device_type, d.device_model FROM user_devices d JOIN user_sessions s ON d.user_id = s.user_id JOIN user_activities a ON s.user_id = a.user_id JOIN forensic_analysis f ON s.user_id = f.user_id JOIN (SELECT user_id, MAX(timestamp) AS last_activity_time FROM user_activities GROUP BY user_id) l ON l.user_id = u.user_id WHERE last_activity_time > '2022-01-01';",
+      "SELECT u.user_id, COUNT(DISTINCT f.analysis_type) AS unique_analysis_types FROM user_devices d JOIN user_sessions s ON d.user_id = s.user_id JOIN forensic_analysis f ON s.user_id = f.user_id JOIN user_activities a ON s.user_id = a.user_id JOIN (SELECT user_id, COUNT(activity_type) AS total_activities FROM user_activities GROUP BY user_id HAVING total_activities > 5) t ON u.user_id = t.user_id GROUP BY u.user_id HAVING unique_analysis_types > 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM UserActivities LIMIT 10",
+      "SELECT activity_description, timestamp FROM SuspiciousActivities ORDER BY timestamp DESC",
+      "SELECT ip_address, login_timestamp FROM LoginEvents WHERE user_id = '123e4567-e89b-12d3-a456-426614174000'",
+      "SELECT * FROM DeviceTracking WHERE user_id IN ('123e4567-e89b-12d3-a456-426614174000', '223e4567-e89b-12d3-a456-426614174000') ORDER BY last_activity ASC",
+      "SELECT user_id, status FROM AuthenticationLogs",
+      "SELECT user_id, timestamp, activity_description FROM UserActivities WHERE user_id = 'abc123'",
+      "SELECT user_id, activity_description FROM SuspiciousActivities WHERE timestamp > '2022-01-01'",
+      "SELECT * FROM LoginEvents WHERE user_id = 'xyz456' ORDER BY login_timestamp DESC",
+      "SELECT DISTINCT user_id, location FROM DeviceTracking WHERE last_activity > NOW() - INTERVAL '7 days'",
+      "SELECT user_id, status FROM AuthenticationLogs WHERE status = 'failed'"
+    ]
+  }
+]

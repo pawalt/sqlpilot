@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HealthcareEquityResearchData (\n  researcher_id INT,\n  researcher_name VARCHAR(50),\n  healthcare_provider_id INT,\n  healthcare_provider_name VARCHAR(50),\n  patient_id INT,\n  patient_name VARCHAR(50),\n  bias_type VARCHAR(50),\n  bias_description TEXT,\n  patient_care_outcome VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Healthcare_Providers (\n\tprovider_id SERIAL PRIMARY KEY,\n\tprovider_name VARCHAR(100) NOT NULL,\n\tprovider_specialty VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Patient_Care_Outcomes (\n\tpatient_id SERIAL PRIMARY KEY,\n\tpatient_name VARCHAR(100) NOT NULL,\n\tpatient_condition VARCHAR(50) NOT NULL,\n\tpatient_age INT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_providers (\n provider_id UUID PRIMARY KEY,\n provider_name VARCHAR(255),\n specialty VARCHAR(255),\n bias_score FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_records (\n patient_id UUID PRIMARY KEY,\n patient_name VARCHAR(255),\n age INT,\n gender VARCHAR(10),\n provider_id UUID REFERENCES healthcare_providers(provider_id),\n appointment_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE care_outcomes (\n outcome_id UUID PRIMARY KEY,\n patient_id UUID REFERENCES patient_records(patient_id),\n outcome VARCHAR(100),\n outcome_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    research_area VARCHAR(50) NOT NULL,\n    institution VARCHAR(100),\n    research_focus TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Healthcare_Providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(100) NOT NULL,\n    specialty VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patient_Care_Outcomes (\n    patient_id INT PRIMARY KEY,\n    provider_id INT,\n    care_rating INT,\n    outcome_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Provider_Bias (\n    provider_id INT PRIMARY KEY,\n    bias_type VARCHAR(50) NOT NULL,\n    bias_description TEXT,\n    impact_on_outcomes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    specialty VARCHAR(50),\n    institution VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE healthcare_providers (\n    provider_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    specialty VARCHAR(50),\n    institution VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_data (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(50),\n    age INT,\n    gender VARCHAR(10),\n    condition VARCHAR(100),\n    provider_id INT,\n    FOREIGN KEY (provider_id) REFERENCES healthcare_providers(provider_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bias_data (\n    data_id INT PRIMARY KEY,\n    provider_id INT,\n    researcher_id INT,\n    bias_score FLOAT,\n    impact_score FLOAT,\n    FOREIGN KEY (provider_id) REFERENCES healthcare_providers(provider_id),\n    FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outcomes_data (\n    outcome_id INT PRIMARY KEY,\n    patient_id INT,\n    provider_id INT,\n    outcome VARCHAR(100),\n    FOREIGN KEY (patient_id) REFERENCES patient_data(patient_id),\n    FOREIGN KEY (provider_id) REFERENCES healthcare_providers(provider_id)\n);"
+      }
+    ]
+  }
+]

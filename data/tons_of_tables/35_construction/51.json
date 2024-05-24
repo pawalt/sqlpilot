@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE construction_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255),\n  material_cost DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_materials (\n    project_id UUID PRIMARY KEY,\n    material_name VARCHAR(255),\n    quantity INT,\n    unit_price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id INT PRIMARY KEY,\n    material_name TEXT,\n    material_cost DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name TEXT,\n    project_location TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_materials (\n    project_id INT,\n    material_id INT,\n    quantity INT,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id),\n    FOREIGN KEY (material_id) REFERENCES materials(material_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE construction_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    location VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    unit_price DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_materials (\n    project_id INT,\n    material_id INT,\n    quantity INT,\n    FOREIGN KEY (project_id) REFERENCES construction_projects(project_id),\n    FOREIGN KEY (material_id) REFERENCES materials(material_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE material_usage (\n    usage_id INT PRIMARY KEY,\n    project_id INT,\n    material_id INT,\n    quantity_used INT,\n    total_cost DECIMAL(10, 2),\n    FOREIGN KEY (project_id) REFERENCES construction_projects(project_id),\n    FOREIGN KEY (material_id) REFERENCES materials(material_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE material_suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    material_type VARCHAR(50) NOT NULL,\n    material_price DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_details (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE material_inventory (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    material_type VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    supplier_id INT NOT NULL,\n    FOREIGN KEY(supplier_id) REFERENCES material_suppliers(supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_materials (\n    project_id INT,\n    material_id INT,\n    quantity_used INT NOT NULL,\n    PRIMARY KEY(project_id, material_id),\n    FOREIGN KEY(project_id) REFERENCES project_details(project_id),\n    FOREIGN KEY(material_id) REFERENCES material_inventory(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_costs (\n    project_id INT PRIMARY KEY,\n    material_cost DECIMAL(15,2) NOT NULL,\n    labor_cost DECIMAL(15,2) NOT NULL,\n    total_cost DECIMAL(15,2) NOT NULL,\n    FOREIGN KEY(project_id) REFERENCES project_details(project_id)\n);\n"
+      }
+    ]
+  }
+]

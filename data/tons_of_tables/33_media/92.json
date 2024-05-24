@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS CopyrightInfringement (\n    id INT PRIMARY KEY,\n    media_title VARCHAR(255),\n    copyright_owner VARCHAR(255),\n    infringement_type VARCHAR(50),\n    infringement_detected_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MediaEntities (\n  entity_id INT PRIMARY KEY,\n  entity_name VARCHAR(255) NOT NULL,\n  entity_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InfringementReports (\n  report_id INT PRIMARY KEY,\n  reporter_name VARCHAR(100) NOT NULL,\n  report_date DATE NOT NULL,\n  entity_id INT NOT NULL,\n  FOREIGN KEY (entity_id) REFERENCES MediaEntities(entity_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MediaCompanies ( id INT PRIMARY KEY, company_name VARCHAR(255), headquarters_location VARCHAR(255), contact_person VARCHAR(255) );"
+      },
+      {
+        "table_schema": "CREATE TABLE MediaAssets ( id INT PRIMARY KEY, asset_name VARCHAR(255), media_type VARCHAR(50), created_date DATE, media_company_id INT, FOREIGN KEY (media_company_id) REFERENCES MediaCompanies(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE CopyrightInfringements ( id INT PRIMARY KEY, infringement_date DATE, infringing_media_id INT, original_media_id INT, perpetrator_name VARCHAR(255), FOREIGN KEY (infringing_media_id) REFERENCES MediaAssets(id), FOREIGN KEY (original_media_id) REFERENCES MediaAssets(id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE infringement_cases (\n    case_id SERIAL PRIMARY KEY,\n    case_name VARCHAR(255) NOT NULL,\n    case_description TEXT,\n    infringement_date DATE,\n    case_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE copyrighted_content (\n    content_id SERIAL PRIMARY KEY,\n    content_name VARCHAR(255) NOT NULL,\n    content_type VARCHAR(100),\n    content_owner VARCHAR(100) NOT NULL,\n    release_date DATE,\n    expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE infringement_reports (\n    report_id SERIAL PRIMARY KEY,\n    case_id INT REFERENCES infringement_cases(case_id),\n    report_date DATE,\n    reporter_name VARCHAR(100),\n    report_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE enforcement_actions (\n    action_id SERIAL PRIMARY KEY,\n    case_id INT REFERENCES infringement_cases(case_id),\n    action_type VARCHAR(50),\n    action_date DATE,\n    action_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MediaOwners (\n  id INT PRIMARY KEY,\n  owner_name VARCHAR(50) NOT NULL,\n  company_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MediaAssets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(100) NOT NULL,\n  media_type VARCHAR(50),\n  owner_id INT,\n  FOREIGN KEY (owner_id) REFERENCES MediaOwners(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CopyrightClaims (\n  claim_id INT PRIMARY KEY,\n  claim_description TEXT,\n  asset_id INT,\n  claimant_name VARCHAR(50),\n  FOREIGN KEY (asset_id) REFERENCES MediaAssets(asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reports (\n  report_id INT PRIMARY KEY,\n  report_date DATE,\n  claim_id INT,\n  report_status VARCHAR(20),\n  FOREIGN KEY (claim_id) REFERENCES CopyrightClaims(claim_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MediaWatchlist (\n  watchlist_id INT PRIMARY KEY,\n  watchlist_name VARCHAR(50) NOT NULL,\n  watchlist_description TEXT\n);"
+      }
+    ]
+  }
+]

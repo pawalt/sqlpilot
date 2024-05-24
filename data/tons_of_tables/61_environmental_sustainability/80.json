@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MarinePollutionData (\n    region_id UUID PRIMARY KEY,\n    region_name TEXT,\n    pollution_level FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marine_regions ( \n region_id UUID PRIMARY KEY, \n region_name VARCHAR(100) NOT NULL \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE pollution_levels ( \n pollution_id UUID PRIMARY KEY, \n region_id UUID REFERENCES marine_regions(region_id), \n pollution_type VARCHAR(50) NOT NULL, \n pollution_level INT NOT NULL \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Marine_Regions (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Pollution_Levels (\n    record_id INT PRIMARY KEY,\n    region_id INT,\n    pollution_level DECIMAL(10,2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (region_id) REFERENCES Marine_Regions(region_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Pollution_Causes (\n    cause_id INT PRIMARY KEY,\n    cause_description TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regions (\n region_id INT PRIMARY KEY,\n region_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pollution_levels (\n pollution_id INT PRIMARY KEY,\n pollution_level INT NOT NULL,\n region_id INT REFERENCES regions(region_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pollutants (\n pollutant_id INT PRIMARY KEY,\n pollutant_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pollutant_data (\n data_id INT PRIMARY KEY,\n pollution_id INT REFERENCES pollution_levels(pollution_id),\n pollutant_id INT REFERENCES pollutants(pollutant_id),\n data_value FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Region (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PollutionLevel (\n  pollution_id INT PRIMARY KEY,\n  pollution_level VARCHAR(50) NOT NULL,\n  region_id INT REFERENCES Region(region_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PollutionSource (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Measurements (\n  measurement_id INT PRIMARY KEY,\n  measurement_value FLOAT NOT NULL,\n  pollution_id INT REFERENCES PollutionLevel(pollution_id),\n  source_id INT REFERENCES PollutionSource(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RegionData (\n  region_data_id INT PRIMARY KEY,\n  region_id INT REFERENCES Region(region_id),\n  measurement_id INT REFERENCES Measurements(measurement_id)\n);"
+      }
+    ]
+  }
+]

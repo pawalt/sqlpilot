@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_outlets (\n    outlet_id INT PRIMARY KEY,\n    outlet_name VARCHAR(255) NOT NULL,\n    outlet_type VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE journalists (\n    journalist_id INT PRIMARY KEY,\n    journalist_name VARCHAR(255) NOT NULL,\n    journalist_email VARCHAR(255) UNIQUE,\n    outlet_id INT,\n    FOREIGN KEY (outlet_id) REFERENCES media_outlets(outlet_id)\n);\n\nCREATE TABLE public_relations_teams (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_outlets (\n  outlet_id INT PRIMARY KEY,\n  outlet_name VARCHAR(255) NOT NULL,\n  outlet_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE journalists (\n  journalist_id INT PRIMARY KEY,\n  journalist_name VARCHAR(255) NOT NULL,\n  outlet_id INT,\n  FOREIGN KEY (outlet_id) REFERENCES media_outlets(outlet_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE news_media (\n    media_id INT PRIMARY KEY,\n    media_name VARCHAR(255) NOT NULL,\n    media_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE journalists (\n    journalist_id INT PRIMARY KEY,\n    journalist_name VARCHAR(255) NOT NULL,\n    media_id INT,\n    FOREIGN KEY (media_id) REFERENCES news_media(media_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE pr_teams (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    media_id INT,\n    FOREIGN KEY (media_id) REFERENCES news_media(media_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_outlets (\n    media_outlet_id INT PRIMARY KEY,\n    media_outlet_name VARCHAR(255) NOT NULL,\n    media_outlet_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE journalists (\n    journalist_id INT PRIMARY KEY,\n    journalist_name VARCHAR(255) NOT NULL,\n    journalist_specialty VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE public_relations_teams (\n    pr_team_id INT PRIMARY KEY,\n    pr_team_name VARCHAR(255) NOT NULL,\n    pr_team_lead VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE relationships (\n    relationship_id INT PRIMARY KEY,\n    media_outlet_id INT,\n    journalist_id INT,\n    pr_team_id INT,\n    relationship_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (media_outlet_id) REFERENCES media_outlets(media_outlet_id),\n    FOREIGN KEY (journalist_id) REFERENCES journalists(journalist_id),\n    FOREIGN KEY (pr_team_id) REFERENCES public_relations_teams(pr_team_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_outlets (\n    outlet_id INT PRIMARY KEY,\n    outlet_name VARCHAR(255),\n    outlet_location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE journalists (\n    journalist_id INT PRIMARY KEY,\n    journalist_name VARCHAR(255),\n    journalist_email VARCHAR(255),\n    outlet_id INT,\n    FOREIGN KEY (outlet_id) REFERENCES media_outlets(outlet_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE public_relations_teams (\n    pr_team_id INT PRIMARY KEY,\n    pr_team_name VARCHAR(255),\n    pr_team_contact VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE journalists_public_relations_teams (\n    journalist_id INT,\n    pr_team_id INT,\n    PRIMARY KEY (journalist_id, pr_team_id),\n    FOREIGN KEY (journalist_id) REFERENCES journalists(journalist_id),\n    FOREIGN KEY (pr_team_id) REFERENCES public_relations_teams(pr_team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    article_title VARCHAR(255),\n    article_content TEXT,\n    journalist_id INT,\n    FOREIGN KEY (journalist_id) REFERENCES journalists(journalist_id)\n);"
+      }
+    ]
+  }
+]

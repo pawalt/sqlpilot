@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_policies ( \n    policy_id INT PRIMARY KEY, \n    policy_name VARCHAR(50) NOT NULL, \n    policy_description TEXT, \n    implementation_date DATE, \n    regulatory_body VARCHAR(50) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_changes(\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(255),\n    change_date DATE,\n    change_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_audit_logs(\n    log_id INT PRIMARY KEY,\n    action_performed VARCHAR(50),\n    policy_id INT,\n    user_id INT,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name TEXT,\n    policy_description TEXT,\n    issue_date DATE,\n    last_updated DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_changes (\n    change_id INT PRIMARY KEY,\n    policy_id INT,\n    change_description TEXT,\n    change_date DATE,\n    change_type TEXT,\n    FOREIGN KEY (policy_id) REFERENCES regulatory_policies(policy_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_history (\n    history_id INT PRIMARY KEY,\n    policy_id INT,\n    change_id INT,\n    history_date DATE,\n    history_details TEXT,\n    FOREIGN KEY (policy_id) REFERENCES regulatory_policies(policy_id),\n    FOREIGN KEY (change_id) REFERENCES regulatory_changes(change_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_policies (\n  policy_id INT PRIMARY KEY,\n  policy_name VARCHAR(255),\n  policy_description TEXT,\n  effective_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_changes (\n  change_id INT PRIMARY KEY,\n  policy_id INT,\n  change_type VARCHAR(50),\n  change_date DATE,\n  description TEXT,\n  FOREIGN KEY (policy_id) REFERENCES regulatory_policies(policy_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_audit_log (\n  log_id INT PRIMARY KEY,\n  policy_id INT,\n  change_id INT,\n  user_id INT,\n  timestamp TIMESTAMP,\n  action VARCHAR(50),\n  FOREIGN KEY (policy_id) REFERENCES regulatory_policies(policy_id),\n  FOREIGN KEY (change_id) REFERENCES policy_changes(change_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_comments (\n  comment_id INT PRIMARY KEY,\n  policy_id INT,\n  comment_text TEXT,\n  commenter_name VARCHAR(255),\n  timestamp TIMESTAMP,\n  FOREIGN KEY (policy_id) REFERENCES regulatory_policies(policy_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_policies (\n  id SERIAL PRIMARY KEY,\n  policy_name VARCHAR(255) NOT NULL,\n  policy_description TEXT,\n  effective_date DATE,\n  last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_changes (\n  change_id SERIAL PRIMARY KEY,\n  policy_id INT REFERENCES regulatory_policies(id),\n  change_type VARCHAR(50) NOT NULL,\n  change_description TEXT,\n  change_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_agencies (\n  agency_id SERIAL PRIMARY KEY,\n  agency_name VARCHAR(100) NOT NULL,\n  agency_address TEXT,\n  contact_person VARCHAR(150),\n  contact_email VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_audit_log (\n  log_id SERIAL PRIMARY KEY,\n  policy_id INT REFERENCES regulatory_policies(id),\n  action VARCHAR(50) NOT NULL,\n  action_timestamp TIMESTAMP,\n  user_id INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_review_comments (\n  comment_id SERIAL PRIMARY KEY,\n  policy_id INT REFERENCES regulatory_policies(id),\n  user_name VARCHAR(100),\n  comment_text TEXT,\n  comment_date DATE\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnvironmentalImpactAssessment (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    construction_area DOUBLE PRECISION NOT NULL,\n    construction_type VARCHAR(50),\n    impact_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_impact_assessment (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    location VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact_report (\n    report_id INT PRIMARY KEY,\n    project_id INT,\n    assessment_date DATE,\n    findings TEXT,\n    FOREIGN KEY (project_id) REFERENCES environmental_impact_assessment(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE construction_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100),\n    location VARCHAR(100),\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE impact_assessments (\n    assessment_id INT PRIMARY KEY,\n    project_id INT,\n    assessor_name VARCHAR(100),\n    assessment_date DATE,\n    impact_score INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE assessment_details (\n    detail_id INT PRIMARY KEY,\n    assessment_id INT,\n    detail_description VARCHAR(255),\n    detail_value DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_consultants (\n  consultant_id INT PRIMARY KEY,\n  consultant_name VARCHAR(255) NOT NULL,\n  consultant_email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE construction_projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact_reports (\n  report_id INT PRIMARY KEY,\n  project_id INT,\n  report_date DATE,\n  responsible_consultant_id INT,\n  report_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_locations (\n  location_id INT PRIMARY KEY,\n  project_id INT,\n  location_name VARCHAR(255) NOT NULL,\n  latitude DECIMAL(10, 8),\n  longitude DECIMAL(11, 8)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE construction_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    location VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact (\n    impact_id INT PRIMARY KEY,\n    project_id INT,\n    factor_name VARCHAR(255),\n    impact_score INT,\n    FOREIGN KEY (project_id) REFERENCES construction_projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE impact_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_teams (\n    team_id INT PRIMARY KEY,\n    project_id INT,\n    team_lead VARCHAR(255),\n    team_member VARCHAR(255),\n    FOREIGN KEY (project_id) REFERENCES construction_projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assessments (\n    assessment_id INT PRIMARY KEY,\n    project_id INT,\n    category_id INT,\n    impact_id INT,\n    assessment_date DATE,\n    assessment_result VARCHAR(255),\n    FOREIGN KEY (project_id) REFERENCES construction_projects(project_id),\n    FOREIGN KEY (category_id) REFERENCES impact_categories(category_id),\n    FOREIGN KEY (impact_id) REFERENCES environmental_impact(impact_id)\n);"
+      }
+    ]
+  }
+]

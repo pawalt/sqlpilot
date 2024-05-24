@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitors_social_media_data (\n  competitor_id INT PRIMARY KEY,\n  competitor_name VARCHAR(255),\n  social_media_platform VARCHAR(50),\n  post_content TEXT,\n  post_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitor_data (\n  id INT PRIMARY KEY,\n  competitor_name VARCHAR(255),\n  social_media_platform VARCHAR(50),\n  post_content TEXT,\n  post_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n  id INT PRIMARY KEY,\n  competitor_id INT,\n  analysis_date DATE,\n  sentiment_score DECIMAL,\n  engagement_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitor_social_media_accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR(255),\n    follower_count INT,\n    post_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_posts (\n    post_id INT PRIMARY KEY,\n    account_id INT,\n    post_content TEXT,\n    post_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE post_engagement (\n    engagement_id INT PRIMARY KEY,\n    post_id INT,\n    likes_count INT,\n    comments_count INT,\n    shares_count INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitors_activity (\n    competitor_id UUID PRIMARY KEY,\n    social_media_platform VARCHAR(50),\n    post_content TEXT,\n    post_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE competitor_engagement (\n    engagement_id UUID PRIMARY KEY,\n    competitor_id UUID,\n    likes INT,\n    comments INT,\n    shares INT,\n    engagement_date TIMESTAMP,\n    FOREIGN KEY (competitor_id) REFERENCES competitors_activity(competitor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_analysis (\n    sentiment_id UUID PRIMARY KEY,\n    post_id UUID,\n    sentiment_score FLOAT,\n    sentiment_category VARCHAR(50),\n    analysis_date TIMESTAMP,\n    FOREIGN KEY (post_id) REFERENCES competitors_activity(competitor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE competitor_performance (\n    performance_id UUID PRIMARY KEY,\n    competitor_id UUID,\n    engagement_score FLOAT,\n    sentiment_score FLOAT,\n    performance_date TIMESTAMP,\n    FOREIGN KEY (competitor_id) REFERENCES competitors_activity(competitor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Social_Media_Accounts (\n    account_id SERIAL PRIMARY KEY,\n    account_name VARCHAR(255) NOT NULL,\n    follower_count INT,\n    post_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Posts (\n    post_id SERIAL PRIMARY KEY,\n    post_content TEXT,\n    post_date DATE,\n    account_id INT,\n    FOREIGN KEY (account_id) REFERENCES Social_Media_Accounts(account_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Comments (\n    comment_id SERIAL PRIMARY KEY,\n    comment_text TEXT,\n    post_id INT,\n    FOREIGN KEY (post_id) REFERENCES Posts(post_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Likes (\n    like_id SERIAL PRIMARY KEY,\n    post_id INT,\n    account_id INT,\n    FOREIGN KEY (post_id) REFERENCES Posts(post_id),\n    FOREIGN KEY (account_id) REFERENCES Social_Media_Accounts(account_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Hashtags (\n    hashtag_id SERIAL PRIMARY KEY,\n    hashtag_name VARCHAR(50) UNIQUE\n)"
+      }
+    ]
+  }
+]

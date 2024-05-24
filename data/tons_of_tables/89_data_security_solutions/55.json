@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_profiles (\n    user_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    fingerprint_data BYTEA,\n    facial_data BYTEA,\n    iris_scan_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    biometric_data TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    access_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_time TIMESTAMP,\n    access_type VARCHAR(20) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES user_profiles(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserProfiles (\n\tuser_id UUID PRIMARY KEY,\n\tuser_name VARCHAR(50) NOT NULL,\n\tbiometric_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControl (\n\taccess_id UUID PRIMARY KEY,\n\tuser_id UUID REFERENCES UserProfiles(user_id),\n\taccess_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BiometricCharacteristics (\n\tcharacteristic_id UUID PRIMARY KEY,\n\tuser_id UUID REFERENCES UserProfiles(user_id),\n\tfingerprint_data BYTEA,\n\tface_data BYTEA,\n\tiris_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserProfiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    biometric_data BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BiometricCharacteristics (\n    bio_id INT PRIMARY KEY,\n    bio_type VARCHAR(50) NOT NULL,\n    bio_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControl (\n    access_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    bio_id INT NOT NULL,\n    access_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserLogs (\n    log_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    log_description TEXT,\n    log_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_profiles (\n    id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    biometric_type VARCHAR(50) NOT NULL,\n    biometric_data BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n\nCREATE TABLE users (\n    id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n\nCREATE TABLE fingerprints (\n    id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    fingerprint_data BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n\nCREATE TABLE iris_scans (\n    id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    iris_data BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n\nCREATE TABLE face_scans (\n    id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    face_data BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

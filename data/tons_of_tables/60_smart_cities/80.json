@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionSchedule (\n  schedule_id INT PRIMARY KEY,\n  route_id INT,\n  collection_date DATE,\n  collection_time TIME,\n  collection_area VARCHAR(50),\n  collection_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS WasteCollectionSchedule (\n  collection_id INT PRIMARY KEY,\n  collection_date DATE,\n  pickup_area VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS RouteMapping (\n  route_id INT PRIMARY KEY,\n  collection_id INT,\n  vehicle_id INT,\n  driver_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionSchedule (\n    id INT PRIMARY KEY,\n    collection_date DATE,\n    collection_time TIME,\n    collection_zone VARCHAR(50),\n    truck_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionRoutes (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(100),\n    starting_point VARCHAR(100),\n    ending_point VARCHAR(100),\n    route_distance DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GarbageCollectionHistory (\n    collection_id INT PRIMARY KEY,\n    collection_date DATE,\n    collection_time TIME,\n    route_id INT,\n    truck_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteManagementRoutes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(50) NOT NULL,\n  route_schedule VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteManagementTrucks (\n  truck_id INT PRIMARY KEY,\n  truck_license_plate VARCHAR(20) NOT NULL,\n  truck_capacity FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteManagementPickups (\n  pickup_id INT PRIMARY KEY,\n  pickup_date DATE NOT NULL,\n  pickup_time TIME NOT NULL,\n  truck_id INT REFERENCES WasteManagementTrucks(truck_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteManagementGarbageBins (\n  bin_id INT PRIMARY KEY,\n  bin_location VARCHAR(100) NOT NULL,\n  bin_capacity FLOAT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteManagementLocation (\n    location_id UUID PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    location_address VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteCollectionRoute (\n    route_id UUID PRIMARY KEY,\n    route_name VARCHAR(255) NOT NULL,\n    route_distance DECIMAL(10, 2) NOT NULL,\n    route_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteCollectionSchedule (\n    schedule_id UUID PRIMARY KEY,\n    route_id UUID REFERENCES WasteCollectionRoute(route_id),\n    location_id UUID REFERENCES WasteManagementLocation(location_id),\n    schedule_date DATE NOT NULL,\n    schedule_time TIME NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GarbageCollectionWorker (\n    worker_id UUID PRIMARY KEY,\n    worker_name VARCHAR(255) NOT NULL,\n    worker_role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WorkerAssignment (\n    assignment_id UUID PRIMARY KEY,\n    worker_id UUID REFERENCES GarbageCollectionWorker(worker_id),\n    schedule_id UUID REFERENCES WasteCollectionSchedule(schedule_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_recognition (\n    image_id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    product_name VARCHAR(100),\n    product_category VARCHAR(50),\n    product_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id UUID PRIMARY KEY,\n    image_name VARCHAR(255) NOT NULL,\n    image_data BYTEA NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    product_image_id UUID NOT NULL,\n    FOREIGN KEY (product_image_id) REFERENCES images(image_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    image_url VARCHAR(255),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    product_id INT,\n    FOREIGN KEY (product_id) REFERENCES products (product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_tags (\n    tag_id INT PRIMARY KEY,\n    image_id INT,\n    tag_name VARCHAR(50),\n    FOREIGN KEY (image_id) REFERENCES images (image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    id UUID PRIMARY KEY,\n    image_data BYTES\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    name VARCHAR,\n    category VARCHAR,\n    price DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE product_images (\n    product_id UUID,\n    image_id UUID,\n    PRIMARY KEY (product_id, image_id),\n    FOREIGN KEY (product_id) REFERENCES products(product_id),\n    FOREIGN KEY (image_id) REFERENCES images(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_annotations (\n    annotation_id UUID PRIMARY KEY,\n    image_id UUID,\n    annotation TEXT,\n    FOREIGN KEY (image_id) REFERENCES images(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Images (\n  image_id UUID PRIMARY KEY,\n  image_url TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n  product_id UUID PRIMARY KEY,\n  product_name TEXT NOT NULL,\n  product_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageFeatures (\n  feature_id UUID PRIMARY KEY,\n  image_id UUID NOT NULL,\n  feature_vector BYTEA NOT NULL,\n  FOREIGN KEY (image_id) REFERENCES Images(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductImages (\n  product_id UUID NOT NULL,\n  image_id UUID NOT NULL,\n  PRIMARY KEY (product_id, image_id),\n  FOREIGN KEY (product_id) REFERENCES Products(product_id),\n  FOREIGN KEY (image_id) REFERENCES Images(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageMatches (\n  match_id UUID PRIMARY KEY,\n  image_id UUID NOT NULL,\n  product_id UUID NOT NULL,\n  score FLOAT NOT NULL,\n  FOREIGN KEY (image_id) REFERENCES Images(image_id),\n  FOREIGN KEY (product_id) REFERENCES Products(product_id)\n);"
+      }
+    ]
+  }
+]

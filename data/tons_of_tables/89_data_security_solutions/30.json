@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  encrypted_password BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    encrypted_password TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_reset (\n    reset_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    reset_code VARCHAR(20) NOT NULL,\n    reset_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_algorithms (\n    id INT PRIMARY KEY,\n    algorithm_name VARCHAR(50),\n    encryption_key BINARY(64)\n);\n\nCREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password_hash BINARY(64),\n    encryption_algorithm_id INT\n);\n\nCREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    user_id INT,\n    encryption_key BINARY(64)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    user_id INT,\n    encryption_key VARCHAR(200) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_policies (\n    policy_id INT PRIMARY KEY,\n    user_id INT,\n    complexity_level VARCHAR(20) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_history (\n    history_id INT PRIMARY KEY,\n    user_id INT,\n    password_hash VARCHAR(100) NOT NULL,\n    change_timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARBINARY(100),\n    encryption_key VARBINARY(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    user_id INT PRIMARY KEY,\n    encryption_key VARBINARY(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_history (\n    user_id INT,\n    password VARBINARY(100),\n    date_changed TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id VARCHAR(50) PRIMARY KEY,\n    user_id INT,\n    last_activity TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_resets (\n    reset_id INT PRIMARY KEY,\n    user_id INT,\n    reset_code VARCHAR(50),\n    reset_token VARBINARY(100),\n    reset_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

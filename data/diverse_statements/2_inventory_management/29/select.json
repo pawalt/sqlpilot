@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM assets;",
+      "SELECT asset_name, location FROM assets WHERE quantity > 0;",
+      "SELECT asset_id, asset_name, quantity FROM assets ORDER BY asset_name ASC;",
+      "SELECT * FROM assets WHERE location = 'Warehouse A';",
+      "SELECT asset_name, barcode FROM assets WHERE quantity < 10;",
+      "SELECT * FROM assets WHERE quantity > 10 ORDER BY asset_name ASC",
+      "SELECT asset_name, location FROM assets WHERE barcode LIKE 'ABC%' ORDER BY asset_name DESC",
+      "SELECT asset_id, asset_name, quantity FROM assets WHERE location IN ('Room A', 'Room B') ORDER BY quantity DESC",
+      "SELECT DISTINCT location FROM assets WHERE quantity BETWEEN 5 AND 15",
+      "SELECT COUNT(*) AS total_assets FROM assets"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM assets;",
+      "SELECT asset_id, asset_name FROM assets ORDER BY asset_name DESC;",
+      "SELECT asset_id, asset_name, barcode FROM assets WHERE asset_id = 1;",
+      "SELECT asset_id, asset_name FROM assets WHERE barcode LIKE '123%';",
+      "SELECT * FROM asset_tracking ORDER BY tracking_time ASC;",
+      "SELECT asset_id, asset_name, barcode FROM assets WHERE asset_id = 100;",
+      "SELECT * FROM assets WHERE barcode LIKE 'ABC%' ORDER BY asset_name DESC;",
+      "SELECT asset_name, location FROM assets INNER JOIN asset_tracking ON assets.asset_id = asset_tracking.asset_id WHERE tracking_time > '2022-01-01';",
+      "SELECT COUNT(*) AS total_assets, location FROM asset_tracking GROUP BY location HAVING total_assets > 10 ORDER BY total_assets DESC;",
+      "SELECT asset_name, barcode FROM assets WHERE asset_id IN (SELECT asset_id FROM asset_tracking WHERE location = 'Warehouse' AND tracking_time BETWEEN '2022-01-01' AND '2022-01-31');"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM assets;",
+      "SELECT name, description FROM assets;",
+      "SELECT description, name FROM assets;",
+      "SELECT location_code, description FROM locations;",
+      "SELECT id, asset_id, location_id FROM asset_tracking;",
+      "SELECT * FROM assets WHERE description IS NOT NULL ORDER BY name DESC;",
+      "SELECT id, name, description FROM assets WHERE id='123e4567-e89b-12d3-a456-426614174000' ORDER BY name;",
+      "SELECT a.name, a.description, l.location_code FROM assets a JOIN locations l ON a.id = l.id WHERE l.description LIKE '%Headquarters%' ORDER BY l.location_code ASC;",
+      "SELECT a.name, at.scan_time, l.location_code FROM assets a JOIN asset_tracking at ON a.id = at.asset_id JOIN locations l ON at.location_id = l.id WHERE a.name LIKE '%Laptop%' ORDER BY at.scan_time DESC, l.location_code;",
+      "SELECT l.location_code, COUNT(at.id) AS total_scans FROM locations l LEFT JOIN asset_tracking at ON l.id = at.location_id GROUP BY l.location_code HAVING COUNT(at.id) > 5 ORDER BY total_scans DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM asset_assets;",
+      "SELECT asset_name, location FROM asset_assets WHERE barcode = '123456';",
+      "SELECT asset_name, acquisition_date FROM asset_assets ORDER BY acquisition_date DESC;",
+      "SELECT * FROM asset_assets WHERE location LIKE '%Room%';",
+      "SELECT asset_id, asset_name FROM asset_assets JOIN asset_categories ON asset_assets.asset_id = asset_categories.category_id;",
+      "SELECT * FROM asset_assets WHERE asset_name = 'Laptop' AND location = 'Room A';",
+      "SELECT asset_id, asset_name FROM asset_assets WHERE acquisition_date >= '2022-01-01';",
+      "SELECT asset_id, barcode FROM asset_assets WHERE location IN ('Room A', 'Room B') ORDER BY asset_id DESC;",
+      "SELECT scan_id, scan_date, scan_results FROM asset_scans ORDER BY scan_date DESC LIMIT 5;",
+      "SELECT * FROM asset_assets INNER JOIN asset_categories ON asset_assets.asset_id = asset_categories.category_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM asset_tracking;",
+      "SELECT id, barcode, asset_name FROM asset_tracking WHERE location IS NULL;",
+      "SELECT * FROM asset_details WHERE manufacturer = 'Apple';",
+      "SELECT asset_name, last_scanned FROM asset_tracking ORDER BY last_scanned DESC LIMIT 10;",
+      "SELECT a.asset_name, ad.category, ah.scan_time FROM asset_tracking a JOIN asset_details ad ON a.id = ad.asset_id JOIN asset_history ah ON a.id = ah.asset_id WHERE ah.location_after = 'Storage';",
+      "SELECT * FROM asset_tracking ORDER BY asset_name DESC, last_scanned ASC LIMIT 10;",
+      "SELECT asset_name, location FROM asset_tracking WHERE location IS NOT NULL AND last_scanned BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT asset_name, location, category FROM asset_tracking JOIN asset_details ON asset_tracking.id = asset_details.asset_id WHERE manufacturer = 'Apple' AND location LIKE '%Floor%';",
+      "SELECT a.asset_name, b.category, h.scan_time FROM asset_tracking a JOIN asset_details b ON a.id = b.asset_id JOIN asset_history h ON a.id = h.asset_id WHERE h.location_before <> h.location_after AND b.model IS NOT NULL;",
+      "SELECT u.username, u.full_name, a.action FROM audit_logs a JOIN user_accounts u ON a.user_id = u.user_id WHERE a.timestamp > '2022-06-01' AND u.role = 'Admin' ORDER BY a.timestamp DESC LIMIT 5;"
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE account_balances (\n    account_id INT PRIMARY KEY,\n    balance DECIMAL,\n    last_updated TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE account_balance (\n    account_id INT PRIMARY KEY,\n    balance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE savings_activity (\n    activity_id INT PRIMARY KEY,\n    account_id INT,\n    activity_type VARCHAR(50),\n    amount FLOAT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE account_balance_changes (\n\tid INT PRIMARY KEY,\n\taccount_id INT,\n\tchange_amount DECIMAL,\n\tchange_type VARCHAR(20),\n\tchange_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE savings_activities (\n\tsavings_id INT PRIMARY KEY,\n\taccount_id INT,\n\tsavings_type VARCHAR(20),\n\tsavings_amount DECIMAL,\n\tsavings_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE unusual_activities (\n\tactivity_id INT PRIMARY KEY,\n\taccount_id INT,\n\tactivity_type VARCHAR(50),\n\tactivity_description TEXT,\n\tactivity_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE account_balance_changes (\n    account_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    balance DECIMAL,\n    change DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE savings_activities (\n    activity_id INT PRIMARY KEY,\n    account_id INT REFERENCES account_balance_changes(account_id),\n    activity_type VARCHAR,\n    amount DECIMAL,\n    activity_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE unusual_activities (\n    activity_id INT PRIMARY KEY,\n    account_id INT REFERENCES account_balance_changes(account_id),\n    activity_description TEXT,\n    activity_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE monitoring_logs (\n    log_id INT PRIMARY KEY,\n    account_id INT REFERENCES account_balance_changes(account_id),\n    log_type VARCHAR,\n    log_message TEXT,\n    log_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE account_balance_changes (\n    id UUID PRIMARY KEY,\n    account_id UUID NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    balance DECIMAL NOT NULL,\n    reason TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account_savings (\n    account_id UUID PRIMARY KEY,\n    account_type TEXT NOT NULL,\n    balance DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE unusual_activities (\n    id UUID PRIMARY KEY,\n    account_id UUID NOT NULL,\n    activity_type TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account_status (\n    account_id UUID PRIMARY KEY,\n    is_active BOOLEAN NOT NULL,\n    last_activity TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account_verification (\n    id UUID PRIMARY KEY,\n    account_id UUID NOT NULL,\n    verification_code TEXT NOT NULL\n);"
+      }
+    ]
+  }
+]

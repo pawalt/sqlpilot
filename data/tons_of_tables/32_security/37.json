@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecuritySchedule (\n  id SERIAL PRIMARY KEY,\n  personnel_id INT,\n  shift_start TIMESTAMP,\n  shift_end TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_personnel (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    rank VARCHAR(20),\n    badge_number INT UNIQUE\n);\nCREATE TABLE shift_schedule (\n    shift_id INT PRIMARY KEY,\n    shift_type VARCHAR(20) NOT NULL,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    personnel_id INT,\n    FOREIGN KEY (personnel_id) REFERENCES security_personnel(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_personnel (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  badge_number INT,\n  position VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n  schedule_id INT PRIMARY KEY,\n  security_personnel_id INT,\n  shift_date DATE,\n  shift_start_time TIME,\n  shift_end_time TIME\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE shift_assignments (\n  assignment_id INT PRIMARY KEY,\n  security_personnel_id INT,\n  shift_date DATE,\n  shift_confirmation BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_personnel ( \n  personnel_id INT PRIMARY KEY, \n  personnel_name VARCHAR(50) NOT NULL, \n  personnel_role VARCHAR(50) NOT NULL \n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE shift_assignments ( \n  assignment_id INT PRIMARY KEY, \n  personnel_id INT, \n  shift_date DATE NOT NULL, \n  shift_time TIME NOT NULL \n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE shifts ( \n  shift_id INT PRIMARY KEY, \n  shift_type VARCHAR(50) NOT NULL, \n  shift_duration INT NOT NULL \n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules ( \n  schedule_id INT PRIMARY KEY, \n  assignment_id INT, \n  shift_id INT, \n  deployment_date DATE NOT NULL \n) \n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityPersonnel (\n    personnel_id INT PRIMARY KEY,\n    personnel_name VARCHAR,\n    personnel_role VARCHAR,\n    hourly_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Shifts (\n    shift_id INT PRIMARY KEY,\n    shift_date DATE,\n    shift_type VARCHAR,\n    personnel_id INT REFERENCES SecurityPersonnel(personnel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShiftAssignments (\n    assignment_id INT PRIMARY KEY,\n    shift_id INT REFERENCES Shifts(shift_id),\n    personnel_id INT REFERENCES SecurityPersonnel(personnel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShiftLocations (\n    shift_id INT REFERENCES Shifts(shift_id),\n    location_id INT REFERENCES Locations(location_id)\n);"
+      }
+    ]
+  }
+]

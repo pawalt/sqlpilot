@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_images (\n    image_id UUID PRIMARY KEY,\n    image_data BYTEA,\n    label TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_images (\n    id INT PRIMARY KEY,\n    image_data BYTEA,\n    label VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE neural_networks (\n    id INT PRIMARY KEY,\n    network_name VARCHAR(100),\n    layers INT,\n    activation_function VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageData (\n    id INT PRIMARY KEY,\n    image_data BYTEA,\n    label VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelData (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_architecture TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingData (\n    train_id INT PRIMARY KEY,\n    image_id INT,\n    model_id INT,\n    loss FLOAT,\n    accuracy FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n  id SERIAL PRIMARY KEY,\n  image_data BYTEA,\n  label TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n  label_id SERIAL PRIMARY KEY,\n  label_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n  id SERIAL PRIMARY KEY,\n  image_id INT,\n  label_id INT,\n  FOREIGN KEY (image_id) REFERENCES images(id),\n  FOREIGN KEY (label_id) REFERENCES labels(label_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n  id SERIAL PRIMARY KEY,\n  image_id INT,\n  label_id INT,\n  timestamp TIMESTAMP,\n  FOREIGN KEY (image_id) REFERENCES images(id),\n  FOREIGN KEY (label_id) REFERENCES labels(label_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id INT PRIMARY KEY,\n    image_data BYTES,\n    label TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id INT PRIMARY KEY,\n    label_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    image_id INT,\n    label_id INT,\n    PRIMARY KEY (image_id, label_id),\n    FOREIGN KEY (image_id) REFERENCES images(image_id),\n    FOREIGN KEY (label_id) REFERENCES labels(label_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    image_id INT,\n    label_id INT,\n    data_split TEXT,\n    FOREIGN KEY (image_id) REFERENCES images(image_id),\n    FOREIGN KEY (label_id) REFERENCES labels(label_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_predictions (\n    image_id INT,\n    model_id TEXT,\n    prediction_score FLOAT,\n    FOREIGN KEY (image_id) REFERENCES images(image_id)\n);"
+      }
+    ]
+  }
+]

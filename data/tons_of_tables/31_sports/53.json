@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tee_time_reservations (\n  reservation_id INT PRIMARY KEY,\n  player_name VARCHAR(50),\n  tee_time DATETIME,\n  golf_course_name VARCHAR(100),\n  booking_method VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tee_time_reservations (\n    reservation_id INT PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    tee_time DATETIME NOT NULL,\n    course_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE golf_courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(50) NOT NULL,\n    course_location VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeeTimeReservations (\n    reservation_id INT PRIMARY KEY,\n    player_name VARCHAR(50),\n    tee_time DATETIME,\n    course_id INT,\n    CONSTRAINT fk_course FOREIGN KEY (course_id) REFERENCES GolfCourses(course_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GolfCourses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Players (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GolfCourses (\n id INT PRIMARY KEY,\n name VARCHAR(255),\n location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Players (\n id INT PRIMARY KEY,\n name VARCHAR(255),\n email VARCHAR(255),\n phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TeeTimes (\n id INT PRIMARY KEY,\n tee_time TIMESTAMP,\n player_id INT,\n golf_course_id INT,\n FOREIGN KEY (player_id) REFERENCES Players(id),\n FOREIGN KEY (golf_course_id) REFERENCES GolfCourses(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Reservations (\n id INT PRIMARY KEY,\n tee_time_id INT,\n player_id INT,\n status VARCHAR(20),\n FOREIGN KEY (tee_time_id) REFERENCES TeeTimes(id),\n FOREIGN KEY (player_id) REFERENCES Players(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tee_times (\n  tee_time_id INT,\n  course_id INT,\n  player_id INT,\n  tee_time_date DATE,\n  PRIMARY KEY (tee_time_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n  course_id INT,\n  course_name VARCHAR(50),\n  course_location VARCHAR(100),\n  course_rating DECIMAL(3, 1),\n  PRIMARY KEY (course_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n  player_id INT,\n  player_name VARCHAR(50),\n  player_email VARCHAR(100),\n  player_phone VARCHAR(15),\n  player_handicap DECIMAL(3, 1),\n  PRIMARY KEY (player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reservations (\n  reservation_id INT,\n  tee_time_id INT,\n  player_id INT,\n  reservation_time TIMESTAMP,\n  PRIMARY KEY (reservation_id),\n  FOREIGN KEY (tee_time_id) REFERENCES tee_times(tee_time_id),\n  FOREIGN KEY (player_id) REFERENCES players(player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tee_time_history (\n  history_id INT,\n  tee_time_id INT,\n  reservation_id INT,\n  played_date DATE,\n  score INT,\n  PRIMARY KEY (history_id),\n  FOREIGN KEY (tee_time_id) REFERENCES tee_times(tee_time_id),\n  FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id)\n);"
+      }
+    ]
+  }
+]

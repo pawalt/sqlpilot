@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE convergence_behavior (\n    experiment_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    optimization_goal VARCHAR(255),\n    convergence_rate DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_machine_learning_optimization (\n    optimization_id INT PRIMARY KEY,\n    optimization_algorithm VARCHAR(50),\n    convergence_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE convergence_history (\n    history_id INT PRIMARY KEY,\n    optimization_id INT,\n    iteration_number INT,\n    loss_value DECIMAL,\n    convergence_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ConvergenceBehavior (\n    experiment_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(100) NOT NULL,\n    convergence_rate DOUBLE PRECISION NOT NULL,\n    iterations INT NOT NULL,\n    accuracy DOUBLE PRECISION\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumOptimization (\n    optimization_id INT PRIMARY KEY,\n    experiment_id INT REFERENCES ConvergenceBehavior(experiment_id),\n    quantum_unit VARCHAR(50) NOT NULL,\n    optimization_type VARCHAR(50) NOT NULL,\n    convergence_threshold DOUBLE PRECISION NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OptimizationHistory (\n    history_id INT PRIMARY KEY,\n    optimization_id INT REFERENCES QuantumOptimization(optimization_id),\n    iteration_number INT NOT NULL,\n    objective_value DOUBLE PRECISION NOT NULL,\n    convergence_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumOptimizationParameters (\n    optimization_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(50),\n    learning_rate FLOAT,\n    convergence_threshold FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumOptimizationData (\n    data_id INT PRIMARY KEY,\n    optimization_id INT,\n    iteration INT,\n    loss FLOAT,\n    gradient_norm FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumOptimizationResults (\n    result_id INT PRIMARY KEY,\n    optimization_id INT,\n    final_loss FLOAT,\n    convergence BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumOptimizationStatus (\n    status_id INT PRIMARY KEY,\n    optimization_id INT,\n    status VARCHAR(50),\n    message TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumOptimizationMetrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(50) NOT NULL,\n    metric_value FLOAT NOT NULL,\n    optimization_id INT NOT NULL,\n    CONSTRAINT fk_optimization_id FOREIGN KEY (optimization_id) REFERENCES OptimizationAlgorithm(optimization_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OptimizationAlgorithm (\n    optimization_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(50) NOT NULL,\n    convergence_speed FLOAT NOT NULL,\n    optimization_type VARCHAR(20) NOT NULL,\n    max_iterations INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OptimizationHistory (\n    history_id INT PRIMARY KEY,\n    optimization_id INT NOT NULL,\n    iteration_number INT NOT NULL,\n    optimization_loss FLOAT NOT NULL,\n    CONSTRAINT fk_opt_id FOREIGN KEY (optimization_id) REFERENCES OptimizationAlgorithm(optimization_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumComputers (\n    computer_id INT PRIMARY KEY,\n    computer_name VARCHAR(50) NOT NULL,\n    qubit_count INT NOT NULL,\n    manufacturer VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingData (\n    data_id INT PRIMARY KEY,\n    optimization_id INT NOT NULL,\n    input_data TEXT NOT NULL,\n    output_data TEXT NOT NULL,\n    CONSTRAINT fk_opt_id FOREIGN KEY (optimization_id) REFERENCES OptimizationAlgorithm(optimization_id)\n);\n"
+      }
+    ]
+  }
+]

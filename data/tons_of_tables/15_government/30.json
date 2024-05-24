@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulations (\n  id UUID PRIMARY KEY,\n  title VARCHAR(255) NOT NULL,\n  description TEXT,\n  department VARCHAR(100),\n  created_at TIMESTAMPTZ DEFAULT now()\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulations (\n    id INT PRIMARY KEY,\n    regulation_name TEXT,\n    regulation_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    id INT PRIMARY KEY,\n    policy_name TEXT,\n    policy_description TEXT,\n    regulation_id INT,\n    FOREIGN KEY (regulation_id) REFERENCES regulations(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulations (\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(255),\n    category VARCHAR(100),\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    id INT PRIMARY KEY,\n    regulation_id INT,\n    policy_text TEXT,\n    policy_effective_date DATE,\n    FOREIGN KEY (regulation_id) REFERENCES regulations(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n    id INT PRIMARY KEY,\n    department_name VARCHAR(255),\n    responsible_person VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulations (\n    regulation_id SERIAL PRIMARY KEY,\n    regulation_name VARCHAR(255),\n    regulation_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id SERIAL PRIMARY KEY,\n    policy_name VARCHAR(255),\n    policy_description TEXT,\n    regulation_id INT REFERENCES regulations(regulation_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n    department_id SERIAL PRIMARY KEY,\n    department_name VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE department_policies (\n    department_id INT REFERENCES departments(department_id),\n    policy_id INT REFERENCES policies(policy_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulations (\n    id SERIAL PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    id SERIAL PRIMARY KEY,\n    policy_number INT UNIQUE NOT NULL,\n    effective_date DATE,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    id SERIAL PRIMARY KEY,\n    category_name VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE agencies (\n    id SERIAL PRIMARY KEY,\n    agency_name VARCHAR(100) UNIQUE NOT NULL,\n    address TEXT,\n    contact_person VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE links (\n    id SERIAL PRIMARY KEY,\n    regulation_id INT REFERENCES regulations(id),\n    policy_id INT REFERENCES policies(id),\n    category_id INT REFERENCES categories(id),\n    agency_id INT REFERENCES agencies(id)\n);\n"
+      }
+    ]
+  }
+]

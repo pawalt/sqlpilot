@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cross_docking_facility_layouts (\n    facility_id INT PRIMARY KEY,\n    warehouse_name VARCHAR(50),\n    storage_capacity INT,\n    layout_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cross_docking_facility (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(255) NOT NULL,\n    facility_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE storage_space (\n    space_id INT PRIMARY KEY,\n    facility_id INT,\n    space_type VARCHAR(50) NOT NULL,\n    capacity DECIMAL(10,2) NOT NULL,\n    FOREIGN KEY (facility_id) REFERENCES cross_docking_facility(facility_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cross_dock_facility (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE storage_areas (\n    area_id INT PRIMARY KEY,\n    facility_id INT NOT NULL,\n    area_name VARCHAR(50) NOT NULL,\n    area_capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE items (\n    item_id INT PRIMARY KEY,\n    area_id INT NOT NULL,\n    item_name VARCHAR(50) NOT NULL,\n    quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cross_docking_facility_layouts (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(100) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE storage_spaces (\n    space_id INT PRIMARY KEY,\n    facility_id INT NOT NULL,\n    space_type VARCHAR(50) NOT NULL,\n    capacity INT,\n    FOREIGN KEY (facility_id) REFERENCES cross_docking_facility_layouts(facility_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    category VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_inventory (\n    inventory_id INT PRIMARY KEY,\n    product_id INT NOT NULL,\n    space_id INT NOT NULL,\n    quantity INT,\n    FOREIGN KEY (product_id) REFERENCES products(product_id),\n    FOREIGN KEY (space_id) REFERENCES storage_spaces(space_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cross_docking_facility (\n  facility_id INT PRIMARY KEY,\n  facility_name VARCHAR(255) NOT NULL,\n  total_capacity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  unit_price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE storage_area (\n  area_id INT PRIMARY KEY,\n  area_name VARCHAR(255) NOT NULL,\n  area_capacity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dock (\n  dock_id INT PRIMARY KEY,\n  dock_name VARCHAR(255) NOT NULL,\n  dock_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dock_schedule (\n  schedule_id INT PRIMARY KEY,\n  dock_id INT NOT NULL,\n  schedule_date DATE NOT NULL,\n  schedule_time TIME NOT NULL\n);"
+      }
+    ]
+  }
+]

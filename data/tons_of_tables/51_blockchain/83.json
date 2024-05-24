@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protocol_upgrades (\n    upgrade_id SERIAL PRIMARY KEY,\n    upgrade_name VARCHAR(50) NOT NULL,\n    upgrade_version INT NOT NULL,\n    upgrade_date DATE NOT NULL,\n    upgrade_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protocol_upgrades (\n    id INT PRIMARY KEY,\n    upgrade_version VARCHAR(50) NOT NULL,\n    upgrade_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE protocol_changes (\n    change_id INT PRIMARY KEY,\n    change_description TEXT NOT NULL,\n    change_date DATE NOT NULL,\n    upgrade_id INT,\n    FOREIGN KEY (upgrade_id) REFERENCES protocol_upgrades(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Protocol_Updates (\n   id SERIAL PRIMARY KEY,\n   upgrade_version VARCHAR(10) NOT NULL,\n   change_description TEXT NOT NULL,\n   upgrade_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance_Records (\n   id SERIAL PRIMARY KEY,\n   policy_name VARCHAR(50) NOT NULL,\n   status VARCHAR(20) NOT NULL,\n   implemented_date DATE NOT NULL,\n   approval_person VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Version_Control (\n   id SERIAL PRIMARY KEY,\n   version_number VARCHAR(10) NOT NULL,\n   notes TEXT,\n   release_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protocol_upgrade_history (\n  upgrade_id INT PRIMARY KEY,\n  upgrade_version INT NOT NULL,\n  upgrade_date DATE NOT NULL,\n  upgrade_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE protocol_changes (\n  change_id INT PRIMARY KEY,\n  change_type VARCHAR(50) NOT NULL,\n  change_description TEXT,\n  change_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_records (\n  record_id INT PRIMARY KEY,\n  record_type VARCHAR(50) NOT NULL,\n  record_date DATE NOT NULL,\n  record_details JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE version_control (\n  version_id INT PRIMARY KEY,\n  version_number VARCHAR(10) NOT NULL,\n  version_date DATE NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProtocolVersions (\n  ProtocolID INT PRIMARY KEY,\n  Version INT NOT NULL,\n  Description TEXT,\n  UpgradeDate DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE UpgradeLogs (\n  LogID INT PRIMARY KEY,\n  ProtocolID INT REFERENCES ProtocolVersions(ProtocolID),\n  UpgradeType VARCHAR(50),\n  LogDetails TEXT,\n  LogTimestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceRecords (\n  RecordID INT PRIMARY KEY,\n  ProtocolID INT REFERENCES ProtocolVersions(ProtocolID),\n  ComplianceStatus VARCHAR(20),\n  ComplianceDate DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ChangeRequests (\n  RequestID INT PRIMARY KEY,\n  RequesterName VARCHAR(50),\n  ProtocolID INT REFERENCES ProtocolVersions(ProtocolID),\n  RequestDate DATE,\n  RequestDetails TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ApprovalLogs (\n  ApprovalID INT PRIMARY KEY,\n  RequestID INT REFERENCES ChangeRequests(RequestID),\n  ApproverName VARCHAR(50),\n  ApprovalDate DATE\n)"
+      }
+    ]
+  }
+]

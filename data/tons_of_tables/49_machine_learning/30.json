@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n    image_id UUID PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_path VARCHAR(255),\n    image_format VARCHAR(10),\n    image_size INT,\n    creation_date TIMESTAMP,\n    object_detection BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n    id SERIAL PRIMARY KEY,\n    image_name TEXT,\n    image_path TEXT,\n    image_size INT,\n    image_format TEXT,\n    capture_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ObjectAnnotations (\n    id SERIAL PRIMARY KEY,\n    image_id INT,\n    object_label TEXT,\n    object_bbox TEXT,\n    confidence FLOAT,\n    FOREIGN KEY (image_id) REFERENCES ImageMetadata(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n  id INT PRIMARY KEY,\n  image_name VARCHAR(255),\n  image_path VARCHAR(255),\n  capture_time TIMESTAMP,\n  image_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ObjectAnnotations (\n  id INT PRIMARY KEY,\n  object_name VARCHAR(255),\n  object_category VARCHAR(50),\n  object_confidence FLOAT,\n  bounding_box_x INT,\n  bounding_box_y INT,\n  bounding_box_width INT,\n  bounding_box_height INT,\n  image_id INT,\n  FOREIGN KEY (image_id) REFERENCES ImageMetadata(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DetectionResults (\n  id INT PRIMARY KEY,\n  detection_time TIMESTAMP,\n  detected_object_id INT,\n  detection_confidence FLOAT,\n  image_id INT,\n  FOREIGN KEY (detected_object_id) REFERENCES ObjectAnnotations(id),\n  FOREIGN KEY (image_id) REFERENCES ImageMetadata(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_url VARCHAR(255),\n    image_size INT,\n    image_format VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE objects (\n    object_id INT PRIMARY KEY,\n    object_name VARCHAR(100),\n    object_category VARCHAR(50),\n    object_confidence FLOAT,\n    image_id INT,\n    FOREIGN KEY (image_id) REFERENCES images(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n    annotation_id INT PRIMARY KEY,\n    object_id INT,\n    annotation_text TEXT,\n    annotation_author VARCHAR(100),\n    annotation_date DATE,\n    FOREIGN KEY (object_id) REFERENCES objects(object_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE detections (\n    detection_id INT PRIMARY KEY,\n    detection_score FLOAT,\n    object_id INT,\n    detection_date DATE,\n    FOREIGN KEY (object_id) REFERENCES objects(object_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Image_Metadata (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_path VARCHAR(255),\n    image_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Object_Detections (\n    detection_id INT PRIMARY KEY,\n    image_id INT,\n    object_label VARCHAR(50),\n    bounding_box_x INT,\n    bounding_box_y INT,\n    bounding_box_width INT,\n    bounding_box_height INT,\n    FOREIGN KEY (image_id) REFERENCES Image_Metadata(image_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Annotation_Tags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Image_Annotations (\n    annotation_id INT PRIMARY KEY,\n    image_id INT,\n    detection_id INT,\n    tag_id INT,\n    FOREIGN KEY (image_id) REFERENCES Image_Metadata(image_id),\n    FOREIGN KEY (detection_id) REFERENCES Object_Detections(detection_id),\n    FOREIGN KEY (tag_id) REFERENCES Annotation_Tags(tag_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE User_Stats (\n    user_id INT PRIMARY KEY,\n    total_annotations INT\n);\n"
+      }
+    ]
+  }
+]

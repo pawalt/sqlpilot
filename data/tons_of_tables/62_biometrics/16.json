@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fingerprint_system (\n    user_id INT PRIMARY KEY,\n    fingerprint_data BYTEA,\n    access_level INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    fingerprint_data BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT REFERENCES users(user_id),\n    access_level INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fingerprints (\n    id UUID PRIMARY KEY,\n    fingerprint_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username TEXT UNIQUE,\n    access_level INT,\n    fingerprint_id UUID REFERENCES fingerprints(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id UUID PRIMARY KEY,\n    permission_name TEXT UNIQUE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT PRIMARY KEY,\n    fingerprint_data BYTEA,\n    access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT,\n    access_time TIMESTAMP,\n    access_result BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50),\n    fingerprint_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n    level_id SERIAL PRIMARY KEY,\n    level_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FingerprintUsers (\n    id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    fingerprint_data BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Permissions (\n    permission_id SERIAL PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserPermissions (\n    user_id UUID,\n    permission_id INT,\n    FOREIGN KEY (user_id) REFERENCES FingerprintUsers(id),\n    FOREIGN KEY (permission_id) REFERENCES Permissions(permission_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLevels (\n    level_id SERIAL PRIMARY KEY,\n    level_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserAccessLevels (\n    user_id UUID,\n    level_id INT,\n    FOREIGN KEY (user_id) REFERENCES FingerprintUsers(id),\n    FOREIGN KEY (level_id) REFERENCES AccessLevels(level_id)\n);"
+      }
+    ]
+  }
+]

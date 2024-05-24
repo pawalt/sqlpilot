@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RoboAdvisorPortfolio (\n    customer_id INT,\n    portfolio_name VARCHAR(50),\n    initial_investment DECIMAL(10,2),\n    current_value DECIMAL(10,2),\n    risk_tolerance VARCHAR(10),\n    last_rebalance_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customer_Portfolios (\n    customer_id INT PRIMARY KEY,\n    portfolio_name VARCHAR(50),\n    total_assets DECIMAL(12, 2),\n    risk_level VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Rebalance_Criteria (\n    criteria_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    threshold DECIMAL(5, 2),\n    frequency VARCHAR(20),\n    action VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customer (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Portfolio (\n    portfolio_id INT PRIMARY KEY,\n    customer_id INT REFERENCES Customer(customer_id),\n    balance DECIMAL(10, 2),\n    assets TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Criteria (\n    criteria_id INT PRIMARY KEY,\n    criteria_name VARCHAR(50),\n    criteria_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerProfiles (\n  customer_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(100),\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PortfolioAssets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(50),\n  asset_type VARCHAR(20),\n  quantity INT,\n  customer_id INT,\n  FOREIGN KEY (customer_id) REFERENCES CustomerProfiles(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RebalanceCriteria (\n  criteria_id INT PRIMARY KEY,\n  criteria_name VARCHAR(50),\n  asset_type VARCHAR(20),\n  threshold DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RebalancingLogs (\n  log_id INT PRIMARY KEY,\n  criteria_id INT,\n  asset_id INT,\n  action_taken VARCHAR(100),\n  timestamp TIMESTAMP,\n  FOREIGN KEY (criteria_id) REFERENCES RebalanceCriteria(criteria_id),\n  FOREIGN KEY (asset_id) REFERENCES PortfolioAssets(asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    customer_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Portfolios (\n    portfolio_id INT PRIMARY KEY,\n    customer_id INT,\n    portfolio_name VARCHAR(255),\n    portfolio_value DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    asset_value DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Criteria (\n    criteria_id INT PRIMARY KEY,\n    criteria_name VARCHAR(255),\n    rebalance_threshold DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RebalancingHistory (\n    transaction_id INT PRIMARY KEY,\n    portfolio_id INT,\n    timestamp TIMESTAMP,\n    action_taken VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

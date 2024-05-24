@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_compound_data (\n    compound_id UUID PRIMARY KEY,\n    compound_name VARCHAR(255) NOT NULL,\n    molecular_structure TEXT,\n    molecular_weight FLOAT,\n    melting_point DECIMAL,\n    testing_result JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_compounds (\n  compound_id INT PRIMARY KEY,\n  compound_name TEXT,\n  molecular_structure TEXT,\n  molecular_weight FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE testing_results (\n  test_id INT PRIMARY KEY,\n  compound_id INT,\n  test_description TEXT,\n  test_result TEXT,\n  test_date DATE,\n  FOREIGN KEY (compound_id) REFERENCES drug_compounds(compound_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compound_structures (\n    compound_id SERIAL PRIMARY KEY,\n    compound_name VARCHAR(255) NOT NULL,\n    structure TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compound_properties (\n    property_id SERIAL PRIMARY KEY,\n    compound_id INTEGER REFERENCES compound_structures(compound_id),\n    molecular_weight DECIMAL,\n    melting_point DECIMAL,\n    boiling_point DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE testing_results (\n    result_id SERIAL PRIMARY KEY,\n    compound_id INTEGER REFERENCES compound_structures(compound_id),\n    test_type VARCHAR(50),\n    test_result TEXT,\n    test_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compound_structures (\n  compound_id UUID PRIMARY KEY,\n  structure TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compound_properties (\n  compound_id UUID PRIMARY KEY,\n  molecular_weight FLOAT,\n  melting_point FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE testing_results (\n  test_id UUID PRIMARY KEY,\n  compound_id UUID,\n  test_type TEXT,\n  result BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE research_processes (\n  process_id UUID PRIMARY KEY,\n  process_name TEXT,\n  start_date DATE,\n  end_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_compound_structures (\n    compound_id INT PRIMARY KEY,\n    compound_name VARCHAR(255),\n    molecular_formula VARCHAR(50),\n    molecular_weight DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compound_properties (\n    property_id INT PRIMARY KEY,\n    compound_id INT,\n    melting_point DECIMAL(8,2),\n    boiling_point DECIMAL(8,2),\n    density DECIMAL(8,2),\n    FOREIGN KEY (compound_id) REFERENCES drug_compound_structures(compound_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE testing_results (\n    result_id INT PRIMARY KEY,\n    compound_id INT,\n    test_type VARCHAR(50),\n    test_result VARCHAR(255),\n    test_date DATE,\n    FOREIGN KEY (compound_id) REFERENCES drug_compound_structures(compound_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_processes (\n    process_id INT PRIMARY KEY,\n    process_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE process_steps (\n    step_id INT PRIMARY KEY,\n    process_id INT,\n    step_description TEXT,\n    step_status VARCHAR(20),\n    FOREIGN KEY (process_id) REFERENCES research_processes(process_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE targets (id INT PRIMARY KEY,\nname VARCHAR(50) NOT NULL,\naccess_level VARCHAR(20) NOT NULL,\ntarget_status VARCHAR(20) NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE targets (\n    target_id INT,\n    target_name VARCHAR(255),\n    access_level VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_privileges (\n    privilege_id INT,\n    target_id INT,\n    privilege_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_privileges (\n    id SERIAL PRIMARY KEY,\n    target_name VARCHAR(50) NOT NULL,\n    privilege_level VARCHAR(20) NOT NULL,\n    access_date DATE\n);\n\nCREATE TABLE social_engineering (\n    id SERIAL PRIMARY KEY,\n    attacker_name VARCHAR(50) NOT NULL,\n    target_name VARCHAR(50) NOT NULL,\n    method_used VARCHAR(50) NOT NULL,\n    successful BOOLEAN\n);\n\nCREATE TABLE unauthorized_access (\n    id SERIAL PRIMARY KEY,\n    target_name VARCHAR(50) NOT NULL,\n    access_method VARCHAR(50) NOT NULL,\n    access_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE targets (\n    target_id INT PRIMARY KEY,\n    target_name TEXT NOT NULL,\n    access_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE privileges (\n    privilege_id INT PRIMARY KEY,\n    privilege_name TEXT NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access (\n    user_id INT PRIMARY KEY,\n    target_id INT NOT NULL,\n    privilege_id INT NOT NULL,\n    FOREIGN KEY (target_id) REFERENCES targets(target_id),\n    FOREIGN KEY (privilege_id) REFERENCES privileges(privilege_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suspicious_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    activity_type TEXT NOT NULL,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE targets (\n  target_id INT PRIMARY KEY,\n  target_name VARCHAR(255),\n  target_email VARCHAR(255),\n  target_role VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE accesses (\n  access_id INT PRIMARY KEY,\n  access_type VARCHAR(50),\n  access_date TIMESTAMP,\n  target_id INT,\n  FOREIGN KEY (target_id) REFERENCES targets(target_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE privileges (\n  privilege_id INT PRIMARY KEY,\n  privilege_type VARCHAR(50),\n  target_id INT,\n  FOREIGN KEY (target_id) REFERENCES targets(target_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE social_engineering (\n  technique_id INT PRIMARY KEY,\n  technique_name VARCHAR(100),\n  access_id INT,\n  FOREIGN KEY (access_id) REFERENCES accesses(access_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE unauthorized_access (\n  unauthorized_id INT PRIMARY KEY,\n  technique_id INT,\n  privilege_id INT,\n  FOREIGN KEY (technique_id) REFERENCES social_engineering(technique_id),\n  FOREIGN KEY (privilege_id) REFERENCES privileges(privilege_id)\n);\n"
+      }
+    ]
+  }
+]

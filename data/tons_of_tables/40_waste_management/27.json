@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_decomposition (\n  material_id INT,\n  material_name VARCHAR(255),\n  decomposition_rate DECIMAL(10, 2),\n  start_date DATE,\n  end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE decomposition_rates (\n  id SERIAL PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  decomposition_rate FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE composting_process (\n  process_id SERIAL PRIMARY KEY,\n  material_id INT REFERENCES decomposition_rates(id),\n  start_date DATE NOT NULL,\n  end_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE organic_materials(\n  id SERIAL PRIMARY KEY,\n  material_name TEXT,\n  decomposition_rate FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_bins(\n  id SERIAL PRIMARY KEY,\n  bin_id TEXT,\n  temperature FLOAT,\n  moisture_level FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE decomposition_logs(\n  id SERIAL PRIMARY KEY,\n  material_id INT,\n  bin_id INT,\n  decomposition_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE organic_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255) NOT NULL,\n  decomposition_rate FLOAT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_bins (\n  bin_id INT PRIMARY KEY,\n  location VARCHAR(255) NOT NULL,\n  temperature FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE decomposition_data (\n  data_id INT PRIMARY KEY,\n  material_id INT,\n  bin_id INT,\n  decomposition_percentage FLOAT,\n  timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE decomposition_logs (\n  log_id INT PRIMARY KEY,\n  data_id INT,\n  temperature FLOAT,\n  oxygen_level FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Materials (\n  material_id SERIAL PRIMARY KEY,\n  material_name VARCHAR(100) NOT NULL,\n  decomposition_rate DECIMAL(5,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CompostBins (\n  bin_id SERIAL PRIMARY KEY,\n  bin_location VARCHAR(100) NOT NULL,\n  bin_capacity DECIMAL(5,2),\n  material_id INT REFERENCES Materials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TemperatureLogs (\n  log_id SERIAL PRIMARY KEY,\n  log_date DATE,\n  temperature DECIMAL(5,2),\n  bin_id INT REFERENCES CompostBins(bin_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MoistureLevels (\n  level_id SERIAL PRIMARY KEY,\n  level DECIMAL(5,2),\n  log_id INT REFERENCES TemperatureLogs(log_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PHLevels (\n  level_id SERIAL PRIMARY KEY,\n  ph DECIMAL(5,2),\n  log_id INT REFERENCES TemperatureLogs(log_id)\n);\n"
+      }
+    ]
+  }
+]

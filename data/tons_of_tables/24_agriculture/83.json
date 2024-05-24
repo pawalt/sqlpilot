@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_growth_stages (\n  stage_id INT PRIMARY KEY,\n  stage_name VARCHAR(50),\n  growth_description TEXT,\n  optimal_conditions TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_growth_stages (\n  stage_id INT PRIMARY KEY,\n  stage_description VARCHAR(255),\n  estimated_duration_hours INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE field_conditions (\n  field_id INT PRIMARY KEY,\n  temperature FLOAT,\n  humidity FLOAT,\n  soil_moisture FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CropGrowthStages (\n    stage_id INT PRIMARY KEY,\n    stage_name VARCHAR(50) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldConditions (\n    condition_id INT PRIMARY KEY,\n    condition_name VARCHAR(50) NOT NULL,\n    temperature DECIMAL(5,2) NOT NULL,\n    humidity DECIMAL(5,2) NOT NULL,\n    wind_speed DECIMAL(5,2) NOT NULL,\n    rain_volume DECIMAL(5,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CropFieldMapping (\n    crop_id INT,\n    field_id INT,\n    stage_id INT,\n    FOREIGN KEY (field_id) REFERENCES FieldConditions(condition_id),\n    FOREIGN KEY (stage_id) REFERENCES CropGrowthStages(stage_id),\n    PRIMARY KEY (crop_id, field_id, stage_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_growth_stages (\n    stage_id INT PRIMARY KEY,\n    stage_name VARCHAR(50),\n    description TEXT,\n    duration_in_days INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE field_conditions (\n    condition_id INT PRIMARY KEY,\n    farm_area_id INT,\n    temperature_celsius FLOAT,\n    humidity_percent FLOAT,\n    rainfall_mm FLOAT,\n    FOREIGN KEY (farm_area_id) REFERENCES farm_areas(farm_area_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE farm_areas (\n    farm_area_id INT PRIMARY KEY,\n    area_name VARCHAR(50),\n    location VARCHAR(100),\n    soil_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_records (\n    record_id INT PRIMARY KEY,\n    crop_id INT,\n    stage_id INT,\n    date_recorded DATE,\n    field_condition_id INT,\n    FOREIGN KEY (crop_id) REFERENCES crops(crop_id),\n    FOREIGN KEY (stage_id) REFERENCES crop_growth_stages(stage_id),\n    FOREIGN KEY (field_condition_id) REFERENCES field_conditions(condition_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_growth_stages (\n  crop_id INT PRIMARY KEY,\n  stage_name VARCHAR(50),\n  temperature FLOAT,\n  humidity FLOAT,\n  soil_moisture FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE field_conditions (\n  field_id INT PRIMARY KEY,\n  crop_id INT,\n  weather VARCHAR(50),\n  irrigation_needed BOOLEAN,\n  FOREIGN KEY (crop_id) REFERENCES crop_growth_stages(crop_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_data (\n  crop_id INT PRIMARY KEY,\n  planting_date DATE,\n  harvest_date DATE,\n  yield INT,\n  field_id INT,\n  FOREIGN KEY (field_id) REFERENCES field_conditions(field_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensors (\n  sensor_id INT PRIMARY KEY,\n  sensor_type VARCHAR(50),\n  field_id INT,\n  FOREIGN KEY (field_id) REFERENCES field_conditions(field_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n  data_id INT PRIMARY KEY,\n  sensor_id INT,\n  reading DOUBLE,\n  timestamp TIMESTAMP,\n  FOREIGN KEY (sensor_id) REFERENCES sensors(sensor_id)\n)"
+      }
+    ]
+  }
+]

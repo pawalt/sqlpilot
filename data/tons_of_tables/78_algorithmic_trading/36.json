@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE market_data (\n  vendor_id INT,\n  vendor_name VARCHAR(255),\n  data_type VARCHAR(100),\n  data_timestamp TIMESTAMP,\n  data_value DECIMAL(18, 2),\n  PRIMARY KEY (vendor_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE market_data_vendors (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(50),\n    contact_email VARCHAR(100)\n);\n\nCREATE TABLE financial_data (\n    data_id INT PRIMARY KEY,\n    vendor_id INT,\n    client_id INT,\n    data_type VARCHAR(50),\n    data_value DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MarketDataVendors (\n\tvendor_id INT PRIMARY KEY,\n\tvendor_name VARCHAR(100) NOT NULL,\n\tlocation VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FinancialData (\n\tdata_id INT PRIMARY KEY,\n\tvendor_id INT,\n\tdata_type VARCHAR(50) NOT NULL,\n\tdata_value DECIMAL(10,2) NOT NULL,\n\tFOREIGN KEY (vendor_id) REFERENCES MarketDataVendors(vendor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Clients (\n\tclient_id INT PRIMARY KEY,\n\tclient_name VARCHAR(100) NOT NULL,\n\tclient_email VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ClientFinancialData (\n\tclient_id INT,\n\tdata_id INT,\n\tsale_date DATE,\n\tFOREIGN KEY (client_id) REFERENCES Clients(client_id),\n\tFOREIGN KEY (data_id) REFERENCES FinancialData(data_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE market_data_vendors (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_data (\n    data_id INT PRIMARY KEY,\n    data_type VARCHAR(255) NOT NULL,\n    data_value DECIMAL(10, 2) NOT NULL,\n    vendor_id INT,\n    client_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution (\n    distribution_id INT PRIMARY KEY,\n    data_id INT,\n    vendor_id INT,\n    client_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE market_data_vendors (\n    vendor_id UUID PRIMARY KEY,\n    vendor_name STRING NOT NULL,\n    vendor_location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_data (\n    data_id UUID PRIMARY KEY,\n    vendor_id UUID REFERENCES market_data_vendors(vendor_id),\n    data_name STRING NOT NULL,\n    data_value DECIMAL,\n    data_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE client_data (\n    client_id UUID PRIMARY KEY,\n    client_name STRING NOT NULL,\n    client_email STRING UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscription (\n    subscription_id UUID PRIMARY KEY,\n    client_id UUID REFERENCES client_data(client_id),\n    data_id UUID REFERENCES financial_data(data_id),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id UUID PRIMARY KEY,\n    client_id UUID REFERENCES client_data(client_id),\n    log_timestamp TIMESTAMP,\n    log_action STRING\n);"
+      }
+    ]
+  }
+]

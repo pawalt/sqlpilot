@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE raw_material_inventory (\n    material_id INT PRIMARY KEY,\n    material_name STRING,\n    current_inventory INT,\n    reorder_point INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials_inventory (\n    material_id UUID PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    current_quantity INT,\n    reorder_point INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE materials_orders (\n    order_id UUID PRIMARY KEY,\n    material_id UUID,\n    order_quantity INT,\n    order_date DATE,\n    FOREIGN KEY (material_id) REFERENCES materials_inventory(material_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id SERIAL PRIMARY KEY,\n    material_name STRING,\n    current_inventory INT,\n    reorder_point INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id SERIAL PRIMARY KEY,\n    supplier_name STRING,\n    supplier_contact STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n    shipment_id SERIAL PRIMARY KEY,\n    material_id INT REFERENCES materials(material_id),\n    supplier_id INT REFERENCES suppliers(supplier_id),\n    shipment_date DATE,\n    quantity_shipped INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n    id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    quantity INT,\n    reorder_point INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    contact_person VARCHAR(255),\n    email VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n    id INT PRIMARY KEY,\n    material_id INT,\n    supplier_id INT,\n    quantity_shipped INT,\n    shipment_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_logs (\n    id INT PRIMARY KEY,\n    material_id INT,\n    quantity_change INT,\n    event_type VARCHAR(255),\n    event_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE raw_materials (\n  material_id INT PRIMARY KEY,\n  material_name TEXT NOT NULL,\n  quantity_on_hand INT,\n  reorder_point INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name TEXT NOT NULL,\n  contact_person TEXT,\n  phone_number TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n  shipment_id INT PRIMARY KEY,\n  material_id INT REFERENCES raw_materials(material_id),\n  supplier_id INT REFERENCES suppliers(supplier_id),\n  shipment_date DATE,\n  quantity_shipped INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_logs (\n  log_id INT PRIMARY KEY,\n  material_id INT REFERENCES raw_materials(material_id),\n  log_date DATE,\n  action TEXT,\n  quantity_changed INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reorder_history (\n  reorder_id INT PRIMARY KEY,\n  material_id INT REFERENCES raw_materials(material_id),\n  reorder_date DATE,\n  previous_quantity INT,\n  new_quantity INT\n)"
+      }
+    ]
+  }
+]

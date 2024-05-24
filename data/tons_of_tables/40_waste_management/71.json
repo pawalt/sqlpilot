@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_footprint (\n    production_process_id INT PRIMARY KEY,\n    packaging_material VARCHAR(255),\n    carbon_emission FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n    material_id UUID PRIMARY KEY,\n    material_name STRING,\n    carbon_footprint FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_processes (\n    process_id UUID PRIMARY KEY,\n    process_name STRING,\n    process_description STRING,\n    material_id UUID REFERENCES packaging_materials(material_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PackagingMaterials (\n   material_id UUID PRIMARY KEY,\n   material_name STRING,\n   carbon_footprint FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionProcesses (\n   process_id UUID PRIMARY KEY,\n   process_name STRING,\n   process_description TEXT,\n   carbon_emission_rate FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PackagingProcesses (\n   packaging_id UUID PRIMARY KEY,\n   packaging_name STRING,\n   material_id UUID REFERENCES PackagingMaterials(material_id),\n   process_id UUID REFERENCES ProductionProcesses(process_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255),\n  carbon_footprint DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n  process_id INT PRIMARY KEY,\n  process_name VARCHAR(255),\n  emissions_factor DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE production_facilities (\n  facility_id INT PRIMARY KEY,\n  facility_name VARCHAR(255),\n  location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  material_id INT,\n  process_id INT,\n  facility_id INT,\n  production_date DATE,\n  FOREIGN KEY (material_id) REFERENCES packaging_materials(material_id),\n  FOREIGN KEY (process_id) REFERENCES manufacturing_processes(process_id),\n  FOREIGN KEY (facility_id) REFERENCES production_facilities(facility_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Packaging_Companies (\n  company_id INT PRIMARY KEY,\n  company_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Packaging_Materials (\n  material_id INT PRIMARY KEY,\n  material_type VARCHAR(50) NOT NULL,\n  material_source VARCHAR(100) NOT NULL,\n  emissions_factor FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Packaging_Production (\n  production_id INT PRIMARY KEY,\n  company_id INT NOT NULL,\n  material_id INT NOT NULL,\n  production_date DATE NOT NULL,\n  production_quantity INT NOT NULL,\n  FOREIGN KEY (company_id) REFERENCES Packaging_Companies(company_id),\n  FOREIGN KEY (material_id) REFERENCES Packaging_Materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Packaging_Statistics (\n  statistic_id INT PRIMARY KEY,\n  production_id INT NOT NULL,\n  emission_amount FLOAT NOT NULL,\n  measurement_date DATE NOT NULL,\n  FOREIGN KEY (production_id) REFERENCES Packaging_Production(production_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Packaging_Users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  }
+]

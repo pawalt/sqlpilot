@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscriber_location (\n    subscriber_id UUID PRIMARY KEY,\n    email_address VARCHAR(255),\n    timezone VARCHAR(50),\n    latitude DECIMAL,\n    longitude DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n subscriber_id INT PRIMARY KEY,\n subscriber_name VARCHAR(50),\n email_address VARCHAR(100),\n timezone VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_schedule (\n email_id INT PRIMARY KEY,\n subscriber_id INT,\n email_subject VARCHAR(100),\n send_time TIMESTAMP\n FOREIGN KEY(subscriber_id) REFERENCES subscribers(subscriber_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n subscriber_id INT PRIMARY KEY,\n email VARCHAR(255) NOT NULL,\n timezone VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_schedules (\n schedule_id INT PRIMARY KEY,\n subscriber_id INT NOT NULL,\n send_time TIMESTAMP NOT NULL,\n FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE time_zones (\n timezone_id INT PRIMARY KEY,\n timezone_name VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n    subscriber_id INT PRIMARY KEY,\n    email_address VARCHAR(255) NOT NULL,\n    timezone VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emails (\n    email_id INT PRIMARY KEY,\n    subject VARCHAR(255) NOT NULL,\n    content TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE time_zones (\n    timezone_id INT PRIMARY KEY,\n    time_zone_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE optimal_send_times (\n    time_id INT PRIMARY KEY,\n    time_slot TIME NOT NULL,\n    timezone_id INT NOT NULL,\n    FOREIGN KEY (timezone_id) REFERENCES time_zones (timezone_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n    subscriber_id INT PRIMARY KEY,\n    email VARCHAR(255),\n    location VARCHAR(100),\n    timezone VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_schedules (\n    schedule_id INT PRIMARY KEY,\n    subscriber_id INT,\n    send_time TIMESTAMP,\n    FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE time_zones (\n    timezone_id INT PRIMARY KEY,\n    timezone_name VARCHAR(50),\n    offset_hours INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE optimal_send_times (\n    time_zone_id INT,\n    day_of_week VARCHAR(15),\n    optimal_send_time TIME,\n    FOREIGN KEY (time_zone_id) REFERENCES time_zones(timezone_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    log_id INT PRIMARY KEY,\n    subscriber_id INT,\n    send_time TIMESTAMP,\n    delivery_status VARCHAR(20),\n    FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id)\n);\n"
+      }
+    ]
+  }
+]

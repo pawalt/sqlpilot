@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_audits (\n  audit_id INT PRIMARY KEY,\n  audit_type VARCHAR(255) NOT NULL,\n  audit_date DATE NOT NULL,\n  inspector_name VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "audit_details"
+      },
+      {
+        "table_schema": "inspection_details"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_audits (\n    audit_id INT NOT NULL,\n    audit_date DATE NOT NULL,\n    auditor_name VARCHAR(50) NOT NULL,\n    audit_type VARCHAR(50) NOT NULL,\n    audit_score FLOAT NOT NULL,\n    PRIMARY KEY (audit_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_details (\n    inspection_id INT NOT NULL,\n    inspection_date DATE NOT NULL,\n    inspector_name VARCHAR(50) NOT NULL,\n    inspection_type VARCHAR(50) NOT NULL,\n    inspection_result TEXT NOT NULL,\n    PRIMARY KEY (inspection_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_monitoring (\n    monitoring_id INT NOT NULL,\n    monitoring_date DATE NOT NULL,\n    monitor_name VARCHAR(50) NOT NULL,\n    issue_found TEXT NOT NULL,\n    action_taken TEXT NOT NULL,\n    PRIMARY KEY (monitoring_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Audit (\n    audit_id INT PRIMARY KEY,\n    audit_date DATE,\n    auditor_name VARCHAR(50),\n    audit_type VARCHAR(50),\n    audit_result VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspection (\n    inspection_id INT PRIMARY KEY,\n    inspection_date DATE,\n    inspector_name VARCHAR(50),\n    inspection_type VARCHAR(50),\n    inspection_result VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AuditDetails (\n    audit_id INT,\n    audit_question VARCHAR(100),\n    audit_answer VARCHAR(100),\n    FOREIGN KEY (audit_id) REFERENCES Audit(audit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InspectionDetails (\n    inspection_id INT,\n    inspection_question VARCHAR(100),\n    inspection_answer VARCHAR(100),\n    FOREIGN KEY (inspection_id) REFERENCES Inspection(inspection_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audit_details (\n    audit_id UUID PRIMARY KEY,\n    audit_name VARCHAR(255) NOT NULL,\n    audit_date TIMESTAMP NOT NULL,\n    auditor_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_findings (\n    finding_id UUID PRIMARY KEY,\n    audit_id UUID REFERENCES audit_details(audit_id),\n    finding_text TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_details (\n    inspection_id UUID PRIMARY KEY,\n    inspection_type VARCHAR(100) NOT NULL,\n    inspection_date TIMESTAMP NOT NULL,\n    inspector_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_findings (\n    finding_id UUID PRIMARY KEY,\n    inspection_id UUID REFERENCES inspection_details(inspection_id),\n    finding_text TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_stats (\n    stat_id UUID PRIMARY KEY,\n    audit_id UUID REFERENCES audit_details(audit_id),\n    inspection_id UUID REFERENCES inspection_details(inspection_id),\n    compliance_score INT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  password VARCHAR(100) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  full_name VARCHAR(100),\n  email VARCHAR(100) UNIQUE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    access_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    smart_lock_id INT NOT NULL,\n    access_level VARCHAR(20) NOT NULL,\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),\n    CONSTRAINT fk_smart_lock_id FOREIGN KEY (smart_lock_id) REFERENCES smart_locks(smart_lock_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_locks (\n    smart_lock_id INT PRIMARY KEY,\n    lock_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserProfiles (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  phone_number VARCHAR(15),\n  date_created TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Locks (\n  lock_id UUID PRIMARY KEY,\n  lock_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  is_locked BOOLEAN NOT NULL DEFAULT TRUE,\n  date_installed DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControl (\n  access_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES UserProfiles(user_id),\n  lock_id UUID REFERENCES Locks(lock_id),\n  level ENUM('admin', 'user') NOT NULL,\n  date_granted TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SecuritySystems (\n  system_id UUID PRIMARY KEY,\n  system_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  status ENUM('active', 'inactive') NOT NULL,\n  date_installed DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    password VARCHAR(100),\n    role VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    profile_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    full_name VARCHAR(100),\n    age INT,\n    address VARCHAR(150)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_locks (\n    lock_id INT PRIMARY KEY,\n    lock_name VARCHAR(50),\n    location VARCHAR(100),\n    is_locked BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    lock_id INT REFERENCES smart_locks(lock_id),\n    access_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(20),\n    description VARCHAR(200)\n);"
+      }
+    ]
+  }
+]

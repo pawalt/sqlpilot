@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EquipmentSpecifications (\n\tequipment_id INT PRIMARY KEY,\n\tequipment_name VARCHAR(50) NOT NULL,\n\tequipment_type VARCHAR(50),\n\tequipment_brand VARCHAR(50),\n\tequipment_model VARCHAR(50),\n\tequipment_description TEXT,\n\toperation_manual TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EquipmentSpecifications (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(255),\n  equipment_type VARCHAR(100),\n  description TEXT,\n  manual_url VARCHAR(500)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OperationManuals (\n  manual_id INT PRIMARY KEY,\n  equipment_id INT,\n  manual_text TEXT,\n  CONSTRAINT fk_equipment\n    FOREIGN KEY (equipment_id)\n    REFERENCES EquipmentSpecifications(equipment_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EquipmentSpecifications (\n  id SERIAL PRIMARY KEY,\n  equipment_name VARCHAR(255) NOT NULL,\n  model_number VARCHAR(50),\n  brand VARCHAR(50),\n  year_of_manufacture INT,\n  specification_text TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OperationManuals (\n  id SERIAL PRIMARY KEY,\n  equipment_id INT,\n  manual_title VARCHAR(255) NOT NULL,\n  manual_text TEXT,\n  FOREIGN KEY (equipment_id) REFERENCES EquipmentSpecifications(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingSessions (\n  id SERIAL PRIMARY KEY,\n  session_date DATE,\n  session_duration INT,\n  trainer_name VARCHAR(100),\n  equipment_id INT,\n  FOREIGN KEY (equipment_id) REFERENCES EquipmentSpecifications(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EquipmentSpecifications (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(50),\n    equipment_type VARCHAR(50),\n    specifications TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OperationManuals (\n    manual_id INT PRIMARY KEY,\n    equipment_id INT,\n    manual_title VARCHAR(100),\n    manual_content TEXT,\n    FOREIGN KEY (equipment_id) REFERENCES EquipmentSpecifications(equipment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ARTrainingSessions (\n    session_id INT PRIMARY KEY,\n    session_date DATE,\n    equipment_id INT,\n    user_id INT,\n    FOREIGN KEY (equipment_id) REFERENCES EquipmentSpecifications(equipment_id),\n    FOREIGN KEY (user_id) REFERENCES Users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50),\n    user_role VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EquipmentSpecifications (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(255),\n  manufacturer VARCHAR(255),\n  model_number VARCHAR(50),\n  specifications TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE OperationManuals (\n  manual_id INT PRIMARY KEY,\n  equipment_id INT,\n  manual_title VARCHAR(255),\n  manual_content TEXT,\n  FOREIGN KEY (equipment_id) REFERENCES EquipmentSpecifications(equipment_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ARTrainingSessions (\n  session_id INT PRIMARY KEY,\n  session_date DATE,\n  equipment_id INT,\n  manual_id INT,\n  duration_hours DECIMAL(5,2),\n  FOREIGN KEY (equipment_id) REFERENCES EquipmentSpecifications(equipment_id),\n  FOREIGN KEY (manual_id) REFERENCES OperationManuals(manual_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  email VARCHAR(100),\n  password VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE UserSessions (\n  user_id INT,\n  session_id INT,\n  PRIMARY KEY (user_id, session_id),\n  FOREIGN KEY (user_id) REFERENCES Users(user_id),\n  FOREIGN KEY (session_id) REFERENCES ARTrainingSessions(session_id)\n)"
+      }
+    ]
+  }
+]

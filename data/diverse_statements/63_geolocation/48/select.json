@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT id, notification_name, notification_message, geofence_polygon FROM geofencing_notifications;",
+      "SELECT notification_message, notification_name, geofence_polygon, id FROM geofencing_notifications;",
+      "SELECT notification_name, id, geofence_polygon FROM geofencing_notifications;",
+      "SELECT geofence_polygon, notification_name FROM geofencing_notifications;",
+      "SELECT notification_name, geofence_polygon, id, notification_message FROM geofencing_notifications;",
+      "SELECT notification_name, notification_message FROM geofencing_notifications WHERE id = '12345678-1234-5678-1234-567812345678' LIMIT 1;",
+      "SELECT * FROM geofencing_notifications ORDER BY notification_name DESC, id;",
+      "SELECT notification_name, ST_AsText(geofence_polygon) FROM geofencing_notifications WHERE ST_Area(geofence_polygon) > 1000;",
+      "SELECT notification_name, notification_message FROM geofencing_notifications WHERE notification_name ILIKE '%important%' AND geofence_polygon = 'POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))';",
+      "SELECT notification_name, ST_X(ST_Centroid(geofence_polygon)) AS centroid_x, ST_Y(ST_Centroid(geofence_polygon)) AS centroid_y FROM geofencing_notifications WHERE ST_Area(geofence_polygon) > 1000 ORDER BY centroid_x, centroid_y DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT geofence_id, geofence_name, geofence_area, alert_radius FROM geofence_locations;",
+      "SELECT * FROM geofence_locations ORDER BY geofence_id DESC;",
+      "SELECT geofence_name, alert_radius FROM geofence_locations WHERE alert_radius > 50;",
+      "SELECT user_name, user_location FROM user_locations WHERE last_updated >= '2022-01-01';",
+      "SELECT * FROM user_locations ORDER BY user_id;",
+      "SELECT geofence_id, geofence_name FROM geofence_locations WHERE alert_radius > 50 ORDER BY geofence_id DESC;",
+      "SELECT * FROM geofence_locations WHERE alert_radius < 30 ORDER BY geofence_name ASC;",
+      "SELECT user_name, last_updated FROM user_locations WHERE user_id = 1001;",
+      "SELECT user_name, user_location.STAsText() AS location_text FROM user_locations WHERE ST_Distance(user_location, 'POINT(10 20)') < 1000;",
+      "SELECT geofence_name, ST_AREA(geofence_area) AS area_size FROM geofence_locations WHERE ST_DWithin(geofence_area, 'POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))', 5)"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM geofences;",
+      "SELECT id, name FROM locations ORDER BY id DESC;",
+      "SELECT name, ST_AsText(boundary) FROM geofences WHERE id = 1;",
+      "SELECT * FROM locations WHERE name = 'Home';",
+      "SELECT id, message FROM notifications WHERE location_id = 3 ORDER BY id ASC;",
+      "SELECT * FROM geofences WHERE id = 1;",
+      "SELECT name, boundary FROM geofences ORDER BY name DESC;",
+      "SELECT name AS geofence_name, COUNT(id) AS geofence_count FROM geofences GROUP BY name;",
+      "SELECT l.name AS location_name, n.message AS notification_message FROM locations l INNER JOIN notifications n ON l.id = n.location_id;",
+      "SELECT id, ST_AsText(coordinates) FROM locations WHERE ST_DWithin(coordinates, 'POINT(-74.0060 40.7128)', 1000);"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM geofence_areas;",
+      "SELECT id, name, created_at FROM geofence_areas WHERE id = 1;",
+      "SELECT name, area FROM geofence_areas WHERE created_at > '2022-01-01';",
+      "SELECT username, email FROM users WHERE location IS NOT NULL;",
+      "SELECT * FROM notifications WHERE triggered_at < '2022-06-01';",
+      "SELECT * FROM geofence_areas WHERE id = 1;",
+      "SELECT name, area FROM geofence_areas WHERE name LIKE 'Central%';",
+      "SELECT id, name, created_at FROM geofence_areas ORDER BY created_at DESC;",
+      "SELECT id, name, area FROM geofence_areas WHERE ST_Distance(area, 'POINT(-74.0059 40.7128)'::geography) < 10000;",
+      "SELECT COUNT(id) AS total_geofence_areas, MAX(created_at) AS latest_created FROM geofence_areas;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM geofence_areas ORDER BY area_name DESC;",
+      "SELECT id, area_name FROM geofence_areas WHERE id = 3;",
+      "SELECT user_id, username FROM users WHERE username LIKE 'A%';",
+      "SELECT * FROM user_locations ORDER BY timestamp DESC LIMIT 5;",
+      "SELECT user_id, message, timestamp FROM notifications ORDER BY timestamp ASC;",
+      "SELECT * FROM geofence_areas;",
+      "SELECT area_name, ST_AsText(geo_polygon) FROM geofence_areas WHERE id = 1;",
+      "SELECT user_id, username, email FROM users WHERE user_id = 5;",
+      "SELECT notification_id, message, notification_type, timestamp FROM notifications ORDER BY timestamp DESC;",
+      "SELECT location_id, user_id, ST_AsText(location), timestamp FROM user_locations WHERE timestamp BETWEEN '2022-01-01 00:00:00' AND '2022-02-01 00:00:00';"
+    ]
+  }
+]

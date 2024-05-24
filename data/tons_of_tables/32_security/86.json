@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE monitoring_tools (\n    tool_id INT PRIMARY KEY,\n    tool_name VARCHAR(50),\n    tool_description TEXT,\n    last_update TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_vulnerabilities (id INT PRIMARY KEY,\n\tvulnerability_name VARCHAR,\n\tdescription TEXT,\n\tdetection_timestamp TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE monitoring_tools (id INT PRIMARY KEY,\n\ttool_name VARCHAR,\n\tvendor_name VARCHAR,\n\tlicense_key VARCHAR);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_alerts (\n    alert_id INT PRIMARY KEY,\n    alert_message TEXT,\n    alert_type VARCHAR(50),\n    alert_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_scans (\n    scan_id INT PRIMARY KEY,\n    scan_date DATE,\n    scan_results JSON,\n    scan_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE integration_tools (\n    tool_id INT PRIMARY KEY,\n    tool_name VARCHAR(50),\n    tool_version VARCHAR(20),\n    tool_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tools (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    description TEXT,\n    version FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE monitoring (\n    id INT PRIMARY KEY,\n    tool_id INT,\n    FOREIGN KEY (tool_id) REFERENCES tools(id),\n    status VARCHAR(20) NOT NULL,\n    last_check TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    id INT PRIMARY KEY,\n    description TEXT NOT NULL,\n    severity VARCHAR(10) NOT NULL,\n    alert_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE detection_logs (\n    id INT PRIMARY KEY,\n    monitored_id INT,\n    FOREIGN KEY (monitored_id) REFERENCES monitoring(id),\n    timestamp TIMESTAMP,\n    message TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tools (\n   tool_id INT PRIMARY KEY,\n   tool_name VARCHAR(50) NOT NULL,\n   tool_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE monitoring (\n   monitoring_id INT PRIMARY KEY,\n   tool_id INT,\n   monitoring_tool VARCHAR(50) NOT NULL,\n   monitoring_interval INT,\n   FOREIGN KEY (tool_id) REFERENCES tools(tool_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n   vulnerability_id INT PRIMARY KEY,\n   vulnerability_description TEXT NOT NULL,\n   severity ENUM('Low', 'Medium', 'High')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE detection (\n   detection_id INT PRIMARY KEY,\n   monitoring_id INT,\n   vulnerability_id INT,\n   detection_time TIMESTAMP,\n   FOREIGN KEY (monitoring_id) REFERENCES monitoring(monitoring_id),\n   FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(vulnerability_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n   alert_id INT PRIMARY KEY,\n   detection_id INT,\n   alert_message TEXT NOT NULL,\n   alert_time TIMESTAMP,\n   FOREIGN KEY (detection_id) REFERENCES detection(detection_id)\n);\n"
+      }
+    ]
+  }
+]

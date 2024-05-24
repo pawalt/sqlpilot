@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE favorite_spots (\n\tspot_id INT PRIMARY KEY,\n\tspot_name VARCHAR(255) NOT NULL,\n\tspot_category VARCHAR(50),\n\tspot_type VARCHAR(50) CHECK (spot_type IN ('Cafe', 'Co-working Space', 'Internet Speed Test')), \n\taverage_rating FLOAT,\n\tinternet_speed_Mbps INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE work_cafes (\n  cafe_id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  wifi_speed INT,\n  power_outlets BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE co_working_spaces (\n  space_id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  amenities VARCHAR(255),\n  membership_fee DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE remote_work_cafes (\n  cafe_id INT PRIMARY KEY,\n  cafe_name VARCHAR(50),\n  location VARCHAR(100),\n  wifi_speed INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE co_working_spaces (\n  space_id INT PRIMARY KEY,\n  space_name VARCHAR(50),\n  location VARCHAR(100),\n  amenities VARCHAR(200)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE internet_speed_tests (\n  test_id INT PRIMARY KEY,\n  location VARCHAR(100),\n  speed_download FLOAT,\n  speed_upload FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE favorite_cafes (\n    cafe_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    wifi_speed INT,\n    coffee_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE coworking_spaces (\n    space_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    amenities TEXT,\n    daily_rate DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE speed_test_results (\n    test_id INT PRIMARY KEY,\n    date TIMESTAMP NOT NULL,\n    download_speed INT,\n    upload_speed INT,\n    ping_time INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE nomads (\n    nomad_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    favorite_cafe_id INT REFERENCES favorite_cafes(cafe_id),\n    favorite_space_id INT REFERENCES coworking_spaces(space_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE remote_work_cafes (\n  cafe_id UUID PRIMARY KEY,\n  cafe_name VARCHAR(100),\n  location VARCHAR(200),\n  wifi_speed_mbps INTEGER,\n  rating FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE co_working_spaces (\n  space_id UUID PRIMARY KEY,\n  space_name VARCHAR(100),\n  location VARCHAR(200),\n  amenities VARCHAR(500),\n  rating FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE internet_speed_test_results (\n  test_id UUID PRIMARY KEY,\n  cafe_id UUID REFERENCES remote_work_cafes(cafe_id),\n  download_speed_mbps INTEGER,\n  upload_speed_mbps INTEGER,\n  test_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE digital_nomads (\n  nomad_id UUID PRIMARY KEY,\n  nomad_name VARCHAR(100),\n  email VARCHAR(200),\n  location VARCHAR(200),\n  favorite_cafe_id UUID REFERENCES remote_work_cafes(cafe_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cafe_reviews (\n  review_id UUID PRIMARY KEY,\n  cafe_id UUID REFERENCES remote_work_cafes(cafe_id),\n  nomad_id UUID REFERENCES digital_nomads(nomad_id),\n  review_text TEXT,\n  rating FLOAT\n)"
+      }
+    ]
+  }
+]

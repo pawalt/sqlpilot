@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims_processing (\n  claim_id INT PRIMARY KEY,\n  claim_status VARCHAR(50),\n  claim_amount DECIMAL(10,2),\n  update_timestamp TIMESTAMP,\n  payout_amount DECIMAL(10,2),\n  report_generated BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims ( \n  claim_id INT PRIMARY KEY, \n  claim_status TEXT, \n  claim_amount DECIMAL \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE payouts ( \n  payout_id INT PRIMARY KEY, \n  claim_id INT REFERENCES claims(claim_id), \n  payout_amount DECIMAL, \n  payout_status TEXT \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claim_status (\n  claim_id INT PRIMARY KEY,\n  status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_payout (\n  claim_id INT PRIMARY KEY,\n  payout_amount DECIMAL(10, 2) NOT NULL,\n  payout_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_reports (\n  report_id INT PRIMARY KEY,\n  report_name VARCHAR(100) NOT NULL,\n  report_content TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id SERIAL PRIMARY KEY,\n    claim_status VARCHAR(50),\n    policy_holder_name VARCHAR(100),\n    policy_number VARCHAR(20),\n    claim_amount DECIMAL(10, 2),\n    payout_amount DECIMAL(10, 2)\n);\n\nCREATE TABLE claim_updates (\n    update_id SERIAL PRIMARY KEY,\n    claim_id INTEGER REFERENCES claims(claim_id),\n    update_timestamp TIMESTAMP,\n    updated_by VARCHAR(100),\n    new_claim_status VARCHAR(50)\n);\n\nCREATE TABLE payouts (\n    payout_id SERIAL PRIMARY KEY,\n    claim_id INTEGER REFERENCES claims(claim_id),\n    payout_amount DECIMAL(10, 2),\n    payout_date DATE\n);\n\nCREATE TABLE reports (\n    report_id SERIAL PRIMARY KEY,\n    report_date DATE,\n    total_claims INTEGER,\n    total_payouts DECIMAL(10, 2),\n    total_processed_claims INTEGER\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id INT PRIMARY KEY,\n    claim_status VARCHAR(20) NOT NULL,\n    claim_amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_updates (\n    update_id INT PRIMARY KEY,\n    claim_id INT NOT NULL,\n    update_message VARCHAR(100) NOT NULL,\n    update_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payouts (\n    payout_id INT PRIMARY KEY,\n    claim_id INT NOT NULL,\n    payout_amount DECIMAL(10, 2) NOT NULL,\n    payout_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n    report_id INT PRIMARY KEY,\n    claim_id INT NOT NULL,\n    report_type VARCHAR(50) NOT NULL,\n    report_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_triggers (\n    trigger_id INT PRIMARY KEY,\n    trigger_name VARCHAR(50) NOT NULL,\n    trigger_event VARCHAR(20) NOT NULL,\n    trigger_action VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  }
+]

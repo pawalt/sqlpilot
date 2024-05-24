@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE land_parcel_ownership (\n  parcel_id UUID PRIMARY KEY,\n  owner_name VARCHAR(255),\n  owner_address VARCHAR(255),\n  property_value DECIMAL(10,2),\n  last_tax_assessment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LandParcelOwners (\n    parcel_id UUID PRIMARY KEY,\n    owner_name VARCHAR(255),\n    owner_address TEXT,\n    parcel_size FLOAT\n);\n\nCREATE TABLE PropertyAssessments (\n    assessment_id UUID PRIMARY KEY,\n    parcel_id UUID REFERENCES LandParcelOwners(parcel_id),\n    assessed_value DECIMAL,\n    assessment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LandParcel (parcel_id INT PRIMARY KEY,\n  owner_name VARCHAR(255),\n  parcel_area DECIMAL(10, 2))\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OwnershipHistory (history_id INT PRIMARY KEY,\n  parcel_id INT,\n  owner_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  FOREIGN KEY (parcel_id) REFERENCES LandParcel(parcel_id))\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PropertyTaxAssessment (assessment_id INT PRIMARY KEY,\n  parcel_id INT,\n  assessed_value DECIMAL(12, 2),\n  assessment_date DATE,\n  FOREIGN KEY (parcel_id) REFERENCES LandParcel(parcel_id))\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LandParcel (id INT PRIMARY KEY,\nparcel_number VARCHAR(255) NOT NULL,\nowner_name VARCHAR(255) NOT NULL,\nowner_address VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PropertyTaxAssessment (id INT PRIMARY KEY,\nparcel_id INT NOT NULL,\nassessed_value DECIMAL(10, 2) NOT NULL,\nassessment_date DATE NOT NULL,\nFOREIGN KEY (parcel_id) REFERENCES LandParcel(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PlanningDecisions (id INT PRIMARY KEY,\nparcel_id INT NOT NULL,\ndecision_description TEXT NOT NULL,\ndecision_date DATE NOT NULL,\nFOREIGN KEY (parcel_id) REFERENCES LandParcel(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OwnershipHistory (id INT PRIMARY KEY,\nparcel_id INT NOT NULL,\nownership_start_date DATE NOT NULL,\nownership_end_date DATE,\nprevious_owner_name VARCHAR(255),\nFOREIGN KEY (parcel_id) REFERENCES LandParcel(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LandOwners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(255),\n    owner_address VARCHAR(255),\n    property_id INT,\n    purchase_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Properties (\n    property_id INT PRIMARY KEY,\n    property_address VARCHAR(255),\n    property_size FLOAT,\n    owner_id INT,\n    property_value DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Taxes (\n    tax_id INT PRIMARY KEY,\n    property_id INT,\n    tax_amount DECIMAL(10, 2),\n    tax_year INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Assessments (\n    assessment_id INT PRIMARY KEY,\n    property_id INT,\n    assessment_date DATE,\n    assessment_value DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PlanningDecisions (\n    decision_id INT PRIMARY KEY,\n    property_id INT,\n    decision_date DATE,\n    decision_details TEXT\n);"
+      }
+    ]
+  }
+]

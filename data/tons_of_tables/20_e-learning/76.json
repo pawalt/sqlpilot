@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE curriculum_content (\n  content_id INT PRIMARY KEY,\n  content_title VARCHAR(255),\n  content_description TEXT,\n  content_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE curriculum_content (\n    content_id UUID PRIMARY KEY,\n    content_name VARCHAR(255) NOT NULL,\n    content_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lesson_plans (\n    plan_id UUID PRIMARY KEY,\n    plan_title VARCHAR(255) NOT NULL,\n    plan_description TEXT,\n    plan_content_id UUID,\n    FOREIGN KEY (plan_content_id) REFERENCES curriculum_content(content_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE curriculum_content (\n  content_id INT PRIMARY KEY,\n  content_title VARCHAR(255),\n  content_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lesson_plans (\n  plan_id INT PRIMARY KEY,\n  plan_title VARCHAR(255),\n  plan_description TEXT,\n  content_id INT,\n  FOREIGN KEY (content_id) REFERENCES curriculum_content(content_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assessment_data (\n  assessment_id INT PRIMARY KEY,\n  assessment_title VARCHAR(255),\n  assessment_date DATE,\n  plan_id INT,\n  FOREIGN KEY (plan_id) REFERENCES lesson_plans(plan_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE curriculum_content (\n  content_id SERIAL PRIMARY KEY,\n  content_title VARCHAR(255) NOT NULL,\n  content_description TEXT,\n  content_type VARCHAR(50),\n  created_at TIMESTAMPTZ DEFAULT NOW()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lesson_plans (\n  plan_id SERIAL PRIMARY KEY,\n  plan_name VARCHAR(255) NOT NULL,\n  plan_description TEXT,\n  plan_content_id INT REFERENCES curriculum_content(content_id),\n  plan_created_at TIMESTAMPTZ DEFAULT NOW()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assessment_data (\n  assessment_id SERIAL PRIMARY KEY,\n  assessed_plan_id INT REFERENCES lesson_plans(plan_id),\n  assessment_score DECIMAL,\n  assessment_date DATE,\n  created_at TIMESTAMPTZ DEFAULT NOW()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE educational_programs (\n  program_id SERIAL PRIMARY KEY,\n  program_name VARCHAR(255) NOT NULL,\n  program_description TEXT,\n  program_start_date DATE,\n  program_end_date DATE,\n  created_at TIMESTAMPTZ DEFAULT NOW()\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE curriculum (\n  curriculum_id UUID PRIMARY KEY,\n  curriculum_name VARCHAR(255) NOT NULL,\n  curriculum_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lesson_plans (\n  lesson_plan_id UUID PRIMARY KEY,\n  lesson_plan_title VARCHAR(255) NOT NULL,\n  lesson_plan_description TEXT,\n  curriculum_id UUID REFERENCES curriculum(curriculum_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assessments (\n  assessment_id UUID PRIMARY KEY,\n  assessment_title VARCHAR(255) NOT NULL,\n  assessment_description TEXT,\n  lesson_plan_id UUID REFERENCES lesson_plans(lesson_plan_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE students (\n  student_id UUID PRIMARY KEY,\n  student_name VARCHAR(255) NOT NULL,\n  student_grade VARCHAR(10),\n  lesson_plan_id UUID REFERENCES lesson_plans(lesson_plan_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE teachers (\n  teacher_id UUID PRIMARY KEY,\n  teacher_name VARCHAR(255) NOT NULL,\n  teacher_email VARCHAR(255),\n  curriculum_id UUID REFERENCES curriculum(curriculum_id)\n);\n"
+      }
+    ]
+  }
+]

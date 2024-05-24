@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    encryption_key BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  key_id INT PRIMARY KEY,\n  key_value TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_information (\n  payment_id INT PRIMARY KEY,\n  encrypted_data TEXT,\n  FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(key_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    encryption_key TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE card_info (\n    card_number VARCHAR(16) PRIMARY KEY,\n    name_on_card VARCHAR(100),\n    expiration_date DATE,\n    cvv INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_log (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    action VARCHAR(20),\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id SERIAL PRIMARY KEY,\n    key_name TEXT NOT NULL,\n    key_value TEXT NOT NULL,\n    key_type TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_info (\n    payment_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    card_number TEXT NOT NULL,\n    card_expiry_date TEXT NOT NULL,\n    cvv INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    payment_id INT NOT NULL,\n    amount DECIMAL NOT NULL,\n    currency TEXT NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username TEXT NOT NULL,\n    email TEXT NOT NULL,\n    password TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA,\n    created_at TIMESTAMP,\n    expires_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_information (\n    payment_id SERIAL PRIMARY KEY,\n    card_number VARCHAR(16),\n    cardholder_name VARCHAR(50),\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    amount DECIMAL(10, 2),\n    payment_id INT,\n    transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n    log_id SERIAL PRIMARY KEY,\n    transaction_id INT,\n    log_message TEXT,\n    log_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

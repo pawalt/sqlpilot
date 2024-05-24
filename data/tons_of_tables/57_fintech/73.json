@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE news_data (\n    news_id SERIAL PRIMARY KEY,\n    news_title VARCHAR(255) NOT NULL,\n    news_content TEXT NOT NULL,\n    publish_date TIMESTAMP NOT NULL,\n    sentiment_score REAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE news_articles (\n    article_id INT PRIMARY KEY,\n    headline TEXT,\n    body TEXT,\n    published_date DATE,\n    sentiment_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(50),\n    buy_threshold FLOAT,\n    sell_threshold FLOAT,\n    active BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FinancialMarketNews (\n    news_id SERIAL PRIMARY KEY,\n    news_title TEXT,\n    news_content TEXT,\n    publish_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SentimentAnalysis (\n    analysis_id SERIAL PRIMARY KEY,\n    news_id INT REFERENCES FinancialMarketNews(news_id),\n    sentiment_score FLOAT,\n    sentiment_category TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TradingAlgorithms (\n    algorithm_id SERIAL PRIMARY KEY,\n    algorithm_name TEXT,\n    algorithm_description TEXT,\n    algorithm_type TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE financial_news_data (\n    news_id UUID PRIMARY KEY,\n    news_title TEXT,\n    publication_date TIMESTAMP,\n    sentiment_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_prices (\n    stock_symbol TEXT PRIMARY KEY,\n    company_name TEXT,\n    current_price NUMERIC,\n    change_percent NUMERIC\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_algorithms (\n    algo_id UUID PRIMARY KEY,\n    algo_name TEXT,\n    strategy TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE news_sentiment_analysis (\n    analysis_id UUID PRIMARY KEY,\n    news_id UUID,\n    sentiment_score FLOAT,\n    analysis_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE financial_news (\n    news_id INT PRIMARY KEY,\n    news_title TEXT,\n    news_content TEXT,\n    news_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiments (\n    sentiment_id INT PRIMARY KEY,\n    news_id INT,\n    sentiment_score FLOAT,\n    sentiment_category VARCHAR(50),\n    FOREIGN KEY (news_id) REFERENCES financial_news(news_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(50),\n    algorithm_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_results (\n    result_id INT PRIMARY KEY,\n    algorithm_id INT,\n    evaluation_date DATE,\n    result_score FLOAT,\n    FOREIGN KEY (algorithm_id) REFERENCES trading_algorithms(algorithm_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE market_data (\n    data_id INT PRIMARY KEY,\n    news_id INT,\n    stock_symbol VARCHAR(10),\n    market_price FLOAT,\n    news_published_date DATE,\n    FOREIGN KEY (news_id) REFERENCES financial_news(news_id)\n);\n"
+      }
+    ]
+  }
+]

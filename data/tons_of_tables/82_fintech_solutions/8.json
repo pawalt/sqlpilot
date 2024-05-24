@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_Data (\n    device_id INT,\n    device_name VARCHAR(255),\n    data_type VARCHAR(50),\n    data_value FLOAT,\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_Device_Data (\n  device_id UUID PRIMARY KEY,\n  device_name VARCHAR(50),\n  data_type VARCHAR(20),\n  data_value JSONB,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Blockchain_Data (\n  block_id UUID PRIMARY KEY,\n  device_id UUID,\n  block_data JSONB,\n  timestamp TIMESTAMP,\n  FOREIGN KEY (device_id) REFERENCES IoT_Device_Data(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_Device (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    blockchain_address VARCHAR(100),\n    creation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Device_Data (\n    data_id INT PRIMARY KEY,\n    device_id INT,\n    data_value FLOAT,\n    data_timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES IoT_Device(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Device_Analytics (\n    analytics_id INT PRIMARY KEY,\n    device_id INT,\n    analytics_type VARCHAR(50),\n    analytics_result VARCHAR(100),\n    analysis_date DATE,\n    FOREIGN KEY (device_id) REFERENCES IoT_Device(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_devices (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    blockchain_address VARCHAR(100) NOT NULL,\n    creation_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Device_data (\n    data_id SERIAL PRIMARY KEY,\n    device_id INT REFERENCES IoT_devices(device_id),\n    data_type VARCHAR(50) NOT NULL,\n    data_value TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Device_alerts (\n    alert_id SERIAL PRIMARY KEY,\n    device_id INT REFERENCES IoT_devices(device_id),\n    alert_type VARCHAR(50) NOT NULL,\n    alert_message TEXT NOT NULL,\n    alert_timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Device_analytics (\n    analytics_id SERIAL PRIMARY KEY,\n    device_id INT REFERENCES IoT_devices(device_id),\n    analytics_type VARCHAR(50) NOT NULL,\n    analytics_data JSONB NOT NULL,\n    analytics_timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_data (\n device_id INT PRIMARY KEY,\n device_name VARCHAR(50),\n data_hash VARCHAR(100),\n timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_status (\n status_id INT PRIMARY KEY,\n device_id INT,\n status VARCHAR(20),\n timestamp TIMESTAMP,\n FOREIGN KEY (device_id) REFERENCES device_data(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_data (\n block_id INT PRIMARY KEY,\n device_id INT,\n data_hash VARCHAR(100),\n timestamp TIMESTAMP,\n FOREIGN KEY (device_id) REFERENCES device_data(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE analytics_data (\n analytics_id INT PRIMARY KEY,\n device_id INT,\n data_type VARCHAR(50),\n analytics_result VARCHAR(255),\n timestamp TIMESTAMP,\n FOREIGN KEY (device_id) REFERENCES device_data(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE real_time_data (\n real_time_id INT PRIMARY KEY,\n device_id INT,\n data_value FLOAT,\n timestamp TIMESTAMP,\n FOREIGN KEY (device_id) REFERENCES device_data(device_id)\n);\n"
+      }
+    ]
+  }
+]

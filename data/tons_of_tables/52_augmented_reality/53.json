@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserBehavior ( \n    user_id INT PRIMARY KEY, \n    behavior_type VARCHAR(50), \n    behavior_description TEXT, \n    last_interaction TIMESTAMP \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(100),\n  user_behavior JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE augmented_reality_logs (\n  log_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES user_profiles(user_id),\n  action_taken VARCHAR(100),\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    avatar_url VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behaviors (\n    behavior_id INT PRIMARY KEY,\n    user_id INT,\n    behavior_type VARCHAR(50),\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_experiences (\n    experience_id INT PRIMARY KEY,\n    user_id INT,\n    ar_content_url VARCHAR(255),\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    age INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behavior (\n    user_id UUID,\n    behavior VARCHAR(50),\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_settings (\n    user_id UUID,\n    contact_enabled BOOLEAN,\n    location_enabled BOOLEAN,\n    notification_enabled BOOLEAN,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_experiences (\n    id UUID PRIMARY KEY,\n    user_id UUID,\n    experience_name VARCHAR(100),\n    behavior_trigger VARCHAR(50),\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (     user_id INT PRIMARY KEY,     username VARCHAR(50) NOT NULL,     email VARCHAR(100) NOT NULL,     age INT,     gender VARCHAR(10)     );"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behaviors (     behavior_id INT PRIMARY KEY,     user_id INT,     behavior_type VARCHAR(50),     behavior_timestamp TIMESTAMP,     FOREIGN KEY (user_id) REFERENCES users(user_id)     );"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_devices (     device_id INT PRIMARY KEY,     device_name VARCHAR(50) NOT NULL,     device_type VARCHAR(50),     user_id INT,     FOREIGN KEY (user_id) REFERENCES users(user_id)     );"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_content (     content_id INT PRIMARY KEY,     content_name VARCHAR(100) NOT NULL,     content_type VARCHAR(50),     content_rating INT,     content_owner VARCHAR(50)     );"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (     preference_id INT PRIMARY KEY,     user_id INT,     content_id INT,     preference_level INT,     FOREIGN KEY (user_id) REFERENCES users(user_id),     FOREIGN KEY (content_id) REFERENCES ar_content(content_id)     );"
+      }
+    ]
+  }
+]

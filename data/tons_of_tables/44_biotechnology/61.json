@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DNASequences (\n    sequence_id INT PRIMARY KEY,\n    sequence TEXT NOT NULL,\n    description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n    id UUID PRIMARY KEY,\n    sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_searches (\n    search_id UUID PRIMARY KEY,\n    sequence_id UUID,\n    search_result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DNA_Sequences (\n    id INT PRIMARY KEY,\n    sequence VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sequence_Types (\n    type_id INT PRIMARY KEY,\n    type_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sequence_Records (\n    record_id INT PRIMARY KEY,\n    sequence_id INT NOT NULL,\n    type_id INT NOT NULL,\n    created_on TIMESTAMP NOT NULL,\n    FOREIGN KEY (sequence_id) REFERENCES DNA_Sequences(id),\n    FOREIGN KEY (type_id) REFERENCES Sequence_Types(type_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  id SERIAL PRIMARY KEY,\n  sequence TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username TEXT NOT NULL,\n  email TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id SERIAL PRIMARY KEY,\n  permission_name TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_matches (\n  match_id SERIAL PRIMARY KEY,\n  sequence_id INTEGER REFERENCES dna_sequences(id),\n  user_id INTEGER REFERENCES users(user_id),\n  permission_id INTEGER REFERENCES permissions(permission_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n    id SERIAL PRIMARY KEY,\n    sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genes (\n    id SERIAL PRIMARY KEY,\n    gene_name VARCHAR(255),\n    sequence_id INT,\n    FOREIGN KEY (sequence_id) REFERENCES dna_sequences(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE proteins (\n    id SERIAL PRIMARY KEY,\n    protein_name VARCHAR(255),\n    sequence_id INT,\n    FOREIGN KEY (sequence_id) REFERENCES dna_sequences(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mutations (\n    id SERIAL PRIMARY KEY,\n    gene_id INT,\n    protein_id INT,\n    mutation_type VARCHAR(50),\n    FOREIGN KEY (gene_id) REFERENCES genes(id),\n    FOREIGN KEY (protein_id) REFERENCES proteins(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genomes (\n    id SERIAL PRIMARY KEY,\n    genome_name VARCHAR(255),\n    sequence_id INT,\n    FOREIGN KEY (sequence_id) REFERENCES dna_sequences(id)\n);"
+      }
+    ]
+  }
+]

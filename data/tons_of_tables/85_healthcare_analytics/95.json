@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medication_allergies (\n\tpatient_id INTEGER,\n\tallergy_name VARCHAR(255),\n\tallergy_type VARCHAR(50),\n\trecorded_date DATE,\n\tseverity VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Medications (\n    medication_id INT PRIMARY KEY,\n    medication_name VARCHAR(255),\n    patient_id INT,\n    dosage VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Allergies (\n    allergy_id INT PRIMARY KEY,\n    patient_id INT,\n    allergen_name VARCHAR(255),\n    alert_status BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Medication_Allergies (\n  patient_id INT,\n  medication_name VARCHAR,\n  allergy_type VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR,\n  date_of_birth DATE,\n  address VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (\n  alert_id INT PRIMARY KEY,\n  patient_id INT,\n  alert_message TEXT,\n  alert_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Medications ( \n  medication_id INT PRIMARY KEY, \n  medication_name VARCHAR(50) NOT NULL, \n  dosage VARCHAR(20) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Allergies ( \n  allergy_id INT PRIMARY KEY, \n  allergy_name VARCHAR(50) NOT NULL \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PatientMedicationAllergies ( \n  patient_id INT, \n  medication_id INT, \n  allergy_id INT, \n  PRIMARY KEY (patient_id, medication_id, allergy_id), \n  FOREIGN KEY (medication_id) REFERENCES Medications(medication_id), \n  FOREIGN KEY (allergy_id) REFERENCES Allergies(allergy_id) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts ( \n  alert_id INT PRIMARY KEY, \n  alert_message TEXT NOT NULL, \n  alert_type VARCHAR(20) NOT NULL, \n  patient_id INT NOT NULL, \n  FOREIGN KEY (patient_id) REFERENCES PatientMedicationAllergies(patient_id) \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_info (\n    patient_id INT PRIMARY KEY,\n    first_name VARCHAR,\n    last_name VARCHAR,\n    date_of_birth DATE,\n    medication_allergies VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_list (\n    medication_id INT PRIMARY KEY,\n    medication_name VARCHAR,\n    medication_description VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_allergy (\n    allergy_id INT PRIMARY KEY,\n    patient_id INT,\n    medication_id INT,\n    allergy_description VARCHAR,\n    FOREIGN KEY (patient_id) REFERENCES patient_info(patient_id),\n    FOREIGN KEY (medication_id) REFERENCES medication_list(medication_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE allergy_alert (\n    alert_id INT PRIMARY KEY,\n    patient_id INT,\n    medication_id INT,\n    alert_message VARCHAR,\n    FOREIGN KEY (patient_id) REFERENCES patient_info(patient_id),\n    FOREIGN KEY (medication_id) REFERENCES medication_list(medication_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_log (\n    log_id INT PRIMARY KEY,\n    alert_id INT,\n    alert_date TIMESTAMP,\n    alert_status VARCHAR,\n    FOREIGN KEY (alert_id) REFERENCES allergy_alert(alert_id)\n)"
+      }
+    ]
+  }
+]

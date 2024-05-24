@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id UUID NOT NULL,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    role VARCHAR(50) NOT NULL,\n    PRIMARY KEY (player_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id UUID PRIMARY KEY,\n    username STRING NOT NULL,\n    password STRING NOT NULL,\n    email STRING NOT NULL UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_roles (\n    player_id UUID REFERENCES players(player_id) ON DELETE CASCADE,\n    role STRING NOT NULL,\n    PRIMARY KEY (player_id, role)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id UUID PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_sessions (\n    session_id UUID PRIMARY KEY,\n    player_id UUID REFERENCES players(player_id) ON DELETE CASCADE,\n    session_token VARCHAR(255) NOT NULL,\n    login_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_roles (\n    role_id UUID PRIMARY KEY,\n    player_id UUID REFERENCES players(player_id) ON DELETE CASCADE,\n    role_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n    player_id UUID PRIMARY KEY,\n    full_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    country VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    role_description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_access (\n    player_id UUID,\n    role_id UUID,\n    PRIMARY KEY (player_id, role_id),\n    FOREIGN KEY (player_id) REFERENCES players(player_id),\n    FOREIGN KEY (role_id) REFERENCES access_roles(role_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n  player_id INT PRIMARY KEY,\n  player_name VARCHAR(50) NOT NULL,\n  password_hash VARCHAR(100) NOT NULL,\n  email VARCHAR(100) NOT NULL UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_roles (\n  role_id INT PRIMARY KEY,\n  role_name VARCHAR(50) NOT NULL,\n  player_id INT NOT NULL,\n  FOREIGN KEY (player_id) REFERENCES players(player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_sessions (\n  session_id INT PRIMARY KEY,\n  player_id INT NOT NULL,\n  session_token VARCHAR(100) NOT NULL,\n  session_start_time TIMESTAMP NOT NULL,\n  session_end_time TIMESTAMP,\n  FOREIGN KEY (player_id) REFERENCES players(player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_permissions (\n  permission_id INT PRIMARY KEY,\n  permission_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n  role_id INT NOT NULL,\n  permission_id INT NOT NULL,\n  FOREIGN KEY (role_id) REFERENCES player_roles(role_id),\n  FOREIGN KEY (permission_id) REFERENCES player_permissions(permission_id),\n  PRIMARY KEY (role_id, permission_id)\n);"
+      }
+    ]
+  }
+]

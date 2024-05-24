@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_log (\n  id INT PRIMARY KEY,\n  incident_description TEXT,\n  resolution TEXT,\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_incidents (\n  incident_id UUID PRIMARY KEY,\n  incident_date DATE,\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resolution_log (\n  resolution_id UUID PRIMARY KEY,\n  incident_id UUID,\n  resolution_date DATE,\n  resolution_desc TEXT,\n  resolution_status VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingIncidents (\n  incident_id UUID PRIMARY KEY,\n  incident_date DATE,\n  description TEXT,\n  ship_name VARCHAR(255),\n  resolved BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingResolutions (\n  resolution_id UUID PRIMARY KEY,\n  incident_id UUID REFERENCES ShippingIncidents(incident_id),\n  resolution_date DATE,\n  resolution_details TEXT,\n  resolved_by VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingLogs (\n  log_id UUID PRIMARY KEY,\n  incident_id UUID REFERENCES ShippingIncidents(incident_id),\n  resolution_id UUID REFERENCES ShippingResolutions(resolution_id),\n  log_date TIMESTAMP,\n  log_details TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incident_logs (\n  id UUID PRIMARY KEY,\n  incident_description TEXT,\n  date_occurred TIMESTAMP,\n  resolution TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE shipping_agents (\n  agent_id SERIAL PRIMARY KEY,\n  name TEXT,\n  email TEXT,\n  phone_number TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_categories (\n  category_id SERIAL PRIMARY KEY,\n  category_name TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_assignments (\n  incident_id UUID,\n  agent_id INT,\n  date_assigned TIMESTAMP,\n  FOREIGN KEY (incident_id) REFERENCES incident_logs(id),\n  FOREIGN KEY (agent_id) REFERENCES shipping_agents(agent_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_incidents (\n    incident_id SERIAL PRIMARY KEY,\n    incident_date TIMESTAMP,\n    location VARCHAR(100),\n    description TEXT,\n    resolution VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents_categories (\n    category_id SERIAL PRIMARY KEY,\n    category_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_logs (\n    log_id SERIAL PRIMARY KEY,\n    incident_id INT REFERENCES shipping_incidents(incident_id),\n    log_date TIMESTAMP,\n    log_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n    resolution_id SERIAL PRIMARY KEY,\n    incident_id INT REFERENCES shipping_incidents(incident_id),\n    resolution_date TIMESTAMP,\n    resolution_details TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id SERIAL PRIMARY KEY,\n    employee_name VARCHAR(50),\n    employee_role VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

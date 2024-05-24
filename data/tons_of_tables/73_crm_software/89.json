@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProjectIntegration (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    integration_platform VARCHAR(100),\n    synchronization_status BOOLEAN,\n    data_connector_id INT,\n    data_connector_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProjectManagementTool ( \n    project_id INT PRIMARY KEY, \n    project_name VARCHAR(255), \n    project_description TEXT, \n    project_start_date DATE, \n    project_end_date DATE \n); "
+      },
+      {
+        "table_schema": "CREATE TABLE SyncDatabaseConnector ( \n    connector_id INT PRIMARY KEY, \n    connector_name VARCHAR(255), \n    connector_type ENUM('SQL', 'NoSQL'), \n    last_sync_date TIMESTAMP \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_managers (\n id SERIAL PRIMARY KEY,\n name TEXT,\n email TEXT,\n company TEXT\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE system_connectors (\n id SERIAL PRIMARY KEY,\n name TEXT,\n type TEXT,\n owner TEXT\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE data_synchronization (\n id SERIAL PRIMARY KEY,\n source_system TEXT,\n target_system TEXT,\n sync_type TEXT\n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id UUID PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    priority INT,\n    project_id UUID REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE,\n    role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_assignments (\n    assignment_id UUID PRIMARY KEY,\n    task_id UUID REFERENCES tasks(task_id),\n    user_id UUID REFERENCES users(user_id),\n    assign_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id SERIAL PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    project_description TEXT,\n    project_status VARCHAR(50) DEFAULT 'Active'\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    task_status VARCHAR(50) DEFAULT 'To Do',\n    task_due_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    user_name VARCHAR(255) NOT NULL,\n    user_email VARCHAR(255) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE system_integration (\n    integration_id SERIAL PRIMARY KEY,\n    integration_name VARCHAR(255) NOT NULL,\n    integration_description TEXT,\n    integration_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE synchronization_logs (\n    log_id SERIAL PRIMARY KEY,\n    integration_id INT NOT NULL,\n    log_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    log_message TEXT\n);\n"
+      }
+    ]
+  }
+]

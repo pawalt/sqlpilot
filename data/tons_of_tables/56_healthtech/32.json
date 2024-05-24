@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n\tdevice_id INT NOT NULL,\n\tlog_timestamp TIMESTAMP NOT NULL,\n\tmaintenance_type VARCHAR(255) NOT NULL,\n\tmaintenance_description TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    log_description TEXT,\n    maintenance_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedules (\n    schedule_id INT PRIMARY KEY,\n    device_id INT,\n    maintenance_type TEXT,\n    frequency INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DeviceMaintenanceLogs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    maintenance_date DATE,\n    maintenance_description VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceSchedules (\n    schedule_id INT PRIMARY KEY,\n    device_id INT,\n    scheduled_date DATE,\n    scheduled_maintenance_type VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(100),\n    device_type VARCHAR(100),\n    last_maintenance_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Device (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255) NOT NULL,\n    maintenance_schedule VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLog (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    log_date DATE NOT NULL,\n    service_type VARCHAR(50) NOT NULL,\n    technician_name VARCHAR(100) NOT NULL,\n    CONSTRAINT fk_device_id FOREIGN KEY (device_id) REFERENCES Device(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ServiceRecord (\n    record_id INT PRIMARY KEY,\n    log_id INT,\n    service_date DATE NOT NULL,\n    service_details TEXT,\n    CONSTRAINT fk_log_id FOREIGN KEY (log_id) REFERENCES MaintenanceLog(log_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Technician (\n    technician_id INT PRIMARY KEY,\n    technician_name VARCHAR(100) NOT NULL,\n    specialization VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Device (\n  device_id UUID PRIMARY KEY,\n  device_name VARCHAR(255) NOT NULL,\n  device_type VARCHAR(100) NOT NULL,\n  device_location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLog (\n  log_id UUID PRIMARY KEY,\n  device_id UUID REFERENCES Device(device_id),\n  maintenance_date DATE NOT NULL,\n  maintenance_description TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceSchedule (\n  schedule_id UUID PRIMARY KEY,\n  device_id UUID REFERENCES Device(device_id),\n  maintenance_frequency VARCHAR(50) NOT NULL,\n  last_maintenance_date DATE,\n  next_maintenance_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Technician (\n  technician_id UUID PRIMARY KEY,\n  technician_name VARCHAR(255) NOT NULL,\n  technician_experience_years INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceAssignment (\n  assignment_id UUID PRIMARY KEY,\n  technician_id UUID REFERENCES Technician(technician_id),\n  schedule_id UUID REFERENCES MaintenanceSchedule(schedule_id)\n);\n"
+      }
+    ]
+  }
+]

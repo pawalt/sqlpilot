@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE printing_jobs (\n    job_id INT PRIMARY KEY,\n    job_name VARCHAR(255),\n    job_priority INT,\n    job_status VARCHAR(50),\n    assigned_resource VARCHAR(100),\n    scheduled_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PrintingJobs (\n    job_id INT PRIMARY KEY,\n    job_name VARCHAR(255),\n    priority INT,\n    deadline TIMESTAMP,\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255),\n    status VARCHAR(50),\n    availability BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PrintingJobs (\n  job_id INT PRIMARY KEY,\n  job_name VARCHAR(50) NOT NULL,\n  priority INT NOT NULL,\n  status ENUM('pending', 'printing', 'completed') NOT NULL,\n  resources_required INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Resources (\n  resource_id INT PRIMARY KEY,\n  resource_name VARCHAR(50) NOT NULL,\n  availability ENUM('available', 'busy') NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE JobSchedule (\n  job_id INT NOT NULL,\n  resource_id INT NOT NULL,\n  start_time TIMESTAMP NOT NULL,\n  end_time TIMESTAMP NOT NULL,\n  FOREIGN KEY (job_id) REFERENCES PrintingJobs(job_id),\n  FOREIGN KEY (resource_id) REFERENCES Resources(resource_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PrintingJobs (\n    job_id SERIAL PRIMARY KEY,\n    job_name VARCHAR(255) NOT NULL,\n    priority INT NOT NULL,\n    status VARCHAR(50) DEFAULT 'Pending'\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Resources (\n    resource_id SERIAL PRIMARY KEY,\n    resource_name VARCHAR(100) NOT NULL,\n    available_quantity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE JobSchedule (\n    schedule_id SERIAL PRIMARY KEY,\n    job_id INT REFERENCES PrintingJobs(job_id),\n    resource_id INT REFERENCES Resources(resource_id),\n    scheduled_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE JobHistory (\n    history_id SERIAL PRIMARY KEY,\n    job_id INT REFERENCES PrintingJobs(job_id),\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE printing_jobs (\n    job_id INT PRIMARY KEY,\n    job_name VARCHAR(255),\n    priority INT,\n    status VARCHAR(50),\n    resources_needed INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255),\n    status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE printers (\n    printer_id INT PRIMARY KEY,\n    printer_name VARCHAR(255),\n    status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE print_queue (\n    queue_id INT PRIMARY KEY,\n    job_id INT,\n    printer_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE printer_logs (\n    log_id INT PRIMARY KEY,\n    printer_id INT,\n    log_message TEXT,\n    log_time TIMESTAMP\n)"
+      }
+    ]
+  }
+]

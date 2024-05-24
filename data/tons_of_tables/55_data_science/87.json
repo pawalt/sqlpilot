@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE linguistic_corpus (\n  corpus_id INT PRIMARY KEY,\n  corpus_name VARCHAR(255),\n  language VARCHAR(50),\n  date_created DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Corpus (\n    corpus_id INT PRIMARY KEY,\n    corpus_name VARCHAR(255) NOT NULL,\n    language VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE Document (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    corpus_id INT,\n    FOREIGN KEY (corpus_id) REFERENCES Corpus(corpus_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Corpus (\n    corpus_id INT PRIMARY KEY,\n    corpus_name VARCHAR,\n    language VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Document (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR,\n    corpus_id INT,\n    FOREIGN KEY (corpus_id) REFERENCES Corpus(corpus_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sentence (\n    sentence_id INT PRIMARY KEY,\n    sentence_text TEXT,\n    document_id INT,\n    FOREIGN KEY (document_id) REFERENCES Document(document_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE linguistic_corpus (\n    id SERIAL PRIMARY KEY,\n    text TEXT,\n    language TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authors (\n    id SERIAL PRIMARY KEY,\n    name TEXT,\n    affiliation TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE publications (\n    id SERIAL PRIMARY KEY,\n    title TEXT,\n    publication_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n    id SERIAL PRIMARY KEY,\n    analysis_type TEXT,\n    result JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE corpora (\n    corpus_id UUID PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    language VARCHAR(50),\n    date_created TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE texts (\n    text_id UUID PRIMARY KEY,\n    corpus_id UUID REFERENCES corpora(corpus_id),\n    author VARCHAR(100),\n    content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sentences (\n    sentence_id UUID PRIMARY KEY,\n    text_id UUID REFERENCES texts(text_id),\n    sentence_number INT,\n    sentence_content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE words (\n    word_id UUID PRIMARY KEY,\n    sentence_id UUID REFERENCES sentences(sentence_id),\n    word_text VARCHAR(50),\n    part_of_speech VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    category_id UUID PRIMARY KEY,\n    word_id UUID REFERENCES words(word_id),\n    category_name VARCHAR(50)\n);\n"
+      }
+    ]
+  }
+]

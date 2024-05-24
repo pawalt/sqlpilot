@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CharacterBehavior (\n character_id UUID PRIMARY KEY,\n behavior_type VARCHAR(255),\n behavior_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_characters (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    behavior VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_queries (\n    query_id SERIAL PRIMARY KEY,\n    character_id INT,\n    query_text TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE character_data (\n    character_id INT PRIMARY KEY,\n    character_name VARCHAR(50) NOT NULL,\n    ar_experience INT,\n    is_active BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE character_actions (\n    action_id INT PRIMARY KEY,\n    action_name VARCHAR(50) NOT NULL,\n    action_description TEXT,\n    character_id INT,\n    FOREIGN KEY (character_id) REFERENCES character_data(character_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE character_logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP NOT NULL,\n    character_id INT,\n    action_id INT,\n    log_details TEXT,\n    FOREIGN KEY (character_id) REFERENCES character_data(character_id),\n    FOREIGN KEY (action_id) REFERENCES character_actions(action_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VirtualCharacter (\n    character_id UUID PRIMARY KEY,\n    name VARCHAR(50),\n    age INT,\n    gender VARCHAR(10),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CharacterActions (\n    action_id UUID PRIMARY KEY,\n    character_id UUID REFERENCES VirtualCharacter(character_id),\n    action_name VARCHAR(50),\n    action_type VARCHAR(20),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ARDevices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(20),\n    owner_id UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CharacterInventory (\n    inventory_id UUID PRIMARY KEY,\n    character_id UUID REFERENCES VirtualCharacter(character_id),\n    item_name VARCHAR(50),\n    quantity INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Character (\n    character_id UUID PRIMARY KEY,\n    character_name VARCHAR(50) NOT NULL,\n    character_type VARCHAR(20) NOT NULL\n);\n\nCREATE TABLE Location (\n    location_id UUID PRIMARY KEY,\n    character_id UUID REFERENCES Character(character_id),\n    location_name VARCHAR(50) NOT NULL,\n    latitude DECIMAL(10, 6) NOT NULL,\n    longitude DECIMAL(10, 6) NOT NULL\n);\n\nCREATE TABLE Action (\n    action_id UUID PRIMARY KEY,\n    character_id UUID REFERENCES Character(character_id),\n    action_name VARCHAR(50) NOT NULL,\n    action_type VARCHAR(20) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n\nCREATE TABLE Inventory (\n    inventory_id UUID PRIMARY KEY,\n    character_id UUID REFERENCES Character(character_id),\n    item_name VARCHAR(50) NOT NULL,\n    quantity INTEGER NOT NULL\n);\n\nCREATE TABLE Behavior (\n    behavior_id UUID PRIMARY KEY,\n    character_id UUID REFERENCES Character(character_id),\n    behavior_type VARCHAR(50) NOT NULL,\n    description TEXT,\n    approval_status BOOLEAN NOT NULL\n);"
+      }
+    ]
+  }
+]

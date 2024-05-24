@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FarmManagement (\n id INT,\n field_id INT,\n schedule_time TIMESTAMP,\n water_usage FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Farm (\n    farm_id INT PRIMARY KEY,\n    farm_name VARCHAR(255) NOT NULL,\n    farm_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Irrigation (\n    irrigation_id INT PRIMARY KEY,\n    farm_id INT NOT NULL,\n    irrigation_date DATE,\n    amount_used DECIMAL(10,2),\n    CONSTRAINT fk_farm_id FOREIGN KEY (farm_id)\n        REFERENCES Farm(farm_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (\n   id SERIAL PRIMARY KEY,\n   date DATE,\n   time TIME,\n   duration INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n   id SERIAL PRIMARY KEY,\n   date DATE,\n   amount DECIMAL(10,2),\n   sensor_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE farm_fields (\n   id SERIAL PRIMARY KEY,\n   name VARCHAR(50),\n   area DECIMAL(10,2),\n   crop_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Farm (\n  farm_id UUID PRIMARY KEY,\n  farm_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Field (\n  field_id UUID PRIMARY KEY,\n  field_name VARCHAR(255) NOT NULL,\n  farm_id UUID NOT NULL,\n  area DECIMAL NOT NULL,\n  PRIMARY KEY (field_id, farm_id),\n  FOREIGN KEY (farm_id) REFERENCES Farm(farm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IrrigationSchedule (\n  schedule_id UUID PRIMARY KEY,\n  field_id UUID NOT NULL,\n  start_time TIMESTAMP NOT NULL,\n  end_time TIMESTAMP NOT NULL,\n  water_usage DECIMAL NOT NULL,\n  FOREIGN KEY (field_id) REFERENCES Field(field_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterUsageLog (\n  log_id UUID PRIMARY KEY,\n  field_id UUID NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  water_amount DECIMAL NOT NULL,\n  FOREIGN KEY (field_id) REFERENCES Field(field_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE farm (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location VARCHAR(255),\n    established_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (\n    schedule_id INT PRIMARY KEY,\n    farm_id INT,\n    start_time TIME,\n    end_time TIME,\n    duration_minutes INT,\n    FOREIGN KEY (farm_id) REFERENCES farm(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n    usage_id INT PRIMARY KEY,\n    farm_id INT,\n    date DATE,\n    amount_used INT,\n    FOREIGN KEY (farm_id) REFERENCES farm(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE crop (\n    crop_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    type VARCHAR(255),\n    harvest_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_planting (\n    planting_id INT PRIMARY KEY,\n    crop_id INT,\n    farm_id INT,\n    planting_date DATE,\n    quantity INT,\n    FOREIGN KEY (crop_id) REFERENCES crop(crop_id),\n    FOREIGN KEY (farm_id) REFERENCES farm(id)\n)"
+      }
+    ]
+  }
+]

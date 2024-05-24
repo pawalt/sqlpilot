@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_details (\n    user_id INT NOT NULL,\n    coverage_type VARCHAR(50) NOT NULL,\n    premium_amount DECIMAL(10, 2) NOT NULL,\n    coverage_start_date DATE NOT NULL,\n    coverage_end_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_details (\n  id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  coverage_amount DECIMAL NOT NULL,\n  coverage_start_date DATE NOT NULL,\n  coverage_end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_histories (\n  id INT PRIMARY KEY,\n  coverage_id INT NOT NULL,\n  claim_date DATE NOT NULL,\n  claim_amount DECIMAL NOT NULL,\n  status VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_details (\n    coverage_id UUID PRIMARY KEY,\n    insurer_id UUID REFERENCES insurers(insurer_id),\n    user_id UUID REFERENCES users(user_id),\n    coverage_amount DECIMAL,\n    coverage_start_date DATE,\n    coverage_end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE premiums (\n    premium_id UUID PRIMARY KEY,\n    coverage_id UUID REFERENCES coverage_details(coverage_id),\n    premium_amount DECIMAL,\n    payment_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_histories (\n    claim_id UUID PRIMARY KEY,\n    coverage_id UUID REFERENCES coverage_details(coverage_id),\n    claim_date DATE,\n    claim_amount DECIMAL,\n    resolved BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_details (\n    user_id INT PRIMARY KEY,\n    coverage_amount DECIMAL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE premiums (\n    premium_id INT PRIMARY KEY,\n    user_id INT,\n    premium_amount DECIMAL,\n    payment_date DATE,\n    FOREIGN KEY (user_id) REFERENCES coverage_details(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_histories (\n    claim_id INT PRIMARY KEY,\n    user_id INT,\n    claim_date DATE,\n    claim_status VARCHAR(50),\n    FOREIGN KEY (user_id) REFERENCES coverage_details(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50),\n    user_address VARCHAR(100),\n    user_email VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_details (\n    id INT PRIMARY KEY,\n    user_id INT,\n    protocol_name VARCHAR(50),\n    coverage_amount DECIMAL(10, 2),\n    coverage_start DATE,\n    coverage_end DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE premiums (\n    id INT PRIMARY KEY,\n    user_id INT,\n    protocol_name VARCHAR(50),\n    premium_amount DECIMAL(10, 2),\n    payment_date DATE,\n    payment_method VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_histories (\n    id INT PRIMARY KEY,\n    user_id INT,\n    protocol_name VARCHAR(50),\n    claim_amount DECIMAL(10, 2),\n    claim_date DATE,\n    claim_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(50),\n    address VARCHAR(100),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE protocols (\n    id INT PRIMARY KEY,\n    protocol_name VARCHAR(50),\n    description TEXT,\n    website_url VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

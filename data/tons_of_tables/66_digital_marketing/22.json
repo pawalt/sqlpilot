@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_delivery_status (\n    id SERIAL PRIMARY KEY,\n    email_address VARCHAR(255) NOT NULL,\n    delivery_status VARCHAR(50) NOT NULL,\n    delivery_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_status (\n    id INT PRIMARY KEY,\n    email_address VARCHAR(255),\n    status VARCHAR(50),\n    delivery_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_issues (\n    id SERIAL PRIMARY KEY,\n    email_address VARCHAR(255),\n    issue_description TEXT,\n    reported_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    id INT PRIMARY KEY,\n    recipient_email VARCHAR(255),\n    delivery_status VARCHAR(50),\n    sent_timestamp TIMESTAMP,\n    received_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_errors (\n    error_id INT PRIMARY KEY,\n    email_log_id INT REFERENCES email_logs(id),\n    error_message TEXT,\n    error_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE error_categories (\n    category_id INT PRIMARY KEY,\n    error_code INT,\n    error_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailStatus (\n    id INT PRIMARY KEY,\n    email_address VARCHAR(255) NOT NULL,\n    delivery_status VARCHAR(50) NOT NULL,\n    delivery_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BouncedEmails (\n    id INT PRIMARY KEY,\n    email_id INT REFERENCES EmailStatus(id),\n    bounced_reason VARCHAR(255) NOT NULL,\n    bounce_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OpenedEmails (\n    id INT PRIMARY KEY,\n    email_id INT REFERENCES EmailStatus(id),\n    open_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ClickedLinks (\n    id INT PRIMARY KEY,\n    email_id INT REFERENCES EmailStatus(id),\n    link_url VARCHAR(255) NOT NULL,\n    click_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_messages (\n    message_id UUID PRIMARY KEY,\n    sender_email VARCHAR(255),\n    recipient_email VARCHAR(255),\n    subject VARCHAR(255),\n    timestamp TIMESTAMP,\n    delivery_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    log_id UUID PRIMARY KEY,\n    message_id UUID REFERENCES email_messages(message_id),\n    log_timestamp TIMESTAMP,\n    log_info VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_errors (\n    error_id UUID PRIMARY KEY,\n    log_id UUID REFERENCES email_logs(log_id),\n    error_timestamp TIMESTAMP,\n    error_message TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_recipients (\n    recipient_id UUID PRIMARY KEY,\n    recipient_email VARCHAR(255),\n    recipient_name VARCHAR(255),\n    opted_out BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_domains (\n    domain_id UUID PRIMARY KEY,\n    domain_name VARCHAR(255),\n    domain_status VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

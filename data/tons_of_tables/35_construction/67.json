@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BackupSchedule (\n    backup_id INT PRIMARY KEY,\n    schedule_time TIMESTAMP,\n    retention_policy TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_schedules (\n    backup_schedule_id INT PRIMARY KEY,\n    backup_frequency VARCHAR(50),\n    next_backup_date TIMESTAMP,\n    retention_policy VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n    policy_id INT PRIMARY KEY,\n    backup_frequency VARCHAR(50),\n    retention_period INTERVAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_schedules (\n    schedule_id INT PRIMARY KEY,\n    schedule_name VARCHAR(50),\n    backup_frequency VARCHAR(20),\n    next_backup_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    retention_days INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id INT PRIMARY KEY,\n    schedule_id INT,\n    backup_timestamp TIMESTAMP,\n    backup_status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_schedules (\n    id INT PRIMARY KEY,\n    schedule_name TEXT,\n    backup_frequency TEXT,\n    start_time TIMESTAMP,\n    next_backup TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n    id INT PRIMARY KEY,\n    policy_name TEXT,\n    retention_period INTERVAL,\n    backup_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backups (\n    id INT PRIMARY KEY,\n    backup_name TEXT,\n    backup_timestamp TIMESTAMP,\n    size_in_bytes INT,\n    schedule_id INT,\n    FOREIGN KEY (schedule_id) REFERENCES backup_schedules(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    id INT PRIMARY KEY,\n    backup_id INT,\n    log_message TEXT,\n    log_timestamp TIMESTAMP,\n    FOREIGN KEY (backup_id) REFERENCES backups(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_schedules (\n    id INT PRIMARY KEY,\n    backup_name VARCHAR(255),\n    backup_time TIMESTAMP,\n    frequency VARCHAR(50),\n    retention_policy VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(255),\n    retention_period INT,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    id INT PRIMARY KEY,\n    backup_id INT,\n    backup_status VARCHAR(20),\n    backup_timestamp TIMESTAMP,\n    FOREIGN KEY (backup_id) REFERENCES backup_schedules(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_errors (\n    id INT PRIMARY KEY,\n    backup_id INT,\n    error_code VARCHAR(10),\n    error_description TEXT,\n    FOREIGN KEY (backup_id) REFERENCES backup_schedules(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recovery_points (\n    id INT PRIMARY KEY,\n    backup_id INT,\n    recovery_time TIMESTAMP,\n    recovery_status VARCHAR(20),\n    FOREIGN KEY (backup_id) REFERENCES backup_schedules(id)\n);"
+      }
+    ]
+  }
+]

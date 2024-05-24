@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NLP_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    task_status ENUM('open', 'in progress', 'completed'),\n    created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE nlp_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE nlp_results (\n    result_id INT PRIMARY KEY,\n    task_id INT,\n    result_data JSON,\n    result_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NLP_Documents (\n    document_id UUID PRIMARY KEY,\n    document_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NLP_Tokens (\n    token_id UUID PRIMARY KEY,\n    token_text TEXT,\n    document_id UUID REFERENCES NLP_Documents(document_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NLP_Annotations (\n    annotation_id UUID PRIMARY KEY,\n    annotation_type TEXT,\n    start_offset INT,\n    end_offset INT,\n    token_id UUID REFERENCES NLP_Tokens(token_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NLP_Documents (\n    document_id INT PRIMARY KEY,\n    document_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NLP_Keywords (\n    keyword_id INT PRIMARY KEY,\n    keyword_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NLP_Entities (\n    entity_id INT PRIMARY KEY,\n    entity_text TEXT,\n    entity_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NLP_Annotations (\n    annotation_id INT PRIMARY KEY,\n    document_id INT,\n    keyword_id INT,\n    entity_id INT,\n    FOREIGN KEY (document_id) REFERENCES NLP_Documents(document_id),\n    FOREIGN KEY (keyword_id) REFERENCES NLP_Keywords(keyword_id),\n    FOREIGN KEY (entity_id) REFERENCES NLP_Entities(entity_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE texts (\n    id INT PRIMARY KEY,\n    content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokens (\n    id INT PRIMARY KEY,\n    text_id INT,\n    token TEXT,\n    position INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entities (\n    id INT PRIMARY KEY,\n    text_id INT,\n    entity_type TEXT,\n    entity_value TEXT,\n    start_position INT,\n    end_position INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE relationships (\n    id INT PRIMARY KEY,\n    text_id INT,\n    entity1_id INT,\n    entity2_id INT,\n    relationship TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE metadata (\n    id INT PRIMARY KEY,\n    text_id INT,\n    language TEXT,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]

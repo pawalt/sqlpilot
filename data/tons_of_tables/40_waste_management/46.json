@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE e_waste_recycling_data (\n    id INT PRIMARY KEY,\n    location VARCHAR(255),\n    recycling_initiative VARCHAR(255),\n    recycling_rate DECIMAL(5,2),\n    impact_report TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE e_waste_recycling_centers (\n  center_id INT PRIMARY KEY,\n  center_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  recycling_capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE e_waste_recycling_data (\n  data_id INT PRIMARY KEY,\n  center_id INT,\n  date DATE NOT NULL,\n  weight_kg DECIMAL(10,2) NOT NULL,\n  impact_score INT,\n  FOREIGN KEY (center_id) REFERENCES e_waste_recycling_centers(center_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE e_waste_recycling_rates (\n  id INT PRIMARY KEY,\n  city VARCHAR(255),\n  recycling_rate DECIMAL(5,2),\n  impact_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_initiatives (\n  initiative_id INT PRIMARY KEY,\n  initiative_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  city VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_impact_evaluation (\n  evaluation_id INT PRIMARY KEY,\n  initiative_id INT,\n  evaluation_date DATE,\n  impact_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ewaste_locations (\n  location_id INT PRIMARY KEY,\n  city VARCHAR(50),\n  state VARCHAR(50),\n  country VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ewaste_recycling_facilities (\n  facility_id INT PRIMARY KEY,\n  facility_name VARCHAR(100),\n  location_id INT,\n  capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ewaste_collection_records (\n  record_id INT PRIMARY KEY,\n  facility_id INT,\n  collection_date DATE,\n  collection_weight DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ewaste_recycling_rates (\n  rate_id INT PRIMARY KEY,\n  facility_id INT,\n  process_date DATE,\n  recycling_rate DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE e_waste_recycling_centers(\n  center_id INT PRIMARY KEY,\n  center_name TEXT,\n  location TEXT,\n  capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE e_waste_collection(\n  collection_id INT PRIMARY KEY,\n  center_id INT,\n  collection_date DATE,\n  collected_items TEXT[],\n  FOREIGN KEY (center_id) REFERENCES e_waste_recycling_centers(center_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE e_waste_impact(\n  impact_id INT PRIMARY KEY,\n  collection_id INT,\n  impact_type TEXT,\n  impact_description TEXT,\n  FOREIGN KEY (collection_id) REFERENCES e_waste_collection(collection_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE e_waste_stats(\n  stats_id INT PRIMARY KEY,\n  collection_id INT,\n  recycling_rate DECIMAL,\n  impact_score DECIMAL,\n  FOREIGN KEY (collection_id) REFERENCES e_waste_collection(collection_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE e_waste_reports(\n  report_id INT PRIMARY KEY,\n  stats_id INT,\n  report_date DATE,\n  report_text TEXT,\n  FOREIGN KEY (stats_id) REFERENCES e_waste_stats(stats_id)\n)"
+      }
+    ]
+  }
+]

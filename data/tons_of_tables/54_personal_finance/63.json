@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE credit_card_rewards_points (\n  user_id INT PRIMARY KEY,\n  total_points INT,\n  points_expiry_date TIMESTAMP,\n  points_usage_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE credit_card_rewards (\n id INT PRIMARY KEY,\n credit_card_number VARCHAR(16),\n rewards_points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards_optimization (\n id INT PRIMARY KEY,\n credit_card_id INT,\n optimal_strategy VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CreditCardRewardsPoints (\n    card_number INT PRIMARY KEY,\n    points_balance INT,\n    rewards_program VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id INT PRIMARY KEY,\n    card_number INT,\n    transaction_amount INT,\n    transaction_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RewardsRedemption (\n    redemption_id INT PRIMARY KEY,\n    card_number INT,\n    redeemed_points INT,\n    redemption_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Rewards_Programs (\n    program_id UUID PRIMARY KEY,\n    program_name VARCHAR(50),\n    credit_card VARCHAR(50),\n    reward_rate DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id UUID PRIMARY KEY,\n    transaction_date DATE,\n    transaction_amount DECIMAL,\n    program_id UUID REFERENCES Rewards_Programs(program_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(50),\n    user_email VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Points_Balance (\n    user_id UUID REFERENCES Users(user_id),\n    program_id UUID REFERENCES Rewards_Programs(program_id),\n    points_balance INTEGER\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rewards_program (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(255) NOT NULL,\n  point_value DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE credit_cards (\n  card_id INT PRIMARY KEY,\n  card_name VARCHAR(255) NOT NULL,\n  issuer VARCHAR(255) NOT NULL,\n  annual_fee DECIMAL(10, 2) NOT NULL,\n  reward_category VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cardholders (\n  cardholder_id INT PRIMARY KEY,\n  full_name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) NOT NULL,\n  address VARCHAR(255) NOT NULL,\n  phone_number VARCHAR(15) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  card_id INT NOT NULL,\n  transaction_date DATE NOT NULL,\n  merchant VARCHAR(255) NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  FOREIGN KEY (card_id) REFERENCES credit_cards(card_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards_earned (\n  reward_id INT PRIMARY KEY,\n  cardholder_id INT NOT NULL,\n  transaction_id INT NOT NULL,\n  earned_points INT NOT NULL,\n  FOREIGN KEY (cardholder_id) REFERENCES cardholders(cardholder_id),\n  FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_ingredients (\n    id SERIAL PRIMARY KEY,\n    ingredient_name VARCHAR(50) NOT NULL,\n    supplier_name VARCHAR(50) NOT NULL,\n    purchase_date DATE,\n    expiration_date DATE,\n    batch_number VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ingredients (\n  ingredient_id UUID PRIMARY KEY,\n  ingredient_name VARCHAR(255) NOT NULL,\n  supplier_id UUID,\n  date_received DATE,\n  traceability_code VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_formulations (\n  formulation_id UUID PRIMARY KEY,\n  formulation_name VARCHAR(255) NOT NULL,\n  active_ingredient_id UUID,\n  batch_number VARCHAR(50) NOT NULL,\n  date_manufactured DATE,\n  traceability_code VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ingredient (\n    ingredient_id INT PRIMARY KEY,\n    ingredient_name VARCHAR(255) NOT NULL,\n    supplier_id INT,\n    date_of_receipt DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug (\n    drug_id INT PRIMARY KEY,\n    drug_name VARCHAR(255) NOT NULL,\n    formula VARCHAR(255) NOT NULL,\n    manufacturer_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ingredient_usage (\n    usage_id INT PRIMARY KEY,\n    ingredient_id INT,\n    drug_id INT,\n    quantity DECIMAL(10,2) NOT NULL,\n    CONSTRAINT fk_ingredient FOREIGN KEY (ingredient_id) REFERENCES ingredient(ingredient_id),\n    CONSTRAINT fk_drug FOREIGN KEY (drug_id) REFERENCES drug(drug_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ingredients (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    supplier VARCHAR(50) NOT NULL,\n    expiry_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drugs (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    dosage FLOAT NOT NULL,\n    ingredient_id INT REFERENCES ingredients(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE formulations (\n    id INT PRIMARY KEY,\n    formulation_name VARCHAR(100) NOT NULL,\n    drug_id INT REFERENCES drugs(id),\n    quantity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE traceability (\n    id INT PRIMARY KEY,\n    ingredient_id INT REFERENCES ingredients(id),\n    manufacturer VARCHAR(100) NOT NULL,\n    production_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Ingredients (ingredient_id UUID PRIMARY KEY, ingredient_name STRING, supplier STRING, date_received DATE, quantity INTEGER);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Drugs (drug_id UUID PRIMARY KEY, drug_name STRING, formulation STRING, ingredient_id UUID REFERENCES Ingredients(ingredient_id), quantity INTEGER, expiration_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Manufacturers (manufacturer_id UUID PRIMARY KEY, manufacturer_name STRING, contact_person STRING, location STRING);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Formulations (formulation_id UUID PRIMARY KEY, formulation_name STRING, drug_id UUID REFERENCES Drugs(drug_id), manufacturer_id UUID REFERENCES Manufacturers(manufacturer_id), production_date DATE, quantity_produced INTEGER);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS BatchRecords (batch_id UUID PRIMARY KEY, formulation_id UUID REFERENCES Formulations(formulation_id), production_date DATE, quantity_produced INTEGER);"
+      }
+    ]
+  }
+]

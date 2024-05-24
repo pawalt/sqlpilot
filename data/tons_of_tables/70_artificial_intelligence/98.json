@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Virtual_Assistants_Subscriptions (\n    subscription_id INT PRIMARY KEY,\n    customer_id INT,\n    subscription_name VARCHAR(255),\n    subscription_type VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    billing_amount DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscription_services (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  description TEXT,\n  price DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_information (\n  id INT PRIMARY KEY,\n  user_id INT,\n  subscription_id INT,\n  payment_method VARCHAR(50),\n  payment_amount DECIMAL(10, 2),\n  payment_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_assistants (\n    assistant_id INT PRIMARY KEY,\n    assistant_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    subscription_plan ENUM('basic', 'premium', 'enterprise')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    assistant_id INT,\n    start_date DATE,\n    end_date DATE,\n    subscription_status ENUM('active', 'paused', 'cancelled')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_info (\n    billing_id INT PRIMARY KEY,\n    assistant_id INT,\n    card_number VARCHAR(16),\n    expiration_date DATE,\n    cvv INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_assistants (\n id INT PRIMARY KEY,\n name STRING,\n subscription_status STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n subscription_id INT PRIMARY KEY,\n assistant_id INT,\n start_date DATE,\n end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_info (\n billing_id INT PRIMARY KEY,\n assistant_id INT,\n billing_amount DECIMAL,\n payment_status STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE assistants_clients (\n assistant_id INT,\n client_id INT,\n client_name STRING,\n subscription_id INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscription_services (\n    service_id UUID PRIMARY KEY,\n    service_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    subscription_service_id UUID REFERENCES subscription_services(service_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_subscriptions (\n    subscription_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_info (\n    billing_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    card_number VARCHAR(16) NOT NULL,\n    expiration_date DATE NOT NULL,\n    cvv VARCHAR(3) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id UUID PRIMARY KEY,\n    billing_id UUID REFERENCES billing_info(billing_id),\n    payment_date DATE NOT NULL,\n    amount DECIMAL(10,2) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE top_performing_stocks (\n    stock_symbol VARCHAR(255),\n    company_name VARCHAR(255),\n    performance_score FLOAT,\n    market_cap DECIMAL,\n    sector VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE top_performing_stocks (\n    stock_symbol VARCHAR(10),\n    stock_name VARCHAR(50),\n    performance_score FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE historical_performance_data (\n    stock_id INT,\n    performance_date DATE,\n    closing_price DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stocks ( \n\tstock_id INT PRIMARY KEY, \n\tstock_name VARCHAR(255) NOT NULL, \n\tstock_price DECIMAL(10,2) NOT NULL, \n\tstock_performance DECIMAL(5,2) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_history ( \n\thistory_id INT PRIMARY KEY, \n\tstock_id INT, \n\tdate DATE NOT NULL, \n\thigh_price DECIMAL(10,2) NOT NULL, \n\tlow_price DECIMAL(10,2) NOT NULL, \n\tclose_price DECIMAL(10,2) NOT NULL, \n\tvolume INT NOT NULL, \n\tFOREIGN KEY (stock_id) REFERENCES stocks(stock_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE top_performing_stocks_view AS \nSELECT stock_id, stock_name, stock_price, stock_performance \nFROM stocks \nWHERE stock_performance > 0.8 \nORDER BY stock_performance DESC;"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Stock (\n    stock_id INT PRIMARY KEY,\n    stock_name VARCHAR(50) NOT NULL,\n    stock_symbol VARCHAR(10) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StockPerformance (\n    performance_id INT PRIMARY KEY,\n    stock_id INT REFERENCES Stock(stock_id),\n    performance_date DATE,\n    performance_value DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StockRanking (\n    ranking_id INT PRIMARY KEY,\n    stock_id INT REFERENCES Stock(stock_id),\n    ranking_position INT,\n    ranking_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StockView (\n    view_id INT PRIMARY KEY,\n    stock_id INT REFERENCES Stock(stock_id),\n    view_name VARCHAR(50) NOT NULL,\n    view_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stocks (\n    id UUID PRIMARY KEY,\n    name STRING,\n    symbol STRING,\n    price DECIMAL,\n    volume INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_performance (\n    stock_id UUID REFERENCES stocks(id),\n    performance_date DATE,\n    closing_price DECIMAL,\n    daily_return DECIMAL,\n    PRIMARY KEY (stock_id, performance_date)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE historical_data (\n    record_id UUID PRIMARY KEY,\n    stock_id UUID REFERENCES stocks(id),\n    date DATE,\n    open_price DECIMAL,\n    high_price DECIMAL,\n    low_price DECIMAL,\n    volume INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_ratings (\n    stock_id UUID REFERENCES stocks(id),\n    rating INT,\n    rating_date DATE,\n    PRIMARY KEY (stock_id, rating_date)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_view (\n    stock_id UUID REFERENCES stocks(id),\n    rank INT,\n    performance_date DATE,\n    closing_price DECIMAL,\n    daily_return DECIMAL\n)"
+      }
+    ]
+  }
+]

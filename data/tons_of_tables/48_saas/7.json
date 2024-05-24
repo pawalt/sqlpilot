@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "PaaSProviders"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE apps (\n    app_id INT PRIMARY KEY,\n    app_name VARCHAR(50) NOT NULL,\n    user_id INT REFERENCES users(user_id),\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Paas_Providers (\n    provider_id SERIAL PRIMARY KEY,\n    provider_name VARCHAR(50) UNIQUE,\n    foundation_year INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SQL_Databases (\n    db_id SERIAL PRIMARY KEY,\n    db_name VARCHAR(50) UNIQUE,\n    db_provider_id INT,\n    FOREIGN KEY (db_provider_id) REFERENCES Paas_Providers(provider_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Developer_Applications (\n    app_id SERIAL PRIMARY KEY,\n    app_name VARCHAR(50),\n    app_description TEXT,\n    app_db_id INT,\n    FOREIGN KEY (app_db_id) REFERENCES SQL_Databases(db_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE providers (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR,\n  location VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE databases (\n  database_id INT PRIMARY KEY,\n  database_name VARCHAR,\n  provider_id INT,\n  FOREIGN KEY (provider_id) REFERENCES providers(provider_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE applications (\n  application_id INT PRIMARY KEY,\n  application_name VARCHAR,\n  database_id INT,\n  FOREIGN KEY (database_id) REFERENCES databases(database_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE developers (\n  developer_id INT PRIMARY KEY,\n  developer_name VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(255) NOT NULL,\n    provider_region VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE databases (\n    database_id INT PRIMARY KEY,\n    database_name VARCHAR(255) NOT NULL,\n    database_type VARCHAR(50) NOT NULL,\n    provider_id INT,\n    FOREIGN KEY (provider_id) REFERENCES providers(provider_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE applications (\n    app_id INT PRIMARY KEY,\n    app_name VARCHAR(255) NOT NULL,\n    app_description TEXT,\n    database_id INT,\n    FOREIGN KEY (database_id) REFERENCES databases(database_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE developers (\n    developer_id INT PRIMARY KEY,\n    developer_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE app_developers (\n    app_id INT,\n    developer_id INT,\n    PRIMARY KEY (app_id, developer_id),\n    FOREIGN KEY (app_id) REFERENCES applications(app_id),\n    FOREIGN KEY (developer_id) REFERENCES developers(developer_id)\n);"
+      }
+    ]
+  }
+]

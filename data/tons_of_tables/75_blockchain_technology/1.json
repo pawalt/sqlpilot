@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_movement (\n  product_id INT PRIMARY KEY,\n  product_name STRING,\n  current_stage STRING,\n  previous_stage STRING\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_movement (\n  product_id INT PRIMARY KEY,\n  stage VARCHAR(50) NOT NULL,\n  movement_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supply_chain (\n  product_id INT,\n  vendor_id INT,\n  supplier_id INT,\n  stage_from VARCHAR(50),\n  stage_to VARCHAR(50),\n  movement_date TIMESTAMP,\n  FOREIGN KEY (product_id) REFERENCES product_movement(product_id),\n  FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id),\n  FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    quantity INT,\n    stage VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stages (\n    stage_id INT PRIMARY KEY,\n    stage_name VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_movements (\n    movement_id INT PRIMARY KEY,\n    product_id INT,\n    from_stage_id INT,\n    to_stage_id INT,\n    move_date DATE,\n    FOREIGN KEY (product_id) REFERENCES products(product_id),\n    FOREIGN KEY (from_stage_id) REFERENCES stages(stage_id),\n    FOREIGN KEY (to_stage_id) REFERENCES stages(stage_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    supplier_id INT,\n    quantity INT,\n    stage VARCHAR(50) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    supplier_location VARCHAR(255),\n    contact_person VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE stages (\n    stage_id INT PRIMARY KEY,\n    stage_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE movements (\n    movement_id INT PRIMARY KEY,\n    product_id INT,\n    source_stage_id INT,\n    destination_stage_id INT,\n    movement_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_stage (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  current_stage VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stage_transition (\n  transition_id INT PRIMARY KEY,\n  product_id INT,\n  from_stage VARCHAR(100),\n  to_stage VARCHAR(100),\n  transition_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stage_history (\n  history_id INT PRIMARY KEY,\n  product_id INT,\n  stage VARCHAR(100),\n  entry_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stage_location (\n  location_id INT PRIMARY KEY,\n  product_id INT,\n  stage VARCHAR(100),\n  location VARCHAR(255),\n  entry_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_inventory (\n  inventory_id INT PRIMARY KEY,\n  product_id INT,\n  quantity INT,\n  last_updated TIMESTAMP\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE material_sourcing_info (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    supplier_name VARCHAR(255),\n    supplier_location VARCHAR(255),\n    sustainability_rating INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255) NOT NULL,\n  material_type VARCHAR(50) NOT NULL,\n  source_location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  project_location VARCHAR(255) NOT NULL,\n  material_id INT,\n  FOREIGN KEY (material_id) REFERENCES materials(material_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE material_suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    location VARCHAR(255),\n    certification_status BOOLEAN\n)  \n"
+      },
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    supplier_id INT REFERENCES material_suppliers(supplier_id),\n    quantity INT,\n    price DECIMAL(10, 2),\n    date_received DATE\n)  \n"
+      },
+      {
+        "table_schema": "CREATE TABLE construction_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    project_location VARCHAR(255),\n    material_id INT REFERENCES materials(material_id)\n)  \n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n  material_id UUID PRIMARY KEY,\n  material_name VARCHAR(100),\n  material_type VARCHAR(50),\n  source_location VARCHAR(100),\n  is_sustainable BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id UUID PRIMARY KEY,\n  supplier_name VARCHAR(100),\n  contact_person VARCHAR(100),\n  contact_number VARCHAR(20),\n  email_address VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(100),\n  location VARCHAR(100),\n  start_date DATE,\n  end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE material_suppliers (\n  material_id UUID,\n  supplier_id UUID,\n  price DECIMAL(10, 2),\n  PRIMARY KEY (material_id, supplier_id),\n  FOREIGN KEY (material_id) REFERENCES materials (material_id),\n  FOREIGN KEY (supplier_id) REFERENCES suppliers (supplier_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n  material_id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  category VARCHAR(50) NOT NULL,\n  supplier_id INT,\n  price DECIMAL(10, 2),\n  quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  location VARCHAR(100),\n  contact VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  location VARCHAR(100),\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_materials (\n  project_id INT,\n  material_id INT,\n  quantity INT,\n  PRIMARY KEY (project_id, material_id),\n  FOREIGN KEY (project_id) REFERENCES projects(project_id),\n  FOREIGN KEY (material_id) REFERENCES materials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE material_reviews (\n  review_id INT PRIMARY KEY,\n  material_id INT,\n  rating DECIMAL(3, 1) CHECK (rating >= 0 AND rating <= 5),\n  review_text TEXT,\n  reviewer_name VARCHAR(100),\n  FOREIGN KEY (material_id) REFERENCES materials(material_id)\n);\n"
+      }
+    ]
+  }
+]

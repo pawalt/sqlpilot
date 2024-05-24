@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_audio_data (\n    id SERIAL PRIMARY KEY,\n    audio_file_path VARCHAR(255) NOT NULL,\n    label VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_audio_data (audio_id INT PRIMARY KEY, audio_blob BYTEA, label VARCHAR(100));\nCREATE TABLE speech_recognition_models (model_id INT PRIMARY KEY, model_name VARCHAR(100), accuracy FLOAT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audio_data (\n    audio_id INT PRIMARY KEY,\n    audio_file_path VARCHAR(255),\n    label VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50),\n    trained_by VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    age INT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recordings (\n    recording_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    audio_file BYTEA NOT NULL,\n    label VARCHAR(50) NOT NULL,\n    duration INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(50) NOT NULL,\n    created_by UUID REFERENCES users(user_id),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_predictions (\n    prediction_id UUID PRIMARY KEY,\n    model_id UUID REFERENCES models(model_id),\n    audio_id UUID REFERENCES recordings(recording_id),\n    predicted_label VARCHAR(50) NOT NULL,\n    confidence FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_audio_files (\n  file_id UUID PRIMARY KEY,\n  file_name VARCHAR(255),\n  label VARCHAR(50),\n  audio_data BYTEA\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(255),\n  password_hash VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  user_role_id UUID PRIMARY KEY,\n  user_id UUID,\n  role VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n  model_id UUID PRIMARY KEY,\n  model_name VARCHAR(100),\n  model_type VARCHAR(50),\n  model_accuracy FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE model_results (\n  result_id UUID PRIMARY KEY,\n  model_id UUID,\n  audio_file_id UUID,\n  result TEXT\n)"
+      }
+    ]
+  }
+]

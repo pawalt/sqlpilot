@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_reports (\n    report_id INT PRIMARY KEY,\n    team_name VARCHAR(50) NOT NULL,\n    report_title VARCHAR(100) NOT NULL,\n    report_description TEXT,\n    created_at TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_reports (\n\treport_id INT PRIMARY KEY,\n\tteam_name VARCHAR(255) NOT NULL,\n\tmetrics TEXT NOT NULL,\n\tcreated_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_dashboards (\n\tdashboard_id INT PRIMARY KEY,\n\tteam_name VARCHAR(255) NOT NULL,\n\tdashboard_title VARCHAR(255) NOT NULL,\n\twidgets JSON NOT NULL,\n\tcreated_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR(50),\n  team_id INT,\n  role VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n  report_id INT PRIMARY KEY,\n  report_name VARCHAR(100),\n  created_by INT,\n  created_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE metrics (\n  metric_id INT PRIMARY KEY,\n  metric_name VARCHAR(100),\n  metric_value FLOAT,\n  date_collected DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE teams (\n    team_id UUID PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    team_lead VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n    report_id UUID PRIMARY KEY,\n    report_name VARCHAR(255) NOT NULL,\n    team_id UUID REFERENCES teams(team_id),\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE metrics (\n    metric_id UUID PRIMARY KEY,\n    metric_name VARCHAR(255) NOT NULL,\n    metric_value DECIMAL NOT NULL,\n    report_id UUID REFERENCES reports(report_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboards (\n    dashboard_id UUID PRIMARY KEY,\n    dashboard_name VARCHAR(255) NOT NULL,\n    team_id UUID REFERENCES teams(team_id),\n    created_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Team (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    team_location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Member (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(255) NOT NULL,\n    team_id INT NOT NULL,\n    FOREIGN KEY (team_id) REFERENCES Team(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Report (\n    report_id INT PRIMARY KEY,\n    report_name VARCHAR(255) NOT NULL,\n    created_date TIMESTAMP NOT NULL,\n    team_id INT NOT NULL,\n    FOREIGN KEY (team_id) REFERENCES Team(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Metric (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(255) NOT NULL,\n    metric_description VARCHAR(500),\n    report_id INT NOT NULL,\n    FOREIGN KEY (report_id) REFERENCES Report(report_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Dashboard (\n    dashboard_id INT PRIMARY KEY,\n    dashboard_name VARCHAR(255) NOT NULL,\n    display_type VARCHAR(50) NOT NULL,\n    report_id INT NOT NULL,\n    FOREIGN KEY (report_id) REFERENCES Report(report_id)\n);\n"
+      }
+    ]
+  }
+]

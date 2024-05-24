@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE annotated_text_data (\n    id SERIAL PRIMARY KEY,\n    text_data TEXT NOT NULL,\n    entity_type TEXT NOT NULL,\n    start_offset INTEGER NOT NULL,\n    end_offset INTEGER NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ner_training_data (\n    id SERIAL PRIMARY KEY,\n    text_data TEXT,\n    annotation TEXT\n);\n\nCREATE TABLE ner_model (\n    model_id SERIAL PRIMARY KEY,\n    model_name TEXT,\n    model_version TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE named_entities (\n    id INT PRIMARY KEY,\n    text_data TEXT,\n    entity_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id INT PRIMARY KEY,\n    text_id INT,\n    named_entity_id INT,\n    FOREIGN KEY (text_id) REFERENCES named_entities(id),\n    FOREIGN KEY (named_entity_id) REFERENCES named_entities(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    id INT PRIMARY KEY,\n    model_name TEXT,\n    accuracy FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE named_entities (\n    id INT PRIMARY KEY,\n    text_data VARCHAR(255),\n    entity_type VARCHAR(50),\n    annotation_confidence FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id INT PRIMARY KEY,\n    named_entity_id INT,\n    training_text TEXT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(100),\n    training_data_id INT,\n    accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_evaluations (\n    id INT PRIMARY KEY,\n    model_id INT,\n    precision FLOAT,\n    recall FLOAT,\n    f1_score FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE annotations (\n    id UUID PRIMARY KEY,\n    text TEXT NOT NULL,\n    entity_type TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    id UUID PRIMARY KEY,\n    title TEXT NOT NULL,\n    content TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE entity_types (\n    id UUID PRIMARY KEY,\n    entity_type TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    id UUID PRIMARY KEY,\n    model_name TEXT NOT NULL,\n    model_type TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id UUID PRIMARY KEY,\n    document_id UUID NOT NULL,\n    model_id UUID NOT NULL,\n    start_index INT NOT NULL,\n    end_index INT NOT NULL,\n    entity_type TEXT NOT NULL\n);\n"
+      }
+    ]
+  }
+]

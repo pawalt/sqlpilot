@@ -1,0 +1,46 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RiskIndicators (\n    id INT PRIMARY KEY,\n    indicator_name TEXT,\n    current_value FLOAT,\n    target_value FLOAT,\n    status TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RiskIndicators (\n  id SERIAL PRIMARY KEY,\n  risk_name VARCHAR(255) NOT NULL,\n  risk_value DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DashboardViews (\n  view_id SERIAL PRIMARY KEY,\n  view_name VARCHAR(255) NOT NULL,\n  view_type VARCHAR(50) NOT NULL,\n  created_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE risk_dashboard (\n    id SERIAL PRIMARY KEY,\n    risk_indicator VARCHAR(100) NOT NULL,\n    indicator_value FLOAT NOT NULL,\n    timestamp TIMESTAMPTZ NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_preferences (\n    user_id SERIAL PRIMARY KEY,\n    show_risk_threshold BOOLEAN NOT NULL,\n    show_alerts BOOLEAN NOT NULL,\n    alert_emails VARCHAR(100)[]\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE senior_management_dashboard (\n\tid INT PRIMARY KEY,\n\tdashboard_name VARCHAR(255),\n\tkey_risk_indicator VARCHAR(255),\n\tcurrent_value DECIMAL,\n\ttarget_value DECIMAL\n);\n\nCREATE TABLE user_preferences (\n\tid INT PRIMARY KEY,\n\tuser_id INT,\n\tdashboard_id INT,\n\tdisplay_order INT,\n\tFOREIGN KEY(user_id) REFERENCES senior_management_dashboard(id),\n\tFOREIGN KEY(dashboard_id) REFERENCES senior_management_dashboard(id)\n);\n\nCREATE TABLE dashboard_settings (\n\tid INT PRIMARY KEY,\n\tdashboard_id INT,\n\trefresh_interval INT,\n\tdisplay_theme VARCHAR(50),\n\tFOREIGN KEY(dashboard_id) REFERENCES senior_management_dashboard(id)\n);\n\nCREATE TABLE notification_history (\n\tid INT PRIMARY KEY,\n\tdashboard_id INT,\n\tnotification_text TEXT,\n\tnotification_sent_at TIMESTAMP,\n\tFOREIGN KEY(dashboard_id) REFERENCES senior_management_dashboard(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE risk_dashboard (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  value DECIMAL,\n  timestamp TIMESTAMP\n);\n\nCREATE TABLE risk_category (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(255),\n  description TEXT\n);\n\nCREATE TABLE risk_metric (\n  metric_id INT PRIMARY KEY,\n  metric_name VARCHAR(255),\n  weight DECIMAL,\n  target DECIMAL\n);\n\nCREATE TABLE dashboard_user (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(255),\n  email VARCHAR(255),\n  role VARCHAR(50)\n);\n\nCREATE TABLE metric_assignment (\n  assignment_id INT PRIMARY KEY,\n  metric_id INT,\n  user_id INT,\n  assignment_date DATE\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamMembers (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50),\n    location VARCHAR(50),\n    meeting_notes TEXT,\n    action_items JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meetings (meeting_id INT PRIMARY KEY, meeting_date DATE, meeting_notes TEXT) CREATE TABLE action_items (action_item_id INT PRIMARY KEY, meeting_id INT, action_description TEXT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meeting_notes (meeting_id INT PRIMARY KEY,\n    meeting_date DATE,\n    team_member_id INT,\n    meeting_notes TEXT,\n    action_items TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (team_member_id INT PRIMARY KEY,\n    team_member_name VARCHAR(50),\n    location VARCHAR(50),\n    email VARCHAR(50))"
+      },
+      {
+        "table_schema": "CREATE TABLE action_items (item_id INT PRIMARY KEY,\n    meeting_id INT,\n    assigned_to INT,\n    item_description VARCHAR(255),\n    status VARCHAR(20))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamMembers (\n  member_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  location VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingNotes (\n  note_id INT PRIMARY KEY,\n  meeting_id INT,\n  note_text TEXT,\n  created_at TIMESTAMP,\n  FOREIGN KEY (meeting_id) REFERENCES TeamMembers(member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ActionItems (\n  item_id INT PRIMARY KEY,\n  meeting_id INT,\n  item_description TEXT,\n  assigned_to INT,\n  completed BOOLEAN,\n  FOREIGN KEY (meeting_id) REFERENCES MeetingNotes(meeting_id),\n  FOREIGN KEY (assigned_to) REFERENCES TeamMembers(member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Meetings (\n  meeting_id INT PRIMARY KEY,\n  meeting_title VARCHAR(100),\n  meeting_date DATE,\n  meeting_location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Meeting_Notes (\n  note_id INT PRIMARY KEY,\n  note_content TEXT,\n  created_by VARCHAR(255),\n  created_at TIMESTAMP,\n  meeting_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Action_Items (\n  item_id INT PRIMARY KEY,\n  item_description TEXT,\n  assigned_to VARCHAR(255),\n  due_date DATE,\n  status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Team_Members (\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR(255),\n  location VARCHAR(255),\n  role VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Meetings (\n  meeting_id INT PRIMARY KEY,\n  meeting_date DATE,\n  location VARCHAR(255),\n  meeting_notes_id INT,\n  FOREIGN KEY (meeting_notes_id) REFERENCES Meeting_Notes(note_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Collaboration (\n  collaboration_id INT PRIMARY KEY,\n  meeting_id INT,\n  item_id INT,\n  FOREIGN KEY (meeting_id) REFERENCES Meetings(meeting_id),\n  FOREIGN KEY (item_id) REFERENCES Action_Items(item_id)\n)"
+      }
+    ]
+  }
+]

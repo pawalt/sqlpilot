@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SalesData (\n    sale_id INT PRIMARY KEY,\n    sale_date DATE,\n    product_id INT,\n    quantity INT,\n    amount DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sales (\n    sales_id INT PRIMARY KEY,\n    product_id INT,\n    sale_date DATE,\n    sale_amount DECIMAL\n);\n\nCREATE TABLE demographic (\n    demographic_id INT PRIMARY KEY,\n    customer_id INT,\n    age INT,\n    gender VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sales_data (\n    sale_id INT PRIMARY KEY,\n    product_name VARCHAR(50),\n    sale_amount DECIMAL(10, 2),\n    sale_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE demographic_data (\n    demographic_id INT PRIMARY KEY,\n    city VARCHAR(50),\n    state VARCHAR(2),\n    age_group VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE combined_data (\n    sale_id INT,\n    demographic_id INT,\n    total_sales DECIMAL(10, 2),\n    prediction_score DECIMAL(10, 2)\n    FOREIGN KEY (sale_id) REFERENCES sales_data(sale_id),\n    FOREIGN KEY (demographic_id) REFERENCES demographic_data(demographic_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sales_data (\n    sale_id INT PRIMARY KEY,\n    product_name VARCHAR(50),\n    sale_amount DECIMAL(10, 2),\n    sale_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE demographic_data (\n    demographic_id INT PRIMARY KEY,\n    city VARCHAR(50),\n    state VARCHAR(50),\n    age_range VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sales_demographic_view (\n    sale_id INT,\n    demographic_id INT,\n    FOREIGN KEY (sale_id) REFERENCES sales_data(sale_id),\n    FOREIGN KEY (demographic_id) REFERENCES demographic_data(demographic_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE prediction_data (\n    predicted_sale_amount DECIMAL(10, 2),\n    predicted_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SalesData (    sales_id INT,    product_name TEXT,    quantity INT,    sale_date DATE,    PRIMARY KEY (sales_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE DemographicData (    customer_id INT,    customer_name TEXT,    age INT,    gender TEXT,    location TEXT,    PRIMARY KEY (customer_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE CombinedData (    sales_id INT,    customer_id INT,    product_name TEXT,    quantity INT,    sale_date DATE,    customer_name TEXT,    age INT,    gender TEXT,    location TEXT,    PRIMARY KEY (sales_id, customer_id),    FOREIGN KEY (sales_id) REFERENCES SalesData(sales_id) ON DELETE CASCADE,    FOREIGN KEY (customer_id) REFERENCES DemographicData(customer_id) ON DELETE CASCADE );"
+      },
+      {
+        "table_schema": "CREATE TABLE DemandPredictions (    prediction_id INT,    sales_id INT,    customer_id INT,    prediction_status TEXT,    prediction_date DATE,    prediction_value FLOAT,    PRIMARY KEY (prediction_id),    FOREIGN KEY (sales_id) REFERENCES SalesData(sales_id),    FOREIGN KEY (customer_id) REFERENCES DemographicData(customer_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE SalesView AS SELECT s.sales_id, s.product_name, s.quantity, s.sale_date, d.customer_name, d.age, d.gender, d.location FROM SalesData s JOIN DemographicData d ON s.sales_id = d.customer_id;"
+      }
+    ]
+  }
+]

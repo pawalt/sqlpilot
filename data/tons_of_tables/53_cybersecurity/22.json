@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatData (\n  threat_id UUID PRIMARY KEY,\n  threat_name VARCHAR(255),\n  threat_type VARCHAR(50),\n  threat_date DATE,\n  threat_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threats (\n  threat_id INT PRIMARY KEY,\n  threat_name VARCHAR(255),\n  threat_type VARCHAR(50),\n  threat_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attack_patterns (\n  pattern_id INT PRIMARY KEY,\n  pattern_name VARCHAR(255),\n  pattern_description TEXT,\n  pattern_severity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatData (\n  threat_id SERIAL PRIMARY KEY,\n  threat_type VARCHAR(255) NOT NULL,\n  threat_description TEXT,\n  threat_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ThreatPatterns (\n  pattern_id SERIAL PRIMARY KEY,\n  pattern_name VARCHAR(255) NOT NULL,\n  pattern_description TEXT,\n  threat_id INT REFERENCES ThreatData(threat_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CyberAttacks (\n  attack_id SERIAL PRIMARY KEY,\n  attack_description TEXT,\n  attack_date DATE,\n  pattern_id INT REFERENCES ThreatPatterns(pattern_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Threats (\n    threat_id UUID PRIMARY KEY,\n    threat_name TEXT,\n    threat_type TEXT,\n    threat_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Incidents (\n    incident_id UUID PRIMARY KEY,\n    incident_date DATE,\n    threat_id UUID REFERENCES Threats(threat_id),\n    incident_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Attackers (\n    attacker_id UUID PRIMARY KEY,\n    attacker_name TEXT,\n    attacker_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Attacks (\n    attack_id UUID PRIMARY KEY,\n    attack_date DATE,\n    incident_id UUID REFERENCES Incidents(incident_id),\n    attacker_id UUID REFERENCES Attackers(attacker_id),\n    attack_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatActors (id INT, name STRING, description STRING, primary key (id));"
+      },
+      {
+        "table_schema": "CREATE TABLE AttackVectors (id INT, name STRING, threat_actor_id INT, description STRING, primary key (id), foreign key (threat_actor_id) references ThreatActors(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Targets (id INT, name STRING, description STRING, primary key (id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Attacks (id INT, attack_vector_id INT, target_id INT, date DATE, description STRING, primary key (id), foreign key (attack_vector_id) references AttackVectors(id), foreign key (target_id) references Targets(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentReports (id INT, attack_id INT, date DATE, summary STRING, primary key (id), foreign key (attack_id) references Attacks(id));"
+      }
+    ]
+  }
+]

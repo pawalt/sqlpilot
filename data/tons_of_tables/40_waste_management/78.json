@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sustainable_packaging_materials (\n  material_id SERIAL PRIMARY KEY,\n  material_name TEXT NOT NULL,\n  supplier_name TEXT NOT NULL,\n  country_of_origin TEXT,\n  sustainability_rating INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sustainable_materials (\n    id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    source_type VARCHAR(255),\n    source_location VARCHAR(255),\n    sustainability_rating INT\n);\n\nCREATE TABLE material_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255),\n    contact_person VARCHAR(255),\n    contact_email VARCHAR(255),\n    material_id INT,\n    FOREIGN KEY (material_id) REFERENCES sustainable_materials(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(50),\n    source_country VARCHAR(50),\n    sustainability_rating INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(50),\n    contact_person VARCHAR(50),\n    email VARCHAR(50),\n    phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sourcing_records (\n    record_id INT PRIMARY KEY,\n    material_id INT,\n    supplier_id INT,\n    amount_purchased INT,\n    purchase_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n  material_id UUID PRIMARY KEY,\n  material_name TEXT,\n  source_location TEXT,\n  sustainability_rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id UUID PRIMARY KEY,\n  supplier_name TEXT,\n  contact_email TEXT,\n  location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n  order_id UUID PRIMARY KEY,\n  supplier_id UUID,\n  material_id UUID,\n  quantity INT,\n  order_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_inventory (\n  inventory_id UUID PRIMARY KEY,\n  material_id UUID,\n  quantity INT,\n  expiration_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  material_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  contact_person VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_sources (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(100) NOT NULL,\n  source_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_inventory (\n  inventory_id INT PRIMARY KEY,\n  material_id INT NOT NULL,\n  source_id INT NOT NULL,\n  quantity INT NOT NULL,\n  FOREIGN KEY (material_id) REFERENCES packaging_materials(material_id),\n  FOREIGN KEY (source_id) REFERENCES packaging_sources(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_orders (\n  order_id INT PRIMARY KEY,\n  supplier_id INT NOT NULL,\n  material_id INT NOT NULL,\n  quantity INT NOT NULL,\n  order_date DATE NOT NULL,\n  delivery_date DATE,\n  FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id),\n  FOREIGN KEY (material_id) REFERENCES packaging_materials(material_id)\n);"
+      }
+    ]
+  }
+]

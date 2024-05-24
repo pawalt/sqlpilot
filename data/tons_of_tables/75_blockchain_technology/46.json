@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_agreements (\n    agreement_id UUID PRIMARY KEY,\n    agreement_name VARCHAR(255) NOT NULL,\n    parties JSONB NOT NULL,\n    executed_date TIMESTAMP NOT NULL,\n    contract_address VARCHAR(42)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_agreements (\n    agreement_id UUID PRIMARY KEY,\n    agreement_name VARCHAR(100) NOT NULL,\n    agreement_text TEXT NOT NULL,\n    party1 VARCHAR(50) NOT NULL,\n    party2 VARCHAR(50) NOT NULL,\n    validity_period TIMESTAMP\n);\n\nCREATE TABLE smart_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name VARCHAR(100) NOT NULL,\n    contract_text TEXT NOT NULL,\n    agreement_id UUID NOT NULL REFERENCES legal_agreements(agreement_id),\n    execution_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_agreements (\n    agreement_id INT PRIMARY KEY,\n    agreement_name VARCHAR(255),\n    party_one VARCHAR(255),\n    party_two VARCHAR(255),\n    agreement_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contracts (\n    contract_id INT PRIMARY KEY,\n    contract_name VARCHAR(255),\n    agreement_id INT,\n    execution_date DATE,\n    is_executed BOOLEAN,\n    FOREIGN KEY (agreement_id) REFERENCES legal_agreements(agreement_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id INT PRIMARY KEY,\n    contract_name VARCHAR(255),\n    contract_code TEXT,\n    start_date DATE,\n    end_date DATE,\n    is_active BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_agreements (\n    agreement_id UUID PRIMARY KEY,\n    agreement_name TEXT,\n    parties TEXT[],\n    execution_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_templates (\n    template_id UUID PRIMARY KEY,\n    template_name TEXT,\n    template_format TEXT,\n    template_content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE executed_contracts (\n    contract_id UUID PRIMARY KEY,\n    agreement_id UUID REFERENCES legal_agreements(agreement_id),\n    template_id UUID REFERENCES contract_templates(template_id),\n    executed_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_address TEXT,\n    contract_code TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agreements (\n    agreement_id INT,\n    agreement_name VARCHAR(255),\n    agreement_text TEXT,\n    signing_date DATE,\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parties (\n    party_id INT,\n    party_name VARCHAR(255),\n    address VARCHAR(255),\n    phone_number VARCHAR(15),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signatures (\n    signature_id INT,\n    agreement_id INT,\n    party_id INT,\n    signature_date DATE,\n    signature_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE executions (\n    execution_id INT,\n    agreement_id INT,\n    smart_contract_id INT,\n    execution_date DATE,\n    execution_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    smart_contract_id INT,\n    contract_name VARCHAR(255),\n    contract_text TEXT,\n    creation_date DATE,\n    creator_party_id INT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE livestock_breeding (\n  id SERIAL PRIMARY KEY,\n  animal_id INT NOT NULL,\n  parent1_id INT,\n  parent2_id INT,\n  birth_date DATE,\n  breeding_date DATE,\n  breeding_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LivestockBreedingInformation (\n    id INT PRIMARY KEY,\n    animal_name VARCHAR(50),\n    parent1_id INT,\n    parent2_id INT,\n    birth_date DATE,\n    breeding_history JSON\n);\n\nCREATE TABLE BreedingPrograms (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    program_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parent_animal (\n  animal_id INT PRIMARY KEY,\n  animal_name VARCHAR(255),\n  birth_date DATE,\n  breed VARCHAR(50),\n  gender VARCHAR(10),\n  sire_id INT,\n  dam_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE breeding_history (\n  history_id INT PRIMARY KEY,\n  animal_id INT,\n  breeding_date DATE,\n  breeding_type VARCHAR(50),\n  result VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE breeding_program (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(100),\n  start_date DATE,\n  end_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parent_animal (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    breed VARCHAR(50) NOT NULL,\n    age INT\n);\n\nCREATE TABLE offspring (\n    id INT PRIMARY KEY,\n    parent_id INT NOT NULL,\n    name VARCHAR(50) NOT NULL,\n    breed VARCHAR(50) NOT NULL,\n    age INT,\n    FOREIGN KEY (parent_id) REFERENCES parent_animal(id)\n);\n\nCREATE TABLE breeding_history (\n    id INT PRIMARY KEY,\n    parent_id INT NOT NULL,\n    offspring_id INT NOT NULL,\n    mating_date DATE NOT NULL,\n    breeding_success BOOLEAN,\n    FOREIGN KEY (parent_id) REFERENCES parent_animal(id),\n    FOREIGN KEY (offspring_id) REFERENCES offspring(id)\n);\n\nCREATE TABLE breeding_program (\n    id INT PRIMARY KEY,\n    program_name VARCHAR(50) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parent_animal (\n    parent_id INT PRIMARY KEY,\n    parent_name VARCHAR(50),\n    birth_date DATE,\n    breed VARCHAR(50),\n    gender ENUM('Male', 'Female'),\n    breed_history TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE offspring_animal (\n    offspring_id INT PRIMARY KEY,\n    parent_id INT,\n    offspring_name VARCHAR(50),\n    birth_date DATE,\n    breed VARCHAR(50),\n    gender ENUM('Male', 'Female'),\n    FOREIGN KEY (parent_id) REFERENCES parent_animal(parent_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE breeding_stock (\n    stock_id INT PRIMARY KEY,\n    animal_id INT,\n    breeding_date DATE,\n    breeding_notes TEXT,\n    FOREIGN KEY (animal_id) REFERENCES offspring_animal(offspring_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE breeding_program (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(50),\n    program_start_date DATE,\n    program_end_date DATE,\n    program_notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE program_participation (\n    participation_id INT PRIMARY KEY,\n    program_id INT,\n    stock_id INT,\n    participation_date DATE,\n    comments TEXT,\n    FOREIGN KEY (program_id) REFERENCES breeding_program(program_id),\n    FOREIGN KEY (stock_id) REFERENCES breeding_stock(stock_id)\n);\n"
+      }
+    ]
+  }
+]

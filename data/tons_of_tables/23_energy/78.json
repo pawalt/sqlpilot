@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_impact_assessments (\n    assessment_id INT PRIMARY KEY,\n    project_name VARCHAR(100),\n    location VARCHAR(100),\n    assessment_date DATE,\n    assessed_by VARCHAR(100),\n    assessment_details TEXT,\n    mitigation_measures TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_assessments (\n  assessment_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  location VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  estimated_impact DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_measures (\n  measure_id INT PRIMARY KEY,\n  assessment_id INT,\n  measure_description TEXT,\n  effectiveness VARCHAR(50),\n  cost_estimate DECIMAL(10, 2),\n  FOREIGN KEY (assessment_id) REFERENCES environmental_assessments(assessment_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_impact_assessments (\n    assessment_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    assessment_date DATE,\n    assessed_by VARCHAR(255),\n    assessment_results TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_measures (\n    measure_id INT PRIMARY KEY,\n    assessment_id INT,\n    measure_description TEXT,\n    measure_effectiveness VARCHAR(50),\n    FOREIGN KEY (assessment_id) REFERENCES environmental_impact_assessments(assessment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE geothermal_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    location VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    project_status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnvironmentalImpactAssessment (\n    id INT PRIMARY KEY,\n    project_name VARCHAR(100),\n    location VARCHAR(100),\n    assessment_date DATE,\n    assessors VARCHAR(100),\n    impact_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MitigationMeasures (\n    id INT PRIMARY KEY,\n    assessment_id INT,\n    measure_name VARCHAR(100),\n    measure_description TEXT,\n    effectiveness VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GeothermalProject (\n    id INT PRIMARY KEY,\n    project_name VARCHAR(100),\n    location VARCHAR(100),\n    capacity FLOAT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reporting (\n    id INT PRIMARY KEY,\n    project_id INT,\n    assessment_id INT,\n    report_date DATE,\n    reporter VARCHAR(100),\n    report_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geothermal_projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  location VARCHAR(100),\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact_assessments (\n  assessment_id INT PRIMARY KEY,\n  project_id INT,\n  assessment_date DATE,\n  impact_summary TEXT,\n  CONSTRAINT fk_project_id FOREIGN KEY (project_id) REFERENCES geothermal_projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_measures (\n  measure_id INT PRIMARY KEY,\n  assessment_id INT,\n  measure_description TEXT,\n  CONSTRAINT fk_assessment_id FOREIGN KEY (assessment_id) REFERENCES environmental_impact_assessments(assessment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE stakeholders (\n  stakeholder_id INT PRIMARY KEY,\n  stakeholder_name VARCHAR(100),\n  contact_info VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_stakeholders (\n  project_id INT,\n  stakeholder_id INT,\n  PRIMARY KEY (project_id, stakeholder_id),\n  CONSTRAINT fk_project_id FOREIGN KEY (project_id) REFERENCES geothermal_projects(project_id),\n  CONSTRAINT fk_stakeholder_id FOREIGN KEY (stakeholder_id) REFERENCES stakeholders(stakeholder_id)\n);\n"
+      }
+    ]
+  }
+]

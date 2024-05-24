@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (    id INT PRIMARY KEY,    username VARCHAR(50) NOT NULL,    password VARCHAR(100) NOT NULL,    role ENUM('admin', 'user') NOT NULL );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(50) NOT NULL,\n  user_id INT NOT NULL,\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n  device_id UUID PRIMARY KEY,\n  device_name VARCHAR(50) NOT NULL,\n  device_type VARCHAR(50) NOT NULL,\n  user_id UUID REFERENCES users(user_id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n  access_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,\n  device_id UUID REFERENCES devices(device_id) ON DELETE CASCADE,\n  access_level INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    owner_id INT NOT NULL,\n    FOREIGN KEY (owner_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_access (\n    access_id INT PRIMARY KEY,\n    device_id INT NOT NULL,\n    user_id INT NOT NULL,\n    access_level VARCHAR(20) NOT NULL,\n    FOREIGN KEY (device_id) REFERENCES devices(device_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    access_id INT NOT NULL,\n    user_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    action VARCHAR(20) NOT NULL,\n    FOREIGN KEY (access_id) REFERENCES device_access(access_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    password VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(255) NOT NULL,\n    user_id UUID REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id UUID PRIMARY KEY,\n    device_id UUID REFERENCES devices(device_id),\n    access_time TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id UUID REFERENCES users(user_id),\n    role_id UUID REFERENCES roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n);\n"
+      }
+    ]
+  }
+]

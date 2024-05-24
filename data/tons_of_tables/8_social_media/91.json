@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE misinformation_tracking (\n  post_id SERIAL PRIMARY KEY,\n  user_id INT,\n  post_content TEXT,\n  interaction_type VARCHAR(50),\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_interactions (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  interaction_type VARCHAR(20),\n  interaction_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE misinformation (\n  post_id INT PRIMARY KEY,\n  user_id INT,\n  post_content TEXT,\n  misinformation_category VARCHAR(50),\n  misinformation_timestamp TIMESTAMP,\n  FOREIGN KEY (user_id) REFERENCES user_interactions(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserInteractions (\n    user_id INT PRIMARY KEY,\n    post_id INT,\n    interaction_type VARCHAR(50),\n    interaction_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MisinformationPosts (\n    post_id INT PRIMARY KEY,\n    post_content TEXT,\n    user_id INT,\n    post_date TIMESTAMP,\n    misinformation_score FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MisinformationReports (\n    report_id INT PRIMARY KEY,\n    post_id INT,\n    reporter_id INT,\n    report_date TIMESTAMP,\n    report_reason TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    join_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    post_content TEXT,\n    post_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reactions (\n    reaction_id INT PRIMARY KEY,\n    post_id INT NOT NULL,\n    user_id INT NOT NULL,\n    reaction_type VARCHAR(10),\n    reaction_date TIMESTAMP,\n    FOREIGN KEY (post_id) REFERENCES posts(post_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    post_id INT NOT NULL,\n    user_id INT NOT NULL,\n    comment_content TEXT,\n    comment_date TIMESTAMP,\n    FOREIGN KEY (post_id) REFERENCES posts(post_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MisinformationUsers (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MisinformationPosts (\n  post_id INT PRIMARY KEY,\n  user_id INT,\n  post_content TEXT NOT NULL,\n  post_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MisinformationLikes (\n  like_id INT PRIMARY KEY,\n  user_id INT,\n  post_id INT,\n  like_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MisinformationComments (\n  comment_id INT PRIMARY KEY,\n  user_id INT,\n  post_id INT,\n  comment_content TEXT NOT NULL,\n  comment_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MisinformationReports (\n  report_id INT PRIMARY KEY,\n  user_id INT,\n  report_type VARCHAR(20) NOT NULL,\n  report_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

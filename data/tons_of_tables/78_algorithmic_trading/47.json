@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE client_preferences (\n    client_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    preference_1 VARCHAR(50),\n    preference_2 VARCHAR(50),\n    preference_3 VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(100),\n  phone_number VARCHAR(15),\n  dob DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n  strategy_id INT PRIMARY KEY,\n  strategy_name VARCHAR(50),\n  client_id INT REFERENCES clients(client_id),\n  strategy_description VARCHAR(255),\n  created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n\tclient_id UUID PRIMARY KEY,\n\tclient_name VARCHAR(100),\n\tclient_email VARCHAR(100),\n\tclient_balance DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n\tpreference_id UUID PRIMARY KEY,\n\tclient_id UUID REFERENCES clients(client_id),\n\tpreference_name VARCHAR(100),\n\tpreference_value VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n\tstrategy_id UUID PRIMARY KEY,\n\tclient_id UUID REFERENCES clients(client_id),\n\tstrategy_type VARCHAR(50),\n\tstrategy_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255) UNIQUE,\n    phone VARCHAR(20),\n    address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    id INT PRIMARY KEY,\n    client_id INT REFERENCES clients(id),\n    strategy_name VARCHAR(255),\n    preference_data TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n    id INT PRIMARY KEY,\n    strategy_name VARCHAR(255) UNIQUE,\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE client_trading_prefs (\n    id INT PRIMARY KEY,\n    client_id INT REFERENCES clients(id),\n    strategy_id INT REFERENCES trading_strategies(id),\n    preference_data JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n\tclient_id INT PRIMARY KEY,\n\tclient_name VARCHAR(50) NOT NULL,\n\temail VARCHAR(100) UNIQUE,\n\tphone_number VARCHAR(15),\n\tdate_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n\taccount_id INT PRIMARY KEY,\n\tclient_id INT,\n\tbalance DECIMAL(10,2) DEFAULT 0,\n\tFOREIGN KEY (client_id) REFERENCES clients(client_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n\tpreference_id INT PRIMARY KEY,\n\tclient_id INT,\n\tinvestment_type VARCHAR(50),\n\trisk_tolerance VARCHAR(10),\n\tFOREIGN KEY (client_id) REFERENCES clients(client_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE strategies (\n\tstrategy_id INT PRIMARY KEY,\n\tstrategy_name VARCHAR(50),\n\tdescription TEXT,\n\tclient_id INT,\n\tFOREIGN KEY (client_id) REFERENCES clients(client_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n\ttransaction_id INT PRIMARY KEY,\n\tclient_id INT,\n\tstrategy_id INT,\n\ttransaction_type VARCHAR(10),\n\tamount DECIMAL(10,2),\n\ttimestamp TIMESTAMP,\n\tFOREIGN KEY (client_id) REFERENCES clients(client_id),\n\tFOREIGN KEY (strategy_id) REFERENCES strategies(strategy_id)\n);"
+      }
+    ]
+  }
+]

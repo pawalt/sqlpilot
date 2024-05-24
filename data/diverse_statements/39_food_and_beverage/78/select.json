@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM wine_preferences;",
+      "SELECT customer_id, name, email FROM wine_preferences;",
+      "SELECT name, email, wine_ratings FROM wine_preferences;",
+      "SELECT customer_id, name, past_purchases FROM wine_preferences;",
+      "SELECT * FROM wine_preferences WHERE name = 'John Smith';",
+      "SELECT * FROM wine_preferences WHERE customer_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT name, email FROM wine_preferences WHERE customer_id = '123e4567-e89b-12d3-a456-426614174001';",
+      "SELECT name, past_purchases FROM wine_preferences WHERE email = 'example@gmail.com';",
+      "SELECT * FROM wine_preferences WHERE customer_id = '123e4567-e89b-12d3-a456-426614174002' AND wine_ratings ->> 'chardonnay' > '4';",
+      "SELECT customer_id, name, email, wine_ratings->'cabernet_sauvignon' AS rating FROM wine_preferences WHERE JSONB_ARRAY_LENGTH(wine_ratings) > 2;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM customer_preferences;",
+      "SELECT customer_id, preference_1 FROM customer_preferences ORDER BY customer_id DESC;",
+      "SELECT customer_id, preference_2 FROM customer_preferences WHERE preference_2 = 'Red Wine';",
+      "SELECT customer_id, preference_3 FROM customer_preferences WHERE customer_id = 3;",
+      "SELECT * FROM customer_preferences WHERE preference_1 LIKE '%Cabernet%' LIMIT 5;",
+      "SELECT * FROM customer_preferences WHERE customer_id = 1 ORDER BY preference_1 DESC, preference_2 ASC, preference_3",
+      "SELECT customer_id, preference_1, preference_3 FROM customer_preferences WHERE preference_2 = 'Red Wine'",
+      "SELECT c.customer_id, c.preference_1, w.rating_value FROM customer_preferences c INNER JOIN wine_ratings w ON c.customer_id = w.customer_id WHERE w.rating_value >= 4.5 ORDER BY c.customer_id ASC",
+      "SELECT c.customer_id, w.rating_value FROM customer_preferences c INNER JOIN wine_ratings w ON c.customer_id = w.customer_id GROUP BY c.customer_id HAVING AVG(w.rating_value) > 3.0",
+      "SELECT c.customer_id, COUNT(w.rating_id) AS total_ratings FROM customer_preferences c LEFT JOIN wine_ratings w ON c.customer_id = w.customer_id GROUP BY c.customer_id ORDER BY total_ratings DESC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT customer_id, wine_preference, food_preference FROM customer_preferences;",
+      "SELECT * FROM past_purchases WHERE customer_id = 1;",
+      "SELECT purchase_id, purchase_date, quantity FROM past_purchases WHERE purchase_date > '2022-01-01';",
+      "SELECT customer_id, wine_bottle_id, rating FROM wine_ratings WHERE rating >= 4.5;",
+      "SELECT customer_id, wine_preference, food_preference FROM customer_preferences ORDER BY customer_id DESC;",
+      "SELECT customer_id, wine_preference, food_preference FROM customer_preferences;",
+      "SELECT * FROM customer_preferences ORDER BY customer_id DESC;",
+      "SELECT customer_id, wine_preference FROM customer_preferences WHERE wine_preference = 'Red Wine';",
+      "SELECT cp.customer_id, pp.purchase_date, wr.rating FROM customer_preferences cp JOIN past_purchases pp ON cp.customer_id = pp.customer_id JOIN wine_ratings wr ON cp.customer_id = wr.customer_id ORDER BY pp.purchase_date DESC, wr.rating ASC;",
+      "SELECT cp.customer_id, pp.purchase_date, COUNT(wr.rating) AS total_ratings FROM customer_preferences cp JOIN past_purchases pp ON cp.customer_id = pp.customer_id JOIN wine_ratings wr ON cp.customer_id = wr.customer_id GROUP BY cp.customer_id, pp.purchase_date ORDER BY total_ratings DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM customers;",
+      "SELECT first_name, last_name, email FROM customers;",
+      "SELECT customer_id, first_name, last_name FROM customers ORDER BY last_name DESC;",
+      "SELECT * FROM purchases WHERE total_amount > 100;",
+      "SELECT wine_name, grape_variety, region FROM wines;",
+      "SELECT * FROM customers WHERE customer_id = 1;",
+      "SELECT first_name, last_name, email FROM customers WHERE customer_id = 2;",
+      "SELECT customer_id, first_name, last_name FROM customers WHERE last_name LIKE 'S%' ORDER BY first_name DESC;",
+      "SELECT * FROM purchases WHERE total_amount > 100 ORDER BY purchase_date DESC;",
+      "SELECT customers.first_name, wines.wine_name, wine_ratings.rating FROM customers JOIN wine_ratings ON customers.customer_id = wine_ratings.customer_id JOIN wines ON wine_ratings.wine_id = wines.wine_id WHERE customers.customer_id = 1 ORDER BY rating DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM customers;",
+      "SELECT customer_name, customer_age FROM customers;",
+      "SELECT customer_name, customer_email FROM customers WHERE customer_age > 30;",
+      "SELECT customer_name, total_amount FROM customers JOIN purchases ON customers.customer_id = purchases.customer_id;",
+      "SELECT wine_name, price FROM wines WHERE region = 'France';",
+      "SELECT * FROM customers WHERE customer_age > 30 ORDER BY customer_name ASC;",
+      "SELECT customer_name, customer_email FROM customers WHERE customer_age BETWEEN 25 AND 40;",
+      "SELECT wine_name, region, price FROM wines WHERE price < 50 ORDER BY price DESC;",
+      "SELECT customer_name, preferred_wine_type, preferred_region FROM customers JOIN preferences ON customers.customer_id = preferences.customer_id;",
+      "SELECT customer_name, purchase_date, total_amount FROM customers JOIN purchases ON customers.customer_id = purchases.customer_id WHERE purchase_date >= '2022-01-01';"
+    ]
+  }
+]

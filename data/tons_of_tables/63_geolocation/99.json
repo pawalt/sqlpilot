@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_leaderboards (\n    player_id UUID PRIMARY KEY,\n    player_name VARCHAR(255),\n    region VARCHAR(50),\n    achievements INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_leaderboard (\n    player_id UUID PRIMARY KEY,\n    player_name VARCHAR(255),\n    player_region VARCHAR(50),\n    player_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE region_leaderboard (\n    region_id UUID PRIMARY KEY,\n    region_name VARCHAR(100),\n    top_player_id UUID,\n    top_player_score INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location (\n    location_id INT PRIMARY KEY,\n    region_name VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE player (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    region_id INT NOT NULL,\n    achievements INT NOT NULL,\n    FOREIGN KEY (region_id) REFERENCES location(location_id)\n);\n\nCREATE TABLE leaderboard (\n    leaderboard_id INT PRIMARY KEY,\n    player_id INT NOT NULL,\n    rank INT NOT NULL,\n    FOREIGN KEY (player_id) REFERENCES player(player_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE region (\n    region_id INT PRIMARY KEY,\n    region_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player (\n    player_id INT PRIMARY KEY,\n    player_name TEXT,\n    player_region INT,\n    FOREIGN KEY (player_region) REFERENCES region(region_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE achievements (\n    achievement_id INT PRIMARY KEY,\n    achievement_name TEXT,\n    achievement_points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboard (\n    leaderboard_id INT PRIMARY KEY,\n    player_id INT,\n    region_id INT,\n    achievement_id INT,\n    points_earned INT,\n    FOREIGN KEY (player_id) REFERENCES player(player_id),\n    FOREIGN KEY (region_id) REFERENCES region(region_id),\n    FOREIGN KEY (achievement_id) REFERENCES achievements(achievement_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regions (id INT PRIMARY KEY, region_name STRING NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE players (id INT PRIMARY KEY, player_name STRING NOT NULL, region_id INT NOT NULL, achievements INT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboard (id INT PRIMARY KEY, player_id INT NOT NULL, region_id INT NOT NULL, rank INT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE cities (id INT PRIMARY KEY, city_name STRING NOT NULL, region_id INT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE achievements (id INT PRIMARY KEY, achievement_name STRING NOT NULL, points INT NOT NULL);"
+      }
+    ]
+  }
+]

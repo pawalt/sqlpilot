@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FoodDistributionNetwork (\n  id VARCHAR(255) PRIMARY KEY,\n  distributor_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255),\n  contact_number VARCHAR(20),\n  food_category VARCHAR(100),\n  distribution_capacity INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE distribution_centers ( id INT PRIMARY KEY, name STRING, location STRING, capacity INT );"
+      },
+      {
+        "table_schema": "CREATE TABLE food_items ( id INT PRIMARY KEY, name STRING, category STRING, quantity INT, expiration DATE );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FoodDistributor (\n    distributor_id INT PRIMARY KEY,\n    distributor_name STRING NOT NULL,\n    region_id INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FoodInventory (\n    inventory_id INT PRIMARY KEY,\n    food_item STRING NOT NULL,\n    quantity INT NOT NULL,\n    distributor_id INT REFERENCES FoodDistributor(distributor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RegionalDistribution (\n    distribution_id INT PRIMARY KEY,\n    region_id INT NOT NULL,\n    distributor_id INT REFERENCES FoodDistributor(distributor_id),\n    inventory_id INT REFERENCES FoodInventory(inventory_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE distribution_centers (\n id INT PRIMARY KEY,\n name VARCHAR(255) NOT NULL,\n location VARCHAR(255) NOT NULL,\n capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n id INT PRIMARY KEY,\n name VARCHAR(255) NOT NULL,\n location VARCHAR(255) NOT NULL,\n contact_person VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE food_products (\n id INT PRIMARY KEY,\n name VARCHAR(255) NOT NULL,\n category VARCHAR(255) NOT NULL,\n price DECIMAL(8,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution_records (\n id INT PRIMARY KEY,\n distribution_center_id INT NOT NULL,\n supplier_id INT NOT NULL,\n food_product_id INT NOT NULL,\n quantity INT,\n date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FoodDistributionCenters (\n    center_id INT PRIMARY KEY,\n    center_name VARCHAR(50),\n    location VARCHAR(100),\n    capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Donors (\n    donor_id INT PRIMARY KEY,\n    donor_name VARCHAR(50),\n    contact_name VARCHAR(50),\n    contact_number VARCHAR(20),\n    email VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Recipients (\n    recipient_id INT PRIMARY KEY,\n    recipient_name VARCHAR(50),\n    address VARCHAR(100),\n    contact_number VARCHAR(20),\n    household_size INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Donations (\n    donation_id INT PRIMARY KEY,\n    donor_id INT,\n    donation_date DATE,\n    donation_amount DECIMAL(10, 2),\n    FOREIGN KEY (donor_id) REFERENCES Donors(donor_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DistributionHistory (\n    distribution_id INT PRIMARY KEY,\n    center_id INT,\n    recipient_id INT,\n    distribution_date DATE,\n    quantity_received INT,\n    FOREIGN KEY (center_id) REFERENCES FoodDistributionCenters(center_id),\n    FOREIGN KEY (recipient_id) REFERENCES Recipients(recipient_id)\n)"
+      }
+    ]
+  }
+]

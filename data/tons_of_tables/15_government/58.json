@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE election_debates_schedule (\n    debate_id INT PRIMARY KEY,\n    debate_topic VARCHAR(255),\n    debate_date DATE,\n    moderator_name VARCHAR(100),\n    participant_1_name VARCHAR(100),\n    participant_2_name VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debates (\n    debate_id UUID PRIMARY KEY,\n    debate_topic TEXT NOT NULL,\n    debate_date TIMESTAMP NOT NULL,\n    moderator TEXT\n);\n\nCREATE TABLE participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name TEXT NOT NULL,\n    participant_role TEXT NOT NULL,\n    debate_id UUID REFERENCES debates(debate_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debates_schedule (\n    debate_id INT PRIMARY KEY,\n    debate_topic VARCHAR(255),\n    debate_date DATE,\n    debate_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255),\n    participant_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE debate_participants (\n    debate_id INT,\n    participant_id INT,\n    PRIMARY KEY (debate_id, participant_id),\n    FOREIGN KEY (debate_id) REFERENCES debates_schedule(debate_id),\n    FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debates_schedule (\n    debate_id INT PRIMARY KEY,\n    debate_topic VARCHAR(255),\n    debate_date DATE,\n    debate_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255),\n    participant_affiliation VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE debate_attendance (\n    attendance_id INT PRIMARY KEY,\n    debate_id INT,\n    participant_id INT,\n    attendance_status BOOLEAN,\n    FOREIGN KEY (debate_id) REFERENCES debates_schedule(debate_id),\n    FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE debate_questions (\n    question_id INT PRIMARY KEY,\n    debate_id INT,\n    question_text TEXT,\n    question_category VARCHAR(100),\n    FOREIGN KEY (debate_id) REFERENCES debates_schedule(debate_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debates (\n    debate_id INT PRIMARY KEY,\n    debate_topic VARCHAR(255),\n    debate_date DATE,\n    debate_location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255),\n    participant_role VARCHAR(50),\n    debate_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE moderators (\n    moderator_id INT PRIMARY KEY,\n    moderator_name VARCHAR(255),\n    debate_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sponsors (\n    sponsor_id INT PRIMARY KEY,\n    sponsor_name VARCHAR(255),\n    sponsor_budget DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendee_registration (\n    registration_id INT PRIMARY KEY,\n    attendee_name VARCHAR(255),\n    debate_id INT,\n    registration_date DATE\n);"
+      }
+    ]
+  }
+]

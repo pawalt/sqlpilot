@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory_tracking (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(255),\n    barcode VARCHAR(50) UNIQUE,\n    quantity INT,\n    price DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory (\n    id INT PRIMARY KEY,\n    product_name TEXT,\n    barcode VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scanned_items (\n    scan_id SERIAL PRIMARY KEY,\n    barcode VARCHAR(50),\n    scan_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InventoryItems (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(255),\n    barcode VARCHAR(50) UNIQUE,\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ScannedItems (\n    scan_id SERIAL PRIMARY KEY,\n    item_id INT,\n    scan_timestamp TIMESTAMP,\n    FOREIGN KEY (item_id) REFERENCES InventoryItems(item_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InventoryLogs (\n    log_id SERIAL PRIMARY KEY,\n    action_type VARCHAR(50),\n    item_id INT,\n    log_timestamp TIMESTAMP,\n    FOREIGN KEY (item_id) REFERENCES InventoryItems(item_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    barcode VARCHAR(50) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id UUID PRIMARY KEY,\n    product_id UUID REFERENCES products(product_id),\n    quantity INTEGER DEFAULT 0\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id UUID PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE scanning_records (\n    scanning_id UUID PRIMARY KEY,\n    product_id UUID REFERENCES products(product_id),\n    location_id UUID REFERENCES locations(location_id),\n    scanning_time TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BarcodeScanner (\n  id SERIAL PRIMARY KEY,\n  scanner_name TEXT NOT NULL,\n  manufacturer TEXT,\n  purchase_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InventoryItem (\n  id SERIAL PRIMARY KEY,\n  item_name TEXT NOT NULL,\n  barcode TEXT UNIQUE,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InventoryLocation (\n  id SERIAL PRIMARY KEY,\n  location_name TEXT NOT NULL,\n  address TEXT,\n  capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InventoryTransaction (\n  id SERIAL PRIMARY KEY,\n  item_id INT,\n  location_id INT,\n  transaction_type TEXT CHECK(transaction_type IN ('IN', 'OUT')),\n  transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InventoryAudit (\n  id SERIAL PRIMARY KEY,\n  audit_date DATE,\n  auditor_name TEXT,\n  discrepancy_found BOOLEAN\n);"
+      }
+    ]
+  }
+]

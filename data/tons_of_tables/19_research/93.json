@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_data (\n  participant_id UUID PRIMARY KEY,\n  gene_sequence TEXT,\n  mutation_type VARCHAR(50),\n  research_area VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researcher ( id INT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255) );"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneticData ( id INT PRIMARY KEY, researcher_id INT, data BLOB, FOREIGN KEY (researcher_id) REFERENCES Researcher(id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_information (patient_id UUID PRIMARY KEY,\n  first_name STRING,\n  last_name STRING,\n  age INT,\n  gender STRING,\n  ethnicity STRING,\n  has_family_history BOOL);"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_data (data_id UUID PRIMARY KEY,\n  patient_id UUID,\n  data_type STRING,\n  data_value FLOAT,\n  data_unit STRING,\n  test_date TIMESTAMP,\n  CONSTRAINT fk_patient_id FOREIGN KEY (patient_id) REFERENCES patient_information (patient_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE research_results (result_id UUID PRIMARY KEY,\n  patient_id UUID,\n  analysis_date TIMESTAMP,\n  result_summary STRING,\n  CONSTRAINT fk_patient_id FOREIGN KEY (patient_id) REFERENCES patient_information (patient_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researchers (researcher_id INT PRIMARY KEY, researcher_name VARCHAR(255), research_area VARCHAR(255));\nCREATE TABLE samples (sample_id INT PRIMARY KEY, sample_name VARCHAR(255), sample_type VARCHAR(50), researcher_id INT);\nCREATE TABLE experiments (experiment_id INT PRIMARY KEY, experiment_name VARCHAR(255), start_date DATE, end_date DATE, researcher_id INT);\nCREATE TABLE results (result_id INT PRIMARY KEY, sample_id INT, experiment_id INT, result_data TEXT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255),\n    specialization VARCHAR(255),\n    affiliation VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Samples (\n    sample_id INT PRIMARY KEY,\n    sample_name VARCHAR(255),\n    sample_type VARCHAR(255),\n    researcher_id INT,\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    analysis_type VARCHAR(255),\n    gene_function VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Mutations (\n    mutation_id INT PRIMARY KEY,\n    mutation_type VARCHAR(255),\n    gene_id INT,\n    FOREIGN KEY (gene_id) REFERENCES Genes(gene_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    experiment_date DATE,\n    researcher_id INT,\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n)"
+      }
+    ]
+  }
+]

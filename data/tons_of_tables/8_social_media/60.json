@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(100),\n    credit_card_number VARCHAR(20),\n    encrypted_data BYTES\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50)\n);\n\nCREATE TABLE encryption_settings (\n    setting_id INT PRIMARY KEY,\n    encryption_at_rest BOOL,\n    encryption_in_transit BOOL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(50),\n  social_security_number VARCHAR(20),\n  credit_card_number VARCHAR(16)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  key_id SERIAL PRIMARY KEY,\n  encryption_key BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_settings (\n  setting_id SERIAL PRIMARY KEY,\n  encryption_enabled BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    ssn VARCHAR(11),\n    credit_card_number VARCHAR(16)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id SERIAL PRIMARY KEY,\n    key_name VARCHAR(50),\n    key_value VARCHAR(256)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_encryption (\n    id SERIAL PRIMARY KEY,\n    encrypted_data TEXT,\n    encryption_key_id INT,\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n    id SERIAL PRIMARY KEY,\n    action_type VARCHAR(20),\n    timestamp TIMESTAMPTZ,\n    user_id INT,\n    table_affected VARCHAR(50),\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL,\n    order_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    order_id INT NOT NULL,\n    payment_amount DECIMAL(10, 2) NOT NULL,\n    payment_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id INT PRIMARY KEY,\n    log_description TEXT NOT NULL,\n    log_type VARCHAR(50) NOT NULL,\n    log_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

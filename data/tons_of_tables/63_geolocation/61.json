@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_tracking_data (\n  id INT PRIMARY KEY,\n  satellite_id INT NOT NULL,\n  tracking_date DATE NOT NULL,\n  latitude FLOAT NOT NULL,\n  longitude FLOAT NOT NULL,\n  altitude FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_positions (\n  id INT PRIMARY KEY,\n  satellite_id INT,\n  timestamp TIMESTAMP,\n  latitude FLOAT,\n  longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_metadata (\n  satellite_id INT PRIMARY KEY,\n  satellite_name VARCHAR(255),\n  launch_date DATE,\n  status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_tracking_data ( \n    satellite_id UUID PRIMARY KEY, \n    timestamp TIMESTAMP, \n    latitude FLOAT, \n    longitude FLOAT, \n    altitude FLOAT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_status ( \n    satellite_id UUID PRIMARY KEY, \n    status VARCHAR(50), \n    last_communication TIMESTAMP, \n    battery_level FLOAT, \n    is_active BOOLEAN \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_teams ( \n    team_id UUID PRIMARY KEY, \n    team_name VARCHAR(100), \n    number_of_members INT, \n    team_lead VARCHAR(100) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Satellite (\n  satellite_id SERIAL PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  launch_date DATE NOT NULL,\n  orbital_slot VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrackingData (\n  tracking_id SERIAL PRIMARY KEY,\n  satellite_id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  latitude DECIMAL(9,6) NOT NULL,\n  longitude DECIMAL(9,6) NOT NULL,\n  elevation DECIMAL(15,6) NOT NULL,\n  CONSTRAINT fk_satellite FOREIGN KEY (satellite_id) REFERENCES Satellite(satellite_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GroundStation (\n  station_id SERIAL PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DataAnalysis (\n  analysis_id SERIAL PRIMARY KEY,\n  tracking_id INT NOT NULL,\n  station_id INT NOT NULL,\n  analysis_result TEXT NOT NULL,\n  CONSTRAINT fk_tracking FOREIGN KEY (tracking_id) REFERENCES TrackingData(tracking_id),\n  CONSTRAINT fk_station FOREIGN KEY (station_id) REFERENCES GroundStation(station_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TrackingStation {\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  capacity INT\n}"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE support_tickets (\n    ticket_id INT PRIMARY KEY,\n    customer_id INT,\n    ticket_status VARCHAR(20),\n    creation_date TIMESTAMP,\n    resolution_date TIMESTAMP,\n    ticket_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tickets (\n    ticket_id INT PRIMARY KEY,\n    customer_id INT,\n    category VARCHAR(50),\n    status VARCHAR(20),\n    created_at TIMESTAMP,\n    resolved_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    ticket_id INT,\n    interaction_timestamp TIMESTAMP,\n    interaction_description TEXT,\n    agent_id INT,\n    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tickets (\n  ticket_id SERIAL,\n  customer_id INT,\n  priority VARCHAR(10),\n  status VARCHAR(10),\n  created_at TIMESTAMP,\n  PRIMARY KEY (ticket_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  interaction_id SERIAL,\n  ticket_id INT,\n  interaction_type VARCHAR(20),\n  interaction_details TEXT,\n  created_at TIMESTAMP,\n  PRIMARY KEY (interaction_id),\n  FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id SERIAL,\n  name VARCHAR(50),\n  email VARCHAR(50),\n  phone_number VARCHAR(15),\n  PRIMARY KEY (customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tickets (\n    ticket_id UUID PRIMARY KEY,\n    customer_id UUID,\n    ticket_status VARCHAR(50),\n    created_at TIMESTAMP,\n    resolved_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id UUID PRIMARY KEY,\n    ticket_id UUID,\n    interaction_type VARCHAR(50),\n    interaction_text TEXT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(100),\n    email VARCHAR(100),\n    phone_number VARCHAR(20),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id UUID PRIMARY KEY,\n    agent_name VARCHAR(100),\n    department VARCHAR(50),\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tickets (\n  ticket_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  issue_description TEXT,\n  status VARCHAR(20) DEFAULT 'Open',\n  priority VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  interaction_id INT PRIMARY KEY,\n  ticket_id INT,\n  interaction_time TIMESTAMP,\n  interaction_details TEXT,\n  FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agents (\n  agent_id INT PRIMARY KEY,\n  agent_name VARCHAR(50) NOT NULL,\n  department VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assignments (\n  assignment_id INT PRIMARY KEY,\n  ticket_id INT,\n  agent_id INT,\n  assignment_time TIMESTAMP,\n  FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id),\n  FOREIGN KEY (agent_id) REFERENCES agents(agent_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notes (\n  note_id INT PRIMARY KEY,\n  ticket_id INT,\n  agent_id INT,\n  note_text TEXT,\n  note_time TIMESTAMP,\n  FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id),\n  FOREIGN KEY (agent_id) REFERENCES agents(agent_id)\n);"
+      }
+    ]
+  }
+]

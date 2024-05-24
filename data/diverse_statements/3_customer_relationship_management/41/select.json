@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM email_tracking;",
+      "SELECT email_id, open_rate, timestamp FROM email_tracking WHERE click_through_rate > 0.5;",
+      "SELECT MAX(open_rate) AS max_open_rate FROM email_tracking;",
+      "SELECT email_id, click_through_rate FROM email_tracking ORDER BY click_through_rate DESC;",
+      "SELECT AVG(open_rate) AS avg_open_rate, AVG(click_through_rate) AS avg_ctr FROM email_tracking WHERE timestamp > '2022-01-01';",
+      "SELECT email_id, open_rate, click_through_rate, timestamp FROM email_tracking WHERE open_rate > 0.5 ORDER BY timestamp DESC LIMIT 10;",
+      "SELECT email_id, open_rate, click_through_rate, timestamp FROM email_tracking WHERE click_through_rate < 0.3 ORDER BY open_rate ASC LIMIT 5;",
+      "SELECT email_id, AVG(open_rate) AS avg_open_rate, AVG(click_through_rate) AS avg_click_through_rate FROM email_tracking GROUP BY email_id HAVING avg_open_rate > 0.4;",
+      "SELECT email_id, timestamp FROM email_tracking WHERE MONTH(timestamp) = 6 AND YEAR(timestamp) = 2022 ORDER BY timestamp ASC;",
+      "SELECT email_id, open_rate, click_through_rate, timestamp FROM email_tracking WHERE open_rate BETWEEN 0.2 AND 0.8 ORDER BY timestamp DESC LIMIT 10;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_open_rates;",
+      "SELECT email_id, open_time, open_location FROM email_open_rates ORDER BY open_time DESC;",
+      "SELECT email_id, open_location FROM email_open_rates WHERE user_id = 100;",
+      "SELECT email_id, click_time FROM email_click_through_rates WHERE click_location = 'USA';",
+      "SELECT * FROM email_click_through_rates ORDER BY click_time ASC;",
+      "SELECT * FROM email_open_rates WHERE user_id = 1;",
+      "SELECT email_id, open_time FROM email_open_rates ORDER BY open_time DESC LIMIT 10;",
+      "SELECT * FROM email_click_through_rates WHERE click_location = 'USA' AND user_id = 2;",
+      "SELECT email_id, click_time FROM email_click_through_rates ORDER BY click_time ASC LIMIT 5;",
+      "SELECT user_id, COUNT(email_id) AS total_emails FROM email_open_rates GROUP BY user_id HAVING total_emails > 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_campaigns;",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns;",
+      "SELECT campaign_id, campaign_name, start_date, end_date FROM email_campaigns ORDER BY start_date DESC;",
+      "SELECT campaign_name, COUNT(*) AS total_clicks FROM email_campaigns JOIN email_click_through_rates ON email_campaigns.campaign_id = email_click_through_rates.campaign_id GROUP BY campaign_name;",
+      "SELECT * FROM email_open_rates WHERE open_date BETWEEN '2022-01-01' AND '2022-02-28';",
+      "SELECT * FROM email_campaigns",
+      "SELECT DISTINCT campaign_name, start_date, end_date FROM email_campaigns ORDER BY start_date DESC",
+      "SELECT campaign_name, start_date, count(*) AS total_open_count FROM email_campaigns JOIN email_open_rates ON email_campaigns.campaign_id = email_open_rates.campaign_id GROUP BY campaign_name ORDER BY total_open_count DESC",
+      "SELECT email_open_rates.recipient_email, email_click_through_rates.click_date FROM email_open_rates JOIN email_click_through_rates ON email_open_rates.campaign_id = email_click_through_rates.campaign_id WHERE email_click_through_rates.click_date >= '2022-01-01'",
+      "SELECT campaign_name, start_date, end_date, recipient_email AS open_email FROM email_campaigns JOIN email_open_rates ON email_campaigns.campaign_id = email_open_rates.campaign_id WHERE start_date >= '2021-06-01'"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users",
+      "SELECT email, first_name, last_name FROM users",
+      "SELECT campaign_id, campaign_name FROM email_campaigns",
+      "SELECT email_id, click_time FROM click_through_rates",
+      "SELECT user_id, open_time FROM open_rates",
+      "SELECT email, first_name, last_name FROM users;",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns;",
+      "SELECT email_id, open_time FROM open_rates ORDER BY open_time DESC;",
+      "SELECT campaign_name, email, start_date, end_date FROM email_campaigns JOIN users ON email_campaigns.campaign_id = users.user_id;",
+      "SELECT user_id, SUM(DATEDIFF(end_date, start_date)) AS campaign_duration FROM email_campaigns GROUP BY user_id ORDER BY campaign_duration DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_campaigns;",
+      "SELECT campaign_name, start_date FROM email_campaigns WHERE start_date > '2021-01-01';",
+      "SELECT name, subscription_date FROM email_recipients WHERE subscription_date BETWEEN '2020-01-01' AND '2020-12-31';",
+      "SELECT campaign_name, interaction_date FROM email_campaigns JOIN email_interactions ON email_campaigns.campaign_id = email_interactions.campaign_id;",
+      "SELECT recipient_id, open_rate FROM email_interactions JOIN email_open_rates ON email_interactions.interaction_id = email_open_rates.interaction_id ORDER BY open_rate DESC;",
+      "SELECT * FROM email_campaigns WHERE campaign_id = 1;",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns WHERE start_date >= '2022-01-01' ORDER BY start_date DESC;",
+      "SELECT email_address, name FROM email_recipients WHERE subscription_date BETWEEN '2021-01-01' AND '2022-01-01';",
+      "SELECT i.interaction_id, e.campaign_name, r.name FROM email_interactions AS i JOIN email_campaigns AS e ON i.campaign_id = e.campaign_id JOIN email_recipients AS r ON i.recipient_id = r.recipient_id WHERE i.interaction_date > '2021-06-01' ORDER BY i.interaction_date DESC;",
+      "SELECT i.interaction_id, o.open_rate, c.click_through_rate FROM email_interactions AS i JOIN email_open_rates AS o ON i.interaction_id = o.interaction_id JOIN email_click_through_rates AS c ON i.interaction_id = c.interaction_id WHERE i.interaction_type = 'click' AND o.open_rate > 0.5;"
+    ]
+  }
+]

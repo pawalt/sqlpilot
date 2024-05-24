@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamDocuments (\n\tdocument_id UUID PRIMARY KEY,\n\tdocument_name VARCHAR(255) NOT NULL,\n\tdocument_content TEXT,\n\towner_id UUID,\n\tcreated_at TIMESTAMP DEFAULT NOW(),\n\tupdated_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE documents (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    owner_team VARCHAR(255) NOT NULL,\n    version INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    document_id INT,\n    FOREIGN KEY (document_id) REFERENCES documents(document_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    doc_id INT PRIMARY KEY,\n    doc_name VARCHAR(100) NOT NULL,\n    owner_id INT,\n    FOREIGN KEY (owner_id) REFERENCES team_members(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(100) NOT NULL,\n    doc_id INT,\n    FOREIGN KEY (doc_id) REFERENCES documents(doc_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE teams (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    team_leader VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    team_id INT NOT NULL,\n    document_content TEXT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    team_id INT NOT NULL,\n    resource_url VARCHAR(255),\n    uploaded_by VARCHAR(100) NOT NULL,\n    uploaded_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE versions (\n    version_id INT PRIMARY KEY,\n    document_id INT NOT NULL,\n    version_number INT NOT NULL,\n    version_content TEXT,\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE documents (\n  id SERIAL PRIMARY KEY,\n  title TEXT,\n  content TEXT,\n  created_at TIMESTAMP,\n  updated_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE teams (\n  id SERIAL PRIMARY KEY,\n  name TEXT,\n  description TEXT,\n  team_lead INT,\n  created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n  id SERIAL PRIMARY KEY,\n  name TEXT,\n  type TEXT,\n  url TEXT,\n  created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE team_documents (\n  team_id INT,\n  document_id INT,\n  PRIMARY KEY (team_id, document_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE team_resources (\n  team_id INT,\n  resource_id INT,\n  PRIMARY KEY (team_id, resource_id)\n)"
+      }
+    ]
+  }
+]

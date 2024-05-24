@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_market_data (\n  region VARCHAR(50),\n  sector VARCHAR(50),\n  property_type VARCHAR(50),\n  demand INT,\n  supply INT,\n  average_price DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_demand (\n    region_id INT,\n    property_type VARCHAR,\n    demand_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE property_supply (\n    region_id INT,\n    property_type VARCHAR,\n    supply_level INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Region (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(50) NOT NULL,\n  region_population INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Property (\n  property_id INT PRIMARY KEY,\n  property_type ENUM('Residential', 'Commercial', 'Industrial') NOT NULL,\n  property_area DECIMAL(10, 2),\n  region_id INT,\n  FOREIGN KEY (region_id) REFERENCES Region(region_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MarketData (\n  market_data_id INT PRIMARY KEY,\n  property_id INT,\n  demand_index INT,\n  supply_index INT,\n  forecast VARCHAR(100),\n  date_recorded DATE,\n  FOREIGN KEY (property_id) REFERENCES Property(property_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_demand (\n    property_id INT PRIMARY KEY,\n    region VARCHAR(255),\n    demand_level INT,\n    last_updated TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE property_supply (\n    property_id INT PRIMARY KEY,\n    region VARCHAR(255),\n    supply_level INT,\n    last_updated TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE market_fluctuations (\n    region VARCHAR(255),\n    year INT,\n    demand_index INT,\n    supply_index INT,\n    market_opportunities VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_opportunities (\n    opportunity_id INT PRIMARY KEY,\n    region VARCHAR(255),\n    investment_type VARCHAR(255),\n    opportunity_description TEXT,\n    potential_roi DECIMAL(10,2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Regions (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(50) NOT NULL,\n    average_property_price DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Properties (\n    property_id INT PRIMARY KEY,\n    property_name VARCHAR(100) NOT NULL,\n    property_type VARCHAR(50) NOT NULL,\n    property_size DECIMAL(10, 2) NOT NULL,\n    region_id INT NOT NULL,\n    FOREIGN KEY (region_id) REFERENCES Regions(region_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Demand (\n    demand_id INT PRIMARY KEY,\n    property_id INT NOT NULL,\n    demand_level VARCHAR(50) NOT NULL,\n    demand_date DATE NOT NULL,\n    FOREIGN KEY (property_id) REFERENCES Properties(property_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Supply (\n    supply_id INT PRIMARY KEY,\n    property_id INT NOT NULL,\n    supply_level VARCHAR(50) NOT NULL,\n    supply_date DATE NOT NULL,\n    FOREIGN KEY (property_id) REFERENCES Properties(property_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Investments (\n    investment_id INT PRIMARY KEY,\n    property_id INT NOT NULL,\n    investment_amount DECIMAL(10, 2) NOT NULL,\n    investment_date DATE NOT NULL,\n    FOREIGN KEY (property_id) REFERENCES Properties(property_id)\n);\n"
+      }
+    ]
+  }
+]

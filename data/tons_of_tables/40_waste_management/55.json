@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PowerOutputRecords (\n    record_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    power_output DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE power_output (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    power_output DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE plant_info (\n    plant_id INT PRIMARY KEY,\n    plant_name VARCHAR(255),\n    location VARCHAR(255),\n    capacity DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PowerOutput (\n    plant_id INT,\n    date DATE,\n    power_generated DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Plants (\n    plant_id INT PRIMARY KEY,\n    plant_name VARCHAR(50),\n    location VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Reports (\n    report_id INT PRIMARY KEY,\n    plant_id INT,\n    report_date DATE,\n    analysis_result TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PowerPlant (\n    plant_id INT NOT NULL,\n    plant_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100),\n    capacity FLOAT NOT NULL,\n    commission_date DATE,\n    PRIMARY KEY (plant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PowerOutput (\n    output_id INT NOT NULL,\n    plant_id INT NOT NULL,\n    production_date DATE NOT NULL,\n    power_output FLOAT NOT NULL,\n    PRIMARY KEY (output_id),\n    FOREIGN KEY (plant_id) REFERENCES PowerPlant(plant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLog (\n    log_id INT NOT NULL,\n    plant_id INT NOT NULL,\n    maintenance_date DATE NOT NULL,\n    description TEXT,\n    PRIMARY KEY (log_id),\n    FOREIGN KEY (plant_id) REFERENCES PowerPlant(plant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WeatherData (\n    data_id INT NOT NULL,\n    plant_id INT NOT NULL,\n    date DATE NOT NULL,\n    temperature FLOAT,\n    humidity FLOAT,\n    PRIMARY KEY (data_id),\n    FOREIGN KEY (plant_id) REFERENCES PowerPlant(plant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Power_Plant (\n    plant_id INT PRIMARY KEY,\n    plant_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    commission_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Generator (\n    generator_id INT PRIMARY KEY,\n    plant_id INT,\n    generator_type ENUM('Gas Turbine', 'Steam Turbine', 'Hydro Turbine', 'Wind Turbine'),\n    installation_date DATE,\n    FOREIGN KEY (plant_id) REFERENCES Power_Plant(plant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Power_Output (\n    output_id INT PRIMARY KEY,\n    generator_id INT,\n    output_value DECIMAL(10, 2),\n    output_date DATE,\n    FOREIGN KEY (generator_id) REFERENCES Generator(generator_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Maintenance_Log (\n    log_id INT PRIMARY KEY,\n    generator_id INT,\n    maintenance_date DATE,\n    maintenance_type VARCHAR(50),\n    FOREIGN KEY (generator_id) REFERENCES Generator(generator_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Efficiency_Report (\n    report_id INT PRIMARY KEY,\n    generator_id INT,\n    efficiency DECIMAL(5, 2),\n    report_date DATE,\n    FOREIGN KEY (generator_id) REFERENCES Generator(generator_id)\n);"
+      }
+    ]
+  }
+]

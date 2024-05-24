@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM behavior_profiles WHERE user_id = 1;",
+      "SELECT interaction_type, interaction_timestamp FROM behavior_profiles WHERE user_id = 2 ORDER BY interaction_timestamp DESC;",
+      "SELECT user_id, interaction_details->'category' AS category FROM behavior_profiles WHERE user_id = 3;",
+      "SELECT * FROM behavior_profiles WHERE interaction_timestamp BETWEEN '2022-01-01' AND '2022-01-31' ORDER BY interaction_type;",
+      "SELECT DISTINCT user_id FROM behavior_profiles WHERE interaction_type = 'click';",
+      "SELECT user_id, interaction_timestamp, interaction_type, interaction_details FROM behavior_profiles WHERE user_id = 1;",
+      "SELECT user_id, interaction_type, interaction_timestamp FROM behavior_profiles WHERE interaction_type = 'click' ORDER BY interaction_timestamp DESC;",
+      "SELECT user_id, interaction_timestamp, interaction_type, interaction_details FROM behavior_profiles WHERE interaction_type = 'hover' AND interaction_details->>'device' = 'mobile' ORDER BY interaction_timestamp ASC;",
+      "SELECT user_id, interaction_type, interaction_details->>'device' AS device_type FROM behavior_profiles WHERE user_id = 2 AND interaction_type IN ('click', 'hover') ORDER BY interaction_timestamp;",
+      "SELECT user_id, interaction_details->>'device' AS device_type, COUNT(*) AS interaction_count FROM behavior_profiles WHERE user_id = 3 GROUP BY user_id, device_type ORDER BY interaction_count DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM user_interactions WHERE user_id = 1;",
+      "SELECT interaction_id, user_id, timestamp FROM user_interactions WHERE interaction_type = 'like';",
+      "SELECT user_id, interaction_type, timestamp FROM user_interactions ORDER BY timestamp DESC;",
+      "SELECT user_id, COUNT(interaction_id) AS total_interactions FROM user_interactions GROUP BY user_id;",
+      "SELECT user_id, behavior_score FROM behavior_profiles WHERE behavior_score > 0.5;",
+      "SELECT * FROM user_interactions WHERE user_id = 100 ORDER BY timestamp DESC;",
+      "SELECT user_id, COUNT(interaction_id) AS total_interactions FROM user_interactions GROUP BY user_id HAVING COUNT(interaction_id) > 5;",
+      "SELECT user_id, interaction_type, timestamp FROM user_interactions WHERE interaction_type = 'click' OR interaction_type = 'hover';",
+      "SELECT user_id, behavior_score FROM behavior_profiles WHERE behavior_score >= 0.7 ORDER BY behavior_score DESC, last_interaction_timestamp ASC;",
+      "SELECT user_id, total_interactions FROM behavior_profiles JOIN (SELECT user_id, COUNT(interaction_id) AS total_interactions FROM user_interactions GROUP BY user_id) AS interactions ON behavior_profiles.user_id = interactions.user_id ORDER BY total_interactions DESC, behavior_score ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM user_interactions ORDER BY user_id DESC;",
+      "SELECT user_id, interaction_timestamp FROM user_interactions WHERE interaction_type = 'click';",
+      "SELECT user_id, interaction_type FROM user_interactions WHERE interaction_timestamp >= '2022-01-01' ORDER BY interaction_timestamp DESC;",
+      "SELECT * FROM behavior_profiles WHERE user_id = 123;",
+      "SELECT user_id, interaction_date FROM interaction_history WHERE interaction_time BETWEEN '08:00:00' AND '12:00:00';",
+      "SELECT * FROM user_interactions WHERE user_id = 1;",
+      "SELECT user_id, interaction_type FROM user_interactions WHERE interaction_timestamp > '2022-01-01 00:00:00';",
+      "SELECT user_id, JSON_VALUE(profile_data, '$.email') AS user_email FROM behavior_profiles;",
+      "SELECT AVG(DATEDIFF(interaction_date, CURDATE())) AS avg_days_since_interaction FROM interaction_history;",
+      "SELECT * FROM user_interactions ORDER BY interaction_timestamp DESC LIMIT 10;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM user_interactions;",
+      "SELECT user_id, timestamp FROM user_profiles;",
+      "SELECT profile_name, age FROM user_profiles WHERE address='123 Main St';",
+      "SELECT behavior_type, score FROM user_behavior ORDER BY score DESC;",
+      "SELECT user_id, interaction_id, timestamp FROM user_history WHERE user_id=123;",
+      "SELECT * FROM user_profiles WHERE age >= 25 ORDER BY profile_name DESC LIMIT 10;",
+      "SELECT user_id, behavior_type, MAX(score) FROM user_behavior GROUP BY user_id HAVING MAX(score) > 0.5 ORDER BY user_id;",
+      "SELECT DISTINCT user_id, COUNT(DISTINCT interaction_id) AS total_interactions FROM user_history GROUP BY user_id ORDER BY total_interactions DESC;",
+      "SELECT user_profiles.user_id, user_profiles.profile_name, user_behavior.behavior_type FROM user_profiles JOIN user_behavior ON user_profiles.user_id = user_behavior.user_id ORDER BY user_profiles.user_id;",
+      "SELECT user_id, MIN(score), MAX(score) FROM user_behavior GROUP BY user_id HAVING COUNT(*) >= 2 ORDER BY user_id DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM user_profiles LIMIT 5;",
+      "SELECT user_id, profile_data -> 'name' AS user_name, profile_data -> 'email' AS user_email FROM user_profiles;",
+      "SELECT user_id, COUNT(*) AS total_interactions FROM user_interactions GROUP BY user_id;",
+      "SELECT behavior_type, COUNT(*) AS total_behaviors FROM user_behaviors GROUP BY behavior_type ORDER BY total_behaviors DESC;",
+      "SELECT user_id, action_type, MAX(action_timestamp) AS latest_action_timestamp FROM user_actions GROUP BY user_id, action_type ORDER BY user_id, latest_action_timestamp DESC;",
+      "SELECT * FROM user_interactions WHERE user_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT interaction_id, user_id, interaction_timestamp FROM user_behaviors ORDER BY behavior_timestamp DESC;",
+      "SELECT interaction_id, user_id, interaction_timestamp FROM user_interactions WHERE interaction_type = 'click' AND user_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT user_id, COUNT(*) as total_interactions FROM user_profiles GROUP BY user_id HAVING COUNT(*) > 10 ORDER BY total_interactions DESC;",
+      "SELECT u.user_id, u.profile_data, b.behavior_type FROM user_profiles u JOIN user_behaviors b ON u.user_id = b.user_id;"
+    ]
+  }
+]

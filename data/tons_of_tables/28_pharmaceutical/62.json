@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProductionBatches (\n    batch_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    lot_number VARCHAR(50),\n    manufacturing_date DATE,\n    expiration_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_batches (\n    batch_id SERIAL PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    production_date DATE NOT NULL,\n    lot_number VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE batch_tracking (\n    tracking_id SERIAL PRIMARY KEY,\n    batch_id INT REFERENCES production_batches(batch_id),\n    quality_issue VARCHAR(255),\n    recall_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_batches (\n  batch_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  production_date DATE,\n  lot_number INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lot_numbers (\n  lot_id INT PRIMARY KEY,\n  batch_id INT,\n  lot_number INT,\n  expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recalls (\n  recall_id INT PRIMARY KEY,\n  batch_id INT,\n  recall_reason TEXT,\n  recall_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_batches (\n    id UUID PRIMARY KEY,\n    batch_number INT NOT NULL,\n    product_id UUID REFERENCES products(id),\n    production_date TIMESTAMP NOT NULL,\n    lot_number VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    id UUID PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    manufacturer VARCHAR(100) NOT NULL,\n    expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recalls (\n    id UUID PRIMARY KEY,\n    recall_number INT NOT NULL,\n    batch_id UUID REFERENCES production_batches(id),\n    reason TEXT NOT NULL,\n    recall_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pharmacies (\n    id UUID PRIMARY KEY,\n    pharmacy_name VARCHAR(100) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    contact_number VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_batches (\n  batch_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  production_date DATE NOT NULL,\n  lot_number VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_details (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  manufacturer VARCHAR(100) NOT NULL,\n  dosage VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quality_issues (\n  issue_id INT PRIMARY KEY,\n  batch_id INT NOT NULL,\n  issue_description TEXT,\n  reported_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recalls (\n  recall_id INT PRIMARY KEY,\n  batch_id INT NOT NULL,\n  reason VARCHAR(255) NOT NULL,\n  recall_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(100) NOT NULL,\n  role VARCHAR(50) NOT NULL,\n  department VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

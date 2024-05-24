@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_state (\n    game_id UUID PRIMARY KEY,\n    player_id INT,\n    player_name VARCHAR(255),\n    player_score INT,\n    game_level INT,\n    game_map TEXT,\n    game_state_json JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_sessions (\n    session_id UUID PRIMARY KEY,\n    game_name VARCHAR(255),\n    current_players INT,\n    game_state JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_stats (\n    player_id UUID PRIMARY KEY,\n    player_name VARCHAR(255),\n    player_score INT,\n    session_id UUID,\n    FOREIGN KEY (session_id) REFERENCES game_sessions (session_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_data (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50),\n    player_score INT,\n    last_active TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE game_rooms (\n    room_id INT PRIMARY KEY,\n    room_name VARCHAR(50),\n    total_players INT,\n    game_state JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_actions (\n    action_id SERIAL PRIMARY KEY,\n    player_id INT,\n    room_id INT,\n    action_timestamp TIMESTAMP,\n    action_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id SERIAL PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    game_room_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_rooms (\n    room_id SERIAL PRIMARY KEY,\n    game_name VARCHAR(50) NOT NULL,\n    capacity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_state (\n    state_id SERIAL PRIMARY KEY,\n    room_id INT NOT NULL,\n    state_data JSONB NOT NULL,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_actions (\n    action_id SERIAL PRIMARY KEY,\n    room_id INT NOT NULL,\n    player_id INT NOT NULL,\n    action_type VARCHAR(50) NOT NULL,\n    action_data JSONB NOT NULL,\n    action_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_sessions (\n    session_id INT PRIMARY KEY,\n    game_name VARCHAR(50),\n    player_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50),\n    session_id INT REFERENCES game_sessions(session_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_states (\n    state_id INT PRIMARY KEY,\n    session_id INT REFERENCES game_sessions(session_id),\n    state_data JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_actions (\n    action_id INT PRIMARY KEY,\n    session_id INT REFERENCES game_sessions(session_id),\n    action_type VARCHAR(50),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_actions (\n    action_id INT PRIMARY KEY,\n    player_id INT REFERENCES players(player_id),\n    action_type VARCHAR(50),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

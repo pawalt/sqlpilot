@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE topographic_survey_data (\n    survey_id SERIAL PRIMARY KEY,\n    survey_date DATE,\n    surveyor_name VARCHAR(50),\n    location_id INTEGER,\n    elevation REAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE topographic_survey_data (\n  id SERIAL PRIMARY KEY,\n  point_name VARCHAR(50) NOT NULL,\n  elevation DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE surveyors (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  license_number VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TopographicSurveys (\n    survey_id SERIAL PRIMARY KEY,\n    survey_name VARCHAR(50),\n    survey_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyPoints (\n    point_id SERIAL PRIMARY KEY,\n    survey_id INT REFERENCES TopographicSurveys(survey_id),\n    point_name VARCHAR(50),\n    point_elevation FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyMeasurements (\n    measurement_id SERIAL PRIMARY KEY,\n    point_id INT REFERENCES SurveyPoints(point_id),\n    measurement_type VARCHAR(50),\n    measurement_value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SurveyPoints (\n  id SERIAL PRIMARY KEY,\n  point_name VARCHAR(50),\n  x_coordinate FLOAT,\n  y_coordinate FLOAT,\n  z_coordinate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyMeasurements (\n   id SERIAL PRIMARY KEY,\n   point_id INT REFERENCES SurveyPoints(id),\n   measurement_type VARCHAR(50),\n   measurement_value FLOAT,\n   measurement_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AreasOfInterest (\n   id SERIAL PRIMARY KEY,\n   name VARCHAR(100),\n   description TEXT,\n   boundary GEOMETRY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyReports (\n   id SERIAL PRIMARY KEY,\n   report_name VARCHAR(100),\n   report_date DATE,\n   surveyor_name VARCHAR(50),\n   feedback TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SurveyData (\n  id UUID PRIMARY KEY,\n  surveyor_name VARCHAR NOT NULL,\n  survey_date DATE NOT NULL,\n  elevation DECIMAL,\n  terrain_type VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyPoints (\n  point_id UUID PRIMARY KEY,\n  survey_id UUID REFERENCES SurveyData(id) NOT NULL,\n  latitude DECIMAL NOT NULL,\n  longitude DECIMAL NOT NULL,\n  point_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyReports (\n  report_id UUID PRIMARY KEY,\n  survey_id UUID REFERENCES SurveyData(id) NOT NULL,\n  report_date DATE NOT NULL,\n  findings TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Equipment (\n  equipment_id UUID PRIMARY KEY,\n  equipment_name VARCHAR NOT NULL,\n  model VARCHAR NOT NULL,\n  manufacturer VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyPhotos (\n  photo_id UUID PRIMARY KEY,\n  survey_id UUID REFERENCES SurveyData(id) NOT NULL,\n  photo_path VARCHAR NOT NULL,\n  photo_description TEXT\n);\n"
+      }
+    ]
+  }
+]

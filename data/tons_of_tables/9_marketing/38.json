@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_tracking (\n    email_id UUID PRIMARY KEY,\n    email_link TEXT,\n    utm_source TEXT,\n    utm_medium TEXT,\n    utm_campaign TEXT,\n    conversion_tracking BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_links (email_id INT, utm_source VARCHAR(255), utm_medium VARCHAR(255), utm_campaign VARCHAR(255))\n"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions (conversion_id INT, email_id INT, conversion_date TIMESTAMP, conversion_amount DECIMAL(10,2))\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_links ( \n    id INT PRIMARY KEY, \n    link TEXT NOT NULL, \n    utm_source VARCHAR(255), \n    utm_medium VARCHAR(255), \n    utm_campaign VARCHAR(255) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tracked_conversions ( \n    id INT PRIMARY KEY, \n    link_id INT, \n    conversion_date DATE NOT NULL, \n    conversion_value FLOAT, \n    FOREIGN KEY (link_id) REFERENCES email_links(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE click_tracking ( \n    id INT PRIMARY KEY, \n    link_id INT, \n    click_date DATE NOT NULL, \n    ip_address VARCHAR(255), \n    user_agent TEXT, \n    FOREIGN KEY (link_id) REFERENCES email_links(id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaign_links (\n    link_id INT PRIMARY KEY,\n    email_link VARCHAR(255) NOT NULL,\n    utm_source VARCHAR(50) NOT NULL,\n    utm_medium VARCHAR(50) NOT NULL,\n    utm_campaign VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE click_tracking (\n    click_id INT PRIMARY KEY,\n    link_id INT NOT NULL,\n    click_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions (\n    conversion_id INT PRIMARY KEY,\n    click_id INT NOT NULL,\n    conversion_type VARCHAR(50) NOT NULL,\n    conversion_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conversion_attributes (\n    conversion_id INT NOT NULL,\n    attribute_key VARCHAR(50) NOT NULL,\n    attribute_value VARCHAR(255) NOT NULL,\n    PRIMARY KEY (conversion_id, attribute_key)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE utm_campaigns (\n  id SERIAL PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  utm_source VARCHAR(255) NOT NULL,\n  utm_medium VARCHAR(255) NOT NULL,\n  utm_content VARCHAR(255) NOT NULL,\n  utm_term VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_contacts (\n  id SERIAL PRIMARY KEY,\n  email_address VARCHAR(255) UNIQUE NOT NULL,\n  first_name VARCHAR(100),\n  last_name VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_clicks (\n  id SERIAL PRIMARY KEY,\n  email_id INT,\n  click_timestamp TIMESTAMP,\n  utm_source VARCHAR(255),\n  utm_medium VARCHAR(255),\n  utm_campaign VARCHAR(255),\n  FOREIGN KEY (email_id) REFERENCES email_campaigns(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions (\n  id SERIAL PRIMARY KEY,\n  email_id INT,\n  conversion_timestamp TIMESTAMP,\n  conversion_value DECIMAL,\n  FOREIGN KEY (email_id) REFERENCES email_clicks(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conversion_attribution (\n  id SERIAL PRIMARY KEY,\n  conversion_id INT,\n  attribution_method VARCHAR(50),\n  attribution_timestamp TIMESTAMP,\n  FOREIGN KEY (conversion_id) REFERENCES conversions(id)\n)"
+      }
+    ]
+  }
+]

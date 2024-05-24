@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_assets (\n  asset_id UUID PRIMARY KEY,\n  asset_name VARCHAR(255) NOT NULL,\n  asset_type VARCHAR(50) NOT NULL,\n  asset_file BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_assets (\n  id UUID PRIMARY KEY,\n  asset_name VARCHAR(255),\n  asset_type VARCHAR(50),\n  asset_url TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_metadata (\n  id UUID PRIMARY KEY,\n  asset_id UUID REFERENCES game_assets(id),\n  metadata_key VARCHAR(255),\n  metadata_value TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GameAssets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    asset_size INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Images (\n    image_id UUID PRIMARY KEY,\n    image_url TEXT NOT NULL,\n    image_description TEXT,\n    asset_id UUID,\n    FOREIGN KEY (asset_id) REFERENCES GameAssets(asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Videos (\n    video_id UUID PRIMARY KEY,\n    video_url TEXT NOT NULL,\n    video_duration INT,\n    asset_id UUID,\n    FOREIGN KEY (asset_id) REFERENCES GameAssets(asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_assets (\n    asset_id SERIAL,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    asset_path TEXT,\n    creation_date TIMESTAMP,\n    PRIMARY KEY (asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id SERIAL,\n    image_name VARCHAR(255),\n    image_size INT,\n    image_resolution VARCHAR(50),\n    asset_id INT,\n    PRIMARY KEY (image_id),\n    FOREIGN KEY (asset_id) REFERENCES game_assets (asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE videos (\n    video_id SERIAL,\n    video_name VARCHAR(255),\n    video_duration TIME,\n    video_quality VARCHAR(50),\n    asset_id INT,\n    PRIMARY KEY (video_id),\n    FOREIGN KEY (asset_id) REFERENCES game_assets (asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sound_files (\n    sound_id SERIAL,\n    sound_name VARCHAR(255),\n    sound_duration TIME,\n    sound_type VARCHAR(50),\n    asset_id INT,\n    PRIMARY KEY (sound_id),\n    FOREIGN KEY (asset_id) REFERENCES game_assets (asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GameAssets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type ENUM('image', 'video', 'sound') NOT NULL,\n    asset_size INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GameAttributes (\n    attribute_id INT PRIMARY KEY,\n    attribute_name VARCHAR(255) NOT NULL,\n    attribute_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GameDevelopers (\n    developer_id INT PRIMARY KEY,\n    developer_name VARCHAR(255) NOT NULL,\n    developer_email VARCHAR(255) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeveloperAssets (\n    developer_id INT,\n    asset_id INT,\n    FOREIGN KEY (developer_id) REFERENCES GameDevelopers(developer_id),\n    FOREIGN KEY (asset_id) REFERENCES GameAssets(asset_id),\n    PRIMARY KEY (developer_id, asset_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GameReviews (\n    review_id INT PRIMARY KEY,\n    asset_id INT,\n    reviewer_name VARCHAR(255) NOT NULL,\n    review_rating INT CHECK (review_rating >= 1 AND review_rating <= 5),\n    review_comment TEXT,\n    FOREIGN KEY (asset_id) REFERENCES GameAssets(asset_id)\n);\n"
+      }
+    ]
+  }
+]

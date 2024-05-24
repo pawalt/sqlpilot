@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_dependencies (\n    project_id INT,\n    dependency_id INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_dependencies (\n  project_id INT NOT NULL,\n  dependent_project_id INT NOT NULL,\n  PRIMARY KEY (project_id, dependent_project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_sequences (\n  task_id INT NOT NULL,\n  task_description VARCHAR(255) NOT NULL,\n  task_order INT NOT NULL,\n  project_id INT NOT NULL,\n  PRIMARY KEY (task_id),\n  FOREIGN KEY (project_id) REFERENCES project_dependencies(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_dependencies (\n  project_id INT PRIMARY KEY,\n  dependent_project_id INT,\n  FOREIGN KEY (dependent_project_id) REFERENCES projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE task_sequences (\n  sequence_id INT PRIMARY KEY,\n  task_name VARCHAR(255),\n  project_id INT,\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE critical_paths (\n  path_id INT PRIMARY KEY,\n  path_name VARCHAR(255),\n  sequence_id INT,\n  FOREIGN KEY (sequence_id) REFERENCES task_sequences(sequence_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Project (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Dependency (\n    dependency_id INT PRIMARY KEY,\n    project_id INT,\n    dependent_project_id INT,\n    foreign key (project_id) references Project(project_id),\n    foreign key (dependent_project_id) references Project(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Task (\n    task_id INT PRIMARY KEY,\n    project_id INT,\n    task_name VARCHAR(255) NOT NULL,\n    duration INT,\n    foreign key (project_id) references Project(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CriticalPath (\n    sequence_id INT PRIMARY KEY,\n    project_id INT,\n    task_id INT,\n    dependency_id INT,\n    foreign key (project_id) references Project(project_id),\n    foreign key (task_id) references Task(task_id),\n    foreign key (dependency_id) references Dependency(dependency_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_dependencies (\n  project_id INT,\n  dependency_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_sequences (\n  task_id INT,\n  sequence_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE critical_paths (\n  path_id INT,\n  task_id INT,\n  duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_workflows (\n  workflow_id INT,\n  project_id INT,\n  task_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_timelines (\n  timeline_id INT,\n  project_id INT,\n  date DATE\n);"
+      }
+    ]
+  }
+]

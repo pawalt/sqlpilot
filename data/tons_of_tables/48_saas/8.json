@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name VARCHAR(100) NOT NULL,\n    task_description TEXT,\n    task_status VARCHAR(20) DEFAULT 'Pending',\n    scheduled_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    task_status ENUM('pending', 'in-progress', 'completed')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE task_assignees (\n    assignee_id INT PRIMARY KEY,\n    task_id INT,\n    assignee_name VARCHAR(100) NOT NULL,\n    assignee_email VARCHAR(255),\n    FOREIGN KEY (task_id) REFERENCES tasks(task_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Task (\n    task_id INT PRIMARY KEY,\n    task_name TEXT,\n    task_description TEXT,\n    task_status TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskScheduler (\n    scheduler_id INT PRIMARY KEY,\n    task_id INT,\n    scheduler_name TEXT,\n    scheduler_description TEXT,\n    scheduler_status TEXT,\n    FOREIGN KEY (task_id) REFERENCES Task(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskLog (\n    log_id INT PRIMARY KEY,\n    task_id INT,\n    log_message TEXT,\n    log_timestamp TIMESTAMP,\n    FOREIGN KEY (task_id) REFERENCES Task(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n  task_id UUID PRIMARY KEY,\n  task_name VARCHAR(50) NOT NULL,\n  task_description TEXT,\n  scheduled_time TIMESTAMP,\n  status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_logs (\n  log_id UUID PRIMARY KEY,\n  task_id UUID REFERENCES tasks(task_id),\n  log_message TEXT,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_assignees (\n  assignment_id UUID PRIMARY KEY,\n  task_id UUID REFERENCES tasks(task_id),\n  assignee_name VARCHAR(50),\n  assigned_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_dependencies (\n  dependency_id UUID PRIMARY KEY,\n  task_id UUID REFERENCES tasks(task_id),\n  dependent_task_id UUID REFERENCES tasks(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    task_status VARCHAR(50) DEFAULT 'pending',\n    created_at TIMESTAMP DEFAULT NOW()\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(100) NOT NULL,\n    email VARCHAR(255) UNIQUE,\n    created_at TIMESTAMP DEFAULT NOW()\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP DEFAULT NOW()\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT REFERENCES users(user_id),\n    role_id INT REFERENCES roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE task_assignments (\n    task_id INT REFERENCES tasks(task_id),\n    user_id INT REFERENCES users(user_id),\n    completed_at TIMESTAMP,\n    PRIMARY KEY (task_id, user_id)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_contacts (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  phone_number VARCHAR(15) NOT NULL,\n  relation VARCHAR(50) NOT NULL,\n  address VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_contacts (\n    contact_id UUID PRIMARY KEY,\n    contact_name VARCHAR(255),\n    contact_phone_number VARCHAR(20),\n    contact_relation VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distress_areas (\n    area_id UUID PRIMARY KEY,\n    area_name VARCHAR(100),\n    area_location GEOGRAPHY,\n    area_population INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_contacts (\n    contact_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    phone_number VARCHAR(15) NOT NULL,\n    email VARCHAR(50),\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE individuals (\n    individual_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    medical_conditions VARCHAR(200),\n    emergency_contact_id INT REFERENCES emergency_contacts(contact_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distress_areas (\n    area_id INT PRIMARY KEY,\n    area_name VARCHAR(100) NOT NULL,\n    emergency_services_available BOOLEAN,\n    nearby_hospital VARCHAR(100),\n    population_density INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_contacts (\n  contact_id INT PRIMARY KEY,\n  full_name VARCHAR(50) NOT NULL,\n  phone_number VARCHAR(15) NOT NULL,\n  email VARCHAR(50),\n  address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE individuals (\n  individual_id INT PRIMARY KEY,\n  full_name VARCHAR(50) NOT NULL,\n  age INT,\n  gender CHAR(1),\n  emergency_contact_id INT REFERENCES emergency_contacts(contact_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distressed_areas (\n  area_id INT PRIMARY KEY,\n  area_name VARCHAR(50) NOT NULL,\n  severity_level INT,\n  contact_id INT REFERENCES emergency_contacts(contact_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assistance_logs (\n  log_id INT PRIMARY KEY,\n  individual_id INT REFERENCES individuals(individual_id),\n  area_id INT REFERENCES distressed_areas(area_id),\n  assistance_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_contacts (\n  contact_id UUID PRIMARY KEY,\n  name VARCHAR(50),\n  phone_number VARCHAR(20) NOT NULL,\n  email VARCHAR(50),\n  address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distressed_areas (\n  area_id UUID PRIMARY KEY,\n  area_name VARCHAR(100),\n  location_point GEOMETRY(POINT)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE individual_contacts (\n  individual_id UUID PRIMARY KEY,\n  contact_id UUID,\n  area_id UUID,\n  relationship VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assistance_requests (\n  request_id UUID PRIMARY KEY,\n  individual_id UUID,\n  area_id UUID,\n  request_timestamp TIMESTAMPTZ DEFAULT now(),\n  status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assistance_responses (\n  response_id UUID PRIMARY KEY,\n  request_id UUID,\n  responder_id UUID,\n  response_timestamp TIMESTAMPTZ DEFAULT now(),\n  details TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ExpiringProducts (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  expiration_date DATE,\n  alert_threshold_days INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ExpiringProducts (\n   product_id INT PRIMARY KEY,\n   product_name VARCHAR(255) NOT NULL,\n   expiration_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExpiryAlerts (\n   alert_id INT PRIMARY KEY,\n   product_id INT,\n   alert_date DATE,\n   FOREIGN KEY (product_id) REFERENCES ExpiringProducts(product_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_records (\n  product_id INT PRIMARY KEY,\n  product_name TEXT,\n  expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE expiration_alerts (\n  alert_id INT PRIMARY KEY,\n  product_id INT,\n  alert_date DATE,\n  alert_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n  notification_id INT PRIMARY KEY,\n  alert_id INT,\n  notification_date DATE,\n  notification_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (id INT PRIMARY KEY, name VARCHAR(100), expiration_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (id INT PRIMARY KEY, product_id INT, alert_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts_log (id INT PRIMARY KEY, alert_id INT, alert_sent BOOLEAN);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    expiration_date DATE NOT NULL,\n    alert_sent BOOLEAN NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    product_id INT REFERENCES products(product_id),\n    alert_date DATE NOT NULL,\n    alert_message TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_products (\n    user_id INT REFERENCES users(user_id),\n    product_id INT REFERENCES products(product_id),\n    PRIMARY KEY (user_id, product_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_logs (\n    log_id INT PRIMARY KEY,\n    alert_id INT REFERENCES alerts(alert_id),\n    user_id INT REFERENCES users(user_id),\n    log_date TIMESTAMP,\n    log_message TEXT\n);\n"
+      }
+    ]
+  }
+]

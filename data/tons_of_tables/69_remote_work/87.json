@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id SERIAL PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL DEFAULT NOW()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id SERIAL PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encrypted_messages (\n    message_id SERIAL PRIMARY KEY,\n    message_content TEXT NOT NULL,\n    encryption_key_id INT\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys (key_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  key_id UUID PRIMARY KEY,\n  key_value BYTEA NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  password_hash VARCHAR(100) NOT NULL,\n  email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE messages (\n  message_id UUID PRIMARY KEY,\n  sender_id UUID NOT NULL,\n  recipient_id UUID NOT NULL,\n  message_text TEXT NOT NULL,\n  encrypted BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(255) NOT NULL,\n    encryption_key BLOB NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    user_id INT,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE communications (\n    comm_id INT PRIMARY KEY,\n    sender_id INT,\n    receiver_id INT,\n    message TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (sender_id) REFERENCES users(user_id),\n    FOREIGN KEY (receiver_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  key_id INT PRIMARY KEY,\n  encryption_key VARCHAR(256) NOT NULL,\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE communications (\n  comm_id INT PRIMARY KEY,\n  sender_id INT NOT NULL,\n  receiver_id INT NOT NULL,\n  message TEXT NOT NULL,\n  timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(50) NOT NULL,\n  user_id INT NOT NULL,\n  last_used TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n  log_id INT PRIMARY KEY,\n  log_description TEXT NOT NULL,\n  log_timestamp TIMESTAMP\n)"
+      }
+    ]
+  }
+]

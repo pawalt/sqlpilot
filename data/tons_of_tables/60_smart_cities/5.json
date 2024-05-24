@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_billing (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    address VARCHAR(255),\n    total_bill DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_billing (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    address VARCHAR(255),\n    bill_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_records (\n    payment_id INT PRIMARY KEY,\n    customer_id INT,\n    payment_amount DECIMAL,\n    payment_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES customer_billing(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerBilling (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    account_number VARCHAR(20),\n    bill_amount DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentRecords (\n    payment_id INT PRIMARY KEY,\n    customer_id INT,\n    payment_date DATE,\n    amount_paid DECIMAL(10,2),\n    payment_method VARCHAR(20),\n    FOREIGN KEY (customer_id) REFERENCES CustomerBilling(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BillingHistory (\n    billing_id INT PRIMARY KEY,\n    customer_id INT,\n    billing_date DATE,\n    bill_amount DECIMAL(10,2),\n    payment_status BOOLEAN,\n    FOREIGN KEY (customer_id) REFERENCES CustomerBilling(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customer (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  address VARCHAR(100),\n  email VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BillingInformation (\n  bill_id INT PRIMARY KEY,\n  customer_id INT,\n  bill_amount DECIMAL,\n  bill_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentRecords (\n  payment_id INT PRIMARY KEY,\n  bill_id INT,\n  payment_amount DECIMAL,\n  payment_date DATE,\n  FOREIGN KEY (bill_id) REFERENCES BillingInformation(bill_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BillingProcesses (\n  process_id INT PRIMARY KEY,\n  bill_id INT,\n  process_date DATE,\n  status VARCHAR(20),\n  FOREIGN KEY (bill_id) REFERENCES BillingInformation(bill_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customer (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    address VARCHAR(255),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Meter (\n    meter_id INT PRIMARY KEY,\n    customer_id INT,\n    meter_type VARCHAR(50),\n    install_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Billing (\n    bill_id INT PRIMARY KEY,\n    customer_id INT,\n    meter_id INT,\n    bill_amount DECIMAL(10, 2),\n    bill_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),\n    FOREIGN KEY (meter_id) REFERENCES Meter(meter_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Payment (\n    payment_id INT PRIMARY KEY,\n    customer_id INT,\n    bill_id INT,\n    payment_amount DECIMAL(10, 2),\n    payment_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),\n    FOREIGN KEY (bill_id) REFERENCES Billing(bill_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Status (\n    status_id INT PRIMARY KEY,\n    meter_id INT,\n    reading INT,\n    status_date DATE,\n    FOREIGN KEY (meter_id) REFERENCES Meter(meter_id)\n);"
+      }
+    ]
+  }
+]

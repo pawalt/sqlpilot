@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_maps (\n    map_id UUID PRIMARY KEY,\n    map_name VARCHAR(100),\n    level_design JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_maps (\n    map_id UUID PRIMARY KEY,\n    map_name VARCHAR(255),\n    map_data JSONB\n);\n\nCREATE TABLE level_designs (\n    design_id UUID PRIMARY KEY,\n    map_id UUID REFERENCES game_maps(map_id),\n    level_number INT,\n    design_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_maps (\n    map_id INT PRIMARY KEY,\n    map_name VARCHAR(100),\n    map_data JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE level_designs (\n    design_id INT PRIMARY KEY,\n    map_id INT,\n    designer_name VARCHAR(100),\n    design_data JSON,\n    FOREIGN KEY (map_id) REFERENCES game_maps(map_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gameplay_logs (\n    log_id INT PRIMARY KEY,\n    map_id INT,\n    player_name VARCHAR(100),\n    action_performed VARCHAR(100),\n    action_timestamp TIMESTAMP,\n    FOREIGN KEY (map_id) REFERENCES game_maps(map_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maps (\n    map_id INT PRIMARY KEY,\n    map_name VARCHAR(255) NOT NULL,\n    map_data JSONB NOT NULL\n);\n\nCREATE TABLE levels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(255) NOT NULL,\n    map_id INT REFERENCES maps(map_id) NOT NULL\n);\n\nCREATE TABLE obstacles (\n    obstacle_id INT PRIMARY KEY,\n    obstacle_name VARCHAR(255) NOT NULL,\n    level_id INT REFERENCES levels(level_id) NOT NULL\n);\n\nCREATE TABLE checkpoints (\n    checkpoint_id INT PRIMARY KEY,\n    checkpoint_name VARCHAR(255) NOT NULL,\n    level_id INT REFERENCES levels(level_id) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_maps (\n    map_id INT PRIMARY KEY,\n    map_name TEXT NOT NULL,\n    map_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE level_designs (\n    level_id INT PRIMARY KEY,\n    map_id INT REFERENCES game_maps(map_id),\n    level_name TEXT NOT NULL,\n    level_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gameplay_progress (\n    player_id INT,\n    level_id INT REFERENCES level_designs(level_id),\n    progress_percentage FLOAT,\n    PRIMARY KEY (player_id, level_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_stats (\n    player_id INT PRIMARY KEY,\n    player_name TEXT NOT NULL,\n    total_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_inventory (\n    player_id INT REFERENCES player_stats(player_id),\n    item_id INT PRIMARY KEY,\n    item_name TEXT NOT NULL,\n    quantity INT\n);"
+      }
+    ]
+  }
+]

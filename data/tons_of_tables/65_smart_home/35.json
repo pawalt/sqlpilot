@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE connected_devices (\n    device_id UUID PRIMARY KEY,\n    device_name STRING,\n    device_type STRING,\n    device_status STRING,\n    owner_id UUID,\n    access_level STRING\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE connected_devices (\n  id INT PRIMARY KEY,\n  device_name VARCHAR(255) NOT NULL,\n  device_type VARCHAR(50) NOT NULL,\n  device_owner VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n  access_id INT PRIMARY KEY,\n  device_id INT NOT NULL,\n  role VARCHAR(50) NOT NULL,\n  access_type VARCHAR(50) NOT NULL,\n  CONSTRAINT fk_device_id FOREIGN KEY (device_id) REFERENCES connected_devices(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE connected_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    device_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_roles (\n    device_id INT,\n    role_id INT,\n    FOREIGN KEY(device_id) REFERENCES connected_devices(device_id),\n    FOREIGN KEY(role_id) REFERENCES roles(role_id),\n    PRIMARY KEY(device_id, role_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    role VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    user_id INT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_access (\n    access_id INT PRIMARY KEY,\n    device_id INT NOT NULL,\n    role_id INT NOT NULL,\n    FOREIGN KEY (device_id) REFERENCES devices(device_id),\n    FOREIGN KEY (role_id) REFERENCES device_roles(role_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE connected_devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    owner_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50),\n    role_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_roles (\n    device_id UUID,\n    role_id UUID,\n    FOREIGN KEY (device_id) REFERENCES connected_devices(device_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id UUID,\n    role_id UUID,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CyberbullyingEvidence (\n  incident_id INT PRIMARY KEY,\n  victim_name VARCHAR(50) NOT NULL,\n  bully_name VARCHAR(50) NOT NULL,\n  evidence_details TEXT,\n  timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CyberbullyingIncidents (\n    id INT PRIMARY KEY,\n    incident_date TIMESTAMP,\n    description TEXT,\n    evidence_url VARCHAR(255),\n    reported_by VARCHAR(50)\n);\nCREATE TABLE CyberbullyingUsers (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    role VARCHAR(20),\n    last_login TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CyberbullyingIncidents (\n  id INT PRIMARY KEY,\n  victim_name VARCHAR(255),\n  bully_name VARCHAR(255),\n  incident_date DATE,\n  evidence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reporters (\n  id INT PRIMARY KEY,\n  reporter_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ActionsTaken (\n  id INT PRIMARY KEY,\n  incident_id INT,\n  action_date DATE,\n  action_description TEXT,\n  FOREIGN KEY (incident_id) REFERENCES CyberbullyingIncidents(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Evidence (\n   id INT PRIMARY KEY,\n   incident_date DATE,\n   victim_name VARCHAR(50),\n   bully_name VARCHAR(50),\n   description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Attachments (\n   attachment_id INT PRIMARY KEY,\n   evidence_id INT,\n   attachment_url TEXT,\n   FOREIGN KEY(evidence_id) REFERENCES Evidence(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Comments (\n   comment_id INT PRIMARY KEY,\n   evidence_id INT,\n   comment TEXT,\n   commenter_name VARCHAR(50),\n   FOREIGN KEY(evidence_id) REFERENCES Evidence(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Tags (\n   tag_id INT PRIMARY KEY,\n   evidence_id INT,\n   tag_name VARCHAR(50),\n   FOREIGN KEY(evidence_id) REFERENCES Evidence(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cyberbullying_reports (\n    report_id SERIAL PRIMARY KEY,\n    reporter_name TEXT NOT NULL,\n    report_date DATE NOT NULL,\n    incident_description TEXT,\n    evidence_image BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reported_user (\n    user_id SERIAL PRIMARY KEY,\n    username TEXT NOT NULL UNIQUE,\n    email TEXT UNIQUE,\n    user_role TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reported_post (\n    post_id SERIAL PRIMARY KEY,\n    post_text TEXT NOT NULL,\n    post_date TIMESTAMP NOT NULL,\n    user_id INTEGER REFERENCES reported_user(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reported_comments (\n    comment_id SERIAL PRIMARY KEY,\n    comment_text TEXT NOT NULL,\n    comment_date TIMESTAMP NOT NULL,\n    post_id INTEGER REFERENCES reported_post(post_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cyberbullying_statistics (\n    stat_id SERIAL PRIMARY KEY,\n    reported_count INTEGER NOT NULL,\n    resolution_status TEXT\n);"
+      }
+    ]
+  }
+]

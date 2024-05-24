@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE error_correction_operations (\n  qubit_state VARCHAR(50) PRIMARY KEY,\n  error_syndrome VARCHAR(100),\n  correction_operation VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE error_syndromes (\n    syndrome_id INT PRIMARY KEY,\n    syndrome_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE error_corrections (\n    correction_id INT PRIMARY KEY,\n    syndrome_id INT,\n    correction_operation TEXT,\n    FOREIGN KEY (syndrome_id) REFERENCES error_syndromes(syndrome_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubit_states (\n    id SERIAL PRIMARY KEY,\n    qubit_state VARCHAR(255) NOT NULL,\n    error_syndrome VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE error_corrections (\n    id SERIAL PRIMARY KEY,\n    error_correction_op VARCHAR(255) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qubit_errors (\n    id SERIAL PRIMARY KEY,\n    qubit_id INT REFERENCES qubit_states(id),\n    error_id INT REFERENCES error_corrections(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE error_syndromes (\n    syndrome_id SERIAL PRIMARY KEY,\n    qubit_state VARCHAR(255) NOT NULL,\n    syndrome_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE error_corrections (\n    correction_id SERIAL PRIMARY KEY,\n    syndrome_id INT NOT NULL,\n    correction_operation VARCHAR(255) NOT NULL,\n    FOREIGN KEY (syndrome_id) REFERENCES error_syndromes(syndrome_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qubit_states (\n    state_id SERIAL PRIMARY KEY,\n    state_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE syndrome_corrections (\n    syndrome_correction_id SERIAL PRIMARY KEY,\n    syndrome_id INT NOT NULL,\n    correction_id INT NOT NULL,\n    FOREIGN KEY (syndrome_id) REFERENCES error_syndromes(syndrome_id),\n    FOREIGN KEY (correction_id) REFERENCES error_corrections(correction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE error_syndromes (\n  syndrome_id INT PRIMARY KEY,\n  syndrome_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE error_corrections (\n  correction_id INT PRIMARY KEY,\n  correction_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qubit_states (\n  state_id INT PRIMARY KEY,\n  state_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE syndrome_corrections (\n  syndrome_id INT,\n  correction_id INT,\n  FOREIGN KEY (syndrome_id) REFERENCES error_syndromes(syndrome_id),\n  FOREIGN KEY (correction_id) REFERENCES error_corrections(correction_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE state_corrections (\n  state_id INT,\n  correction_id INT,\n  FOREIGN KEY (state_id) REFERENCES qubit_states(state_id),\n  FOREIGN KEY (correction_id) REFERENCES error_corrections(correction_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_consent (\n    user_id INT PRIMARY KEY,\n    consent_date DATE,\n    consent_given BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_consent (\n    user_id INT,\n    consent_type VARCHAR(50),\n    consent_given_at TIMESTAMP,\n    PRIMARY KEY (user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_processing_activity (\n    activity_id INT,\n    activity_type VARCHAR(50),\n    activity_description TEXT,\n    activity_date TIMESTAMP,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES user_consent(user_id),\n    PRIMARY KEY (activity_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_consent (\n  user_id INT PRIMARY KEY,\n  consent_description TEXT,\n  consent_given_at TIMESTAMP,\n  consent_valid_until TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_processing_activity (\n  activity_id INT PRIMARY KEY,\n  activity_description TEXT,\n  activity_type TEXT,\n  activity_start_time TIMESTAMP,\n  activity_end_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data (\n  data_id INT PRIMARY KEY,\n  user_id INT,\n  data_content JSONB,\n  data_collection_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_consent (\n    user_id UUID,\n    activity_id INT,\n    consent_timestamp TIMESTAMP,\n    consent_given BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_processing_activity (\n    activity_id INT,\n    activity_description TEXT,\n    data_category TEXT,\n    data_source TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_registration (\n    user_id UUID,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    registration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_history (\n    user_id UUID,\n    activity_id INT,\n    consent_date DATE,\n    consent_revoked BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_personal_data (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(100) NOT NULL,\n    email VARCHAR(200) UNIQUE NOT NULL,\n    consent_given BOOL DEFAULT FALSE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_processing_activities (\n    activity_id INT PRIMARY KEY,\n    activity_name VARCHAR(100) NOT NULL,\n    activity_description VARCHAR(200),\n    activity_category VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_consent_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_personal_data(user_id),\n    activity_id INT REFERENCES data_processing_activities(activity_id),\n    consent_status BOOL NOT NULL,\n    consent_timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_processing_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL,\n    category_description VARCHAR(200)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data_notifications (\n    notification_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_personal_data(user_id),\n    notification_message VARCHAR(250) NOT NULL,\n    notification_sent_date DATE NOT NULL\n);\n"
+      }
+    ]
+  }
+]

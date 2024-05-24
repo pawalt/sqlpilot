@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_logs (\n  event_id INT PRIMARY KEY,\n  event_timestamp TIMESTAMP,\n  event_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_logs (\n    id UUID PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    application_id UUID NOT NULL,\n    log_message STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    id UUID PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    application_id UUID NOT NULL,\n    severity INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_logs (\n    id SERIAL PRIMARY KEY,\n    event_name TEXT NOT NULL,\n    event_description TEXT,\n    event_timestamp TIMESTAMP NOT NULL\n);\n\nCREATE TABLE alerts (\n    alert_id SERIAL PRIMARY KEY,\n    alert_type TEXT NOT NULL,\n    alert_message TEXT,\n    alert_timestamp TIMESTAMP NOT NULL\n);\n\nCREATE TABLE edge_apps (\n    app_id SERIAL PRIMARY KEY,\n    app_name TEXT NOT NULL,\n    app_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EventLogs (\n    log_id INT PRIMARY KEY,\n    event_name VARCHAR(50),\n    event_description TEXT,\n    event_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (\n    alert_id INT PRIMARY KEY,\n    alert_message TEXT,\n    alert_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EdgeApplications (\n    app_id INT PRIMARY KEY,\n    app_name VARCHAR(50),\n    app_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EventLogMapping (\n    log_id INT,\n    alert_id INT,\n    FOREIGN KEY (log_id) REFERENCES EventLogs(log_id),\n    FOREIGN KEY (alert_id) REFERENCES Alerts(alert_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_logs (\n    log_id UUID PRIMARY KEY,\n    event_time TIMESTAMP,\n    event_type VARCHAR(50),\n    event_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id SERIAL PRIMARY KEY,\n    log_id UUID REFERENCES event_logs(log_id),\n    alert_time TIMESTAMP,\n    alert_type VARCHAR(50),\n    alert_message TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(100),\n    device_type VARCHAR(50),\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE applications (\n    app_id SERIAL PRIMARY KEY,\n    app_name VARCHAR(100),\n    app_version VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id UUID REFERENCES event_logs(log_id),\n    device_id SERIAL REFERENCES devices(device_id),\n    app_id SERIAL REFERENCES applications(app_id),\n    log_description TEXT,\n    log_data JSONB\n);\n"
+      }
+    ]
+  }
+]

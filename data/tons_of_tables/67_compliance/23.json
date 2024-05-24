@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ethically_validated_data (\n   id INT PRIMARY KEY,\n   name VARCHAR(50) NOT NULL,\n   email VARCHAR(100) UNIQUE NOT NULL,\n   age INT CHECK (age >= 18),\n   gender ENUM('Male', 'Female', 'Other') NOT NULL,\n   date_of_birth DATE CHECK (date_of_birth <= current_date)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EthicalDataValidationRules (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    age INT CHECK (age >= 18),\n    email VARCHAR(255) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DataValidationLogs (\n    log_id SERIAL PRIMARY KEY,\n    entry_time TIMESTAMP NOT NULL,\n    message TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EthicalDataValidation (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    age INT CHECK (age >= 18),\n    is_verified BOOLEAN DEFAULT FALSE\n);\n\nCREATE TABLE DataValidationLog (\n    log_id SERIAL PRIMARY KEY,\n    entry_date DATE DEFAULT CURRENT_DATE,\n    description TEXT\n);\n\nCREATE TABLE EthicsRuleViolations (\n    violation_id SERIAL PRIMARY KEY,\n    user_id INT,\n    violation_type VARCHAR(50),\n    violation_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES EthicalDataValidation(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    age INT NOT NULL CHECK (age >= 18),\n    CONSTRAINT valid_email CHECK (email LIKE '%_@__%.__%')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),\n    quantity INT NOT NULL CHECK (quantity >= 0)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    product_id INT NOT NULL,\n    order_date TIMESTAMP NOT NULL,\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),\n    CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES products(product_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    product_id INT NOT NULL,\n    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),\n    review_text TEXT NOT NULL,\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),\n    CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES products(product_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users ( \n id INT PRIMARY KEY, \n username VARCHAR(50) NOT NULL, \n email VARCHAR(100) NOT NULL, \n age INT CHECK (age >= 18), \n gender VARCHAR(10) CHECK (gender IN ('Male', 'Female', 'Other')) \n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Products ( \n product_id INT PRIMARY KEY, \n product_name VARCHAR(100) NOT NULL, \n price DECIMAL(10, 2) CHECK (price >= 0), \n stock_quantity INT CHECK (stock_quantity >= 0) \n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders ( \n order_id INT PRIMARY KEY, \n user_id INT REFERENCES Users(id), \n product_id INT REFERENCES Products(product_id), \n quantity INT CHECK (quantity > 0) \n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Categories ( \n category_id INT PRIMARY KEY, \n category_name VARCHAR(50) NOT NULL \n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Product_Categories ( \n product_id INT REFERENCES Products(product_id), \n category_id INT REFERENCES Categories(category_id) \n)"
+      }
+    ]
+  }
+]

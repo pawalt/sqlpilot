@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_classroom_resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255),\n    resource_type VARCHAR(50),\n    resource_description TEXT,\n    resource_link VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reference_materials (\n  id INT PRIMARY KEY,\n  material_name VARCHAR(255),\n  material_type VARCHAR(50),\n  author VARCHAR(100),\n  upload_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE external_links (\n  id INT PRIMARY KEY,\n  link_title VARCHAR(255),\n  link_url VARCHAR(255),\n  description TEXT,\n  category VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n  id SERIAL PRIMARY KEY,\n  title VARCHAR(255),\n  content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE external_links (\n  id SERIAL PRIMARY KEY,\n  title VARCHAR(255),\n  url VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n  id SERIAL PRIMARY KEY,\n  type VARCHAR(50),\n  description TEXT,\n  linked_material_id INT,\n  linked_link_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reference_materials (\n    id INT PRIMARY KEY,\n    title TEXT,\n    author TEXT,\n    category TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE external_links (\n    id INT PRIMARY KEY,\n    title TEXT,\n    url TEXT,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE materials_to_links (\n    material_id INT REFERENCES reference_materials(id),\n    link_id INT REFERENCES external_links(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    name TEXT,\n    email TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_classroom_resource (\n    resource_id INT PRIMARY KEY,\n    resource_name TEXT,\n    resource_type TEXT,\n    resource_link TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reference_material (\n    material_id INT PRIMARY KEY,\n    material_title TEXT,\n    material_content TEXT,\n    material_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE external_link (\n    link_id INT PRIMARY KEY,\n    link_title TEXT,\n    link_url TEXT,\n    link_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_category (\n    category_id INT PRIMARY KEY,\n    category_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_mapping (\n    mapping_id INT PRIMARY KEY,\n    resource_id INT,\n    material_id INT,\n    link_id INT,\n    category_id INT,\n    FOREIGN KEY (resource_id) REFERENCES virtual_classroom_resource(resource_id),\n    FOREIGN KEY (material_id) REFERENCES reference_material(material_id),\n    FOREIGN KEY (link_id) REFERENCES external_link(link_id),\n    FOREIGN KEY (category_id) REFERENCES resource_category(category_id)\n);\n"
+      }
+    ]
+  }
+]

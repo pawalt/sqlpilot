@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_datasets (\n    dataset_id INT PRIMARY KEY,\n    dataset_name VARCHAR(255),\n    dataset_size INT,\n    dataset_format VARCHAR(50),\n    experiment_id INT,\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dataset (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment (\n    id INT PRIMARY KEY,\n    dataset_id INT REFERENCES dataset(id),\n    model_name VARCHAR(255) NOT NULL,\n    accuracy FLOAT,\n    loss FLOAT,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_dataset (\n    dataset_id UUID PRIMARY KEY,\n    dataset_name VARCHAR(100) NOT NULL,\n    num_records INT NOT NULL,\n    created_on TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deep_learning_model (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(100) NOT NULL,\n    model_type VARCHAR(50) NOT NULL,\n    accuracy FLOAT NOT NULL,\n    trained_on DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment (\n    experiment_id UUID PRIMARY KEY,\n    experiment_name VARCHAR(100) NOT NULL,\n    dataset_id UUID REFERENCES training_dataset(dataset_id),\n    model_id UUID REFERENCES deep_learning_model(model_id),\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_datasets (\n    dataset_id UUID PRIMARY KEY,\n    dataset_name VARCHAR(255) NOT NULL,\n    dataset_description TEXT,\n    dataset_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id UUID PRIMARY KEY,\n    dataset_id UUID REFERENCES training_datasets(dataset_id),\n    experiment_name VARCHAR(255) NOT NULL,\n    experiment_description TEXT,\n    experiment_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments_results (\n    result_id UUID PRIMARY KEY,\n    experiment_id UUID REFERENCES experiments(experiment_id),\n    result_metrics JSONB,\n    result_duration INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_logs (\n    log_id UUID PRIMARY KEY,\n    experiment_id UUID REFERENCES experiments(experiment_id),\n    log_date TIMESTAMP NOT NULL,\n    log_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dataset (\n    dataset_id INT PRIMARY KEY,\n    dataset_name VARCHAR(255),\n    dataset_description TEXT,\n    dataset_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    model_id INT,\n    dataset_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_type VARCHAR(50),\n    model_accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    hyperparameters_id INT PRIMARY KEY,\n    model_id INT,\n    learning_rate FLOAT,\n    batch_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_history (\n    training_id INT PRIMARY KEY,\n    model_id INT,\n    epochs_trained INT,\n    validation_accuracy FLOAT\n);"
+      }
+    ]
+  }
+]

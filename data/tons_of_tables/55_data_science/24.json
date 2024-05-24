@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MachineLearningModels (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_description TEXT,\n    model_type VARCHAR(50),\n    model_accuracy DECIMAL(5,2),\n    training_data_size INT,\n    training_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Machine_Learning_Models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_type VARCHAR(50),\n    model_accuracy FLOAT\n);\nCREATE TABLE Model_Results (\n    result_id INT PRIMARY KEY,\n    model_id INT,\n    result_metric VARCHAR(30),\n    result_value FLOAT,\n    FOREIGN KEY (model_id) REFERENCES Machine_Learning_Models(model_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_inputs (\n    id SERIAL PRIMARY KEY,\n    input_name VARCHAR(255) NOT NULL,\n    input_data JSONB NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_outputs (\n    id SERIAL PRIMARY KEY,\n    output_name VARCHAR(255) NOT NULL,\n    output_data JSONB NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metadata (\n    id SERIAL PRIMARY KEY,\n    model_name VARCHAR(255) NOT NULL,\n    model_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE machine_learning_models (\n    model_id SERIAL PRIMARY KEY,\n    model_name TEXT NOT NULL,\n    model_type TEXT NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT NOW()\n);\n\nCREATE TABLE model_parameters (\n    parameter_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES machine_learning_models(model_id) ON DELETE CASCADE,\n    parameter_name TEXT NOT NULL,\n    parameter_value FLOAT NOT NULL\n);\n\nCREATE TABLE training_data (\n    data_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES machine_learning_models(model_id) ON DELETE CASCADE,\n    feature_vector JSONB NOT NULL,\n    target_variable FLOAT NOT NULL\n);\n\nCREATE TABLE predictions (\n    prediction_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES machine_learning_models(model_id) ON DELETE CASCADE,\n    input_data JSONB NOT NULL,\n    predicted_output FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE machine_learning_models (\n  model_id INT PRIMARY KEY,\n  model_name TEXT NOT NULL,\n  model_description TEXT,\n  algorithm TEXT NOT NULL,\n  accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n  data_id INT PRIMARY KEY,\n  model_id INT NOT NULL,\n  data_input TEXT NOT NULL,\n  data_output TEXT NOT NULL,\n  data_accuracy FLOAT,\n  FOREIGN KEY (model_id) REFERENCES machine_learning_models(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n  parameter_id INT PRIMARY KEY,\n  model_id INT NOT NULL,\n  parameter_name TEXT NOT NULL,\n  parameter_value TEXT NOT NULL,\n  FOREIGN KEY (model_id) REFERENCES machine_learning_models(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE evaluation_metrics (\n  eval_id INT PRIMARY KEY,\n  model_id INT NOT NULL,\n  metric_name TEXT NOT NULL,\n  metric_value FLOAT NOT NULL,\n  FOREIGN KEY (model_id) REFERENCES machine_learning_models(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE predictions (\n  prediction_id INT PRIMARY KEY,\n  model_id INT NOT NULL,\n  prediction_input TEXT NOT NULL,\n  prediction_output TEXT NOT NULL,\n  prediction_accuracy FLOAT,\n  FOREIGN KEY (model_id) REFERENCES machine_learning_models(model_id)\n);"
+      }
+    ]
+  }
+]

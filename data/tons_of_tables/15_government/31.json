@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VotingRecords (\n  official_id INT PRIMARY KEY,\n  official_name VARCHAR(50),\n  vote_date DATE,\n  decision VARCHAR(255),\n  party_affiliation VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_officials (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    party_affiliation VARCHAR(50),\n    position VARCHAR(50),\n    district VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_records (\n    record_id INT PRIMARY KEY,\n    official_id INT,\n    vote_decision VARCHAR(50),\n    vote_date DATE,\n    FOREIGN KEY (official_id) REFERENCES public_officials(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_officials (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    party_affiliation VARCHAR(50),\n    position VARCHAR(50),\n    office_location VARCHAR(100)\n);\n\nCREATE TABLE voting_records (\n    record_id INT PRIMARY KEY,\n    official_id INT,\n    vote_decision VARCHAR(10),\n    vote_date DATE,\n    motion_id INT,\n    FOREIGN KEY (official_id) REFERENCES public_officials(id)\n);\n\nCREATE TABLE motions (\n    motion_id INT PRIMARY KEY,\n    motion_description TEXT,\n    vote_result VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE officials (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  party VARCHAR(50),\n  district VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE votes (\n  id INT PRIMARY KEY,\n  official_id INT,\n  vote_date TIMESTAMP,\n  decision VARCHAR(50),\n  FOREIGN KEY (official_id) REFERENCES officials(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n  id INT PRIMARY KEY,\n  session_date DATE,\n  agenda TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_records (\n  id INT PRIMARY KEY,\n  official_id INT,\n  vote_id INT,\n  vote_decision VARCHAR(50),\n  vote_result VARCHAR(20),\n  FOREIGN KEY (official_id) REFERENCES officials(id),\n  FOREIGN KEY (vote_id) REFERENCES votes(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_officials (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  party VARCHAR(50) NOT NULL,\n  district VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_records (\n  record_id INT PRIMARY KEY,\n  official_id INT NOT NULL,\n  vote DECIMAL(5,2) NOT NULL,\n  vote_date DATE NOT NULL,\n  FOREIGN KEY (official_id) REFERENCES public_officials(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bills (\n  bill_id INT PRIMARY KEY,\n  bill_name VARCHAR(255) NOT NULL,\n  proposed_by INT NOT NULL,\n  proposed_date DATE NOT NULL,\n  FOREIGN KEY (proposed_by) REFERENCES public_officials(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE committees (\n  committee_id INT PRIMARY KEY,\n  committee_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE committee_assignments (\n  assignment_id INT PRIMARY KEY,\n  official_id INT NOT NULL,\n  committee_id INT NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE,\n  FOREIGN KEY (official_id) REFERENCES public_officials(id),\n  FOREIGN KEY (committee_id) REFERENCES committees(committee_id)\n);"
+      }
+    ]
+  }
+]

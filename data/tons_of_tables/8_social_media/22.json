@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaign_data (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date TIMESTAMP,\n    end_date TIMESTAMP,\n    total_recipients INT,\n    open_rate FLOAT,\n    click_rate FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    campaign_id INT,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    target_audience VARCHAR(255),\n    total_recipients INT,\n    total_opened INT,\n    total_clicked INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    performance_id INT,\n    campaign_id INT,\n    open_rate DECIMAL(5,2),\n    click_rate DECIMAL(5,2),\n    conversion_rate DECIMAL(5,2),\n    revenue_generated DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailCampaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    email_subject VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignRecipients (\n    recipient_id INT PRIMARY KEY,\n    campaign_id INT,\n    recipient_email VARCHAR(255),\n    recipient_name VARCHAR(255),\n    recipient_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignPerformance (\n    performance_id INT PRIMARY KEY,\n    campaign_id INT,\n    recipient_id INT,\n    open_count INT,\n    click_count INT,\n    conversion_count INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailCampaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name TEXT,\n    start_date DATE,\n    end_date DATE,\n    total_recipients INT,\n    total_opened INT,\n    total_clicked INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignAnalytics (\n    campaign_id INT,\n    analytics_date DATE,\n    total_opened INT,\n    total_clicked INT,\n    total_conversions INT,\n    PRIMARY KEY (campaign_id, analytics_date)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailRecipients (\n    recipient_id INT PRIMARY KEY,\n    email_address TEXT,\n    first_name TEXT,\n    last_name TEXT,\n    subscription_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignTags (\n    tag_id INT PRIMARY KEY,\n    campaign_id INT,\n    tag_name TEXT,\n    PRIMARY KEY (tag_id, campaign_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailCampaigns (\n\tcampaign_id UUID PRIMARY KEY,\n\tcampaign_name VARCHAR(255) NOT NULL,\n\tstart_date DATE NOT NULL,\n\tend_date DATE,\n\tsent_emails INT,\n\topened_emails INT,\n\tclicked_emails INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignContacts (\n\tcontact_id UUID PRIMARY KEY,\n\tcampaign_id UUID REFERENCES EmailCampaigns(campaign_id) ON DELETE CASCADE,\n\tcontact_name VARCHAR(255) NOT NULL,\n\temail_address VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignPerformance (\n\tperformance_id UUID PRIMARY KEY,\n\tcampaign_id UUID REFERENCES EmailCampaigns(campaign_id) ON DELETE CASCADE,\n\tdate DATE NOT NULL,\n\tsent_emails INT,\n\topened_emails INT,\n\tclicked_emails INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignAudience (\n\taudience_id UUID PRIMARY KEY,\n\tcampaign_id UUID REFERENCES EmailCampaigns(campaign_id) ON DELETE CASCADE,\n\tsegment_name VARCHAR(255) NOT NULL,\n\ttotal_contacts INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignStats (\n\tstat_id UUID PRIMARY KEY,\n\tcampaign_id UUID REFERENCES EmailCampaigns(campaign_id) ON DELETE CASCADE,\n\tdate DATE NOT NULL,\n\ttotal_sent_emails INT,\n\ttotal_opened_emails INT,\n\ttotal_clicked_emails INT\n);\n"
+      }
+    ]
+  }
+]

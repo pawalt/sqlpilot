@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE equipment_failure_prediction (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(255),\n  last_maintenance_date DATE,\n  next_maintenance_due_date DATE,\n  condition_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE equipment_data (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(50),\n    equipment_type VARCHAR(50),\n    maintenance_date DATE,\n    maintenance_cost DECIMAL(10, 2),\n    maintenance_notes TEXT\n);\nCREATE TABLE maintenance_log (\n    log_id INT PRIMARY KEY,\n    equipment_id INT,\n    maintenance_date DATE,\n    issue_description TEXT,\n    resolution_details TEXT,\n    CONSTRAINT fk_equipment_id FOREIGN KEY (equipment_id) REFERENCES equipment_data(equipment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Equipment (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(255),\n  location VARCHAR(255),\n  last_maintenance_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceRecords (\n  record_id INT PRIMARY KEY,\n  equipment_id INT,\n  maintenance_date DATE,\n  maintenance_type VARCHAR(255),\n  technician_name VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EquipmentHealth (\n  reading_id INT PRIMARY KEY,\n  equipment_id INT,\n  reading_date DATE,\n  health_status VARCHAR(255),\n  prediction_score DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Equipment (\n    equipment_id UUID PRIMARY KEY,\n    name VARCHAR(255),\n    type VARCHAR(100),\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorData (\n    data_id UUID PRIMARY KEY,\n    equipment_id UUID REFERENCES Equipment(equipment_id),\n    reading_time TIMESTAMP,\n    sensor_name VARCHAR(50),\n    value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n    log_id UUID PRIMARY KEY,\n    equipment_id UUID REFERENCES Equipment(equipment_id),\n    maintenance_date DATE,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PredictiveAnalysis (\n    analysis_id UUID PRIMARY KEY,\n    equipment_id UUID REFERENCES Equipment(equipment_id),\n    analysis_date DATE,\n    prediction VARCHAR(100),\n    confidence_level FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name TEXT,\n    installation_date DATE,\n    maintenance_due_date DATE,\n    status TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceRecords (\n    record_id INT PRIMARY KEY,\n    equipment_id INT,\n    maintenance_date DATE,\n    technician TEXT,\n    description TEXT,\n    FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorData (\n    sensor_id INT PRIMARY KEY,\n    equipment_id INT,\n    reading_time TIMESTAMP,\n    sensor_type TEXT,\n    value FLOAT,\n    FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FailurePredictions (\n    prediction_id INT PRIMARY KEY,\n    equipment_id INT,\n    prediction_time TIMESTAMP,\n    prediction_score FLOAT,\n    prediction_result TEXT,\n    FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceSchedule (\n    schedule_id INT PRIMARY KEY,\n    equipment_id INT,\n    scheduled_maintenance_date DATE,\n    suggested_action TEXT,\n    FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)\n)"
+      }
+    ]
+  }
+]

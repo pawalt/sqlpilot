@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  success_rate FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name TEXT,\n    campaign_start_date DATE,\n    campaign_end_date DATE,\n    total_emails_sent INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_results (\n    result_id INT PRIMARY KEY,\n    campaign_id INT REFERENCES phishing_campaigns(campaign_id),\n    recipient_email TEXT,\n    opened BOOLEAN,\n    clicked BOOLEAN,\n    reported BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_campaigns (\n  campaign_id UUID PRIMARY KEY,\n  start_date TIMESTAMP,\n  end_date TIMESTAMP,\n  success_rate FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_participants (\n  participant_id UUID PRIMARY KEY,\n  campaign_id UUID,\n  participant_name STRING,\n  email STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_metrics (\n  metric_id UUID PRIMARY KEY,\n  campaign_id UUID,\n  metric_type STRING,\n  value FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_campaigns (\n    campaign_id UUID PRIMARY KEY,\n    start_date DATE,\n    end_date DATE,\n    success_rate FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE emails (\n    email_id UUID PRIMARY KEY,\n    campaign_id UUID,\n    recipient_email VARCHAR(255),\n    opened BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE links (\n    link_id UUID PRIMARY KEY,\n    email_id UUID,\n    link_url VARCHAR(255),\n    clicked BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE statistics (\n    stat_id UUID PRIMARY KEY,\n    campaign_id UUID,\n    email_id UUID,\n    link_id UUID,\n    open_timestamp TIMESTAMP,\n    click_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_campaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    target_url VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_metrics (\n    metric_id UUID PRIMARY KEY,\n    campaign_id UUID REFERENCES phishing_campaigns(campaign_id),\n    open_rate FLOAT,\n    click_rate FLOAT,\n    conversion_rate FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    log_id UUID PRIMARY KEY,\n    campaign_id UUID REFERENCES phishing_campaigns(campaign_id),\n    email_address VARCHAR(255),\n    sent_date TIMESTAMP,\n    opened BOOLEAN,\n    clicked BOOLEAN,\n    converted BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE link_clicks (\n    click_id UUID PRIMARY KEY,\n    log_id UUID REFERENCES email_logs(log_id),\n    link_url VARCHAR(255),\n    click_date TIMESTAMP,\n    clicked_by_email BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions (\n    conversion_id UUID PRIMARY KEY,\n    log_id UUID REFERENCES email_logs(log_id),\n    conversion_date TIMESTAMP,\n    converted_by_email BOOLEAN\n);\n"
+      }
+    ]
+  }
+]

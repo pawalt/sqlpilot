@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CivilEngineeringDesignDrawings (\n    project_id UUID PRIMARY KEY,\n    project_name TEXT NOT NULL,\n    designer_name TEXT,\n    drawing_file BYTEA NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InfrastructureProjects (\n project_id UUID PRIMARY KEY,\n project_name VARCHAR(255) NOT NULL,\n project_location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DesignDrawings (\n drawing_id UUID PRIMARY KEY,\n project_id UUID REFERENCES InfrastructureProjects(project_id),\n drawing_name VARCHAR(255) NOT NULL,\n drawing_file BYTEA NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE infrastructure_projects (\n    project_id INT PRIMARY KEY,\n    project_name TEXT,\n    project_location TEXT,\n    project_start_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE design_drawings (\n    drawing_id INT PRIMARY KEY,\n    project_id INT REFERENCES infrastructure_projects(project_id),\n    drawing_name TEXT,\n    drawing_type TEXT,\n    drawing_file BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE engineers (\n    engineer_id INT PRIMARY KEY,\n    engineer_name TEXT,\n    engineer_specialization TEXT,\n    engineer_experience_years INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CivilEngineeringFirm (\nfirm_id INT,\nfirm_name VARCHAR(255),\nlocation VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InfrastructureProjects (\nproject_id INT,\nproject_name VARCHAR(255),\nstart_date DATE,\nend_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DesignDrawings (\ndrawing_id INT,\nproject_id INT,\ndrawing_description TEXT,\ndrawing_file BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Engineers (\nengineer_id INT,\nengineer_name VARCHAR(255),\nengineer_role VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Firm (firm_id INT PRIMARY KEY,\nfirm_name VARCHAR(100) NOT NULL,\nlocation VARCHAR(100) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Project (project_id INT PRIMARY KEY,\nproject_name VARCHAR(100) NOT NULL,\nstart_date DATE,\nend_date DATE,\nfirm_id INT,\nFOREIGN KEY (firm_id) REFERENCES Firm(firm_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Drawing (drawing_id INT PRIMARY KEY,\ndrawing_name VARCHAR(100) NOT NULL,\ndescription TEXT,\nproject_id INT,\nFOREIGN KEY (project_id) REFERENCES Project(project_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Engineer (engineer_id INT PRIMARY KEY,\nengineer_name VARCHAR(100) NOT NULL,\ndepartment VARCHAR(100) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE DrawingRevision (revision_id INT PRIMARY KEY,\nrevision_number INT NOT NULL,\nrevision_date DATE,\ndrawing_id INT,\nENGINEER_ID INT,\nFOREIGN KEY (drawing_id) REFERENCES Drawing(drawing_id),\nFOREIGN KEY (engineer_id) REFERENCES Engineer(engineer_id));"
+      }
+    ]
+  }
+]

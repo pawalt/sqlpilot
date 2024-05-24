@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_actor_profiles (\n  actor_id INTEGER PRIMARY KEY,\n  actor_name TEXT,\n  actor_description TEXT,\n  actor_country TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_actors (\n    threat_actor_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    organization VARCHAR(255),\n    country VARCHAR(255),\n    threat_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ttps (\n    ttp_id INT PRIMARY KEY,\n    threat_actor_id INT,\n    description TEXT,\n    type VARCHAR(100),\n    FOREIGN KEY (threat_actor_id) REFERENCES threat_actors(threat_actor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_actors (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ttps (\n    id INT PRIMARY KEY,\n    technique VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE actor_ttps (\n    threat_actor_id INT,\n    ttp_id INT,\n    FOREIGN KEY (threat_actor_id) REFERENCES threat_actors(id),\n    FOREIGN KEY (ttp_id) REFERENCES ttps(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_actors (\n\threat_actor_id SERIAL PRIMARY KEY,\n\tname TEXT NOT NULL,\n\tnationality TEXT,\n\torganization TEXT,\n\tknown_aliases TEXT[],\n\tcreated_at TIMESTAMPTZ DEFAULT current_timestamp\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ttps (\n\tttp_id SERIAL PRIMARY KEY,\n\tthreat_actor_id INT REFERENCES threat_actors(threat_actor_id) ON DELETE CASCADE,\n\ttechnique_name TEXT NOT NULL,\n\ttechnique_description TEXT,\n\treference_links TEXT[],\n\tcreated_at TIMESTAMPTZ DEFAULT current_timestamp\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n\tvulnerability_id SERIAL PRIMARY KEY,\n\tttp_id INT REFERENCES ttps(ttp_id) ON DELETE CASCADE,\n\tcve_id TEXT NOT NULL,\n\tpublished_date DATE,\n\tdescription TEXT,\n\tcreated_at TIMESTAMPTZ DEFAULT current_timestamp\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attacks (\n\tattack_id SERIAL PRIMARY KEY,\n\tttp_id INT REFERENCES ttps(ttp_id) ON DELETE CASCADE,\n\tattack_type TEXT,\n\ttargeted_system TEXT,\n\timpact_description TEXT,\n\tcreated_at TIMESTAMPTZ DEFAULT current_timestamp\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_actors (\n    id INT PRIMARY KEY,\n    actor_name VARCHAR(50),\n    nationality VARCHAR(50),\n    known_aliases TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE actors_ttps (\n    id INT PRIMARY KEY,\n    actor_id INT,\n    ttp_type VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE indicators (\n    id INT PRIMARY KEY,\n    indicator_type VARCHAR(50),\n    value VARCHAR(100),\n    indicator_source TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE actor_relations (\n    id INT PRIMARY KEY,\n    actor1_id INT,\n    actor2_id INT,\n    relation_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ttp_sources (\n    id INT PRIMARY KEY,\n    ttp_id INT,\n    source_name VARCHAR(100),\n    source_link TEXT\n);"
+      }
+    ]
+  }
+]

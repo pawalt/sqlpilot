@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iris_scans (\n    id INT PRIMARY KEY,\n    person_id INT,\n    iris_data BYTEA\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE individuals (\n  id UUID PRIMARY KEY,\n  iris_scan BYTEA,\n  name VARCHAR,\n  age INT,\n  gender VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE iris_scans (\n  scan_id UUID PRIMARY KEY,\n  individual_id UUID REFERENCES individuals(id),\n  scan_date TIMESTAMP,\n  scan_result VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iris_scans (\n   person_id INT PRIMARY KEY,\n   iris_scan_data BYTES\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE individuals (\n   person_id INT PRIMARY KEY,\n   first_name VARCHAR,\n   last_name VARCHAR,\n   age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE iris_match (\n   match_id INT PRIMARY KEY,\n   person_id_a INT,\n   person_id_b INT,\n   match_similarity FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE individuals (\n    individual_id INT PRIMARY KEY,\n    iris_scan_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE iris_scans (\n    scan_id INT PRIMARY KEY,\n    individual_id INT,\n    scan_date TIMESTAMP,\n    scan_results BYTEA,\n    FOREIGN KEY (individual_id) REFERENCES individuals(individual_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    individual_id INT,\n    scan_id INT,\n    permission_level INT,\n    FOREIGN KEY (individual_id) REFERENCES individuals(individual_id),\n    FOREIGN KEY (scan_id) REFERENCES iris_scans(scan_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    individual_id INT,\n    scan_id INT,\n    access_date TIMESTAMP,\n    access_result BOOLEAN,\n    FOREIGN KEY (individual_id) REFERENCES individuals(individual_id),\n    FOREIGN KEY (scan_id) REFERENCES iris_scans(scan_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iris_scans (\n    person_id UUID PRIMARY KEY,\n    iris_data BLOB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE persons (\n    person_id UUID PRIMARY KEY,\n    full_name TEXT,\n    date_of_birth DATE,\n    gender TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id UUID PRIMARY KEY,\n    access_level INT,\n    person_id UUID REFERENCES persons(person_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    person_id UUID REFERENCES persons(person_id),\n    action TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE security_cameras (\n    camera_id UUID PRIMARY KEY,\n    location TEXT,\n    person_id UUID REFERENCES persons(person_id)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE samples (\n  sample_id INT PRIMARY KEY,\n  sample_name VARCHAR(50) NOT NULL,\n  collection_date DATE,\n  sample_type VARCHAR(20),\n  storage_location VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE samples (\n  sample_id UUID PRIMARY KEY,\n  sample_name STRING,\n  organism STRING,\n  collection_date DATE,\n  location STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n  experiment_id UUID PRIMARY KEY,\n  sample_id UUID,\n  experiment_type STRING,\n  start_date TIMESTAMP,\n  end_date TIMESTAMP,\n  result TEXT,\n  FOREIGN KEY (sample_id) REFERENCES samples(sample_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sample_metadata (\n    sample_id UUID PRIMARY KEY,\n    sample_name VARCHAR,\n    sample_type VARCHAR,\n    collection_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_measurements (\n    measurement_id UUID PRIMARY KEY,\n    sample_id UUID REFERENCES sample_metadata(sample_id),\n    measurement_type VARCHAR,\n    measurement_value FLOAT,\n    measurement_unit VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_annotations (\n    annotation_id UUID PRIMARY KEY,\n    sample_id UUID REFERENCES sample_metadata(sample_id),\n    annotation_type VARCHAR,\n    annotation_value VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sample_info(\n  sample_id INT PRIMARY KEY,\n  sample_name TEXT,\n  researcher_name TEXT,\n  collection_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_metadata(\n  metadata_id INT PRIMARY KEY,\n  sample_id INT,\n  metadata_key TEXT,\n  metadata_value TEXT,\n  FOREIGN KEY (sample_id) REFERENCES sample_info(sample_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_results(\n  result_id INT PRIMARY KEY,\n  sample_id INT,\n  result_data TEXT,\n  result_date DATE,\n  FOREIGN KEY (sample_id) REFERENCES sample_info(sample_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_analysis(\n  analysis_id INT PRIMARY KEY,\n  result_id INT,\n  analysis_type TEXT,\n  analysis_date DATE,\n  FOREIGN KEY (result_id) REFERENCES sample_results(result_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE samples ( sample_id INT PRIMARY KEY, sample_name VARCHAR(255) NOT NULL, organism_name VARCHAR(255) NOT NULL, collection_date DATE, created_at TIMESTAMP DEFAULT NOW() )"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers ( researcher_id INT PRIMARY KEY, researcher_name VARCHAR(255) NOT NULL, email VARCHAR(255) UNIQUE, organization VARCHAR(255) NOT NULL )"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments ( experiment_id INT PRIMARY KEY, experiment_name VARCHAR(255) NOT NULL, description TEXT, start_date DATE, end_date DATE )"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements ( measurement_id INT PRIMARY KEY, sample_id INT, experiment_id INT, measurement_name VARCHAR(255) NOT NULL, value FLOAT NOT NULL, measurement_date DATE, FOREIGN KEY (sample_id) REFERENCES samples(sample_id), FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id) )"
+      },
+      {
+        "table_schema": "CREATE TABLE results ( result_id INT PRIMARY KEY, measurement_id INT, researcher_id INT, result_description TEXT, result_date DATE, FOREIGN KEY (measurement_id) REFERENCES measurements(measurement_id), FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id) )"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE order_routing_rules (\n    rule_id INT PRIMARY KEY,\n    symbol VARCHAR(255) NOT NULL,\n    order_type VARCHAR(50) NOT NULL,\n    execution_strategy VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE order_routing_rules (\n    id INT PRIMARY KEY,\n    rule_name VARCHAR(255),\n    symbol VARCHAR(50),\n    route_priority INT,\n    route_destination VARCHAR(100)\n);\n\nCREATE TABLE execution_strategies (\n    id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    strategy_description TEXT,\n    parameters JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE order_routing_rules (\n    rule_id SERIAL PRIMARY KEY,\n    rule_name VARCHAR(255) NOT NULL,\n    execution_strategy VARCHAR(255) NOT NULL,\n    route_priority INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithmic_strategies (\n    strategy_id SERIAL PRIMARY KEY,\n    strategy_name VARCHAR(255) NOT NULL,\n    strategy_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routing_instructions (\n    instruction_id SERIAL PRIMARY KEY,\n    rule_id INT REFERENCES order_routing_rules(rule_id),\n    strategy_id INT REFERENCES algorithmic_strategies(strategy_id),\n    instruction_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE order_routing_rules (\n    rule_id INT PRIMARY KEY,\n    rule_name TEXT NOT NULL,\n    order_type TEXT NOT NULL,\n    condition TEXT,\n    strategy_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE execution_instructions (\n    instruction_id INT PRIMARY KEY,\n    instruction_name TEXT NOT NULL,\n    strategy_id INT,\n    instruction_text TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name TEXT NOT NULL,\n    strategy_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE order_types (\n    order_type_id INT PRIMARY KEY,\n    order_type_name TEXT NOT NULL,\n    order_type_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE order_routing_rules (\n    rule_id INT PRIMARY KEY,\n    symbol VARCHAR(50) NOT NULL,\n    order_type VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    execution_strategy VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE execution_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    parameters JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routing_instructions (\n    instruction_id INT PRIMARY KEY,\n    rule_id INT REFERENCES order_routing_rules(rule_id),\n    strategy_id INT REFERENCES execution_strategies(strategy_id),\n    order_priority INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_role_mapping (\n    user_id INT,\n    role_id INT,\n    PRIMARY KEY (user_id, role_id),\n    FOREIGN KEY (role_id) REFERENCES user_roles(role_id)\n);"
+      }
+    ]
+  }
+]

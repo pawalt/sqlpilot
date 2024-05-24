@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(100),\n  barcode VARCHAR(50) UNIQUE,\n  location VARCHAR(100),\n  quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(50) NOT NULL,\n  barcode VARCHAR(20) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_tracking (\n  tracking_id INT PRIMARY KEY,\n  asset_id INT,\n  tracking_time TIMESTAMP NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  FOREIGN KEY (asset_id) REFERENCES assets(asset_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n  id UUID PRIMARY KEY,\n  barcode STRING NOT NULL,\n  name STRING,\n  description STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  id UUID PRIMARY KEY,\n  location_code STRING NOT NULL,\n  description STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_tracking (\n  id UUID PRIMARY KEY,\n  asset_id UUID REFERENCES assets(id),\n  location_id UUID REFERENCES locations(id),\n  scan_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_assets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255),\n    barcode VARCHAR(50) UNIQUE,\n    location VARCHAR(100),\n    acquisition_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_categories (\n    category_id UUID PRIMARY KEY,\n    category_name VARCHAR(255) UNIQUE,\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_scans (\n    scan_id UUID PRIMARY KEY,\n    asset_id UUID REFERENCES asset_assets(asset_id),\n    scan_date TIMESTAMP,\n    scan_results TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(100) UNIQUE,\n    email VARCHAR(255),\n    password_hash VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_tracking (\n  id INT PRIMARY KEY,\n  barcode VARCHAR(50) NOT NULL,\n  asset_name VARCHAR(100) NOT NULL,\n  location VARCHAR(100),\n  last_scanned TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_details (\n  asset_id INT PRIMARY KEY,\n  category VARCHAR(50) NOT NULL,\n  manufacturer VARCHAR(50),\n  model VARCHAR(50),\n  description TEXT,\n  warranty_start DATE,\n  warranty_end DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_history (\n  history_id INT PRIMARY KEY,\n  asset_id INT,\n  scan_time TIMESTAMP,\n  scanned_by VARCHAR(50),\n  location_before VARCHAR(100),\n  location_after VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(50) NOT NULL,\n  full_name VARCHAR(100) NOT NULL,\n  role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n  log_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  user_id INT,\n  action VARCHAR(100),\n  details TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gender_based_violence_statistics (\n  case_id INT PRIMARY KEY,\n  victim_name VARCHAR(50),\n  victim_gender VARCHAR(10),\n  perpetrator_name VARCHAR(50),\n  incident_date DATE,\n  judicial_outcome VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gender_violence_cases (\n  case_id INT PRIMARY KEY,\n  victim_name VARCHAR(50),\n  victim_gender VARCHAR(10),\n  incident_date DATE,\n  judicial_outcome VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE judicial_outcomes (\n  outcome_id INT PRIMARY KEY,\n  case_id INT,\n  outcome VARCHAR(50),\n  court_name VARCHAR(50),\n  FOREIGN KEY (case_id) REFERENCES gender_violence_cases(case_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenderBasedViolenceCases (\n  case_id INT PRIMARY KEY,\n  victim_name VARCHAR(50),\n  victim_gender VARCHAR(10),\n  incident_date DATE,\n  judicial_outcome VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE JudicialOutcomes (\n  outcome_id INT PRIMARY KEY,\n  case_id INT,\n  outcome_description TEXT,\n  trial_date DATE,\n  verdict VARCHAR(50),\n  FOREIGN KEY (case_id) REFERENCES GenderBasedViolenceCases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseLocations (\n  location_id INT PRIMARY KEY,\n  case_id INT,\n  location_name VARCHAR(100),\n  city VARCHAR(50),\n  state VARCHAR(50),\n  FOREIGN KEY (case_id) REFERENCES GenderBasedViolenceCases(case_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenderBasedViolenceCases (\n    case_id INT PRIMARY KEY,\n    victim_name VARCHAR(50),\n    offender_name VARCHAR(50),\n    incident_date DATE,\n    report_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE JudicialOutcomes (\n    outcome_id INT PRIMARY KEY,\n    case_id INT, \n    verdict VARCHAR(50),\n    sentencing VARCHAR(50),\n    verdict_date DATE,\n    FOREIGN KEY (case_id) REFERENCES GenderBasedViolenceCases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportingAgencies (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(50),\n    city VARCHAR(50),\n    state VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyEvaluation (\n    evaluation_id INT PRIMARY KEY,\n    case_id INT,\n    outcome_id INT,\n    agency_id INT,\n    evaluation_date DATE,\n    FOREIGN KEY (case_id) REFERENCES GenderBasedViolenceCases(case_id),\n    FOREIGN KEY (outcome_id) REFERENCES JudicialOutcomes(outcome_id),\n    FOREIGN KEY (agency_id) REFERENCES ReportingAgencies(agency_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenderViolenceCases (\n case_id INT PRIMARY KEY,\n case_description TEXT,\n reported_date DATE,\n gender_of_victim VARCHAR(255),\n gender_of_perpetrator VARCHAR(255),\n outcome VARCHAR(255),\n judicial_outcome TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Victims (\n victim_id INT PRIMARY KEY,\n victim_name VARCHAR(255),\n victim_age INT,\n victim_gender VARCHAR(255),\n victim_occupation VARCHAR(255),\n case_id INT,\n FOREIGN KEY (case_id) REFERENCES GenderViolenceCases(case_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Perpetrators (\n perpetrator_id INT PRIMARY KEY,\n perpetrator_name VARCHAR(255),\n perpetrator_age INT,\n perpetrator_gender VARCHAR(255),\n perpetrator_relationship VARCHAR(255),\n case_id INT,\n FOREIGN KEY (case_id) REFERENCES GenderViolenceCases(case_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE LegalActions (\n action_id INT PRIMARY KEY,\n action_type VARCHAR(255),\n action_date DATE,\n case_id INT,\n FOREIGN KEY (case_id) REFERENCES GenderViolenceCases(case_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE JudicialOutcomes (\n outcome_id INT PRIMARY KEY,\n outcome_type VARCHAR(255),\n outcome_description TEXT,\n action_id INT,\n FOREIGN KEY (action_id) REFERENCES LegalActions(action_id)\n)"
+      }
+    ]
+  }
+]

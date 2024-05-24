@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE literature_review_data (\n  id INT PRIMARY KEY,\n  title VARCHAR(255),\n  author VARCHAR(255),\n  publication_date DATE,\n  abstract TEXT,\n  keywords VARCHAR(255),\n  citation_count INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LiteratureReview (\n    id INT PRIMARY KEY,\n    title TEXT,\n    author TEXT,\n    publication_date DATE,\n    abstract TEXT\n);\n\nCREATE TABLE Reviewer (\n    reviewer_id INT PRIMARY KEY,\n    name TEXT,\n    specialization TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE literature_reviews (\n    review_id UUID PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    author VARCHAR(100) NOT NULL,\n    publication_date DATE,\n    content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE review_comments (\n    comment_id UUID PRIMARY KEY,\n    review_id UUID REFERENCES literature_reviews(review_id),\n    commenter_name VARCHAR(100),\n    comment_date TIMESTAMP,\n    comment_text TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE review_ratings (\n    rating_id UUID PRIMARY KEY,\n    review_id UUID REFERENCES literature_reviews(review_id),\n    rating INT CHECK (rating >= 1 AND rating <= 5),\n    rating_date TIMESTAMP,\n    reviewer VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Literature (\n    review_id INT PRIMARY KEY,\n    review_title VARCHAR(255) NOT NULL,\n    review_text TEXT,\n    review_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Authors (\n    author_id INT PRIMARY KEY,\n    author_name VARCHAR(100) NOT NULL,\n    author_email VARCHAR(255),\n    author_affiliation VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Journals (\n    journal_id INT PRIMARY KEY,\n    journal_name VARCHAR(100) NOT NULL,\n    journal_publisher VARCHAR(100),\n    journal_issn VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Citations (\n    citation_id INT PRIMARY KEY,\n    citing_review_id INT,\n    cited_review_id INT,\n    citation_date DATE,\n    FOREIGN KEY (citing_review_id) REFERENCES Literature(review_id),\n    FOREIGN KEY (cited_review_id) REFERENCES Literature(review_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LiteratureReview (\n    review_id INT PRIMARY KEY,\n    title TEXT,\n    author TEXT,\n    publication_year INT,\n    abstract TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Authors (\n    author_id INT PRIMARY KEY,\n    author_name TEXT,\n    affiliation TEXT,\n    contact_email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Publications (\n    publication_id INT PRIMARY KEY,\n    title TEXT,\n    author_id INT,\n    publication_year INT,\n    abstract TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Keywords (\n    keyword_id INT PRIMARY KEY,\n    keyword_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ReviewKeywords (\n    review_id INT,\n    keyword_id INT,\n    PRIMARY KEY (review_id, keyword_id)\n);"
+      }
+    ]
+  }
+]

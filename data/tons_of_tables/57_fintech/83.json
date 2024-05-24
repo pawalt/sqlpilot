@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  funding_goal DECIMAL NOT NULL,\n  current_funding DECIMAL DEFAULT 0,\n  start_date TIMESTAMP NOT NULL,\n  end_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    funding_goal DECIMAL\n);\n\nCREATE TABLE funding_progress (\n    project_id INT,\n    amount_raised DECIMAL,\n    date TIMESTAMP,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    funding_goal INT NOT NULL,\n    current_funding INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donations (\n    donation_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES projects(project_id),\n    donor_name VARCHAR(255) NOT NULL,\n    donation_amount INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE progress_tracking (\n    tracking_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES projects(project_id),\n    funding_progress INT NOT NULL,\n    progress_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255),\n    funding_goal DECIMAL,\n    current_funding DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_updates (\n    update_id SERIAL PRIMARY KEY,\n    project_id UUID,\n    amount_updated DECIMAL,\n    update_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_status (\n    project_id UUID PRIMARY KEY,\n    status VARCHAR(50),\n    last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_team (\n    team_id SERIAL PRIMARY KEY,\n    project_id UUID,\n    member_name VARCHAR(100),\n    role VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project (project_id SERIAL PRIMARY KEY, project_name VARCHAR(255) NOT NULL, start_date DATE, funding_goal NUMERIC NOT NULL)},{"
+      },
+      {
+        "table_schema": "CREATE TABLE donation (donation_id SERIAL PRIMARY KEY, project_id INT REFERENCES project(project_id), amount NUMERIC NOT NULL, donator_name VARCHAR(255) NOT NULL, donation_date DATE)"
+      },
+      {
+        "table_schema": "CREATE TABLE progress_tracker (tracker_id SERIAL PRIMARY KEY, project_id INT REFERENCES project(project_id), progress_percentage NUMERIC NOT NULL, tracker_date DATE)"
+      },
+      {
+        "table_schema": "CREATE TABLE milestone (milestone_id SERIAL PRIMARY KEY, project_id INT REFERENCES project(project_id), milestone_name VARCHAR(255) NOT NULL, milestone_date DATE)"
+      },
+      {
+        "table_schema": "CREATE TABLE team_member (member_id SERIAL PRIMARY KEY, project_id INT REFERENCES project(project_id), member_name VARCHAR(255) NOT NULL, role VARCHAR(100))"
+      }
+    ]
+  }
+]

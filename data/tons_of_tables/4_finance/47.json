@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bank_transactions (\n    transaction_id INT PRIMARY KEY,\n    transaction_date DATE,\n    amount FLOAT,\n    account_id INT,\n    transaction_type VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction_records (\n    id SERIAL PRIMARY KEY,\n    transaction_date DATE NOT NULL,\n    transaction_description TEXT,\n    amount DECIMAL NOT NULL\n);\n\nCREATE TABLE bank_statements (\n    id SERIAL PRIMARY KEY,\n    statement_date DATE NOT NULL,\n    statement_balance DECIMAL NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BankStatements (\n    statement_id INT PRIMARY KEY,\n    account_id INT,\n    statement_date DATE,\n    closing_balance DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id INT PRIMARY KEY,\n    account_id INT,\n    transaction_date DATE,\n    amount DECIMAL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ReconciliationStatus (\n    status_id INT PRIMARY KEY,\n    statement_id INT,\n    transaction_id INT,\n    reconciliation_date DATE,\n    is_reconciled BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bank_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    transaction_date DATE,\n    account_number VARCHAR(10),\n    transaction_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bank_statements (\n    statement_id SERIAL PRIMARY KEY,\n    statement_date DATE,\n    account_number VARCHAR(10),\n    statement_balance DECIMAL(12, 2),\n    statement_start_date DATE,\n    statement_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reconciled_transactions (\n    reconciliation_id SERIAL PRIMARY KEY,\n    transaction_id INT REFERENCES bank_transactions(transaction_id),\n    statement_id INT REFERENCES bank_statements(statement_id),\n    reconciliation_date DATE,\n    matched_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE discrepancies (\n    discrepancy_id SERIAL PRIMARY KEY,\n    reconciliation_id INT REFERENCES reconciled_transactions(reconciliation_id),\n    discrepancy_type VARCHAR(50),\n    discrepancy_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Bank_Statements (\n    statement_id INT PRIMARY KEY,\n    statement_date DATE,\n    statement_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Recorded_Transactions (\n    transaction_id INT PRIMARY KEY,\n    transaction_date DATE,\n    transaction_amount DECIMAL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reconciliation_Log (\n    log_id INT PRIMARY KEY,\n    statement_id INT,\n    transaction_id INT,\n    status VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reconciliation_Errors (\n    error_id INT PRIMARY KEY,\n    log_id INT,\n    error_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reconciliation_Audit (\n    audit_id INT PRIMARY KEY,\n    log_id INT,\n    user_id INT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

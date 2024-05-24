@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wine_tasting_events (\n    event_id INT PRIMARY KEY,\n    venue VARCHAR(255),\n    event_date DATE,\n    participants JSONB,\n    wine_selections JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wine_tasting_events (\n    id SERIAL PRIMARY KEY,\n    venue VARCHAR(255),\n    event_date DATE,\n    participants VARCHAR(255),\n    wine_selections TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wine_selections (\n    id SERIAL PRIMARY KEY,\n    wine_name VARCHAR(255),\n    grape_variety VARCHAR(255),\n    region VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wine_events (\n    event_id INT PRIMARY KEY,\n    venue_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    participant_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wine_selections (\n    selection_id INT PRIMARY KEY,\n    event_id INT,\n    wine_name VARCHAR(255) NOT NULL,\n    wine_type VARCHAR(50),\n    available_quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    participant_email VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Venue (\n    venue_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Event (\n    event_id INT PRIMARY KEY,\n    date DATE NOT NULL,\n    venue_id INT,\n    FOREIGN KEY (venue_id) REFERENCES Venue(venue_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Participant (\n    participant_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WineSelection (\n    selection_id INT PRIMARY KEY,\n    wine_type VARCHAR(255) NOT NULL,\n    event_id INT,\n    participant_id INT,\n    FOREIGN KEY (event_id) REFERENCES Event(event_id),\n    FOREIGN KEY (participant_id) REFERENCES Participant(participant_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Events (\n  event_id UUID PRIMARY KEY,\n  venue TEXT NOT NULL,\n  event_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Participants (\n  participant_id UUID PRIMARY KEY,\n  participant_name TEXT NOT NULL,\n  event_id UUID REFERENCES Events(event_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Wines (\n  wine_id UUID PRIMARY KEY,\n  wine_name TEXT NOT NULL,\n  wine_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Event_Participants (\n  event_id UUID REFERENCES Events(event_id),\n  participant_id UUID REFERENCES Participants(participant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Event_Wines (\n  event_id UUID REFERENCES Events(event_id),\n  wine_id UUID REFERENCES Wines(wine_id)\n);\n"
+      }
+    ]
+  }
+]

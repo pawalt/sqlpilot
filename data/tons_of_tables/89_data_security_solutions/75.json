@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(100) NOT NULL,\n  email VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id INT PRIMARY KEY,\n    mfa_enabled BOOLEAN NOT NULL DEFAULT FALSE,\n    phone_number VARCHAR(15),\n    backup_codes VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT REFERENCES users(id),\n    role VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE two_factor_auth (\n    user_id INT REFERENCES users(id),\n    is_enabled BOOL DEFAULT FALSE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50),\n    email VARCHAR(50),\n    phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    date_started TIMESTAMP,\n    date_expired TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    log_description VARCHAR(255),\n    log_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_questions (\n    id INT PRIMARY KEY,\n    question VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_questions (\n    user_id INT,\n    question_id INT,\n    answer VARCHAR(255) NOT NULL,\n    PRIMARY KEY (user_id, question_id),\n    FOREIGN KEY (user_id) REFERENCES users(id),\n    FOREIGN KEY (question_id) REFERENCES security_questions(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    action VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      }
+    ]
+  }
+]

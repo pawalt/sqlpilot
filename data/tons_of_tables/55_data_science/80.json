@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE texts (\n\ttext_id INT PRIMARY KEY,\n\tsource TEXT,\n\ttext_content TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE texts (\n    text_id UUID PRIMARY KEY,\n    text_source VARCHAR(255),\n    text_content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE language_models (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_description TEXT,\n    trained_text_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE texts (text_id INT PRIMARY KEY, source_id INT, text_content TEXT, language_code VARCHAR(5))\nCREATE TABLE sources (source_id INT PRIMARY KEY, source_name VARCHAR(50), source_type VARCHAR(50))\nCREATE TABLE language_models (model_id INT PRIMARY KEY, model_name VARCHAR(50), model_type VARCHAR(50), model_accuracy FLOAT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE texts (\n    text_id INT PRIMARY KEY,\n    text_content TEXT,\n    source_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authors (\n    author_id INT PRIMARY KEY,\n    author_name TEXT,\n    author_bio TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE languages (\n    language_id INT PRIMARY KEY,\n    language_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sources (\n    source_id INT PRIMARY KEY,\n    source_name TEXT,\n    source_language_id INT,\n    FOREIGN KEY (source_language_id) REFERENCES languages(language_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE text_sources (\n    id SERIAL PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE texts (\n    text_id SERIAL PRIMARY KEY,\n    text_content TEXT NOT NULL,\n    source_id INT,\n    FOREIGN KEY (source_id) REFERENCES text_sources(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id SERIAL PRIMARY KEY,\n    model_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_training (\n    training_id SERIAL PRIMARY KEY,\n    model_id INT,\n    text_id INT,\n    FOREIGN KEY (model_id) REFERENCES models(model_id),\n    FOREIGN KEY (text_id) REFERENCES texts(text_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE train_logs (\n    log_id SERIAL PRIMARY KEY,\n    training_id INT,\n    log_message TEXT,\n    FOREIGN KEY (training_id) REFERENCES model_training(training_id)\n);\n"
+      }
+    ]
+  }
+]

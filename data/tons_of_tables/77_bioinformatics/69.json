@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RegulatoryElements (\n    id INT PRIMARY KEY,\n    element_name VARCHAR(50),\n    sequence TEXT,\n    functional_significance ENUM('Enhancer', 'Promoter', 'Silencer', 'Enhancer-Promoter', 'Enhancer-Silencer', 'Promoter-Silencer', 'Enhancer-Promoter-Silencer'),\n    chromosome VARCHAR(10),\n    start_position INT,\n    end_position INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_elements (\n  element_id INT PRIMARY KEY,\n  element_name VARCHAR(255),\n  element_type VARCHAR(100),\n  start_position INT,\n  end_position INT\n);\n\nCREATE TABLE functional_significance (\n  significance_id INT PRIMARY KEY,\n  element_id INT,\n  significance_description TEXT,\n  FOREIGN KEY (element_id) REFERENCES regulatory_elements(element_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RegulatoryElements (\n  id INT PRIMARY KEY,\n  sequence VARCHAR(255),\n  element_type VARCHAR(50),\n  significance TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RegulatoryFactors (\n  id INT PRIMARY KEY,\n  factor_name VARCHAR(100),\n  factor_type VARCHAR(50),\n  factor_activity VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RegulatoryInteractions (\n  regulatory_element_id INT,\n  regulatory_factor_id INT,\n  interaction_type VARCHAR(50),\n  FOREIGN KEY (regulatory_element_id) REFERENCES RegulatoryElements(id),\n  FOREIGN KEY (regulatory_factor_id) REFERENCES RegulatoryFactors(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_elements (\n  element_id SERIAL PRIMARY KEY,\n  element_name VARCHAR(100) NOT NULL,\n  element_type VARCHAR(50) NOT NULL,\n  sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_functions (\n  function_id SERIAL PRIMARY KEY,\n  function_name VARCHAR(100) NOT NULL,\n  function_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_element_function_mapping (\n  mapping_id SERIAL PRIMARY KEY,\n  element_id INTEGER REFERENCES regulatory_elements(element_id),\n  function_id INTEGER REFERENCES regulatory_functions(function_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_information (\n  gene_id SERIAL PRIMARY KEY,\n  gene_name VARCHAR(100) NOT NULL,\n  chromosome VARCHAR(10) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_elements (\n  id SERIAL PRIMARY KEY,\n  element_name VARCHAR(100) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE functional_significance (\n  id SERIAL PRIMARY KEY,\n  regulatory_element_id INT REFERENCES regulatory_elements(id),\n  significance VARCHAR(100) NOT NULL,\n  strength FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE query_history (\n  id SERIAL PRIMARY KEY,\n  query TEXT NOT NULL,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n  id SERIAL PRIMARY KEY,\n  username VARCHAR(100) UNIQUE NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  full_name VARCHAR(200) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_annotations (\n  id SERIAL PRIMARY KEY,\n  regulatory_element_id INT REFERENCES regulatory_elements(id),\n  function VARCHAR(200) NOT NULL,\n  annotation TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE financial_data ( \n  id SERIAL PRIMARY KEY, \n  date DATE NOT NULL, \n  description VARCHAR(255) NOT NULL, \n  amount DECIMAL(10, 2) NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Budget (\n  budget_id SERIAL PRIMARY KEY,\n  category VARCHAR(50),\n  amount DECIMAL(10,2),\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Expense (\n  expense_id SERIAL PRIMARY KEY,\n  category VARCHAR(50),\n  amount DECIMAL(10,2),\n  date DATE,\n  notes TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FinancialData (\n  id UUID PRIMARY KEY,\n  date DATE,\n  transaction_name VARCHAR,\n  amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BudgetCategories (\n  category_id SERIAL PRIMARY KEY,\n  category_name VARCHAR,\n  budget_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TransactionTypes (\n  type_id SERIAL PRIMARY KEY,\n  type_name VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Budget (\n    id UUID PRIMARY KEY,\n    category TEXT NOT NULL,\n    amount DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Expense (\n    id UUID PRIMARY KEY,\n    date DATE NOT NULL,\n    category TEXT NOT NULL,\n    amount DECIMAL NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Income (\n    id UUID PRIMARY KEY,\n    date DATE NOT NULL,\n    source TEXT NOT NULL,\n    amount DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transaction (\n    id UUID PRIMARY KEY,\n    date TIMESTAMP NOT NULL,\n    type TEXT NOT NULL,\n    amount DECIMAL NOT NULL,\n    description TEXT,\n    budget_id UUID,\n    expense_id UUID,\n    income_id UUID,\n    FOREIGN KEY (budget_id) REFERENCES Budget (id),\n    FOREIGN KEY (expense_id) REFERENCES Expense (id),\n    FOREIGN KEY (income_id) REFERENCES Income (id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Budgets (\n  id INT PRIMARY KEY,\n  category VARCHAR(255),\n  goal_amount DECIMAL,\n  actual_amount DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n  id INT PRIMARY KEY,\n  date DATE,\n  amount DECIMAL,\n  description TEXT,\n  budget_id INT REFERENCES Budgets(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Expenses (\n  id INT PRIMARY KEY,\n  date DATE,\n  amount DECIMAL,\n  category VARCHAR(255),\n  transaction_id INT REFERENCES Transactions(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Incomes (\n  id INT PRIMARY KEY,\n  date DATE,\n  amount DECIMAL,\n  source VARCHAR(255),\n  transaction_id INT REFERENCES Transactions(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Accounts (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  balance DECIMAL\n)"
+      }
+    ]
+  }
+]

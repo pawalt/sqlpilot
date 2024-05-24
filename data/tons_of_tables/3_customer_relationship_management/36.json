@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(255) NOT NULL,\n  email VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT,\n    post_content TEXT,\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    post_content VARCHAR(255) NOT NULL,\n    post_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    post_id INT REFERENCES posts(post_id),\n    interaction_type VARCHAR(10) NOT NULL,\n    interaction_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT,\n    post_content TEXT,\n    created_at TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES user_accounts(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    user_id INT,\n    post_id INT,\n    reaction VARCHAR(20),\n    comment TEXT,\n    created_at TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES user_accounts(user_id),\n    FOREIGN KEY (post_id) REFERENCES posts(post_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE followers (\n    follower_user_id INT,\n    following_user_id INT,\n    created_at TIMESTAMP,\n    PRIMARY KEY (follower_user_id, following_user_id),\n    FOREIGN KEY (follower_user_id) REFERENCES user_accounts(user_id),\n    FOREIGN KEY (following_user_id) REFERENCES user_accounts(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE posts (\n    post_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    post_content TEXT,\n    post_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n\nCREATE TABLE likes (\n    like_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    post_id INT NOT NULL,\n    like_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (post_id) REFERENCES posts(post_id)\n);\n\nCREATE TABLE comments (\n    comment_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    post_id INT NOT NULL,\n    comment TEXT,\n    comment_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (post_id) REFERENCES posts(post_id)\n);\n\nCREATE TABLE interactions (\n    interaction_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    post_id INT NOT NULL,\n    interaction_type VARCHAR(20) NOT NULL,\n    interaction_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (post_id) REFERENCES posts(post_id)\n);"
+      }
+    ]
+  }
+]

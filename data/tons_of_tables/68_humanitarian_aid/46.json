@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CommunicationLogs (\n  log_id INT PRIMARY KEY,\n  responder_id INT,\n  timestamp TIMESTAMP,\n  message TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_logs (\n   log_id INT PRIMARY KEY,\n   responder_id INT,\n   timestamp TIMESTAMP,\n   log_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE responders (\n   responder_id INT PRIMARY KEY,\n   responder_name VARCHAR(50),\n   role VARCHAR(50),\n   contact_number VARCHAR(15)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_responders (\n    responder_id INT PRIMARY KEY,\n    responder_name VARCHAR(50) NOT NULL,\n    responder_role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crisis_events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    event_date DATE NOT NULL,\n    event_location VARCHAR(100) NOT NULL,\n    event_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n    log_id INT PRIMARY KEY,\n    event_id INT NOT NULL,\n    responder_id INT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_responders (\n  id SERIAL PRIMARY KEY,\n  responder_name VARCHAR(50) NOT NULL,\n  contact_number VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE crisis_situations (\n  id SERIAL PRIMARY KEY,\n  location VARCHAR(100) NOT NULL,\n  crisis_type VARCHAR(50) NOT NULL,\n  start_time TIMESTAMP NOT NULL,\n  end_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n  id SERIAL PRIMARY KEY,\n  responder_id INT NOT NULL,\n  situation_id INT NOT NULL,\n  communication_time TIMESTAMP NOT NULL,\n  message TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE responder_locations (\n  responder_id INT NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  last_updated TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_responders (\n  responder_id INT PRIMARY KEY,\n  responder_name VARCHAR(50) NOT NULL,\n  responder_role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crisis_situations (\n  crisis_id INT PRIMARY KEY,\n  crisis_location VARCHAR(100) NOT NULL,\n  crisis_description TEXT NOT NULL,\n  crisis_datetime DATETIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n  log_id INT PRIMARY KEY,\n  crisis_id INT,\n  responder_id INT,\n  log_message TEXT NOT NULL,\n  log_datetime DATETIME,\n  FOREIGN KEY (crisis_id) REFERENCES crisis_situations(crisis_id),\n  FOREIGN KEY (responder_id) REFERENCES emergency_responders(responder_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE message_recipients (\n  message_id INT,\n  responder_id INT,\n  PRIMARY KEY (message_id, responder_id),\n  FOREIGN KEY (message_id) REFERENCES communication_logs(log_id),\n  FOREIGN KEY (responder_id) REFERENCES emergency_responders(responder_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_notifications (\n  notification_id INT PRIMARY KEY,\n  crisis_id INT,\n  notification_message TEXT NOT NULL,\n  notification_datetime DATETIME,\n  FOREIGN KEY (crisis_id) REFERENCES crisis_situations(crisis_id)\n);"
+      }
+    ]
+  }
+]

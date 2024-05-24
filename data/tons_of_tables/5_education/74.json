@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parent_contacts (\n  parent_id INT PRIMARY KEY,\n  parent_name VARCHAR(50),\n  parent_email VARCHAR(50),\n  parent_phone VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Parents (\n    parent_id SERIAL PRIMARY KEY,\n    parent_name VARCHAR(255) NOT NULL,\n    parent_email VARCHAR(255) UNIQUE,\n    parent_phone VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Children (\n    child_id SERIAL PRIMARY KEY,\n    child_name VARCHAR(255) NOT NULL,\n    parent_id INT REFERENCES Parents(parent_id),\n    child_age INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parents (\n    parent_id SERIAL PRIMARY KEY,\n    parent_name VARCHAR(50) NOT NULL,\n    parent_email VARCHAR(50) UNIQUE,\n    parent_phone VARCHAR(15) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE children (\n    child_id SERIAL PRIMARY KEY,\n    child_name VARCHAR(50) NOT NULL,\n    child_dob DATE NOT NULL,\n    parent_id INT REFERENCES parents(parent_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contacts (\n    contact_id SERIAL PRIMARY KEY,\n    contact_type VARCHAR(20) NOT NULL,\n    contact_info VARCHAR(50) NOT NULL,\n    child_id INT REFERENCES children(child_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Parents (\n  parent_id INT PRIMARY KEY,\n  parent_name VARCHAR(50) NOT NULL,\n  parent_email VARCHAR(50) UNIQUE,\n  parent_phone VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Children (\n  child_id INT PRIMARY KEY,\n  child_name VARCHAR(50) NOT NULL,\n  child_birthdate DATE,\n  parent_id INT,\n  FOREIGN KEY (parent_id) REFERENCES Parents(parent_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Teachers (\n  teacher_id INT PRIMARY KEY,\n  teacher_name VARCHAR(50) NOT NULL,\n  teacher_email VARCHAR(50) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CommunicationLogs (\n  log_id INT PRIMARY KEY,\n  log_date DATE,\n  log_time TIME,\n  log_description TEXT,\n  parent_id INT,\n  teacher_id INT,\n  FOREIGN KEY (parent_id) REFERENCES Parents(parent_id),\n  FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parents(\n  parent_id UUID PRIMARY KEY,\n  parent_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(15),\n  address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE children(\n  child_id UUID PRIMARY KEY,\n  child_name VARCHAR(255),\n  age INT,\n  parent_id UUID REFERENCES parents(parent_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE teachers(\n  teacher_id UUID PRIMARY KEY,\n  teacher_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE classrooms(\n  classroom_id UUID PRIMARY KEY,\n  classroom_name VARCHAR(255),\n  teacher_id UUID REFERENCES teachers(teacher_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs(\n  log_id UUID PRIMARY KEY,\n  log_date TIMESTAMP,\n  log_description TEXT,\n  parent_id UUID REFERENCES parents(parent_id),\n  teacher_id UUID REFERENCES teachers(teacher_id)\n);"
+      }
+    ]
+  }
+]

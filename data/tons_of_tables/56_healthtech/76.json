@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_markers (\n    marker_id INT PRIMARY KEY,\n    marker_name VARCHAR(255),\n    chromosome VARCHAR(10),\n    position INT,\n    allele1 VARCHAR(5),\n    allele2 VARCHAR(5),\n    allele_frequency FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneticMarkers (\n    marker_id INT PRIMARY KEY,\n    marker_name VARCHAR(50),\n    chromosome VARCHAR(10),\n    position INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PopulationData (\n    population_id INT PRIMARY KEY,\n    population_name VARCHAR(50),\n    country VARCHAR(50),\n    sample_size INT,\n    marker_id INT,\n    FOREIGN KEY (marker_id) REFERENCES GeneticMarkers(marker_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_markers (\n  marker_id INT PRIMARY KEY,\n  marker_name VARCHAR(50) NOT NULL,\n  chromosome VARCHAR(10),\n  position INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_population (\n  sample_id INT PRIMARY KEY,\n  population_name VARCHAR(50) NOT NULL,\n  country VARCHAR(50),\n  region VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE marker_data (\n  marker_data_id INT PRIMARY KEY,\n  marker_id INT,\n  sample_id INT,\n  allele_1 VARCHAR(2),\n  allele_2 VARCHAR(2),\n  allele_frequency FLOAT,\n  FOREIGN KEY (marker_id) REFERENCES genetic_markers(marker_id),\n  FOREIGN KEY (sample_id) REFERENCES sample_population(sample_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneticMarkers (\n  id SERIAL PRIMARY KEY,\n  marker_name VARCHAR(50) NOT NULL,\n  chromosome_number INT NOT NULL,\n  position INT NOT NULL,\n  allele_1 VARCHAR(10) NOT NULL,\n  allele_2 VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SamplePopulation (\n  id SERIAL PRIMARY KEY,\n  population_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MarkerVariants (\n  id SERIAL PRIMARY KEY,\n  marker_id INT NOT NULL,\n  variant_name VARCHAR(50) NOT NULL,\n  allele_frequency FLOAT NOT NULL,\n  FOREIGN KEY (marker_id) REFERENCES GeneticMarkers(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PopulationSamples (\n  sample_id SERIAL PRIMARY KEY,\n  population_id INT NOT NULL,\n  sample_name VARCHAR(50) NOT NULL,\n  collection_date DATE NOT NULL,\n  sample_size INT NOT NULL,\n  FOREIGN KEY (population_id) REFERENCES SamplePopulation(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneticMarkers (\n    marker_id INT PRIMARY KEY,\n    marker_name VARCHAR(100),\n    chromosome VARCHAR(10),\n    position INT,\n    allele_1 VARCHAR(1),\n    allele_2 VARCHAR(1)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PopulationSamples (\n    sample_id INT PRIMARY KEY,\n    population_name VARCHAR(100),\n    sample_size INT,\n    collection_date DATE,\n    marker_id INT,\n    FOREIGN KEY(marker_id) REFERENCES GeneticMarkers(marker_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchStudies (\n    study_id INT PRIMARY KEY,\n    study_title VARCHAR(255),\n    researcher_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE StudySamples (\n    study_id INT,\n    sample_id INT,\n    PRIMARY KEY (study_id, sample_id),\n    FOREIGN KEY (study_id) REFERENCES ResearchStudies(study_id),\n    FOREIGN KEY (sample_id) REFERENCES PopulationSamples(sample_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MarkerAssociations (\n    association_id INT PRIMARY KEY,\n    study_id INT,\n    marker_id INT,\n    p_value FLOAT,\n    FOREIGN KEY (study_id) REFERENCES ResearchStudies(study_id),\n    FOREIGN KEY (marker_id) REFERENCES GeneticMarkers(marker_id)\n);\n"
+      }
+    ]
+  }
+]

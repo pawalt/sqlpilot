@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_impact_assessments (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    project_location VARCHAR(255),\n    assessment_date DATE,\n    responsible_engineer VARCHAR(255),\n    environmental_impact TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE construction_projects (\n    project_id SERIAL PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL,\n    project_location VARCHAR(255) NOT NULL,\n    project_start_date DATE,\n    project_end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact (\n    impact_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    impact_type VARCHAR(50) NOT NULL,\n    impact_description TEXT,\n    impact_rating INT,\n    CONSTRAINT fk_project_id FOREIGN KEY (project_id) REFERENCES construction_projects(project_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_impact_assessment (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    location VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    assessment_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assessment_criteria (\n    criteria_id INT PRIMARY KEY,\n    criteria_name VARCHAR(255),\n    description TEXT,\n    weight FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_stakeholders (\n    stakeholder_id INT PRIMARY KEY,\n    project_id INT,\n    stakeholder_name VARCHAR(255),\n    role VARCHAR(50)\n    FOREIGN KEY (project_id) REFERENCES environmental_impact_assessment(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_reports (\n    id SERIAL PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    assessment_date DATE,\n    impact_score INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE construction_projects (\n    id SERIAL PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    project_manager VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stakeholders (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    role VARCHAR(50),\n    contact_email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_documents (\n    id SERIAL PRIMARY KEY,\n    document_name VARCHAR(100) NOT NULL,\n    document_type VARCHAR(50),\n    upload_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ConstructionProjects (\n  project_id SERIAL PRIMARY KEY,\n  project_name VARCHAR(100) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnvironmentalAssessments (\n  assessment_id SERIAL PRIMARY KEY,\n  project_id INT REFERENCES ConstructionProjects(project_id),\n  assessment_date DATE NOT NULL,\n  impact_description TEXT NOT NULL,\n  risk_level INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ConstructionMaterials (\n  material_id SERIAL PRIMARY KEY,\n  material_name VARCHAR(100) NOT NULL,\n  material_type VARCHAR(50) NOT NULL,\n  unit_price DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ConstructionWorkers (\n  worker_id SERIAL PRIMARY KEY,\n  worker_name VARCHAR(100) NOT NULL,\n  specialization VARCHAR(50) NOT NULL,\n  contact_number VARCHAR(15) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectTasks (\n  task_id SERIAL PRIMARY KEY,\n  project_id INT REFERENCES ConstructionProjects(project_id),\n  task_description TEXT NOT NULL,\n  status VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

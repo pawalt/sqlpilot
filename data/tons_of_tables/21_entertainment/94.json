@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE book_recommendations ( \n   user_id SERIAL PRIMARY KEY, \n   book_title VARCHAR(255) NOT NULL, \n   author VARCHAR(255) NOT NULL, \n   genre VARCHAR(100), \n   rating FLOAT, \n   date_read DATE \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n   user_id INT PRIMARY KEY,\n   username VARCHAR(255),\n   email VARCHAR(255),\n   age INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE books (\n   book_id INT PRIMARY KEY,\n   title VARCHAR(255),\n   author VARCHAR(255),\n   genre VARCHAR(50),\n   published_year INT,\n   user_id INT,\n   FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE books (\n    book_id INT PRIMARY KEY,\n    title VARCHAR(100) NOT NULL,\n    author VARCHAR(50) NOT NULL,\n    genre VARCHAR(50),\n    publish_year INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT,\n    genre VARCHAR(50),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users ( user_id UUID PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) UNIQUE NOT NULL, date_joined TIMESTAMP NOT NULL )"
+      },
+      {
+        "table_schema": "CREATE TABLE books ( book_id UUID PRIMARY KEY, title VARCHAR(100) NOT NULL, author VARCHAR(50) NOT NULL, genre VARCHAR(50), published_date DATE, isbn VARCHAR(20) UNIQUE )"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences ( user_id UUID REFERENCES users(user_id), genre_preference VARCHAR(50) NOT NULL, CONSTRAINT user_preferences_pk PRIMARY KEY (user_id, genre_preference) )"
+      },
+      {
+        "table_schema": "CREATE TABLE user_reading_history ( user_id UUID REFERENCES users(user_id), book_id UUID REFERENCES books(book_id), date_read DATE, rating INT CHECK (rating >= 1 AND rating <= 5) )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE books (\n    book_id SERIAL PRIMARY KEY,\n    title VARCHAR(100) NOT NULL,\n    author VARCHAR(100) NOT NULL,\n    genre VARCHAR(50),\n    publication_year INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT REFERENCES users(user_id),\n    genre VARCHAR(50) NOT NULL,\n    PRIMARY KEY(user_id, genre)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reading_history (\n    user_id INT REFERENCES users(user_id),\n    book_id INT REFERENCES books(book_id),\n    date_read DATE,\n    rating INT,\n    PRIMARY KEY(user_id, book_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE recommendations (\n    user_id INT REFERENCES users(user_id),\n    book_id INT REFERENCES books(book_id),\n    recommendation_score INT,\n    PRIMARY KEY(user_id, book_id)\n);\n"
+      }
+    ]
+  }
+]

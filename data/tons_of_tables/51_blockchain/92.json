@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_node_metadata (\n    node_id SERIAL PRIMARY KEY,\n    node_name VARCHAR(255),\n    node_ip_address VARCHAR(50),\n    node_status VARCHAR(20),\n    block_height INTEGER\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_node_metadata (\n  node_id INT PRIMARY KEY,\n  node_name VARCHAR(255) NOT NULL,\n  node_url VARCHAR(255) NOT NULL,\n  node_ip VARCHAR(50) NOT NULL,\n  block_height INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE monitoring_logs (\n  log_id SERIAL PRIMARY KEY,\n  node_id INT REFERENCES blockchain_node_metadata(node_id),\n  log_timestamp TIMESTAMP NOT NULL,\n  log_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_nodes (\n  node_id INT PRIMARY KEY,\n  node_name VARCHAR(255),\n  node_address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE block_metadata (\n  block_id INT PRIMARY KEY,\n  block_hash VARCHAR(255),\n  block_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE node_connections (\n  connection_id INT PRIMARY KEY,\n  node_id INT,\n  connected_node_id INT,\n  connection_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_nodes (\n    id INT PRIMARY KEY,\n    node_name VARCHAR(50),\n    ip_address VARCHAR(15),\n    port INT,\n    last_checked_at TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    sender_address VARCHAR(50),\n    recipient_address VARCHAR(50),\n    amount DECIMAL,\n    timestamp TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blocks (\n    block_id UUID PRIMARY KEY,\n    previous_block_id UUID,\n    miner_address VARCHAR(50),\n    timestamp TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE block_transactions (\n    block_id UUID,\n    transaction_id UUID,\n    FOREIGN KEY (block_id) REFERENCES blocks(block_id),\n    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_nodes (\n    id INT PRIMARY KEY,\n    node_id UUID,\n    node_url TEXT,\n    node_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE block_headers (\n    block_hash UUID PRIMARY KEY,\n    block_number INT,\n    timestamp TIMESTAMPTZ,\n    node_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    tx_id UUID PRIMARY KEY,\n    block_hash UUID,\n    from_address TEXT,\n    to_address TEXT,\n    amount DECIMAL,\n    timestamp TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE node_logs (\n    log_id INT PRIMARY KEY,\n    node_id UUID,\n    log_timestamp TIMESTAMPTZ,\n    message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE node_stats (\n    stat_id INT PRIMARY KEY,\n    node_id UUID,\n    uptime INTERVAL,\n    memory_usage DECIMAL,\n    cpu_usage DECIMAL\n);"
+      }
+    ]
+  }
+]

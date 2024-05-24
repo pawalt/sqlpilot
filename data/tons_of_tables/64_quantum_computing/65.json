@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumMetrics (\n    id SERIAL PRIMARY KEY,\n    protocol_name TEXT NOT NULL,\n    transmission_rate FLOAT NOT NULL,\n    error_rate FLOAT NOT NULL,\n    latency INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Quantum_Protocols (\n    protocol_id INT PRIMARY KEY,\n    protocol_name VARCHAR(255),\n    success_rate FLOAT,\n    latency_ms INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Protocol_Users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(255),\n    protocol_id INT,\n    FOREIGN KEY (protocol_id) REFERENCES Quantum_Protocols(protocol_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumProtocols (\n    protocol_id INT PRIMARY KEY,\n    protocol_name VARCHAR(50) NOT NULL,\n    protocol_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProtocolMetrics (\n    metric_id INT PRIMARY KEY,\n    protocol_id INT NOT NULL,\n    timestamp TIMESTAMP WITH TIME ZONE NOT NULL,\n    latency_ms FLOAT,\n    throughput Mbps FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    device_location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_protocols (\n    protocol_id INT PRIMARY KEY,\n    protocol_name VARCHAR(255),\n    success_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id INT PRIMARY KEY,\n    protocol_id INT,\n    device_id INT,\n    latency_ms FLOAT,\n    bandwidth_kbps INT,\n    CONSTRAINT fk_protocol_id FOREIGN KEY (protocol_id) REFERENCES quantum_protocols(protocol_id),\n    CONSTRAINT fk_device_id FOREIGN KEY (device_id) REFERENCES communication_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE error_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    error_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumProtocols (\n    protocol_id INT PRIMARY KEY,\n    protocol_name VARCHAR(50),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProtocolMetrics (\n    metric_id INT PRIMARY KEY,\n    protocol_id INT REFERENCES QuantumProtocols(protocol_id),\n    latency INT,\n    throughput FLOAT,\n    success_rate FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProtocolParticipants (\n    participant_id INT PRIMARY KEY,\n    protocol_id INT REFERENCES QuantumProtocols(protocol_id),\n    participant_name VARCHAR(50),\n    role VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    location VARCHAR(50),\n    is_active BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentResults (\n    result_id INT PRIMARY KEY,\n    metric_id INT REFERENCES ProtocolMetrics(metric_id),\n    experiment_date DATE,\n    status VARCHAR(20),\n    feedback TEXT\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageData (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_data BYTEA\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageData (\n    id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n    image_id INT,\n    metadata_key VARCHAR(255),\n    metadata_value TEXT,\n    FOREIGN KEY (image_id) REFERENCES ImageData(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_data (\n    image_id UUID PRIMARY KEY,\n    image_url TEXT,\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id UUID PRIMARY KEY,\n    label_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    image_id UUID,\n    label_id UUID,\n    FOREIGN KEY (image_id) REFERENCES image_data(image_id),\n    FOREIGN KEY (label_id) REFERENCES labels(label_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (image_id INT PRIMARY KEY,\nimage_name VARCHAR(255) NOT NULL,\nimage_path VARCHAR(255) NOT NULL,\nimage_size INT NOT NULL,\nimage_format VARCHAR(10) NOT NULL,\ncreated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageFeatures (feature_id INT PRIMARY KEY,\nimage_id INT NOT NULL,\nfeature_data BYTEA NOT NULL,\nfeature_type VARCHAR(50) NOT NULL,\ncreated_at TIMESTAMP,\nFOREIGN KEY (image_id) REFERENCES ImageMetadata(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageLabels (label_id INT PRIMARY KEY,\nimage_id INT NOT NULL,\nlabel_name VARCHAR(50) NOT NULL,\nconfidence FLOAT NOT NULL,\ncreated_at TIMESTAMP,\nFOREIGN KEY (image_id) REFERENCES ImageMetadata(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageCategories (category_id INT PRIMARY KEY,\nimage_id INT NOT NULL,\ncategory_name VARCHAR(50) NOT NULL,\ncategory_type VARCHAR(50) NOT NULL,\ncreated_at TIMESTAMP,\nFOREIGN KEY (image_id) REFERENCES ImageMetadata(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id UUID PRIMARY KEY,\n    image_url VARCHAR(255),\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE objects (\n    object_id UUID PRIMARY KEY,\n    object_name VARCHAR(50),\n    object_coordinates JSONB,\n    image_id UUID REFERENCES images(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id UUID PRIMARY KEY,\n    label_text VARCHAR(50),\n    confidence DOUBLE PRECISION,\n    object_id UUID REFERENCES objects(object_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    category_id UUID PRIMARY KEY,\n    category_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_categories (\n    image_id UUID REFERENCES images(image_id),\n    category_id UUID REFERENCES categories(category_id),\n    PRIMARY KEY(image_id, category_id)\n);"
+      }
+    ]
+  }
+]

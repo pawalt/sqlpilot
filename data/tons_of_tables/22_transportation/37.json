@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingRoutes (\n    route_id INT PRIMARY KEY,\n    origin_location GEOMETRY,\n    destination_location GEOMETRY,\n    distance_km FLOAT,\n    estimated_time_minutes INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(255),\n  start_point GEOMETRY(POINT),\n  end_point GEOMETRY(POINT)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n  shipment_id INT PRIMARY KEY,\n  route_id INT,\n  shipment_name VARCHAR(255),\n  weight_kg FLOAT,\n  destination GEOMETRY(POINT),\n  FOREIGN KEY (route_id) REFERENCES routes(route_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingRoutes (\n    route_id SERIAL PRIMARY KEY,\n    start_location POINT,\n    end_location POINT,\n    distance_km FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingWarehouses (\n    warehouse_id SERIAL PRIMARY KEY,\n    location POINT,\n    capacity INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingOrders (\n    order_id SERIAL PRIMARY KEY,\n    warehouse_id INTEGER,\n    route_id INTEGER,\n    delivery_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n  id INT PRIMARY KEY,\n  start_point POINT,\n  end_point POINT,\n  distance DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  id INT PRIMARY KEY,\n  location_name VARCHAR(255),\n  coordinates POINT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n  id INT PRIMARY KEY,\n  shipment_name VARCHAR(255),\n  start_location_id INT,\n  end_location_id INT,\n  distance DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n  id INT PRIMARY KEY,\n  vehicle_name VARCHAR(255),\n  capacity DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(255),\n  route_geom GEOGRAPHY,\n  distance FLOAT,\n  CONSTRAINT chk_distance CHECK (distance >= 0)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipping_destinations (\n  destination_id INT PRIMARY KEY,\n  destination_name VARCHAR(255),\n  destination_geom GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE route_stops (\n  stop_id INT PRIMARY KEY,\n  route_id INT,\n  destination_id INT,\n  stop_order INT,\n  CONSTRAINT fk_route FOREIGN KEY (route_id) REFERENCES shipping_routes(route_id),\n  CONSTRAINT fk_destination FOREIGN KEY (destination_id) REFERENCES shipping_destinations(destination_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE route_schedule (\n  schedule_id INT PRIMARY KEY,\n  route_id INT,\n  departure_time TIMESTAMP,\n  arrival_time TIMESTAMP,\n  CONSTRAINT fk_route_schedule FOREIGN KEY (route_id) REFERENCES shipping_routes(route_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE route_history (\n  history_id INT PRIMARY KEY,\n  route_id INT,\n  status VARCHAR(50),\n  update_time TIMESTAMP,\n  CONSTRAINT fk_route_history FOREIGN KEY (route_id) REFERENCES shipping_routes(route_id)\n);"
+      }
+    ]
+  }
+]

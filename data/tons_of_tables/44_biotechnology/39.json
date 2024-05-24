@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE proteins (\n    protein_id INT PRIMARY KEY,\n    protein_name STRING,\n    expression_level FLOAT,\n    study_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinExpressionStudies (\n    experiment_id INT PRIMARY KEY,\n    sample_id INT,\n    protein_name VARCHAR(255),\n    expression_level FLOAT\n);\n\nCREATE TABLE BiopharmaceuticalDevelopment (\n    sample_id INT PRIMARY KEY,\n    drug_name VARCHAR(255),\n    efficacy FLOAT,\n    toxicity FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinExpressionStudies (\n    study_id UUID PRIMARY KEY,\n    study_name STRING,\n    study_start_date DATE,\n    study_end_date DATE,\n    researcher_name STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinExpressionData (\n    data_id UUID PRIMARY KEY,\n    study_id UUID REFERENCES ProteinExpressionStudies(study_id),\n    protein_name STRING,\n    expression_value FLOAT,\n    sample_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BiopharmaceuticalDevelopment (\n    development_id UUID PRIMARY KEY,\n    data_id UUID REFERENCES ProteinExpressionData(data_id),\n    compound_name STRING,\n    target_protein STRING,\n    experimental_stage STRING,\n    development_status STRING\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Proteins (\n    protein_id UUID PRIMARY KEY,\n    protein_name VARCHAR(255),\n    expression_level FLOAT,\n    source_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Studies (\n    study_id UUID PRIMARY KEY,\n    study_name VARCHAR(255),\n    researcher_name VARCHAR(255),\n    study_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Samples (\n    sample_id UUID PRIMARY KEY,\n    study_id UUID,\n    protein_id UUID,\n    sample_name VARCHAR(255),\n    sample_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Results (\n    result_id UUID PRIMARY KEY,\n    sample_id UUID,\n    measurement FLOAT,\n    significance BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSamples (\n    sample_id INT PRIMARY KEY,\n    sample_name VARCHAR(255),\n    expression_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneInformation (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    gene_sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentalConditions (\n    condition_id INT PRIMARY KEY,\n    condition_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StudyParticipants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255),\n    participant_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StudyResults (\n    result_id INT PRIMARY KEY,\n    sample_id INT,\n    gene_id INT,\n    condition_id INT,\n    result_description TEXT\n);"
+      }
+    ]
+  }
+]

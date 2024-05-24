@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debt_management_team (\n  id INT PRIMARY KEY,\n  debtor_name VARCHAR(255),\n  debt_amount DECIMAL(10, 2),\n  recovery_rate DECIMAL(5, 2),\n  age_of_debt INT,\n  collection_efficiency DECIMAL(5, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debt_management_teams (\n    id INT PRIMARY KEY,\n    team_name VARCHAR(255),\n    recovery_rate FLOAT,\n    debt_age INT,\n    collection_efficiency FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE debt_records (\n    record_id INT PRIMARY KEY,\n    debt_amount DECIMAL(10, 2),\n    debtor_name VARCHAR(255),\n    debt_status ENUM('current', 'overdue', 'paid'),\n    team_id INT,\n    FOREIGN KEY (team_id) REFERENCES debt_management_teams(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debtors (\n  debtor_id INT PRIMARY KEY,\n  debtor_name VARCHAR(50) NOT NULL,\n  debt_amount DECIMAL(10, 2) NOT NULL,\n  payment_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE debts (\n  debt_id INT PRIMARY KEY,\n  debtor_id INT REFERENCES debtors(debtor_id),\n  debt_amount DECIMAL(10, 2) NOT NULL,\n  debt_age_days INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE collections (\n  collection_id INT PRIMARY KEY,\n  debt_id INT REFERENCES debts(debt_id),\n  collection_date DATE,\n  collection_amount DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE `debt_management_teams` (\n  `team_id` INT PRIMARY KEY,\n  `team_name` VARCHAR(50) NOT NULL,\n  `team_lead` VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE `recovery_rates` (\n  `rate_id` INT PRIMARY KEY,\n  `team_id` INT,\n  `recovery_rate` DECIMAL(5,2) NOT NULL,\n  FOREIGN KEY (`team_id`) REFERENCES `debt_management_teams`(`team_id`)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE `aging_of_debts` (\n  `debt_id` INT PRIMARY KEY,\n  `debt_amount` DECIMAL(10,2) NOT NULL,\n  `debt_age` INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE `collection_efficiency` (\n  `efficiency_id` INT PRIMARY KEY,\n  `team_id` INT,\n  `efficiency_rate` DECIMAL(5,2) NOT NULL,\n  `efficiency_date` DATE NOT NULL,\n  FOREIGN KEY (`team_id`) REFERENCES `debt_management_teams`(`team_id`)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debtors (\n    debtor_id SERIAL PRIMARY KEY,\n    name VARCHAR(100),\n    address VARCHAR(255),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE debts (\n    debt_id SERIAL PRIMARY KEY,\n    debtor_id INT REFERENCES debtors(debtor_id),\n    amount DECIMAL(10, 2),\n    due_date DATE,\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id SERIAL PRIMARY KEY,\n    debt_id INT REFERENCES debts(debt_id),\n    payment_amount DECIMAL(10, 2),\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collection_metrics (\n    metric_id SERIAL PRIMARY KEY,\n    debt_id INT REFERENCES debts(debt_id),\n    recovery_rate DECIMAL(5, 2),\n    aging_of_debts INT,\n    collection_efficiency DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE teams (\n    team_id SERIAL PRIMARY KEY,\n    team_name VARCHAR(100),\n    team_lead VARCHAR(100),\n    location VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

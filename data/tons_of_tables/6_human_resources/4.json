@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InterviewFeedback (\n    interview_id UUID PRIMARY KEY,\n    candidate_id UUID NOT NULL,\n    interview_date TIMESTAMP NOT NULL,\n    interviewer TEXT NOT NULL,\n    interview_feedback TEXT,\n    overall_rating INT,\n    feedback_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE interviews(\n    interview_id UUID PRIMARY KEY,\n    candidate_id UUID,\n    interview_date DATE,\n    interview_time TIME,\n    interview_location VARCHAR(255),\n    feedback TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hiring_teams(\n    team_id UUID PRIMARY KEY,\n    team_name VARCHAR(255),\n    team_lead UUID,\n    team_size INT,\n    team_email VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InterviewSchedule (\n  interview_id UUID NOT NULL,\n  candidate_id UUID NOT NULL,\n  interview_date DATE NOT NULL,\n  interview_time TIME NOT NULL,\n  room_number INT NOT NULL,\n  PRIMARY KEY (interview_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Feedback (\n  feedback_id UUID NOT NULL,\n  interview_id UUID NOT NULL,\n  team_member_id UUID NOT NULL,\n  feedback_text TEXT NOT NULL,\n  rating INT NOT NULL,\n  PRIMARY KEY (feedback_id),\n  FOREIGN KEY (interview_id) REFERENCES InterviewSchedule(interview_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamMember (\n  team_member_id UUID NOT NULL,\n  name VARCHAR(50) NOT NULL,\n  role VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  PRIMARY KEY (team_member_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InterviewSchedules (\n    interview_id INT PRIMARY KEY,\n    candidate_name VARCHAR(50),\n    interview_date DATE,\n    interview_time TIME,\n    interviewer_name VARCHAR(50),\n    room_number INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE HiringTeams (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(50),\n    team_lead VARCHAR(50),\n    team_size INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Feedbacks (\n    feedback_id INT PRIMARY KEY,\n    interview_id INT,\n    feedback_text TEXT,\n    feedback_given_by VARCHAR(50),\n    feedback_given_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Candidates (\n    candidate_id INT PRIMARY KEY,\n    candidate_name VARCHAR(50),\n    candidate_email VARCHAR(50),\n    candidate_phone VARCHAR(15),\n    candidate_resume TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE interview_schedules (\n    interview_id SERIAL PRIMARY KEY,\n    candidate_name VARCHAR(50) NOT NULL,\n    interview_date DATE NOT NULL,\n    interview_time TIME NOT NULL,\n    interviewer_name VARCHAR(50) NOT NULL,\n    feedback TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE interview_feedback (\n    feedback_id SERIAL PRIMARY KEY,\n    interview_id INT REFERENCES interview_schedules(interview_id),\n    feedback_text TEXT,\n    rating INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE hiring_teams (\n    team_id SERIAL PRIMARY KEY,\n    team_name VARCHAR(50) NOT NULL,\n    team_lead VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id SERIAL PRIMARY KEY,\n    team_id INT REFERENCES hiring_teams(team_id),\n    member_name VARCHAR(50) NOT NULL,\n    member_role VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE candidates (\n    candidate_id SERIAL PRIMARY KEY,\n    candidate_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50),\n    phone_number VARCHAR(15)\n)"
+      }
+    ]
+  }
+]

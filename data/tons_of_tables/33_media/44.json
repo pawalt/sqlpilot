@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles_cross_reference (\n  article_id INT PRIMARY KEY,\n  article_title VARCHAR(255),\n  article_source VARCHAR(100),\n  bias_level ENUM('Low', 'Medium', 'High'),\n  reference_article_id INT,\n  FOREIGN KEY (reference_article_id) REFERENCES articles_cross_reference(article_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE article ( id INT PRIMARY KEY, title VARCHAR(255) NOT NULL, source VARCHAR(255) NOT NULL );\nCREATE TABLE bias_level ( id INT PRIMARY KEY, article_id INT NOT NULL, bias_level VARCHAR(50) NOT NULL, FOREIGN KEY (article_id) REFERENCES article(id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (article_id INT PRIMARY KEY, article_title TEXT, source_id INT, bias_level INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE sources (source_id INT PRIMARY KEY, source_name TEXT, source_bias TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE article_sources (article_id INT, source_id INT, FOREIGN KEY (article_id) REFERENCES articles(article_id), FOREIGN KEY (source_id) REFERENCES sources(source_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    title VARCHAR(255),\n    content TEXT,\n    source VARCHAR(50)\n);\n\nCREATE TABLE sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(100)\n);\n\nCREATE TABLE article_sources (\n    article_id INT,\n    source_id INT,\n    bias_level VARCHAR(20),\n    CONSTRAINT fk_article_id FOREIGN KEY (article_id) REFERENCES articles(article_id),\n    CONSTRAINT fk_source_id FOREIGN KEY (source_id) REFERENCES sources(source_id)\n);\n\nCREATE TABLE bias_levels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (article_id INT PRIMARY KEY,\n source_name VARCHAR,\n article_title VARCHAR,\n bias_level VARCHAR);"
+      },
+      {
+        "table_schema": "CREATE TABLE sources (source_id INT PRIMARY KEY,\n source_name VARCHAR,\n domain_URL VARCHAR);"
+      },
+      {
+        "table_schema": "CREATE TABLE bias_levels (bias_level VARCHAR PRIMARY KEY,\n description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE article_sources (article_id INT,\n source_id INT,\n PRIMARY KEY (article_id, source_id),\n FOREIGN KEY (article_id) REFERENCES articles(article_id),\n FOREIGN KEY (source_id) REFERENCES sources(source_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE article_bias_levels (article_id INT,\n bias_level VARCHAR,\n PRIMARY KEY (article_id, bias_level),\n FOREIGN KEY (article_id) REFERENCES articles(article_id),\n FOREIGN KEY (bias_level) REFERENCES bias_levels(bias_level));"
+      }
+    ]
+  }
+]

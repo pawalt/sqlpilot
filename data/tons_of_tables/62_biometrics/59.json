@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_behavior (\n    user_id INT,\n    username VARCHAR(255),\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP,\n    page_views INT,\n    behavior_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_behavior (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    session_id INT,\n    behavior_pattern VARCHAR(200)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomaly_detection (\n    detection_id INT PRIMARY KEY,\n    user_id INT,\n    anomaly_type VARCHAR(50),\n    detection_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    last_login TIMESTAMP,\n    behavior_profile JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE login_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id INT,\n    login_time TIMESTAMP,\n    ip_address INET,\n    browser_info VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_anomalies (\n    anomaly_id SERIAL PRIMARY KEY,\n    user_id INT,\n    anomaly_details JSON,\n    detection_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_history (\n    history_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    login_timestamp TIMESTAMP NOT NULL,\n    login_location VARCHAR(100),\n    login_success BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_data (\n    data_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    behavior_type VARCHAR(50) NOT NULL,\n    behavior_description TEXT,\n    behavior_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    anomaly_id SERIAL PRIMARY KEY,\n    data_id INT REFERENCES behavior_data(data_id),\n    anomaly_type VARCHAR(50) NOT NULL,\n    anomaly_timestamp TIMESTAMP NOT NULL,\n    anomaly_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profile (\n    user_id SERIAL PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_history (\n    login_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    login_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE session_data (\n    session_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_data (\n    behavior_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    behavior_type VARCHAR(50) NOT NULL,\n    behavior_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomaly_detection (\n    anomaly_id SERIAL PRIMARY KEY,\n    behavior_id INT NOT NULL,\n    anomaly_type VARCHAR(50) NOT NULL,\n    anomaly_description TEXT\n);"
+      }
+    ]
+  }
+]

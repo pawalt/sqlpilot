@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailCampaignData (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name STRING,\n    campaign_date DATE,\n    recipient_count INT,\n    open_rate DECIMAL,\n    click_through_rate DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    total_recipients INT,\n    open_rate FLOAT,\n    click_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_responses (\n    response_id SERIAL PRIMARY KEY,\n    campaign_id INT REFERENCES campaigns(campaign_id),\n    recipient_email VARCHAR(255) NOT NULL,\n    response_type VARCHAR(50),\n    response_date TIMESTAMP,\n    response_content TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    total_recipients INT,\n    open_rate DECIMAL(5,2),\n    click_rate DECIMAL(5,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_responses (\n    response_id INT PRIMARY KEY,\n    campaign_id INT,\n    recipient_email VARCHAR(100),\n    response_date TIMESTAMP,\n    response_type VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_results (\n    result_id INT PRIMARY KEY,\n    campaign_id INT,\n    total_responses INT,\n    conversion_rate DECIMAL(5,2),\n    revenue_generated DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name STRING,\n    start_date DATE,\n    end_date DATE,\n    recipient_count INT,\n    open_rate FLOAT,\n    click_through_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emails (\n    email_id UUID PRIMARY KEY,\n    campaign_id UUID REFERENCES campaigns(campaign_id),\n    recipient_email STRING,\n    open_status BOOLEAN,\n    click_status BOOLEAN,\n    delivery_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_responses (\n    response_id UUID PRIMARY KEY,\n    email_id UUID REFERENCES emails(email_id),\n    response_type STRING,\n    response_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_engagement (\n    engagement_id UUID PRIMARY KEY,\n    email_id UUID REFERENCES emails(email_id),\n    engagement_type STRING,\n    engagement_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    open_rate FLOAT,\n    click_rate FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_recipients (\n    recipient_id INT PRIMARY KEY,\n    email_address VARCHAR(255),\n    full_name VARCHAR(100),\n    subscribed_date DATE,\n    unsubscribe_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_clicks (\n    click_id INT PRIMARY KEY,\n    recipient_id INT,\n    campaign_id INT,\n    click_timestamp TIMESTAMP,\n    clicked_url VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_opens (\n    open_id INT PRIMARY KEY,\n    recipient_id INT,\n    campaign_id INT,\n    open_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE email_metrics (\n    metric_id INT PRIMARY KEY,\n    campaign_id INT,\n    open_rate FLOAT,\n    click_rate FLOAT\n)"
+      }
+    ]
+  }
+]

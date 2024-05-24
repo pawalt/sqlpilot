@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE content_files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_path VARCHAR(255),\n    file_size INT,\n    upload_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE content_files (\n    file_id INT PRIMARY KEY,\n    file_name TEXT NOT NULL,\n    file_type TEXT,\n    file_size INT,\n    created_at TIMESTAMP\n);\n\nCREATE TABLE file_metadata (\n    metadata_id INT PRIMARY KEY,\n    file_id INT REFERENCES content_files(file_id),\n    metadata_key TEXT NOT NULL,\n    metadata_value TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE files (\n    id SERIAL PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_path TEXT NOT NULL,\n    file_size INT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tags (\n    id SERIAL PRIMARY KEY,\n    tag_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_tags (\n    file_id INT NOT NULL,\n    tag_id INT NOT NULL,\n    PRIMARY KEY (file_id, tag_id),\n    FOREIGN KEY (file_id) REFERENCES files(id),\n    FOREIGN KEY (tag_id) REFERENCES tags(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_size INT,\n    file_type VARCHAR(50),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100) UNIQUE,\n    created_at TIMESTAMP,\n    last_login TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) UNIQUE,\n    description TEXT,\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE file_mappings (\n    mapping_id INT PRIMARY KEY,\n    file_id INT REFERENCES files(file_id),\n    category_id INT REFERENCES categories(category_id),\n    created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR,\n    file_type VARCHAR,\n    file_size INT,\n    file_path VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_tags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_metadata (\n    metadata_id INT PRIMARY KEY,\n    file_id INT,\n    category_id INT,\n    tag_id INT,\n    metadata_value VARCHAR,\n    FOREIGN KEY (file_id) REFERENCES files(file_id),\n    FOREIGN KEY (category_id) REFERENCES file_categories(category_id),\n    FOREIGN KEY (tag_id) REFERENCES file_tags(tag_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_permissions (\n    permission_id INT PRIMARY KEY,\n    file_id INT,\n    permission_type VARCHAR,\n    FOREIGN KEY (file_id) REFERENCES files(file_id)\n);"
+      }
+    ]
+  }
+]

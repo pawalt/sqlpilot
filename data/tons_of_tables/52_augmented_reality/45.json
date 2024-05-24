@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geolocation_info (\n    location_id INT PRIMARY KEY,\n    latitude FLOAT,\n    longitude FLOAT,\n    campaign_name VARCHAR(100),\n    campaign_start_date DATE,\n    campaign_end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geolocation_data (\n  id UUID PRIMARY KEY,\n  latitude DECIMAL(9,6),\n  longitude DECIMAL(9,6),\n  campaign_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_data (\n  id UUID PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  advertiser_name VARCHAR(255),\n  budget DECIMAL,\n  start_date DATE,\n  end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (campaign_id INT PRIMARY KEY,\n                           campaign_name VARCHAR,\n                           campaign_start_date DATE,\n                           campaign_end_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE Locations (location_id INT PRIMARY KEY,\n                            location_name VARCHAR,\n                            latitude DECIMAL,\n                            longitude DECIMAL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Ads (ad_id INT PRIMARY KEY,\n                       ad_name VARCHAR,\n                       ad_image_url VARCHAR,\n                       ad_clicks INT,\n                       location_id INT,\n                       FOREIGN KEY (location_id) REFERENCES Locations(location_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_data ( \n    location_id UUID PRIMARY KEY, \n    latitude FLOAT, \n    longitude FLOAT, \n    address TEXT \n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_campaigns ( \n    campaign_id UUID PRIMARY KEY, \n    location_id UUID REFERENCES location_data(location_id), \n    start_date TIMESTAMP, \n    end_date TIMESTAMP, \n    budget DECIMAL(10, 2) \n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_impressions ( \n    impression_id UUID PRIMARY KEY, \n    campaign_id UUID REFERENCES ad_campaigns(campaign_id), \n    impression_time TIMESTAMP, \n    user_id UUID, \n    device_id UUID \n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data ( \n    user_id UUID PRIMARY KEY, \n    email VARCHAR(255), \n    phone_number VARCHAR(15), \n    gender VARCHAR(10) \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id UUID PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    address TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR,\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE advertisers (\n    advertiser_id UUID PRIMARY KEY,\n    advertiser_name VARCHAR,\n    contact_email TEXT,\n    phone_number VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ads (\n    ad_id UUID PRIMARY KEY,\n    ad_name VARCHAR,\n    ad_content TEXT,\n    ad_type VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_campaign_mapping (\n    mapping_id UUID PRIMARY KEY,\n    ad_id UUID,\n    campaign_id UUID,\n    FOREIGN KEY (ad_id) REFERENCES ads(ad_id),\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n)"
+      }
+    ]
+  }
+]

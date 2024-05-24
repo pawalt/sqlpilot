@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    role ENUM('admin', 'manager', 'analyst'),\n    permission_level INT,\n    sensitive_data_access BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    id INT PRIMARY KEY,\n    role VARCHAR(50),\n    permission_type VARCHAR(50),\n    risk_data_category VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    role_id INT,\n    FOREIGN KEY (role_id) REFERENCES permissions(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    role VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    role_id INT NOT NULL,\n    data_type VARCHAR(50) NOT NULL,\n    access_level VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    role VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50) UNIQUE NOT NULL,\n    role_description VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id UUID PRIMARY KEY,\n    permission_name VARCHAR(50) UNIQUE NOT NULL,\n    permission_description VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id UUID NOT NULL,\n    role_id UUID NOT NULL,\n    PRIMARY KEY (user_id, role_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,\n    FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users_permissions (\n    user_id UUID PRIMARY KEY,\n    role_id UUID,\n    permissions JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id UUID PRIMARY KEY,\n    role_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_data (\n    data_id UUID PRIMARY KEY,\n    data_value JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id UUID,\n    role_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_id UUID,\n    permissions JSONB\n);"
+      }
+    ]
+  }
+]

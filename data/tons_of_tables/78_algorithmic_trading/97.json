@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE holdings (\n    holding_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_symbol VARCHAR(10),\n    quantity DECIMAL,\n    price DECIMAL,\n    total_value DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolio_holdings (\n    id INT PRIMARY KEY,\n    stock_symbol VARCHAR(255),\n    shares_owned INT,\n    purchase_price DECIMAL(10, 2),\n    purchase_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_records (\n    id INT PRIMARY KEY,\n    stock_symbol VARCHAR(255),\n    transaction_type VARCHAR(10),\n    transaction_date DATE,\n    price DECIMAL(10, 2),\n    shares_traded INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolio_holdings (\n    holding_id INT PRIMARY KEY,\n    ticker_symbol VARCHAR(10),\n    quantity INT,\n    purchase_price DECIMAL(10,2),\n    purchase_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_records (\n    transaction_id INT PRIMARY KEY,\n    holding_id INT,\n    transaction_type VARCHAR(10),\n    amount DECIMAL(10,2),\n    transaction_date DATE,\n    FOREIGN KEY (holding_id) REFERENCES portfolio_holdings(holding_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_performance (\n    trading_performance_id INT PRIMARY KEY,\n    transaction_id INT,\n    neural_network_score FLOAT,\n    trade_profit DECIMAL(10,2),\n    trade_date DATE,\n    FOREIGN KEY (transaction_id) REFERENCES transaction_records(transaction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolio_holdings (\n    holding_id SERIAL PRIMARY KEY,\n    stock_symbol VARCHAR(50) NOT NULL,\n    quantity INTEGER NOT NULL,\n    purchase_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_records (\n    transaction_id SERIAL PRIMARY KEY,\n    holding_id INTEGER REFERENCES portfolio_holdings(holding_id),\n    transaction_type VARCHAR(20) NOT NULL,\n    transaction_date DATE NOT NULL,\n    transaction_amount DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_performance (\n    performance_id SERIAL PRIMARY KEY,\n    holding_id INTEGER REFERENCES portfolio_holdings(holding_id),\n    net_profit DECIMAL(10, 2),\n    success_rate FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE neural_networks (\n    network_id SERIAL PRIMARY KEY,\n    network_name VARCHAR(50) NOT NULL,\n    algorithm_used VARCHAR(50) NOT NULL,\n    accuracy FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolio_holdings (\n    holding_id SERIAL PRIMARY KEY,\n    symbol VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    purchase_price DECIMAL(10,2) NOT NULL,\n    date_purchased DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_records (\n    transaction_id SERIAL PRIMARY KEY,\n    holding_id INT NOT NULL,\n    transaction_type VARCHAR(10) NOT NULL,\n    transaction_date DATE NOT NULL,\n    transaction_amount DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_performance (\n    performance_id SERIAL PRIMARY KEY,\n    holding_id INT NOT NULL,\n    net_profit DECIMAL(10,2) NOT NULL,\n    trade_date DATE NOT NULL,\n    success BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE neural_networks (\n    network_id SERIAL PRIMARY KEY,\n    network_name VARCHAR(50) NOT NULL,\n    training_data JSONB NOT NULL,\n    training_iterations INT NOT NULL,\n    last_updated TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_strategy (\n    strategy_id SERIAL PRIMARY KEY,\n    strategy_name VARCHAR(50) NOT NULL,\n    strategy_description TEXT NOT NULL,\n    success_rate DECIMAL(5,2) NOT NULL\n);"
+      }
+    ]
+  }
+]

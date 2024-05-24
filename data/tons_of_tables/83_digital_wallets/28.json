@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    amount DECIMAL NOT NULL,\n    currency VARCHAR(3) NOT NULL,\n    payment_status VARCHAR(50) NOT NULL,\n    payment_date TIMESTAMP NOT NULL,\n    gateway_id INT NOT NULL,\n    api_service_id INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n    gateway_id INT PRIMARY KEY,\n    gateway_name VARCHAR(255),\n    gateway_type VARCHAR(50),\n    api_key VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE third_party_apis (\n    api_id INT PRIMARY KEY,\n    api_name VARCHAR(255),\n    api_endpoint VARCHAR(255),\n    api_version VARCHAR(20),\n    integration_key VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n    gateway_id INT PRIMARY KEY,\n    gateway_name VARCHAR(50),\n    gateway_type VARCHAR(50),\n    api_key VARCHAR(100),\n    integration_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE third_party_apis (\n    api_id INT PRIMARY KEY,\n    api_name VARCHAR(50),\n    api_type VARCHAR(50),\n    api_key VARCHAR(100),\n    authorization_code VARCHAR(50),\n    integration_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_transactions (\n    transaction_id INT PRIMARY KEY,\n    transaction_date TIMESTAMP,\n    amount DECIMAL(10, 2),\n    status VARCHAR(20),\n    gateway_id INT,\n    api_id INT,\n    FOREIGN KEY (gateway_id) REFERENCES payment_gateways(gateway_id),\n    FOREIGN KEY (api_id) REFERENCES third_party_apis(api_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n    id UUID PRIMARY KEY,\n    gateway_name STRING,\n    api_key STRING,\n    webhook_url STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE third_party_apis (\n    id UUID PRIMARY KEY,\n    api_name STRING,\n    api_url STRING,\n    authentication_token STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_transactions (\n    id UUID PRIMARY KEY,\n    transaction_id STRING,\n    amount DECIMAL,\n    payment_status STRING,\n    gateway_id UUID REFERENCES payment_gateways(id),\n    api_id UUID REFERENCES third_party_apis(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_logs (\n    id UUID PRIMARY KEY,\n    log_time TIMESTAMP,\n    log_message STRING,\n    transaction_id UUID REFERENCES payment_transactions(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_transactions (\n  transaction_id INT PRIMARY KEY,\n  amount DECIMAL,\n  payment_method VARCHAR,\n  customer_id INT,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  name VARCHAR,\n  email VARCHAR,\n  phone_number VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n  gateway_id INT PRIMARY KEY,\n  gateway_name VARCHAR,\n  currency VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE third_party_apis (\n  api_id INT PRIMARY KEY,\n  api_name VARCHAR,\n  endpoint VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n  log_id INT PRIMARY KEY,\n  transaction_id INT,\n  log_message TEXT,\n  log_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

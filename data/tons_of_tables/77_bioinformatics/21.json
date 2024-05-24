@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomicInfo ( \n    protein_sequence VARCHAR(255) NOT NULL, \n    gene VARCHAR(50) NOT NULL, \n    mutation VARCHAR(100) NOT NULL, \n    PRIMARY KEY (protein_sequence) \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSequences (\n    protein_id UUID PRIMARY KEY,\n    sequence TEXT\n);\nCREATE TABLE GeneMutations (\n    gene_id UUID PRIMARY KEY,\n    mutation TEXT,\n    related_protein_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE proteins (\n    protein_id SERIAL PRIMARY KEY,\n    protein_name VARCHAR(255) NOT NULL,\n    gene_id INT NOT NULL,\n    mutation_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE genes (\n    gene_id SERIAL PRIMARY KEY,\n    gene_name VARCHAR(255) NOT NULL,\n    chromosome_id INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mutations (\n    mutation_id SERIAL PRIMARY KEY,\n    mutation_name VARCHAR(255) NOT NULL,\n    protein_id INT NOT NULL,\n    gene_id INT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSequences (\n    protein_id INT PRIMARY KEY,\n    sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genes (\n    gene_id INT PRIMARY KEY,\n    gene_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Mutations (\n    mutation_id INT PRIMARY KEY,\n    mutation_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinGeneMapping (\n    mapping_id INT PRIMARY KEY,\n    protein_id INT,\n    gene_id INT,\n    FOREIGN KEY (protein_id) REFERENCES ProteinSequences(protein_id),\n    FOREIGN KEY (gene_id) REFERENCES Genes(gene_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE proteins (\n  id UUID PRIMARY KEY,\n  protein_sequence TEXT NOT NULL,\n  gene_id UUID REFERENCES genes(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE genes (\n  id UUID PRIMARY KEY,\n  gene_name TEXT NOT NULL,\n  mutation_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mutations (\n  id UUID PRIMARY KEY,\n  mutation_description TEXT NOT NULL,\n  gene_id UUID REFERENCES genes(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_protein_map (\n  gene_id UUID REFERENCES genes(id),\n  protein_id UUID REFERENCES proteins(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_mutation_map (\n  gene_id UUID REFERENCES genes(id),\n  mutation_id UUID REFERENCES mutations(id)\n);\n"
+      }
+    ]
+  }
+]

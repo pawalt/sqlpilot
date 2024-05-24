@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MarineSediments (\n    ResearcherID INT,\n    SedimentLocation VARCHAR(100),\n    PollutantType VARCHAR(50),\n    PollutantConcentration DECIMAL(10, 2),\n    HabitatType VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255),\n    research_specialization VARCHAR(255),\n    institution VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE marine_sediments (\n    sediment_id INT PRIMARY KEY,\n    habitat_name VARCHAR(255),\n    pollutant_type VARCHAR(255),\n    pollutant_level FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researchers (\n researcher_id INT PRIMARY KEY,\n researcher_name VARCHAR(50) NOT NULL,\n researcher_email VARCHAR(100) NOT NULL\n );\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MarineHabitats (\n habitat_id INT PRIMARY KEY,\n habitat_name VARCHAR(50) NOT NULL,\n habitat_location VARCHAR(100) NOT NULL\n );\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MarineSediments (\n sediment_id INT PRIMARY KEY,\n location_id INT NOT NULL,\n pollutant_type VARCHAR(50) NOT NULL,\n pollutant_level DECIMAL(10, 2) NOT NULL,\n FOREIGN KEY (location_id) REFERENCES MarineHabitats(habitat_id)\n );\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MarineHabitats (\n    habitat_id INT PRIMARY KEY,\n    habitat_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Pollutants (\n    pollutant_id INT PRIMARY KEY,\n    pollutant_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SedimentSamples (\n    sample_id INT PRIMARY KEY,\n    habitat_id INT,\n    researcher_id INT,\n    pollutant_id INT,\n    sediment_depth FLOAT,\n    FOREIGN KEY (habitat_id) REFERENCES MarineHabitats(habitat_id),\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id),\n    FOREIGN KEY (pollutant_id) REFERENCES Pollutants(pollutant_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researcher (researcher_id INT PRIMARY KEY, researcher_name VARCHAR(50) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE MarineHabitat (habitat_id INT PRIMARY KEY, habitat_name VARCHAR(50) NOT NULL, habitat_description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE SedimentAnalysis (analysis_id INT PRIMARY KEY, habitat_id INT REFERENCES MarineHabitat(habitat_id), analysis_date DATE, pollutant_type VARCHAR(50), pollutant_level FLOAT);"
+      },
+      {
+        "table_schema": "CREATE TABLE SedimentSample (sample_id INT PRIMARY KEY, habitat_id INT REFERENCES MarineHabitat(habitat_id), sample_date DATE, sample_depth FLOAT, pollutant_concentration FLOAT);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearcherData (researcher_id INT REFERENCES Researcher(researcher_id), sample_id INT REFERENCES SedimentSample(sample_id), analysis_id INT REFERENCES SedimentAnalysis(analysis_id), data_description TEXT);"
+      }
+    ]
+  }
+]

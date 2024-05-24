@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_marketing_roi (\n    campaign_id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL,\n    total_clicks INT,\n    total_conversions INT,\n    total_revenue DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  budget DECIMAL(10, 2),\n  platform VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE analytics (\n  analytics_id INT PRIMARY KEY,\n  campaign_id INT,\n  clicks INT,\n  impressions INT,\n  conversions INT,\n  cost DECIMAL(10, 2),\n  revenue DECIMAL(10, 2),\n  date DATE,\n  FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DigitalMarketingCampaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL\n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignMetrics (\n    metric_id UUID PRIMARY KEY,\n    campaign_id UUID,\n    metric_name VARCHAR(255),\n    metric_value DECIMAL,\n    date_measured DATE\n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE BudgetAllocation (\n    allocation_id UUID PRIMARY KEY,\n    campaign_id UUID,\n    allocation_amount DECIMAL,\n    allocation_date DATE\n) \n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_marketing_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL,\n    clicks INT,\n    conversions INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_channels (\n    channel_id INT PRIMARY KEY,\n    channel_name VARCHAR(255),\n    channel_type VARCHAR(50),\n    is_active BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    performance_id INT PRIMARY KEY,\n    campaign_id INT,\n    channel_id INT,\n    clicks INT,\n    conversions INT,\n    spend DECIMAL,\n    roi DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE budget_allocation (\n    allocation_id INT PRIMARY KEY,\n    campaign_id INT,\n    channel_id INT,\n    allocated_budget DECIMAL,\n    actual_spend DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AdGroups (\n    ad_group_id INT PRIMARY KEY,\n    ad_group_name VARCHAR(255),\n    campaign_id INT REFERENCES Campaigns(campaign_id),\n    bid_amount DECIMAL(8, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Ads (\n    ad_id INT PRIMARY KEY,\n    ad_text TEXT,\n    ad_group_id INT REFERENCES AdGroups(ad_group_id),\n    cost_per_click DECIMAL(6, 2),\n    click_through_rate DECIMAL(4, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Clicks (\n    click_id INT PRIMARY KEY,\n    ad_id INT REFERENCES Ads(ad_id),\n    click_timestamp TIMESTAMP,\n    city VARCHAR(100),\n    device_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Conversions (\n    conversion_id INT PRIMARY KEY,\n    click_id INT REFERENCES Clicks(click_id),\n    conversion_timestamp TIMESTAMP,\n    conversion_value DECIMAL(10, 2)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE microbiome_data (\n  sample_id INT PRIMARY KEY,\n  bacteria_name VARCHAR(50),\n  abundance FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gut_microbiome_data ( \n  sample_id UUID PRIMARY KEY, \n  bacteria_name VARCHAR(255), \n  bacteria_count INT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_participants ( \n  participant_id UUID PRIMARY KEY, \n  age INT, \n  gender VARCHAR(10), \n  location VARCHAR(50) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bacteria (\n    id UUID PRIMARY KEY,\n    species TEXT,\n    genus TEXT,\n    abundance FLOAT\n);\n\nCREATE TABLE samples (\n    sample_id UUID PRIMARY KEY,\n    collection_date DATE,\n    sample_location TEXT,\n    patient_id UUID\n);\n\nCREATE TABLE research (\n    research_id UUID PRIMARY KEY,\n    researcher_name TEXT,\n    research_topic TEXT,\n    publication_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE samples (\n    sample_id INT PRIMARY KEY,\n    sample_date DATE,\n    participant_id INT,\n    location TEXT,\n    sample_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    participant_name TEXT,\n    age INT,\n    gender TEXT,\n    ethnicity TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bacteria (\n    bacteria_id INT PRIMARY KEY,\n    bacteria_name TEXT,\n    bacteria_species TEXT,\n    detection_method TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE microbiome_data (\n    data_id INT PRIMARY KEY,\n    sample_id INT,\n    bacteria_id INT,\n    abundance FLOAT,\n    FOREIGN KEY (sample_id) REFERENCES samples(sample_id),\n    FOREIGN KEY (bacteria_id) REFERENCES bacteria(bacteria_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gut_microbiome_data (\n  sample_id INT PRIMARY KEY,\n  microbiome_species VARCHAR(255),\n  abundance FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_data (\n  patient_id INT PRIMARY KEY,\n  age INT,\n  gender VARCHAR(10),\n  health_condition VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE research_studies (\n  study_id INT PRIMARY KEY,\n  study_name VARCHAR(255),\n  publication_date DATE,\n  lead_researcher VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_collection (\n  sample_id INT PRIMARY KEY,\n  collection_date DATE,\n  research_study_id INT,\n  FOREIGN KEY (research_study_id) REFERENCES research_studies(study_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_samples (\n  patient_id INT,\n  sample_id INT,\n  collection_date DATE,\n  FOREIGN KEY (patient_id) REFERENCES patient_data(patient_id),\n  FOREIGN KEY (sample_id) REFERENCES sample_collection(sample_id)\n)"
+      }
+    ]
+  }
+]

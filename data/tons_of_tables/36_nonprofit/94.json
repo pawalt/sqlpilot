@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE community_engagement (\n    initiative_id SERIAL PRIMARY KEY,\n    initiative_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    start_date DATE,\n    end_date DATE,\n    coordinator_name VARCHAR(100),\n    budget NUMERIC(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE community_engagement_initiatives (\n    initiative_id SERIAL PRIMARY KEY,\n    initiative_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    start_date DATE,\n    target_audience VARCHAR(100),\n    status VARCHAR(20) DEFAULT 'Planned'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stakeholder_feedback (\n    feedback_id SERIAL PRIMARY KEY,\n    initiative_id INT NOT NULL REFERENCES community_engagement_initiatives(initiative_id),\n    feedback_text TEXT,\n    rating INT,\n    submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE community_engagement_initiatives (\n    id INT PRIMARY KEY,\n    initiative_name TEXT,\n    stakeholder_name TEXT,\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE initiative_participants (\n    participant_id INT PRIMARY KEY,\n    initiative_id INT,\n    participant_name TEXT,\n    email TEXT,\n    role TEXT,\n    FOREIGN KEY (initiative_id) REFERENCES community_engagement_initiatives(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stakeholder_feedback (\n    feedback_id INT PRIMARY KEY,\n    initiative_id INT,\n    participant_id INT,\n    feedback TEXT,\n    submission_date DATE,\n    FOREIGN KEY (initiative_id) REFERENCES community_engagement_initiatives(id),\n    FOREIGN KEY (participant_id) REFERENCES initiative_participants(participant_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE community_engagement (\n    initiative_id INT PRIMARY KEY,\n    initiative_name VARCHAR(255),\n    description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stakeholders (\n    stakeholder_id INT PRIMARY KEY,\n    stakeholder_name VARCHAR(255),\n    organization VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE initiatives_progress (\n    progress_id INT PRIMARY KEY,\n    initiative_id INT,\n    stakeholder_id INT,\n    progress_status VARCHAR(50),\n    progress_update TEXT,\n    update_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n    feedback_id INT PRIMARY KEY,\n    initiative_id INT,\n    stakeholder_id INT,\n    feedback_text TEXT,\n    feedback_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE community_engagement_initiatives (\n    initiative_id INT PRIMARY KEY,\n    initiative_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    stakeholder_group VARCHAR(100),\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stakeholders (\n    stakeholder_id INT PRIMARY KEY,\n    stakeholder_name VARCHAR(255),\n    contact_email VARCHAR(255),\n    organization VARCHAR(255),\n    role VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE initiatives_participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255),\n    initiative_id INT,\n    stakeholder_id INT,\n    role VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE initiative_feedback (\n    feedback_id INT PRIMARY KEY,\n    initiative_id INT,\n    stakeholder_id INT,\n    feedback_date DATE,\n    feedback TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE initiative_evaluation (\n    evaluation_id INT PRIMARY KEY,\n    initiative_id INT,\n    evaluation_date DATE,\n    evaluator VARCHAR(255),\n    rating INT\n)"
+      }
+    ]
+  }
+]

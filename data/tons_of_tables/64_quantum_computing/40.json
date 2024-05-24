@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubit_states (\n    qubit_id SERIAL PRIMARY KEY,\n    qubit_name VARCHAR(50) NOT NULL,\n    state VARCHAR(10) NOT NULL,\n    probability FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubit_states (\n  qubit_id INT PRIMARY KEY,\n  state VARCHAR(255) NOT NULL,\n  amplitude DECIMAL(10, 5) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements (\n  measurement_id INT PRIMARY KEY,\n  qubit_id INT,\n  measurement_result VARCHAR(10) NOT NULL,\n  FOREIGN KEY (qubit_id) REFERENCES qubit_states(qubit_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubit_states (\n  qubit_id INT PRIMARY KEY,\n  state VARCHAR NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE qubit_measurements (\n  measurement_id INT PRIMARY KEY,\n  qubit_id INT NOT NULL,\n  measurement_result VARCHAR NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_experiment (\n  experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR NOT NULL,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id INT PRIMARY KEY,\n    qubit_state VARCHAR(20),\n    measurement_result VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements (\n    measurement_id INT PRIMARY KEY,\n    qubit_id INT,\n    measurement_time TIMESTAMP,\n    measurement_value FLOAT,\n    FOREIGN KEY (qubit_id) REFERENCES qubits(qubit_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(50),\n    experiment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE simulation_results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    measurement_id INT,\n    result_value FLOAT,\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id),\n    FOREIGN KEY (measurement_id) REFERENCES measurements(measurement_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubit_states (\n    qubit_id SERIAL PRIMARY KEY,\n    state VARCHAR(50) NOT NULL,\n    probability FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE qubit_measurements (\n    measurement_id SERIAL PRIMARY KEY,\n    qubit_id INT NOT NULL REFERENCES qubit_states(qubit_id),\n    measurement_value FLOAT NOT NULL,\n    measured_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_experiment (\n    experiment_id SERIAL PRIMARY KEY,\n    experiment_name VARCHAR(100) NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    result_id SERIAL PRIMARY KEY,\n    experiment_id INT NOT NULL REFERENCES quantum_experiment(experiment_id),\n    qubit_id INT NOT NULL REFERENCES qubit_states(qubit_id),\n    measurement_id INT NOT NULL REFERENCES qubit_measurements(measurement_id),\n    result VARCHAR(10) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_simulation (\n    simulation_id SERIAL PRIMARY KEY,\n    simulation_name VARCHAR(100) NOT NULL,\n    simulation_description TEXT NOT NULL,\n    simulation_time TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

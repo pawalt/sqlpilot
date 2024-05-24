@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE program_impact (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    impact_type VARCHAR(50),\n    impact_description TEXT,\n    awareness_level INT,\n    advocacy_level INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE program_impact (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255) NOT NULL,\n    awareness_score INT,\n    advocacy_score INT\n);\n\nCREATE TABLE participant_details (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    program_id INT,\n    CONSTRAINT fk_program_id FOREIGN KEY (program_id) REFERENCES program_impact(program_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Program (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255) NOT NULL,\n    program_description TEXT,\n    program_start_date DATE,\n    program_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Participant (\n    participant_id INT PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(255),\n    start_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Impact (\n    impact_id INT PRIMARY KEY,\n    program_id INT REFERENCES Program(program_id),\n    participant_id INT REFERENCES Participant(participant_id),\n    impact_score INT,\n    impact_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE impact_of_educational_programs (\n    id INT PRIMARY KEY,\n    program_name VARCHAR(50),\n    organization_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE human_rights_awareness (\n    id INT PRIMARY KEY,\n    participant_name VARCHAR(50),\n    age INT,\n    aware_level INT,\n    program_id INT,\n    FOREIGN KEY (program_id) REFERENCES impact_of_educational_programs(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE advocacy_activities (\n    id INT PRIMARY KEY,\n    activity_type VARCHAR(50),\n    location VARCHAR(50),\n    date DATE,\n    participant_id INT,\n    FOREIGN KEY (participant_id) REFERENCES human_rights_awareness(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_evaluation (\n    id INT PRIMARY KEY,\n    program_id INT,\n    evaluator_name VARCHAR(50),\n    evaluation_date DATE,\n    evaluation_score INT,\n    FOREIGN KEY (program_id) REFERENCES impact_of_educational_programs(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE program (\n program_id UUID PRIMARY KEY,\n program_name VARCHAR(255),\n start_date DATE,\n end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participant (\n participant_id UUID PRIMARY KEY,\n participant_name VARCHAR(255),\n age INT,\n gender VARCHAR(10),\n program_id UUID REFERENCES program(program_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE impact_measurement (\n measurement_id UUID PRIMARY KEY,\n measurement_date DATE,\n awareness_level INT,\n advocacy_level INT,\n participant_id UUID REFERENCES participant(participant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resource (\n resource_id UUID PRIMARY KEY,\n resource_name VARCHAR(255),\n resource_type VARCHAR(50),\n impact_measurement_id UUID REFERENCES impact_measurement(measurement_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n feedback_id UUID PRIMARY KEY,\n feedback_text TEXT,\n feedback_date DATE,\n participant_id UUID REFERENCES participant(participant_id)\n);\n"
+      }
+    ]
+  }
+]

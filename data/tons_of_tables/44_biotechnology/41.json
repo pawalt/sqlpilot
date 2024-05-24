@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_editing_history (\n    experiment_id INT PRIMARY KEY,\n    crop_name VARCHAR(255) NOT NULL,\n    experiment_date DATE,\n    gene_editor VARCHAR(255),\n    compliance_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_editing_experiments (\n    experiment_id INT PRIMARY KEY,\n    crop_name VARCHAR(255),\n    experiment_date DATE,\n    modified_genes TEXT\n);\n\nCREATE TABLE regulations_compliance (\n    regulation_id INT PRIMARY KEY,\n    experiment_id INT,\n    compliance_status BOOLEAN,\n    regulation_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_editing_experiments (\n    experiment_id SERIAL PRIMARY KEY,\n    crop_name VARCHAR(100) NOT NULL,\n    editing_technique VARCHAR(50) NOT NULL,\n    researcher_name VARCHAR(100) NOT NULL,\n    experiment_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    result_id SERIAL PRIMARY KEY,\n    experiment_id INT REFERENCES gene_editing_experiments(experiment_id),\n    gene_expression_level FLOAT NOT NULL,\n    toxicity_level FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance (\n    compliance_id SERIAL PRIMARY KEY,\n    experiment_id INT REFERENCES gene_editing_experiments(experiment_id),\n    compliance_status VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneEditingExperiment (\n  id INT PRIMARY KEY,\n  crop_name TEXT,\n  experiment_date DATE,\n  researcher_name TEXT,\n  compliance_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentResults (\n  id INT PRIMARY KEY,\n  experiment_id INT,\n  result TEXT,\n  analysis_date DATE,\n  CONSTRAINT fk_experiment FOREIGN KEY (experiment_id) REFERENCES GeneEditingExperiment(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RegulationCompliance (\n  id INT PRIMARY KEY,\n  experiment_id INT,\n  regulatory_body TEXT,\n  compliance_date DATE,\n  CONSTRAINT fk_experiment FOREIGN KEY (experiment_id) REFERENCES GeneEditingExperiment(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ApprovalRecords (\n  id INT PRIMARY KEY,\n  experiment_id INT,\n  approval_status TEXT,\n  approval_date DATE,\n  CONSTRAINT fk_experiment FOREIGN KEY (experiment_id) REFERENCES GeneEditingExperiment(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n    id UUID PRIMARY KEY,\n    gene_name VARCHAR(255),\n    edited_by VARCHAR(255),\n    edit_date TIMESTAMP,\n    compliance_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crops (\n    id UUID PRIMARY KEY,\n    crop_name VARCHAR(255),\n    crop_type VARCHAR(50),\n    origin_country VARCHAR(50),\n    gene_id UUID,\n    FOREIGN KEY (gene_id) REFERENCES genes(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    id UUID PRIMARY KEY,\n    experiment_date TIMESTAMP,\n    crop_id UUID,\n    researcher_name VARCHAR(255),\n    FOREIGN KEY (crop_id) REFERENCES crops(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulations (\n    id UUID PRIMARY KEY,\n    regulation_number VARCHAR(50),\n    regulation_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_logs (\n    id UUID PRIMARY KEY,\n    experiment_id UUID,\n    regulation_id UUID,\n    compliance_status VARCHAR(50),\n    FOREIGN KEY (experiment_id) REFERENCES experiments(id),\n    FOREIGN KEY (regulation_id) REFERENCES regulations(id)\n);"
+      }
+    ]
+  }
+]

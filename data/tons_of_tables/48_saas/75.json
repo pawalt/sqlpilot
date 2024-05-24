@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE interactions_on_social_media (\n  interaction_id INT PRIMARY KEY,\n  customer_id INT,\n  platform_name VARCHAR(255),\n  interaction_timestamp TIMESTAMP,\n  interaction_type VARCHAR(50),\n  interaction_content TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_posts (\n    post_id INT PRIMARY KEY,\n    post_content TEXT,\n    post_date TIMESTAMP,\n    likes_count INT,\n    comments_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_analysis (\n    analysis_id INT PRIMARY KEY,\n    post_id INT,\n    sentiment_score FLOAT,\n    sentiment_category VARCHAR(50),\n    analysis_date TIMESTAMP,\n    FOREIGN KEY (post_id) REFERENCES social_media_posts(post_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_email VARCHAR(50),\n    social_media_handle VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    interaction_timestamp TIMESTAMP,\n    interaction_type VARCHAR(50),\n    interaction_content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_analysis (\n    sentiment_id INT PRIMARY KEY,\n    interaction_id INT REFERENCES interactions(interaction_id),\n    sentiment_score DECIMAL(5, 2),\n    sentiment_category VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_interactions (\n    customer_id INT PRIMARY KEY,\n    platform VARCHAR(50),\n    interaction_type VARCHAR(50),\n    interaction_text TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_analysis (\n    sentiment_id INT PRIMARY KEY,\n    analysis_date DATE,\n    customer_id INT,\n    sentiment_score FLOAT,\n    sentiment_category VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE platform_users (\n    user_id INT PRIMARY KEY,\n    platform_id INT,\n    user_name VARCHAR(50),\n    user_email VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE platform_activity (\n    activity_id INT PRIMARY KEY,\n    platform_id INT,\n    activity_type VARCHAR(50),\n    activity_date DATETIME\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(100) NOT NULL,\n  customer_email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Posts (\n  post_id INT PRIMARY KEY,\n  post_content TEXT NOT NULL,\n  post_date DATE NOT NULL,\n  customer_id INT,\n  FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Comments (\n  comment_id INT PRIMARY KEY,\n  comment_content TEXT NOT NULL,\n  comment_date DATE NOT NULL,\n  post_id INT,\n  FOREIGN KEY (post_id) REFERENCES Posts(post_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Likes (\n  like_id INT PRIMARY KEY,\n  post_id INT,\n  customer_id INT,\n  FOREIGN KEY (post_id) REFERENCES Posts(post_id),\n  FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sentiments (\n  sentiment_id INT PRIMARY KEY,\n  sentiment_type VARCHAR(50) NOT NULL,\n  post_id INT,\n  FOREIGN KEY (post_id) REFERENCES Posts(post_id)\n);"
+      }
+    ]
+  }
+]

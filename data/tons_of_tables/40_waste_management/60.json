@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_quality_measurements (\n    id INT PRIMARY KEY,\n    location VARCHAR(50),\n    measurement_date DATE,\n    pH FLOAT,\n    salinity FLOAT,\n    turbidity FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_quality_measurements (\n    location_id INT PRIMARY KEY,\n    measurement_date DATE,\n    pH FLOAT,\n    salinity FLOAT,\n    temperature FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marine_locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_quality_measurements (\n    measurement_id INT PRIMARY KEY,\n    location VARCHAR(100),\n    measurement_date DATE,\n    ph_level DECIMAL(5, 2),\n    salinity DECIMAL(6, 2),\n    temperature DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marine_locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(100) UNIQUE,\n    country VARCHAR(50),\n    region VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(100) UNIQUE,\n    contact_person VARCHAR(100),\n    contact_email VARCHAR(100),\n    location_id INT REFERENCES marine_locations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Location (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterQualityMeasurement (\n    measurement_id INT PRIMARY KEY,\n    location_id INT,\n    measurement_date DATE,\n    pH FLOAT,\n    temperature FLOAT,\n    salinity FLOAT,\n    PRIMARY KEY (measurement_id, location_id),\n    FOREIGN KEY (location_id) REFERENCES Location(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MarineOrganisms (\n    organism_id INT PRIMARY KEY,\n    organism_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OrganismObservation (\n    observation_id INT PRIMARY KEY,\n    organism_id INT,\n    measurement_id INT,\n    quantity INT,\n    PRIMARY KEY (observation_id, organism_id, measurement_id),\n    FOREIGN KEY (organism_id) REFERENCES MarineOrganisms(organism_id),\n    FOREIGN KEY (measurement_id) REFERENCES WaterQualityMeasurement(measurement_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_quality_measurements ( location_id INT, date DATE, salinity FLOAT, pH FLOAT, temperature FLOAT )"
+      },
+      {
+        "table_schema": "CREATE TABLE locations ( location_id INT, location_name VARCHAR(50), country VARCHAR(50) )"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements_sources ( source_id INT, source_name VARCHAR(50) )"
+      },
+      {
+        "table_schema": "CREATE TABLE parameters ( parameter_id INT, parameter_name VARCHAR(50), unit VARCHAR(10) )"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements ( location_id INT, parameter_id INT, value FLOAT, measurement_date DATE )"
+      }
+    ]
+  }
+]

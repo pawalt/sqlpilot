@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_data (\n  sensor_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  temperature FLOAT,\n  humidity FLOAT,\n  airflow FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HVAC_System_Sensors (\n    sensor_id UUID PRIMARY KEY,\n    sensor_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    installation_date DATE,\n    sensor_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE HVAC_Maintenance_Logs (\n    log_id UUID PRIMARY KEY,\n    sensor_id UUID NOT NULL,\n    maintenance_date DATE,\n    maintenance_type VARCHAR(50) NOT NULL,\n    maintenance_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HVAC_Sensors ( id INT PRIMARY KEY, sensor_name TEXT, location TEXT, installation_date DATE, sensor_type TEXT );"
+      },
+      {
+        "table_schema": "CREATE TABLE HVAC_Readings ( reading_id INT PRIMARY KEY, sensor_id INT, reading_value FLOAT, reading_time TIMESTAMP, FOREIGN KEY (sensor_id) REFERENCES HVAC_Sensors(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE Maintenance_Log ( log_id INT PRIMARY KEY, sensor_id INT, maintenance_date DATE, maintenance_type TEXT, maintenance_description TEXT, FOREIGN KEY (sensor_id) REFERENCES HVAC_Sensors(id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HVAC_Systems (\n    system_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    installation_date DATE,\n    last_maintenance_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Maintenance_Records (\n    record_id INT PRIMARY KEY,\n    system_id INT REFERENCES HVAC_Systems(system_id),\n    maintenance_date DATE,\n    maintenance_type VARCHAR(50),\n    technician VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Sensor_Data (\n    sensor_id INT PRIMARY KEY,\n    system_id INT REFERENCES HVAC_Systems(system_id),\n    sensor_type VARCHAR(50),\n    reading_value DECIMAL(10,2),\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Predictive_Maintenance (\n    prediction_id INT PRIMARY KEY,\n    system_id INT REFERENCES HVAC_Systems(system_id),\n    prediction_date DATE,\n    prediction_result VARCHAR(255),\n    confidence_level DECIMAL(5,2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HVAC_Systems (\n system_id UUID PRIMARY KEY,\n location VARCHAR(255),\n installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Maintenance_Records (\n record_id UUID PRIMARY KEY,\n system_id UUID,\n maintenance_date DATE,\n technician VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sensor_Data (\n data_id UUID PRIMARY KEY,\n system_id UUID,\n timestamp TIMESTAMP,\n temperature FLOAT,\n humidity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Prediction_Models (\n model_id UUID PRIMARY KEY,\n model_name VARCHAR(255),\n trained_date DATE,\n accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (\n alert_id UUID PRIMARY KEY,\n prediction_id UUID,\n alert_type VARCHAR(255),\n alert_date DATE\n);"
+      }
+    ]
+  }
+]

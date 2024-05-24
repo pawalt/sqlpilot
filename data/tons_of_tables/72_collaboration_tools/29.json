@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id UUID PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    access_level INT NOT NULL,\n    sensitive_info_restrict BOOLEAN NOT NULL,\n    user_id UUID NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    role_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_info (\n    info_id INT PRIMARY KEY,\n    info_content TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n  id INT PRIMARY KEY,\n  role_name VARCHAR(50) NOT NULL,\n  access_level INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  user_id INT PRIMARY KEY,\n  role_id INT NOT NULL,\n  FOREIGN KEY (role_id) REFERENCES permissions(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n  data_id INT PRIMARY KEY,\n  data_content TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access (\n  user_id INT,\n  data_id INT,\n  FOREIGN KEY (user_id) REFERENCES user_roles(user_id),\n  FOREIGN KEY (data_id) REFERENCES sensitive_data(data_id),\n  PRIMARY KEY (user_id, data_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    role_id INT NOT NULL,\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT,\n    permission_id INT,\n    PRIMARY KEY (user_id, permission_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_information (\n    info_id INT PRIMARY KEY,\n    info_content TEXT NOT NULL\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_communication_sessions (\n    session_id SERIAL PRIMARY KEY,\n    session_start TIMESTAMPTZ,\n    session_end TIMESTAMPTZ,\n    sender_id INT,\n    receiver_id INT,\n    message TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_communication_sessions (\n  session_id UUID PRIMARY KEY,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  participants JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_devices (\n  device_id UUID PRIMARY KEY,\n  device_name VARCHAR(50),\n  device_type VARCHAR(50),\n  manufacturer VARCHAR(50),\n  location VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_sessions (\n    session_id UUID PRIMARY KEY,\n    session_name VARCHAR(255),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_devices (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_connections (\n    connection_id SERIAL PRIMARY KEY,\n    session_id UUID REFERENCES quantum_sessions(session_id),\n    device_id INT REFERENCES quantum_devices(device_id),\n    connection_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_session (\n  session_id UUID PRIMARY KEY,\n  start_time TIMESTAMP NOT NULL,\n  end_time TIMESTAMP,\n  participants JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qubit_information (\n  qubit_id UUID PRIMARY KEY,\n  session_id UUID REFERENCES quantum_session(session_id),\n  qubit_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_devices (\n  device_id UUID PRIMARY KEY,\n  device_name VARCHAR(100),\n  location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_errors (\n  error_id UUID PRIMARY KEY,\n  session_id UUID REFERENCES quantum_session(session_id),\n  error_code INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_communication_sessions (\n session_id INT PRIMARY KEY,\n start_time TIMESTAMP,\n end_time TIMESTAMP,\n participants TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_devices (\n device_id INT PRIMARY KEY,\n device_name TEXT,\n device_type TEXT,\n software_version TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_channels (\n channel_id INT PRIMARY KEY,\n source_device_id INT,\n destination_device_id INT,\n channel_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_message_log (\n log_id INT PRIMARY KEY,\n message TEXT,\n timestamp TIMESTAMP,\n sender_device_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_errors (\n error_id INT PRIMARY KEY,\n error_description TEXT,\n timestamp TIMESTAMP,\n session_id INT\n);"
+      }
+    ]
+  }
+]

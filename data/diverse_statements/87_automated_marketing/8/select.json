@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM unsubscribe_requests;",
+      "SELECT email, request_date FROM unsubscribe_requests WHERE id = 1;",
+      "SELECT reason FROM unsubscribe_requests WHERE id = 2;",
+      "SELECT id, email, reason FROM unsubscribe_requests WHERE request_date >= '2022-01-01';",
+      "SELECT * FROM unsubscribe_requests ORDER BY request_date DESC;",
+      "SELECT id, email, reason FROM unsubscribe_requests WHERE request_date >= '2022-01-01';",
+      "SELECT * FROM unsubscribe_requests WHERE email LIKE '%@example.com';",
+      "SELECT id, reason FROM unsubscribe_requests WHERE email = 'test@example.com' ORDER BY request_date DESC;",
+      "SELECT * FROM unsubscribe_requests WHERE reason IS NOT NULL AND reason != '' ORDER BY id ASC;",
+      "SELECT COUNT(*), DATE(request_date) AS date FROM unsubscribe_requests GROUP BY DATE(request_date) HAVING COUNT(*) > 1;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM unsubscribe_requests;",
+      "SELECT email, timestamp FROM unsubscribe_requests WHERE reason IS NULL;",
+      "SELECT reason, email FROM unsubscribe_requests ORDER BY timestamp DESC;",
+      "SELECT * FROM unsubscribe_requests WHERE timestamp > '2022-01-01';",
+      "SELECT request_id, email, reason FROM unsubscribe_requests JOIN opt_out_reasons ON unsubscribe_requests.reason = opt_out_reasons.reason_name;",
+      "SELECT * FROM opt_out_reasons WHERE reason_id = 1;",
+      "SELECT reason_name FROM opt_out_reasons WHERE reason_name LIKE 'spam%';",
+      "SELECT reason_name, reason_id FROM opt_out_reasons ORDER BY reason_name DESC;",
+      "SELECT reason_name FROM opt_out_reasons WHERE reason_id IN (1, 2, 3);",
+      "SELECT reason_id, COUNT(*) AS total_requests FROM unsubscribe_requests GROUP BY reason_id HAVING COUNT(*) > 1;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM unsubscribe_requests;",
+      "SELECT user_id, email FROM users WHERE user_id = 10;",
+      "SELECT first_name, last_name FROM users ORDER BY last_name ASC;",
+      "SELECT email FROM opt_out_logs WHERE reason = 'spam' OR reason = 'unsubscribe';",
+      "SELECT * FROM unsubscribe_requests WHERE timestamp < '2022-01-01 00:00:00';",
+      "SELECT * FROM unsubscribe_requests WHERE user_id = 123;",
+      "SELECT user_id, email, timestamp FROM opt_out_logs WHERE timestamp > '2022-01-01' ORDER BY timestamp DESC LIMIT 10;",
+      "SELECT u.user_id, u.first_name, u.last_name, o.email FROM users u JOIN opt_out_logs o ON u.user_id = o.user_id WHERE o.reason LIKE '%spam%';",
+      "SELECT DISTINCT email FROM unsubscribe_requests WHERE reason IS NOT NULL;",
+      "SELECT user_id, email FROM opt_out_logs WHERE email LIKE '%@example.com' AND timestamp BETWEEN '2022-01-01' AND '2022-12-31';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM unsubscribe_requests;",
+      "SELECT user_id, email_address FROM unsubscribe_requests WHERE reason='spam';",
+      "SELECT first_name, last_name FROM unsubscribe_users ORDER BY registration_date DESC;",
+      "SELECT request_id, request_date FROM unsubscribe_requests WHERE email_address='test@example.com';",
+      "SELECT * FROM opt_out_history WHERE opt_out_source='email' ORDER BY opt_out_date ASC;",
+      "SELECT * FROM unsubscribe_requests ORDER BY request_date DESC LIMIT 5;",
+      "SELECT email_address, reason FROM unsubscribe_requests WHERE request_date > '2022-01-01';",
+      "SELECT u.user_id, u.first_name, u.last_name, r.request_date FROM unsubscribe_users u JOIN unsubscribe_requests r ON u.user_id = r.user_id;",
+      "SELECT r.request_id, r.request_date, h.opt_out_date, h.opt_out_source FROM unsubscribe_requests r LEFT JOIN opt_out_history h ON r.request_id = h.request_id;",
+      "SELECT u.first_name, u.last_name, c.action_type, c.action_date FROM unsubscribe_users u JOIN compliance_records c ON u.user_id = c.user_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM opt_out_reasons;",
+      "SELECT id, reason_code, description FROM opt_out_reasons WHERE id = 1;",
+      "SELECT id, source_name FROM opt_out_sources ORDER BY source_name DESC;",
+      "SELECT category_name, description FROM opt_out_categories WHERE category_name LIKE '%marketing%';",
+      "SELECT request_id, source_id, created_at FROM opt_out_logs WHERE category_id = 2 ORDER BY created_at ASC;",
+      "SELECT * FROM unsubscribe_requests;",
+      "SELECT email, reason FROM unsubscribe_requests WHERE id = 1;",
+      "SELECT source_name, description FROM opt_out_sources WHERE id = 1;",
+      "SELECT id, category_name FROM opt_out_categories WHERE description LIKE '%spam%';",
+      "SELECT u.email, s.source_name, c.category_name FROM unsubscribe_requests u JOIN opt_out_sources s ON u.id = s.id JOIN opt_out_categories c ON u.id = c.id ORDER BY u.created_at DESC;"
+    ]
+  }
+]

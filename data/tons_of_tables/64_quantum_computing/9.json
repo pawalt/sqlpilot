@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithm_revisions (\n    revision_id UUID PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    author_name VARCHAR(255),\n    impact_on_calculations VARCHAR(1024),\n    revision_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithm_revision (\n    revision_id UUID PRIMARY KEY,\n    algorithm_name VARCHAR(255) NOT NULL,\n    revision_date TIMESTAMP NOT NULL,\n    impact_on_calculations TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE calculation_results (\n    result_id UUID PRIMARY KEY,\n    algorithm_revision_id UUID NOT NULL,\n    calculation_date TIMESTAMP NOT NULL,\n    result_value DOUBLE PRECISION\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithm_revisions (\n    revision_id SERIAL PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    author_name VARCHAR(255),\n    revision_date DATE,\n    impact_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_calculations (\n    calculation_id SERIAL PRIMARY KEY,\n    revision_id INT REFERENCES quantum_algorithm_revisions(revision_id),\n    calculation_name VARCHAR(255),\n    input_data JSON,\n    output_data JSON,\n    calculation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE calculation_history (\n    history_id SERIAL PRIMARY KEY,\n    calculation_id INT REFERENCES algorithm_calculations(calculation_id),\n    revision_id INT REFERENCES quantum_algorithm_revisions(revision_id),\n    history_date DATE,\n    history_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithm_revisions (\n    revision_id SERIAL PRIMARY KEY,\n    algorithm_name TEXT,\n    author_name TEXT,\n    revision_date TIMESTAMP,\n    impact_on_calculations TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_parameters (\n    parameter_id SERIAL PRIMARY KEY,\n    revision_id INT,\n    parameter_name TEXT,\n    parameter_value TEXT,\n    CONSTRAINT fk_revision_id FOREIGN KEY (revision_id) REFERENCES quantum_algorithm_revisions(revision_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_stats (\n    stats_id SERIAL PRIMARY KEY,\n    revision_id INT,\n    execution_time INT,\n    memory_usage INT,\n    CONSTRAINT fk_revision_id FOREIGN KEY (revision_id) REFERENCES quantum_algorithm_revisions(revision_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_contributors (\n    contributor_id SERIAL PRIMARY KEY,\n    revision_id INT,\n    contributor_name TEXT,\n    contributor_email TEXT,\n    CONSTRAINT fk_revision_id FOREIGN KEY (revision_id) REFERENCES quantum_algorithm_revisions(revision_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithm_revisions (\n    revision_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    author_name VARCHAR(255),\n    revision_date DATE,\n    impact_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE calculations (\n    calculation_id INT PRIMARY KEY,\n    algorithm_revision_id INT,\n    calculation_description TEXT,\n    result DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authors (\n    author_id INT PRIMARY KEY,\n    author_name VARCHAR(255),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE revision_comments (\n    comment_id INT PRIMARY KEY,\n    algorithm_revision_id INT,\n    comment_text TEXT,\n    commented_by VARCHAR(255),\n    comment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE calculation_history (\n    history_id INT PRIMARY KEY,\n    calculation_id INT,\n    calculation_date DATE,\n    calculation_author VARCHAR(255),\n    revision_impact_description TEXT\n);"
+      }
+    ]
+  }
+]

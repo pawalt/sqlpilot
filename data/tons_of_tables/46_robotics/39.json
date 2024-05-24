@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maintenance_tasks (\n    task_id INT PRIMARY KEY,\n    drone_id INT,\n    task_description TEXT,\n    estimated_duration INT,\n    start_date DATE,\n    completion_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maintenance_records (\n    record_id SERIAL PRIMARY KEY,\n    drone_id INT NOT NULL,\n    maintenance_task VARCHAR(255) NOT NULL,\n    maintenance_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n    schedule_id SERIAL PRIMARY KEY,\n    drone_id INT NOT NULL,\n    scheduled_task VARCHAR(255) NOT NULL,\n    scheduled_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Drone (\n  drone_id INT PRIMARY KEY,\n  drone_name VARCHAR(255),\n  purchase_date DATE,\n  last_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceTask (\n  task_id INT PRIMARY KEY,\n  task_name VARCHAR(255),\n  task_description TEXT,\n  estimated_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceRecord (\n  record_id INT PRIMARY KEY,\n  drone_id INT,\n  task_id INT,\n  maintenance_date DATE,\n  completion_status VARCHAR(50),\n  FOREIGN KEY (drone_id) REFERENCES Drone(drone_id),\n  FOREIGN KEY (task_id) REFERENCES MaintenanceTask(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Drones ( \n    id SERIAL PRIMARY KEY, \n    drone_name VARCHAR(50) NOT NULL, \n    manufacturer VARCHAR(50) NOT NULL, \n    model VARCHAR(50) NOT NULL, \n    production_date DATE NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS MaintenanceRecords ( \n    id SERIAL PRIMARY KEY, \n    drone_id INT NOT NULL, \n    maintenance_date DATE NOT NULL, \n    maintenance_type VARCHAR(50) NOT NULL, \n    maintenance_description TEXT, \n    FOREIGN KEY (drone_id) REFERENCES Drones(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Tasks ( \n    id SERIAL PRIMARY KEY, \n    task_name VARCHAR(100) NOT NULL, \n    due_date DATE NOT NULL, \n    completion_status BOOLEAN NOT NULL DEFAULT FALSE, \n    drone_id INT NOT NULL, \n    FOREIGN KEY (drone_id) REFERENCES Drones(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Employees ( \n    id SERIAL PRIMARY KEY, \n    employee_name VARCHAR(100), \n    department VARCHAR(50), \n    hire_date DATE \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n    drone_id UUID PRIMARY KEY,\n    drone_model VARCHAR(50) NOT NULL,\n    last_maintenance_date DATE,\n    next_maintenance_date DATE,\n    status ENUM('operational', 'maintenance', 'out_of_service')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_records (\n    record_id UUID PRIMARY KEY,\n    drone_id UUID REFERENCES drones(drone_id),\n    maintenance_date DATE,\n    maintenance_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_tasks (\n    task_id UUID PRIMARY KEY,\n    task_name VARCHAR(50) NOT NULL,\n    task_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assigned_tasks (\n    assignment_id UUID PRIMARY KEY,\n    task_id UUID REFERENCES maintenance_tasks(task_id),\n    drone_id UUID REFERENCES drones(drone_id),\n    assigned_date DATE,\n    completion_date DATE,\n    status ENUM('pending', 'completed')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE technicians (\n    technician_id UUID PRIMARY KEY,\n    technician_name VARCHAR(100) NOT NULL,\n    technician_specialization VARCHAR(50)\n);\n"
+      }
+    ]
+  }
+]

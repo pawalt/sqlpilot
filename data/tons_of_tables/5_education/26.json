@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_progress (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  group_id INT,\n  student_id INT,\n  design_iteration INT,\n  progress_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE group_projects(\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE,\n    project_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE design_iterations(\n    iteration_id INT PRIMARY KEY,\n    project_id INT,\n    iteration_number INT,\n    iteration_description TEXT,\n    iteration_date DATE,\n    iteration_notes TEXT,\n    FOREIGN KEY (project_id) REFERENCES group_projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name STRING,\n    project_description STRING,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE design_iterations (\n    iteration_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES projects(project_id),\n    iteration_number INT,\n    design_notes STRING,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE student_progress (\n    progress_id UUID PRIMARY KEY,\n    iteration_id UUID REFERENCES design_iterations(iteration_id),\n    student_name STRING,\n    progress_description STRING,\n    progress_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  project_description TEXT,\n  start_date DATE,\n  end_date DATE,\n  team_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Teams (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(255) NOT NULL,\n  project_id INT,\n  team_lead_id INT,\n  FOREIGN KEY (project_id) REFERENCES Projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamMembers (\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR(255) NOT NULL,\n  team_id INT,\n  role VARCHAR(50),\n  FOREIGN KEY (team_id) REFERENCES Teams(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DesignIterations (\n  iteration_id INT PRIMARY KEY,\n  project_id INT,\n  iteration_number INT,\n  iteration_description TEXT,\n  FOREIGN KEY (project_id) REFERENCES Projects(project_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Projects (\n    project_id INT PRIMARY KEY,\n    project_name TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Students (\n    student_id INT PRIMARY KEY,\n    student_name TEXT,\n    email_address TEXT,\n    major TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Projects_Students (\n    project_id INT,\n    student_id INT,\n    PRIMARY KEY (project_id, student_id),\n    FOREIGN KEY (project_id) REFERENCES Projects(project_id),\n    FOREIGN KEY (student_id) REFERENCES Students(student_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Design_Iterations (\n    iteration_id INT PRIMARY KEY,\n    project_id INT,\n    iteration_date DATE,\n    description TEXT,\n    FOREIGN KEY (project_id) REFERENCES Projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Progress_Tracking (\n    tracking_id INT PRIMARY KEY,\n    project_id INT,\n    student_id INT,\n    status TEXT,\n    last_updated DATE,\n    FOREIGN KEY (project_id) REFERENCES Projects(project_id),\n    FOREIGN KEY (student_id) REFERENCES Students(student_id)\n);"
+      }
+    ]
+  }
+]

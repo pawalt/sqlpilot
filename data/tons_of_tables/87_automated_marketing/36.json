@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE creatives_and_ad_placements (\n  creative_id UUID PRIMARY KEY,\n  creative_name TEXT,\n  ad_placement_id UUID,\n  ad_unit_id UUID,\n  bid_amount DOUBLE PRECISION\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE creatives (\n    creative_id INT PRIMARY KEY,\n    creative_name VARCHAR(255),\n    creative_type VARCHAR(50),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_placements (\n    placement_id INT PRIMARY KEY,\n    placement_name VARCHAR(255),\n    placement_type VARCHAR(50),\n    ad_format VARCHAR(50),\n    bid_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE creatives (\n    creative_id SERIAL PRIMARY KEY,\n    creative_name VARCHAR(255) NOT NULL,\n    ad_placement_id INT NOT NULL,\n    creative_type VARCHAR(50),\n    creative_size VARCHAR(20),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_placements (\n    ad_placement_id SERIAL PRIMARY KEY,\n    placement_name VARCHAR(100) NOT NULL,\n    targeting_criteria TEXT,\n    ad_format VARCHAR(50) NOT NULL,\n    cost_per_click DECIMAL(10, 2),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_delivery (\n    delivery_id SERIAL PRIMARY KEY,\n    ad_placement_id INT NOT NULL,\n    creative_id INT NOT NULL,\n    delivery_date DATE,\n    impressions INT,\n    clicks INT,\n    conversions INT,\n    delivery_status VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE creatives (\n    creative_id INT PRIMARY KEY,\n    creative_name VARCHAR(255),\n    ad_placement_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_placements (\n    ad_placement_id INT PRIMARY KEY,\n    placement_name VARCHAR(255),\n    device_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_analytics (\n    analytics_id INT PRIMARY KEY,\n    ad_placement_id INT,\n    num_impressions INT,\n    num_clicks INT,\n    conversion_rate FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE creatives (\n  creative_id UUID PRIMARY KEY,\n  creative_name VARCHAR(255) NOT NULL,\n  creative_type VARCHAR(50) NOT NULL,\n  image_url VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_placements (\n  placement_id UUID PRIMARY KEY,\n  placement_name VARCHAR(255) NOT NULL,\n  placement_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_campaigns (\n  campaign_id UUID PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_groups (\n  group_id UUID PRIMARY KEY,\n  group_name VARCHAR(255) NOT NULL,\n  campaign_id UUID REFERENCES ad_campaigns(campaign_id) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_targets (\n  target_id UUID PRIMARY KEY,\n  target_name VARCHAR(255) NOT NULL,\n  group_id UUID REFERENCES ad_groups(group_id) NOT NULL,\n  placement_id UUID REFERENCES ad_placements(placement_id) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

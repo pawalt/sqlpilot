@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_quality_indicators (\n    patient_id INT PRIMARY KEY,\n    indicator_name VARCHAR(255) NOT NULL,\n    indicator_value DECIMAL(10,2) NOT NULL,\n    industry_standard DECIMAL(10,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_quality_indicators (\n  indicator_id INT PRIMARY KEY,\n  indicator_name VARCHAR(255) NOT NULL,\n  performance_score FLOAT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE industry_standards (\n  standard_id INT PRIMARY KEY,\n  standard_name VARCHAR(255) NOT NULL,\n  benchmark_score FLOAT NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_facilities (\n  id SERIAL PRIMARY KEY,\n  facility_name VARCHAR(255),\n  address VARCHAR(255),\n  city VARCHAR(100),\n  state VARCHAR(50),\n  zip_code VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE quality_indicators (\n  id SERIAL PRIMARY KEY,\n  indicator_name VARCHAR(255),\n  description TEXT,\n  benchmark_value FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE indicator_performance (\n  id SERIAL PRIMARY KEY,\n  facility_id INTEGER REFERENCES healthcare_facilities(id),\n  indicator_id INTEGER REFERENCES quality_indicators(id),\n  performance_score FLOAT,\n  date_measured DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_providers (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR(255) NOT NULL,\n  provider_type VARCHAR(100) NOT NULL,\n  location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE healthcare_patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(255) NOT NULL,\n  patient_age INT NOT NULL,\n  patient_gender VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE healthcare_metrics (\n  metric_id INT PRIMARY KEY,\n  metric_name VARCHAR(255) NOT NULL,\n  benchmark_value DECIMAL(10,2) NOT NULL,\n  performance_value DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE healthcare_ratings (\n  rating_id INT PRIMARY KEY,\n  provider_id INT NOT NULL,\n  patient_id INT NOT NULL,\n  rating_value DECIMAL(5,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hospital (\n\tid INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\tlocation VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Doctor (\n\tid INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\tspeciality VARCHAR(255) NOT NULL,\n\thospital_id INT,\n\tFOREIGN KEY (hospital_id) REFERENCES Hospital(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Patient (\n\tid INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\tage INT,\n\tdoctor_id INT,\n\tFOREIGN KEY (doctor_id) REFERENCES Doctor(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Treatment (\n\tid INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\tpatient_id INT,\n\tFOREIGN KEY (patient_id) REFERENCES Patient(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Indicator (\n\tid INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\tthreshold INT\n);\n"
+      }
+    ]
+  }
+]

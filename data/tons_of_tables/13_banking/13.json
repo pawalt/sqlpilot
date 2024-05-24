@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investment_portfolios (\n    portfolio_id INT PRIMARY KEY,\n    portfolio_name VARCHAR(255),\n    total_investment DECIMAL(10,2),\n    performance_rating INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investment_portfolio (portfolio_id INT, portfolio_name VARCHAR(255), owner_id INT, date_created DATE) \nCREATE TABLE performance_report (report_id INT, portfolio_id INT, report_date DATE, performance_metric VARCHAR(255))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolios (\n    portfolio_id UUID PRIMARY KEY,\n    portfolio_name VARCHAR(255) NOT NULL,\n    client_id UUID NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investments (\n    investment_id UUID PRIMARY KEY,\n    portfolio_id UUID NOT NULL,\n    investment_type VARCHAR(100) NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    purchase_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_reports (\n    report_id UUID PRIMARY KEY,\n    portfolio_id UUID NOT NULL,\n    report_date DATE NOT NULL,\n    performance DECIMAL(5,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investment_portfolio (\n  portfolio_id UUID PRIMARY KEY,\n  portfolio_name VARCHAR(255) NOT NULL,\n  portfolio_description TEXT,\n  created_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investment (\n  investment_id UUID PRIMARY KEY,\n  investment_name VARCHAR(255) NOT NULL,\n  investment_type VARCHAR(50),\n  investment_amount NUMERIC,\n  investment_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE portfolio_investment (\n  id UUID PRIMARY KEY,\n  portfolio_id UUID REFERENCES investment_portfolio(portfolio_id),\n  investment_id UUID REFERENCES investment(investment_id),\n  investment_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_performance (\n  performance_id UUID PRIMARY KEY,\n  investment_id UUID REFERENCES investment(investment_id),\n  performance_date TIMESTAMP,\n  performance_result NUMERIC\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolio (    id INT PRIMARY KEY,    name TEXT NOT NULL,    date_created DATE NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE portfolio_holdings (    id INT PRIMARY KEY,    portfolio_id INT NOT NULL,    symbol TEXT NOT NULL,    quantity INT NOT NULL,    purchase_price DECIMAL NOT NULL,    FOREIGN KEY (portfolio_id) REFERENCES portfolio(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_reports (    id INT PRIMARY KEY,    portfolio_id INT NOT NULL,    report_date DATE NOT NULL,    total_returns DECIMAL NOT NULL,    FOREIGN KEY (portfolio_id) REFERENCES portfolio(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_transactions (    id INT PRIMARY KEY,    portfolio_id INT NOT NULL,    transaction_date DATE NOT NULL,    transaction_type TEXT NOT NULL,    amount DECIMAL NOT NULL,    FOREIGN KEY (portfolio_id) REFERENCES portfolio(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE portfolio_managers (    id INT PRIMARY KEY,    name TEXT NOT NULL,    experience_years INT NOT NULL );"
+      }
+    ]
+  }
+]

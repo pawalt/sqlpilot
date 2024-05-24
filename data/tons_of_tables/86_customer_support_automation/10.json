@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_credentials (\n  customer_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE support_tickets (\n    ticket_id INT PRIMARY KEY,\n    customer_id INT,\n    ticket_details TEXT,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_username VARCHAR(50) NOT NULL,\n  customer_password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n  order_id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  order_date DATE,\n  order_status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(50) NOT NULL,\n  product_price DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    product_id UUID REFERENCES products(product_id),\n    order_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    login_time TIMESTAMP NOT NULL,\n    logout_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE addresses (\n    address_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    street_address VARCHAR(100) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    state VARCHAR(50) NOT NULL,\n    postal_code VARCHAR(20) NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n\nCREATE TABLE support_tickets (\n    ticket_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    title VARCHAR(100) NOT NULL,\n    description TEXT,\n    status VARCHAR(20) NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n\nCREATE TABLE comments (\n    comment_id SERIAL PRIMARY KEY,\n    ticket_id INT NOT NULL,\n    customer_id INT NOT NULL,\n    comment TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (ticket_id) REFERENCES support_tickets(ticket_id),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n\nCREATE TABLE sessions (\n    session_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    token VARCHAR(100) NOT NULL,\n    expiration_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      }
+    ]
+  }
+]

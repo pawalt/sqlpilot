@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_usage_reports (\n    report_id INT PRIMARY KEY,\n    farm_id INT,\n    report_date DATE,\n    water_usage_gallons INT,\n    compliance_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_usage_reports (\n    report_id INT PRIMARY KEY,\n    report_date DATE,\n    farm_id INT,\n    water_usage FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE farm_details (\n    farm_id INT PRIMARY KEY,\n    farm_name VARCHAR(255),\n    location VARCHAR(255),\n    acreage FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_sources (\n    id INT PRIMARY KEY,\n    source_name STRING,\n    location STRING,\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE farming_activities (\n    id INT PRIMARY KEY,\n    activity_name STRING,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n    id INT PRIMARY KEY,\n    farming_activity_id INT,\n    water_source_id INT,\n    amount_used INT,\n    FOREIGN KEY (farming_activity_id) REFERENCES farming_activities(id),\n    FOREIGN KEY (water_source_id) REFERENCES water_sources(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterSources (\n  id INT PRIMARY KEY,\n  source_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  water_type ENUM('groundwater', 'surface water', 'rainwater') NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Farms (\n  farm_id INT PRIMARY KEY,\n  farm_name VARCHAR(100) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  size_acres DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterUsage (\n  usage_id INT PRIMARY KEY,\n  farm_id INT NOT NULL,\n  source_id INT NOT NULL,\n  amount_gallons INT NOT NULL,\n  date DATE NOT NULL,\n  FOREIGN KEY (farm_id) REFERENCES Farms(farm_id),\n  FOREIGN KEY (source_id) REFERENCES WaterSources(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Reports (\n  report_id INT PRIMARY KEY,\n  farm_id INT NOT NULL,\n  report_date DATE NOT NULL,\n  total_usage_gallons INT NOT NULL,\n  CONSTRAINT fk_farm_id FOREIGN KEY (farm_id) REFERENCES Farms(farm_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterSources (\n    id INT PRIMARY KEY,\n    source_name VARCHAR(255),\n    source_type VARCHAR(50),\n    location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterUsage (\n    id INT PRIMARY KEY,\n    source_id INT,\n    date DATE,\n    amount DECIMAL(10,2),\n    FOREIGN KEY (source_id) REFERENCES WaterSources(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FarmingActivities (\n    id INT PRIMARY KEY,\n    activity_name VARCHAR(255),\n    activity_type VARCHAR(50),\n    location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ActivityReport (\n    id INT PRIMARY KEY,\n    activity_id INT,\n    date DATE,\n    report_text TEXT,\n    FOREIGN KEY (activity_id) REFERENCES FarmingActivities(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Regulations (\n    id INT PRIMARY KEY,\n    regulation_name VARCHAR(255),\n    regulation_type VARCHAR(50),\n    description TEXT\n)"
+      }
+    ]
+  }
+]

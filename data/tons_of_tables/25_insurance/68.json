@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InsuranceAgents (\n    agent_id INT,\n    agent_name VARCHAR(50),\n    policy_id INT,\n    policy_type VARCHAR(50),\n    policy_amount DECIMAL(10, 2),\n    commission_rate DECIMAL(5, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InsuranceAgents ( \n agent_id INT PRIMARY KEY, \n agent_name VARCHAR(50), \n total_policies_sold INT, \n commission_rate DECIMAL(5,2) \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE CommissionPayments ( \n payment_id INT PRIMARY KEY, \n agent_id INT, \n payment_amount DECIMAL(10,2), \n payment_date DATE \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE commission_payments (\n    id INT PRIMARY KEY,\n    agent_id INT,\n    policy_id INT,\n    commission_amount DECIMAL,\n    commission_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(100),\n    policy_type VARCHAR(50),\n    policy_amount DECIMAL,\n    start_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id INT PRIMARY KEY,\n    agent_name VARCHAR(50) NOT NULL,\n    commission_rate DECIMAL(5,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(50) NOT NULL,\n    policy_category VARCHAR(50) NOT NULL,\n    policy_amount DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    customer_address VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE commissions (\n    commission_id INT PRIMARY KEY,\n    agent_id INT,\n    policy_id INT,\n    customer_id INT,\n    commission_amount DECIMAL(10,2) NOT NULL,\n    FOREIGN KEY (agent_id) REFERENCES agents(agent_id),\n    FOREIGN KEY (policy_id) REFERENCES policies(policy_id),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InsuranceAgents (\n    agent_id SERIAL PRIMARY KEY,\n    agent_name VARCHAR(50) NOT NULL,\n    commission_rate DECIMAL(5,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n    policy_id SERIAL PRIMARY KEY,\n    policy_type VARCHAR(50) NOT NULL,\n    policy_amount DECIMAL(10,2) NOT NULL,\n    agent_id INT NOT NULL,\n    FOREIGN KEY (agent_id) REFERENCES InsuranceAgents(agent_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CommissionPayments (\n    payment_id SERIAL PRIMARY KEY,\n    policy_id INT NOT NULL,\n    agent_id INT NOT NULL,\n    payment_amount DECIMAL(10,2) NOT NULL,\n    payment_date DATE NOT NULL,\n    FOREIGN KEY (policy_id) REFERENCES Policies(policy_id),\n    FOREIGN KEY (agent_id) REFERENCES InsuranceAgents(agent_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TriggerLogs (\n    log_id SERIAL PRIMARY KEY,\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CommissionTriggers (\n    trigger_id SERIAL PRIMARY KEY,\n    trigger_name VARCHAR(50) NOT NULL,\n    trigger_definition TEXT NOT NULL,\n    agent_id INT NOT NULL,\n    FOREIGN KEY (agent_id) REFERENCES InsuranceAgents(agent_id)\n);\n"
+      }
+    ]
+  }
+]

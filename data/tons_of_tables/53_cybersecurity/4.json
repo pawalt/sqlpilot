@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatIntelligenceData (\n\tindicator_id UUID PRIMARY KEY,\n\tindicator_type TEXT,\n\tindicator_value TEXT,\n\tdescription TEXT,\n\ttimestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatIntelligenceData (\n    id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMPTZ NOT NULL,\n    indicator TEXT NOT NULL,\n    description TEXT\n);\n\nCREATE TABLE ThreatDetectionLogs (\n    log_id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMPTZ NOT NULL,\n    detection_type TEXT NOT NULL,\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_indicators (\n    indicator_id UUID PRIMARY KEY,\n    indicator_type VARCHAR(50) NOT NULL,\n    indicator_value TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents (\n    incident_id UUID PRIMARY KEY,\n    incident_name VARCHAR(100) NOT NULL,\n    incident_description TEXT NOT NULL,\n    incident_date DATE NOT NULL,\n    threat_level INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE threat_analysis (\n    analysis_id UUID PRIMARY KEY,\n    incident_id UUID REFERENCES incidents(incident_id),\n    indicator_id UUID REFERENCES threat_indicators(indicator_id),\n    analysis_result TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatActors (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    affiliation VARCHAR(50),\n    description TEXT,\n    last_seen TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Indicators (\n    id INT PRIMARY KEY,\n    indicator_type VARCHAR(50),\n    value VARCHAR(255),\n    description TEXT,\n    source VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Incidents (\n    id INT PRIMARY KEY,\n    type VARCHAR(50),\n    severity VARCHAR(20),\n    description TEXT,\n    date_occurred TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ThreatIntel (\n    id INT PRIMARY KEY,\n    indicator_id INT,\n    threat_actor_id INT,\n    incident_id INT,\n    description TEXT,\n    FOREIGN KEY (indicator_id) REFERENCES Indicators(id),\n    FOREIGN KEY (threat_actor_id) REFERENCES ThreatActors(id),\n    FOREIGN KEY (incident_id) REFERENCES Incidents(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatActors (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    description TEXT,\n    primary_motivation VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Indicators (\n    id INT PRIMARY KEY,\n    indicator_type VARCHAR(50),\n    indicator_value VARCHAR(255),\n    source VARCHAR(100),\n    threat_actor_id INT,\n    FOREIGN KEY (threat_actor_id) REFERENCES ThreatActors(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Incidents (\n    id INT PRIMARY KEY,\n    incident_date DATE,\n    description TEXT,\n    threat_actor_id INT,\n    FOREIGN KEY (threat_actor_id) REFERENCES ThreatActors(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CorrelatedIncidents (\n    id INT PRIMARY KEY,\n    incident_id INT,\n    correlated_incident_id INT,\n    FOREIGN KEY (incident_id) REFERENCES Incidents(id),\n    FOREIGN KEY (correlated_incident_id) REFERENCES Incidents(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ThreatIntelReports (\n    id INT PRIMARY KEY,\n    report_date DATE,\n    summary TEXT,\n    threat_actor_id INT,\n    FOREIGN KEY (threat_actor_id) REFERENCES ThreatActors(id)\n);"
+      }
+    ]
+  }
+]

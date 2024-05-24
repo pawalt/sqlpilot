@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_feedback_data (\n    feedback_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    feedback_text TEXT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feedback_data (\n    feedback_id INT PRIMARY KEY,\n    customer_id INT,\n    feedback_text TEXT,\n    rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE common_issues (\n    issue_id INT PRIMARY KEY,\n    issue_name VARCHAR(50),\n    resolved BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feedback_data (\n  feedback_id INT PRIMARY KEY,\n  customer_id INT,\n  feedback_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE issues (\n  issue_id INT PRIMARY KEY,\n  issue_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_service (\n  service_id INT PRIMARY KEY,\n  customer_id INT,\n  service_rating INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    feedback VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_categories (\n    id SERIAL PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_ratings (\n    id SERIAL PRIMARY KEY,\n    feedback_id INT NOT NULL,\n    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),\n    FOREIGN KEY (feedback_id) REFERENCES customers(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_comments (\n    id SERIAL PRIMARY KEY,\n    feedback_id INT NOT NULL,\n    comment TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (feedback_id) REFERENCES customers(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_feedback (\n  feedback_id INT PRIMARY KEY,\n  customer_id INT,\n  feedback_text TEXT,\n  feedback_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE common_issues (\n  issue_id INT PRIMARY KEY,\n  issue_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_categories (\n  category_id INT PRIMARY KEY,\n  category_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_tags (\n  tag_id INT PRIMARY KEY,\n  tag_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_mapping (\n  mapping_id INT PRIMARY KEY,\n  feedback_id INT,\n  issue_id INT,\n  category_id INT,\n  tag_id INT,\n  FOREIGN KEY (feedback_id) REFERENCES customer_feedback(feedback_id),\n  FOREIGN KEY (issue_id) REFERENCES common_issues(issue_id),\n  FOREIGN KEY (category_id) REFERENCES feedback_categories(category_id),\n  FOREIGN KEY (tag_id) REFERENCES feedback_tags(tag_id)\n);"
+      }
+    ]
+  }
+]

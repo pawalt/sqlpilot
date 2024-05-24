@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_data (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50),\n    data_value JSON,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_data (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    data_type VARCHAR(50),\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cloud_data (\n    cloud_id INT PRIMARY KEY,\n    cloud_provider VARCHAR(255),\n    data_type VARCHAR(50),\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_data (\n  device_id INT PRIMARY KEY,\n  device_name TEXT,\n  data_payload JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cloud_data (\n  cloud_id INT PRIMARY KEY,\n  cloud_name TEXT,\n  data_storage JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sync_logs (\n  log_id SERIAL PRIMARY KEY,\n  action_type VARCHAR(50),\n  log_message TEXT,\n  created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE connected_devices (\n  device_id UUID PRIMARY KEY,\n  device_name VARCHAR(255) NOT NULL,\n  device_type VARCHAR(100) NOT NULL,\n  last_sync_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cloud_services (\n  service_id UUID PRIMARY KEY,\n  service_name VARCHAR(255) NOT NULL,\n  service_type VARCHAR(100) NOT NULL,\n  stored_data JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_data (\n  data_id UUID PRIMARY KEY,\n  device_id UUID REFERENCES connected_devices(device_id),\n  service_id UUID REFERENCES cloud_services(service_id),\n  data_content TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sync_logs (\n  log_id UUID PRIMARY KEY,\n  sync_timestamp TIMESTAMP,\n  device_id UUID REFERENCES connected_devices(device_id),\n  service_id UUID REFERENCES cloud_services(service_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE connected_devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(255),\n  last_sync TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cloud_services (\n  service_id INT PRIMARY KEY,\n  service_name VARCHAR(255),\n  last_update TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_data (\n  data_id INT PRIMARY KEY,\n  device_id INT,\n  data JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sync_logs (\n  log_id INT PRIMARY KEY,\n  device_id INT,\n  service_id INT,\n  sync_status VARCHAR(50),\n  sync_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sync_errors (\n  error_id INT PRIMARY KEY,\n  log_id INT,\n  error_message TEXT\n)"
+      }
+    ]
+  }
+]

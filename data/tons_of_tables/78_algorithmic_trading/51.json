@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_positions (\n position_id INT PRIMARY KEY,\n instrument_name VARCHAR(50),\n quantity INT,\n market_price DECIMAL(10,2),\n exposure DECIMAL(10,2),\n risk_factor FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE positions (\n  position_id UUID PRIMARY KEY,\n  security_name VARCHAR(255),\n  quantity NUMERIC,\n  price NUMERIC\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE exposures (\n  exposure_id UUID PRIMARY KEY,\n  position_id UUID REFERENCES positions(position_id),\n  risk_category VARCHAR(50),\n  amount NUMERIC\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_positions (\n    position_id INT PRIMARY KEY,\n    asset_id INT,\n    quantity DECIMAL,\n    price DECIMAL,\n    trade_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE exposures (\n    exposure_id INT PRIMARY KEY,\n    position_id INT,\n    exposure_amount DECIMAL,\n    exposure_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_metrics (\n    metric_id INT PRIMARY KEY,\n    exposure_id INT,\n    var DECIMAL,\n    cvar DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE positions (\n    position_id INT PRIMARY KEY,\n    security_name VARCHAR(255),\n    quantity INT,\n    book_value DECIMAL(10, 2),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE exposures (\n    exposure_id INT PRIMARY KEY,\n    position_id INT REFERENCES positions(position_id),\n    exposure_amount DECIMAL(10, 2),\n    exposure_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_metrics (\n    risk_id INT PRIMARY KEY,\n    position_id INT REFERENCES positions(position_id),\n    VaR DECIMAL(10, 2),\n    expected_shortfall DECIMAL(10, 2),\n    confidence_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    password VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE positions (\n  position_id UUID PRIMARY KEY,\n  security_symbol STRING,\n  quantity INT,\n  price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE exposures (\n  exposure_id UUID PRIMARY KEY,\n  position_id UUID REFERENCES positions(position_id),\n  risk_category STRING,\n  value DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_metrics (\n  metric_id UUID PRIMARY KEY,\n  exposure_id UUID REFERENCES exposures(exposure_id),\n  metric_type STRING,\n  metric_value DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE var_parameters (\n  var_id UUID PRIMARY KEY,\n  risk_level DECIMAL,\n  confidence_level DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE var_results (\n  result_id UUID PRIMARY KEY,\n  var_id UUID REFERENCES var_parameters(var_id),\n  var_value DECIMAL\n);"
+      }
+    ]
+  }
+]

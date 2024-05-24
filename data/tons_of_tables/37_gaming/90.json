@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profile (\n    player_id UUID PRIMARY KEY,\n    player_name STRING,\n    game_score INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n    player_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    join_date DATE\n);\n\nCREATE TABLE game_statistics (\n    stat_id SERIAL PRIMARY KEY,\n    player_id INT REFERENCES player_profiles(player_id),\n    game_name VARCHAR(50) NOT NULL,\n    score INT,\n    played_on DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_statistics (\n    game_id INT PRIMARY KEY,\n    player_id INT,\n    game_score INT,\n    game_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboard (\n    player_id INT PRIMARY KEY,\n    rank INT,\n    total_games_played INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    total_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE games (\n    game_id INT PRIMARY KEY,\n    game_name VARCHAR(50) NOT NULL,\n    release_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_stats (\n    player_id INT,\n    game_id INT,\n    score INT,\n    level INT,\n    FOREIGN KEY (player_id) REFERENCES players(player_id),\n    FOREIGN KEY (game_id) REFERENCES games(game_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboard (\n    player_id INT,\n    game_id INT,\n    rank INT,\n    date_time TIMESTAMP,\n    FOREIGN KEY (player_id) REFERENCES players(player_id),\n    FOREIGN KEY (game_id) REFERENCES games(game_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    join_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE games (\n    game_id INT PRIMARY KEY,\n    game_name VARCHAR(50) NOT NULL,\n    release_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_stats (\n    player_id INT,\n    game_id INT,\n    score INT,\n    level INT,\n    CONSTRAINT pk_player_stats PRIMARY KEY (player_id, game_id),\n    CONSTRAINT fk_player_id FOREIGN KEY (player_id) REFERENCES players(player_id),\n    CONSTRAINT fk_game_id FOREIGN KEY (game_id) REFERENCES games(game_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboards (\n    leaderboard_id INT PRIMARY KEY,\n    game_id INT,\n    leaderboard_date DATE,\n    CONSTRAINT fk_game_id_leaderboards FOREIGN KEY (game_id) REFERENCES games(game_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboard_scores (\n    leaderboard_id INT,\n    player_id INT,\n    score INT,\n    rank INT,\n    CONSTRAINT pk_leaderboard_scores PRIMARY KEY (leaderboard_id, player_id),\n    CONSTRAINT fk_leaderboard_id FOREIGN KEY (leaderboard_id) REFERENCES leaderboards(leaderboard_id),\n    CONSTRAINT fk_player_id_scores FOREIGN KEY (player_id) REFERENCES players(player_id)\n);\n"
+      }
+    ]
+  }
+]

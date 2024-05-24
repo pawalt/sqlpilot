@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE markers (\n  id SERIAL PRIMARY KEY,\n  marker_name VARCHAR(50) NOT NULL,\n  chromosome VARCHAR(10),\n  position INT,\n  trait_association BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_markers (\n    marker_id INT PRIMARY KEY,\n    marker_name VARCHAR(100),\n    trait_association VARCHAR(100),\n    chromosome_number VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trait_information (\n    trait_id INT PRIMARY KEY,\n    trait_name VARCHAR(100),\n    trait_description TEXT,\n    marker_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genotype (\n    id INT PRIMARY KEY,\n    gene_name VARCHAR(50),\n    allele_1 VARCHAR(10),\n    allele_2 VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trait (\n    id INT PRIMARY KEY,\n    trait_name VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marker (\n    id INT PRIMARY KEY,\n    marker_name VARCHAR(50),\n    location VARCHAR(50),\n    trait_id INT REFERENCES trait(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE markers (\n  marker_id INT PRIMARY KEY,\n  marker_name VARCHAR(50),\n  chromosome VARCHAR(10),\n  position INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traits (\n  trait_id INT PRIMARY KEY,\n  trait_name VARCHAR(50),\n  trait_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marker_traits (\n  marker_trait_id INT PRIMARY KEY,\n  marker_id INT REFERENCES markers(marker_id),\n  trait_id INT REFERENCES traits(trait_id),\n  trait_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE samples (\n  sample_id INT PRIMARY KEY,\n  sample_name VARCHAR(50),\n  marker_id INT REFERENCES markers(marker_id),\n  trait_id INT REFERENCES traits(trait_id),\n  data_collected DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE markers (\n  marker_id INT PRIMARY KEY,\n  marker_name VARCHAR(255),\n  chromosome VARCHAR(10),\n  position INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traits (\n  trait_id INT PRIMARY KEY,\n  trait_name VARCHAR(255),\n  trait_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marker_traits (\n  marker_id INT,\n  trait_id INT,\n  PRIMARY KEY (marker_id, trait_id),\n  FOREIGN KEY (marker_id) REFERENCES markers(marker_id),\n  FOREIGN KEY (trait_id) REFERENCES traits(trait_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE samples (\n  sample_id INT PRIMARY KEY,\n  sample_name VARCHAR(255),\n  collection_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_markers (\n  sample_id INT,\n  marker_id INT,\n  allele VARCHAR(1),\n  PRIMARY KEY (sample_id, marker_id),\n  FOREIGN KEY (sample_id) REFERENCES samples(sample_id),\n  FOREIGN KEY (marker_id) REFERENCES markers(marker_id)\n);"
+      }
+    ]
+  }
+]

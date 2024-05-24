@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fleet_management (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_name VARCHAR(255),\n  location GEOMETRY(POINT),\n  status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fleet_locations (\n    location_id    INT PRIMARY KEY,\n    latitude       DECIMAL,\n    longitude      DECIMAL,\n    timestamp      TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_status (\n    vehicle_id     INT PRIMARY KEY,\n    status         VARCHAR,\n    last_update    TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FleetLocation (\n    location_id INT PRIMARY KEY,\n    vehicle_id INT,\n    latitude DECIMAL,\n    longitude DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VehicleStatus (\n    vehicle_id INT PRIMARY KEY,\n    status VARCHAR,\n    last_updated timestamp\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RouteHistory (\n    route_id INT PRIMARY KEY,\n    vehicle_id INT,\n    route_details TEXT,\n    start_time timestamp,\n    end_time timestamp\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id UUID PRIMARY KEY,\n    vehicle_type VARCHAR(50),\n    manufacturer VARCHAR(100),\n    model VARCHAR(100),\n    last_known_location GEOGRAPHY,\n    last_update TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drivers (\n    driver_id UUID PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    phone_number VARCHAR(20),\n    email VARCHAR(100),\n    hire_date DATE,\n    supervisor_id UUID,\n    FOREIGN KEY (supervisor_id) REFERENCES drivers(driver_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id UUID PRIMARY KEY,\n    route_name VARCHAR(100),\n    start_location GEOGRAPHY,\n    end_location GEOGRAPHY,\n    distance_km FLOAT,\n    estimated_time TIME,\n    vehicle_id UUID,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id UUID PRIMARY KEY,\n    sensor_type VARCHAR(50),\n    installation_date DATE,\n    status VARCHAR(20),\n    vehicle_id UUID,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fleet_locations (\n    id SERIAL PRIMARY KEY,\n    vehicle_id UUID NOT NULL,\n    location GEOGRAPHY(POINT) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_info (\n    vehicle_id UUID PRIMARY KEY,\n    manufacturer TEXT NOT NULL,\n    model TEXT NOT NULL,\n    year INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE driver_info (\n    driver_id UUID PRIMARY KEY,\n    first_name TEXT NOT NULL,\n    last_name TEXT NOT NULL,\n    license_number TEXT UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE route_logs (\n    log_id SERIAL PRIMARY KEY,\n    vehicle_id UUID NOT NULL,\n    route_id UUID NOT NULL,\n    start_location GEOGRAPHY(POINT) NOT NULL,\n    end_location GEOGRAPHY(POINT) NOT NULL,\n    start_timestamp TIMESTAMP NOT NULL,\n    end_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n    schedule_id SERIAL PRIMARY KEY,\n    vehicle_id UUID NOT NULL,\n    maintenance_type TEXT NOT NULL,\n    schedule_date DATE NOT NULL\n);\n"
+      }
+    ]
+  }
+]

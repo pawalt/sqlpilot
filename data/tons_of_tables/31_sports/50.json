@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE golf_courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    course_layout TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE golf_courses ( course_id SERIAL PRIMARY KEY,\n                 course_name VARCHAR(100) NOT NULL,\n                 location VARCHAR(100) NOT NULL,\n                 number_of_holes INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE course_layouts ( layout_id SERIAL PRIMARY KEY,\n                   course_id INT REFERENCES golf_courses(course_id),\n                   hole_number INT NOT NULL,\n                   par INT NOT NULL,\n                   length INT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE golf_courses ( course_id INT PRIMARY KEY, course_name VARCHAR(255), location VARCHAR(255), course_layout TEXT )"
+      },
+      {
+        "table_schema": "CREATE TABLE course_details ( course_id INT, par INT, yardage INT, difficulty VARCHAR(50), FOREIGN KEY (course_id) REFERENCES golf_courses(course_id) )"
+      },
+      {
+        "table_schema": "CREATE TABLE golfers ( golfer_id INT PRIMARY KEY, golfer_name VARCHAR(255), age INT, handicap FLOAT )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE golf_courses (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255),\n    course_layout TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE golf_courses_schedule (\n    schedule_id INT PRIMARY KEY,\n    course_id INT,\n    date DATE,\n    start_time TIME,\n    end_time TIME,\n    FOREIGN KEY (course_id) REFERENCES golf_courses(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE golf_players (\n    player_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    handicap FLOAT,\n    gender CHAR(1)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tournament_results (\n    result_id INT PRIMARY KEY,\n    tournament_id INT,\n    player_id INT,\n    score INT,\n    position INT,\n    FOREIGN KEY (player_id) REFERENCES golf_players(player_id),\n    FOREIGN KEY (tournament_id) REFERENCES golf_courses_schedule(schedule_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE golf_courses (\n\tcourse_id INT PRIMARY KEY,\n\tcourse_name VARCHAR(255) NOT NULL,\n\tlocation VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE course_layouts (\n\tlayout_id INT PRIMARY KEY,\n\tcourse_id INT REFERENCES golf_courses(course_id),\n\tpar INT NOT NULL,\n\thole_number INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE holes (\n\thole_id INT PRIMARY KEY,\n\tlayout_id INT REFERENCES course_layouts(layout_id),\n\tpar INT NOT NULL,\n\tyardage INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE golfers (\n\tgolfer_id INT PRIMARY KEY,\n\tfirst_name VARCHAR(255) NOT NULL,\n\tlast_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scores (\n\tscore_id INT PRIMARY KEY,\n\tgolfer_id INT REFERENCES golfers(golfer_id),\n\thole_id INT REFERENCES holes(hole_id),\n\tscore INT NOT NULL\n);"
+      }
+    ]
+  }
+]

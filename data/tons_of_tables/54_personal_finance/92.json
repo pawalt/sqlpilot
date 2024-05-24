@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InvestmentPortfolio (\n    investor_id UUID PRIMARY KEY,\n    asset_name STRING,\n    asset_type STRING,\n    asset_allocation DECIMAL,\n    performance_metric DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investors (\n  investor_id INT PRIMARY KEY,\n  investor_name VARCHAR(50),\n  investment_amount DECIMAL,\n  investment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE portfolios (\n  portfolio_id INT PRIMARY KEY,\n  portfolio_name VARCHAR(50),\n  investor_id INT,\n  allocation DECIMAL,\n  performance_metrics JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InvestmentPortfolio (\n    investor_id INT,\n    asset_name TEXT,\n    asset_type TEXT,\n    asset_quantity INT,\n    allocation_percentage DECIMAL,\n    performance_metric DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Investors (\n    investor_id INT PRIMARY KEY,\n    investor_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceMetrics (\n    investor_id INT,\n    asset_name TEXT,\n    daily_return DECIMAL,\n    weekly_return DECIMAL,\n    monthly_return DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Investors (\n    investor_id BIGINT PRIMARY KEY,\n    investor_name VARCHAR(255) NOT NULL,\n    investment_amount DECIMAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Assets (\n    asset_id BIGINT PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    asset_value DECIMAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Portfolio (\n    portfolio_id BIGINT PRIMARY KEY,\n    investor_id BIGINT REFERENCES Investors(investor_id),\n    asset_id BIGINT REFERENCES Assets(asset_id),\n    allocation DECIMAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Performance (\n    performance_id BIGINT PRIMARY KEY,\n    asset_id BIGINT REFERENCES Assets(asset_id),\n    performance_date DATE NOT NULL,\n    return_rate DECIMAL NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Investors ( investor_id UUID PRIMARY KEY, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, phone_number VARCHAR(20), registration_date DATE NOT NULL, street_address VARCHAR(255), city VARCHAR(100), state VARCHAR(50), zip_code VARCHAR(10) )"
+      },
+      {
+        "table_schema": "CREATE TABLE Investments ( investment_id UUID PRIMARY KEY, investor_id UUID NOT NULL, asset_name VARCHAR(255) NOT NULL, asset_type VARCHAR(50) NOT NULL, investment_amount DECIMAL(10, 2) NOT NULL, investment_date DATE NOT NULL, CONSTRAINT fk_investor FOREIGN KEY (investor_id) REFERENCES Investors(investor_id) )"
+      },
+      {
+        "table_schema": "CREATE TABLE AssetAllocation ( allocation_id UUID PRIMARY KEY, investment_id UUID NOT NULL, asset_name VARCHAR(255) NOT NULL, allocation_percentage DECIMAL(5, 2) NOT NULL, CONSTRAINT fk_investment FOREIGN KEY (investment_id) REFERENCES Investments(investment_id) )"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceMetrics ( metrics_id UUID PRIMARY KEY, investment_id UUID NOT NULL, metric_name VARCHAR(50) NOT NULL, metric_value DECIMAL(10, 2) NOT NULL, metric_date DATE NOT NULL, CONSTRAINT fk_inv_invest FOREIGN KEY (investment_id) REFERENCES Investments(investment_id) )"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions ( transaction_id UUID PRIMARY KEY, investment_id UUID NOT NULL, transaction_type VARCHAR(50) NOT NULL, transaction_amount DECIMAL(10, 2) NOT NULL, transaction_date DATE NOT NULL, CONSTRAINT fk_invts_invest FOREIGN KEY (investment_id) REFERENCES Investments(investment_id) )"
+      }
+    ]
+  }
+]

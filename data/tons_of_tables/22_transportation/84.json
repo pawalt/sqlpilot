@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BicycleMaintenance (\n id INT PRIMARY KEY,\n bicycle_id INT,\n task_name VARCHAR(255),\n task_description TEXT,\n scheduled_date DATE,\n completed_date DATE,\n technician VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BicycleMaintenance (\n    id INT PRIMARY KEY,\n    bike_id INT,\n    maintenance_task VARCHAR(255),\n    scheduled_date DATE,\n    completed_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ServiceRecords (\n    record_id INT PRIMARY KEY,\n    bike_id INT,\n    service_type VARCHAR(255),\n    mechanic_name VARCHAR(255),\n    service_date DATE,\n    cost DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n  bicycle_id INT PRIMARY KEY,\n  maintenance_task TEXT,\n  due_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_records (\n  record_id SERIAL PRIMARY KEY,\n  bicycle_id INT,\n  service_date DATE,\n  service_type TEXT,\n  service_notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bicycles (\n  bicycle_id SERIAL PRIMARY KEY,\n  brand TEXT,\n  model TEXT,\n  purchase_date DATE,\n  last_service_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BicycleOwners (\n  owner_id INT PRIMARY KEY,\n  owner_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BicycleModels (\n  model_id INT PRIMARY KEY,\n  model_name VARCHAR(50) NOT NULL,\n  manufacturer VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ServiceTasks (\n  task_id INT PRIMARY KEY,\n  task_name VARCHAR(50) NOT NULL,\n  task_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ServiceRecords (\n  record_id INT PRIMARY KEY,\n  bicycle_id INT NOT NULL,\n  task_id INT NOT NULL,\n  service_date DATE,\n  technician_id INT,\n  FOREIGN KEY (bicycle_id) REFERENCES BicycleOwners(owner_id),\n  FOREIGN KEY (task_id) REFERENCES ServiceTasks(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BicycleOwners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(255) NOT NULL,\n    owner_email VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Bicycles (\n    bike_id INT PRIMARY KEY,\n    bike_model VARCHAR(255) NOT NULL,\n    bike_color VARCHAR(50) NOT NULL,\n    owner_id INT,\n    FOREIGN KEY (owner_id) REFERENCES BicycleOwners(owner_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ServiceRecords (\n    record_id INT PRIMARY KEY,\n    bike_id INT,\n    service_date DATE NOT NULL,\n    service_description TEXT,\n    FOREIGN KEY (bike_id) REFERENCES Bicycles(bike_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceTasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskAssignments (\n    assignment_id INT PRIMARY KEY,\n    task_id INT,\n    bike_id INT,\n    assigned_worker VARCHAR(255) NOT NULL,\n    assigned_date DATE NOT NULL,\n    FOREIGN KEY (task_id) REFERENCES MaintenanceTasks(task_id),\n    FOREIGN KEY (bike_id) REFERENCES Bicycles(bike_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CallDetailRecords (\n  call_id UUID PRIMARY KEY,\n  caller_id UUID,\n  receiver_id UUID,\n  call_duration INT,\n  call_date DATE,\n  billing_amount DECIMAL,\n  is_billed BOOLEAN,\n  call_type ENUM('incoming', 'outgoing'),\n  call_status ENUM('completed', 'missed', 'cancelled'),\n  created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE call_detail_records (\n  call_id UUID PRIMARY KEY,\n  caller_phone_number VARCHAR,\n  receiver_phone_number VARCHAR,\n  call_duration INT,\n  call_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n  log_id UUID PRIMARY KEY,\n  call_id UUID,\n  event_type VARCHAR,\n  event_description VARCHAR,\n  event_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE call_details (\n    call_id SERIAL PRIMARY KEY,\n    caller_id INT NOT NULL,\n    callee_id INT NOT NULL,\n    call_duration INT,\n    call_start TIMESTAMP,\n    call_end TIMESTAMP,\n    call_cost DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_records (\n    record_id SERIAL PRIMARY KEY,\n    call_id INT NOT NULL,\n    bill_date DATE,\n    billed_amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id SERIAL PRIMARY KEY,\n    action_type VARCHAR(50) NOT NULL,\n    action_date TIMESTAMP,\n    user_id INT,\n    description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_calls (\n    call_id UUID PRIMARY KEY,\n    caller_number VARCHAR,\n    callee_number VARCHAR,\n    call_duration INT,\n    call_cost DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_invoices (\n    invoice_id UUID PRIMARY KEY,\n    call_id UUID REFERENCES billing_calls(call_id),\n    total_amount DECIMAL,\n    payment_status VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id UUID PRIMARY KEY,\n    action VARCHAR,\n    timestamp TIMESTAMP,\n    user_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR,\n    address VARCHAR,\n    phone_number VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE calls (\n    call_id UUID PRIMARY KEY,\n    caller_id INT,\n    receiver_id INT,\n    call_duration INT,\n    call_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE billing (\n    bill_id UUID PRIMARY KEY,\n    call_id UUID REFERENCES calls(call_id),\n    total_cost DECIMAL,\n    payment_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id INT PRIMARY KEY,\n    account_name TEXT,\n    balance DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username TEXT,\n    email TEXT,\n    phone_number TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n    audit_id UUID PRIMARY KEY,\n    action_type TEXT,\n    action_date TIMESTAMP,\n    user_id INT REFERENCES users(user_id)\n);"
+      }
+    ]
+  }
+]

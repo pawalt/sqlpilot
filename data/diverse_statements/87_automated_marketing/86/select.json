@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM content_approval_workflow;",
+      "SELECT content_id, status FROM content_approval_workflow ORDER BY content_id DESC;",
+      "SELECT id, status, content_id FROM content_approval_workflow WHERE status='pending';",
+      "SELECT approver_id FROM content_approval_workflow WHERE status='approved' AND approver_id=12345;",
+      "SELECT * FROM content_approval_workflow WHERE approver_id IN (54321, 98765);",
+      "SELECT * FROM content_approval_workflow WHERE status='pending';",
+      "SELECT id, content_id FROM content_approval_workflow WHERE approver_id=5 ORDER BY content_id DESC;",
+      "SELECT content_id, COUNT(*) as num_approvals FROM content_approval_workflow GROUP BY content_id HAVING num_approvals > 2;",
+      "SELECT id, status FROM content_approval_workflow WHERE content_id IN (SELECT id FROM content_approval_workflow WHERE status='approved');",
+      "SELECT id, content_id, approver_id, status FROM content_approval_workflow WHERE approver_id > 2 AND status='rejected' ORDER BY id ASC LIMIT 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM approvals WHERE status = 'approved';",
+      "SELECT content_title FROM content WHERE content_id = 1;",
+      "SELECT content_body, content_title FROM content WHERE approval_status = 'pending';",
+      "SELECT approval_id, status FROM approvals WHERE approver_id = 5;",
+      "SELECT * FROM approvals JOIN content ON approvals.content_id = content.content_id;",
+      "SELECT * FROM approvals WHERE approval_id = 1;",
+      "SELECT content_id, approver_id, status FROM approvals WHERE approver_id = 3;",
+      "SELECT approval_id, content_title, content_body FROM content WHERE approval_status = 'approved';",
+      "SELECT content_id, content_title, approval_status FROM content ORDER BY approval_status DESC, content_title ASC;",
+      "SELECT a.approval_id, c.content_title, a.status FROM approvals a INNER JOIN content c ON a.content_id = c.content_id WHERE a.status = 'pending';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM approval_workflows;",
+      "SELECT workflow_id, workflow_name FROM approval_workflows ORDER BY workflow_id DESC;",
+      "SELECT content_name, approval_status FROM content_approval WHERE approval_status = TRUE;",
+      "SELECT content_id, approval_date, approver_name FROM approval_history WHERE approval_date > '2022-01-01';",
+      "SELECT * FROM approval_workflows JOIN content_approval ON approval_workflows.workflow_id = content_approval.workflow_id;",
+      "SELECT * FROM approval_workflows WHERE workflow_name = 'Marketing' ORDER BY created_at DESC;",
+      "SELECT content_approval.content_name, approval_history.approval_date FROM content_approval JOIN approval_history ON content_approval.content_id = approval_history.content_id WHERE approval_status = TRUE;",
+      "SELECT approval_workflows.workflow_name, COUNT(content_approval.content_id) AS total_content FROM approval_workflows LEFT JOIN content_approval ON approval_workflows.workflow_id = content_approval.workflow_id GROUP BY approval_workflows.workflow_name;",
+      "SELECT * FROM approval_workflows WHERE workflow_id IN (1, 3, 5) OR workflow_name LIKE '%Legal%';",
+      "SELECT DISTINCT approval_workflows.workflow_name, approval_history.approver_name FROM approval_workflows JOIN content_approval ON approval_workflows.workflow_id = content_approval.workflow_id JOIN approval_history ON content_approval.content_id = approval_history.content_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM content_approval_workflow;",
+      "SELECT content_id, approval_status, approval_date FROM content_approval_workflow WHERE approval_status = 'approved';",
+      "SELECT approver_id, name FROM approver ORDER BY name DESC;",
+      "SELECT content_id, title FROM content ORDER BY content_id LIMIT 3 OFFSET 1;",
+      "SELECT content_id, current_status, last_updated FROM content_status WHERE last_updated >= '2022-01-01';",
+      "SELECT * FROM content_approval_workflow WHERE approval_status = 'approved';",
+      "SELECT content_id, approval_status, approval_date FROM content_approval_workflow WHERE approver_id = 'fd54a65c-85a7-4f30-a5b1-0d4605d2515b';",
+      "SELECT content_id, title FROM content WHERE author_id = 'fe994a0d-4c0d-43f8-9c80-e036b339e489' ORDER BY title DESC;",
+      "SELECT c.title, w.approval_status FROM content c JOIN content_approval_workflow w ON c.content_id = w.content_id WHERE w.approver_id = 'fd54a65c-85a7-4f30-a5b1-0d4605d2515b';",
+      "SELECT a.name, a.email, w.approval_date FROM approver a JOIN content_approval_workflow w ON a.approver_id = w.approver_id WHERE w.approval_status = 'pending' ORDER BY w.approval_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM approval_requests;",
+      "SELECT request_id, content, status FROM approval_requests WHERE status = 'Pending';",
+      "SELECT * FROM approvers ORDER BY name DESC;",
+      "SELECT approver_id, name, email FROM approvers WHERE email LIKE '%@example.com%';",
+      "SELECT request_id, comment, comment_date FROM approval_comments ORDER BY comment_date ASC;",
+      "SELECT * FROM approval_requests ORDER BY request_id DESC;",
+      "SELECT content, status FROM approval_requests WHERE status='Pending';",
+      "SELECT ar.content, ap.name, ah.approved_at FROM approval_requests ar JOIN approval_history ah ON ar.request_id = ah.request_id JOIN approvers ap ON ah.approver_id = ap.approver_id;",
+      "SELECT pc.comment_id, pc.comment, ap.name FROM approval_comments pc JOIN approvers ap ON pc.commented_by = ap.approver_id WHERE pc.request_id = 1;",
+      "SELECT pa.request_id, ap.name as assigned_approver, pa.deadline FROM pending_approval pa JOIN approvers ap ON pa.assigned_approver = ap.approver_id ORDER BY pa.deadline ASC;"
+    ]
+  }
+]

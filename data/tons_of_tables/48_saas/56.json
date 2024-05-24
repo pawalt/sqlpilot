@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_adoption (\n    user_id UUID PRIMARY KEY,\n    feature_name VARCHAR(255) NOT NULL,\n    adoption_date DATE NOT NULL,\n    tier_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_adoption (\n    user_id INT PRIMARY KEY,\n    feature_id INT,\n    adoption_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pricing_tiers (\n    tier_id INT PRIMARY KEY,\n    tier_name VARCHAR(50),\n    min_users INT,\n    max_users INT,\n    price_per_user DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_adoption (\n    user_id UUID PRIMARY KEY,\n    feature_id UUID,\n    adoption_date TIMESTAMP,\n    activity_count INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE feature_tiers (\n    tier_id UUID PRIMARY KEY,\n    tier_name VARCHAR(50) NOT NULL,\n    max_features INT,\n    max_users INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE pricing_structures (\n    pricing_id UUID PRIMARY KEY,\n    tier_id UUID,\n    monthly_price DECIMAL(10, 2),\n    annual_discount DECIMAL(5, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_adoption (\n   customer_id INT PRIMARY KEY,\n   feature_name VARCHAR(255),\n   adoption_status BOOLEAN\n);\n\nCREATE TABLE pricing_tiers (\n   tier_id INT PRIMARY KEY,\n   tier_name VARCHAR(255),\n   price DECIMAL(10,2)\n);\n\nCREATE TABLE customer_segments (\n   segment_id INT PRIMARY KEY,\n   segment_name VARCHAR(255)\n);\n\nCREATE TABLE adoption_history (\n   customer_id INT,\n   feature_name VARCHAR(255),\n   adoption_date DATE\n   FOREIGN KEY (customer_id) REFERENCES feature_adoption(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_adoption (\n    user_id INT PRIMARY KEY,\n    feature_name VARCHAR(255),\n    adoption_date DATE,\n    adoption_status ENUM('adopted', 'not_adopted'),\n    upgrade_suggested BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_tiers (\n    tier_id INT PRIMARY KEY,\n    tier_name VARCHAR(255),\n    tier_description TEXT,\n    monthly_price DECIMAL(10,2),\n    max_features INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    feature_name VARCHAR(255),\n    activity_date TIMESTAMP,\n    activity_type ENUM('view', 'click', 'upgrade'),\n    FOREIGN KEY (user_id) REFERENCES feature_adoption(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pricing_history (\n    history_id INT PRIMARY KEY,\n    tier_id INT,\n    timestamp TIMESTAMP,\n    price DECIMAL(10,2),\n    FOREIGN KEY (tier_id) REFERENCES product_tiers(tier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_metrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_value DECIMAL(10,2),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

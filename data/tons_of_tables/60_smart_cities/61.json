@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenBuildings (\n    building_id UUID PRIMARY KEY,\n    building_name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    leed_certification_status VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE green_buildings (\n  building_id INT PRIMARY KEY,\n  building_name VARCHAR(255) NOT NULL,\n  certification_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE leed_certifications (\n  certification_id INT PRIMARY KEY,\n  certification_name VARCHAR(100) NOT NULL,\n  certification_level VARCHAR(50) NOT NULL,\n  building_id INT,\n  FOREIGN KEY (building_id) REFERENCES green_buildings(building_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Green_Buildings (\n    building_id UUID PRIMARY KEY,\n    building_name VARCHAR(255) NOT NULL,\n    certification_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Certification (\n    certification_id UUID PRIMARY KEY,\n    certification_name VARCHAR(100) NOT NULL,\n    certification_level VARCHAR(50)\n\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Building_Certification (\n    building_id UUID REFERENCES Green_Buildings(building_id),\n    certification_id UUID REFERENCES Certification(certification_id),\n    certification_date DATE,\n    PRIMARY KEY (building_id, certification_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE buildings (\n    building_id INT PRIMARY KEY,\n    building_name VARCHAR(255),\n    leed_certification_status VARCHAR(50),\n    certification_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE floors (\n    floor_id INT PRIMARY KEY,\n    building_id INT,\n    floor_number INT,\n    area_sqft FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE leed_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(100),\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE building_leed_category (\n    building_id INT,\n    category_id INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Buildings (\n    building_id INT PRIMARY KEY,\n    building_name VARCHAR(50) NOT NULL,\n    address VARCHAR(100) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    state VARCHAR(2) NOT NULL,\n    zip_code VARCHAR(10) NOT NULL,\n    leed_certification_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE LEEDCategories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Certifications (\n    certification_id INT PRIMARY KEY,\n    building_id INT NOT NULL,\n    category_id INT NOT NULL,\n    certification_date DATE,\n    expiry_date DATE,\n    FOREIGN KEY (building_id) REFERENCES Buildings(building_id),\n    FOREIGN KEY (category_id) REFERENCES LEEDCategories(category_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(30) UNIQUE NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserRoles (\n    user_id INT NOT NULL,\n    role_name VARCHAR(20) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES Users(user_id)\n);\n"
+      }
+    ]
+  }
+]

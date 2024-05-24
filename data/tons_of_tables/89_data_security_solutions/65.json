@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_tunnel_encryption_keys (\n    key_id UUID PRIMARY KEY,\n    user_id UUID,\n    key_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_tunnel_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    key_value VARCHAR(100),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    key_id INT,\n    FOREIGN KEY (key_id) REFERENCES vpn_tunnel_keys(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VPNUsers (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VPNServers (\n  server_id SERIAL PRIMARY KEY,\n  server_name VARCHAR(50) UNIQUE NOT NULL,\n  server_ip VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VPNKeys (\n  key_id SERIAL PRIMARY KEY,\n  key_value TEXT NOT NULL,\n  user_id INT REFERENCES VPNUsers(user_id),\n  server_id INT REFERENCES VPNServers(server_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    key_value BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    os_version VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_connections (\n    connection_id INT PRIMARY KEY,\n    user_id INT,\n    device_id INT,\n    key_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (device_id) REFERENCES devices(device_id),\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_tunnel_keys (\n    key_id INT PRIMARY KEY,\n    user_id INT,\n    key_name VARCHAR(50),\n    key_description TEXT,\n    key_encryption_method VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(100),\n    password_hash VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_groups (\n    group_id INT PRIMARY KEY,\n    group_name VARCHAR(50) UNIQUE,\n    group_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_access_control (\n    key_id INT,\n    user_id INT,\n    group_id INT,\n    access_level VARCHAR(20),\n    PRIMARY KEY (key_id, user_id, group_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id INT PRIMARY KEY,\n    activity_description TEXT,\n    timestamp TIMESTAMP,\n    user_id INT,\n    key_id INT\n);"
+      }
+    ]
+  }
+]

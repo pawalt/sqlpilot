@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_transportation_analysis (\n  package_id INT PRIMARY KEY,\n  package_type VARCHAR(255),\n  transportation_method VARCHAR(255),\n  carbon_footprint DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_methods (\n  method_id SERIAL PRIMARY KEY,\n  method_name VARCHAR(50) NOT NULL,\n  carbon_footprint DECIMAL\n);\n\nCREATE TABLE transportation_modes (\n  mode_id SERIAL PRIMARY KEY,\n  mode_name VARCHAR(50) NOT NULL,\n  emissions_factor DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_methods (\n    method_id INT PRIMARY KEY,\n    method_name VARCHAR(50),\n    carbon_footprint DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_modes (\n    mode_id INT PRIMARY KEY,\n    mode_name VARCHAR(50),\n    emissions_factor DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact (\n    impact_id INT PRIMARY KEY,\n    method_id INT,\n    mode_id INT,\n    impact_value DECIMAL,\n    FOREIGN KEY (method_id) REFERENCES packaging_methods(method_id),\n    FOREIGN KEY (mode_id) REFERENCES transportation_modes(mode_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_method (\n  package_id INT PRIMARY KEY,\n  method_name VARCHAR(255),\n  emissions_factor DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_method (\n  method_id INT PRIMARY KEY,\n  method_name VARCHAR(255),\n  distance_covered DECIMAL(10,2),\n  emissions_factor DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_transportation (\n  package_id INT,\n  method_id INT,\n  amount_transported DECIMAL(10,2),\n  FOREIGN KEY (package_id) REFERENCES packaging_method(package_id),\n  FOREIGN KEY (method_id) REFERENCES transportation_method(method_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emissions_report (\n  report_id INT PRIMARY KEY,\n  report_date DATE,\n  total_emissions DECIMAL(10,2),\n  CONSTRAINT positive_emissions CHECK(total_emissions > 0)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(50) NOT NULL,\n    material_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_methods (\n    method_id INT PRIMARY KEY,\n    method_name VARCHAR(50) NOT NULL,\n    carbon_emission DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_cost (\n    cost_id INT PRIMARY KEY,\n    material_id INT NOT NULL,\n    method_id INT NOT NULL,\n    cost DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment_details (\n    shipment_id INT PRIMARY KEY,\n    shipment_date DATE NOT NULL,\n    material_id INT NOT NULL,\n    method_id INT NOT NULL,\n    shipment_cost DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE carbon_emission_report (\n    report_id INT PRIMARY KEY,\n    report_date DATE NOT NULL,\n    shipment_id INT NOT NULL,\n    carbon_emission DECIMAL(10,2) NOT NULL\n);"
+      }
+    ]
+  }
+]

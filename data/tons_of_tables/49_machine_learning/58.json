@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (image_id UUID PRIMARY KEY,\nimage_data BYTEA,\nannotation TEXT,\ncreated_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    id UUID PRIMARY KEY,\n    image_data BYTES\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n    id UUID PRIMARY KEY,\n    annotation_text STRING,\n    image_id UUID REFERENCES images(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id UUID PRIMARY KEY,\n    image_url VARCHAR(255),\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n    annotation_id UUID PRIMARY KEY,\n    image_id UUID,\n    annotation_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(50),\n    model_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n    annotation_id INT PRIMARY KEY,\n    image_id INT,\n    annotation_data JSONB,\n    FOREIGN KEY (image_id) REFERENCES images(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    training_id INT PRIMARY KEY,\n    model_id INT,\n    image_id INT,\n    annotation_id INT,\n    training_date DATE,\n    FOREIGN KEY (model_id) REFERENCES models(model_id),\n    FOREIGN KEY (image_id) REFERENCES images(image_id),\n    FOREIGN KEY (annotation_id) REFERENCES annotations(annotation_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id SERIAL PRIMARY KEY,\n    image_name TEXT NOT NULL,\n    image_data BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n    annotation_id SERIAL PRIMARY KEY,\n    image_id INT REFERENCES images (image_id),\n    annotation_data JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id SERIAL PRIMARY KEY,\n    model_name TEXT NOT NULL,\n    model_type TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_annotations (\n    model_annotation_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES models (model_id),\n    annotation_id INT REFERENCES annotations (annotation_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_sets (\n    training_set_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES models (model_id),\n    training_data JSONB NOT NULL\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE simulation_results (\n    simulation_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    robot_model VARCHAR(100),\n    test_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE simulation_results (\n    result_id SERIAL PRIMARY KEY,\n    experiment_id INTEGER,\n    robot_id INTEGER,\n    result_data TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE test_data (\n    data_id SERIAL PRIMARY KEY,\n    experiment_id INTEGER,\n    robot_id INTEGER,\n    test_data JSON\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SimulationResults (\n    result_id INT PRIMARY KEY,\n    experiment_name VARCHAR(100),\n    result_data JSONB,\n    timestamp TIMESTAMPTZ\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TestData (\n    data_id INT PRIMARY KEY,\n    experiment_id INT REFERENCES SimulationResults(result_id),\n    test_data JSONB,\n    timestamp TIMESTAMPTZ\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RobotExperiments (\n    experiment_id INT PRIMARY KEY,\n    robot_name VARCHAR(100),\n    experiment_description TEXT,\n    start_time TIMESTAMPTZ,\n    end_time TIMESTAMPTZ\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SimulationResults (\n  id SERIAL PRIMARY KEY,\n  experiment_name TEXT,\n  result_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TestData (\n  id SERIAL PRIMARY KEY,\n  test_name TEXT,\n  test_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RobotModels (\n  id SERIAL PRIMARY KEY,\n  model_name TEXT,\n  description TEXT,\n  created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentLogs (\n  id SERIAL PRIMARY KEY,\n  experiment_id INT,\n  log_data JSONB,\n  timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE simulation_results (\n    simulation_id INT PRIMARY KEY,\n    experiment_name VARCHAR(100),\n    result_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE test_data (\n    test_id INT PRIMARY KEY,\n    test_name VARCHAR(100),\n    experiment_id INT,\n    test_data JSONB,\n    FOREIGN KEY (experiment_id) REFERENCES simulation_results(simulation_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE virtual_robots (\n    robot_id INT PRIMARY KEY,\n    robot_name VARCHAR(100),\n    created_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE robot_tests (\n    test_id INT,\n    robot_id INT,\n    test_result JSONB,\n    FOREIGN KEY (test_id) REFERENCES test_data(test_id),\n    FOREIGN KEY (robot_id) REFERENCES virtual_robots(robot_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_logs (\n    log_id INT PRIMARY KEY,\n    simulation_id INT,\n    log_description TEXT,\n    log_timestamp TIMESTAMP,\n    FOREIGN KEY (simulation_id) REFERENCES simulation_results(simulation_id)\n);\n"
+      }
+    ]
+  }
+]

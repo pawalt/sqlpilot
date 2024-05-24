@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PropertyDamageClaims (\n claim_id INT PRIMARY KEY,\n property_owner_id INT,\n damage_type VARCHAR(255),\n claim_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_claims (\n    claim_id INT PRIMARY KEY,\n    property_id INT,\n    claim_date DATE,\n    claim_description TEXT\n);\n\nCREATE TABLE property_owners (\n    owner_id INT PRIMARY KEY,\n    owner_name TEXT,\n    property_id INT,\n    phone_number TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id INT PRIMARY KEY,\n    property_owner_id INT,\n    date_submitted DATE,\n    damage_description TEXT,\n    status ENUM('pending', 'approved', 'rejected')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_owners (\n    owner_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(50),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_actions (\n    action_id INT PRIMARY KEY,\n    claim_id INT,\n    action_date DATETIME,\n    action_description TEXT,\n    action_taken_by VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PropertyOwners (\n  owner_id INT PRIMARY KEY,\n  owner_name VARCHAR(50) NOT NULL,\n  property_address VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Claims (\n  claim_id INT PRIMARY KEY,\n  owner_id INT NOT NULL,\n  claim_date DATE NOT NULL,\n  claim_description VARCHAR(255) NOT NULL,\n  claim_status VARCHAR(20) NOT NULL,\n  FOREIGN KEY (owner_id) REFERENCES PropertyOwners(owner_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspections (\n  inspection_id INT PRIMARY KEY,\n  claim_id INT NOT NULL,\n  inspector_name VARCHAR(50) NOT NULL,\n  inspection_date DATE NOT NULL,\n  inspection_notes TEXT,\n  FOREIGN KEY (claim_id) REFERENCES Claims(claim_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n  payment_id INT PRIMARY KEY,\n  claim_id INT NOT NULL,\n  payment_amount DECIMAL(10,2) NOT NULL,\n  payment_date DATE NOT NULL,\n  payment_method VARCHAR(20) NOT NULL,\n  FOREIGN KEY (claim_id) REFERENCES Claims(claim_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_owners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(50),\n    property_address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id INT PRIMARY KEY,\n    owner_id INT,\n    claim_date DATE,\n    claim_amount DECIMAL(10, 2),\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_items (\n    item_id INT PRIMARY KEY,\n    claim_id INT,\n    item_description TEXT,\n    item_value DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE adjusters (\n    adjuster_id INT PRIMARY KEY,\n    adjuster_name VARCHAR(50),\n    adjuster_email VARCHAR(50),\n    adjuster_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_assignments (\n    assign_id INT PRIMARY KEY,\n    claim_id INT,\n    adjuster_id INT,\n    assignment_date DATE\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\nsensitive_id INT PRIMARY KEY,\nsensitive_info VARCHAR,\nencryption_key VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    id INT PRIMARY KEY,\n    email VARCHAR(255),\n    password VARCHAR(255),\n    encryption_key VARCHAR(50)\n);\n\nCREATE TABLE access_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50),\n    permission_level VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n  data_id INT PRIMARY KEY,\n  user_id INT REFERENCES users(id),\n  encrypted_data VARCHAR(200) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n  access_id INT PRIMARY KEY,\n  user_id INT REFERENCES users(id),\n  permission_level VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_data(\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    ssn VARCHAR(11) ENCRYPTED,\n    salary DECIMAL(10, 2) ENCRYPTED\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls(\n    id INT PRIMARY KEY,\n    user_id INT,\n    role VARCHAR(50) ENCRYPTED,\n    access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs(\n    id INT PRIMARY KEY,\n    action_type VARCHAR(50),\n    action_time TIMESTAMP,\n    user_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys(\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    key_value VARCHAR(100) ENCRYPTED\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Employee (\n    employee_id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    email TEXT UNIQUE,\n    password TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Department (\n    department_id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    manager_id INT,\n    CONSTRAINT fk_manager FOREIGN KEY(manager_id) REFERENCES Employee(employee_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Salary (\n    employee_id INT PRIMARY KEY,\n    salary DECIMAL NOT NULL,\n    bonus DECIMAL,\n    CONSTRAINT fk_employee FOREIGN KEY(employee_id) REFERENCES Employee(employee_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLogs (\n    log_id INT PRIMARY KEY,\n    employee_id INT,\n    log_description TEXT NOT NULL,\n    access_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    CONSTRAINT fk_log_employee FOREIGN KEY(employee_id) REFERENCES Employee(employee_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EncryptedData (\n    data_id INT PRIMARY KEY,\n    encrypted_text TEXT NOT NULL,\n    decryption_key TEXT NOT NULL,\n    access_level INT CHECK (access_level IN (1, 2, 3))\n);\n"
+      }
+    ]
+  }
+]

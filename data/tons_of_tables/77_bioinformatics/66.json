@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genomic_data (\n  sample_id INT PRIMARY KEY,\n  experiment_id INT NOT NULL,\n  sequencing_data JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genomics_data (\n  sample_id INT PRIMARY KEY,\n  sample_name VARCHAR(50),\n  sequencing_method VARCHAR(50),\n  sequenced_data TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n  analysis_id INT PRIMARY KEY,\n  sample_id INT,\n  analysis_date DATE,\n  analysis_result TEXT,\n  FOREIGN KEY (sample_id) REFERENCES genomics_data(sample_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SampleData (\n\tsample_id INT PRIMARY KEY,\n\tsample_name TEXT NOT NULL,\n\tsequencing_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiment (\n\texperiment_id INT PRIMARY KEY,\n\tsample_id INT REFERENCES SampleData(sample_id),\n\texperiment_name TEXT NOT NULL,\n\texperiment_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AnalysisResults (\n\tresult_id INT PRIMARY KEY,\n\texperiment_id INT REFERENCES Experiment(experiment_id),\n\tresult_data JSONB\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomeSamples (\n    sample_id UUID PRIMARY KEY,\n    experiment_id UUID,\n    sequenced_at TIMESTAMP,\n    file_path TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SequencingResults (\n    result_id UUID PRIMARY KEY,\n    sample_id UUID REFERENCES GenomeSamples(sample_id),\n    analysis_date DATE,\n    coverage FLOAT,\n    variants_count INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneticVariants (\n    variant_id UUID PRIMARY KEY,\n    sample_id UUID REFERENCES GenomeSamples(sample_id),\n    chromosome TEXT,\n    position INT,\n    gene_name TEXT,\n    variant_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneAnnotations (\n    annotation_id UUID PRIMARY KEY,\n    gene_name TEXT,\n    function TEXT,\n    pathway TEXT,\n    sequence TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient (\n  patient_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  age INT,\n  gender VARCHAR(10),\n  condition VARCHAR(100),\n  sequence_data BYTES\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sample (\n  sample_id INT PRIMARY KEY,\n  patient_id INT REFERENCES patient(patient_id),\n  date_collected DATE,\n  tissue_type VARCHAR(50),\n  quality_score DOUBLE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment (\n  experiment_id INT PRIMARY KEY,\n  sample_id INT REFERENCES sample(sample_id),\n  experiment_type VARCHAR(50),\n  read_depth INT,\n  coverage DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE variant (\n  variant_id INT PRIMARY KEY,\n  experiment_id INT REFERENCES experiment(experiment_id),\n  chrom_position INT,\n  mutation_type VARCHAR(10),\n  allele_frequency DOUBLE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis (\n  analysis_id INT PRIMARY KEY,\n  experiment_id INT REFERENCES experiment(experiment_id),\n  analysis_type VARCHAR(50),\n  result_details TEXT,\n  researcher_name VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

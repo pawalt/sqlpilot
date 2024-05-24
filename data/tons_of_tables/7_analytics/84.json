@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_Data (\n    device_id INT PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    temperature DECIMAL NOT NULL,\n    humidity DECIMAL NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (\n  sensor_id INT PRIMARY KEY,\n  sensor_name STRING,\n  sensor_type STRING,\n  location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n  data_id INT PRIMARY KEY,\n  sensor_id INT, \n  timestamp TIMESTAMP, \n  data_value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    last_update TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    sensor_id INT PRIMARY KEY,\n    device_id INT REFERENCES devices(device_id),\n    sensor_type VARCHAR(50),\n    sensor_value DECIMAL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_data (\n    dashboard_id INT PRIMARY KEY,\n    device_id INT REFERENCES devices(device_id),\n    dashboard_name VARCHAR(50),\n    dashboard_url VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n device_id UUID PRIMARY KEY,\n device_name VARCHAR(255),\n device_type VARCHAR(50),\n device_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_streams (\n stream_id UUID PRIMARY KEY,\n device_id UUID,\n stream_value FLOAT,\n timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_aggregation (\n aggregation_id UUID PRIMARY KEY,\n aggregation_type VARCHAR(50),\n aggregation_value FLOAT,\n timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboards (\n dashboard_id UUID PRIMARY KEY,\n dashboard_name VARCHAR(255),\n user_id UUID,\n creation_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iot_devices (\n    device_id INT PRIMARY KEY,\n    device_name STRING,\n    location STRING,\n    data_stream JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_streams (\n    stream_id INT PRIMARY KEY,\n    device_id INT REFERENCES iot_devices(device_id),\n    stream_data JSON,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_users (\n    user_id INT PRIMARY KEY,\n    username STRING,\n    email STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT REFERENCES dashboard_users(user_id),\n    permission_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_visualizations (\n    visualization_id INT PRIMARY KEY,\n    stream_id INT REFERENCES data_streams(stream_id),\n    visualization_type STRING,\n    visualization_data JSON\n);"
+      }
+    ]
+  }
+]

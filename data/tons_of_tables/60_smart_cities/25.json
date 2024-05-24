@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_devices (    device_id UUID PRIMARY KEY,    device_name STRING NOT NULL,    device_type STRING NOT NULL,    location STRING,    configuration JSONB NOT NULL,    created_at TIMESTAMPTZ DEFAULT NOW(),    updated_at TIMESTAMPTZ DEFAULT NOW() );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(255),\n  device_type VARCHAR(50),\n  device_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_settings (\n  setting_id SERIAL PRIMARY KEY,\n  device_id INT,\n  setting_name VARCHAR(100),\n  setting_value VARCHAR(255),\n  FOREIGN KEY (device_id) REFERENCES smart_home_devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id UUID NOT NULL,\n    device_name TEXT NOT NULL,\n    device_type TEXT NOT NULL,\n    location TEXT,\n    PRIMARY KEY (device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE configurations (\n    config_id UUID NOT NULL,\n    device_id UUID NOT NULL,\n    config_name TEXT NOT NULL,\n    config_value TEXT NOT NULL,\n    PRIMARY KEY (config_id),\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE settings (\n    settings_id UUID NOT NULL,\n    device_id UUID NOT NULL,\n    setting_name TEXT NOT NULL,\n    setting_value TEXT NOT NULL,\n    PRIMARY KEY (settings_id),\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartHomeDevices (\n device_id UUID PRIMARY KEY,\n device_name STRING,\n device_type STRING,\n device_location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceSettings (\n setting_id UUID PRIMARY KEY,\n device_id UUID,\n setting_name STRING,\n setting_value STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceConfigurations (\n config_id UUID PRIMARY KEY,\n device_id UUID,\n config_name STRING,\n config_value STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceUsers (\n user_id UUID PRIMARY KEY,\n device_id UUID,\n user_name STRING,\n user_role STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartHomeDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    device_location VARCHAR(100),\n    device_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceConfigurations (\n    config_id INT PRIMARY KEY,\n    device_id INT,\n    config_name VARCHAR(255),\n    config_value TEXT,\n    FOREIGN KEY (device_id) REFERENCES SmartHomeDevices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RoomConfigurations (\n    room_id INT PRIMARY KEY,\n    room_name VARCHAR(100),\n    room_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceRoomMapping (\n    mapping_id INT PRIMARY KEY,\n    device_id INT,\n    room_id INT,\n    FOREIGN KEY (device_id) REFERENCES SmartHomeDevices(device_id),\n    FOREIGN KEY (room_id) REFERENCES RoomConfigurations(room_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserSettings (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(255),\n    user_email VARCHAR(100),\n    notification_preference BOOLEAN\n);\n"
+      }
+    ]
+  }
+]

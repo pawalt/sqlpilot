@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n  student_id UUID PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  age INT,\n  grade_level INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(255) NOT NULL,\n    grade_level INT,\n    math_score INT,\n    english_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grades (\n    student_id INT,\n    subject VARCHAR(255) NOT NULL,\n    grade_letter CHAR(1),\n    FOREIGN KEY (student_id) REFERENCES students(student_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(50),\n    age INT,\n    grade_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(50),\n    credits INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grades (\n    grade_id INT PRIMARY KEY,\n    student_id INT,\n    course_id INT,\n    grade FLOAT,\n    FOREIGN KEY (student_id) REFERENCES students(student_id),\n    FOREIGN KEY (course_id) REFERENCES courses(course_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    age INT,\n    major VARCHAR(50),\n    GPA DECIMAL(3,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n    course_id SERIAL PRIMARY KEY,\n    course_name VARCHAR(100) NOT NULL,\n    department VARCHAR(50),\n    instructor VARCHAR(100),\n    room_number VARCHAR(10),\n    schedule TIMESTAMPTZ\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE grades (\n    grade_id SERIAL PRIMARY KEY,\n    student_id INT REFERENCES students(student_id),\n    course_id INT REFERENCES courses(course_id),\n    grade DECIMAL(2,1) CHECK(grade >= 0 AND grade <= 100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendance (\n    attendance_id SERIAL PRIMARY KEY,\n    student_id INT REFERENCES students(student_id),\n    course_id INT REFERENCES courses(course_id),\n    date DATE,\n    present BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    age INT,\n    grade VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(50),\n    instructor VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE enrollments (\n    enrollment_id INT PRIMARY KEY,\n    student_id INT,\n    course_id INT,\n    enrollment_date DATE,\n    grade VARCHAR(10),\n    FOREIGN KEY (student_id) REFERENCES students(id),\n    FOREIGN KEY (course_id) REFERENCES courses(course_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assignments (\n    assignment_id INT PRIMARY KEY,\n    course_id INT,\n    assignment_title VARCHAR(50),\n    due_date DATE,\n    max_score INT,\n    FOREIGN KEY (course_id) REFERENCES courses(course_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grades (\n    grade_id INT PRIMARY KEY,\n    enrollment_id INT,\n    assignment_id INT,\n    score INT,\n    submitted_date DATE,\n    FOREIGN KEY (enrollment_id) REFERENCES enrollments(enrollment_id),\n    FOREIGN KEY (assignment_id) REFERENCES assignments(assignment_id)\n);"
+      }
+    ]
+  }
+]

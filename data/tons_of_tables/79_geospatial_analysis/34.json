@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_permits (\n  permit_id UUID PRIMARY KEY,\n  vehicle_id UUID,\n  permit_start_date DATE,\n  permit_end_date DATE,\n  permit_status VARCHAR(20) CHECK(permit_status IN ('Active', 'Expired', 'Suspended')),\n  permit_type VARCHAR(20),\n  permit_fee DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ParkingPermitInfo (\n    permit_id INT PRIMARY KEY,\n    vehicle_id INT,\n    permit_type VARCHAR(50),\n    issue_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OccupancyRates (\n    date DATE PRIMARY KEY,\n    occupancy_percentage DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_permits (\n    permit_id INT PRIMARY KEY,\n    permit_number VARCHAR(50),\n    vehicle_id INT,\n    start_date DATE,\n    end_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_permit_information (\n  permit_id SERIAL PRIMARY KEY,\n  vehicle_owner_name VARCHAR(255),\n  vehicle_license_plate VARCHAR(20) UNIQUE,\n  permit_expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_occupancy (\n  parking_space_id SERIAL PRIMARY KEY,\n  occupancy_status ENUM('Occupied', 'Available'),\n  last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_location (\n  location_id SERIAL PRIMARY KEY,\n  location_name VARCHAR(255) UNIQUE,\n  total_spaces INTEGER,\n  occupied_spaces INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_permit_occupancy (\n  permit_id INT,\n  parking_space_id INT,\n  start_date DATE,\n  end_date DATE,\n  PRIMARY KEY (permit_id, parking_space_id),\n  FOREIGN KEY (permit_id) REFERENCES parking_permit_information(permit_id),\n  FOREIGN KEY (parking_space_id) REFERENCES parking_occupancy(parking_space_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_lots (\n    parking_lot_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    capacity INT,\n    occupancy INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE permits (\n    permit_id INT PRIMARY KEY,\n    permit_type VARCHAR(50),\n    permit_cost DECIMAL(10, 2),\n    expiration_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id INT PRIMARY KEY,\n    plate_number VARCHAR(20),\n    owner_name VARCHAR(100),\n    permit_id INT REFERENCES permits(permit_id),\n    entry_time TIMESTAMP,\n    exit_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE occupancy_rates (\n    occupancy_id INT PRIMARY KEY,\n    parking_lot_id INT REFERENCES parking_lots(parking_lot_id),\n    date DATE,\n    occupancy_rate DECIMAL(5, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE income (\n    income_id INT PRIMARY KEY,\n    date DATE,\n    income_amount DECIMAL(10, 2),\n    source VARCHAR(100)\n)"
+      }
+    ]
+  }
+]

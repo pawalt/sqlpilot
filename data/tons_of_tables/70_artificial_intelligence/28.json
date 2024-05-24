@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotProjects (\n project_id INT PRIMARY KEY,\n project_name VARCHAR(255),\n milestone_date DATE,\n resource_allocated DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotProjects (\n  project_id UUID PRIMARY KEY,\n  project_name TEXT NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  completed BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectTasks (\n  task_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES RobotProjects(project_id),\n  task_name TEXT NOT NULL,\n  task_description TEXT,\n  deadline DATE,\n  assigned_to TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_timelines (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date TIMESTAMP,\n    end_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE milestones (\n    milestone_id UUID PRIMARY KEY,\n    milestone_name VARCHAR(255),\n    milestone_date TIMESTAMP,\n    project_id UUID REFERENCES project_timelines(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (\n    resource_id UUID PRIMARY KEY,\n    resource_name VARCHAR(255),\n    allocation_date TIMESTAMP,\n    project_id UUID REFERENCES project_timelines(project_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Project (\n\tproject_id INT PRIMARY KEY,\n\tproject_name VARCHAR(255) NOT NULL,\n\tstart_date DATE,\n\tend_date DATE,\n\tstatus VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Milestone (\n\tmilestone_id INT PRIMARY KEY,\n\tmilestone_name VARCHAR(255) NOT NULL,\n\tproject_id INT,\n\tdue_date DATE,\n\tstatus VARCHAR(50),\n\tFOREIGN KEY (project_id) REFERENCES Project(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Resource (\n\tresource_id INT PRIMARY KEY,\n\tresource_name VARCHAR(255) NOT NULL,\n\trole VARCHAR(100),\n\tavailability BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Allocation (\n\tallocation_id INT PRIMARY KEY,\n\tproject_id INT,\n\tresource_id INT,\n\tallocation_date DATE,\n\thours_allocated INT,\n\tFOREIGN KEY (project_id) REFERENCES Project(project_id),\n\tFOREIGN KEY (resource_id) REFERENCES Resource(resource_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE robots (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    type VARCHAR(50) NOT NULL,\n    year_manufactured INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    description TEXT,\n    start_date DATE NOT NULL,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE milestones (\n    id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    milestone_name VARCHAR(100) NOT NULL,\n    milestone_date DATE NOT NULL,\n    completed BOOLEAN DEFAULT false\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE allocations (\n    id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    resource_id INT NOT NULL,\n    allocation_date DATE NOT NULL,\n    quantity INT NOT NULL\n);"
+      }
+    ]
+  }
+]

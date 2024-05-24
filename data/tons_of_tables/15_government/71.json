@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislative_bills (\n    bill_id SERIAL PRIMARY KEY,\n    bill_number VARCHAR(255) NOT NULL,\n    bill_title TEXT,\n    current_stage VARCHAR(100) CHECK (current_stage IN ('Introduced', 'In Committee', 'Passed House', 'Passed Senate', 'Enacted')),\n    sponsor_name VARCHAR(255),\n    introduction_date DATE,\n    last_action_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bill_progress (\n    bill_id int PRIMARY KEY,\n    bill_name varchar(255),\n    current_stage varchar(100),\n    start_date date,\n    end_date date\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stage (\n    stage_id int PRIMARY KEY,\n    stage_name varchar(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LegislativeBills (\n    bill_id INT PRIMARY KEY,\n    bill_name VARCHAR(255),\n    stage VARCHAR(50),\n    last_update_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BillStages (\n    stage_id INT PRIMARY KEY,\n    stage_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BillHistory (\n    history_id INT PRIMARY KEY,\n    bill_id INT,\n    stage_id INT,\n    date_updated DATE,\n    FOREIGN KEY (bill_id) REFERENCES LegislativeBills(bill_id),\n    FOREIGN KEY (stage_id) REFERENCES BillStages(stage_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bills (\n  bill_id SERIAL PRIMARY KEY,\n  bill_name VARCHAR(255),\n  bill_status VARCHAR(100),\n  sponsor_name VARCHAR(255),\n  introduction_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stages (\n  stage_id SERIAL PRIMARY KEY,\n  stage_name VARCHAR(100),\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE bill_tracking (\n  tracking_id SERIAL PRIMARY KEY,\n  bill_id INTEGER REFERENCES bills(bill_id),\n  stage_id INTEGER REFERENCES stages(stage_id),\n  date_reached_stage DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(100),\n  role VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Bill (\n  bill_id SERIAL PRIMARY KEY,\n  bill_number VARCHAR(255) NOT NULL,\n  title TEXT NOT NULL,\n  status VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BillStage (\n  stage_id SERIAL PRIMARY KEY,\n  stage_name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BillProgress (\n  progress_id SERIAL PRIMARY KEY,\n  bill_id INT REFERENCES Bill(bill_id),\n  stage_id INT REFERENCES BillStage(stage_id),\n  date_progress TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Legislator (\n  legislator_id SERIAL PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  party VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BillAuthor (\n  author_id SERIAL PRIMARY KEY,\n  bill_id INT REFERENCES Bill(bill_id),\n  legislator_id INT REFERENCES Legislator(legislator_id)\n);\n"
+      }
+    ]
+  }
+]

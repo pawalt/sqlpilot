@@ -1,0 +1,52 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE machine_learning_results (\n    id SERIAL PRIMARY KEY,\n    model_name VARCHAR(50),\n    prediction_date DATE,\n    prediction_result JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE machine_learning_models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50) NOT NULL,\n    model_type VARCHAR(50) NOT NULL,\n    training_data_url TEXT,\n    prediction_output_url TEXT\n);\n\nCREATE TABLE predictions (\n    prediction_id INT PRIMARY KEY,\n    model_id INT NOT NULL,\n    prediction_date TIMESTAMP NOT NULL,\n    input_data TEXT,\n    output_result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_results (\n    id INT PRIMARY KEY,\n    model_name TEXT,\n    result JSONB,\n    prediction TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_predictions (\n    id INT PRIMARY KEY,\n    model_name TEXT,\n    input_data JSONB,\n    output_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_info (\n    id INT PRIMARY KEY,\n    model_name TEXT,\n    training_data JSONB,\n    model_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_results (\n    id UUID PRIMARY KEY,\n    model_name TEXT,\n    result_json JSONB,\n    created_at TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE predictions (\n    id UUID PRIMARY KEY,\n    model_id UUID REFERENCES model_results(id),\n    input_data JSONB,\n    prediction_result JSONB,\n    created_at TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE evaluation_metrics (\n    id UUID PRIMARY KEY,\n    model_id UUID REFERENCES model_results(id),\n    metric_name TEXT,\n    metric_value FLOAT,\n    created_at TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metadata (\n    model_id UUID PRIMARY KEY REFERENCES model_results(id),\n    metadata_key TEXT,\n    metadata_value TEXT,\n    created_at TIMESTAMPTZ\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE machine_learning_models (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(50),\n    accuracy DECIMAL(5, 2),\n    trained_date DATE\n);\n\nCREATE TABLE predictions (\n    id INT PRIMARY KEY,\n    prediction_date DATE,\n    input_data JSON,\n    model_id INT,\n    result VARCHAR(50)\n);\n\nCREATE TABLE model_evaluation (\n    id INT PRIMARY KEY,\n    evaluation_date DATE,\n    model_id INT,\n    evaluation_result VARCHAR(50)\n);\n\nCREATE TABLE training_data (\n    id INT PRIMARY KEY,\n    data_date DATE,\n    model_id INT,\n    training_data JSON\n);\n\nCREATE TABLE model_parameters (\n    id INT PRIMARY KEY,\n    model_id INT,\n    parameter_name VARCHAR(50),\n    parameter_value DECIMAL(5, 2)\n);\n"
+      }
+    ]
+  }
+]

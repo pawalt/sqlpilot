@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LoyaltyProgram (\n  customer_id INT PRIMARY KEY,\n  total_purchase_amount DECIMAL,\n  membership_level VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_program (\n    customer_id INT,\n    total_purchase_amount DECIMAL (10, 2),\n    loyalty_points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchase_history (\n    transaction_id INT,\n    customer_id INT,\n    transaction_date DATE,\n    purchase_amount DECIMAL (10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_program_customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    total_points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_program_purchase_history (\n    purchase_id INT PRIMARY KEY,\n    customer_id INT,\n    purchase_date DATE,\n    purchase_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_program_reward_catalog (\n    reward_id INT PRIMARY KEY,\n    reward_name VARCHAR(255),\n    required_points INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_programs (\n  loyalty_id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  program_name VARCHAR(50) NOT NULL,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n  purchase_id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  product_id INT NOT NULL,\n  purchase_date DATE,\n  purchase_amount DECIMAL(10, 2),\n  FOREIGN KEY (customer_id) REFERENCES loyalty_programs(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n  reward_id INT PRIMARY KEY,\n  loyalty_id INT NOT NULL,\n  reward_name VARCHAR(50) NOT NULL,\n  reward_type VARCHAR(20),\n  reward_amount DECIMAL(10, 2),\n  FOREIGN KEY (loyalty_id) REFERENCES loyalty_programs(loyalty_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  loyalty_id INT NOT NULL,\n  transaction_date DATE,\n  transaction_amount DECIMAL(10, 2),\n  FOREIGN KEY (loyalty_id) REFERENCES loyalty_programs(loyalty_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_programs (\n    loyalty_program_id UUID PRIMARY KEY,\n    program_name VARCHAR,\n    description TEXT,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    name VARCHAR,\n    email VARCHAR,\n    phone_number VARCHAR,\n    join_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n    purchase_id UUID PRIMARY KEY,\n    customer_id UUID,\n    purchase_date DATE,\n    total_amount DECIMAL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id UUID PRIMARY KEY,\n    loyalty_program_id UUID,\n    reward_type VARCHAR,\n    reward_value DECIMAL,\n    description TEXT,\n    FOREIGN KEY (loyalty_program_id) REFERENCES loyalty_programs(loyalty_program_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    purchase_id UUID,\n    customer_id UUID,\n    transaction_date DATE,\n    total_amount DECIMAL,\n    reward_id UUID,\n    FOREIGN KEY (purchase_id) REFERENCES purchases(purchase_id),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n    FOREIGN KEY (reward_id) REFERENCES rewards(reward_id)\n);\n"
+      }
+    ]
+  }
+]

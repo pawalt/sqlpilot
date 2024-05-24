@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE kyc_regulations (\n    customer_id INT PRIMARY KEY,\n    full_name VARCHAR(100),\n    date_of_birth DATE,\n    address VARCHAR(200),\n    identification_number VARCHAR(50),\n    transaction_amount DECIMAL(10, 2),\n    transaction_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE KYC_Customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(50),\n    date_of_birth DATE,\n    address VARCHAR(100),\n    kyc_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Transaction_Logs (\n    transaction_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    sender_id UUID,\n    receiver_id UUID,\n    amount DECIMAL(10, 2),\n    status VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE KYC_Users (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(100),\n    date_of_birth DATE,\n    address VARCHAR(255),\n    government_id VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Transaction_History (\n    transaction_id INT PRIMARY KEY,\n    user_id INT,\n    amount DECIMAL,\n    currency VARCHAR(10),\n    transaction_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES KYC_Users(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Suspicious_Activity (\n    activity_id INT PRIMARY KEY,\n    transaction_id INT,\n    report_reason VARCHAR(255),\n    report_date TIMESTAMP,\n    FOREIGN KEY (transaction_id) REFERENCES Transaction_History(transaction_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    full_name TEXT NOT NULL,\n    email TEXT UNIQUE NOT NULL,\n    address TEXT,\n    phone_number TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT,\n    amount DECIMAL NOT NULL,\n    source_wallet TEXT NOT NULL,\n    destination_wallet TEXT NOT NULL,\n    transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE identities (\n    identity_id INT PRIMARY KEY,\n    customer_id INT,\n    id_type TEXT NOT NULL,\n    id_number TEXT NOT NULL,\n    issue_date DATE,\n    expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    customer_id INT,\n    alert_type TEXT NOT NULL,\n    description TEXT,\n    status TEXT,\n    creation_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_information (\n  customer_id INT PRIMARY KEY,\n  full_name VARCHAR(100) NOT NULL,\n  date_of_birth DATE NOT NULL,\n  address VARCHAR(200) NOT NULL,\n  identification_type VARCHAR(50) NOT NULL,\n  identification_number VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_history (\n  transaction_id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  transaction_date TIMESTAMP NOT NULL,\n  transaction_amount DECIMAL(18, 2) NOT NULL,\n  transaction_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flag_activity (\n  flag_id INT PRIMARY KEY,\n  transaction_id INT NOT NULL,\n  flag_reason VARCHAR(200),\n  flagged_by VARCHAR(100) NOT NULL,\n  flag_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account_balance (\n  account_id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  balance DECIMAL(18, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE KYC_updates (\n  update_id INT PRIMARY KEY,\n  account_id INT NOT NULL,\n  update_field VARCHAR(100) NOT NULL,\n  previous_value VARCHAR(200),\n  new_value VARCHAR(200) NOT NULL\n);"
+      }
+    ]
+  }
+]

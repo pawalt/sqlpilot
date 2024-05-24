@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_info (\n    vulnerability_id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(100),\n    affected_software VARCHAR(200),\n    severity_level VARCHAR(50),\n    patch_priority ENUM('high', 'medium', 'low'),\n    patch_deadline DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_info (\n  vulnerability_id INT PRIMARY KEY,\n  vulnerability_name VARCHAR(255),\n  severity_level VARCHAR(50),\n  description TEXT,\n  affected_systems JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_efforts (\n  mitigation_id INT PRIMARY KEY,\n  vulnerability_id INT,\n  mitigation_description TEXT,\n  mitigation_status VARCHAR(50),\n  FOREIGN KEY (vulnerability_id) REFERENCES vulnerability_info(vulnerability_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Vulnerabilities (\n    vulnerability_id UUID PRIMARY KEY,\n    vulnerability_name VARCHAR(100) NOT NULL,\n    severity_level ENUM('low', 'medium', 'high') NOT NULL,\n    affected_system VARCHAR(255) NOT NULL,\n    affected_software_version VARCHAR(50),\n    patch_available BOOLEAN DEFAULT FALSE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Mitigation_Strategies (\n    strategy_id UUID PRIMARY KEY,\n    strategy_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    recommended_action TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Vulnerability_Impact (\n    impact_id UUID PRIMARY KEY,\n    vulnerability_id UUID REFERENCES Vulnerabilities(vulnerability_id),\n    strategy_id UUID REFERENCES Mitigation_Strategies(strategy_id),\n    affected_assets VARCHAR(255) NOT NULL,\n    impact_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_info (\n    vulnerability_id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(255),\n    vulnerability_type VARCHAR(50),\n    severity_level INT,\n    affected_systems INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_strategy (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(100),\n    strategy_description TEXT,\n    prioritization_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE affected_assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(100),\n    asset_type VARCHAR(50),\n    vulnerability_id INT,\n    strategy_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patching_efforts (\n    patch_id INT PRIMARY KEY,\n    patch_description TEXT,\n    patch_date DATE,\n    applied_assets INT,\n    success_rate DECIMAL(5,2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PatchManagement (\npatch_id INT PRIMARY KEY,\npatch_name VARCHAR(100),\npatch_date DATE,\npatch_applied BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MitigationPlans (\nmitigation_id INT PRIMARY KEY,\nmitigation_name VARCHAR(100),\nmitigation_description TEXT,\nmitigation_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE VulnerableSystems (\nsystem_id INT PRIMARY KEY,\nsystem_name VARCHAR(100),\nsystem_type VARCHAR(50),\nlast_scan_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE VulnerabilityScans (\nscan_id INT PRIMARY KEY,\nscan_date DATE,\nresults TEXT,\nscanned_system_id INT,\nFOREIGN KEY (scanned_system_id) REFERENCES VulnerableSystems(system_id)\n)"
+      }
+    ]
+  }
+]

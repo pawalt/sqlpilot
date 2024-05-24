@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drone_telemetry_data (\n    telemetry_id UUID PRIMARY KEY,\n    drone_id UUID,\n    timestamp TIMESTAMP,\n    altitude FLOAT,\n    latitude FLOAT,\n    longitude FLOAT,\n    speed FLOAT,\n    battery_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n    id UUID PRIMARY KEY,\n    drone_id INT NOT NULL,\n    telemetry_data JSONB NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flight_logs (\n    log_id UUID PRIMARY KEY,\n    drone_id INT NOT NULL,\n    flight_date DATE NOT NULL,\n    flight_duration INTERVAL NOT NULL,\n    flight_path GEOGRAPHY\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n    drone_id INT PRIMARY KEY,\n    manufacturer VARCHAR(255),\n    model VARCHAR(255),\n    max_speed FLOAT,\n    battery_life INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE telemetry_data (\n    telemetry_id INT PRIMARY KEY,\n    drone_id INT REFERENCES drones(drone_id),\n    altitude FLOAT,\n    speed FLOAT,\n    battery_level INT,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE flight_logs (\n    log_id INT PRIMARY KEY,\n    drone_id INT REFERENCES drones(drone_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    mission_status VARCHAR(255),\n    flight_path STRING\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n    id INT PRIMARY KEY,\n    drone_name STRING,\n    max_speed FLOAT,\n    max_altitude INT,\n    status STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE telemetry_data (\n    telemetry_id INT PRIMARY KEY,\n    drone_id INT,\n    latitude FLOAT,\n    longitude FLOAT,\n    altitude INT,\n    speed FLOAT,\n    battery_level INT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (drone_id) REFERENCES drones(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flight_logs (\n    log_id INT PRIMARY KEY,\n    drone_id INT,\n    flight_duration INT,\n    distance_covered FLOAT,\n    average_speed FLOAT,\n    start_timestamp TIMESTAMP,\n    end_timestamp TIMESTAMP,\n    FOREIGN KEY (drone_id) REFERENCES drones(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    maintenance_id INT PRIMARY KEY,\n    drone_id INT,\n    maintenance_date DATE,\n    maintenance_type STRING,\n    technician_name STRING,\n    details STRING,\n    FOREIGN KEY (drone_id) REFERENCES drones(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  manufacturer VARCHAR(50),\n  serial_number VARCHAR(50),\n  max_speed FLOAT,\n  max_altitude INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE telemetry_data (\n  data_id SERIAL PRIMARY KEY,\n  drone_id INT,\n  timestamp TIMESTAMP,\n  latitude FLOAT,\n  longitude FLOAT,\n  altitude INT,\n  speed FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_records (\n  record_id SERIAL PRIMARY KEY,\n  drone_id INT,\n  maintenance_type VARCHAR(50),\n  maintenance_date DATE,\n  maintenance_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drone_errors (\n  error_id SERIAL PRIMARY KEY,\n  drone_id INT,\n  error_code VARCHAR(20),\n  error_message TEXT,\n  error_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE operation_logs (\n  log_id SERIAL PRIMARY KEY,\n  log_timestamp TIMESTAMP,\n  drone_id INT,\n  operation_type VARCHAR(50),\n  operation_description TEXT\n);"
+      }
+    ]
+  }
+]

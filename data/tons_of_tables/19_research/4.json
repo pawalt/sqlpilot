@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneticData (\n    genetic_id UUID PRIMARY KEY,\n    patient_id UUID,\n    gene_name VARCHAR(50),\n    gene_variant VARCHAR(100),\n    gene_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255) NOT NULL,\n    gene_sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255) NOT NULL,\n    patient_age INT NOT NULL,\n    patient_gender VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n  gene_id UUID PRIMARY KEY,\n  gene_name VARCHAR(255),\n  chromosome_number INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE variations (\n  variation_id UUID PRIMARY KEY,\n  gene_id UUID REFERENCES genes(gene_id),\n  variation_type VARCHAR(50),\n  impact_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id UUID PRIMARY KEY,\n  patient_name VARCHAR(255),\n  gender CHAR(1),\n  age INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_records (\n    record_id INT PRIMARY KEY,\n    user_id INT,\n    diagnosis TEXT,\n    treatment_plan TEXT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_data (\n    data_id INT PRIMARY KEY,\n    user_id INT,\n    dna_sequence TEXT,\n    mutation_status BOOLEAN,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_studies (\n    study_id INT PRIMARY KEY,\n    study_name VARCHAR(100) NOT NULL,\n    research_area VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_variant (\n    variant_id UUID PRIMARY KEY,\n    gene_name VARCHAR(255),\n    variant_type VARCHAR(50),\n    effect VARCHAR(100),\n    allele_frequency FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_gene_data (\n    patient_id UUID,\n    gene_name VARCHAR(255),\n    genotype VARCHAR(10),\n    CONSTRAINT fk_patient_gene_data FOREIGN KEY (patient_id) REFERENCES gene_variant(variant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_project (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE researcher (\n    researcher_id UUID PRIMARY KEY,\n    researcher_name VARCHAR(255),\n    specialty VARCHAR(100),\n    institution VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_researcher (\n    project_id UUID,\n    researcher_id UUID,\n    CONSTRAINT fk_project_researcher_project FOREIGN KEY (project_id) REFERENCES research_project(project_id),\n    CONSTRAINT fk_project_researcher_researcher FOREIGN KEY (researcher_id) REFERENCES researcher(researcher_id)\n);"
+      }
+    ]
+  }
+]

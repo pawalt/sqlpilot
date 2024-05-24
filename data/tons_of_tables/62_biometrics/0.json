@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE face_recognition_data (\n    face_id SERIAL PRIMARY KEY,\n    face_vector FLOAT[],\n    image_url TEXT,\n    image_metadata JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE face_vectors (\n    id INT PRIMARY KEY,\n    vector FLOAT[],\n    created_at TIMESTAMP\n);\n\nCREATE TABLE image_metadata (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_path TEXT,\n    face_vector_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE face_vectors (\n    id SERIAL PRIMARY KEY,\n    vector BYTEA NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    id SERIAL PRIMARY KEY,\n    image_id UUID NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE face_recognition (\n    id SERIAL PRIMARY KEY,\n    vector_id INT NOT NULL,\n    image_id UUID NOT NULL,\n    confidence FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FaceVectors (\n    id INT PRIMARY KEY,\n    vector BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n    image_id INT PRIMARY KEY,\n    image_name TEXT,\n    image_path TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FaceData (\n    face_id INT PRIMARY KEY,\n    image_id INT,\n    vector_id INT,\n    FOREIGN KEY (image_id) REFERENCES ImageMetadata(image_id),\n    FOREIGN KEY (vector_id) REFERENCES FaceVectors(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecognitionLogs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    action TEXT,\n    result TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE face_vectors (\n    face_id SERIAL PRIMARY KEY,\n    vector BYTEA NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    image_id SERIAL PRIMARY KEY,\n    image_path TEXT NOT NULL,\n    image_width INT NOT NULL,\n    image_height INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE face_images (\n    face_image_id SERIAL PRIMARY KEY,\n    face_id INT NOT NULL,\n    image_id INT NOT NULL,\n    FOREIGN KEY (face_id) REFERENCES face_vectors(face_id),\n    FOREIGN KEY (image_id) REFERENCES image_metadata(image_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_faces (\n    user_face_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    face_id INT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (face_id) REFERENCES face_vectors(face_id)\n);\n"
+      }
+    ]
+  }
+]

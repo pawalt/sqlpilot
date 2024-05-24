@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_policies (\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(255),\n    traffic_type VARCHAR(50),\n    priority_level INT,\n    policy_details TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    priority_level INT,\n    traffic_type VARCHAR(50),\n    max_bandwidth INT,\n    policy_enabled BOOL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    device_ip_address VARCHAR(15),\n    policy_id INT,\n    FOREIGN KEY (policy_id) REFERENCES network_traffic_policies(policy_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_policies (\n  policy_id INT PRIMARY KEY,\n  policy_name VARCHAR(50) NOT NULL,\n  priority INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE subscribers (\n  subscriber_id INT PRIMARY KEY,\n  subscriber_name VARCHAR(50) NOT NULL,\n  subscription_type VARCHAR(20) NOT NULL,\n  policy_id INT,\n  FOREIGN KEY (policy_id) REFERENCES network_policies(policy_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_logs (\n  log_id INT PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  subscriber_id INT,\n  FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id),\n  message TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE traffic_classes (\n    class_id INT PRIMARY KEY,\n    class_name VARCHAR(50),\n    priority INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_rules (\n    rule_id INT PRIMARY KEY,\n    class_id INT,\n    condition VARCHAR(100),\n    action VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    device_id INT,\n    rule_id INT,\n    traffic_amount DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_policies ( \n    policy_id INT PRIMARY KEY, \n    policy_name VARCHAR(255) NOT NULL, \n    priority_level INT NOT NULL, \n    description TEXT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_devices ( \n    device_id INT PRIMARY KEY, \n    device_name VARCHAR(255) NOT NULL, \n    device_type VARCHAR(50) NOT NULL, \n    location VARCHAR(100) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_classification ( \n    classification_id INT PRIMARY KEY, \n    classification_name VARCHAR(255) NOT NULL, \n    protocol VARCHAR(50) NOT NULL, \n    qos_requirements TEXT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_rules ( \n    rule_id INT PRIMARY KEY, \n    rule_name VARCHAR(255) NOT NULL, \n    source_device_id INT NOT NULL, \n    destination_device_id INT NOT NULL, \n    classification_id INT NOT NULL, \n    priority_level INT NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_logs ( \n    log_id INT PRIMARY KEY, \n    timestamp TIMESTAMP NOT NULL, \n    source_device_id INT NOT NULL, \n    destination_device_id INT NOT NULL, \n    rule_id INT NOT NULL, \n    action_taken VARCHAR(50) NOT NULL \n);"
+      }
+    ]
+  }
+]

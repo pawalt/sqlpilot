@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitors_seo_strategies (\n  competitor_id INT NOT NULL,\n  competitor_name VARCHAR(255) NOT NULL,\n  seo_strategy TEXT,\n  analysis_date DATE,\n  PRIMARY KEY (competitor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitor_seo_strategies (\n  id INT PRIMARY KEY,\n  competitor_name VARCHAR(255),\n  keyword VARCHAR(100),\n  ranking_position INT,\n  analysis_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE own_seo_tactics (\n  id INT PRIMARY KEY,\n  tactic_name VARCHAR(255),\n  implementation_date DATE,\n  success_metric VARCHAR(100),\n  notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitor_data (\n    competitor_id INT PRIMARY KEY,\n    competitor_name VARCHAR(50),\n    keyword_analysis JSONB,\n    backlink_analysis JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE keyword_performance (\n    keyword_id INT PRIMARY KEY,\n    keyword VARCHAR(50),\n    search_volume INT,\n    organic_ranking INT,\n    competitor_id INT REFERENCES competitor_data(competitor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE backlink_quality (\n    backlink_id INT PRIMARY KEY,\n    backlink_url VARCHAR(255),\n    domain_authority INT,\n    referring_domains INT,\n    competitor_id INT REFERENCES competitor_data(competitor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitors (\n    competitor_id SERIAL PRIMARY KEY,\n    competitor_name VARCHAR(255) NOT NULL,\n    competitor_website VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (\n    keyword_id SERIAL PRIMARY KEY,\n    keyword_name VARCHAR(255) NOT NULL,\n    search_volume INTEGER,\n    competition_level INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rankings (\n    ranking_id SERIAL PRIMARY KEY,\n    competitor_id INTEGER REFERENCES competitors(competitor_id),\n    keyword_id INTEGER REFERENCES keywords(keyword_id),\n    position INTEGER NOT NULL,\n    date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE seo_metrics (\n    competitor_id INTEGER REFERENCES competitors(competitor_id),\n    backlinks INTEGER,\n    domain_authority INTEGER,\n    page_authority INTEGER\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitors (\n    id INT PRIMARY KEY,\n    competitor_name STRING,\n    seo_strategy STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (\n    id INT PRIMARY KEY,\n    keyword_name STRING,\n    search_volume INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE website_traffic (\n    id INT PRIMARY KEY,\n    competitor_id INT,\n    traffic_source STRING,\n    traffic_count INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE backlinks (\n    id INT PRIMARY KEY,\n    competitor_id INT,\n    backlink_url STRING,\n    anchor_text STRING,\n    authority_score INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ranking_history (\n    id INT PRIMARY KEY,\n    competitor_id INT,\n    rank_date DATE,\n    ranking_position INT\n);\n"
+      }
+    ]
+  }
+]

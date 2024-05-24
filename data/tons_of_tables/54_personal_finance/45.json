@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debt_management_agency (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(50),\n  total_debt DECIMAL(10, 2),\n  case_manager_email VARCHAR(100),\n  payment_due_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  address VARCHAR(100),\n  debt_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  customer_id INT,\n  transaction_date DATE,\n  transaction_amount DECIMAL(10, 2),\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debt_management_agencies (\n agency_id INT PRIMARY KEY,\n agency_name VARCHAR(255),\n address VARCHAR(255),\n phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clients (\n client_id INT PRIMARY KEY,\n client_name VARCHAR(255),\n email VARCHAR(255),\n phone_number VARCHAR(20),\n debt_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_information (\n client_id INT,\n credit_score INT,\n income DECIMAL(12, 2),\n expenses DECIMAL(12, 2),\n FOREIGN KEY (client_id) REFERENCES clients(client_id)\n);"
+      },
+      {
+        "table_schema": "COMMIT;"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debitors (\n  id UUID PRIMARY KEY,\n  name VARCHAR(50),\n  address VARCHAR(100),\n  phone_number VARCHAR(15),\n  total_debt DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE debts (\n  id UUID PRIMARY KEY,\n  debtor_id UUID REFERENCES debiters(id),\n  amount DECIMAL(10, 2),\n  due_date DATE,\n  status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  id UUID PRIMARY KEY,\n  debt_id UUID REFERENCES debts(id),\n  payment_amount DECIMAL(10, 2),\n  payment_date DATE,\n  payment_method VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  id UUID PRIMARY KEY,\n  username VARCHAR(50),\n  password VARCHAR(50),\n  role VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE debtors ( \n    id INT PRIMARY KEY, \n    name VARCHAR(50), \n    address VARCHAR(100), \n    debt_amount DECIMAL(10, 2) \n); \n"
+      },
+      {
+        "table_schema": "CREATE TABLE debts ( \n    debt_id INT PRIMARY KEY, \n    debtor_id INT, \n    amount DECIMAL(10, 2), \n    due_date DATE, \n    FOREIGN KEY (debtor_id) REFERENCES debtors(id) \n); \n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments ( \n    payment_id INT PRIMARY KEY, \n    debt_id INT, \n    amount DECIMAL(10, 2), \n    payment_date DATE, \n    FOREIGN KEY (debt_id) REFERENCES debts(debt_id) \n); \n"
+      },
+      {
+        "table_schema": "CREATE TABLE users ( \n    user_id INT PRIMARY KEY, \n    username VARCHAR(50), \n    password VARCHAR(100) \n); \n"
+      },
+      {
+        "table_schema": "CREATE TABLE logs ( \n    log_id INT PRIMARY KEY, \n    user_id INT, \n    action VARCHAR(50), \n    log_timestamp TIMESTAMP, \n    FOREIGN KEY (user_id) REFERENCES users(user_id) \n); \n"
+      }
+    ]
+  }
+]

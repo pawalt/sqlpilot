@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_dataset_metadata (\n id UUID PRIMARY KEY,\n dataset_name STRING,\n dataset_description STRING,\n owner VARCHAR,\n creation_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumDatasets (\n    dataset_id SERIAL PRIMARY KEY,\n    dataset_name VARCHAR(50) NOT NULL,\n    num_qubits INTEGER NOT NULL,\n    creation_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumMetadata (\n    metadata_id SERIAL PRIMARY KEY,\n    dataset_id INTEGER REFERENCES QuantumDatasets(dataset_id),\n    metadata_key VARCHAR(50) NOT NULL,\n    metadata_value TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_dataset_metadata (\n    id INT PRIMARY KEY,\n    dataset_name VARCHAR(255),\n    data_type VARCHAR(50),\n    num_samples INT,\n    creation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_workflow (\n    id INT PRIMARY KEY,\n    workflow_name VARCHAR(255),\n    description TEXT,\n    created_by VARCHAR(100),\n    create_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_data_relationship (\n    id INT PRIMARY KEY,\n    dataset_id INT,\n    workflow_id INT,\n    relationship_type VARCHAR(50),\n    FOREIGN KEY (dataset_id) REFERENCES quantum_dataset_metadata(id),\n    FOREIGN KEY (workflow_id) REFERENCES quantum_workflow(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumDatasets (\n    dataset_id INT PRIMARY KEY,\n    dataset_name VARCHAR(255) NOT NULL,\n    num_qubits INT,\n    dataset_size INT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumModels (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255) NOT NULL,\n    model_type VARCHAR(50),\n    accuracy FLOAT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumExperiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255) NOT NULL,\n    dataset_id INT,\n    model_id INT,\n    experiment_status VARCHAR(50),\n    started_at TIMESTAMP,\n    completed_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumResults (\n    result_id INT PRIMARY KEY,\n    result_name VARCHAR(255) NOT NULL,\n    experiment_id INT,\n    result_data JSON,\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumDatasets (\n    dataset_id UUID PRIMARY KEY,\n    dataset_name VARCHAR(255) NOT NULL,\n    dataset_description TEXT,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DatasetFiles (\n    file_id UUID PRIMARY KEY,\n    dataset_id UUID,\n    file_name VARCHAR(255) NOT NULL,\n    file_size INT NOT NULL,\n    file_path TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DatasetTags (\n    tag_id UUID PRIMARY KEY,\n    dataset_id UUID,\n    tag_name VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DatasetFeatures (\n    feature_id UUID PRIMARY KEY,\n    dataset_id UUID,\n    feature_name VARCHAR(100) NOT NULL,\n    feature_type VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelResults (\n    result_id UUID PRIMARY KEY,\n    model_name VARCHAR(100) NOT NULL,\n    dataset_id UUID,\n    result_metrics JSONB,\n    created_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

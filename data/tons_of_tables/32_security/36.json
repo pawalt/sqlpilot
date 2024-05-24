@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE floor_plans(\n  floor_id INT PRIMARY KEY,\n  building_id INT,\n  layout_image BYTEA,\n  access_control_points JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FloorPlans (\n    floor_id INT,\n    floor_name VARCHAR(255),\n    layout BLOB,\n    PRIMARY KEY (floor_id)\n);\n\nCREATE TABLE AccessControlPoints (\n    access_point_id INT,\n    location_id INT,\n    access_level VARCHAR(50),\n    PRIMARY KEY (access_point_id),\n    FOREIGN KEY (location_id) REFERENCES FloorPlans(floor_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FloorPlans (\n    floor_id INT PRIMARY KEY,\n    floor_plan_image BYTEA,\n    access_control_points TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BuildingLayouts (\n    layout_id INT PRIMARY KEY,\n    building_name VARCHAR(50),\n    floors INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControlPoints (\n    point_id INT PRIMARY KEY,\n    point_name VARCHAR(50),\n    location VARCHAR(100),\n    accessibility BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FloorPlans (\n\tp_id INT PRIMARY KEY,\n\tfloor_name VARCHAR(50),\n\tbuilding_name VARCHAR(50),\n\timage_url VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControlPoints (\n\tacp_id INT PRIMARY KEY,\n\tlocation VARCHAR(100),\n\tfloor_id INT,\n\tFOREIGN KEY (floor_id) REFERENCES FloorPlans(p_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Emergencies (\n\te_id INT PRIMARY KEY,\n\tdescription TEXT,\n\tdate_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmergencyLog (\n\tlog_id INT PRIMARY KEY,\n\te_id INT,\n\tacp_id INT,\n\tlog_description TEXT,\n\tFOREIGN KEY (e_id) REFERENCES Emergencies(e_id),\n\tFOREIGN KEY (acp_id) REFERENCES AccessControlPoints(acp_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FloorPlans (\n  floor_id INT PRIMARY KEY,\n  floor_name VARCHAR(255) NOT NULL,\n  building_id INT NOT NULL,\n  floor_layout TEXT,\n  emergency_exit_points JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BuildingLayouts (\n  building_id INT PRIMARY KEY,\n  building_name VARCHAR(255) NOT NULL,\n  address VARCHAR(255) NOT NULL,\n  total_floors INT,\n  construction_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControlPoints (\n  access_point_id INT PRIMARY KEY,\n  access_point_name VARCHAR(255) NOT NULL,\n  building_id INT NOT NULL,\n  floor_id INT NOT NULL,\n  access_type ENUM('Card', 'Biometric', 'Code')\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Emergencies (\n  emergency_id INT PRIMARY KEY,\n  emergency_type VARCHAR(50) NOT NULL,\n  building_id INT NOT NULL,\n  floor_id INT NOT NULL,\n  emergency_contact VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BuildingEmployees (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(255) NOT NULL,\n  building_id INT NOT NULL,\n  department VARCHAR(100),\n  access_level ENUM('Admin', 'Employee')\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE machines (\n  machine_id UUID PRIMARY KEY,\n  machine_name VARCHAR(50),\n  location_id UUID,\n  installation_date DATE,\n  last_maintenance_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE machines (\n    machine_id INT PRIMARY KEY,\n    machine_name VARCHAR(255),\n    location VARCHAR(255),\n    status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE machine_data (\n    data_id SERIAL PRIMARY KEY,\n    machine_id INT,\n    timestamp TIMESTAMP,\n    temperature FLOAT,\n    pressure FLOAT,\n    vibration FLOAT,\n    FOREIGN KEY (machine_id) REFERENCES machines(machine_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE machines (\n\tmachine_id SERIAL PRIMARY KEY,\n\tmachine_name VARCHAR(50) NOT NULL,\n\tsensor_type VARCHAR(20) NOT NULL,\n\tsensor_value FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n\tsensor_id SERIAL PRIMARY KEY,\n\tmachine_id INTEGER REFERENCES machines(machine_id),\n\ttimestamp TIMESTAMP NOT NULL,\n\tsensor_value FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_logs (\n\tlog_id SERIAL PRIMARY KEY,\n\tmachine_id INTEGER REFERENCES machines(machine_id),\n\ttimestamp TIMESTAMP NOT NULL,\n\tproduction_output INTEGER NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE machines (\n    machine_id INT PRIMARY KEY,\n    machine_name VARCHAR(255),\n    location VARCHAR(255),\n    last_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_type VARCHAR(50),\n    sensor_location VARCHAR(255),\n    machine_id INT,\n    FOREIGN KEY (machine_id) REFERENCES machines(machine_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    data_id SERIAL PRIMARY KEY,\n    sensor_id INT,\n    timestamp TIMESTAMP,\n    value DECIMAL,\n    FOREIGN KEY (sensor_id) REFERENCES sensors(sensor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id SERIAL PRIMARY KEY,\n    machine_id INT,\n    alert_type VARCHAR(50),\n    alert_date TIMESTAMP,\n    description TEXT,\n    FOREIGN KEY (machine_id) REFERENCES machines(machine_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Machines (\n    machine_id INT PRIMARY KEY,\n    machine_name VARCHAR(255),\n    location VARCHAR(255),\n    production_capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_type VARCHAR(255),\n    sensor_location VARCHAR(255),\n    machine_id INT,\n    FOREIGN KEY (machine_id) REFERENCES Machines(machine_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorData (\n    data_id SERIAL PRIMARY KEY,\n    sensor_id INT,\n    data_time TIMESTAMP,\n    data_value FLOAT,\n    FOREIGN KEY (sensor_id) REFERENCES Sensors(sensor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n    log_id SERIAL PRIMARY KEY,\n    machine_id INT,\n    maintenance_date DATE,\n    maintenance_description TEXT,\n    FOREIGN KEY (machine_id) REFERENCES Machines(machine_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceMetrics (\n    metric_id SERIAL PRIMARY KEY,\n    machine_id INT,\n    metric_date DATE,\n    downtime_seconds INT,\n    efficiency_percent FLOAT,\n    FOREIGN KEY (machine_id) REFERENCES Machines(machine_id)\n);"
+      }
+    ]
+  }
+]

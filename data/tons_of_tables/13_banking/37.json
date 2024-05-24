@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE money_transfers (\n    transfer_id UUID PRIMARY KEY,\n    sender_id UUID NOT NULL,\n    receiver_id UUID NOT NULL,\n    amount DECIMAL NOT NULL,\n    transfer_date TIMESTAMP NOT NULL,\n    status VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE,\n  balance DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  sender_id INT NOT NULL,\n  recipient_id INT NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n\tcustomer_id INT PRIMARY KEY,\n\tcustomer_name VARCHAR(50) NOT NULL,\n\tcustomer_email VARCHAR(100) NOT NULL,\n\tcustomer_balance DECIMAL(10, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n\ttransaction_id INT PRIMARY KEY,\n\tsender_id INT NOT NULL,\n\treceiver_id INT NOT NULL,\n\tamount DECIMAL(10, 2) NOT NULL,\n\ttransaction_date TIMESTAMP NOT NULL,\n\tFOREIGN KEY (sender_id) REFERENCES customers(customer_id),\n\tFOREIGN KEY (receiver_id) REFERENCES customers(customer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n\tlog_id INT PRIMARY KEY,\n\ttransaction_id INT NOT NULL,\n\tlog_description TEXT NOT NULL,\n\tlog_timestamp TIMESTAMP NOT NULL,\n\tFOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email_address VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Accounts (\n    account_id INT PRIMARY KEY,\n    customer_id INT REFERENCES Customers(customer_id),\n    account_balance DECIMAL(10, 2) DEFAULT 0.00,\n    date_opened DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id INT PRIMARY KEY,\n    source_account_id INT REFERENCES Accounts(account_id),\n    destination_account_id INT REFERENCES Accounts(account_id),\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Logs (\n    log_id INT PRIMARY KEY,\n    transaction_id INT REFERENCES Transactions(transaction_id),\n    log_message TEXT,\n    log_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    phone_number VARCHAR(15) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Accounts (\n    account_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES Customers(customer_id),\n    balance DECIMAL(15, 2) DEFAULT 0.00,\n    currency VARCHAR(3) DEFAULT 'USD'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id UUID PRIMARY KEY,\n    from_account_id UUID REFERENCES Accounts(account_id),\n    to_account_id UUID REFERENCES Accounts(account_id),\n    amount DECIMAL(15, 2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Audit_Logs (\n    log_id UUID PRIMARY KEY,\n    event_type VARCHAR(50) NOT NULL,\n    event_description TEXT,\n    timestamp TIMESTAMP NOT NULL DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Security (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    role VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  }
+]

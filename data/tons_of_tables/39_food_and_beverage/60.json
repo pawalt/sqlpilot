@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FoodSupplyChain (\n    id SERIAL PRIMARY KEY,\n    product_name TEXT NOT NULL,\n    origin TEXT NOT NULL,\n    production_practices TEXT,\n    transportation TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE origin (\n    id UUID PRIMARY KEY,\n    country TEXT NOT NULL,\n    region TEXT,\n    city TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_practices (\n    id UUID PRIMARY KEY,\n    method TEXT NOT NULL,\n    certification TEXT,\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE origin_info (\n    origin_id INT PRIMARY KEY,\n    location VARCHAR(255) NOT NULL,\n    origin_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE production_practices (\n    practice_id INT PRIMARY KEY,\n    practice_name VARCHAR(255) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_info (\n    transport_id INT PRIMARY KEY,\n    transport_mode VARCHAR(50) NOT NULL,\n    distance_km FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS origin_info (\n    origin_id INT PRIMARY KEY,\n    origin_name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS production_practices (\n    practice_id INT PRIMARY KEY,\n    practice_name VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS product_info (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    category VARCHAR(255) NOT NULL,\n    weight DECIMAL(10,2) NOT NULL,\n    origin_id INT NOT NULL,\n    practice_id INT NOT NULL,\n    FOREIGN KEY (origin_id) REFERENCES origin_info(origin_id),\n    FOREIGN KEY (practice_id) REFERENCES production_practices(practice_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS transportation_info (\n    transport_id INT PRIMARY KEY,\n    transport_mode VARCHAR(255) NOT NULL,\n    route_details TEXT NOT NULL,\n    product_id INT NOT NULL,\n    FOREIGN KEY (product_id) REFERENCES product_info(product_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE origin (\n    origin_id INT PRIMARY KEY,\n    country VARCHAR(50),\n    region VARCHAR(50),\n    producer_name VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_practices (\n    practice_id INT PRIMARY KEY,\n    practice_name VARCHAR(100),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation (\n    transport_id INT PRIMARY KEY,\n    transport_type VARCHAR(50),\n    start_location VARCHAR(100),\n    end_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE food_products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(100),\n    origin_id INT,\n    practice_id INT,\n    transport_id INT,\n    FOREIGN KEY (origin_id) REFERENCES origin(origin_id),\n    FOREIGN KEY (practice_id) REFERENCES production_practices(practice_id),\n    FOREIGN KEY (transport_id) REFERENCES transportation(transport_id)\n);"
+      }
+    ]
+  }
+]

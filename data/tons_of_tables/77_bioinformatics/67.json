@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE novel_drug_targets (\n  id INT PRIMARY KEY,\n  gene_name VARCHAR(50),\n  expression_profile TEXT,\n  drug_target_label VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_targets (\n    drug_id INT PRIMARY KEY,\n    target_gene_id INT,\n    target_gene_name VARCHAR(255),\n    expression_profile TEXT\n);\n\nCREATE TABLE gene_expression_profiles (\n    profile_id INT PRIMARY KEY,\n    gene_id INT,\n    gene_name VARCHAR(255),\n    expression_values TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_expression_profiles (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    expression_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_targets (\n    target_id INT PRIMARY KEY,\n    target_name VARCHAR(255),\n    target_function TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_gene_relationship (\n    relationship_id INT PRIMARY KEY,\n    drug_id INT,\n    gene_id INT,\n    FOREIGN KEY (drug_id) REFERENCES drug_targets(target_id),\n    FOREIGN KEY (gene_id) REFERENCES gene_expression_profiles(gene_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id UUID PRIMARY KEY,\n  age INT,\n  gender VARCHAR,\n  blood_type VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Genes (\n  gene_id UUID PRIMARY KEY,\n  gene_name VARCHAR,\n  chromosome INT,\n  chromosomal_location VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneExpression (\n  expression_id UUID PRIMARY KEY,\n  gene_id UUID,\n  patient_id UUID,\n  expression_level FLOAT,\n  FOREIGN KEY (gene_id) REFERENCES Genes(gene_id),\n  FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DrugTargets (\n  target_id UUID PRIMARY KEY,\n  gene_id UUID,\n  target_name VARCHAR,\n  action VARCHAR,\n  FOREIGN KEY (gene_id) REFERENCES Genes(gene_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneExpression ( \n  gene_id INT PRIMARY KEY, \n  gene_name STRING, \n  expression_level FLOAT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DrugTargets ( \n  target_id INT PRIMARY KEY, \n  target_name STRING, \n  gene_id INT REFERENCES GeneExpression(gene_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DrugMolecules ( \n  molecule_id INT PRIMARY KEY, \n  molecule_name STRING, \n  target_id INT REFERENCES DrugTargets(target_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ClinicalTrials ( \n  trial_id INT PRIMARY KEY, \n  trial_name STRING, \n  target_id INT REFERENCES DrugTargets(target_id), \n  start_date DATE, \n  end_date DATE \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchResults ( \n  result_id INT PRIMARY KEY, \n  trial_id INT REFERENCES ClinicalTrials(trial_id), \n  gene_id INT REFERENCES GeneExpression(gene_id), \n  result_type STRING, \n  result_description STRING \n);"
+      }
+    ]
+  }
+]

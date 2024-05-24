@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_churn (\n    user_id INT PRIMARY KEY,\n    last_activity TIMESTAMP,\n    engagement_score INT,\n    email_notifications BOOLEAN,\n    subscription_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    activity_type VARCHAR(50) NOT NULL,\n    activity_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    last_activity TIMESTAMP,\n    churn_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    activity_type VARCHAR(50) NOT NULL,\n    activity_date TIMESTAMP,\n    duration_minutes INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_interaction (\n    interaction_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    interaction_type VARCHAR(50) NOT NULL,\n    interaction_date TIMESTAMP,\n    interaction_result VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username TEXT,\n    email TEXT,\n    last_login TIMESTAMP,\n    account_created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    activity_type TEXT,\n    activity_timestamp TIMESTAMP,\n    activity_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    session_start TIMESTAMP,\n    session_end TIMESTAMP,\n    session_duration INTERVAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE churn_prediction (\n    prediction_id INT PRIMARY KEY,\n    user_id INT,\n    churn_probability FLOAT,\n    prediction_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username TEXT,\n  email TEXT,\n  join_date DATE,\n  last_activity TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n  log_id INT PRIMARY KEY,\n  user_id INT,\n  log_date DATE,\n  activity_type TEXT,\n  activity_description TEXT,\n  CONSTRAINT fk_user_logs_user_id\n    FOREIGN KEY (user_id)\n    REFERENCES users (user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE churn_prediction (\n  prediction_id INT PRIMARY KEY,\n  user_id INT,\n  prediction_date DATE,\n  predicted_churn_date DATE,\n  accuracy DECIMAL,\n  CONSTRAINT fk_churn_prediction_user_id\n    FOREIGN KEY (user_id)\n    REFERENCES users (user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inactivity_alerts (\n  alert_id INT PRIMARY KEY,\n  user_id INT,\n  alert_date DATE,\n  alert_message TEXT,\n  CONSTRAINT fk_inactivity_alerts_user_id\n    FOREIGN KEY (user_id)\n    REFERENCES users (user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE engagement_patterns (\n  pattern_id INT PRIMARY KEY,\n  user_id INT,\n  pattern_date DATE,\n  pattern_type TEXT,\n  pattern_frequency INT,\n  CONSTRAINT fk_engagement_patterns_user_id\n    FOREIGN KEY (user_id)\n    REFERENCES users (user_id)\n)"
+      }
+    ]
+  }
+]

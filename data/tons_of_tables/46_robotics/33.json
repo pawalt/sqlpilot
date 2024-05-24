@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BatteryUsage (\n    drone_id INT,\n    battery_level DECIMAL,\n    charging_cycles INT,\n    timestamp TIMESTAMP,\n    PRIMARY KEY (drone_id, timestamp)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BatteryUsage (\n    drone_id INT,\n    usage_date DATE,\n    battery_level DECIMAL,\n    charging_cycle_id INT,\n    PRIMARY KEY (drone_id, usage_date)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ChargingCycles (\n    charging_cycle_id INT,\n    start_date TIMESTAMP,\n    end_date TIMESTAMP,\n    total_charging_time FLOAT,\n    PRIMARY KEY (charging_cycle_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DroneBatteryStatus (\n    drone_id INT PRIMARY KEY,\n    battery_percentage DECIMAL,\n    charging_cycles INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ChargingStations (\n    station_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    max_capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DroneChargingHistory (\n    history_id INT PRIMARY KEY,\n    drone_id INT,\n    station_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    energy_transferred DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n    drone_id INT PRIMARY KEY,\n    battery_level FLOAT NOT NULL,\n    charging_cycles INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drone_locations (\n    location_id INT PRIMARY KEY,\n    drone_id INT REFERENCES drones(drone_id),\n    latitude FLOAT NOT NULL,\n    longitude FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE battery_replacement (\n    replacement_id INT PRIMARY KEY,\n    drone_id INT REFERENCES drones(drone_id),\n    date_replaced DATE NOT NULL,\n    battery_level FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE charging_stations (\n    station_id INT PRIMARY KEY,\n    location_id INT REFERENCES drone_locations(location_id),\n    charging_capacity FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n    drone_id UUID PRIMARY KEY,\n    battery_level FLOAT,\n    charging_cycles INT,\n    last_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE battery_charging_stations (\n    station_id UUID PRIMARY KEY,\n    location VARCHAR,\n    charging_capacity FLOAT,\n    power_source VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE charging_sessions (\n    session_id UUID PRIMARY KEY,\n    drone_id UUID,\n    station_id UUID,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drone_status (\n    drone_id UUID PRIMARY KEY,\n    status VARCHAR,\n    last_update TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE power_consumption_logs (\n    log_id UUID PRIMARY KEY,\n    drone_id UUID,\n    time_stamp TIMESTAMP,\n    power_consumed FLOAT\n);"
+      }
+    ]
+  }
+]

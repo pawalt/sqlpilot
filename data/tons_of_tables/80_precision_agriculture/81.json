@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE soil_moisture_levels (\n    field_id INT,\n    date DATE,\n    moisture_level DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field (\n  field_id INT PRIMARY KEY,\n  field_name VARCHAR(255) NOT NULL,\n  soil_moisture_level DECIMAL(5, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE moisture_reading (\n  reading_id INT PRIMARY KEY,\n  field_id INT,\n  reading_time TIMESTAMP,\n  reading_value DECIMAL(5, 2),\n  FOREIGN KEY (field_id) REFERENCES field(field_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Field (field_id INT PRIMARY KEY, field_name VARCHAR(50), location VARCHAR(100), soil_type VARCHAR(50), last_moisture_level FLOAT);"
+      },
+      {
+        "table_schema": "CREATE TABLE MoistureReading (reading_id INT PRIMARY KEY, field_id INT, reading_timestamp TIMESTAMP, moisture_level FLOAT, FOREIGN KEY (field_id) REFERENCES Field(field_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldHistory (history_id INT PRIMARY KEY, field_id INT, history_date DATE, action VARCHAR(50), notes TEXT, FOREIGN KEY (field_id) REFERENCES Field(field_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fields (\n    field_id INT PRIMARY KEY,\n    field_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE moisture_data (\n    data_id INT PRIMARY KEY,\n    field_id INT NOT NULL,\n    moisture_level DECIMAL NOT NULL,\n    recorded_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_conditions (\n    condition_id INT PRIMARY KEY,\n    description VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE field_weather (\n    field_id INT NOT NULL,\n    condition_id INT NOT NULL,\n    recorded_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (field_id) REFERENCES fields(field_id),\n    FOREIGN KEY (condition_id) REFERENCES weather_conditions(condition_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field_locations (\n    field_id INT PRIMARY KEY,\n    field_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE soil_moisture_measurements (\n    measurement_id INT PRIMARY KEY,\n    field_id INT NOT NULL,\n    moisture_level DECIMAL NOT NULL,\n    measurement_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_conditions (\n    weather_id INT PRIMARY KEY,\n    measurement_id INT NOT NULL,\n    temperature DECIMAL NOT NULL,\n    humidity DECIMAL NOT NULL,\n    rainfall DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE field_properties (\n    field_id INT PRIMARY KEY,\n    field_area DECIMAL NOT NULL,\n    soil_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE field_crops (\n    crop_id INT PRIMARY KEY,\n    field_id INT NOT NULL,\n    crop_name VARCHAR(50) NOT NULL,\n    planting_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

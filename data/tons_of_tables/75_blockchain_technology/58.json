@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_estate_projects (\n    project_id INT NOT NULL,\n    project_name VARCHAR(255) NOT NULL,\n    project_description TEXT,\n    blockchain_address VARCHAR(50) NOT NULL,\n    goal_amount DECIMAL(10, 2) NOT NULL,\n    current_funding DECIMAL(10, 2) DEFAULT 0,\n    start_date DATE,\n    end_date DATE,\n    PRIMARY KEY (project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n    campaign_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    funding_goal DECIMAL(12, 2) NOT NULL,\n    current_funds DECIMAL(12, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Backers (\n    backer_id INT PRIMARY KEY,\n    campaign_id INT REFERENCES Campaigns(campaign_id),\n    backer_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    contribution DECIMAL(12, 2) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n\tcampaign_id INT PRIMARY KEY,\n\tproject_name VARCHAR(255),\n\tstart_date DATE,\n\tend_date DATE,\n\ttarget_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Backers (\n\tbacker_id INT PRIMARY KEY,\n\tbacker_name VARCHAR(255),\n\tbacker_email VARCHAR(255),\n\ttotal_contribution DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n\ttransaction_id INT PRIMARY KEY,\n\tbacker_id INT,\n\tcampaign_id INT,\n\tamount DECIMAL(10, 2),\n\ttransaction_date TIMESTAMP,\n\tFOREIGN KEY (backer_id) REFERENCES Backers(backer_id),\n\tFOREIGN KEY (campaign_id) REFERENCES Campaigns(campaign_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n    campaign_id UUID PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL,\n    project_description TEXT,\n    funding_goal DECIMAL(12, 2),\n    start_date TIMESTAMP NOT NULL,\n    end_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Investors (\n    investor_id UUID PRIMARY KEY,\n    investor_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    total_investment DECIMAL(12, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Investments (\n    investment_id UUID PRIMARY KEY,\n    campaign_id UUID REFERENCES Campaigns(campaign_id),\n    investor_id UUID REFERENCES Investors(investor_id),\n    amount DECIMAL(12, 2) NOT NULL,\n    investment_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n    payment_id UUID PRIMARY KEY,\n    investment_id UUID REFERENCES Investments(investment_id),\n    payment_amount DECIMAL(12, 2) NOT NULL,\n    payment_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name TEXT NOT NULL,\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE,\n    funding_goal DECIMAL,\n    funds_raised DECIMAL\n);\n\nCREATE TABLE backers (\n    backer_id INT PRIMARY KEY,\n    backer_name TEXT NOT NULL,\n    backer_email TEXT NOT NULL,\n    total_invested DECIMAL\n);\n\nCREATE TABLE investments (\n    investment_id INT PRIMARY KEY,\n    backer_id INT REFERENCES backers(backer_id),\n    project_id INT REFERENCES projects(project_id),\n    amount_invested DECIMAL,\n    investment_date DATE\n);\n\nCREATE TABLE rewards (\n    reward_id INT PRIMARY KEY,\n    project_id INT REFERENCES projects(project_id),\n    reward_description TEXT,\n    reward_value DECIMAL\n);\n\nCREATE TABLE blockchain_transactions (\n    transaction_id INT PRIMARY KEY,\n    project_id INT REFERENCES projects(project_id),\n    transaction_type TEXT\n);"
+      }
+    ]
+  }
+]

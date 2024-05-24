@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policy (\n    id SERIAL PRIMARY KEY,\n    policy_name VARCHAR(50) NOT NULL,\n    retention_duration INT NOT NULL,\n    is_active BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_retention_policies (\n    id INT,\n    policy_name VARCHAR(255),\n    retention_period INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE archived_data (\n    archived_id INT,\n    original_id INT,\n    archived_date DATETIME,\n    archived_data JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n    policy_id SERIAL PRIMARY KEY,\n    policy_name VARCHAR(50) NOT NULL,\n    retention_period INTERVAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_to_be_retained (\n    data_id SERIAL PRIMARY KEY,\n    data_type VARCHAR(50) NOT NULL,\n    creation_date DATE NOT NULL,\n    is_archived BOOLEAN DEFAULT FALSE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE archived_data (\n    archived_id SERIAL PRIMARY KEY,\n    original_data_id INT REFERENCES data_to_be_retained(data_id),\n    archive_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_retention_policy (\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    retention_period INT,\n    archival_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE business (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    industry VARCHAR(50),\n    contact_person VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_record (\n    id INT PRIMARY KEY,\n    data_value TEXT,\n    creation_date DATE,\n    business_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_archive (\n    id INT PRIMARY KEY,\n    archive_date DATE,\n    archived_data TEXT,\n    retention_policy_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policy (\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    policy_description TEXT,\n    retention_period INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_entry (\n    entry_id UUID PRIMARY KEY,\n    data_value JSONB,\n    entry_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_archive (\n    archive_id UUID PRIMARY KEY,\n    archive_data JSONB,\n    archive_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deletion_log (\n    log_id SERIAL PRIMARY KEY,\n    deleted_entry_id UUID,\n    deletion_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE retention_log (\n    log_id SERIAL PRIMARY KEY,\n    log_type VARCHAR(20),\n    log_description TEXT,\n    log_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

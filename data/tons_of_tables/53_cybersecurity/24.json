@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_logs (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR(255),\n    destination_ip VARCHAR(255),\n    protocol VARCHAR(50),\n    data_size INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_logs (\n    log_id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    source_ip VARCHAR(15) NOT NULL,\n    destination_ip VARCHAR(15) NOT NULL,\n    protocol VARCHAR(10) NOT NULL,\n    packet_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE intrusion_attempts (\n    attempt_id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    source_ip VARCHAR(15) NOT NULL,\n    destination_ip VARCHAR(15) NOT NULL,\n    protocol VARCHAR(10) NOT NULL,\n    threat_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_logs (\n    id INT,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR,\n    destination_ip VARCHAR,\n    protocol VARCHAR,\n    message TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE malicious_activities (\n    id INT,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR,\n    activity_type VARCHAR,\n    severity INT,\n    details TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE intrusions (\n    id INT,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR,\n    intrusion_type VARCHAR,\n    intrusion_method VARCHAR,\n    status VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR(15),\n    destination_ip VARCHAR(15),\n    protocol VARCHAR(10),\n    data_transfer INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malicious_activities (\n    activity_id INT PRIMARY KEY,\n    log_id INT,\n    activity_description TEXT,\n    threat_level INT,\n    FOREIGN KEY(log_id) REFERENCES network_traffic_logs(log_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE intrusion_attempts (\n    attempt_id INT PRIMARY KEY,\n    log_id INT,\n    attempt_type VARCHAR(50),\n    attempt_time TIMESTAMP,\n    FOREIGN KEY(log_id) REFERENCES network_traffic_logs(log_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE detected_intrusions (\n    intrusion_id INT PRIMARY KEY,\n    attempt_id INT,\n    intrusion_type VARCHAR(50),\n    detection_time TIMESTAMP,\n    FOREIGN KEY(attempt_id) REFERENCES intrusion_attempts(attempt_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR(15),\n    destination_ip VARCHAR(15),\n    port INT,\n    protocol VARCHAR(10),\n    data_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malicious_activities (\n    activity_id INT PRIMARY KEY,\n    log_id INT,\n    activity_description TEXT,\n    detected_timestamp TIMESTAMP,\n    FOREIGN KEY (log_id) REFERENCES network_traffic_logs(log_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE intrusions (\n    intrusion_id INT PRIMARY KEY,\n    log_id INT,\n    intrusion_type VARCHAR(50),\n    intrusion_detected_timestamp TIMESTAMP,\n    FOREIGN KEY (log_id) REFERENCES network_traffic_logs(log_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password_hash VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

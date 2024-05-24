@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserCredentials (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password_hash VARCHAR(255) NOT NULL,\n  last_login TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    user_id INT,\n    role_name VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES user_credentials(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP DEFAULT NOW() \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id SERIAL PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id UUID PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_role_mapping (\n    mapping_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    role_id UUID NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT,\n    role_id INT,\n    PRIMARY KEY (user_id, role_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id INT,\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_reset (\n    reset_id UUID PRIMARY KEY,\n    user_id INT,\n    reset_code VARCHAR(20) NOT NULL,\n    reset_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  }
+]

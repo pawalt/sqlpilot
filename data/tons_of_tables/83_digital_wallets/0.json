@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    transaction_amount DECIMAL NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    transaction_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  user_id INT,\n  amount DECIMAL,\n  status VARCHAR(50),\n  transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(100),\n  registration_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_transactions (\n    user_id UUID,\n    transaction_id UUID,\n    transaction_amount DECIMAL,\n    transaction_date TIMESTAMP,\n    PRIMARY KEY (user_id, transaction_id)\n  );"
+      },
+      {
+        "table_schema": "CREATE TABLE user_audit_log (\n    log_id UUID,\n    user_id UUID,\n    action VARCHAR,\n    action_date TIMESTAMP,\n    PRIMARY KEY (log_id)\n  );"
+      },
+      {
+        "table_schema": "CREATE TABLE user_analysis_data (\n    analysis_id UUID,\n    user_id UUID,\n    analysis_result VARCHAR,\n    analysis_date TIMESTAMP,\n    PRIMARY KEY (analysis_id)\n  );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(255),\n    email VARCHAR(255),\n    account_balance DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES user_accounts(user_id),\n    transaction_type VARCHAR(50),\n    amount DECIMAL,\n    transaction_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n    log_id UUID PRIMARY KEY,\n    transaction_id UUID REFERENCES transactions(transaction_id),\n    log_message TEXT,\n    log_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES user_accounts(user_id),\n    activity_type VARCHAR(50),\n    activity_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT,\n    amount DECIMAL,\n    transaction_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(255),\n    email VARCHAR(255) UNIQUE,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions_audit (\n    audit_id INT PRIMARY KEY,\n    transaction_id INT,\n    user_id INT,\n    audit_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_groups (\n    group_id INT PRIMARY KEY,\n    group_name VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_transactions_summary (\n    user_id INT,\n    total_transactions INT,\n    total_amount DECIMAL\n);\n"
+      }
+    ]
+  }
+]

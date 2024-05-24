@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drone_flight_data (\n  id INT PRIMARY KEY,\n  altitude FLOAT,\n  speed FLOAT,\n  latitude FLOAT,\n  longitude FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DroneFlightData (\n  flight_id INT PRIMARY KEY,\n  altitude FLOAT,\n  speed FLOAT,\n  latitude FLOAT,\n  longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DroneAnalysis (\n  analysis_id INT PRIMARY KEY,\n  flight_id INT,\n  analysis_result TEXT,\n  CONSTRAINT fk_flight_id FOREIGN KEY (flight_id) REFERENCES DroneFlightData(flight_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DroneAltitude (\n  drone_id INT,\n  altitude FLOAT,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DroneSpeed (\n  drone_id INT,\n  speed FLOAT,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DroneGPS (\n  drone_id INT,\n  latitude FLOAT,\n  longitude FLOAT,\n  timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DroneInfo (\n    drone_id INT PRIMARY KEY,\n    altitude DECIMAL,\n    speed DECIMAL,\n    latitude DECIMAL,\n    longitude DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FlightData (\n    flight_id INT PRIMARY KEY,\n    drone_id INT,\n    flight_date DATE,\n    duration INT,\n    distance DECIMAL,\n    CONSTRAINT fk_drone FOREIGN KEY (drone_id) REFERENCES DroneInfo(drone_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TelemetryData (\n    telemetry_id INT PRIMARY KEY,\n    drone_id INT,\n    timestamp TIMESTAMP,\n    temperature DECIMAL,\n    humidity DECIMAL,\n    CONSTRAINT fk_drone FOREIGN KEY (drone_id) REFERENCES DroneInfo(drone_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FlightPath (\n    path_id INT PRIMARY KEY,\n    flight_id INT,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    altitude DECIMAL,\n    speed DECIMAL,\n    CONSTRAINT fk_flight FOREIGN KEY (flight_id) REFERENCES FlightData(flight_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drone_flights (\n  id SERIAL PRIMARY KEY,\n  altitude FLOAT,\n  speed FLOAT,\n  latitude FLOAT,\n  longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drone_sensors (\n  sensor_id SERIAL PRIMARY KEY,\n  drone_id INT,\n  sensor_type VARCHAR(50),\n  sensor_value FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drone_battery (\n  battery_id SERIAL PRIMARY KEY,\n  drone_id INT,\n  battery_level FLOAT,\n  battery_health VARCHAR(50),\n  last_charged_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drone_weather (\n  report_id SERIAL PRIMARY KEY,\n  temperature FLOAT,\n  humidity FLOAT,\n  wind_speed FLOAT,\n  weather_condition VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drone_maintenance (\n  maintenance_id SERIAL PRIMARY KEY,\n  drone_id INT,\n  maintenance_type VARCHAR(50),\n  maintenance_cost FLOAT,\n  maintenance_date DATE\n);\n"
+      }
+    ]
+  }
+]

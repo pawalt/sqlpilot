@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_recalls (\n  id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  batch_number INT,\n  recall_reason TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE batch_tracking_product (\n    product_id INT PRIMARY KEY,\n    batch_number INT,\n    production_date DATE,\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recall_tracking (\n    recall_id INT PRIMARY KEY,\n    product_id INT,\n    recall_reason TEXT,\n    recall_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_batch (\n  batch_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  production_date DATE,\n  expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE recalled_batches (\n  recall_id INT PRIMARY KEY,\n  batch_id INT,\n  reason TEXT,\n  recall_date DATE,\n  FOREIGN KEY (batch_id) REFERENCES product_batch(batch_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE recall_notifications (\n  notification_id INT PRIMARY KEY,\n  recall_id INT,\n  notification_type VARCHAR(50),\n  notification_date DATE,\n  FOREIGN KEY (recall_id) REFERENCES recalled_batches(recall_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProductBatch (batch_id INT PRIMARY KEY,\nproduct_id INT,\nproduction_date DATE,\nexpiration_date DATE);\n\nCREATE TABLE ProductRecall (recall_id INT PRIMARY KEY,\nbatch_id INT,\nrecall_date DATE,\nreason TEXT);\n\nCREATE TABLE RecallNotification (notification_id INT PRIMARY KEY,\nrecall_id INT,\nnotification_date DATE,\nnotification_text TEXT);\n\nCREATE TABLE RecallStatus (status_id INT PRIMARY KEY,\nrecall_id INT,\nstatus TEXT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  batch_number INT,\n  manufacturing_date DATE,\n  expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE batches (\n  batch_id INT PRIMARY KEY,\n  product_id INT,\n  quantity INT,\n  manufacturing_location VARCHAR(255),\n  manufacturing_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recalls (\n  recall_id INT PRIMARY KEY,\n  product_id INT,\n  batch_id INT,\n  reason VARCHAR(255),\n  recall_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recalls_history (\n  recall_id INT,\n  product_id INT,\n  batch_id INT,\n  reason VARCHAR(255),\n  recall_date DATE,\n  PRIMARY KEY (recall_id, recall_date)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recall_notifications (\n  notification_id INT PRIMARY KEY,\n  recall_id INT,\n  notification_type VARCHAR(255),\n  notification_date DATE\n);"
+      }
+    ]
+  }
+]

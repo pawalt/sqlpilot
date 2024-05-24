@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transportation_data (\n    trip_id INT PRIMARY KEY,\n    start_location VARCHAR(255),\n    end_location VARCHAR(255),\n    trip_date DATE,\n    trip_duration_minutes INT,\n    vehicle_type VARCHAR(50),\n    passenger_count INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transportation_data (\n  id INT PRIMARY KEY,\n  date DATE,\n  city VARCHAR(50),\n  mode_of_transport VARCHAR(50),\n  distance FLOAT,\n  duration TIME\n);\n\nCREATE TABLE transportation_patterns (\n  pattern_id INT PRIMARY KEY,\n  pattern_description TEXT,\n  start_time TIME,\n  end_time TIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historic_routes (\n    route_id INT PRIMARY KEY,\n    route_name TEXT,\n    start_city TEXT,\n    end_city TEXT,\n    distance_km FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_modes (\n    mode_id INT PRIMARY KEY,\n    mode_name TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE route_histories (\n    history_id INT PRIMARY KEY,\n    route_id INT,\n    date DATE,\n    mode_id INT,\n    distance_km FLOAT,\n    FOREIGN KEY (route_id) REFERENCES historic_routes(route_id),\n    FOREIGN KEY (mode_id) REFERENCES transportation_modes(mode_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_transportation_data (\n    route_id INT PRIMARY KEY,\n    start_location VARCHAR(255),\n    end_location VARCHAR(255),\n    distance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_routes (\n    route_id INT PRIMARY KEY,\n    vehicle_type VARCHAR(50),\n    speed_limit INT,\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_schedules (\n    schedule_id INT PRIMARY KEY,\n    route_id INT REFERENCES historical_transportation_data(route_id),\n    departure_time TIMESTAMP,\n    arrival_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE passenger_data (\n    passenger_id INT PRIMARY KEY,\n    name VARCHAR(100),\n    age INT,\n    nationality VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HistoricalRoutes (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(255),\n    start_location VARCHAR(255),\n    end_location VARCHAR(255),\n    distance FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TravelData (\n    travel_id INT PRIMARY KEY,\n    route_id INT REFERENCES HistoricalRoutes(route_id),\n    travel_date DATE,\n    travel_time TIME,\n    passenger_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE VehicleInfo (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type VARCHAR(255),\n    vehicle_model VARCHAR(255),\n    manufacture_year INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DriverInfo (\n    driver_id INT PRIMARY KEY,\n    driver_name VARCHAR(255),\n    driver_license VARCHAR(50),\n    contact_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WeatherData (\n    weather_id INT PRIMARY KEY,\n    travel_id INT REFERENCES TravelData(travel_id),\n    weather_condition VARCHAR(100),\n    temperature FLOAT,\n    wind_speed FLOAT\n)"
+      }
+    ]
+  }
+]

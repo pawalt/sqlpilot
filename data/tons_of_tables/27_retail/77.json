@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(255),\n  supplier_location VARCHAR(255),\n  eco_friendly_products BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier ( \n    id SERIAL PRIMARY KEY, \n    name VARCHAR(255) NOT NULL, \n    location VARCHAR(255) NOT NULL, \n    is_eco_friendly BOOLEAN \n);\n\nCREATE TABLE product ( \n    id SERIAL PRIMARY KEY, \n    name VARCHAR(255) NOT NULL, \n    supplier_id INT REFERENCES supplier(id), \n    price DECIMAL(10, 2) NOT NULL, \n    is_sustainable BOOLEAN \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(100),\n  sustainability_rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(100),\n  supplier_id INT,\n  price DECIMAL(10, 2),\n  FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_sources (\n  product_id INT,\n  source_name VARCHAR(100),\n  sustainability_certification VARCHAR(50),\n  FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(255) NOT NULL,\n  supplier_location VARCHAR(255) NOT NULL,\n  is_ecofriendly BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  product_category VARCHAR(50) NOT NULL,\n  supplier_id INT references suppliers(supplier_id),\n  is_sustainable BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_reviews (\n  review_id INT PRIMARY KEY,\n  product_id INT references products(product_id),\n  reviewer_name VARCHAR(255) NOT NULL,\n  review_text TEXT,\n  review_rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_relationships (\n  supplier_id INT references suppliers(supplier_id),\n  related_supplier_id INT references suppliers(supplier_id),\n  relationship_type VARCHAR(50),\n  PRIMARY KEY (supplier_id, related_supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(255) NOT NULL,\n  contact_person VARCHAR(255) NOT NULL,\n  email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  category VARCHAR(50) NOT NULL,\n  price DECIMAL(10, 2) NOT NULL,\n  supplier_id INT,\n  FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sustainability_info (\n  product_id INT PRIMARY KEY,\n  eco_friendly BOOLEAN NOT NULL,\n  sustainable BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_reviews (\n  review_id INT PRIMARY KEY,\n  product_id INT,\n  review_text TEXT NOT NULL,\n  rating INT NOT NULL,\n  FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sourcing_history (\n  history_id INT PRIMARY KEY,\n  product_id INT,\n  supplier_id INT,\n  date_sourced DATE NOT NULL,\n  FOREIGN KEY (product_id) REFERENCES products(product_id),\n  FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patent_infringement_cases (\n    case_id SERIAL PRIMARY KEY,\n    patent_number VARCHAR(50),\n    plaintiff_name VARCHAR(100),\n    defendant_name VARCHAR(100),\n    case_status VARCHAR(50),\n    resolution_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patent_infringement_cases (\n    case_id INT PRIMARY KEY,\n    patent_number VARCHAR(20),\n    plaintiff_name VARCHAR(50),\n    defendant_name VARCHAR(50),\n    case_status VARCHAR(20),\n    resolution_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE case_resolutions (\n    resolution_id INT PRIMARY KEY,\n    case_id INT REFERENCES patent_infringement_cases (case_id),\n    resolution_type VARCHAR(50),\n    resolution_description TEXT,\n    resolution_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patent_infringement_cases (\n    case_id SERIAL PRIMARY KEY,\n    patent_number VARCHAR(50),\n    plaintiff VARCHAR(100),\n    defendant VARCHAR(100),\n    filing_date DATE,\n    resolution_status VARCHAR(50),\n    resolution_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE pharmaceutical_companies (\n    company_id SERIAL PRIMARY KEY,\n    company_name VARCHAR(100),\n    headquarters_location VARCHAR(150),\n    ceo_name VARCHAR(100),\n    founding_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE legal_representatives (\n    representative_id SERIAL PRIMARY KEY,\n    representative_name VARCHAR(100),\n    law_firm VARCHAR(150),\n    contact_email VARCHAR(100),\n    contact_phone VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patent_cases (\n   case_id INT PRIMARY KEY,\n   patent_number VARCHAR(255),\n   plaintiff VARCHAR(255),\n   defendant VARCHAR(255),\n   case_status VARCHAR(50),\n   resolution_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE case_evidence (\n   evidence_id INT PRIMARY KEY,\n   case_id_fk INT,\n   evidence_type VARCHAR(50),\n   description TEXT,\n   FOREIGN KEY (case_id_fk) REFERENCES patent_cases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE case_expenses (\n   expense_id INT PRIMARY KEY,\n   case_id_fk INT,\n   expense_type VARCHAR(50),\n   amount DECIMAL,\n   expense_date DATE,\n   FOREIGN KEY (case_id_fk) REFERENCES patent_cases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE case_outcomes (\n   outcome_id INT PRIMARY KEY,\n   case_id_fk INT,\n   outcome VARCHAR(255),\n   settlement_amount DECIMAL,\n   resolution_date DATE,\n   FOREIGN KEY (case_id_fk) REFERENCES patent_cases(case_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patent_cases (\n  case_id INT NOT NULL,\n  patent_number VARCHAR(255) NOT NULL,\n  plaintiff VARCHAR(255) NOT NULL,\n  defendant VARCHAR(255) NOT NULL,\n  filing_date DATE NOT NULL,\n  resolution_date DATE,\n  PRIMARY KEY (case_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_evidence (\n  evidence_id INT NOT NULL,\n  case_id INT NOT NULL,\n  evidence_description TEXT NOT NULL,\n  PRIMARY KEY (evidence_id),\n  FOREIGN KEY (case_id) REFERENCES patent_cases(case_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n  resolution_id INT NOT NULL,\n  case_id INT NOT NULL,\n  resolution_type VARCHAR(255) NOT NULL,\n  resolution_details TEXT,\n  resolution_date DATE NOT NULL,\n  PRIMARY KEY (resolution_id),\n  FOREIGN KEY (case_id) REFERENCES patent_cases(case_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE lawyers (\n  lawyer_id INT NOT NULL,\n  name VARCHAR(255) NOT NULL,\n  specialized_area VARCHAR(255),\n  email VARCHAR(255) NOT NULL,\n  PRIMARY KEY (lawyer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE law_firms (\n  firm_id INT NOT NULL,\n  firm_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  primary_contact VARCHAR(255),\n  PRIMARY KEY (firm_id)\n)"
+      }
+    ]
+  }
+]

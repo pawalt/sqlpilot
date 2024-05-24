@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(50),\n  purchase_date DATE,\n  purchase_cost DECIMAL(10, 2),\n  useful_life INT,\n  depreciation_method VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fixed_assets (\n  asset_id UUID PRIMARY KEY,\n  asset_name TEXT NOT NULL,\n  purchase_date DATE,\n  purchase_cost NUMERIC,\n  useful_life INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE depreciation_expenses (\n  expense_id SERIAL PRIMARY KEY,\n  asset_id UUID REFERENCES fixed_assets(asset_id),\n  depreciation_amount NUMERIC,\n  period DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fixed_assets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(255),\n  purchase_date DATE,\n  purchase_price DECIMAL(10, 2),\n  useful_life INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fixed_assets (\n    asset_id SERIAL PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    purchase_date DATE NOT NULL,\n    purchase_cost DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE depreciation_methods (\n    method_id SERIAL PRIMARY KEY,\n    method_name VARCHAR(255) NOT NULL,\n    useful_life INT NOT NULL,\n    depreciation_rate DECIMAL(4, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE depreciation_expenses (\n    expense_id SERIAL PRIMARY KEY,\n    asset_id INT NOT NULL,\n    method_id INT NOT NULL,\n    depreciation_expense DECIMAL(10, 2) NOT NULL,\n    depreciation_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assets_info (\n    asset_id SERIAL PRIMARY KEY,\n    asset_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fixed_assets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(255),\n  purchase_date DATE,\n  purchase_price DECIMAL(10, 2),\n  useful_life INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE depreciation_methods (\n  method_id INT PRIMARY KEY,\n  method_name VARCHAR(255),\n  depreciation_rate DECIMAL(5, 4)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE depreciation_expenses (\n  expense_id INT PRIMARY KEY,\n  asset_id INT,\n  method_id INT,\n  expense_amount DECIMAL(10, 2),\n  expense_date DATE,\n  FOREIGN KEY (asset_id) REFERENCES fixed_assets(asset_id),\n  FOREIGN KEY (method_id) REFERENCES depreciation_methods(method_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE depreciation_logs (\n  log_id INT PRIMARY KEY,\n  asset_id INT,\n  method_id INT,\n  calculated_amount DECIMAL(10, 2),\n  calculated_date DATE,\n  FOREIGN KEY (asset_id) REFERENCES fixed_assets(asset_id),\n  FOREIGN KEY (method_id) REFERENCES depreciation_methods(method_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE depreciation_summary (\n  summary_id INT PRIMARY KEY,\n  asset_id INT,\n  total_expense_amount DECIMAL(10, 2),\n  total_calculated_amount DECIMAL(10, 2),\n  remaining_value DECIMAL(10, 2),\n  FOREIGN KEY (asset_id) REFERENCES fixed_assets(asset_id)\n);"
+      }
+    ]
+  }
+]

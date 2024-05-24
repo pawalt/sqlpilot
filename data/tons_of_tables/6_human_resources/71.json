@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE job_tracking (\n  job_id INT PRIMARY KEY,\n  job_title VARCHAR(255),\n  company_name VARCHAR(255),\n  application_date DATE,\n  interview_date DATE,\n  offer_received BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE job_applications (\n    application_id SERIAL PRIMARY KEY,\n    job_title VARCHAR(100) NOT NULL,\n    company VARCHAR(100) NOT NULL,\n    application_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interviews (\n    interview_id SERIAL PRIMARY KEY,\n    application_id INT REFERENCES job_applications(application_id),\n    interview_date DATE,\n    interviewer VARCHAR(100),\n    feedback TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE job_applications (\n  application_id INT PRIMARY KEY,\n  job_title TEXT,\n  company_name TEXT,\n  application_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interviews (\n  interview_id INT PRIMARY KEY,\n  application_id INT,\n  interview_date DATE,\n  interviewer_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE job_offers (\n  offer_id INT PRIMARY KEY,\n  application_id INT,\n  offer_date DATE,\n  salary DECIMAL(10,2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE job_seekers (\n  job_seeker_id UUID PRIMARY KEY,\n  full_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE job_applications (\n  application_id UUID PRIMARY KEY,\n  job_seeker_id UUID,\n  application_date DATE,\n  position_applied VARCHAR(255),\n  status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interviews (\n  interview_id UUID PRIMARY KEY,\n  application_id UUID,\n  interview_date DATE,\n  interviewer VARCHAR(255),\n  notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE job_offers (\n  offer_id UUID PRIMARY KEY,\n  application_id UUID,\n  offer_date DATE,\n  salary DECIMAL(10, 2),\n  benefits TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE job_applications (\n    id UUID PRIMARY KEY,\n    job_title VARCHAR(255),\n    company VARCHAR(255),\n    application_date DATE\n);\n\nCREATE TABLE interviews (\n    id UUID PRIMARY KEY,\n    application_id UUID REFERENCES job_applications(id),\n    interview_date DATE,\n    interview_type VARCHAR(50),\n    interviewer_name VARCHAR(100)\n);\n\nCREATE TABLE offers (\n    id UUID PRIMARY KEY,\n    application_id UUID REFERENCES job_applications(id),\n    offer_date DATE,\n    salary DECIMAL(12, 2),\n    benefits TEXT\n);\n\nCREATE TABLE job_seekers (\n    id UUID PRIMARY KEY,\n    name VARCHAR(100),\n    email VARCHAR(255),\n    phone_number VARCHAR(20)\n);\n\nCREATE TABLE job_history (\n    id UUID PRIMARY KEY,\n    job_seeker_id UUID REFERENCES job_seekers(id),\n    job_title VARCHAR(255),\n    company VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  }
+]

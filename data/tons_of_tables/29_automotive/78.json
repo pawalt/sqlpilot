@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE approved_repair_shops (\n    shop_id INT PRIMARY KEY,\n    shop_name VARCHAR(255) NOT NULL,\n    shop_location VARCHAR(255) NOT NULL,\n    shop_contact VARCHAR(20),\n    approved_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE repair_shops (\n    shop_id INT PRIMARY KEY,\n    shop_name VARCHAR(255),\n    location VARCHAR(255),\n    contact_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id INT PRIMARY KEY,\n    shop_id INT,\n    claim_date DATE,\n    claim_amount DECIMAL(10, 2),\n    FOREIGN KEY (shop_id) REFERENCES repair_shops(shop_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE approved_repair_shops (\n    shop_id INT PRIMARY KEY,\n    shop_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE repair_claims (\n    claim_id INT PRIMARY KEY,\n    shop_id INT NOT NULL,\n    claim_date DATE NOT NULL,\n    claim_description TEXT,\n    claim_amount DECIMAL(10,2) NOT NULL,\n    FOREIGN KEY (shop_id) REFERENCES approved_repair_shops(shop_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE repair_shop_ratings (\n    rating_id INT PRIMARY KEY,\n    shop_id INT NOT NULL,\n    rating INT NOT NULL,\n    review TEXT,\n    FOREIGN KEY (shop_id) REFERENCES approved_repair_shops(shop_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE repair_shops (\n  shop_id INT PRIMARY KEY,\n  shop_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  service_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claims (\n  claim_id INT PRIMARY KEY,\n  shop_id INT,\n  claim_date DATE,\n  claim_amount DECIMAL(10, 2) NOT NULL,\n  CONSTRAINT fk_shop_id FOREIGN KEY (shop_id) REFERENCES repair_shops(shop_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(50) NOT NULL,\n  employee_role VARCHAR(50) NOT NULL,\n  shop_id INT,\n  CONSTRAINT fk_shop_id FOREIGN KEY (shop_id) REFERENCES repair_shops(shop_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  customer_email VARCHAR(100) NOT NULL,\n  customer_phone VARCHAR(15) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE repair_shop (\n    shop_id INT PRIMARY KEY,\n    shop_name VARCHAR(255) NOT NULL,\n    shop_address VARCHAR(255) NOT NULL,\n    shop_city VARCHAR(100) NOT NULL,\n    shop_state VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE claim (\n    claim_id INT PRIMARY KEY,\n    claim_amount DECIMAL(10, 2) NOT NULL,\n    repair_date DATE NOT NULL,\n    shop_id INT NOT NULL,\n    CONSTRAINT fk_shop FOREIGN KEY (shop_id) REFERENCES repair_shop(shop_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    customer_email VARCHAR(255) NOT NULL,\n    customer_phone VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_status (\n    status_id INT PRIMARY KEY,\n    status_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_approval (\n    approval_id INT PRIMARY KEY,\n    claim_id INT NOT NULL,\n    status_id INT NOT NULL,\n    approval_date DATE NOT NULL,\n    CONSTRAINT fk_claim FOREIGN KEY (claim_id) REFERENCES claim(claim_id),\n    CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES claim_status(status_id)\n);\n"
+      }
+    ]
+  }
+]

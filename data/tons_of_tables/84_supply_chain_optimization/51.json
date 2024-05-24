@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RoutePlanning (\n    id INT PRIMARY KEY,\n    start_location VARCHAR(255),\n    end_location VARCHAR(255),\n    distance DECIMAL,\n    traffic_conditions VARCHAR(50),\n    transportation_mode VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Routes (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(255),\n    start_point VARCHAR(255),\n    end_point VARCHAR(255),\n    distance FLOAT,\n    estimated_time FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrafficData (\n    data_id INT PRIMARY KEY,\n    route_id INT,\n    traffic_level VARCHAR(50),\n    congestion FLOAT,\n    weather_conditions VARCHAR(50),\n    FOREIGN KEY (route_id) REFERENCES Routes(route_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE route_planning (\n    route_id INT PRIMARY KEY,\n    source_location TEXT,\n    destination_location TEXT,\n    distance FLOAT,\n    travel_time INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_data (\n    data_id INT PRIMARY KEY,\n    route_id INT REFERENCES route_planning(route_id),\n    traffic_speed FLOAT,\n    traffic_congestion_level INT,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_expenses (\n    expense_id INT PRIMARY KEY,\n    route_id INT REFERENCES route_planning(route_id),\n    fuel_cost FLOAT,\n    tolls_cost FLOAT,\n    maintenance_cost FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Routes (\n\tid INT PRIMARY KEY,\n\torigin VARCHAR(50),\n\tdestination VARCHAR(50),\n\tdistance FLOAT,\n\ttravel_time FLOAT,\n\ttraffic_level ENUM('low', 'medium', 'high')\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n   route_id INT PRIMARY KEY,\n   route_name VARCHAR(50),\n   start_location VARCHAR(100),\n   end_location VARCHAR(100),\n   distance FLOAT,\n   traffic_condition VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_cost (\n   transport_id INT PRIMARY KEY,\n   transport_mode VARCHAR(50),\n   cost_per_km FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_data (\n   traffic_id INT PRIMARY KEY,\n   route_id INT,\n   traffic_timestamp TIMESTAMP,\n   average_speed FLOAT,\n   traffic_status VARCHAR(20),\n   FOREIGN KEY (route_id) REFERENCES routes(route_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n   expense_id INT PRIMARY KEY,\n   route_id INT,\n   transport_id INT,\n   expense_date DATE,\n   total_cost FLOAT,\n   FOREIGN KEY (route_id) REFERENCES routes(route_id),\n   FOREIGN KEY (transport_id) REFERENCES transportation_cost(transport_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE optimizations (\n   optimization_id INT PRIMARY KEY,\n   route_id INT,\n   optimization_date DATE,\n   optimized_traffic_condition VARCHAR(20),\n   optimized_cost FLOAT,\n   FOREIGN KEY (route_id) REFERENCES routes(route_id)\n);"
+      }
+    ]
+  }
+]

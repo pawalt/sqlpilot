@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geospatial_data (\n  id UUID PRIMARY KEY,\n  latitude FLOAT,\n  longitude FLOAT,\n  altitude FLOAT,\n  timestamp TIMESTAMP,\n  drone_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n  drone_id INT PRIMARY KEY,\n  manufacturer TEXT NOT NULL,\n  model TEXT NOT NULL,\n  max_speed FLOAT,\n  PRIMARY KEY (drone_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE surveying_data (\n  data_id INT PRIMARY KEY,\n  drone_id INT REFERENCES drones(drone_id),\n  latitude DOUBLE PRECISION NOT NULL,\n  longitude DOUBLE PRECISION NOT NULL,\n  altitude DOUBLE PRECISION,\n  timestamp TIMESTAMP NOT NULL,\n  PRIMARY KEY (data_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n    drone_id INT PRIMARY KEY,\n    drone_name VARCHAR(50),\n    drone_model VARCHAR(50),\n    drone_capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE spatial_data (\n    data_id INT PRIMARY KEY,\n    drone_id INT,\n    latitude DECIMAL(9,6),\n    longitude DECIMAL(9,6),\n    altitude DECIMAL(8,3),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mapping_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100),\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n    id UUID PRIMARY KEY,\n    drone_name STRING,\n    latitude FLOAT,\n    longitude FLOAT,\n    altitude FLOAT,\n    battery_level FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE flights (\n    flight_id UUID PRIMARY KEY,\n    drone_id UUID REFERENCES drones(id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    area_covered FLOAT,\n    flight_duration INTERVAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id UUID PRIMARY KEY,\n    flight_id UUID REFERENCES flights(flight_id),\n    image_name STRING,\n    image_path STRING,\n    resolution FLOAT,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE maps (\n    map_id UUID PRIMARY KEY,\n    region_name STRING,\n    map_path STRING,\n    created_at TIMESTAMP,\n    drone_id UUID REFERENCES drones(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DroneLocations (\n    id INT PRIMARY KEY,\n    latitude FLOAT,\n    longitude FLOAT,\n    altitude FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DroneRoutes (\n    route_id INT PRIMARY KEY,\n    drone_id INT,\n    route_name VARCHAR,\n    route_description VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MappingData (\n    data_id INT PRIMARY KEY,\n    drone_id INT,\n    map_date DATE,\n    mapped_area FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyReports (\n    report_id INT PRIMARY KEY,\n    survey_id INT,\n    report_date DATE,\n    report_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DroneImages (\n    image_id INT PRIMARY KEY,\n    drone_id INT,\n    image_date TIMESTAMP,\n    image_url VARCHAR\n)"
+      }
+    ]
+  }
+]

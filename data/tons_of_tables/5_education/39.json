@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE academic_deadlines (\n    id INT PRIMARY KEY,\n    deadline_date DATE,\n    event_name VARCHAR(255),\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE academic_deadlines (\n    deadline_id INT PRIMARY KEY,\n    deadline_description TEXT,\n    deadline_date TIMESTAMP,\n    notification_sent BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE notification_subscribers (\n    subscriber_id INT PRIMARY KEY,\n    subscriber_name VARCHAR(255),\n    subscriber_email VARCHAR(255),\n    subscription_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE notifications (\n  id INT PRIMARY KEY,\n  message TEXT,\n  deadline_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username TEXT,\n  email TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n  user_id INT,\n  notification_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (notification_id) REFERENCES notifications(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImportantDates (\n    id INT PRIMARY KEY,\n    event_name VARCHAR(100),\n    event_date DATE,\n    notification_time TIME,\n    is_urgent BOOL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Subscriptions (\n    subscription_id INT PRIMARY KEY,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES Users(id),\n    event_id INT,\n    FOREIGN KEY (event_id) REFERENCES ImportantDates(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Notifications (\n    notification_id INT PRIMARY KEY,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES Users(id),\n    message TEXT,\n    sent_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE important_deadlines ( \n    deadline_id SERIAL PRIMARY KEY, \n    topic VARCHAR(100) NOT NULL, \n    deadline_date DATE NOT NULL \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE students ( \n    student_id SERIAL PRIMARY KEY, \n    student_name VARCHAR(100) NOT NULL, \n    email VARCHAR(100) NOT NULL \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE courses ( \n    course_id SERIAL PRIMARY KEY, \n    course_name VARCHAR(100) NOT NULL, \n    instructor VARCHAR(100) NOT NULL \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE course_deadlines ( \n    deadline_id INT REFERENCES important_deadlines(deadline_id), \n    course_id INT REFERENCES courses(course_id), \n    PRIMARY KEY (deadline_id, course_id) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE student_courses ( \n    student_id INT REFERENCES students(student_id), \n    course_id INT REFERENCES courses(course_id), \n    PRIMARY KEY (student_id, course_id) \n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meetings (\n  meeting_id INT PRIMARY KEY,\n  meeting_name VARCHAR(255),\n  meeting_date DATE,\n  meeting_time TIME,\n  agenda TEXT,\n  organizer_name VARCHAR(255),\n  participant_list TEXT,\n  meeting_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meeting_agendas (\n  meeting_id INT PRIMARY KEY,\n  agenda_title VARCHAR,\n  meeting_date DATE,\n  meeting_time TIME,\n  organizer_name VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_notes (\n  note_id INT PRIMARY KEY,\n  meeting_id INT,\n  participant_name VARCHAR,\n  note_text TEXT,\n  FOREIGN KEY (meeting_id) REFERENCES meeting_agendas(meeting_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meeting_agenda (\n    id INT,\n    meeting_date DATE,\n    topic VARCHAR(255),\n    PRIMARY KEY (id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_participants (\n    id INT,\n    participant_name VARCHAR(255),\n    email VARCHAR(255),\n    meeting_id INT,\n    FOREIGN KEY (meeting_id) REFERENCES meeting_agenda(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_notes (\n    id INT,\n    meeting_id INT,\n    note_text TEXT,\n    PRIMARY KEY (id),\n    FOREIGN KEY (meeting_id) REFERENCES meeting_agenda(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meeting_agendas (\n    agenda_id UUID PRIMARY KEY,\n    agenda_title VARCHAR(255) NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    participant_email VARCHAR(255) NOT NULL,\n    participant_role VARCHAR(50) NOT NULL,\n    meeting_id UUID REFERENCES meeting_agendas(agenda_id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_notes (\n    note_id UUID PRIMARY KEY,\n    meeting_id UUID REFERENCES meeting_agendas(agenda_id) ON DELETE CASCADE,\n    participant_id UUID REFERENCES participants(participant_id) ON DELETE CASCADE,\n    note_text TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id UUID PRIMARY KEY,\n    meeting_id UUID REFERENCES meeting_agendas(agenda_id) ON DELETE CASCADE,\n    participant_id UUID REFERENCES participants(participant_id) ON DELETE CASCADE,\n    scheduled_time TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MeetingAgenda (\n    meeting_id INT PRIMARY KEY,\n    agenda_item VARCHAR(255),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(100),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingNotes (\n    note_id INT PRIMARY KEY,\n    meeting_id INT,\n    participant_id INT,\n    note TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingSchedule (\n    schedule_id INT PRIMARY KEY,\n    meeting_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingRoom (\n    room_id INT PRIMARY KEY,\n    room_name VARCHAR(100),\n    capacity INT\n);"
+      }
+    ]
+  }
+]

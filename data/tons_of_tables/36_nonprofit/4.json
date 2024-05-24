@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_details (\n  grant_id INT PRIMARY KEY,\n  grant_name VARCHAR,\n  grant_amount DECIMAL,\n  application_deadline DATE,\n  approval_deadline DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_details (\n  grant_id INT PRIMARY KEY,\n  grant_name VARCHAR(255),\n  grant_amount DECIMAL(10, 2),\n  grant_deadline DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_deadlines (\n  deadline_id INT PRIMARY KEY,\n  grant_id INT,\n  deadline_date DATE,\n  CONSTRAINT fk_grant_id FOREIGN KEY (grant_id) REFERENCES grant_details(grant_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_details (\n  grant_id UUID PRIMARY KEY,\n  grant_name TEXT NOT NULL,\n  grant_amount DECIMAL NOT NULL,\n  application_deadline TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_recipients (\n  recipient_id UUID PRIMARY KEY,\n  grant_id UUID NOT NULL,\n  recipient_name TEXT NOT NULL,\n  award_amount DECIMAL NOT NULL,\n  award_date TIMESTAMP NOT NULL,\n  FOREIGN KEY (grant_id) REFERENCES grant_details(grant_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_reviews (\n  review_id UUID PRIMARY KEY,\n  grant_id UUID NOT NULL,\n  reviewer_name TEXT NOT NULL,\n  review_date TIMESTAMP NOT NULL,\n  review_comments TEXT,\n  FOREIGN KEY (grant_id) REFERENCES grant_details(grant_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_details (\n  grant_id INT PRIMARY KEY,\n  grant_name VARCHAR(255),\n  grant_amount DECIMAL,\n  grant_description TEXT,\n  deadline DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_management (\n  grant_manager_id INT PRIMARY KEY,\n  grant_id INT,\n  manager_name VARCHAR(255),\n  manager_email VARCHAR(255),\n  CONSTRAINT fk_grant_id FOREIGN KEY (grant_id) REFERENCES grant_details(grant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_applications (\n  application_id INT PRIMARY KEY,\n  grant_id INT,\n  applicant_name VARCHAR(255),\n  application_date DATE,\n  application_status VARCHAR(50),\n  CONSTRAINT fk_grant_id FOREIGN KEY (grant_id) REFERENCES grant_details(grant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_reviews (\n  review_id INT PRIMARY KEY,\n  application_id INT,\n  reviewer_name VARCHAR(255),\n  review_comments TEXT,\n  review_date DATE,\n  recommendation VARCHAR(50),\n  CONSTRAINT fk_application_id FOREIGN KEY (application_id) REFERENCES grant_applications(application_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grants (\n  grant_id UUID PRIMARY KEY,\n  grant_name VARCHAR(255) NOT NULL,\n  grant_description TEXT,\n  grant_amount DECIMAL(10,2),\n  grant_deadline DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_applicants (\n  applicant_id UUID PRIMARY KEY,\n  applicant_name VARCHAR(255) NOT NULL,\n  applicant_email VARCHAR(255) UNIQUE,\n  applicant_address TEXT,\n  grant_id UUID\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_reviews (\n  review_id UUID PRIMARY KEY,\n  reviewer_id UUID,\n  grant_id UUID,\n  review_date DATE,\n  review_comments TEXT,\n  review_score INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_requirements (\n  requirement_id UUID PRIMARY KEY,\n  requirement_description TEXT,\n  grant_id UUID\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_status (\n  status_id UUID PRIMARY KEY,\n  grant_id UUID,\n  status VARCHAR(50) NOT NULL,\n  status_date DATE\n)"
+      }
+    ]
+  }
+]

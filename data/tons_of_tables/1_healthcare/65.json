@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quality_metrics (\n  patient_id UUID PRIMARY KEY,\n  admission_date DATE,\n  discharge_date DATE,\n  readmission_rate FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hospital (\n    hospital_id INT PRIMARY KEY,\n    hospital_name VARCHAR(255),\n    location VARCHAR(255)\n);\n\nCREATE TABLE ReadmissionRates (\n    patient_id INT,\n    hospital_id INT,\n    readmission_rate FLOAT,\n    date DATE,\n    FOREIGN KEY (hospital_id) REFERENCES Hospital(hospital_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hospital (\n    hospital_id INT PRIMARY KEY,\n    hospital_name VARCHAR(255),\n    location VARCHAR(255),\n    bed_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Patient (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255),\n    age INT,\n    gender VARCHAR(10),\n    admission_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Readmission (\n    readmission_id INT PRIMARY KEY,\n    patient_id INT,\n    hospital_id INT,\n    readmission_date DATE,\n    reason VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Metrics (\n    metric_id INT PRIMARY KEY,\n    readmission_id INT,\n    metric_type VARCHAR(50),\n    value INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hospitals (\n    hospital_id INT PRIMARY KEY,\n    hospital_name VARCHAR(255) NOT NULL,\n    city VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255) NOT NULL,\n    age INT NOT NULL,\n    hospital_id INT,\n    FOREIGN KEY (hospital_id) REFERENCES Hospitals(hospital_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Admissions (\n    admission_id INT PRIMARY KEY,\n    admission_date DATE NOT NULL,\n    discharge_date DATE NOT NULL,\n    patient_id INT,\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ReadmissionRates (\n    readmission_id INT PRIMARY KEY,\n    readmission_date DATE NOT NULL,\n    readmission_reason VARCHAR(255) NOT NULL,\n    patient_id INT,\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hospitals (\n  hospital_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  location VARCHAR(255),\n  bed_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  dob DATE,\n  gender VARCHAR(10),\n  admission_date DATE,\n  discharge_date DATE,\n  hospital_id INT,\n  FOREIGN KEY (hospital_id) REFERENCES Hospitals(hospital_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Admissions (\n  admission_id INT PRIMARY KEY,\n  patient_id INT,\n  admission_date DATE,\n  discharge_date DATE,\n  diagnosis VARCHAR(255),\n  treatment VARCHAR(255),\n  FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Readmissions (\n  readmission_id INT PRIMARY KEY,\n  patient_id INT,\n  admission_id INT,\n  readmission_date DATE,\n  cause VARCHAR(255),\n  FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),\n  FOREIGN KEY (admission_id) REFERENCES Admissions(admission_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Metrics (\n  metric_id INT PRIMARY KEY,\n  hospital_id INT,\n  readmission_rate FLOAT,\n  quality_rating VARCHAR(10),\n  FOREIGN KEY (hospital_id) REFERENCES Hospitals(hospital_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProvisioningTemplates (\n    template_id UUID PRIMARY KEY,\n    infrastructure_type VARCHAR(50),\n    resource_name VARCHAR(100),\n    provision_script TEXT,\n    container_image VARCHAR(200)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_machines (\n    vm_id INT PRIMARY KEY,\n    vm_name VARCHAR(50) NOT NULL,\n    vm_template TEXT NOT NULL\n);\n\nCREATE TABLE containers (\n    container_id INT PRIMARY KEY,\n    container_name VARCHAR(50) NOT NULL,\n    container_image VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vm_templates (\n    template_id UUID PRIMARY KEY,\n    template_name VARCHAR(50) NOT NULL,\n    os VARCHAR(50) NOT NULL,\n    memory_gb INT NOT NULL,\n    cpu_cores INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE container_templates (\n    template_id UUID PRIMARY KEY,\n    template_name VARCHAR(50) NOT NULL,\n    image_name VARCHAR(100) NOT NULL,\n    port INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE provision_history (\n    provision_id UUID PRIMARY KEY,\n    provision_date TIMESTAMP NOT NULL,\n    template_id UUID REFERENCES vm_templates(template_id) ON DELETE CASCADE,\n    status VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vm_templates (\n    template_id INT PRIMARY KEY,\n    template_name VARCHAR(255) NOT NULL,\n    os_type VARCHAR(50) NOT NULL,\n    cpu_cores INT NOT NULL,\n    ram_gb INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE container_templates (\n    template_id INT PRIMARY KEY,\n    template_name VARCHAR(255) NOT NULL,\n    image_name VARCHAR(100) NOT NULL,\n    ports VARCHAR(255) NOT NULL,\n    environment_variables VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vm_provisioning_history (\n    provision_id INT PRIMARY KEY,\n    template_id INT NOT NULL,\n    provision_date TIMESTAMP NOT NULL,\n    provision_status VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE container_provisioning_history (\n    provision_id INT PRIMARY KEY,\n    template_id INT NOT NULL,\n    provision_date TIMESTAMP NOT NULL,\n    provision_status VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_machines (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    cpu_count INT NOT NULL,\n    memory_gb INT NOT NULL,\n    os VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE containers (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    image VARCHAR(100) NOT NULL,\n    cpu_limit INT NOT NULL,\n    memory_limit INT NOT NULL,\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE templates (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    description TEXT,\n    os_type VARCHAR(50) NOT NULL,\n    template_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vm_templates (\n    id SERIAL PRIMARY KEY,\n    template_id INT NOT NULL,\n    vm_type VARCHAR(50) NOT NULL,\n    storage_gb INT NOT NULL,\n    CONSTRAINT fk_template FOREIGN KEY (template_id) REFERENCES templates(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE container_templates (\n    id SERIAL PRIMARY KEY,\n    template_id INT NOT NULL,\n    container_type VARCHAR(50) NOT NULL,\n    environment_vars JSONB,\n    CONSTRAINT fk_template FOREIGN KEY (template_id) REFERENCES templates(id)\n);"
+      }
+    ]
+  }
+]

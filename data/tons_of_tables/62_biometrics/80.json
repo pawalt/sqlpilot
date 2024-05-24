@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_images (\n  id SERIAL PRIMARY KEY,\n  image_data BLOB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_images (\n    id INT PRIMARY KEY,\n    image BLOB\n);\n\nCREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    signature_id INT,\n    FOREIGN KEY (signature_id) REFERENCES signature_images(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signatures (\n    id INT PRIMARY KEY,\n    signature BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE auth_tokens (\n    token_id INT PRIMARY KEY,\n    user_id INT,\n    token VARCHAR(100) NOT NULL,\n    expiry_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signatures (\n  id UUID PRIMARY KEY,\n  image BLOB NOT NULL,\n  user_id UUID,\n  created_at TIMESTAMP,\n  FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  id UUID PRIMARY KEY,\n  username VARCHAR(255) NOT NULL,\n  password_digest VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n  id UUID PRIMARY KEY,\n  role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  id UUID PRIMARY KEY,\n  permission_name VARCHAR(50) NOT NULL,\n  role_id UUID,\n  FOREIGN KEY (role_id) REFERENCES roles(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_images (\n    id INT PRIMARY KEY,\n    image BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_signatures (\n    user_id INT,\n    signature_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (signature_id) REFERENCES signature_images(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    log_message TEXT,\n    log_time TIMESTAMP\n);"
+      }
+    ]
+  }
+]

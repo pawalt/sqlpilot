@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SubscriptionPackages (\n  subscription_id INT PRIMARY KEY,\n  package_name VARCHAR(255),\n  price DECIMAL(10,2),\n  discount_rate DECIMAL(5,2),\n  start_date DATE,\n  end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    subscription_name VARCHAR(255) NOT NULL,\n    discount_percentage DECIMAL(5,2) DEFAULT 0.00\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE promotions (\n    promotion_id INT PRIMARY KEY,\n    promotion_name VARCHAR(255) NOT NULL,\n    promotion_code VARCHAR(10) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscription_packages (\n  subscription_id INT PRIMARY KEY,\n  package_name VARCHAR(255),\n  price DECIMAL(10,2),\n  discount_rate DECIMAL(5,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE discounts (\n  discount_id INT PRIMARY KEY,\n  subscription_id INT,\n  discount_code VARCHAR(10),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE promotions (\n  promotion_id INT PRIMARY KEY,\n  promotion_name VARCHAR(255),\n  discount_rate DECIMAL(5,2),\n  start_date DATE,\n  end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE discounts (\n\tdiscount_id INT PRIMARY KEY,\n\tdiscount_percentage DECIMAL(5,2) NOT NULL,\n\tdiscount_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subscription_packages (\n\tpackage_id INT PRIMARY KEY,\n\tpackage_name TEXT NOT NULL,\n\tpackage_price DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE promotions (\n\tpromotion_id INT PRIMARY KEY,\n\tpromotion_name TEXT NOT NULL,\n\tpromotion_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE package_discounts (\n\tpackage_id INT,\n\tdiscount_id INT,\n\tFOREIGN KEY (package_id) REFERENCES subscription_packages(package_id),\n\tFOREIGN KEY (discount_id) REFERENCES discounts(discount_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscription_packages (\n    package_id INT PRIMARY KEY,\n    package_name VARCHAR(50),\n    monthly_price DECIMAL(10,2),\n    discount_code VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE discounts (\n    discount_id INT PRIMARY KEY,\n    discount_code VARCHAR(20),\n    discount_percentage INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE promotions (\n    promotion_id INT PRIMARY KEY,\n    promotion_name VARCHAR(50),\n    promotion_description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE package_discounts (\n    package_id INT,\n    discount_id INT,\n    FOREIGN KEY (package_id) REFERENCES subscription_packages(package_id),\n    FOREIGN KEY (discount_id) REFERENCES discounts(discount_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE package_promotions (\n    package_id INT,\n    promotion_id INT,\n    FOREIGN KEY (package_id) REFERENCES subscription_packages(package_id),\n    FOREIGN KEY (promotion_id) REFERENCES promotions(promotion_id)\n);"
+      }
+    ]
+  }
+]

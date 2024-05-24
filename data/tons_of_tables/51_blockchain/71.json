@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE off_chain_data (\n    id INT PRIMARY KEY,\n    blockchain_transaction_id INT,\n    data_type VARCHAR(255),\n    data_value TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE off_chain_data (\n    id SERIAL PRIMARY KEY,\n    blockchain_transaction_id INT,\n    data_type VARCHAR(255),\n    data_value TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n    id SERIAL PRIMARY KEY,\n    transaction_hash VARCHAR(255),\n    block_number INT,\n    transaction_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE off_chain_data (\n    id SERIAL,\n    data_hash VARCHAR(255) UNIQUE,\n    blockchain_transaction_id INT,\n    metadata JSONB,\n    timestamp TIMESTAMP,\n    PRIMARY KEY (id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n    transaction_id SERIAL,\n    block_number INT,\n    sender_address VARCHAR(255),\n    receiver_address VARCHAR(255),\n    transaction_hash VARCHAR(255) UNIQUE,\n    amount DECIMAL,\n    timestamp TIMESTAMP,\n    PRIMARY KEY (transaction_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_links (\n    link_id SERIAL,\n    data_id INT,\n    transaction_id INT,\n    FOREIGN KEY (data_id) REFERENCES off_chain_data (id),\n    FOREIGN KEY (transaction_id) REFERENCES blockchain_transactions (transaction_id),\n    PRIMARY KEY (link_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE off_chain_data (\n    id INT PRIMARY KEY,\n    data_type VARCHAR(50),\n    data_value TEXT,\n    transaction_id INT\n);\n\nCREATE TABLE blockchain_transactions (\n    transaction_id INT PRIMARY KEY,\n    block_number INT,\n    timestamp TIMESTAMP,\n    sender_address VARCHAR(50),\n    receiver_address VARCHAR(50)\n);\n\nCREATE TABLE data_links (\n    link_id INT PRIMARY KEY,\n    off_chain_data_id INT,\n    blockchain_transaction_id INT,\n    FOREIGN KEY (off_chain_data_id) REFERENCES off_chain_data(id),\n    FOREIGN KEY (blockchain_transaction_id) REFERENCES blockchain_transactions(transaction_id)\n);\n\nCREATE TABLE data_relationships (\n    relationship_id INT PRIMARY KEY,\n    parent_data_id INT,\n    child_data_id INT,\n    relationship_type VARCHAR(50),\n    FOREIGN KEY (parent_data_id) REFERENCES off_chain_data(id),\n    FOREIGN KEY (child_data_id) REFERENCES off_chain_data(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE off_chain_data ( \n    id UUID PRIMARY KEY, \n    transaction_id UUID, \n    data JSONB \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions ( \n    id UUID PRIMARY KEY, \n    timestamp TIMESTAMPTZ, \n    block_number INT, \n    block_hash UUID \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources ( \n    id UUID PRIMARY KEY, \n    name VARCHAR(255), \n    type VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_links ( \n    id UUID PRIMARY KEY, \n    data_id UUID, \n    transaction_id UUID \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE metadata ( \n    id UUID PRIMARY KEY, \n    data_id UUID, \n    transaction_id UUID, \n    description TEXT \n);"
+      }
+    ]
+  }
+]

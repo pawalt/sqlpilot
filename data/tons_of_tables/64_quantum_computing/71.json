@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password_hash VARCHAR(100) NOT NULL,\n    role VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_resources (\n    resource_id UUID PRIMARY KEY,\n    resource_name VARCHAR(50) NOT NULL,\n    access_level INT,\n    owner_id UUID REFERENCES quantum_users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(100) UNIQUE,\n    password_hash VARCHAR(100),\n    role VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_hardware (\n    hardware_id INT PRIMARY KEY,\n    hardware_name VARCHAR(50) UNIQUE,\n    location VARCHAR(50),\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    access_id INT PRIMARY KEY,\n    user_id INT,\n    hardware_id INT,\n    granted BOOLEAN,\n    grant_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES quantum_users(user_id),\n    FOREIGN KEY (hardware_id) REFERENCES quantum_hardware(hardware_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  user_id INT PRIMARY KEY,\n  role_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(50) NOT NULL,\n  device_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_device_access (\n  user_id INT,\n  device_id INT,\n  FOREIGN KEY (user_id) REFERENCES user_roles(user_id),\n  FOREIGN KEY (device_id) REFERENCES quantum_devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_permissions (\n  device_id INT,\n  permission_name VARCHAR(50) NOT NULL,\n  FOREIGN KEY (device_id) REFERENCES quantum_devices(device_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT,\n    role_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_resource_permissions (\n    user_id INT,\n    resource_id INT,\n    permission VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (resource_id) REFERENCES resources(resource_id)\n);"
+      }
+    ]
+  }
+]

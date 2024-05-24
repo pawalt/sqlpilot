@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rewards_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    points INT DEFAULT 0,\n    goals_met BOOLEAN DEFAULT FALSE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserRewards (\n    user_id INT PRIMARY KEY,\n    reward_points INT,\n    goal_met BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NutritiousOptions (\n    option_id INT PRIMARY KEY,\n    option_name VARCHAR,\n    is_nutritious BOOLEAN,\n    calories INT,\n    protein_grams INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    points INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserRewards (\n    reward_id INT PRIMARY KEY,\n    user_id INT REFERENCES Users(user_id),\n    reward_description VARCHAR(255) NOT NULL,\n    reward_points INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserGoals (\n    goal_id INT PRIMARY KEY,\n    user_id INT REFERENCES Users(user_id),\n    goal_description VARCHAR(255) NOT NULL,\n    goal_points INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    rewards_points INT DEFAULT 0\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE goals (\n    goal_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    target_calories INT NOT NULL,\n    target_protein INT NOT NULL,\n    target_carbs INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE food_log (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    meal_time TIMESTAMP NOT NULL,\n    calories INT NOT NULL,\n    protein INT NOT NULL,\n    carbs INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    reward_description TEXT NOT NULL,\n    reward_points_required INT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n user_id INT PRIMARY KEY,\n username VARCHAR(50) NOT NULL,\n email VARCHAR(50) NOT NULL,\n age INT,\n has_consistently_chosen_nutritious_options BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE goals (\n goal_id INT PRIMARY KEY,\n user_id INT REFERENCES users(user_id),\n target_calories INT NOT NULL,\n target_protein INT NOT NULL,\n target_fiber INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meal_options (\n meal_option_id INT PRIMARY KEY,\n option_name VARCHAR(50) NOT NULL,\n calories INT NOT NULL,\n protein INT NOT NULL,\n fiber INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_meals (\n meal_id INT PRIMARY KEY,\n user_id INT REFERENCES users(user_id),\n meal_option_id INT REFERENCES meal_options(meal_option_id),\n date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n reward_id INT PRIMARY KEY,\n user_id INT REFERENCES users(user_id),\n reward_description TEXT,\n reward_points INT\n);\n"
+      }
+    ]
+  }
+]

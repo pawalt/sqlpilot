@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE charging_stations (\n  station_id INT PRIMARY KEY,\n  location_name VARCHAR(50),\n  city VARCHAR(50),\n  state VARCHAR(2),\n  power_rating INT,\n  operator VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location (\n    location_id INT PRIMARY KEY,\n    city VARCHAR(50),\n    address VARCHAR(100),\n    longitude DECIMAL(9, 6),\n    latitude DECIMAL(9, 6)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE charging_station (\n    station_id INT PRIMARY KEY,\n    location_id INT,\n    station_name VARCHAR(50),\n    capacity INT,\n    FOREIGN KEY (location_id) REFERENCES location(location_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE charging_stations (\n    station_id INT PRIMARY KEY,\n    station_name TEXT,\n    address TEXT,\n    city TEXT,\n    state TEXT,\n    zip_code TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username TEXT,\n    email TEXT,\n    phone_number TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT,\n    station_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    amount_paid DECIMAL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (station_id) REFERENCES charging_stations(station_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE charging_stations (\n  id SERIAL PRIMARY KEY,\n  location_name VARCHAR(100) NOT NULL,\n  address VARCHAR(255) NOT NULL,\n  latitude DECIMAL(10, 8) NOT NULL,\n  longitude DECIMAL(11, 8) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE charging_station_stats (\n  id SERIAL PRIMARY KEY,\n  station_id INT NOT NULL REFERENCES charging_stations(id),\n  usage_count INT DEFAULT 0,\n  last_used TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE charging_station_reviews (\n  id SERIAL PRIMARY KEY,\n  station_id INT NOT NULL REFERENCES charging_stations(id),\n  review_text TEXT,\n  rating INT CHECK (rating >= 1 AND rating <= 5)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE charging_station_images (\n  id SERIAL PRIMARY KEY,\n  station_id INT NOT NULL REFERENCES charging_stations(id),\n  image_url VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ChargingStationLocations (\n    station_id INT PRIMARY KEY,\n    station_name TEXT NOT NULL,\n    address TEXT,\n    city TEXT,\n    state TEXT,\n    zip_code TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ChargingStationStatus (\n    status_id INT PRIMARY KEY,\n    station_id INT REFERENCES ChargingStationLocations(station_id),\n    is_operational BOOLEAN,\n    is_busy BOOLEAN,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ChargingStationOwners (\n    owner_id INT PRIMARY KEY,\n    station_id INT REFERENCES ChargingStationLocations(station_id),\n    owner_name TEXT NOT NULL,\n    contact_email TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ChargingStationLogs (\n    log_id INT PRIMARY KEY,\n    station_id INT REFERENCES ChargingStationLocations(station_id),\n    log_description TEXT,\n    log_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ChargingStationReviews (\n    review_id INT PRIMARY KEY,\n    station_id INT REFERENCES ChargingStationLocations(station_id),\n    review_score FLOAT,\n    review_comment TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Shipments (\n    shipment_id UUID PRIMARY KEY,\n    tracking_number STRING,\n    origin_location STRING,\n    destination_location STRING,\n    shipping_carrier STRING,\n    estimated_delivery_date TIMESTAMP,\n    payment_status STRING\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_info (id INT PRIMARY KEY,\ntracking_number VARCHAR(255),\nshipping_company VARCHAR(255),\nshipping_status VARCHAR(50),\nestimated_delivery_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_details (id INT PRIMARY KEY,\norder_id INT,\npayment_method VARCHAR(50),\npayment_status VARCHAR(50),\ntransaction_id VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Shipping (\n    shipping_id SERIAL PRIMARY KEY,\n    tracking_number VARCHAR(100),\n    carrier_name VARCHAR(100),\n    estimated_delivery_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Tracking (\n    tracking_id SERIAL PRIMARY KEY,\n    shipping_id INT REFERENCES Shipping(shipping_id),\n    status VARCHAR(50),\n    last_updated TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentGateway (\n    payment_id SERIAL PRIMARY KEY,\n    order_id INT UNIQUE,\n    amount DECIMAL(10, 2),\n    payment_status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_api (\n    order_id INT PRIMARY KEY,\n    tracking_number UUID,\n    delivery_status TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tracking_api (\n    tracking_number UUID PRIMARY KEY,\n    current_location TEXT,\n    estimated_delivery_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_gateway (\n    transaction_id INT PRIMARY KEY,\n    payment_status TEXT,\n    amount DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE shipping_address (\n    order_id INT PRIMARY KEY,\n    street_address TEXT,\n    city TEXT,\n    zip_code TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingProviders (\n  id SERIAL PRIMARY KEY,\n  provider_name VARCHAR(50) NOT NULL,\n  api_key VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Shipments (\n  shipment_id SERIAL PRIMARY KEY,\n  provider_id INT NOT NULL,\n  tracking_number VARCHAR(20) NOT NULL,\n  shipment_status VARCHAR(20) NOT NULL,\n  FOREIGN KEY (provider_id) REFERENCES ShippingProviders(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentGateways (\n  gateway_id SERIAL PRIMARY KEY,\n  gateway_name VARCHAR(50) NOT NULL,\n  api_url VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n  payment_id SERIAL PRIMARY KEY,\n  gateway_id INT NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  payment_status VARCHAR(20) NOT NULL,\n  FOREIGN KEY (gateway_id) REFERENCES PaymentGateways(gateway_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (\n  customer_id SERIAL PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  email VARCHAR(50) NOT NULL,\n  address VARCHAR(100) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

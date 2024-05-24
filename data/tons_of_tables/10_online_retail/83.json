@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE currencies (\n    currency_code VARCHAR(3) PRIMARY KEY,\n    currency_name VARCHAR(50) NOT NULL,\n    exchange_rate DECIMAL(10, 2) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE currencies (\n    currency_code VARCHAR(3) PRIMARY KEY,\n    currency_name VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE exchange_rates (\n    exchange_id SERIAL PRIMARY KEY,\n    date DATE NOT NULL,\n    from_currency VARCHAR(3) NOT NULL,\n    to_currency VARCHAR(3) NOT NULL,\n    rate DECIMAL(10, 5) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE currencies (\n  currency_id INT PRIMARY KEY,\n  currency_code VARCHAR(3) NOT NULL,\n  currency_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE exchange_rates (\n  exchange_rate_id INT PRIMARY KEY,\n  currency_from_id INT NOT NULL,\n  currency_to_id INT NOT NULL,\n  rate DECIMAL(10, 4) NOT NULL,\n  FOREIGN KEY (currency_from_id) REFERENCES currencies(currency_id),\n  FOREIGN KEY (currency_to_id) REFERENCES currencies(currency_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_reports (\n  report_id INT PRIMARY KEY,\n  report_date DATE NOT NULL,\n  total_amount DECIMAL(12, 2) NOT NULL,\n  currency_id INT NOT NULL,\n  FOREIGN KEY (currency_id) REFERENCES currencies(currency_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE currencies (\n    currency_id UUID PRIMARY KEY,\n    currency_code VARCHAR(3) UNIQUE NOT NULL,\n    currency_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE exchange_rates (\n    rate_id UUID PRIMARY KEY,\n    base_currency VARCHAR(3) NOT NULL,\n    target_currency VARCHAR(3) NOT NULL,\n    exchange_rate DECIMAL(10, 4) NOT NULL,\n    rate_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pricing (\n    price_id UUID PRIMARY KEY,\n    product_id UUID NOT NULL,\n    currency_id UUID NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    price_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_reports (\n    report_id UUID PRIMARY KEY,\n    report_date DATE NOT NULL,\n    total_revenue DECIMAL(15, 2) NOT NULL,\n    total_expenses DECIMAL(15, 2) NOT NULL,\n    net_profit DECIMAL(15, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE currencies (\n    currency_id INT PRIMARY KEY,\n    currency_name VARCHAR(50) NOT NULL,\n    currency_symbol VARCHAR(5)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE exchange_rates (\n    exchange_rate_id INT PRIMARY KEY,\n    source_currency_id INT,\n    target_currency_id INT,\n    rate DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (source_currency_id) REFERENCES currencies(currency_id),\n    FOREIGN KEY (target_currency_id) REFERENCES currencies(currency_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    base_currency_id INT,\n    FOREIGN KEY (base_currency_id) REFERENCES currencies(currency_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE prices (\n    price_id INT PRIMARY KEY,\n    product_id INT,\n    currency_id INT,\n    price DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (product_id) REFERENCES products(product_id),\n    FOREIGN KEY (currency_id) REFERENCES currencies(currency_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_reports (\n    report_id INT PRIMARY KEY,\n    report_name VARCHAR(150) NOT NULL,\n    report_date DATE,\n    currency_id INT,\n    total_amount DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (currency_id) REFERENCES currencies(currency_id)\n);\n"
+      }
+    ]
+  }
+]

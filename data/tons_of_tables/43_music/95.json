@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE artist_contracts (\n    artist_id INT PRIMARY KEY,\n    artist_name VARCHAR(255),\n    contract_date DATE,\n    performance_fee DECIMAL(10, 2),\n    scheduling_details TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE artist_contracts (\n    contract_id INT NOT NULL,\n    artist_name VARCHAR(255) NOT NULL,\n    performance_fee DECIMAL(10,2) NOT NULL,\n    agreement_details TEXT,\n    schedule_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE artist_schedule (\n    schedule_id INT NOT NULL,\n    artist_id INT NOT NULL,\n    schedule_date DATE NOT NULL,\n    start_time TIME,\n    end_time TIME,\n    location VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ArtistContracts (\n    contract_id INT PRIMARY KEY,\n    artist_name VARCHAR(255) NOT NULL,\n    performance_fee DECIMAL(10,2) NOT NULL,\n    agreement_date DATE,\n    festival_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SchedulingDetails (\n    schedule_id INT PRIMARY KEY,\n    contract_id INT,\n    performance_date DATE,\n    venue_name VARCHAR(255),\n    start_time TIME,\n    end_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FestivalDetails (\n    festival_id INT PRIMARY KEY,\n    festival_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    festival_location VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Artist (\n  artist_id UUID PRIMARY KEY,\n  artist_name VARCHAR(255),\n  genre VARCHAR(100),\n  contract_start_date DATE,\n  contract_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Performance (\n  performance_id UUID PRIMARY KEY,\n  artist_id UUID REFERENCES Artist(artist_id),\n  venue_name VARCHAR(255),\n  performance_date DATE,\n  performance_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceFee (\n  fee_id UUID PRIMARY KEY,\n  performance_id UUID REFERENCES Performance(performance_id),\n  fee_amount DECIMAL(10, 2),\n  payment_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Schedule (\n  schedule_id UUID PRIMARY KEY,\n  performance_id UUID REFERENCES Performance(performance_id),\n  stage_number INT,\n  start_time TIME,\n  end_time TIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Artist (\n    artist_id UUID PRIMARY KEY,\n    artist_name VARCHAR(255) NOT NULL,\n    contract_details JSONB,\n    agency_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Performance (\n    performance_id UUID PRIMARY KEY,\n    artist_id UUID REFERENCES Artist(artist_id),\n    performance_date DATE,\n    venue_name VARCHAR(255) NOT NULL,\n    fee DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Schedule (\n    schedule_id UUID PRIMARY KEY,\n    performance_id UUID REFERENCES Performance(performance_id),\n    start_time TIME,\n    end_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Festival (\n    festival_id UUID PRIMARY KEY,\n    festival_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Booking (\n    booking_id UUID PRIMARY KEY,\n    artist_id UUID REFERENCES Artist(artist_id),\n    performance_id UUID REFERENCES Performance(performance_id),\n    festival_id UUID REFERENCES Festival(festival_id),\n    booking_date DATE\n);\n"
+      }
+    ]
+  }
+]

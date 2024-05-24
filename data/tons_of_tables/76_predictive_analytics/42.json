@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE extraction_and_transformation (\n    data_source VARCHAR(255),\n    data_type VARCHAR(50),\n    extraction_method VARCHAR(100),\n    transformation_query TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE extraction_sources (\n    id SERIAL PRIMARY KEY,\n    source_name VARCHAR,\n    source_type VARCHAR,\n    source_url VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_transformations (\n    id SERIAL PRIMARY KEY,\n    transformation_name VARCHAR,\n    transformation_details TEXT,\n    transformation_query TEXT,\n    created_at TIMESTAMP,\n    extraction_source_id INT,\n    FOREIGN KEY (extraction_source_id) REFERENCES extraction_sources(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE extraction_source (\n    id INT PRIMARY KEY,\n    source_name VARCHAR(255),\n    source_type VARCHAR(50),\n    source_location VARCHAR(255),\n    extraction_frequency VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_transformation (\n    id INT PRIMARY KEY,\n    transformation_type VARCHAR(50),\n    transformation_script TEXT,\n    transformation_description TEXT,\n    transformation_status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reporting_config (\n    id INT PRIMARY KEY,\n    report_name VARCHAR(100),\n    report_frequency VARCHAR(50),\n    report_destination VARCHAR(255),\n    report_status VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE extraction_sources ( \n    source_id INT PRIMARY KEY, \n    source_name VARCHAR(255) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_transformation ( \n    transformation_id INT PRIMARY KEY, \n    transformation_name VARCHAR(255), \n    transformation_type VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources_mapping ( \n    mapping_id INT PRIMARY KEY, \n    source_id INT, \n    transformation_id INT, \n    FOREIGN KEY (source_id) REFERENCES extraction_sources(source_id), \n    FOREIGN KEY (transformation_id) REFERENCES data_transformation(transformation_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reporting_data ( \n    report_id INT PRIMARY KEY, \n    report_name VARCHAR(255), \n    report_date DATE, \n    transformation_id INT, \n    mapping_id INT, \n    FOREIGN KEY (transformation_id) REFERENCES data_transformation(transformation_id), \n    FOREIGN KEY (mapping_id) REFERENCES data_sources_mapping(mapping_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ExtractData (\n    id INT PRIMARY KEY,\n    source VARCHAR(100),\n    data_type VARCHAR(50),\n    last_extract_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TransformData (\n    id INT PRIMARY KEY,\n    transform_type VARCHAR(50),\n    transformation_script TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SourceMapping (\n    id INT PRIMARY KEY,\n    source_name VARCHAR(100),\n    source_type VARCHAR(50),\n    target_table VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportDefinition (\n    id INT PRIMARY KEY,\n    report_name VARCHAR(100),\n    report_description TEXT,\n    created_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportData (\n    id INT PRIMARY KEY,\n    report_id INT,\n    report_data JSON,\n    report_date DATE\n);\n"
+      }
+    ]
+  }
+]

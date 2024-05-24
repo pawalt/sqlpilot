@@ -1,0 +1,73 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_compliance_regulations (\n  regulation_id INT PRIMARY KEY,\n  regulation_name VARCHAR(255),\n  regulation_description TEXT,\n  update_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_regulations (\n    id SERIAL PRIMARY KEY,\n    country_code VARCHAR(2) NOT NULL,\n    regulation_text TEXT NOT NULL,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_updates (\n    update_id SERIAL PRIMARY KEY,\n    regulation_id INT NOT NULL,\n    update_text TEXT NOT NULL,\n    update_date TIMESTAMP,\n    CONSTRAINT fk_regulation_id FOREIGN KEY (regulation_id) REFERENCES tax_regulations(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_regulations (\n    id SERIAL PRIMARY KEY,\n    country_code VARCHAR(2) NOT NULL,\n    regulation_text TEXT NOT NULL,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_updates (\n    update_id SERIAL PRIMARY KEY,\n    regulation_id INT NOT NULL,\n    update_text TEXT NOT NULL,\n    update_date TIMESTAMP,\n    CONSTRAINT fk_regulation_id FOREIGN KEY (regulation_id) REFERENCES tax_regulations(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_compliance_regulations (\n    regulation_id INT PRIMARY KEY,\n    regulation_name VARCHAR(255),\n    regulation_description TEXT,\n    regulation_last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE country_tax_rates (\n    country_id INT PRIMARY KEY,\n    country_name VARCHAR(255),\n    tax_rate DECIMAL(5,2),\n    tax_category VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_reporting_history (\n    report_id INT PRIMARY KEY,\n    reported_date DATE,\n    reported_amount DECIMAL(10,2),\n    country_id INT,\n    FOREIGN KEY (country_id) REFERENCES country_tax_rates(country_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_regulations (\n  id INT PRIMARY KEY,\n  regulation_name VARCHAR(255),\n  description TEXT,\n  last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_status (\n  id INT PRIMARY KEY,\n  regulation_id INT,\n  status VARCHAR(50),\n  review_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE authority_agency (\n  id INT PRIMARY KEY,\n  agency_name VARCHAR(255),\n  contact_person VARCHAR(100),\n  contact_email VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE updates_log (\n  id INT PRIMARY KEY,\n  update_type VARCHAR(50),\n  update_description TEXT,\n  update_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_regulations (\n    regulation_id INT PRIMARY KEY,\n    regulation_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    publication_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(100) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulation_updates (\n    update_id INT PRIMARY KEY,\n    regulation_id INT,\n    update_date DATE,\n    update_description TEXT,\n    FOREIGN KEY (regulation_id) REFERENCES tax_regulations(regulation_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulation_references (\n    reference_id INT PRIMARY KEY,\n    regulation_id INT,\n    reference_url VARCHAR(255),\n    FOREIGN KEY (regulation_id) REFERENCES tax_regulations(regulation_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE update_history (\n    history_id INT PRIMARY KEY,\n    update_id INT,\n    update_timestamp TIMESTAMP,\n    status VARCHAR(50),\n    FOREIGN KEY (update_id) REFERENCES regulation_updates(update_id)\n);"
+      }
+    ]
+  }
+]

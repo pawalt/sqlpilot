@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_communication_plans (\n    plan_id UUID PRIMARY KEY,\n    plan_name VARCHAR(100) NOT NULL,\n    plan_price DECIMAL(10,2) NOT NULL,\n    billing_frequency VARCHAR(50) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    subscriber_id UUID,\n    FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscription_plans (\n    plan_id INT PRIMARY KEY,\n    plan_name VARCHAR(50) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_information (\n    billing_id SERIAL PRIMARY KEY,\n    plan_id INT REFERENCES subscription_plans(plan_id),\n    subscriber_name VARCHAR(100) NOT NULL,\n    billing_amount DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Satellite_Communication_Subscription_Plans (\n    plan_id INT PRIMARY KEY,\n    plan_name VARCHAR(255),\n    price DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Billing_Information (\n    billing_id INT PRIMARY KEY,\n    plan_id INT,\n    customer_name VARCHAR(255),\n    amount_due DECIMAL(10,2),\n    FOREIGN KEY(plan_id) REFERENCES Satellite_Communication_Subscription_Plans(plan_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscription_plans (\n    id UUID PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscribers (\n    subscriber_id UUID PRIMARY KEY,\n    plan_id UUID REFERENCES subscription_plans(id),\n    activation_date DATE NOT NULL,\n    status VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_information (\n    bill_id UUID PRIMARY KEY,\n    subscriber_id UUID REFERENCES subscribers(subscriber_id),\n    amount DECIMAL(10, 2) NOT NULL,\n    payment_status VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_history (\n    communication_id UUID PRIMARY KEY,\n    subscriber_id UUID REFERENCES subscribers(subscriber_id),\n    communication_date DATE NOT NULL,\n    message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteCommunicationPlans (\n    plan_id UUID PRIMARY KEY,\n    plan_name VARCHAR(100) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SubscriberAccounts (\n    account_id UUID PRIMARY KEY,\n    account_name VARCHAR(100) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BillingInformation (\n    bill_id UUID PRIMARY KEY,\n    account_id UUID NOT NULL,\n    bill_amount DECIMAL(10, 2) NOT NULL,\n    payment_status VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SubscriptionHistory (\n    history_id UUID PRIMARY KEY,\n    account_id UUID NOT NULL,\n    plan_id UUID NOT NULL,\n    subscription_date TIMESTAMPTZ NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SatelliteCommunicationUsage (\n    usage_id UUID PRIMARY KEY,\n    account_id UUID NOT NULL,\n    data_usage DECIMAL(10, 2) NOT NULL,\n    last_usage_date TIMESTAMPTZ NOT NULL\n);\n"
+      }
+    ]
+  }
+]

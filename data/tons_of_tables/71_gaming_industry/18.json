@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_reality_events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    tournament_name VARCHAR(255),\n    tournament_type VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_events (\n    event_id SERIAL PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    event_date DATE NOT NULL,\n    event_type VARCHAR(50) NOT NULL,\n    player_id INT NOT NULL,\n    event_score INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tournaments (\n    tournament_id SERIAL PRIMARY KEY,\n    tournament_name VARCHAR(100) NOT NULL,\n    tournament_date DATE NOT NULL,\n    prize_pool DECIMAL(10, 2) NOT NULL,\n    winner_id INT NOT NULL,\n    runner_up_id INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS players (\n    player_id UUID PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    player_email VARCHAR(100) NOT NULL,\n    join_date DATE NOT NULL,\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS events (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    event_date DATE NOT NULL,\n    event_location VARCHAR(100) NOT NULL,\n    event_type VARCHAR(50) NOT NULL,\n    event_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS tournament_results (\n    result_id UUID PRIMARY KEY,\n    tournament_id UUID NOT NULL,\n    player_id UUID NOT NULL,\n    event_id UUID NOT NULL,\n    result_duration INTERVAL,\n    result_rank INT,\n    result_prize DECIMAL(10, 2),\n    FOREIGN KEY (tournament_id) REFERENCES tournaments (tournament_id),\n    FOREIGN KEY (player_id) REFERENCES players (player_id),\n    FOREIGN KEY (event_id) REFERENCES events (event_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tournaments (\n    tournament_id UUID PRIMARY KEY,\n    tournament_name VARCHAR(255),\n    tournament_date DATE,\n    tournament_location VARCHAR(255),\n    total_prize_money DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id UUID PRIMARY KEY,\n    player_name VARCHAR(255),\n    player_email VARCHAR(255),\n    player_country VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id UUID PRIMARY KEY,\n    event_id UUID REFERENCES events(event_id),\n    player_id UUID REFERENCES players(player_id),\n    score INTEGER\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n  event_id INT PRIMARY KEY,\n  event_name TEXT NOT NULL,\n  event_date DATE NOT NULL,\n  game_name TEXT NOT NULL,\n  event_location TEXT,\n  event_prize MONEY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n  player_id INT PRIMARY KEY,\n  player_name TEXT NOT NULL,\n  player_email TEXT,\n  player_country TEXT,\n  player_join_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tournaments (\n  tournament_id INT PRIMARY KEY,\n  tournament_name TEXT NOT NULL,\n  tournament_date DATE NOT NULL,\n  tournament_location TEXT,\n  game_name TEXT NOT NULL,\n  tournament_prize MONEY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE games (\n  game_id INT PRIMARY KEY,\n  game_name TEXT NOT NULL,\n  game_developer TEXT,\n  game_genre TEXT,\n  game_release_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n  result_id INT PRIMARY KEY,\n  tournament_id INT,\n  player_id INT,\n  result_rank INT,\n  result_prize MONEY\n);"
+      }
+    ]
+  }
+]

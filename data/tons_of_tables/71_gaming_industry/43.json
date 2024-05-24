@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_progress (\n    player_id INT PRIMARY KEY,\n    save_state BYTEA,\n    last_saved_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_progress (\n    player_id INT PRIMARY KEY,\n    game_id INT,\n    progress_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE save_states (\n    player_id INT,\n    save_id UUID PRIMARY KEY,\n    saved_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50),\n    level INT,\n    progress FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE game (\n    game_id INT PRIMARY KEY,\n    game_name VARCHAR(50),\n    genre VARCHAR(50),\n    total_players INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE save_state (\n    save_id INT PRIMARY KEY,\n    player_id INT REFERENCES player(player_id),\n    game_id INT REFERENCES game(game_id),\n    timestamp TIMESTAMP,\n    state JSONB\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player (\n    player_id UUID PRIMARY KEY,\n    player_name STRING,\n    game_progress INT,\n    save_state BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE game (\n    game_id UUID PRIMARY KEY,\n    game_name STRING,\n    release_date DATE,\n    genre STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_game (\n    player_id UUID,\n    game_id UUID,\n    playtime INT,\n    last_played TIMESTAMP,\n    PRIMARY KEY (player_id, game_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboard (\n    leaderboard_id UUID PRIMARY KEY,\n    game_id UUID,\n    player_id UUID,\n    score INT,\n    rank INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player (\n    id INT PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    level INT,\n    coins INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game (\n    game_id INT PRIMARY KEY,\n    game_name VARCHAR(50) NOT NULL,\n    release_date DATE,\n    platform VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE save_state (\n    save_id INT PRIMARY KEY,\n    player_id INT,\n    game_id INT,\n    save_date TIMESTAMP,\n    progress TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_inventory (\n    player_id INT,\n    item_name VARCHAR(50),\n    quantity INT,\n    PRIMARY KEY (player_id, item_name)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_statistics (\n    player_id INT PRIMARY KEY,\n    total_playtime INT,\n    highest_level INT,\n    coins_collected INT\n);"
+      }
+    ]
+  }
+]

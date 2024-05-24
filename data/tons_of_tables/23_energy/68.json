@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE renewable_energy_subsidies (\n  id INT PRIMARY KEY,\n  subsidy_name VARCHAR(100),\n  availability BOOLEAN,\n  cost DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE renewable_energy_subsidies (\n    subsidy_id INT PRIMARY KEY,\n    subsidy_name VARCHAR(50),\n    subsidy_amount DECIMAL,\n    subsidy_start_date DATE,\n    subsidy_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_cost (\n    cost_id INT PRIMARY KEY,\n    energy_type VARCHAR(50),\n    cost_per_unit DECIMAL,\n    cost_unit VARCHAR(20),\n    is_renewable BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Subsidies (\n    subsidy_id INT PRIMARY KEY,\n    subsidy_name VARCHAR(50) NOT NULL,\n    subsidy_amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProviders (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(50) NOT NULL,\n    provider_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyPrices (\n    price_id INT PRIMARY KEY,\n    provider_id INT REFERENCES EnergyProviders(provider_id),\n    subsidy_id INT REFERENCES Subsidies(subsidy_id),\n    price DECIMAL(8, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AvailabilitySubsidies (\n  subsidy_id INT PRIMARY KEY,\n  subsidy_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  eligible_regions VARCHAR(255),\n  funding_source VARCHAR(255),\n  amount FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CostSubsidies (\n  subsidy_id INT PRIMARY KEY,\n  subsidy_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  eligible_technologies VARCHAR(255),\n  funding_source VARCHAR(255),\n  amount FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EligibleTechnologies (\n  tech_id INT PRIMARY KEY,\n  tech_name VARCHAR(255),\n  tech_type VARCHAR(255),\n  efficiency FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Regions (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(255),\n  country VARCHAR(255),\n  population INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subsidies (\n    subsidy_id INT PRIMARY KEY,\n    subsidy_name VARCHAR(50),\n    subsidy_amount DECIMAL(10, 2),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regions (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(50),\n    region_id INT,\n    CONSTRAINT fk_region FOREIGN KEY (region_id) REFERENCES regions(region_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(50),\n    facility_id INT,\n    CONSTRAINT fk_facility FOREIGN KEY (facility_id) REFERENCES facilities(facility_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE applications (\n    application_id INT PRIMARY KEY,\n    provider_id INT,\n    subsidy_id INT,\n    application_date DATE,\n    CONSTRAINT fk_provider FOREIGN KEY (provider_id) REFERENCES providers(provider_id),\n    CONSTRAINT fk_subsidy FOREIGN KEY (subsidy_id) REFERENCES subsidies(subsidy_id)\n);"
+      }
+    ]
+  }
+]

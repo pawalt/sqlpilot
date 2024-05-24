@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS ip_blacklist (\n  id UUID PRIMARY KEY,\n  ip_address INET,\n  reason TEXT,\n  blocked_at TIMESTAMP,\n  created_at TIMESTAMP DEFAULT current_timestamp\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blacklisted_ips\n(\n    ip_address VARCHAR(15) PRIMARY KEY,\n    reason TEXT\n);\n\nCREATE TABLE fraud_attempts\n(\n    id SERIAL PRIMARY KEY,\n    ip_address VARCHAR(15) REFERENCES blacklisted_ips(ip_address),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blacklisted_ip_addresses (\n   ip_address VARCHAR(15) PRIMARY KEY,\n   reason TEXT,\n   date_added TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraudulent_activities (\n   activity_id SERIAL PRIMARY KEY,\n   ip_address VARCHAR(15),\n   activity_type VARCHAR(50),\n   activity_date TIMESTAMP,\n   FOREIGN KEY (ip_address) REFERENCES blacklisted_ip_addresses(ip_address)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_comments (\n   comment_id SERIAL PRIMARY KEY,\n   ip_address VARCHAR(15),\n   comment TEXT,\n   comment_date TIMESTAMP,\n   FOREIGN KEY (ip_address) REFERENCES blacklisted_ip_addresses(ip_address)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blacklisted_ips (\n    ip_address VARCHAR(15) PRIMARY KEY,\n    reason TEXT,\n    date_added TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE fraudulent_activities (\n    activity_id SERIAL PRIMARY KEY,\n    ip_address VARCHAR(15) REFERENCES blacklisted_ips(ip_address),\n    activity_type VARCHAR(50),\n    activity_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n    report_id SERIAL PRIMARY KEY,\n    ip_address VARCHAR(15) REFERENCES blacklisted_ips(ip_address),\n    report_description TEXT,\n    reporter_name VARCHAR(100),\n    report_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id SERIAL PRIMARY KEY,\n    action_type VARCHAR(50),\n    ip_address VARCHAR(15) REFERENCES blacklisted_ips(ip_address),\n    log_details TEXT,\n    log_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blacklisted_ips (\n    ip_address VARCHAR(15) PRIMARY KEY,\n    reason TEXT,\n    blacklisted_at TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    created_at TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    amount NUMERIC(10, 2) NOT NULL,\n    transaction_date TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_attempts (\n    attempt_id UUID PRIMARY KEY,\n    ip_address VARCHAR(15) REFERENCES blacklisted_ips(ip_address),\n    user_id UUID REFERENCES users(user_id),\n    attempt_date TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id UUID PRIMARY KEY,\n    action VARCHAR(50) NOT NULL,\n    user_id UUID REFERENCES users(user_id),\n    log_date TIMESTAMPTZ\n);"
+      }
+    ]
+  }
+]

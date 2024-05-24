@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_connection_logs (\n  id UUID PRIMARY KEY,\n  username VARCHAR(50),\n  connect_time TIMESTAMP,\n  disconnect_time TIMESTAMP,\n  ip_address VARCHAR(15),\n  status VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_logs (\n  log_id INT PRIMARY KEY,\n  connection_id INT,\n  user_id INT,\n  timestamp TIMESTAMP,\n  client_ip VARCHAR(15),\n  server_ip VARCHAR(15),\n  vpn_server_port INT,\n  vpn_protocol VARCHAR(10),\n  connection_duration INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n  incident_id INT PRIMARY KEY,\n  log_id INT,\n  incident_type VARCHAR(50),\n  investigation_status VARCHAR(20),\n  incident_description TEXT,\n  response_action TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_connections (\n    id INT PRIMARY KEY,\n    user_id INT,\n    connection_time TIMESTAMP,\n    disconnect_time TIMESTAMP,\n    vpn_server VARCHAR(50),\n    connection_status VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_info (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    role VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n    incident_id INT PRIMARY KEY,\n    user_id INT,\n    description TEXT,\n    severity VARCHAR(10),\n    incident_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_users (\n user_id UUID PRIMARY KEY,\n username VARCHAR(50) UNIQUE,\n password VARCHAR(100),\n last_login TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_connections (\n connection_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n user_id UUID REFERENCES vpn_users(user_id),\n connection_time TIMESTAMP,\n server_ip VARCHAR(20),\n client_ip VARCHAR(20),\n connection_duration INTERVAL,\n success BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_servers (\n server_id UUID PRIMARY KEY,\n server_name VARCHAR(50) UNIQUE,\n server_ip VARCHAR(20) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n incident_id UUID PRIMARY KEY,\n connection_id UUID REFERENCES vpn_connections(connection_id),\n incident_type VARCHAR(50),\n incident_description TEXT,\n incident_date TIMESTAMP,\n incident_resolved BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_user (user_id INT, username VARCHAR(50), connection_time TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_server (server_id INT, server_name VARCHAR(50), location VARCHAR(50), server_ip VARCHAR(15)"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_connection_log (log_id INT, user_id INT, server_id INT, connection_start TIMESTAMP, connection_end TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_alerts (alert_id INT, log_id INT, alert_type VARCHAR(50), alert_description TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_incidents (incident_id INT, log_id INT, incident_type VARCHAR(50), incident_description TEXT)"
+      }
+    ]
+  }
+]

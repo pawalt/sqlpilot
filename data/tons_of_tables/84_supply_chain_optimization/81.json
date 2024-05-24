@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_footprint_data (\n    material_id UUID PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    carbon_intensity FLOAT NOT NULL,\n    source_location VARCHAR(255) NOT NULL,\n    acquisition_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_footprint_data (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(50),\n    carbon_intensity DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sourcing_decisions (\n    decision_id INT PRIMARY KEY,\n    material_id INT,\n    decision_date DATE,\n    decision_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE raw_materials (\n    material_id UUID PRIMARY KEY,\n    material_name VARCHAR(255),\n    carbon_intensity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id UUID PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE carbon_footprint_data (\n    data_id UUID PRIMARY KEY,\n    material_id UUID,\n    supplier_id UUID,\n    emission_amount FLOAT,\n    measurement_date DATE,\n    FOREIGN KEY (material_id) REFERENCES raw_materials(material_id),\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RawMaterials (\n    material_id SERIAL PRIMARY KEY,\n    material_name VARCHAR(100) NOT NULL,\n    carbon_footprint DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id SERIAL PRIMARY KEY,\n    supplier_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialSuppliers (\n    material_id INT NOT NULL,\n    supplier_id INT NOT NULL,\n    FOREIGN KEY (material_id) REFERENCES RawMaterials(material_id),\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CarbonFootprintLog (\n    log_id SERIAL PRIMARY KEY,\n    material_id INT NOT NULL,\n    carbon_emission DECIMAL(10,2) NOT NULL,\n    log_date TIMESTAMP NOT NULL,\n    PRIMARY KEY (log_id, material_id),\n    FOREIGN KEY (material_id) REFERENCES RawMaterials(material_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CarbonFootprintData (\n  id INT PRIMARY KEY,\n  material_name VARCHAR(255),\n  carbon_emission DECIMAL(10, 2),\n  source_location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialDetails (\n  id INT PRIMARY KEY,\n  material_name VARCHAR(255),\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SourceLocation (\n  id INT PRIMARY KEY,\n  location_name VARCHAR(255),\n  coordinates VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Supplier (\n  id INT PRIMARY KEY,\n  supplier_name VARCHAR(255),\n  contact_info VARCHAR(255),\n  material_id INT,\n  FOREIGN KEY (material_id) REFERENCES MaterialDetails(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SustainableSourcingDecisions (\n  id INT PRIMARY KEY,\n  decision_date DATE,\n  decision_description TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityIncidents (\n    incident_id UUID PRIMARY KEY,\n    incident_date TIMESTAMP,\n    incident_type VARCHAR(50),\n    description TEXT,\n    location TEXT,\n    severity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n    incident_id   INT PRIMARY KEY,\n    incident_date TIMESTAMP,\n    incident_type VARCHAR(50),\n    location      VARCHAR(100),\n    description   TEXT,\n    severity      INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_analysis (\n    analysis_id   INT PRIMARY KEY,\n    analysis_date TIMESTAMP,\n    incident_id   INT,\n    analysis_result TEXT,\n    analyst       VARCHAR(50),\n    CONSTRAINT fk_incident FOREIGN KEY (incident_id) REFERENCES security_incidents(incident_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n  id UUID PRIMARY KEY,\n  incident_type VARCHAR(100),\n  incident_date TIMESTAMP,\n  location TEXT,\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_reports (\n  report_id UUID PRIMARY KEY,\n  incident_id UUID REFERENCES security_incidents(id),\n  report_date TIMESTAMP,\n  report_description TEXT,\n  is_resolved BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_cameras (\n  camera_id SERIAL PRIMARY KEY,\n  location TEXT,\n  installation_date TIMESTAMP,\n  resolution VARCHAR(10),\n  is_active BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityIncidents (\n  incident_id UUID PRIMARY KEY,\n  incident_date DATE,\n  incident_time TIME,\n  location VARCHAR,\n  description TEXT,\n  severity VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentReports (\n  report_id UUID PRIMARY KEY,\n  incident_id UUID REFERENCES SecurityIncidents(incident_id),\n  reporter_name VARCHAR,\n  report_date DATE,\n  report_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentImages (\n  image_id UUID PRIMARY KEY,\n  incident_id UUID REFERENCES SecurityIncidents(incident_id),\n  image_url VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentLogs (\n  log_id UUID PRIMARY KEY,\n  incident_id UUID REFERENCES SecurityIncidents(incident_id),\n  log_date DATE,\n  log_time TIME,\n  log_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n   incident_id INT PRIMARY KEY,\n   incident_type VARCHAR(100),\n   incident_date DATE,\n   location VARCHAR(255),\n   description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents_devices (\n   incident_id INT,\n   device_id INT,\n   FOREIGN KEY (incident_id) REFERENCES security_incidents(incident_id),\n   FOREIGN KEY (device_id) REFERENCES devices(device_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n   device_id INT PRIMARY KEY,\n   device_type VARCHAR(100),\n   installation_date DATE,\n   status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n   user_id INT PRIMARY KEY,\n   username VARCHAR(50),\n   email VARCHAR(100),\n   phone_number VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_responses (\n   response_id INT PRIMARY KEY,\n   incident_id INT,\n   user_id INT,\n   response_date TIMESTAMP,\n   response_text TEXT,\n   FOREIGN KEY (incident_id) REFERENCES security_incidents(incident_id),\n   FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      }
+    ]
+  }
+]

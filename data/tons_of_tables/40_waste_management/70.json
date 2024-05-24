@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n    material_id INT PRIMARY KEY,\n    material_name TEXT,\n    carbon_footprint DECIMAL,\n    recyclability_rating INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n    id SERIAL PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    sustainability_score FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_metrics (\n    id SERIAL PRIMARY KEY,\n    material_id INT NOT NULL,\n    recyclable BOOLEAN NOT NULL,\n    biodegradable BOOLEAN NOT NULL,\n    weight FLOAT NOT NULL,\n    FOREIGN KEY (material_id) REFERENCES packaging_materials(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(50) NOT NULL,\n    sustainability_score FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_properties (\n    property_id INT PRIMARY KEY,\n    property_name VARCHAR(50) NOT NULL,\n    property_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_metrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(50) NOT NULL,\n    metric_value FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n   id SERIAL PRIMARY KEY,\n   material_name VARCHAR(50) NOT NULL,\n   sustainability_rating INTEGER NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_categories (\n   category_id SERIAL PRIMARY KEY,\n   category_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_metrics (\n   metric_id SERIAL PRIMARY KEY,\n   metric_name VARCHAR(50) NOT NULL,\n   unit_of_measure VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_metrics (\n   packaging_id SERIAL PRIMARY KEY,\n   packaging_material_id INTEGER REFERENCES packaging_materials(id),\n   metric_id INTEGER REFERENCES material_metrics(metric_id),\n   value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PackagingMaterial (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  category VARCHAR(50) NOT NULL,\n  recyclable BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialMetrics (\n  metrics_id INT PRIMARY KEY,\n  material_id INT NOT NULL,\n  thickness DECIMAL(5,2) NOT NULL,\n  weight DECIMAL(5,2) NOT NULL,\n  CONSTRAINT fk_material FOREIGN KEY (material_id) REFERENCES PackagingMaterial(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Supplier (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(50) NOT NULL,\n  location VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PackagingMetrics (\n  packaging_id INT PRIMARY KEY,\n  material_id INT NOT NULL,\n  quantity INT NOT NULL,\n  CONSTRAINT fk_material FOREIGN KEY (material_id) REFERENCES PackagingMaterial(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SustainabilityReports (\n  report_id INT PRIMARY KEY,\n  packaging_id INT NOT NULL,\n  supplier_id INT NOT NULL,\n  date DATE NOT NULL,\n  sustainability_score INT NOT NULL,\n  CONSTRAINT fk_packaging FOREIGN KEY (packaging_id) REFERENCES PackagingMetrics(packaging_id),\n  CONSTRAINT fk_supplier FOREIGN KEY (supplier_id) REFERENCES Supplier(supplier_id)\n);"
+      }
+    ]
+  }
+]

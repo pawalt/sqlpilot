@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VideoFootageMetadata (\n    video_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    camera_id INT,\n    frame_number INT,\n    person_id INT,\n    detected_emotion VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VideoFootageMetadata (\n  video_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP,\n  camera_id UUID,\n  location VARCHAR(255),\n  people_count INT,\n  flagged BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FacialRecognition (\n  face_id UUID PRIMARY KEY,\n  video_id UUID,\n  timestamp TIMESTAMP,\n  detected_emotion VARCHAR(50),\n  detected_age INT,\n  confidence FLOAT,\n  FOREIGN KEY (video_id) REFERENCES VideoFootageMetadata(video_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VideoMetadata (\n    video_id INT PRIMARY KEY,\n    footage_name VARCHAR(255),\n    timestamp TIMESTAMP,\n    duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FacialRecognition (\n    face_id INT PRIMARY KEY,\n    video_id INT,\n    face_data JSON,\n    confidence_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SecuritySystem (\n    system_id INT PRIMARY KEY,\n    system_name VARCHAR(255),\n    location VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_system_videos (\n    video_id UUID PRIMARY KEY,\n    video_url TEXT NOT NULL,\n    video_length INT,\n    facial_recognition_enabled BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE video_capture_data (\n    capture_id UUID PRIMARY KEY,\n    video_id UUID REFERENCES security_system_videos(video_id),\n    capture_time TIMESTAMP,\n    captured_frame BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE facial_recognition_results (\n    result_id UUID PRIMARY KEY,\n    capture_id UUID REFERENCES video_capture_data(capture_id),\n    recognized_faces INT[],\n    unrecognized_faces INT[]\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE video_analysis_metadata (\n    metadata_id UUID PRIMARY KEY,\n    video_id UUID REFERENCES security_system_videos(video_id),\n    analysis_time TIMESTAMP,\n    analysis_result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE footage_metadata (\n    footage_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    camera_id INT,\n    video_length INTERVAL,\n    resolution TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE facial_recognition (\n    recognition_id UUID PRIMARY KEY,\n    person_id UUID,\n    footage_id UUID,\n    recognition_timestamp TIMESTAMP,\n    result JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE persons (\n    person_id UUID PRIMARY KEY,\n    first_name TEXT,\n    last_name TEXT,\n    birthdate DATE,\n    gender TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cameras (\n    camera_id INT PRIMARY KEY,\n    location TEXT,\n    status TEXT,\n    installation_date DATE,\n    model TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id UUID PRIMARY KEY,\n    event_type TEXT,\n    event_timestamp TIMESTAMP,\n    footage_id UUID,\n    camera_id INT\n)"
+      }
+    ]
+  }
+]

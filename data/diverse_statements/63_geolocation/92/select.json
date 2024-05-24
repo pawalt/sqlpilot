@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM PlayerInteractions;",
+      "SELECT interaction_id, player_id, object_id FROM PlayerInteractions ORDER BY interaction_id DESC;",
+      "SELECT player_id, interaction_type FROM PlayerInteractions WHERE player_id = 10;",
+      "SELECT COUNT(*) FROM PlayerInteractions WHERE interaction_type = 'like';",
+      "SELECT * FROM PlayerInteractions WHERE ST_DISTANCE(geographical_point, ST_POINT(-73.935242, 40.730610)) < 1000;",
+      "SELECT * FROM PlayerInteractions ORDER BY interaction_id DESC LIMIT 10;",
+      "SELECT player_id, COUNT(*) AS total_interactions FROM PlayerInteractions GROUP BY player_id HAVING total_interactions > 5;",
+      "SELECT object_id, interaction_type FROM PlayerInteractions WHERE interaction_type = 'like' OR interaction_type = 'comment';",
+      "SELECT ST_AsText(geographical_point) AS location FROM PlayerInteractions WHERE ST_DWithin(geographical_point, ST_GeographyFromText('POINT(-73.985752 40.748817)'), 10000);",
+      "SELECT interaction_id, player_id, object_id, interaction_type, ST_X(geographical_point) AS longitude, ST_Y(geographical_point) AS latitude FROM PlayerInteractions WHERE ST_Contains(ST_GeomFromText('POLYGON((-74.049072 40.712776, -74.009280 40.702758, -73.977501 40.758315, -73.957158 40.766114, -73.975969 40.811225, -74.012432 40.793928, -74.049072 40.712776))'), geographical_point);"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM player_interactions WHERE player_id = 1;",
+      "SELECT object_name, geographical_point FROM game_world_objects WHERE object_type = 'weapon';",
+      "SELECT COUNT(*) AS total_interactions FROM player_interactions;",
+      "SELECT object_id, object_type FROM game_world_objects ORDER BY object_name DESC;",
+      "SELECT player_id, COUNT(DISTINCT interaction_type) AS unique_interactions FROM player_interactions GROUP BY player_id;",
+      "SELECT * FROM player_interactions WHERE player_id = 1;",
+      "SELECT object_id, object_name FROM game_world_objects WHERE object_type = 'weapon' ORDER BY object_name DESC;",
+      "SELECT player_id, COUNT(interaction_id) AS num_interactions FROM player_interactions GROUP BY player_id HAVING num_interactions > 5;",
+      "SELECT object_name, ST_DISTANCE(player_interactions.geographical_point, game_world_objects.geographical_point) AS distance FROM game_world_objects, player_interactions WHERE player_interactions.object_id = game_world_objects.object_id ORDER BY distance ASC;",
+      "SELECT * FROM player_interactions, game_world_objects WHERE ST_DWITHIN(player_interactions.geographical_point, game_world_objects.geographical_point, 1000);"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT player_id, object_id, interaction_type, interaction_timestamp, geo_point FROM player_interactions;",
+      "SELECT * FROM player_locations;",
+      "SELECT object_id, object_name, object_class FROM game_objects;",
+      "SELECT player_id, interaction_type, interaction_timestamp FROM player_interactions WHERE interaction_type = 'like';",
+      "SELECT object_id, object_name, object_location FROM game_objects WHERE object_class = 'weapon';",
+      "SELECT player_id, object_id, interaction_type FROM player_interactions WHERE interaction_type='like';",
+      "SELECT * FROM player_locations WHERE player_id='123e4567-e89b-12d3-a456-426655440000' ORDER BY location_timestamp DESC;",
+      "SELECT object_id, object_name, ST_AsText(object_location) AS location FROM game_objects WHERE object_class='weapon' AND ST_Distance(object_location, ST_GeomFromText('POINT(1 1)')) < 100;",
+      "SELECT player_id, COUNT(DISTINCT object_id) AS total_interactions FROM player_interactions GROUP BY player_id ORDER BY total_interactions DESC;",
+      "SELECT player_id, ST_AsText(geo_point) AS location FROM player_locations WHERE ST_Distance(geo_point, ST_GeomFromText('POINT(0 0)')) < 5000;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM players;",
+      "SELECT player_name, player_level FROM players WHERE player_level > 5;",
+      "SELECT object_name, object_type FROM game_objects ORDER BY object_name ASC;",
+      "SELECT player_name, player_level, object_name FROM players JOIN player_interaction_logs ON players.player_id = player_interaction_logs.player_id JOIN game_objects ON player_interaction_logs.object_id = game_objects.object_id WHERE geographical_point_id = 1;",
+      "SELECT player_name, COUNT(*) AS interactions_count FROM players JOIN player_interaction_logs ON players.player_id = player_interaction_logs.player_id GROUP BY player_name ORDER BY interactions_count DESC;",
+      "SELECT player_name, player_level FROM players;",
+      "SELECT object_id, object_name, object_type FROM game_objects WHERE object_type = 'weapon';",
+      "SELECT player_name, player_level, object_name FROM players JOIN game_objects ON player_id = object_id;",
+      "SELECT player_id, interaction_type FROM player_interaction_logs WHERE geographical_point_id = 1 ORDER BY player_id DESC;",
+      "SELECT player_name, object_name, latitude, longitude FROM players JOIN game_objects ON player_id = object_id JOIN geographical_points ON geographical_point_id = 2;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM player_interactions_at_points;",
+      "SELECT player_id, object_id, interaction_type FROM player_interactions_at_points WHERE player_id = 1;",
+      "SELECT object_id, object_name FROM objects ORDER BY object_name DESC;",
+      "SELECT player_id, latitude, longitude FROM player_locations WHERE latitude > 40 AND longitude < 50;",
+      "SELECT player_id, level, health FROM player_stats WHERE level >= 10 ORDER BY health DESC;",
+      "SELECT * FROM player_interactions_at_points;",
+      "SELECT player_id, object_id, interaction_type FROM player_interactions_at_points WHERE latitude > 40;",
+      "SELECT object_name, object_type FROM objects ORDER BY creation_timestamp DESC;",
+      "SELECT player_id, location_timestamp FROM player_locations WHERE player_id = 100 ORDER BY location_timestamp ASC;",
+      "SELECT player_id, level, experience FROM player_stats WHERE health < 50 ORDER BY experience DESC;"
+    ]
+  }
+]

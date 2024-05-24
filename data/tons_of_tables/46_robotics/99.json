@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SpaceStationEnvironmentalData (\n  id INT PRIMARY KEY,\n  station_name VARCHAR(50),\n  temperature FLOAT,\n  pressure FLOAT,\n  humidity FLOAT,\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE space_station (\n    station_id UUID PRIMARY KEY,\n    location VARCHAR(255),\n    temperature DECIMAL,\n    atmospheric_pressure DECIMAL,\n    humidity DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_data (\n    data_id UUID PRIMARY KEY,\n    station_id UUID,\n    timestamp TIMESTAMP,\n    temperature DECIMAL,\n    atmospheric_pressure DECIMAL,\n    humidity DECIMAL,\n    FOREIGN KEY (station_id) REFERENCES space_station(station_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE space_stations (\n  id SERIAL PRIMARY KEY,\n  station_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  date_established DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_data (\n  id SERIAL PRIMARY KEY,\n  station_id INTEGER REFERENCES space_stations (id),\n  temperature DECIMAL,\n  humidity DECIMAL,\n  air_pressure DECIMAL,\n  timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE research_analysis (\n  id SERIAL PRIMARY KEY,\n  data_id INTEGER REFERENCES environmental_data (id),\n  researcher_name VARCHAR(100),\n  analysis_result TEXT,\n  report_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE space_stations (\n    station_id INT PRIMARY KEY,\n    station_name VARCHAR(255),\n    location VARCHAR(255),\n    crew_capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_readings (\n    reading_id INT PRIMARY KEY,\n    station_id INT,\n    reading_time TIMESTAMP,\n    temperature DECIMAL(5,2),\n    humidity DECIMAL(5,2),\n    pressure DECIMAL(5,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE research_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    assigned_scientist VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_results (\n    result_id INT PRIMARY KEY,\n    project_id INT,\n    result_description TEXT,\n    analysis_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SpaceStations (\n  station_id INT PRIMARY KEY,\n  station_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnvironmentalReadings (\n  reading_id INT PRIMARY KEY,\n  temperature DECIMAL NOT NULL,\n  humidity DECIMAL NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  station_id INT REFERENCES SpaceStations(station_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OxygenLevels (\n  level_id INT PRIMARY KEY,\n  oxygen_level DECIMAL NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  station_id INT REFERENCES SpaceStations(station_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CarbonDioxideLevels (\n  level_id INT PRIMARY KEY,\n  co2_level DECIMAL NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  station_id INT REFERENCES SpaceStations(station_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchData (\n  data_id INT PRIMARY KEY,\n  research_topic VARCHAR(100) NOT NULL,\n  data TEXT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  station_id INT REFERENCES SpaceStations(station_id)\n);"
+      }
+    ]
+  }
+]

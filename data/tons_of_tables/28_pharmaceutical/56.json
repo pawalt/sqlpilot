@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_sop (\n  sop_id INT PRIMARY KEY,\n  sop_name VARCHAR(255),\n  sop_description TEXT,\n  created_at TIMESTAMP,\n  last_updated TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE procedures (\n    procedure_id INT PRIMARY KEY,\n    procedure_name VARCHAR(255) NOT NULL,\n    created_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE steps (\n    step_id INT PRIMARY KEY,\n    step_description TEXT NOT NULL,\n    procedure_id INT,\n    FOREIGN KEY (procedure_id) REFERENCES procedures(procedure_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n  process_id INT PRIMARY KEY,\n  process_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sop_templates (\n  template_id INT PRIMARY KEY,\n  template_name TEXT,\n  template_content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sop_updates (\n  update_id INT PRIMARY KEY,\n  template_id INT,\n  update_description TEXT,\n  update_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_process (\n  id INT PRIMARY KEY,\n  process_name VARCHAR(50),\n  description TEXT,\n  created_at TIMESTAMP,\n  updated_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SOP_category (\n  id INT PRIMARY KEY,\n  category_name VARCHAR(50),\n  category_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SOP_document (\n  id INT PRIMARY KEY,\n  doc_name VARCHAR(50),\n  doc_description TEXT,\n  category_id INT,\n  created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SOP_revision (\n  id INT PRIMARY KEY,\n  revision_number INT,\n  revision_date TIMESTAMP,\n  doc_id INT,\n  created_by VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE standard_operating_procedures (\n    id INT AUTO_INCREMENT PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n    id INT AUTO_INCREMENT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE procedure_steps (\n    id INT AUTO_INCREMENT PRIMARY KEY,\n    procedure_id INT,\n    step_order INT,\n    description TEXT,\n    CONSTRAINT fk_procedure_id FOREIGN KEY (procedure_id) REFERENCES standard_operating_procedures(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE process_steps (\n    id INT AUTO_INCREMENT PRIMARY KEY,\n    step_name VARCHAR(255) NOT NULL,\n    duration_minutes INT,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE step_history (\n    id INT AUTO_INCREMENT PRIMARY KEY,\n    process_step_id INT,\n    completed_at TIMESTAMP,\n    CONSTRAINT fk_process_step_id FOREIGN KEY (process_step_id) REFERENCES process_steps(id)\n);"
+      }
+    ]
+  }
+]

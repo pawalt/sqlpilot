@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_unit_usage(\n  unit_id INT PRIMARY KEY,\n  electricity_usage DECIMAL,\n  water_usage DECIMAL,\n  gas_usage DECIMAL,\n  total_expenditure DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_units (\n  unit_id INT PRIMARY KEY,\n  unit_number INT,\n  tenant_name VARCHAR,\n  utility_usage DECIMAL,\n  total_expenditure DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_payments (\n  payment_id INT PRIMARY KEY,\n  unit_id INT,\n  payment_date DATE,\n  amount_paid DECIMAL,\n  payment_method VARCHAR,\n  FOREIGN KEY (unit_id) REFERENCES rental_units(unit_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_units (\n    unit_id INT PRIMARY KEY,\n    unit_name VARCHAR(50) NOT NULL,\n    unit_type VARCHAR(20),\n    area_sqft INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_usage (\n    usage_id INT PRIMARY KEY,\n    unit_id INT,\n    electricity_usage DECIMAL(10,2),\n    water_usage DECIMAL(10,2),\n    gas_usage DECIMAL(10,2),\n    FOREIGN KEY (unit_id) REFERENCES rental_units(unit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE expenditure (\n    exp_id INT PRIMARY KEY,\n    unit_id INT,\n    electricity_cost DECIMAL(10,2),\n    water_cost DECIMAL(10,2),\n    gas_cost DECIMAL(10,2),\n    FOREIGN KEY (unit_id) REFERENCES rental_units(unit_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RentalUnit (\n  unit_id INT PRIMARY KEY,\n  unit_name VARCHAR(50) NOT NULL,\n  unit_size FLOAT NOT NULL,\n monthly_rent DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UtilityMeter (\n  meter_id INT PRIMARY KEY,\n  unit_id INT NOT NULL,\n  meter_type VARCHAR(20) NOT NULL,\n  usage_value FLOAT NOT NULL,\n  reading_date DATE NOT NULL,\n  FOREIGN KEY (unit_id) REFERENCES RentalUnit(unit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Expenditure (\n  expenditure_id INT PRIMARY KEY,\n  unit_id INT NOT NULL,\n  expenditure_type VARCHAR(20) NOT NULL,\n  expenditure_amount DECIMAL(10, 2) NOT NULL,\n  expenditure_date DATE NOT NULL,\n  FOREIGN KEY (unit_id) REFERENCES RentalUnit(unit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyEfficiency (\n  efficiency_id INT PRIMARY KEY,\n  unit_id INT NOT NULL,\n  efficiency_rating FLOAT NOT NULL,\n  last_update TIMESTAMP NOT NULL,\n  FOREIGN KEY (unit_id) REFERENCES RentalUnit(unit_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_units (\n  unit_id INT PRIMARY KEY,\n  unit_name VARCHAR(255),\n  monthly_rent DECIMAL(10, 2),\n  square_footage INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_meters (\n  meter_id INT PRIMARY KEY,\n  unit_id INT,\n  meter_type VARCHAR(50),\n  starting_reading DECIMAL(10, 2),\n  latest_reading DECIMAL(10, 2),\n  last_read_date DATE,\n  FOREIGN KEY (unit_id) REFERENCES rental_units(unit_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_expenses (\n  expense_id INT PRIMARY KEY,\n  meter_id INT,\n  expense_amount DECIMAL(10, 2),\n  expense_date DATE,\n  FOREIGN KEY (meter_id) REFERENCES utility_meters(meter_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_usage (\n  usage_id INT PRIMARY KEY,\n  meter_id INT,\n  usage_amount DECIMAL(10, 2),\n  usage_date DATE,\n  FOREIGN KEY (meter_id) REFERENCES utility_meters(meter_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_efficiency (\n  efficiency_id INT PRIMARY KEY,\n  unit_id INT,\n  efficiency_rating DECIMAL(5, 2),\n  efficiency_date DATE,\n  FOREIGN KEY (unit_id) REFERENCES rental_units(unit_id)\n)"
+      }
+    ]
+  }
+]

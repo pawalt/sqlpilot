@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n  agent_id INT NOT NULL,\n  response_time FLOAT NOT NULL,\n  customer_satisfaction_rating INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agent_metrics (\n    agent_id INT PRIMARY KEY,\n    response_time INT,\n    customer_satisfaction FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_tracking (\n    tracking_id INT PRIMARY KEY,\n    agent_id INT,\n    response_time INT,\n    customer_satisfaction FLOAT,\n    FOREIGN KEY (agent_id) REFERENCES agent_metrics(agent_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agent_performance_metrics (\n    agent_id INT PRIMARY KEY,\n    response_time INT NOT NULL,\n    customer_satisfaction_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_interactions (\n    interaction_id INT PRIMARY KEY,\n    agent_id INT NOT NULL,\n    customer_id INT NOT NULL,\n    interaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_ratings (\n    agent_id INT PRIMARY KEY,\n    average_rating FLOAT,\n    total_ratings INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agents (\n  agent_id INT PRIMARY KEY,\n  agent_name VARCHAR(50),\n  response_time FLOAT,\n  customer_satisfaction_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE requests (\n  request_id INT PRIMARY KEY,\n  agent_id INT,\n  request_type VARCHAR(50),\n  request_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE responses (\n  response_id INT PRIMARY KEY,\n  request_id INT,\n  response_content TEXT,\n  response_time INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ratings (\n  rating_id INT PRIMARY KEY,\n  agent_id INT,\n  customer_id INT,\n  satisfaction_rating FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agents (\n  agent_id SERIAL PRIMARY KEY,\n  agent_name VARCHAR(50) NOT NULL,\n  response_time FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id SERIAL PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  customer_email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  interaction_id SERIAL PRIMARY KEY,\n  agent_id INT REFERENCES agents(agent_id),\n  customer_id INT REFERENCES customers(customer_id),\n  interaction_type VARCHAR(20) NOT NULL,\n  interaction_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE response_ratings (\n  rating_id SERIAL PRIMARY KEY,\n  interaction_id INT REFERENCES interactions(interaction_id),\n  customer_satisfaction_rating INT NOT NULL,\n  response_quality_rating INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n  report_id SERIAL PRIMARY KEY,\n  agent_id INT REFERENCES agents(agent_id),\n  report_date DATE NOT NULL,\n  performance_metric VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

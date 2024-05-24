@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_authentication ( \n    user_id INT PRIMARY KEY, \n    username VARCHAR(50) UNIQUE NOT NULL, \n    password_hash VARCHAR(100) NOT NULL, \n    role ENUM('admin', 'user') NOT NULL, \n    payment_data JSONB NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_data (\n    payment_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    payment_amount DECIMAL(10, 2) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL,\n    description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL(10, 2) NOT NULL,\n    payment_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(100),\n    email VARCHAR(100) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) UNIQUE,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) UNIQUE,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT,\n    role_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT NOT NULL,\n    role_id INT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    payment_date DATE NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    action VARCHAR(50) NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      }
+    ]
+  }
+]

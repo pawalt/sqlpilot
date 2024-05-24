@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE StockValues (\n  stock_id SERIAL PRIMARY KEY,\n  stock_name VARCHAR(100) NOT NULL,\n  purchase_price DECIMAL(10, 2) NOT NULL,\n  current_market_value DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Stock (\n    ID INT PRIMARY KEY,\n    Name VARCHAR(255),\n    PurchasePrice DECIMAL(10,2),\n    MarketValue DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StockHistory (\n    HistoryID INT PRIMARY KEY,\n    StockID INT,\n    PurchaseDate DATE,\n    PurchaseQuantity INT,\n    CONSTRAINT fk_StockID FOREIGN KEY (StockID) REFERENCES Stock(ID)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stock_inventory (\n    id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    purchase_price DECIMAL,\n    market_value DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE purchase_history (\n    purchase_id INT PRIMARY KEY,\n    product_id INT,\n    purchase_date DATE,\n    quantity INT,\n    FOREIGN KEY (product_id) REFERENCES stock_inventory(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_value (\n    value_id INT PRIMARY KEY,\n    product_id INT,\n    current_market_value DECIMAL,\n    FOREIGN KEY (product_id) REFERENCES stock_inventory(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stocks (\n    id UUID PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    purchase_price DECIMAL(10, 2) NOT NULL,\n    market_value DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n    purchase_id UUID PRIMARY KEY,\n    stock_id UUID REFERENCES stocks(id),\n    quantity INT NOT NULL,\n    purchase_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (\n    sale_id UUID PRIMARY KEY,\n    stock_id UUID REFERENCES stocks(id),\n    quantity INT NOT NULL,\n    sale_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_values (\n    stock_id UUID REFERENCES stocks(id),\n    date DATE NOT NULL,\n    value DECIMAL(10, 2) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Stock (\n    stock_id INT PRIMARY KEY,\n    stock_name VARCHAR(255) NOT NULL,\n    purchase_price DECIMAL(10, 2) NOT NULL,\n    market_value DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StockHistory (\n    history_id INT PRIMARY KEY,\n    stock_id INT NOT NULL,\n    purchase_price DECIMAL(10, 2) NOT NULL,\n    market_value DECIMAL(10, 2) NOT NULL,\n    transaction_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StockTransaction (\n    transaction_id INT PRIMARY KEY,\n    stock_id INT NOT NULL,\n    quantity INT NOT NULL,\n    transaction_type VARCHAR(50) NOT NULL,\n    transaction_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StockPortfolio (\n    portfolio_id INT PRIMARY KEY,\n    stock_id INT NOT NULL,\n    quantity INT NOT NULL,\n    purchase_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StockValue (\n    stock_id INT PRIMARY KEY,\n    current_value DECIMAL(10, 2) NOT NULL,\n    valuation_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

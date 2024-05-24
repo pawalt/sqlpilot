@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vm_configuration ( \n    vm_id INT PRIMARY KEY, \n    vm_name VARCHAR(255), \n    vm_memory_gb INT, \n    vm_cpu_cores INT, \n    vm_os VARCHAR(50) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vm_config (\n    vm_id INT PRIMARY KEY,\n    vm_name VARCHAR(255),\n    vm_memory_gb INT,\n    vm_storage_gb INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vm_network (\n    network_id INT PRIMARY KEY,\n    vm_id INT,\n    network_name VARCHAR(255),\n    subnet_mask VARCHAR(255),\n    gateway VARCHAR(255),\n    FOREIGN KEY (vm_id) REFERENCES vm_config(vm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vm_config (\n    vm_id INT PRIMARY KEY,\n    vm_name VARCHAR(255),\n    vm_memory_gb INT,\n    vm_storage_gb INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VirtualMachines (\n    id UUID PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    ip_address VARCHAR(15) NOT NULL,\n    os_version VARCHAR(50),\n    memory_gb INT,\n    storage_gb INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VMConfigurations (\n    config_id UUID PRIMARY KEY,\n    vm_id UUID REFERENCES VirtualMachines(id),\n    cpu_cores INT,\n    ram_gb INT,\n    storage_type VARCHAR(20),\n    storage_capacity_gb INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VMNetworks (\n    network_id UUID PRIMARY KEY,\n    vm_id UUID REFERENCES VirtualMachines(id),\n    network_name VARCHAR(50),\n    subnet VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_machines (\n    vm_id INT PRIMARY KEY,\n    vm_name VARCHAR(255),\n    vm_memory_gb INT,\n    vm_storage_gb INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    user_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE configurations (\n    config_id INT PRIMARY KEY,\n    vm_id INT,\n    config_name VARCHAR(255),\n    config_value TEXT,\n    FOREIGN KEY (vm_id) REFERENCES virtual_machines(vm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE networks (\n    network_id INT PRIMARY KEY,\n    network_name VARCHAR(255),\n    subnet VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_machines (\n    id UUID PRIMARY KEY,\n    vm_name VARCHAR(50) NOT NULL,\n    vm_os VARCHAR(50) NOT NULL,\n    vm_memory_mb INT NOT NULL,\n    vm_cpu_cores INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vm_networks (\n    id UUID PRIMARY KEY,\n    vm_id UUID REFERENCES virtual_machines(id),\n    network_name VARCHAR(50) NOT NULL,\n    subnet_cidr VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vm_disks (\n    id UUID PRIMARY KEY,\n    vm_id UUID REFERENCES virtual_machines(id),\n    disk_name VARCHAR(50) NOT NULL,\n    disk_size_gb INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vm_snapshots (\n    id UUID PRIMARY KEY,\n    vm_id UUID REFERENCES virtual_machines(id),\n    snapshot_name VARCHAR(50) NOT NULL,\n    snapshot_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vm_configurations (\n    id UUID PRIMARY KEY,\n    vm_id UUID REFERENCES virtual_machines(id),\n    config_key VARCHAR(50) NOT NULL,\n    config_value TEXT NOT NULL\n);"
+      }
+    ]
+  }
+]

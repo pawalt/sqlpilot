@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_platform (\n    id SERIAL PRIMARY KEY,\n    regulation VARCHAR(100) NOT NULL,\n    audit_date DATE,\n    audit_status VARCHAR(50) CHECK (audit_status IN ('Passed', 'Failed', 'Pending'))\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_requirements (\n    requirement_id INT PRIMARY KEY,\n    requirement_name VARCHAR(255),\n    requirement_description TEXT,\n    requirement_type VARCHAR(50),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n    audit_id INT PRIMARY KEY,\n    requirement_id INT,\n    audit_date DATE,\n    auditor_name VARCHAR(100),\n    audit_result VARCHAR(50),\n    audit_notes TEXT,\n    FOREIGN KEY (requirement_id) REFERENCES regulatory_requirements(requirement_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_requirements (\n  requirement_id INT PRIMARY KEY,\n  requirement_name VARCHAR(255) NOT NULL,\n  deadline DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n  audit_id INT PRIMARY KEY,\n  audit_date DATE NOT NULL,\n  auditor_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_checks (\n  check_id INT PRIMARY KEY,\n  requirement_id INT REFERENCES regulatory_requirements(requirement_id),\n  audit_id INT REFERENCES audits(audit_id),\n  result VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RegulatoryRequirements (\n  requirement_id INT PRIMARY KEY,\n  requirement_name TEXT NOT NULL,\n  requirement_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Audits (\n  audit_id INT PRIMARY KEY,\n  audit_date DATE,\n  audit_type TEXT NOT NULL,\n  result TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceOfficers (\n  officer_id INT PRIMARY KEY,\n  officer_name TEXT NOT NULL,\n  company_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceHistory (\n  history_id INT PRIMARY KEY,\n  officer_id INT,\n  audit_id INT,\n  FOREIGN KEY (officer_id) REFERENCES ComplianceOfficers(officer_id),\n  FOREIGN KEY (audit_id) REFERENCES Audits(audit_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_requirements (\n    requirement_id INT PRIMARY KEY,\n    requirement_name VARCHAR(255),\n    description TEXT,\n    due_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n    audit_id INT PRIMARY KEY,\n    audit_date DATE,\n    auditor VARCHAR(255),\n    findings TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_records (\n    record_id INT PRIMARY KEY,\n    requirement_id INT,\n    audit_id INT,\n    status VARCHAR(50),\n    FOREIGN KEY (requirement_id) REFERENCES regulatory_requirements(requirement_id),\n    FOREIGN KEY (audit_id) REFERENCES audits(audit_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    email VARCHAR(255),\n    role VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    action VARCHAR(255),\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      }
+    ]
+  }
+]

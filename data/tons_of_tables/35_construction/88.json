@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenBuildingProjects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE,\n    project_manager VARCHAR(100),\n    project_status ENUM('Planned', 'In Progress', 'Completed')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenBuildingProjects (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(100),\n  project_description TEXT,\n  project_location VARCHAR(255)\n);\n\nCREATE TABLE ProjectMembers (\n  member_id UUID PRIMARY KEY,\n  member_name VARCHAR(100),\n  member_role VARCHAR(50),\n  project_id UUID REFERENCES GreenBuildingProjects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenBuildingProjects (\n    project_id SERIAL PRIMARY KEY,\n    project_name TEXT NOT NULL,\n    project_description TEXT,\n    architect_name TEXT,\n    construction_company TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectTeam (\n    team_id SERIAL PRIMARY KEY,\n    team_name TEXT NOT NULL,\n    project_id INT REFERENCES GreenBuildingProjects(project_id),\n    team_lead TEXT,\n    team_member TEXT[]\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectTasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name TEXT NOT NULL,\n    project_id INT REFERENCES GreenBuildingProjects(project_id),\n    task_description TEXT,\n    task_status TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenBuildingProjects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    project_leader VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectTasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    task_assignee VARCHAR(100),\n    task_status VARCHAR(50),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES GreenBuildingProjects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamMembers (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(100),\n    member_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskComments (\n    comment_id INT PRIMARY KEY,\n    comment_text TEXT,\n    commented_by VARCHAR(100),\n    task_id INT,\n    FOREIGN KEY (task_id) REFERENCES ProjectTasks(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Green_Building_Projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(50),\n    project_description TEXT,\n    project_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Project_Tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(50),\n    task_description TEXT,\n    task_status VARCHAR(20),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES Green_Building_Projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Project_Team (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(50),\n    team_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Team_Members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50),\n    team_id INT,\n    FOREIGN KEY (team_id) REFERENCES Project_Team(team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Project_Documents (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(50),\n    document_type VARCHAR(50),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES Green_Building_Projects(project_id)\n);"
+      }
+    ]
+  }
+]

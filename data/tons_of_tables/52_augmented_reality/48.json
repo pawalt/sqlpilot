@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_content_assets (\n    id INT PRIMARY KEY,\n    content_name VARCHAR(255),\n    content_type VARCHAR(50),\n    campaign_id INT,\n    file_path VARCHAR(255),\n    created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_content_assets (\n\tasset_id UUID PRIMARY KEY,\n\tasset_name VARCHAR(255),\n\tcategory VARCHAR(50),\n\tcreated_at TIMESTAMP,\n\tupdated_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE media_files (\n\tfile_id UUID PRIMARY KEY,\n\tfile_name VARCHAR(255),\n\tfile_type VARCHAR(50),\n\tfile_size INT,\n\tuploaded_at TIMESTAMP,\n\tasset_id UUID,\n\tFOREIGN KEY (asset_id) REFERENCES ar_content_assets(asset_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AR_Content_Assets (\n  id SERIAL PRIMARY KEY,\n  asset_name VARCHAR(255) NOT NULL,\n  asset_type VARCHAR(50) NOT NULL,\n  asset_size INT NOT NULL,\n  uploaded_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Media_Files (\n  id SERIAL PRIMARY KEY,\n  file_name VARCHAR(255) NOT NULL,\n  file_type VARCHAR(50) NOT NULL,\n  file_size INT NOT NULL,\n  uploaded_by VARCHAR(100),\n  uploaded_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Advertising_Campaigns (\n  id SERIAL PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  budget DECIMAL(10,2) NOT NULL,\n  status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ARContentAssets (\n    id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    file_path VARCHAR(255),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MediaFiles (\n    id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_size INT,\n    file_type VARCHAR(50),\n    upload_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AdvertisingCampaigns (\n    id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignAssets (\n    id INT PRIMARY KEY,\n    campaign_id INT,\n    asset_id INT,\n    position VARCHAR(50),\n    FOREIGN KEY (campaign_id) REFERENCES AdvertisingCampaigns(id),\n    FOREIGN KEY (asset_id) REFERENCES ARContentAssets(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_content_assets (\n    content_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    asset_url VARCHAR(255),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE media_files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_type VARCHAR(50),\n    file_size INT,\n    file_url VARCHAR(255),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE advertising_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10, 2),\n    status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_assets (\n    campaign_asset_id INT PRIMARY KEY,\n    campaign_id INT,\n    content_id INT,\n    file_id INT,\n    added_at TIMESTAMP,\n    FOREIGN KEY (campaign_id) REFERENCES advertising_campaigns(campaign_id),\n    FOREIGN KEY (content_id) REFERENCES ar_content_assets(content_id),\n    FOREIGN KEY (file_id) REFERENCES media_files(file_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_scheduling (\n    scheduling_id INT PRIMARY KEY,\n    campaign_id INT,\n    start_time TIME,\n    end_time TIME,\n    day_of_week VARCHAR(20),\n    FOREIGN KEY (campaign_id) REFERENCES advertising_campaigns(campaign_id)\n);\n"
+      }
+    ]
+  }
+]

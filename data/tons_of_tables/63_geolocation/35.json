@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ARNavigation (\n  place_id INT PRIMARY KEY,\n  place_name VARCHAR(255),\n  latitude FLOAT,\n  longitude FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id INT PRIMARY KEY,\n    source_location VARCHAR(255) NOT NULL,\n    destination_location VARCHAR(255) NOT NULL,\n    distance FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE route_optimization (\n    optimization_id INT PRIMARY KEY,\n    route_id INT REFERENCES routes(route_id),\n    optimization_details TEXT,\n    optimization_status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  start_point VARCHAR(255),\n  end_point VARCHAR(255),\n  distance DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waypoints (\n  waypoint_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  time DATETIME\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE optimizations (\n  optimization_id INT PRIMARY KEY,\n  route_id INT,\n  FOREIGN KEY (route_id) REFERENCES routes(route_id),\n  cost DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Routes (\n  route_id INT PRIMARY KEY,\n  origin VARCHAR(255),\n  destination VARCHAR(255),\n  distance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Waypoints (\n  waypoint_id INT PRIMARY KEY,\n  route_id INT,\n  waypoint_name VARCHAR(255),\n  latitude FLOAT,\n  longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Stops (\n  stop_id INT PRIMARY KEY,\n  waypoint_id INT,\n  stop_name VARCHAR(255),\n  arrival_time TIMESTAMP,\n  departure_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Vehicles (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_type VARCHAR(50),\n  capacity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Routes (\n    route_id INT PRIMARY KEY,\n    start_location_id INT NOT NULL,\n    end_location_id INT NOT NULL,\n    distance FLOAT NOT NULL,\n    FOREIGN KEY (start_location_id) REFERENCES Locations(location_id),\n    FOREIGN KEY (end_location_id) REFERENCES Locations(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_name VARCHAR(255) NOT NULL,\n    max_capacity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Assignments (\n    assignment_id INT PRIMARY KEY,\n    vehicle_id INT NOT NULL,\n    route_id INT NOT NULL,\n    start_time DATETIME NOT NULL,\n    end_time DATETIME NOT NULL,\n    FOREIGN KEY (vehicle_id) REFERENCES Vehicles(vehicle_id),\n    FOREIGN KEY (route_id) REFERENCES Routes(route_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE JourneyLog (\n    log_id INT PRIMARY KEY,\n    assignment_id INT NOT NULL,\n    event_description TEXT NOT NULL,\n    event_time DATETIME NOT NULL,\n    FOREIGN KEY (assignment_id) REFERENCES Assignments(assignment_id)\n);\n"
+      }
+    ]
+  }
+]

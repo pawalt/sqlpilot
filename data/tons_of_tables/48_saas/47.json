@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE multi_factor_authentication (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash BYTEA NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(15) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE auth_tokens (\n    token_id UUID PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    token_value VARCHAR(100) NOT NULL,\n    expiration_timestamp TIMESTAMP,\n    used BOOLEAN DEFAULT false\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_codes (\n    code_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    code VARCHAR(10) NOT NULL,\n    expiration_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    timestamp TIMESTAMP NOT NULL,\n    action VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokens (\n    token_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    token_value VARCHAR(100) NOT NULL,\n    expiration_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    login_time TIMESTAMP,\n    success BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE factors (\n    factor_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    factor_type VARCHAR(50) NOT NULL,\n    factor_value VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(15) NOT NULL,\n    email VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(20) NOT NULL,\n    last_login TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    device_id UUID NOT NULL,\n    login_timestamp TIMESTAMP NOT NULL,\n    login_success BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_questions (\n    question_id UUID PRIMARY KEY,\n    question_text VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_security_answers (\n    answer_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    question_id UUID NOT NULL,\n    answer_text VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  }
+]

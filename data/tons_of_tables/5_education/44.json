@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE StudentsBehavioralData (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(255),\n    behavior_type VARCHAR(50),\n    behavior_date DATE,\n    behavior_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE behavior_data (\n    student_id INT NOT NULL,\n    behavior_type VARCHAR(50) NOT NULL,\n    behavior_description TEXT,\n    observation_date DATE,\n    CONSTRAINT behavior_data_pk PRIMARY KEY (student_id, observation_date)\n);\nCREATE TABLE intervention_data (\n    intervention_id INT NOT NULL,\n    student_id INT NOT NULL,\n    intervention_type VARCHAR(50) NOT NULL,\n    intervention_description TEXT,\n    intervention_date DATE,\n    CONSTRAINT intervention_data_pk PRIMARY KEY (intervention_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE StudentBehaviorData (\n    student_id INT PRIMARY KEY,\n    behavior_type VARCHAR(50),\n    behavior_description TEXT,\n    behavior_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Interventions (\n    intervention_id INT PRIMARY KEY,\n    student_id INT,\n    intervention_type VARCHAR(50),\n    intervention_description TEXT,\n    intervention_timestamp TIMESTAMP,\n    FOREIGN KEY (student_id) REFERENCES StudentBehaviorData(student_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patterns (\n    pattern_id INT PRIMARY KEY,\n    pattern_name VARCHAR(50),\n    pattern_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students_data (\n    student_id INT,\n    student_name VARCHAR,\n    behavior_type VARCHAR,\n    behavior_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE behaviors (\n    behavior_id INT,\n    behavior_description TEXT,\n    behavior_category VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interventions (\n    intervention_id INT,\n    intervention_description TEXT,\n    intervention_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE student_interventions (\n    student_id INT,\n    intervention_id INT,\n    intervention_notes TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE StudentDetails (\n  student_id SERIAL PRIMARY KEY,\n  student_name VARCHAR(50) NOT NULL,\n  age INT,\n  grade_level VARCHAR(10),\n  primary_disability VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BehaviorRecords (\n  record_id SERIAL PRIMARY KEY,\n  student_id INT REFERENCES StudentDetails(student_id),\n  behavior_type VARCHAR(50),\n  behavior_timestamp TIMESTAMP,\n  behavior_description TEXT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InterventionLog (\n  log_id SERIAL PRIMARY KEY,\n  student_id INT REFERENCES StudentDetails(student_id),\n  intervention_type VARCHAR(50),\n  intervention_timestamp TIMESTAMP,\n  intervention_details TEXT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProgressReports (\n  report_id SERIAL PRIMARY KEY,\n  student_id INT REFERENCES StudentDetails(student_id),\n  report_date DATE,\n  progress_description TEXT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ParentContacts (\n  contact_id SERIAL PRIMARY KEY,\n  student_id INT REFERENCES StudentDetails(student_id),\n  parent_name VARCHAR(50),\n  contact_date DATE,\n  contact_description TEXT\n);"
+      }
+    ]
+  }
+]

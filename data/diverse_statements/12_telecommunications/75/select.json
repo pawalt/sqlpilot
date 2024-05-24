@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM network_outage_incidents;",
+      "SELECT incident_id, incident_date FROM network_outage_incidents WHERE incident_id = 1;",
+      "SELECT incident_id, root_cause FROM network_outage_incidents WHERE incident_date > '2022-01-01';",
+      "SELECT * FROM network_outage_incidents ORDER BY incident_date DESC;",
+      "SELECT incident_id, location FROM network_outage_incidents WHERE root_cause = 'Power Failure';",
+      "SELECT * FROM network_outage_incidents WHERE incident_date = '2022-03-15';",
+      "SELECT incident_id, location FROM network_outage_incidents WHERE root_cause LIKE '%hardware%';",
+      "SELECT * FROM network_outage_incidents WHERE location = 'Data Center A' ORDER BY incident_date DESC;",
+      "SELECT incident_date, location FROM network_outage_incidents WHERE incident_id BETWEEN 100 AND 200;",
+      "SELECT incident_id, root_cause FROM network_outage_incidents WHERE location <> 'Headquarters' ORDER BY incident_id ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT incident_id, incident_date, incident_description, incident_severity FROM network_outage_incidents;",
+      "SELECT * FROM network_outage_incidents WHERE incident_severity = 3;",
+      "SELECT incident_description, incident_date FROM network_outage_incidents ORDER BY incident_date DESC;",
+      "SELECT root_cause_id, cause_description FROM root_causes;",
+      "SELECT * FROM network_outage_incidents WHERE incident_description LIKE '%server%' ORDER BY incident_date ASC;",
+      "SELECT * FROM network_outage_incidents WHERE incident_severity > 2 ORDER BY incident_date DESC;",
+      "SELECT incident_description, incident_date FROM network_outage_incidents WHERE incident_severity = 3 AND incident_date BETWEEN '2022-01-01' AND '2022-06-30';",
+      "SELECT root_causes.cause_description, network_outage_incidents.incident_date FROM root_causes INNER JOIN network_outage_incidents ON root_causes.incident_id = network_outage_incidents.incident_id WHERE root_causes.cause_description LIKE 'hardware%' ORDER BY network_outage_incidents.incident_date ASC;",
+      "SELECT incident_description, incident_severity FROM network_outage_incidents WHERE incident_id IN (SELECT incident_id FROM root_causes WHERE cause_description LIKE '%software%');",
+      "SELECT * FROM network_outage_incidents WHERE incident_severity > 1 ORDER BY incident_severity, incident_date DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM network_outage_incidents WHERE outage_duration > '1 hour';",
+      "SELECT incident_id, incident_description FROM network_outage_incidents ORDER BY outage_start DESC;",
+      "SELECT * FROM network_root_causes WHERE cause_id IN (1, 2, 3);",
+      "SELECT cause_description, incident_id FROM network_root_causes WHERE incident_id = 1001;",
+      "SELECT measure_id, measure_description FROM proactive_measures ORDER BY measure_id ASC;",
+      "SELECT * FROM network_outage_incidents ORDER BY outage_start DESC;",
+      "SELECT incident_id, incident_description, outage_duration FROM network_outage_incidents WHERE outage_duration > INTERVAL '1 hour';",
+      "SELECT * FROM proactive_measures pm JOIN network_root_causes rc ON pm.cause_id = rc.cause_id;",
+      "SELECT mi.measure_description, rc.cause_description, ni.incident_description FROM proactive_measures mi JOIN network_root_causes rc ON mi.cause_id = rc.cause_id JOIN network_outage_incidents ni ON rc.incident_id = ni.incident_id WHERE ni.outage_duration < INTERVAL '4 hours';",
+      "SELECT DISTINCT ni.incident_id, ni.incident_description, rc.cause_description FROM network_outage_incidents ni JOIN network_root_causes rc ON ni.incident_id = rc.incident_id WHERE rc.cause_description LIKE 'Hardware%';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM network_outage_incidents;",
+      "SELECT incident_id, incident_date, outage_duration FROM network_outage_incidents WHERE outage_duration > 60;",
+      "SELECT * FROM network_outage_incidents WHERE incident_date >= '2022-01-01' ORDER BY incident_date DESC;",
+      "SELECT incident_description FROM network_outage_incidents JOIN incident_root_cause_mapping ON network_outage_incidents.incident_id = incident_root_cause_mapping.incident_id WHERE root_cause_id = 3;",
+      "SELECT incident_id, cause_description FROM incident_root_cause_mapping JOIN root_causes ON incident_root_cause_mapping.root_cause_id = root_causes.root_cause_id WHERE incident_id = 5;",
+      "SELECT incident_id, incident_date, outage_duration, incident_description FROM network_outage_incidents;",
+      "SELECT * FROM root_causes;",
+      "SELECT incident_id, cause_description FROM network_outage_incidents JOIN incident_root_cause_mapping ON network_outage_incidents.incident_id = incident_root_cause_mapping.incident_id JOIN root_causes ON root_causes.root_cause_id = incident_root_cause_mapping.root_cause_id;",
+      "SELECT * FROM proactive_measures WHERE measure_description LIKE '%reduction%';",
+      "SELECT incident_id, incident_date, outage_duration FROM network_outage_incidents WHERE incident_date BETWEEN '2021-01-01' AND '2021-12-31';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT id, incident_name, incident_date FROM Incident;",
+      "SELECT * FROM RootCause WHERE impact_level = 'High';",
+      "SELECT device_name, device_type, location FROM NetworkDevice ORDER BY device_name ASC;",
+      "SELECT incident_name, outage_duration, resolution_status FROM Incident WHERE outage_duration > 5;",
+      "SELECT IR.incident_id, IR.root_cause_id, RC.cause_name FROM IncidentRootCause IR JOIN RootCause RC ON IR.root_cause_id = RC.id;",
+      "SELECT * FROM Incident;",
+      "SELECT incident_name, incident_date, resolution_status FROM Incident WHERE outage_duration > 4;",
+      "SELECT cause_name, impact_level, mitigation_strategy FROM RootCause WHERE impact_level='High';",
+      "SELECT id, device_name, location FROM NetworkDevice ORDER BY location DESC;",
+      "SELECT Incident.incident_name, RootCause.cause_name, NetworkDevice.device_name FROM Incident INNER JOIN IncidentRootCause ON Incident.id = IncidentRootCause.incident_id INNER JOIN RootCause ON IncidentRootCause.root_cause_id = RootCause.id INNER JOIN IncidentDevice ON Incident.id = IncidentDevice.incident_id INNER JOIN NetworkDevice ON IncidentDevice.device_id = NetworkDevice.id GROUP BY Incident.incident_name, RootCause.cause_name, NetworkDevice.device_name HAVING COUNT(*) > 1;"
+    ]
+  }
+]

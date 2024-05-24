@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomicData (\n  id INT PRIMARY KEY,\n  chromosome VARCHAR(10),\n  position INT,\n  gene_name VARCHAR(50),\n  mutation_type VARCHAR(20),\n  dna_sequence TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(50) NOT NULL,\n    chromosome VARCHAR(5) NOT NULL,\n    start_position INT NOT NULL,\n    end_position INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE variants (\n    variant_id INT PRIMARY KEY,\n    gene_id INT REFERENCES genes(gene_id),\n    variant_name VARCHAR(50) NOT NULL,\n    variant_type VARCHAR(10) NOT NULL,\n    frequency FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Genes (\n    gene_id SERIAL PRIMARY KEY,\n    gene_name VARCHAR(255) NOT NULL,\n    chromosome VARCHAR(10) NOT NULL,\n    gene_start INT NOT NULL,\n    gene_end INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Variants (\n    variant_id SERIAL PRIMARY KEY,\n    gene_id INT REFERENCES Genes(gene_id),\n    variant_name VARCHAR(255) NOT NULL,\n    variant_type VARCHAR(50) NOT NULL,\n    variant_position INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Samples (\n    sample_id SERIAL PRIMARY KEY,\n    variant_id INT REFERENCES Variants(variant_id),\n    sample_name VARCHAR(255) NOT NULL,\n    sample_type VARCHAR(50) NOT NULL,\n    sample_data JSONB\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_sequences (\n    sequence_id INT PRIMARY KEY,\n    sequence_name VARCHAR(255),\n    gene_name VARCHAR(255),\n    dna_sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_variants (\n    variant_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    variant_type VARCHAR(50),\n    effect VARCHAR(50),\n    impact_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_genotypes (\n    patient_id INT PRIMARY KEY,\n    sequence_id INT,\n    variant_id INT,\n    genotype VARCHAR(10),\n    FOREIGN KEY (sequence_id) REFERENCES genetic_sequences(sequence_id),\n    FOREIGN KEY (variant_id) REFERENCES gene_variants(variant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_studies (\n    study_id INT PRIMARY KEY,\n    study_name VARCHAR(255),\n    lead_researcher VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient (\n    patient_id INT PRIMARY KEY,\n    name VARCHAR,\n    age INT,\n    gender VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sample (\n    sample_id INT PRIMARY KEY,\n    patient_id INT,\n    type VARCHAR,\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Gene (\n    gene_id INT PRIMARY KEY,\n    name VARCHAR,\n    sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Variant (\n    variant_id INT PRIMARY KEY,\n    gene_id INT,\n    type VARCHAR,\n    frequency FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Analysis (\n    analysis_id INT PRIMARY KEY,\n    sample_id INT,\n    variant_id INT,\n    result TEXT\n);"
+      }
+    ]
+  }
+]

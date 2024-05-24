@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM transaction_fees;",
+      "SELECT transaction_id, user_id, total_fee FROM transaction_fees WHERE fee_percentage > 0.1;",
+      "SELECT user_id, SUM(total_fee) AS total_fees FROM transaction_fees GROUP BY user_id;",
+      "SELECT * FROM transaction_fees WHERE transaction_amount BETWEEN 10 AND 100;",
+      "SELECT user_id, AVG(fee_percentage) AS avg_fee_percentage FROM transaction_fees GROUP BY user_id HAVING COUNT(*) > 1;",
+      "SELECT * FROM transaction_fees WHERE fee_percentage > 0.05 ORDER BY transaction_amount DESC;",
+      "SELECT user_id, SUM(total_fee) AS total_fees_paid FROM transaction_fees GROUP BY user_id HAVING SUM(total_fee) > 100;",
+      "SELECT user_id, AVG(fee_percentage) AS avg_fee_percentage FROM transaction_fees GROUP BY user_id ORDER BY avg_fee_percentage DESC;",
+      "SELECT user_id, MAX(transaction_amount) AS max_transaction_amount FROM transaction_fees GROUP BY user_id;",
+      "SELECT COUNT(DISTINCT user_id) AS unique_users, AVG(total_fee) AS avg_total_fee FROM transaction_fees WHERE total_fee > 10;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM transactions;",
+      "SELECT transaction_id, amount, currency, transaction_date FROM transactions WHERE amount > 100;",
+      "SELECT * FROM transactions WHERE currency='USD';",
+      "SELECT transaction_id, amount, currency FROM transactions ORDER BY amount DESC;",
+      "SELECT fee_id, amount FROM fees WHERE fee_type='Processing' ORDER BY fee_date ASC;",
+      "SELECT * FROM transactions WHERE amount > 1000 ORDER BY transaction_date DESC;",
+      "SELECT transaction_id, amount, currency FROM transactions JOIN fees ON transactions.transaction_id = fees.transaction_id WHERE fee_type = 'processing';",
+      "SELECT transaction_id, SUM(amount) AS total_amount FROM transactions GROUP BY transaction_id HAVING total_amount > 5000;",
+      "SELECT transaction_id, amount, currency, fee_type FROM transactions LEFT JOIN fees ON transactions.transaction_id = fees.transaction_id WHERE fee_date IS NOT NULL;",
+      "SELECT transaction_id, COUNT(*) AS fee_count FROM fees GROUP BY transaction_id HAVING fee_count > 2 ORDER BY fee_count DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM transaction_fees;",
+      "SELECT transaction_id, amount, fee_rate FROM transaction_fees ORDER BY amount DESC;",
+      "SELECT transaction_id, total_fee FROM transaction_fees WHERE fee_rate > 0.5;",
+      "SELECT sender_id, receiver_id, description FROM transaction_details WHERE sender_id = 1001;",
+      "SELECT log_id, transaction_id, timestamp FROM transaction_logs ORDER BY timestamp ASC;",
+      "SELECT * FROM transaction_fees WHERE total_fee > 1000 ORDER BY amount DESC;",
+      "SELECT transaction_id, amount, fee_rate, total_fee FROM transaction_fees WHERE amount >= 5000 AND fee_rate < 2.00;",
+      "SELECT t.transaction_id, t.log_details, tl.timestamp, tf.total_fee FROM transaction_logs tl JOIN transaction_details td ON tl.transaction_id = td.transaction_id JOIN transaction_fees tf ON tl.transaction_id = tf.transaction_id WHERE td.sender_id = 12345 ORDER BY tl.timestamp DESC;",
+      "SELECT td.sender_id, SUM(tf.total_fee) AS total_fees_paid FROM transaction_details td JOIN transaction_fees tf ON td.transaction_id = tf.transaction_id GROUP BY td.sender_id HAVING total_fees_paid > 500;",
+      "SELECT * FROM transaction_logs WHERE timestamp >= '2022-01-01' AND timestamp < '2022-02-01' ORDER BY log_id ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM transactions;",
+      "SELECT user_id, date FROM transactions WHERE amount > 100;",
+      "SELECT user_id, SUM(amount) AS total_amount FROM transactions GROUP BY user_id;",
+      "SELECT t.date, t.amount, f.fee_name FROM transactions t JOIN transaction_fees tf ON t.transaction_id = tf.transaction_id JOIN fees f ON tf.fee_id = f.fee_id;",
+      "SELECT t.date, u.username, f.fee_name FROM transactions t JOIN users u ON t.user_id = u.user_id JOIN transaction_fees tf ON t.transaction_id = tf.transaction_id JOIN fees f ON tf.fee_id = f.fee_id WHERE u.email LIKE '%example.com';",
+      "SELECT * FROM transactions;",
+      "SELECT user_id, date, amount FROM transactions WHERE amount > 1000 ORDER BY date DESC;",
+      "SELECT t.transaction_id, t.amount, f.fee_name FROM transactions t JOIN transaction_fees tf ON t.transaction_id = tf.transaction_id JOIN fees f ON tf.fee_id = f.fee_id;",
+      "SELECT username, email FROM users WHERE username LIKE 'A%' OR email LIKE '%gmail.com';",
+      "SELECT t.transaction_id, u.username, tf.fee_id, f.fee_name FROM transactions t JOIN users u ON t.user_id = u.user_id JOIN transaction_fees tf ON t.transaction_id = tf.transaction_id JOIN fees f ON tf.fee_id = f.fee_id ORDER BY t.transaction_id DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Transaction WHERE transaction_id = 1",
+      "SELECT amount, fee, timestamp FROM Transaction ORDER BY timestamp DESC",
+      "SELECT * FROM Customer WHERE name = 'John Doe'",
+      "SELECT description FROM TransactionDetail WHERE detail_id = 5",
+      "SELECT category_name, rate FROM FeeCategory JOIN FeeRate ON FeeCategory.category_id = FeeRate.fee_category_id",
+      "SELECT * FROM Transaction WHERE amount > 1000 ORDER BY timestamp DESC",
+      "SELECT transaction_id, amount, status FROM Transaction WHERE status = 'completed' AND amount >= 500 ORDER BY amount ASC",
+      "SELECT t.transaction_id, t.amount, td.fee_type, f.category_name FROM Transaction t JOIN TransactionDetail td ON t.transaction_id = td.transaction_id JOIN FeeCategory f ON td.fee_type = f.category_name WHERE f.category_id = 3 ORDER BY t.amount DESC",
+      "SELECT c.name, t.amount, tr.rate FROM Transaction t JOIN Customer c ON t.customer_id = c.customer_id JOIN FeeRate tr ON t.fee = tr.rate WHERE c.customer_id = 100 ORDER BY t.timestamp ASC",
+      "SELECT t.transaction_id, td.description, fc.category_name FROM Transaction t JOIN TransactionDetail td ON t.transaction_id = td.transaction_id JOIN FeeCategory fc ON td.fee_type = fc.category_name WHERE t.transaction_id IN (1, 3, 5) ORDER BY t.transaction_id DESC"
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_maps (\n    map_id UUID PRIMARY KEY,\n    map_name VARCHAR(255) NOT NULL,\n    map_description TEXT,\n    map_date DATE,\n    map_image BYTEA\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maps (\n    map_id INT PRIMARY KEY,\n    map_name STRING,\n    map_date DATE,\n    map_author STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE map_layers (\n    layer_id INT PRIMARY KEY,\n    layer_name STRING,\n    layer_description TEXT,\n    map_id INT,\n    FOREIGN KEY (map_id) REFERENCES maps(map_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maps (\n    map_id INT PRIMARY KEY,\n    map_name VARCHAR(255),\n    creation_date DATE,\n    author VARCHAR(255)\n);\n\nCREATE TABLE map_layers (\n    layer_id INT PRIMARY KEY,\n    map_id INT,\n    layer_name VARCHAR(255),\n    layer_type VARCHAR(100),\n    FOREIGN KEY (map_id) REFERENCES maps(map_id)\n);\n\nCREATE TABLE map_locations (\n    location_id INT PRIMARY KEY,\n    layer_id INT,\n    location_name VARCHAR(255),\n    latitude DECIMAL(9,6),\n    longitude DECIMAL(9,6),\n    FOREIGN KEY (layer_id) REFERENCES map_layers(layer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_maps (\n  map_id VARCHAR(255) PRIMARY KEY,\n  map_name VARCHAR(255),\n  map_date DATE,\n  map_region VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE map_layers (\n  layer_id VARCHAR(255) PRIMARY KEY,\n  layer_name VARCHAR(255),\n  layer_type VARCHAR(50),\n  map_id VARCHAR(255),\n  FOREIGN KEY (map_id) REFERENCES historical_maps(map_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE map_users (\n  user_id VARCHAR(255) PRIMARY KEY,\n  user_name VARCHAR(255),\n  user_email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_favorites (\n  favorite_id VARCHAR(255) PRIMARY KEY,\n  map_id VARCHAR(255),\n  user_id VARCHAR(255),\n  FOREIGN KEY (map_id) REFERENCES historical_maps(map_id),\n  FOREIGN KEY (user_id) REFERENCES map_users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maps (\n map_id INT PRIMARY KEY,\n map_title VARCHAR(255),\n map_description TEXT,\n map_date DATE\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE map_layers (\n layer_id INT PRIMARY KEY,\n map_id INT,\n layer_name VARCHAR(255),\n layer_type VARCHAR(50),\n FOREIGN KEY (map_id) REFERENCES maps(map_id)\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE layer_data (\n data_id INT PRIMARY KEY,\n layer_id INT,\n data_type VARCHAR(50),\n data_values JSONB,\n FOREIGN KEY (layer_id) REFERENCES map_layers(layer_id)\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE map_locations (\n location_id INT PRIMARY KEY,\n map_id INT,\n location_name VARCHAR(255),\n latitude DOUBLE PRECISION,\n longitude DOUBLE PRECISION,\n FOREIGN KEY (map_id) REFERENCES maps(map_id)\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n user_id INT PRIMARY KEY,\n user_name VARCHAR(50),\n user_email VARCHAR(255),\n user_password VARCHAR(255)\n );"
+      }
+    ]
+  }
+]

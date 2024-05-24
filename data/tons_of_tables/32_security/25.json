@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  key_id UUID PRIMARY KEY,\n  key_value BYTEA,\n  created_at TIMESTAMP,\n  owner_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTES NOT NULL,\n    created_at TIMESTAMP DEFAULT NOW()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE secure_communication (\n    message_id UUID PRIMARY KEY,\n    encrypted_message STRING NOT NULL,\n    sender_id UUID,\n    receiver_id UUID,\n    created_at TIMESTAMP DEFAULT NOW(),\n    FOREIGN KEY (sender_id) REFERENCES encryption_keys(key_id),\n    FOREIGN KEY (receiver_id) REFERENCES encryption_keys(key_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id UUID PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encrypted_messages (\n    message_id UUID PRIMARY KEY,\n    message_text TEXT NOT NULL,\n    encryption_key_id UUID NOT NULL,\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value TEXT,\n    created_at TIMESTAMP,\n    owner_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username TEXT,\n    password TEXT,\n    email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE messages (\n    message_id UUID PRIMARY KEY,\n    sender_id UUID,\n    receiver_id UUID,\n    encrypted_text TEXT,\n    sent_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_access (\n    access_id UUID PRIMARY KEY,\n    key_id UUID,\n    user_id UUID,\n    access_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    encryption_key BYTEA NOT NULL,\n    key_usage VARCHAR(50) NOT NULL,\n    creation_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n    log_id SERIAL PRIMARY KEY,\n    log_date TIMESTAMP NOT NULL,\n    sender_id UUID NOT NULL,\n    receiver_id UUID NOT NULL,\n    message TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_keys (\n    user_key_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    key_id UUID NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_permissions (\n    permission_id SERIAL PRIMARY KEY,\n    key_id UUID NOT NULL,\n    user_id UUID NOT NULL,\n    permission_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

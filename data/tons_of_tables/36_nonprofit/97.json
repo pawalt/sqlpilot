@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE diversity_and_inclusion_initiatives (\n    initiative_id INT PRIMARY KEY,\n    initiative_name VARCHAR(255),\n    initiative_description TEXT,\n    initiative_type VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE diversity_initiatives (\n    initiative_id INT PRIMARY KEY,\n    initiative_name VARCHAR(100),\n    description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_participation (\n    participation_id INT PRIMARY KEY,\n    employee_id INT,\n    initiative_id INT,\n    participation_date DATE,\n    FOREIGN KEY (employee_id) REFERENCES employees(employee_id),\n    FOREIGN KEY (initiative_id) REFERENCES diversity_initiatives(initiative_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE diversity_and_inclusion_initiatives (\n    initiative_id INT PRIMARY KEY,\n    initiative_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    start_date DATE,\n    end_date DATE,\n    lead_contact VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_participation (\n    participation_id INT PRIMARY KEY,\n    employee_id INT NOT NULL,\n    initiative_id INT NOT NULL,\n    participation_date DATE,\n    participation_status VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE initiative_feedback (\n    feedback_id INT PRIMARY KEY,\n    initiative_id INT NOT NULL,\n    employee_id INT NOT NULL,\n    feedback TEXT,\n    feedback_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE initiatives (\n    initiative_id SERIAL PRIMARY KEY,\n    initiative_name VARCHAR(255) NOT NULL,\n    initiative_description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id SERIAL PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    participant_email VARCHAR(255) UNIQUE,\n    participant_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n    department_id SERIAL PRIMARY KEY,\n    department_name VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_logs (\n    log_id SERIAL PRIMARY KEY,\n    event_timestamp TIMESTAMP NOT NULL,\n    event_description TEXT,\n    user_id INTEGER,\n    table_name VARCHAR(50),\n    action VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE diversity_initiatives (\n  initiative_id INT PRIMARY KEY,\n  initiative_name VARCHAR(100),\n  description TEXT,\n  start_date DATE,\n  end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_diversity (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(100),\n  department VARCHAR(100),\n  gender VARCHAR(10),\n  ethnicity VARCHAR(50),\n  initiative_id INT,\n  FOREIGN KEY (initiative_id) REFERENCES diversity_initiatives (initiative_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (\n  allocation_id INT PRIMARY KEY,\n  initiative_id INT,\n  employee_id INT,\n  allocation_date DATE,\n  hours_allocated INT,\n  FOREIGN KEY (initiative_id) REFERENCES diversity_initiatives (initiative_id),\n  FOREIGN KEY (employee_id) REFERENCES employee_diversity (employee_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE event_tracking (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR(100),\n  event_date DATE,\n  attendees_count INT,\n  initiative_id INT,\n  FOREIGN KEY (initiative_id) REFERENCES diversity_initiatives (initiative_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE survey_responses (\n  response_id INT PRIMARY KEY,\n  employee_id INT,\n  initiative_id INT,\n  response_date DATE,\n  question_1_rating INT,\n  question_2_rating INT,\n  FOREIGN KEY (employee_id) REFERENCES employee_diversity (employee_id),\n  FOREIGN KEY (initiative_id) REFERENCES diversity_initiatives (initiative_id)\n)"
+      }
+    ]
+  }
+]

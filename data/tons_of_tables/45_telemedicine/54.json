@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telecommunication_healthcare_tracking (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    technology_type VARCHAR(100),\n    availability_status BOOLEAN,\n    usage_count INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RuralHealthcareAvailability (\n    id INT PRIMARY KEY,\n    technology_name VARCHAR(50),\n    availability_status BOOLEAN,\n    location VARCHAR(100),\n    last_updated TIMESTAMP\n);\n\nCREATE TABLE TechnologyUsage (\n    id INT PRIMARY KEY,\n    technology_name VARCHAR(50),\n    usage_percentage DECIMAL,\n    location VARCHAR(100),\n    last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rural_healthcare_availability (\n    id INT PRIMARY KEY,\n    technology_name VARCHAR(255),\n    availability_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rural_healthcare_usage (\n    id INT PRIMARY KEY,\n    technology_name VARCHAR(255),\n    usage_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rural_healthcare_location (\n    id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    region VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rural_healthcare_centers (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location VARCHAR(255),\n    technology_used VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE telecommunication_providers (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location VARCHAR(255),\n    services_provided VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE technology_usage (\n    id INT PRIMARY KEY,\n    rural_healthcare_center_id INT,\n    telecommunication_provider_id INT,\n    usage_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE availability (\n    id INT PRIMARY KEY,\n    technology_id INT,\n    availability_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rural_healthcare_facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    technology_available BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE telecommunication_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255) NOT NULL,\n    device_type VARCHAR(50),\n    facility_id INT,\n    FOREIGN KEY (facility_id) REFERENCES rural_healthcare_facilities(facility_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_coverage (\n    coverage_id INT PRIMARY KEY,\n    network_provider VARCHAR(50) NOT NULL,\n    coverage_area VARCHAR(100) NOT NULL,\n    device_id INT,\n    FOREIGN KEY (device_id) REFERENCES telecommunication_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE usage_logs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    usage_date DATE NOT NULL,\n    usage_hours INT,\n    FOREIGN KEY (device_id) REFERENCES telecommunication_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE issue_reports (\n    report_id INT PRIMARY KEY,\n    report_description TEXT,\n    report_date DATE NOT NULL,\n    device_id INT,\n    FOREIGN KEY (device_id) REFERENCES telecommunication_devices(device_id)\n);"
+      }
+    ]
+  }
+]

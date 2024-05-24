@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_experiments (\n    experiment_id SERIAL PRIMARY KEY,\n    experiment_name VARCHAR(100) NOT NULL,\n    experiment_description TEXT,\n    experiment_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    id INT PRIMARY KEY,\n    experiment_name TEXT,\n    start_date TIMESTAMP,\n    end_date TIMESTAMP,\n    num_layers INT,\n    status TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT REFERENCES experiments(id),\n    result_data JSON,\n    accuracy FLOAT,\n    loss FLOAT,\n    execution_time INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255) NOT NULL,\n    experiment_description TEXT,\n    created_at TIMESTAMP,\n    completed BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT REFERENCES experiments(experiment_id),\n    result_value FLOAT,\n    result_description TEXT,\n    result_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE networks (\n    network_id INT PRIMARY KEY,\n    network_name VARCHAR(255) NOT NULL,\n    network_type VARCHAR(50),\n    layers INT,\n    neurons_per_layer INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    experiment_date DATE,\n    experiment_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    result_value FLOAT,\n    result_description TEXT,\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_type VARCHAR(50),\n    model_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE layers (\n    layer_id INT PRIMARY KEY,\n    model_id INT,\n    layer_name VARCHAR(100),\n    layer_type VARCHAR(50),\n    FOREIGN KEY (model_id) REFERENCES models(model_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    experiment_description TEXT,\n    start_date TIMESTAMP,\n    end_date TIMESTAMP,\n    dataset_used VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_description TEXT,\n    model_type VARCHAR(50),\n    training_time INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    hyperparameter_id INT PRIMARY KEY,\n    experiment_id INT,\n    hyperparameter_name VARCHAR(100),\n    hyperparameter_value FLOAT,\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    model_id INT,\n    result_metrics JSONB,\n    execution_time FLOAT,\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id),\n    FOREIGN KEY (model_id) REFERENCES models(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE execution_logs (\n    log_id INT PRIMARY KEY,\n    experiment_id INT,\n    log_timestamp TIMESTAMP,\n    log_message TEXT,\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);"
+      }
+    ]
+  }
+]

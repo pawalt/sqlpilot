@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ClimateModelResults (\n    SimulationID INT,\n    ModelName VARCHAR(255),\n    Temperature FLOAT,\n    Humidity FLOAT,\n    WindSpeed FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE climate_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(50),\n    project_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE simulation_results (\n    result_id INT PRIMARY KEY,\n    project_id INT,\n    simulation_date DATE,\n    result_data JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ClimateModels (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255) NOT NULL,\n    simulation_date DATE,\n    simulation_results JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchProjects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SimulationResults (\n    result_id INT PRIMARY KEY,\n    model_id INT,\n    project_id INT,\n    result_data JSON,\n    FOREIGN KEY (model_id) REFERENCES ClimateModels(model_id),\n    FOREIGN KEY (project_id) REFERENCES ResearchProjects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ClimateModels (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50),\n    model_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SimulationRuns (\n    run_id INT PRIMARY KEY,\n    model_id INT REFERENCES ClimateModels(model_id),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SimulationResults (\n    result_id INT PRIMARY KEY,\n    run_id INT REFERENCES SimulationRuns(run_id),\n    result_date DATE,\n    result_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchProjects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(50),\n    project_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE climate_models (\n  model_id INT PRIMARY KEY,\n  model_name VARCHAR(50),\n  model_type VARCHAR(50),\n  model_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE simulation_runs (\n  run_id INT PRIMARY KEY,\n  model_id INT REFERENCES climate_models(model_id),\n  run_date DATE,\n  run_time TIME,\n  completed BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n  result_id INT PRIMARY KEY,\n  run_id INT REFERENCES simulation_runs(run_id),\n  result_date DATE,\n  result_time TIME,\n  result_data JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_teams (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(50),\n  team_lead VARCHAR(50),\n  team_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE publications (\n  publication_id INT PRIMARY KEY,\n  result_id INT REFERENCES experiment_results(result_id),\n  publication_title VARCHAR(100),\n  publication_date DATE\n);"
+      }
+    ]
+  }
+]

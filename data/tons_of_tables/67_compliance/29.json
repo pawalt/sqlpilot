@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_data (\n  participant_id INT PRIMARY KEY,\n  participant_name TEXT,\n  research_topic TEXT,\n  research_data TEXT,\n  consent_given BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE study_participants (\n  participant_id UUID PRIMARY KEY,\n  name VARCHAR(50),\n  age INT,\n  gender VARCHAR(10),\n  email VARCHAR(100),\n  consent_given BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE research_data (\n  data_id UUID PRIMARY KEY,\n  participant_id UUID REFERENCES study_participants(participant_id),\n  research_study_name VARCHAR(100),\n  data_collected TEXT,\n  data_timestamp TIMESTAMP,\n  data_analyzed BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    participant_age INT,\n    participant_gender VARCHAR(10),\n    consent_given BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchStudies (\n    study_id UUID PRIMARY KEY,\n    study_topic VARCHAR(255) NOT NULL,\n    study_description TEXT,\n    lead_researcher VARCHAR(255),\n    study_start_date DATE,\n    study_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StudyData (\n    data_id UUID PRIMARY KEY,\n    study_id UUID REFERENCES ResearchStudies(study_id),\n    participant_id UUID REFERENCES Participants(participant_id),\n    data_collected JSON,\n    data_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Studies (\n    study_id UUID PRIMARY KEY,\n    study_name VARCHAR(255) NOT NULL,\n    study_description TEXT,\n    study_start_date DATE,\n    study_end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    participant_email VARCHAR(255) UNIQUE,\n    participant_age INT,\n    participant_gender VARCHAR(10) \n)"
+      },
+      {
+        "table_schema": "CREATE TABLE StudyData (\n    data_id UUID PRIMARY KEY,\n    study_id UUID REFERENCES Studies(study_id),\n    participant_id UUID REFERENCES Participants(participant_id),\n    data_values JSONB,\n    data_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ConsentForms (\n    form_id UUID PRIMARY KEY,\n    participant_id UUID REFERENCES Participants(participant_id),\n    consent_text TEXT,\n    consent_given BOOLEAN,\n    consent_timestamp TIMESTAMP)\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE studies (\n    study_id UUID PRIMARY KEY,\n    study_name VARCHAR(255),\n    study_description TEXT,\n    researcher_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    ethical_approval_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id SERIAL PRIMARY KEY,\n    participant_name VARCHAR(100),\n    age INT,\n    gender VARCHAR(10),\n    contact_email VARCHAR(255),\n    consent_given BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_collection (\n    collection_id SERIAL PRIMARY KEY,\n    study_id UUID,\n    participant_id INT,\n    data_collected TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (study_id) REFERENCES studies(study_id),\n    FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_analysis (\n    analysis_id SERIAL PRIMARY KEY,\n    study_id UUID,\n    analysis_results TEXT,\n    analyzed_by VARCHAR(100),\n    analysis_date DATE,\n    FOREIGN KEY (study_id) REFERENCES studies(study_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_logs (\n    log_id SERIAL PRIMARY KEY,\n    study_id UUID,\n    participant_id INT,\n    consent_status BOOLEAN,\n    consent_date DATE,\n    FOREIGN KEY (study_id) REFERENCES studies(study_id),\n    FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);\n"
+      }
+    ]
+  }
+]

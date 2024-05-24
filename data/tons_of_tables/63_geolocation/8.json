@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_location_data (\n    location_id INT,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    timestamp TIMESTAMP,\n    user_id INT,\n    PRIMARY KEY (location_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id UUID PRIMARY KEY,\n  longitude FLOAT,\n  latitude FLOAT,\n  timestamp TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE geofences (\n  geofence_id UUID PRIMARY KEY,\n  center_longitude FLOAT,\n  center_latitude FLOAT,\n  radius INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_location_data (\n    location_id INT PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    event_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE geofence_data (\n    geofence_id INT PRIMARY KEY,\n    geofence_name VARCHAR,\n    geofence_radius DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR,\n    event_date DATE,\n    event_location_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_data (\n  location_id INT PRIMARY KEY,\n  latitude DECIMAL,\n  longitude DECIMAL,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE geofences (\n  geofence_id INT PRIMARY KEY,\n  name VARCHAR,\n  latitude DECIMAL,\n  longitude DECIMAL,\n  radius DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_events (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR,\n  event_date DATE,\n  location_id INT,\n  FOREIGN KEY (location_id) REFERENCES location_data(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_participants (\n  participant_id INT PRIMARY KEY,\n  event_id INT,\n  name VARCHAR,\n  age INT,\n  FOREIGN KEY (event_id) REFERENCES marketing_events(event_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    latitude DECIMAL(10, 8),\n    longitude DECIMAL(11, 8),\n    address VARCHAR(255)\n);\n\nCREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(100),\n    event_date DATE,\n    location_id INT,\n    FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);\n\nCREATE TABLE geofences (\n    geofence_id INT PRIMARY KEY,\n    latitude DECIMAL(10, 8),\n    longitude DECIMAL(11, 8),\n    radius INT\n);\n\nCREATE TABLE marketing_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10, 2)\n);\n\nCREATE TABLE campaign_performance (\n    performance_id INT PRIMARY KEY,\n    campaign_id INT,\n    geofence_id INT,\n    impressions INT,\n    clicks INT,\n    conversions INT,\n    FOREIGN KEY (campaign_id) REFERENCES marketing_campaigns(campaign_id),\n    FOREIGN KEY (geofence_id) REFERENCES geofences(geofence_id)\n);"
+      }
+    ]
+  }
+]

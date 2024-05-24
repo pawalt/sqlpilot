@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n  appliance_id INT PRIMARY KEY,\n  appliance_name VARCHAR(50) NOT NULL,\n  energy_consumed FLOAT NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_appliances (\n    appliance_id INT PRIMARY KEY,\n    appliance_name VARCHAR(255),\n    manufacturer VARCHAR(255),\n    energy_consumption DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption_logs (\n    log_id INT PRIMARY KEY,\n    appliance_id INT,\n    energy_consumed DECIMAL,\n    log_date DATE,\n    FOREIGN KEY (appliance_id) REFERENCES smart_home_appliances(appliance_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartHomeAppliances (\n    appliance_id INT PRIMARY KEY,\n    appliance_name TEXT,\n    power_consumption INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n    consumption_id INT PRIMARY KEY,\n    appliance_id INT,\n    consumption_date DATE,\n    consumption_value INT,\n    FOREIGN KEY (appliance_id) REFERENCES SmartHomeAppliances(appliance_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ApplianceLocation (\n    appliance_id INT,\n    location TEXT,\n    PRIMARY KEY (appliance_id),\n    FOREIGN KEY (appliance_id) REFERENCES SmartHomeAppliances(appliance_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE appliances (\n    appliance_id SERIAL PRIMARY KEY,\n    appliance_name VARCHAR(100) NOT NULL,\n    power_consumption DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id SERIAL PRIMARY KEY,\n    location_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    consumption_id SERIAL PRIMARY KEY,\n    appliance_id INT REFERENCES appliances(appliance_id),\n    location_id INT REFERENCES locations(location_id),\n    consumption_date DATE NOT NULL,\n    energy_used DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartHomeAppliances (\n    appliance_id INT PRIMARY KEY,\n    appliance_name VARCHAR(255),\n    energy_consumption DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Rooms (\n    room_id INT PRIMARY KEY,\n    room_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AppliancesInRooms (\n    id INT PRIMARY KEY,\n    appliance_id INT,\n    room_id INT,\n    FOREIGN KEY (appliance_id) REFERENCES SmartHomeAppliances(appliance_id),\n    FOREIGN KEY (room_id) REFERENCES Rooms(room_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(255),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserApplianceHistory (\n    id INT PRIMARY KEY,\n    user_id INT,\n    appliance_id INT,\n    usage_date DATE,\n    energy_consumed DECIMAL(10,2),\n    FOREIGN KEY (user_id) REFERENCES Users(user_id),\n    FOREIGN KEY (appliance_id) REFERENCES SmartHomeAppliances(appliance_id)\n);"
+      }
+    ]
+  }
+]

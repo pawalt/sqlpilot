@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(15),\n    address TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE NOT NULL,\n    phone_number VARCHAR(20) NOT NULL,\n    address TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    order_date TIMESTAMP NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(50),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    order_date DATE,\n    customer_id INT,\n    total_amount DECIMAL(10, 2),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50),\n    price DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name TEXT NOT NULL,\n    email_address TEXT UNIQUE NOT NULL,\n    phone_number TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id) NOT NULL,\n    order_date DATE NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    product_name TEXT NOT NULL,\n    description TEXT,\n    price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE order_items (\n    order_id UUID REFERENCES orders(order_id) NOT NULL,\n    product_id UUID REFERENCES products(product_id) NOT NULL,\n    quantity INT NOT NULL,\n    PRIMARY KEY (order_id, product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  customer_email VARCHAR(50) UNIQUE,\n  customer_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders (\n  order_id INT PRIMARY KEY,\n  customer_id INT,\n  order_date DATE,\n  total_amount DECIMAL(10, 2),\n  FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(50) NOT NULL,\n  product_price DECIMAL(10, 2) NOT NULL,\n  product_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OrderDetails (\n  order_detail_id INT PRIMARY KEY,\n  order_id INT,\n  product_id INT,\n  quantity INT,\n  unit_price DECIMAL(10, 2),\n  total_price DECIMAL(10, 2),\n  FOREIGN KEY (order_id) REFERENCES Orders(order_id),\n  FOREIGN KEY (product_id) REFERENCES Products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n  payment_id INT PRIMARY KEY,\n  order_id INT,\n  payment_date DATE,\n  payment_amount DECIMAL(10, 2),\n  payment_method VARCHAR(20),\n  FOREIGN KEY (order_id) REFERENCES Orders(order_id)\n);"
+      }
+    ]
+  }
+]

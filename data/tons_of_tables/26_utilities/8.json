@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE local_water_regulations (\n  regulation_id INT PRIMARY KEY,\n  regulation_name VARCHAR(255),\n  compliance_status BOOLEAN,\n  inspection_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterRegulations (\n  regulation_id INT PRIMARY KEY,\n  regulation_name TEXT NOT NULL,\n  regulation_description TEXT,\n  regulation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceRecords (\n  record_id INT PRIMARY KEY,\n  regulation_id INT REFERENCES WaterRegulations(regulation_id),\n  record_date DATE NOT NULL,\n  compliance_status BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_regulations (\n    regulation_id INT PRIMARY KEY,\n    regulation_name VARCHAR(100),\n    regulatory_body VARCHAR(100),\n    enforcement_date DATE,\n    compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_records (\n    inspection_id INT PRIMARY KEY,\n    regulation_id INT,\n    inspection_date DATE,\n    inspector_name VARCHAR(100),\n    inspection_result BOOLEAN,\n    CONSTRAINT fk_regulation FOREIGN KEY (regulation_id) REFERENCES water_regulations(regulation_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE violation_records (\n    violation_id INT PRIMARY KEY,\n    inspection_id INT,\n    violation_date DATE,\n    violation_description TEXT,\n    fine_amount DECIMAL(10, 2),\n    CONSTRAINT fk_inspection FOREIGN KEY (inspection_id) REFERENCES inspection_records(inspection_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Water_Regulations (\n    regulation_id INT PRIMARY KEY,\n    regulation_name VARCHAR(255),\n    jurisdiction VARCHAR(50),\n    compliance_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance_Records (\n    record_id INT PRIMARY KEY,\n    regulation_id INT,\n    record_date DATE,\n    compliance_level VARCHAR(50),\n    FOREIGN KEY (regulation_id) REFERENCES Water_Regulations(regulation_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Organizations (\n    organization_id INT PRIMARY KEY,\n    organization_name VARCHAR(255),\n    location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Contacts (\n    contact_id INT PRIMARY KEY,\n    organization_id INT,\n    contact_name VARCHAR(100),\n    email VARCHAR(100),\n    phone_number VARCHAR(20),\n    FOREIGN KEY (organization_id) REFERENCES Organizations(organization_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulations (\n    id UUID PRIMARY KEY,\n    name VARCHAR(50),\n    description TEXT,\n    type VARCHAR(20),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_records (\n    record_id UUID PRIMARY KEY,\n    regulation_id UUID REFERENCES regulations(id),\n    status VARCHAR(20),\n    notes TEXT,\n    last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_agencies (\n    agency_id UUID PRIMARY KEY,\n    agency_name VARCHAR(50),\n    location VARCHAR(50),\n    contact_person VARCHAR(50),\n    phone_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE violation_reports (\n    report_id UUID PRIMARY KEY,\n    record_id UUID REFERENCES compliance_records(record_id),\n    violation_description TEXT,\n    severity VARCHAR(20),\n    report_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_records (\n    inspection_id UUID PRIMARY KEY,\n    agency_id UUID REFERENCES regulatory_agencies(agency_id),\n    inspector_name VARCHAR(50),\n    inspection_date TIMESTAMP,\n    result VARCHAR(20)\n)"
+      }
+    ]
+  }
+]

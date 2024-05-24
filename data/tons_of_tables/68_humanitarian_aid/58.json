@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_services (\n  service_id INT PRIMARY KEY,\n  service_name VARCHAR(255),\n  location_id INT,\n  service_type VARCHAR(50),\n  opening_hours VARCHAR(50),\n  address VARCHAR(255),\n  city VARCHAR(100),\n  state VARCHAR(50),\n  zipcode VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_facilities (\n  id INT,\n  name VARCHAR(255),\n  location POINT,\n  address VARCHAR(255),\n  primary_contact VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE geographical_data (\n  location_id INT,\n  region VARCHAR(255),\n  state VARCHAR(255),\n  city VARCHAR(255),\n  coordinates POINT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id SERIAL PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL\n);\n\nCREATE TABLE healthcare_centers (\n    center_id SERIAL PRIMARY KEY,\n    center_name VARCHAR(255) NOT NULL,\n    location_id INT NOT NULL,\n    category VARCHAR(50),\n    FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);\n\nCREATE TABLE accessibility_status (\n    status_id SERIAL PRIMARY KEY,\n    center_id INT NOT NULL,\n    accessibility_level VARCHAR(50),\n    safety_rating INT,\n    FOREIGN KEY (center_id) REFERENCES healthcare_centers(center_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hospitals (\n  hospital_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  location_longitude FLOAT,\n  location_latitude FLOAT,\n  bed_capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE doctors (\n  doctor_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  specialization VARCHAR(50),\n  hospital_id INT REFERENCES hospitals(hospital_id),\n  availability BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  age INT,\n  gender VARCHAR(10),\n  hospital_id INT REFERENCES hospitals(hospital_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  city VARCHAR(50),\n  state VARCHAR(50),\n  country VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hospitals (\n    hospital_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location VARCHAR(255),\n    capacity INT,\n    services TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE doctors (\n    doctor_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    specialty VARCHAR(255),\n    hospital_id INT,\n    FOREIGN KEY (hospital_id) REFERENCES hospitals(hospital_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    age INT,\n    gender VARCHAR(10),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n    appointment_id INT PRIMARY KEY,\n    patient_id INT,\n    doctor_id INT,\n    appointment_date DATE,\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id),\n    FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    address TEXT,\n    city VARCHAR(50),\n    state VARCHAR(50),\n    zipcode VARCHAR(10)\n);"
+      }
+    ]
+  }
+]

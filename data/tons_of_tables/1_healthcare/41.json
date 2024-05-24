@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory_levels (\n    id INT PRIMARY KEY,\n    medicine_name VARCHAR(255),\n    quantity INT,\n    expiration_date DATE,\n    clinic_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clinics_inventory (\n    clinic_id INT PRIMARY KEY,\n    clinic_name VARCHAR(50) NOT NULL,\n    medicine_id INT NOT NULL,\n    medicine_name VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medicine_stock (\n    medicine_id INT PRIMARY KEY,\n    medicine_name VARCHAR(50) NOT NULL,\n    stock_location VARCHAR(50) NOT NULL,\n    quantity_in_stock INT NOT NULL,\n    expiration_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medications ( \n    id INT PRIMARY KEY, \n    name TEXT NOT NULL, \n    quantity INT NOT NULL, \n    expiration_date DATE \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clinics ( \n    clinic_id INT PRIMARY KEY, \n    name TEXT NOT NULL, \n    location TEXT NOT NULL, \n    capacity INT NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory ( \n    id INT, \n    medication_id INT, \n    clinic_id INT, \n    quantity INT NOT NULL, \n    FOREIGN KEY (medication_id) REFERENCES medications(id), \n    FOREIGN KEY (clinic_id) REFERENCES clinics(clinic_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Medicines (medicine_id INT PRIMARY KEY, medicine_name TEXT NOT NULL, quantity INT NOT NULL, expiry_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE Clinics (clinic_id INT PRIMARY KEY, clinic_name TEXT NOT NULL, location TEXT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inventory (inventory_id INT PRIMARY KEY, clinic_id INT REFERENCES Clinics(clinic_id), medicine_id INT REFERENCES Medicines(medicine_id), quantity INT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (transaction_id INT PRIMARY KEY, clinic_id INT REFERENCES Clinics(clinic_id), medicine_id INT REFERENCES Medicines(medicine_id), quantity INT NOT NULL, transaction_date TIMESTAMP);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clinic (clinic_id INT PRIMARY KEY, clinic_name TEXT, location TEXT, contact_number TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE medicine (medicine_id INT PRIMARY KEY, medicine_name TEXT, quantity INT, expiry_date DATE)"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (inventory_id INT PRIMARY KEY, clinic_id INT, medicine_id INT, quantity INT, FOREIGN KEY (clinic_id) REFERENCES clinic(clinic_id), FOREIGN KEY (medicine_id) REFERENCES medicine(medicine_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier (supplier_id INT PRIMARY KEY, supplier_name TEXT, contact_number TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE supply_history (supply_id INT PRIMARY KEY, inventory_id INT, supplier_id INT, supply_date DATE, quantity_supplied INT, FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id), FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id))"
+      }
+    ]
+  }
+]

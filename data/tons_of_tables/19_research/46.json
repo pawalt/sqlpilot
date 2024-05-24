@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ConflictOfInterest (\n    review_id INT PRIMARY KEY,\n    reviewer_id INT,\n    conflict_details TEXT,\n    review_status VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE conflicts_of_interest (\n    reviewer_id INT, \n    paper_id INT, \n    conflict_type VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reviewers (\n    reviewer_id INT,\n    name VARCHAR,\n    institution VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE conflicts (\n    id SERIAL PRIMARY KEY,\n    reviewer_id INT NOT NULL,\n    paper_id INT NOT NULL,\n    conflict_reason TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reviewers (\n    id SERIAL PRIMARY KEY,\n    name TEXT NOT NULL,\n    email TEXT UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE papers (\n    id SERIAL PRIMARY KEY,\n    title TEXT NOT NULL,\n    publication_date DATE,\n    abstract TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PeerReviewAssignments (\n    id UUID PRIMARY KEY,\n    reviewer_id UUID,\n    paper_id UUID,\n    conflict_of_interest BOOL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    id UUID PRIMARY KEY,\n    name VARCHAR,\n    institution VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ConflictOfInterestReasons (\n    id UUID PRIMARY KEY,\n    reason TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ReviewerScores (\n    id UUID PRIMARY KEY,\n    reviewer_id UUID,\n    paper_id UUID,\n    score INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researchers (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(100) NOT NULL,\n  institution_name VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE research_papers (\n  paper_id INT PRIMARY KEY,\n  paper_title VARCHAR(200) NOT NULL,\n  researcher_id INT NOT NULL,\n  FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conflicts_of_interest (\n  conflict_id INT PRIMARY KEY,\n  paper_id INT NOT NULL,\n  researcher_id INT NOT NULL,\n  conflict_description TEXT,\n  FOREIGN KEY (paper_id) REFERENCES research_papers(paper_id),\n  FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE peer_review_assignments (\n  assignment_id INT PRIMARY KEY,\n  paper_id INT NOT NULL,\n  reviewer_id INT NOT NULL,\n  assignment_date DATE,\n  FOREIGN KEY (paper_id) REFERENCES research_papers(paper_id),\n  FOREIGN KEY (reviewer_id) REFERENCES researchers(researcher_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n  review_id INT PRIMARY KEY,\n  assignment_id INT NOT NULL,\n  reviewer_id INT NOT NULL,\n  review_score DECIMAL(3,1),\n  review_comment TEXT,\n  FOREIGN KEY (assignment_id) REFERENCES peer_review_assignments(assignment_id),\n  FOREIGN KEY (reviewer_id) REFERENCES researchers(researcher_id)\n)"
+      }
+    ]
+  }
+]

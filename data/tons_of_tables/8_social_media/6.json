@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    organizer VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rsvps (\n    rsvp_id INT PRIMARY KEY,\n    event_id INT,\n    guest_name VARCHAR(255),\n    rsvp_status VARCHAR(20),\n    FOREIGN KEY (event_id) REFERENCES events(event_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    event_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    attendee_name VARCHAR(255) NOT NULL,\n    attendee_email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rsvps (\n    rsvp_id INT PRIMARY KEY,\n    event_id INT NOT NULL,\n    attendee_id INT NOT NULL,\n    rsvp_status VARCHAR(10) NOT NULL,\n    FOREIGN KEY (event_id) REFERENCES events(event_id),\n    FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_details (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE,\n    event_location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendee_details (\n    attendee_id UUID PRIMARY KEY,\n    attendee_name VARCHAR(255) NOT NULL,\n    attendee_email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_rsvps (\n    event_id UUID,\n    attendee_id UUID,\n    rsvp_status VARCHAR(50),\n    PRIMARY KEY (event_id, attendee_id),\n    FOREIGN KEY (event_id) REFERENCES event_details(event_id),\n    FOREIGN KEY (attendee_id) REFERENCES attendee_details(attendee_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(50) NOT NULL,\n    event_date DATE NOT NULL,\n    event_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    attendee_name VARCHAR(50) NOT NULL,\n    attendee_email VARCHAR(100) NOT NULL,\n    attendee_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rsvps (\n    rsvp_id INT PRIMARY KEY,\n    event_id INT,\n    attendee_id INT,\n    rsvp_status VARCHAR(10) NOT NULL,\n    CONSTRAINT FK_event_id FOREIGN KEY (event_id) REFERENCES events(event_id),\n    CONSTRAINT FK_attendee_id FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE guests (\n    guest_id INT PRIMARY KEY,\n    attendee_id INT,\n    guest_name VARCHAR(50) NOT NULL,\n    guest_relationship VARCHAR(50),\n    CONSTRAINT FK_attendee_id FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    event_id INT,\n    attendee_id INT,\n    comment_text TEXT NOT NULL,\n    CONSTRAINT FK_event_id FOREIGN KEY (event_id) REFERENCES events(event_id),\n    CONSTRAINT FK_attendee_id FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id)\n);"
+      }
+    ]
+  }
+]

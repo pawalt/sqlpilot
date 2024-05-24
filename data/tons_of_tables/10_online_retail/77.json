@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE website_traffic (\n    timestamp TIMESTAMP,\n    user_id INT,\n    page_url TEXT,\n    interaction_type TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE website_traffic (\n    website_id INT,\n    page_id INT,\n    user_id INT,\n    timestamp TIMESTAMP,\n    activity VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_interactions (\n    user_id INT,\n    interaction_id INT,\n    interaction_type VARCHAR(50),\n    interaction_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(255),\n    email VARCHAR(255),\n    registration_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE page_views (\n    view_id SERIAL PRIMARY KEY,\n    user_id UUID,\n    page_id UUID,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(255),\n    category VARCHAR(50),\n    price DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE website_users (\n    user_id INT PRIMARY KEY,\n    username TEXT,\n    email TEXT,\n    created_at TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE website_actions (\n    action_id INT PRIMARY KEY,\n    action_name TEXT,\n    action_description TEXT,\n    action_time TIMESTAMPTZ,\n    user_id INT REFERENCES website_users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE website_pages (\n    page_id INT PRIMARY KEY,\n    page_name TEXT,\n    page_url TEXT UNIQUE,\n    created_at TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE website_traffic (\n    traffic_id INT PRIMARY KEY,\n    page_id INT REFERENCES website_pages(page_id),\n    user_id INT REFERENCES website_users(user_id),\n    action_id INT REFERENCES website_actions(action_id),\n    traffic_time TIMESTAMPTZ\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE website_visits (\n    id SERIAL PRIMARY KEY,\n    visitor_id INT,\n    visit_timestamp TIMESTAMP,\n    page_url TEXT,\n    visit_duration INTERVAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_interactions (\n    interaction_id SERIAL PRIMARY KEY,\n    visitor_id INT,\n    interaction_type TEXT,\n    interaction_timestamp TIMESTAMP,\n    interaction_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id SERIAL PRIMARY KEY,\n    username TEXT UNIQUE,\n    email TEXT UNIQUE,\n    password TEXT,\n    account_created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE product_views (\n    view_id SERIAL PRIMARY KEY,\n    visitor_id INT,\n    product_id INT,\n    view_timestamp TIMESTAMP,\n    view_duration INTERVAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cart_items (\n    item_id SERIAL PRIMARY KEY,\n    visitor_id INT,\n    product_id INT,\n    quantity INT,\n    added_to_cart_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

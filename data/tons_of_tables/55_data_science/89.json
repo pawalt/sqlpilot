@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE translations(\n  id INT PRIMARY KEY,\n  source_language TEXT,\n  target_language TEXT,\n  text TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE translations (\n    id INT PRIMARY KEY,\n    source_language VARCHAR,\n    target_language VARCHAR,\n    text TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR,\n    model_version FLOAT,\n    training_data_id INT,\n    FOREIGN KEY (training_data_id) REFERENCES translations(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE translations (\n    translation_id UUID PRIMARY KEY,\n    source_language TEXT,\n    target_language TEXT,\n    translated_text TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE translation_history (\n    history_id SERIAL PRIMARY KEY,\n    translation_id UUID REFERENCES translations (translation_id),\n    translation_date TIMESTAMP,\n    translation_status TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE languages (\n    language_id SERIAL PRIMARY KEY,\n    language_name TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Language (id INT PRIMARY KEY, language_code VARCHAR(5), language_name VARCHAR(50))\nCREATE TABLE Translation (id INT PRIMARY KEY, source_language_id INT, target_language_id INT, translation_text TEXT)\nCREATE TABLE Dataset (id INT PRIMARY KEY, dataset_name VARCHAR(100), dataset_size INT, language_id INT)\nCREATE TABLE Model (id INT PRIMARY KEY, model_name VARCHAR(100), model_type VARCHAR(50), dataset_id INT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Languages (\n    language_id INT PRIMARY KEY,\n    language_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TranslationPairs (\n    pair_id INT PRIMARY KEY,\n    source_language_id INT REFERENCES Languages(language_id),\n    target_language_id INT REFERENCES Languages(language_id),\n    translation_text TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50) NOT NULL,\n    source_language_id INT REFERENCES Languages(language_id),\n    target_language_id INT REFERENCES Languages(language_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingData (\n    data_id INT PRIMARY KEY,\n    model_id INT REFERENCES Models(model_id),\n    pair_id INT REFERENCES TranslationPairs(pair_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Metrics (\n    metric_id INT PRIMARY KEY,\n    model_id INT REFERENCES Models(model_id),\n    metric_name VARCHAR(50) NOT NULL,\n    metric_value FLOAT NOT NULL\n);"
+      }
+    ]
+  }
+]

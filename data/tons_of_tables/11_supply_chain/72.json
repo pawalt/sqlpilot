@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PurchaseOrders ( \n order_id INT PRIMARY KEY, \n supplier_name VARCHAR(255), \n order_date DATE, \n order_status VARCHAR(50) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(50),\n    supplier_email VARCHAR(50)\n);\n\nCREATE TABLE PurchaseOrders (\n    order_id INT PRIMARY KEY,\n    order_date DATE,\n    supplier_id INT,\n    order_status VARCHAR(20),\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE purchase_order (\n    order_id INT PRIMARY KEY,\n    order_date DATE NOT NULL,\n    supplier_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE order_status (\n    status_id INT PRIMARY KEY,\n    order_id INT,\n    status VARCHAR(50) NOT NULL,\n    FOREIGN KEY (order_id) REFERENCES purchase_order(order_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    email VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    supplier_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchase_orders (\n    order_id INT PRIMARY KEY,\n    order_date DATE NOT NULL,\n    status VARCHAR(50) NOT NULL,\n    product_id INT,\n    quantity INT NOT NULL,\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE order_tracking (\n    tracking_id INT PRIMARY KEY,\n    order_id INT,\n    status VARCHAR(50) NOT NULL,\n    location VARCHAR(255),\n    estimated_delivery_date DATE,\n    FOREIGN KEY (order_id) REFERENCES purchase_orders(order_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n supplier_id INT PRIMARY KEY,\n supplier_name VARCHAR(50),\n supplier_email VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n product_id INT PRIMARY KEY,\n product_name VARCHAR(50),\n product_price DECIMAL(10,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n order_id INT PRIMARY KEY,\n order_date DATE,\n supplier_id INT,\n FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE order_items (\n order_item_id INT PRIMARY KEY,\n order_id INT,\n product_id INT,\n quantity INT,\n total_price DECIMAL(10,2),\n FOREIGN KEY (order_id) REFERENCES orders(order_id),\n FOREIGN KEY (product_id) REFERENCES products(product_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE order_status (\n order_id INT PRIMARY KEY,\n status VARCHAR(20),\n updated_at TIMESTAMP,\n FOREIGN KEY (order_id) REFERENCES orders(order_id)\n)"
+      }
+    ]
+  }
+]

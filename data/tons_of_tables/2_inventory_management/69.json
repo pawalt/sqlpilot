@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Invoice (\n    invoice_id UUID PRIMARY KEY,\n    customer_id UUID NOT NULL,\n    invoice_date DATE NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL,\n    payment_status BOOLEAN DEFAULT FALSE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_info ( \n  invoice_id UUID NOT NULL, \n  customer_id INT NOT NULL, \n  invoice_amount DECIMAL NOT NULL, \n  invoice_date DATE NOT NULL, \n  due_date DATE NOT NULL, \n  PRIMARY KEY (invoice_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounting_system ( \n  transaction_id UUID NOT NULL, \n  invoice_id UUID NOT NULL, \n  transaction_date DATE NOT NULL, \n  transaction_amount DECIMAL NOT NULL, \n  transaction_type VARCHAR NOT NULL, \n  PRIMARY KEY (transaction_id), \n  FOREIGN KEY (invoice_id) REFERENCES billing_info(invoice_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE invoices (\n  invoice_id INT PRIMARY KEY,\n  customer_id INT,\n  invoice_date DATE,\n  total_amount DECIMAL(10, 2),\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id INT PRIMARY KEY,\n  invoice_id INT,\n  payment_date DATE,\n  amount_paid DECIMAL(10, 2),\n  payment_method VARCHAR(50),\n  FOREIGN KEY (invoice_id) REFERENCES invoices(invoice_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE invoices (\n    invoice_id INT PRIMARY KEY,\n    customer_id INT,\n    invoice_date DATE,\n    total_amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    unit_price DECIMAL(10, 2),\n    stock_quantity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    invoice_id INT,\n    transaction_date TIMESTAMP,\n    payment_method VARCHAR(50),\n    amount_paid DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_email VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT,\n    order_date DATE,\n    total_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50),\n    unit_price DECIMAL(8, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE invoices (\n    invoice_id INT PRIMARY KEY,\n    order_id INT,\n    invoice_date DATE,\n    invoice_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    invoice_id INT,\n    payment_date DATE,\n    payment_amount DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  }
+]

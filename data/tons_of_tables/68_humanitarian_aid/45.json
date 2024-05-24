@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmergencyResponseTimes (\n  emergency_type VARCHAR(50),\n  response_time INT,\n  report_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_types (\n  emergency_type_id SERIAL PRIMARY KEY,\n  emergency_type_name VARCHAR(50) NOT NULL,\n  emergency_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE response_times (\n  report_id SERIAL PRIMARY KEY,\n  emergency_type_id INT REFERENCES emergency_types(emergency_type_id),\n  response_time_seconds INT NOT NULL,\n  date_reported DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergencies(\n\temergency_id INT PRIMARY KEY,\n\temergency_type VARCHAR(50),\n\temergency_location VARCHAR(100),\n\tresponse_time_in_seconds INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resources(\n\tresource_id INT PRIMARY KEY,\n\tresource_name VARCHAR(50),\n\tresource_type VARCHAR(50),\n\tavailability BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports(\n\treport_id INT PRIMARY KEY,\n\temergency_id INT,\n\tresource_id INT,\n\tresponse_time_in_seconds INT,\n\treport_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_type (                                 \n    emergency_id INT PRIMARY KEY,             \n    emergency_name STRING                        \n);                                              "
+      },
+      {
+        "table_schema": "CREATE TABLE response_times (                           \n    response_id INT PRIMARY KEY,             \n    emergency_id INT REFERENCES emergency_type(emergency_id),                         \n    response_time FLOAT                                  \n);                                                                  "
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (                           \n    allocation_id INT PRIMARY KEY,             \n    emergency_id INT REFERENCES emergency_type(emergency_id),                         \n    resources_allocated INT,                          \n    date_time TIMESTAMP                                  \n);                                                                                          "
+      },
+      {
+        "table_schema": "CREATE TABLE optimization_logs (                           \n    log_id INT PRIMARY KEY,             \n    optimization_description STRING,                         \n    date_time TIMESTAMP                                  \n);                                                                "
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE response_times_emergency_types (\n  id UUID PRIMARY KEY,\n  emergency_type VARCHAR(50),\n  response_time INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emergency_reports (\n  report_id VARCHAR(10) PRIMARY KEY,\n  report_date TIMESTAMP,\n  emergency_type VARCHAR(50),\n  location VARCHAR(100),\n  resources_needed JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (\n  allocation_id INT PRIMARY KEY,\n  report_id VARCHAR(10),\n  resource_type VARCHAR(50),\n  quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_inventory (\n  resource_id INT PRIMARY KEY,\n  resource_type VARCHAR(50),\n  available_quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emergency_response_team (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(50),\n  team_lead VARCHAR(100),\n  team_size INT\n);"
+      }
+    ]
+  }
+]

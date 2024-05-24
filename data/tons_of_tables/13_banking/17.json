@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE corporate_actions (\n    action_id INT PRIMARY KEY,\n    action_name VARCHAR(255),\n    action_type VARCHAR(50),\n    action_date DATE,\n    action_description TEXT,\n    dividend_payment DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE corporate_actions (\n    action_id INT PRIMARY KEY,\n    action_name VARCHAR(255) NOT NULL,\n    action_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dividend_payments (\n    payment_id INT PRIMARY KEY,\n    payment_date DATE NOT NULL,\n    amount DECIMAL(10,2) NOT NULL,\n    recipient VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE corporate_actions (\n    action_id INT PRIMARY KEY,\n    action_name VARCHAR(255),\n    action_type VARCHAR(50),\n    action_date DATE,\n    company_id INT,\n    FOREIGN KEY (company_id) REFERENCES companies(company_id)\n);\n\nCREATE TABLE dividend_payments (\n    payment_id INT PRIMARY KEY,\n    payment_date DATE,\n    payment_amount DECIMAL(10, 2),\n    recipient_id INT,\n    FOREIGN KEY (recipient_id) REFERENCES shareholders(shareholder_id)\n);\n\nCREATE TABLE companies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CorporateActions (\n    action_id INT PRIMARY KEY,\n    action_description TEXT,\n    action_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DividendPayments (\n    payment_id INT PRIMARY KEY,\n    company_id INT,\n    payment_amount DECIMAL(10,2),\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Companies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255),\n    industry VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Shareholders (\n    shareholder_id INT PRIMARY KEY,\n    company_id INT,\n    shareholder_name VARCHAR(255),\n    shares_owned INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CorporateActions (\n    id UUID PRIMARY KEY,\n    action_date DATE,\n    action_type VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DividendPayments (\n    id UUID PRIMARY KEY,\n    payment_date DATE,\n    recipient_id UUID,\n    amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Recipients (\n    id UUID PRIMARY KEY,\n    name VARCHAR(100),\n    email VARCHAR(100),\n    address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ActionRecipients (\n    action_id UUID,\n    recipient_id UUID,\n    FOREIGN KEY(action_id) REFERENCES CorporateActions(id),\n    FOREIGN KEY(recipient_id) REFERENCES Recipients(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentReports (\n    report_id UUID PRIMARY KEY,\n    report_date DATE,\n    total_payments DECIMAL(15, 2),\n    generated_by UUID,\n    FOREIGN KEY(generated_by) REFERENCES Recipients(id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_tasks (\n  task_id SERIAL PRIMARY KEY,\n  task_name VARCHAR(50) NOT NULL,\n  deadline DATE,\n  estimated_duration INTERVAL,\n  assigned_worker VARCHAR(50),\n  task_priority INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE production_schedule (\n    schedule_id INT PRIMARY KEY,\n    task_id INT,\n    start_time TIME,\n    end_time TIME,\n    FOREIGN KEY (task_id) REFERENCES production_tasks(task_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_tasks (\n  task_id INT PRIMARY KEY,\n  task_name VARCHAR(255),\n  start_time TIMESTAMP,\n  end_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE production_schedule (\n  schedule_id INT PRIMARY KEY,\n  task_id INT,\n  schedule_date DATE,\n  is_completed BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE optimal_schedule (\n  optimal_id INT PRIMARY KEY,\n  schedule_id INT,\n  task_id INT,\n  optimization_score FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProductionTasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(50),\n    machine_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    status ENUM('Planned', 'In Progress', 'Completed')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Machines (\n    machine_id INT PRIMARY KEY,\n    machine_name VARCHAR(50),\n    capacity INT,\n    status ENUM('Active', 'Inactive')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionSchedule (\n    schedule_id INT PRIMARY KEY,\n    task_id INT,\n    machine_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    CONSTRAINT fk_task FOREIGN KEY (task_id) REFERENCES ProductionTasks(task_id),\n    CONSTRAINT fk_machine FOREIGN KEY (machine_id) REFERENCES Machines(machine_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductivityMetrics (\n    metric_id INT PRIMARY KEY,\n    machine_id INT,\n    productivity_value FLOAT,\n    recorded_at TIMESTAMP,\n    CONSTRAINT fk_machine FOREIGN KEY (machine_id) REFERENCES Machines(machine_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProductionTasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    description TEXT,\n    deadline TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionSchedule (\n    schedule_id INT PRIMARY KEY,\n    task_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskDependencies (\n    task_id INT,\n    dependent_task_id INT,\n    FOREIGN KEY (task_id) REFERENCES ProductionTasks(task_id),\n    FOREIGN KEY (dependent_task_id) REFERENCES ProductionTasks(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResourceAllocation (\n    allocation_id INT PRIMARY KEY,\n    task_id INT,\n    resource_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskEfficiency (\n    task_id INT,\n    efficiency_percentage DECIMAL(5,2),\n    performance_metric VARCHAR(50),\n    PRIMARY KEY (task_id, performance_metric)\n);"
+      }
+    ]
+  }
+]

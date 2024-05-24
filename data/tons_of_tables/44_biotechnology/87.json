@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n\tprocess_id INT,\n\tprocess_name VARCHAR(255),\n\tstart_date DATE,\n\tend_date DATE,\n\tquality_standard VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Manufacturing (\n    manufacturing_id INT PRIMARY KEY,\n    facility_id INT,\n    product_name TEXT,\n    manufacturing_date DATE,\n    quantity_produced INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QualityControl (\n    qc_id INT PRIMARY KEY,\n    manufacturing_id INT,\n    test_type TEXT,\n    test_date DATE,\n    pass_status BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_process (\n    process_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quality_standards (\n    standard_id INT PRIMARY KEY,\n    parameter_name VARCHAR(255),\n    value DECIMAL,\n    target_range DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_audit (\n    audit_id INT PRIMARY KEY,\n    process_id INT,\n    standard_id INT,\n    audit_date DATE,\n    outcome VARCHAR(50),\n    FOREIGN KEY (process_id) REFERENCES manufacturing_process(process_id),\n    FOREIGN KEY (standard_id) REFERENCES quality_standards(standard_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Manufacturing_Sites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Manufacturing_Units (\n  unit_id INT PRIMARY KEY,\n  unit_name VARCHAR(255) NOT NULL,\n  capacity INT,\n  site_id INT,\n  FOREIGN KEY (site_id) REFERENCES Manufacturing_Sites(site_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Manufacturing_Records (\n  record_id INT PRIMARY KEY,\n  unit_id INT,\n  start_date DATE,\n  end_date DATE,\n  quantity_produced INT,\n  FOREIGN KEY (unit_id) REFERENCES Manufacturing_Units(unit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Quality_Standards (\n  standard_id INT PRIMARY KEY,\n  standard_name VARCHAR(255) NOT NULL,\n  description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biopharmaceutical_firms (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  industry VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n  process_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quality_standards (\n  standard_id INT PRIMARY KEY,\n  standard_name VARCHAR(255) NOT NULL,\n  description TEXT,\n  created_by VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE product_inventory (\n  inventory_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  quantity INT,\n  expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_logs (\n  log_id INT PRIMARY KEY,\n  date_time TIMESTAMP NOT NULL,\n  message TEXT,\n  user_id INT NOT NULL,\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_disposal_activity (\n    disposal_id INT PRIMARY KEY,\n    company_name VARCHAR(50) NOT NULL,\n    disposal_date DATE,\n    disposal_location VARCHAR(100),\n    disposal_type ENUM('Landfill', 'Incineration', 'Recycling'),\n    disposal_quantity DECIMAL(10, 2) NOT NULL,\n    disposal_status ENUM('Approved', 'Pending', 'Rejected')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_disposal_activities (\n  activity_id UUID PRIMARY KEY,\n  waste_type VARCHAR(50),\n  disposal_date DATE,\n  disposal_location VARCHAR(100),\n  compliance_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_agencies (\n  agency_id UUID PRIMARY KEY,\n  agency_name VARCHAR(100),\n  contact_name VARCHAR(100),\n  contact_email VARCHAR(100),\n  contact_phone VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_disposal_activities (\n  disposal_id UUID PRIMARY KEY,\n  disposal_date DATE,\n  disposal_location TEXT,\n  disposal_agent TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_classification (\n  waste_id UUID PRIMARY KEY,\n  waste_type TEXT,\n  waste_quantity DECIMAL,\n  disposal_id UUID REFERENCES hazardous_waste_disposal_activities(disposal_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_records (\n  record_id UUID PRIMARY KEY,\n  disposal_id UUID REFERENCES hazardous_waste_disposal_activities(disposal_id),\n  compliance_status BOOLEAN,\n  inspection_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_disposal_activities (\n\thazardous_waste_id UUID PRIMARY KEY,\n\tlocation VARCHAR(50) NOT NULL,\n\tdisposal_date DATE NOT NULL,\n\tquantity DECIMAL NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE disposal_contractors (\n\tcontractor_id UUID PRIMARY KEY,\n\tcontractor_name VARCHAR(100) NOT NULL,\n\tcontact_person VARCHAR(50) NOT NULL,\n\tphone_number VARCHAR(15) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_categories (\n\tcategory_id UUID PRIMARY KEY,\n\tcategory_name VARCHAR(50) NOT NULL,\n\tdescription TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_agencies (\n\tagency_id UUID PRIMARY KEY,\n\tagency_name VARCHAR(100) NOT NULL,\n\tcontact_email VARCHAR(50) NOT NULL,\n\tphone_number VARCHAR(15) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HazardousWasteDisposalActivity (\n  activity_id INT PRIMARY KEY,\n  disposal_date DATE,\n  waste_type VARCHAR(50),\n  disposal_location VARCHAR(100),\n  disposal_method VARCHAR(100),\n  compliance_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DisposalLocation (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(100),\n  city VARCHAR(50),\n  state VARCHAR(50),\n  zip_code VARCHAR(10),\n  contact_name VARCHAR(100),\n  contact_phone VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE HazardousWasteType (\n  type_id INT PRIMARY KEY,\n  waste_name VARCHAR(100),\n  hazardous_level VARCHAR(50),\n  disposal_instructions TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceRecord (\n  record_id INT PRIMARY KEY,\n  activity_id INT,\n  compliance_date DATE,\n  inspector_name VARCHAR(100),\n  comments TEXT,\n  FOREIGN KEY (activity_id) REFERENCES HazardousWasteDisposalActivity(activity_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspector (\n  inspector_id INT PRIMARY KEY,\n  inspector_name VARCHAR(100),\n  inspector_company VARCHAR(100),\n  inspector_license VARCHAR(20)\n)"
+      }
+    ]
+  }
+]

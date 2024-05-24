@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_data (\n    id UUID PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    high_score INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id SERIAL PRIMARY KEY,\n    username VARCHAR(255) UNIQUE NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    high_score INT\n);\n\nCREATE TABLE leaderboards (\n    leaderboard_id SERIAL PRIMARY KEY,\n    player_id INT REFERENCES players(player_id),\n    score INT,\n    level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    high_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication (\n    player_id INT REFERENCES players (id),\n    last_login TIMESTAMP,\n    login_attempts INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboard (\n    player_id INT REFERENCES players (id),\n    score INT,\n    rank INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_auth (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE player_stats (\n    id INT PRIMARY KEY,\n    player_id INT NOT NULL,\n    high_score INT NOT NULL\n);\n\nCREATE TABLE player_profile (\n    id INT PRIMARY KEY,\n    player_id INT NOT NULL,\n    display_name VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE player_friends (\n    player_id INT NOT NULL,\n    friend_id INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_stats (\n    user_id INT REFERENCES users(user_id),\n    high_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE achievements (\n    achievement_id INT PRIMARY KEY,\n    achievement_name VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_achievements (\n    user_id INT REFERENCES users(user_id),\n    achievement_id INT REFERENCES achievements(achievement_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_inventory (\n    user_id INT REFERENCES users(user_id),\n    item_id INT,\n    item_name VARCHAR(50),\n    quantity INT\n);"
+      }
+    ]
+  }
+]

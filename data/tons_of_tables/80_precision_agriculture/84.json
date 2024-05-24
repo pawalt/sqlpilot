@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE irrigation_pattern ( \nid SERIAL PRIMARY KEY, \nsensor_id INT, \nlocation VARCHAR(255), \nmoisture_level DECIMAL, \nwater_usage DECIMAL, \nirrigation_time TIME \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE irrigation_data (\n    farm_id INT,\n    date DATE,\n    water_usage DECIMAL,\n    temperature DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE field_info (\n    field_id INT,\n    field_name VARCHAR(50),\n    location VARCHAR(50),\n    crop_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IrrigationDetails (\n    id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    location VARCHAR,\n    water_source VARCHAR,\n    water_usage DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldData (\n    field_id UUID PRIMARY KEY,\n    crop_type VARCHAR,\n    planting_date DATE,\n    irrigation_schedule JSON,\n    soil_moisture DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorData (\n    sensor_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    field_id UUID,\n    sensor_type VARCHAR,\n    sensor_value DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE irrigation_zone (\n    zone_id UUID PRIMARY KEY,\n    zone_name VARCHAR(100) NOT NULL,\n    crop_type VARCHAR(50) NOT NULL,\n    area_sqm FLOAT NOT NULL\n);\n\nCREATE TABLE irrigation_schedule (\n    schedule_id UUID PRIMARY KEY,\n    zone_id UUID REFERENCES irrigation_zone(zone_id),\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    frequency VARCHAR(20) NOT NULL\n);\n\nCREATE TABLE soil_moisture (\n    reading_id UUID PRIMARY KEY,\n    zone_id UUID REFERENCES irrigation_zone(zone_id),\n    reading_time TIMESTAMP NOT NULL,\n    moisture_level FLOAT NOT NULL\n);\n\nCREATE TABLE water_flow (\n    flow_id UUID PRIMARY KEY,\n    zone_id UUID REFERENCES irrigation_zone(zone_id),\n    flow_rate FLOAT NOT NULL,\n    flow_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE irrigation_zones (\n    zone_id INT PRIMARY KEY,\n    zone_name TEXT,\n    irrigation_area FLOAT,\n    soil_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (\n    schedule_id INT PRIMARY KEY,\n    zone_id INT,\n    day_of_week TEXT,\n    start_time TIME,\n    end_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n    usage_id INT PRIMARY KEY,\n    zone_id INT,\n    date DATE,\n    amount_used FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_data (\n    weather_id INT PRIMARY KEY,\n    date DATE,\n    temperature FLOAT,\n    humidity FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE soil_moisture (\n    moisture_id INT PRIMARY KEY,\n    zone_id INT,\n    date DATE,\n    moisture_level FLOAT\n);\n"
+      }
+    ]
+  }
+]

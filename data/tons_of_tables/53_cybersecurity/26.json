@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IncidentResponseData (\n  incident_id INT PRIMARY KEY,\n  incident_type VARCHAR(255),\n  incident_description TEXT,\n  reported_by VARCHAR(100),\n  report_date DATE,\n  resolution_status BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incidents (\n  incident_id UUID PRIMARY KEY,\n  incident_date TIMESTAMP,\n  incident_type VARCHAR(50),\n  severity INT,\n  status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_comments (\n  comment_id UUID PRIMARY KEY,\n  incident_id UUID,\n  comment_date TIMESTAMP,\n  comment_text TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incident_reports (\n    incident_id INT PRIMARY KEY,\n    incident_date TIMESTAMP,\n    reported_by VARCHAR(50),\n    incident_type VARCHAR(50),\n    incident_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_participants (\n    participant_id INT PRIMARY KEY,\n    incident_id INT,\n    participant_name VARCHAR(50),\n    participant_role VARCHAR(50),\n    contact_info VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_actions (\n    action_id INT PRIMARY KEY,\n    incident_id INT,\n    action_description TEXT,\n    action_date TIMESTAMP,\n    action_taken_by VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incident (\n  incident_id UUID PRIMARY KEY,\n  incident_date TIMESTAMP,\n  description TEXT,\n  severity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE affected_systems (\n  system_id UUID PRIMARY KEY,\n  incident_id UUID,\n  system_name TEXT,\n  system_type TEXT,\n  status TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE responders (\n  responder_id UUID PRIMARY KEY,\n  incident_id UUID,\n  responder_name TEXT,\n  role TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE actions_taken (\n  action_id UUID PRIMARY KEY,\n  incident_id UUID,\n  action_description TEXT,\n  action_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incidents (\n    incident_id UUID PRIMARY KEY,\n    title VARCHAR(255),\n    description TEXT,\n    severity INT,\n    status VARCHAR(50),\n    reported_by VARCHAR(100),\n    reported_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_comments (\n    comment_id SERIAL PRIMARY KEY,\n    incident_id UUID REFERENCES incidents(incident_id),\n    comment_text TEXT,\n    commented_by VARCHAR(100),\n    commented_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_assignees (\n    assign_id SERIAL PRIMARY KEY,\n    incident_id UUID REFERENCES incidents(incident_id),\n    assignee_name VARCHAR(100),\n    assignee_email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_logs (\n    log_id SERIAL PRIMARY KEY,\n    incident_id UUID REFERENCES incidents(incident_id),\n    log_type VARCHAR(50),\n    log_message TEXT,\n    logged_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_attachments (\n    attachment_id SERIAL PRIMARY KEY,\n    incident_id UUID REFERENCES incidents(incident_id),\n    attachment_name VARCHAR(255),\n    attachment_url TEXT,\n    uploaded_by VARCHAR(100),\n    uploaded_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]

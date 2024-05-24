@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotFarmEquipment (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(255),\n  equipment_type VARCHAR(100),\n  purchase_date DATE,\n  efficiency_rating FLOAT,\n  performance_rating FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotPerformance (\n  robot_id INT PRIMARY KEY,\n  farm_equipment_id INT,\n  performance_metric VARCHAR(50),\n  performance_value FLOAT,\n  performance_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FarmEquipment (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(50),\n  manufacturer VARCHAR(50),\n  purchase_date DATE,\n  warranty_expiry_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotEvents (\n    event_id UUID PRIMARY KEY,\n    robot_id UUID,\n    event_type VARCHAR(50),\n    event_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RobotSensors (\n    sensor_id UUID PRIMARY KEY,\n    robot_id UUID,\n    sensor_name VARCHAR(50),\n    sensor_value FLOAT,\n    sensor_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FarmEquipment (\n    equipment_id UUID PRIMARY KEY,\n    equipment_name VARCHAR(50),\n    equipment_type VARCHAR(50),\n    purchase_date DATE,\n    last_maintenance_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Robot (id INT PRIMARY KEY, name VARCHAR(255), model VARCHAR(255), manufacturer VARCHAR(255), year_of_manufacture INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE FarmEquipment (id INT PRIMARY KEY, type VARCHAR(255), brand VARCHAR(255), manufacturer VARCHAR(255), year_of_manufacture INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceData (id INT PRIMARY KEY, robot_id INT, equipment_id INT, date DATE, efficiency FLOAT, speed FLOAT);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLog (id INT PRIMARY KEY, robot_id INT, equipment_id INT, date DATE, description TEXT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotFarmEquipment (\n    equipment_id SERIAL PRIMARY KEY,\n    equipment_name VARCHAR(50) NOT NULL,\n    equipment_type VARCHAR(50) NOT NULL,\n    purchase_date DATE,\n    manufacturer VARCHAR(50),\n    warranty_expiry DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EquipmentPerformance (\n    performance_id SERIAL PRIMARY KEY,\n    equipment_id INT REFERENCES RobotFarmEquipment(equipment_id),\n    performance_date DATE,\n    efficiency DECIMAL(4,2),\n    average_speed DECIMAL(4,2),\n    fuel_consumption DECIMAL(6,2),\n    maintenance_cost DECIMAL(8,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceSchedule (\n    schedule_id SERIAL PRIMARY KEY,\n    equipment_id INT REFERENCES RobotFarmEquipment(equipment_id),\n    maintenance_date DATE,\n    maintenance_type VARCHAR(50),\n    maintenance_cost DECIMAL(8,2),\n    maintenance_notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EquipmentUsage (\n    usage_id SERIAL PRIMARY KEY,\n    equipment_id INT REFERENCES RobotFarmEquipment(equipment_id),\n    usage_date DATE,\n    acres_covered DECIMAL(6,2),\n    hours_used DECIMAL(6,2),\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EquipmentMalfunction (\n    malfunction_id SERIAL PRIMARY KEY,\n    equipment_id INT REFERENCES RobotFarmEquipment(equipment_id),\n    malfunction_date DATE,\n    malfunction_description TEXT,\n    repair_cost DECIMAL(8,2),\n    repair_date DATE\n);\n"
+      }
+    ]
+  }
+]

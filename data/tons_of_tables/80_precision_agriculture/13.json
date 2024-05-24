@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE natural_disasters_areas (\n\tdisaster_id UUID PRIMARY KEY,\n\tdisaster_type VARCHAR,\n\tlocation GEOMETRY(POINT),\n\tdisaster_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n   image_id INT PRIMARY KEY,\n   image_name VARCHAR(50),\n   image_data BYTEA,\n   upload_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE disaster_areas (\n   area_id INT PRIMARY KEY,\n   area_name VARCHAR(50),\n   affected_image_id INT REFERENCES satellite_images(image_id),\n   area_geometry GEOMETRY\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE natural_disaster_areas (\n    area_id SERIAL PRIMARY KEY,\n    area_name TEXT NOT NULL,\n    affected_image BYTEA NOT NULL,\n    disaster_type TEXT,\n    affected_region GEOMETRY,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE disaster_reports (\n    report_id SERIAL PRIMARY KEY,\n    report_date DATE NOT NULL,\n    area_id INT REFERENCES natural_disaster_areas(area_id),\n    report_description TEXT,\n    report_image BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rescue_teams (\n    team_id SERIAL PRIMARY KEY,\n    team_name TEXT NOT NULL,\n    deployed_date DATE,\n    area_id INT REFERENCES natural_disaster_areas(area_id),\n    team_capacity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE areas_affected (\n    id SERIAL PRIMARY KEY,\n    area_name VARCHAR(50),\n    longitude FLOAT,\n    latitude FLOAT,\n    disaster_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    id SERIAL PRIMARY KEY,\n    image_url TEXT,\n    captured_date DATE,\n    image_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE disaster_types (\n    id SERIAL PRIMARY KEY,\n    type_name VARCHAR(50) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_analysis (\n    id SERIAL PRIMARY KEY,\n    image_id INT,\n    area_id INT,\n    analyzed_date TIMESTAMP,\n    analyzed_by VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n    image_id UUID PRIMARY KEY,\n    image_path STRING NOT NULL,\n    image_date DATE NOT NULL,\n    image_capture_time TIME NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AffectedAreas (\n    area_id UUID PRIMARY KEY,\n    image_id UUID REFERENCES SatelliteImages(image_id),\n    area_name STRING NOT NULL,\n    area_polygon GEOMETRY NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NaturalDisasters (\n    disaster_id UUID PRIMARY KEY,\n    disaster_name STRING NOT NULL,\n    disaster_type STRING NOT NULL,\n    disaster_date DATE NOT NULL,\n    affected_area_id UUID REFERENCES AffectedAreas(area_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DisasterReports (\n    report_id UUID PRIMARY KEY,\n    disaster_id UUID REFERENCES NaturalDisasters(disaster_id),\n    report_date DATE NOT NULL,\n    report_content STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    username STRING NOT NULL,\n    email STRING UNIQUE NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(15),\n    date_of_birth DATE,\n    account_balance DECIMAL(10,2) DEFAULT 0.00,\n    created_at TIMESTAMP DEFAULT NOW()\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account_information (\n    account_id SERIAL PRIMARY KEY,\n    user_id UUID,\n    account_type VARCHAR(50),\n    balance DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(100),\n  age INT,\n  gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account_info (\n  account_id INT PRIMARY KEY,\n  user_id INT,\n  account_type VARCHAR(50),\n  balance DECIMAL,\n  FOREIGN KEY (user_id) REFERENCES user_profiles(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_info (\n  login_id INT PRIMARY KEY,\n  user_id INT,\n  last_login TIMESTAMP,\n  login_attempts INT,\n  FOREIGN KEY (user_id) REFERENCES user_profiles(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(15),\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS account_info (\n    account_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_profiles(user_id),\n    account_type VARCHAR(50) NOT NULL,\n    balance DECIMAL(10, 2) DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS user_preferences (\n    preference_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_profiles(user_id),\n    theme VARCHAR(20) DEFAULT 'light',\n    language VARCHAR(20) DEFAULT 'english'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS session_data (\n    session_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_profiles(user_id),\n    last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    is_active BOOLEAN DEFAULT false\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    profile_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    full_name VARCHAR(100) NOT NULL,\n    age INT,\n    bio TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    address_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    street VARCHAR(100) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    state VARCHAR(50) NOT NULL,\n    postal_code VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account_types (\n    account_type_id INT PRIMARY KEY,\n    type_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    account_type_id INT REFERENCES account_types(account_type_id),\n    balance DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  }
+]

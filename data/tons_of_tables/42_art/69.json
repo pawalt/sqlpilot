@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ticket_sales (\n    ticket_id UUID PRIMARY KEY,\n    film_screening_id UUID,\n    ticket_price DECIMAL,\n    quantity_sold INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE film_screening (\n   screening_id UUID PRIMARY KEY,\n   film_name VARCHAR (100),\n   screening_date TIMESTAMP,\n   available_seats INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_sales (\n   ticket_id UUID PRIMARY KEY,\n   screening_id UUID REFERENCES film_screening(screening_id),\n   ticket_price DECIMAL,\n   customer_name VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Film (\n    film_id SERIAL PRIMARY KEY,\n    film_name VARCHAR(255) NOT NULL,\n    film_genre VARCHAR(50) NOT NULL,\n    film_director VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Screening (\n    screening_id SERIAL PRIMARY KEY,\n    film_id INT NOT NULL,\n    screening_date DATE NOT NULL,\n    screening_time TIME NOT NULL,\n    ticket_price DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TicketSale (\n    sale_id SERIAL PRIMARY KEY,\n    screening_id INT NOT NULL,\n    number_of_tickets INT NOT NULL,\n    total_amount DECIMAL(10,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE film_screenings (\n    id SERIAL PRIMARY KEY,\n    film_name VARCHAR(255),\n    screening_date DATE,\n    available_tickets INT,\n    sold_tickets INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_sales (\n    id SERIAL PRIMARY KEY,\n    screening_id INT,\n    ticket_number INT,\n    sale_amount DECIMAL(10, 2),\n    sale_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    id SERIAL PRIMARY KEY,\n    transaction_date TIMESTAMP,\n    screening_id INT,\n    ticket_sale_id INT,\n    transaction_type VARCHAR(50),\n    transaction_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE refunds (\n    id SERIAL PRIMARY KEY,\n    ticket_sale_id INT,\n    refund_amount DECIMAL(10, 2),\n    refund_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Films (\n    film_id UUID PRIMARY KEY,\n    film_title TEXT,\n    screening_date DATE,\n    ticket_price DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name TEXT,\n    customer_email TEXT,\n    total_tickets_purchased INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Tickets (\n    ticket_id UUID PRIMARY KEY,\n    film_id UUID,\n    customer_id UUID,\n    ticket_quantity INT,\n    ticket_total_price DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Screenings (\n    screening_id UUID PRIMARY KEY,\n    film_id UUID,\n    screening_time TIMESTAMP,\n    available_seats INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Transactions (\n    transaction_id UUID PRIMARY KEY,\n    customer_id UUID,\n    transaction_date TIMESTAMP,\n    transaction_total DECIMAL\n);\n"
+      }
+    ]
+  }
+]

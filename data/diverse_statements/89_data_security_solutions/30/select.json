@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM user_credentials;",
+      "SELECT user_id, username FROM user_credentials WHERE username = 'john_doe';",
+      "SELECT username, user_id FROM user_credentials WHERE user_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT username FROM user_credentials WHERE username LIKE 'a%';",
+      "SELECT user_id,encrypted_password FROM user_credentials WHERE encrypted_password IS NOT NULL;",
+      "SELECT * FROM user_credentials WHERE user_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT username, encrypted_password FROM user_credentials WHERE username LIKE 'john%' ORDER BY username ASC;",
+      "SELECT user_id, encrypted_password FROM user_credentials WHERE user_id IN ('123e4567-e89b-12d3-a456-426614174000', '223e4567-e89b-12d3-a456-426614174001') ORDER BY user_id DESC;",
+      "SELECT * FROM user_credentials WHERE encrypted_password IS NOT NULL AND username != 'admin' ORDER BY encrypted_password ASC, username DESC;",
+      "SELECT COUNT(user_id) AS total_users, MAX(LENGTH(username)) AS max_username_length FROM user_credentials;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users;",
+      "SELECT user_id, username FROM users ORDER BY user_id DESC;",
+      "SELECT * FROM password_reset WHERE user_id = 1;",
+      "SELECT user_id, reset_code, reset_time FROM password_reset WHERE reset_time > '2022-01-01';",
+      "SELECT username, encrypted_password FROM users WHERE username LIKE '%john%';",
+      "SELECT user_id, username FROM users WHERE user_id = 1;",
+      "SELECT * FROM users WHERE username = 'john_doe';",
+      "SELECT user_id, username FROM users ORDER BY username DESC;",
+      "SELECT users.user_id, password_reset.reset_time FROM users JOIN password_reset ON users.user_id = password_reset.user_id;",
+      "SELECT COUNT(*) AS total_users FROM users;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM encryption_algorithms;",
+      "SELECT algorithm_name, encryption_key FROM encryption_algorithms ORDER BY algorithm_name ASC;",
+      "SELECT username, password_hash FROM users WHERE user_id = 3;",
+      "SELECT * FROM encryption_keys WHERE encryption_key IS NOT NULL;",
+      "SELECT user_id, encryption_key FROM encryption_keys WHERE key_id = 1;",
+      "SELECT * FROM users WHERE username = 'admin';",
+      "SELECT user_id, username FROM users WHERE encryption_algorithm_id = 1 ORDER BY user_id DESC;",
+      "SELECT username, encryption_key FROM users JOIN encryption_algorithms ON users.encryption_algorithm_id = encryption_algorithms.id WHERE algorithm_name = 'AES' ORDER BY encryption_key ASC;",
+      "SELECT user_id, username, algorithm_name FROM users LEFT JOIN encryption_algorithms ON users.encryption_algorithm_id = encryption_algorithms.id ORDER BY user_id ASC;",
+      "SELECT * FROM encryption_keys WHERE user_id IN (SELECT user_id FROM users WHERE username LIKE '%john%');"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users;",
+      "SELECT username, password FROM users WHERE user_id = 1;",
+      "SELECT user_id, username FROM users ORDER BY user_id DESC;",
+      "SELECT u.username, k.encryption_key FROM users u JOIN encryption_keys k ON u.user_id = k.user_id;",
+      "SELECT u.username, p.complexity_level FROM users u JOIN password_policies p ON u.user_id = p.user_id WHERE p.complexity_level = 'high';",
+      "SELECT * FROM users;",
+      "SELECT user_id, username FROM users ORDER BY username DESC;",
+      "SELECT users.username, password_policies.complexity_level FROM users INNER JOIN password_policies ON users.user_id = password_policies.user_id;",
+      "SELECT users.username, password_history.change_timestamp FROM users INNER JOIN password_history ON users.user_id = password_history.user_id WHERE users.username LIKE 'A%';",
+      "SELECT users.username, encryption_keys.encryption_key FROM users LEFT JOIN encryption_keys ON users.user_id = encryption_keys.user_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM user_accounts ORDER BY user_id DESC;",
+      "SELECT username, password FROM user_accounts WHERE username = 'john_doe';",
+      "SELECT user_id, encryption_key FROM encryption_keys WHERE user_id = 100;",
+      "SELECT user_id, password, date_changed FROM password_history WHERE user_id = 200 ORDER BY date_changed ASC;",
+      "SELECT session_id, user_id, last_activity FROM user_sessions WHERE user_id = 150 AND last_activity > '2022-01-01';",
+      "SELECT * FROM user_accounts ORDER BY username DESC;",
+      "SELECT user_id, username, encryption_key FROM user_accounts WHERE user_id IN (1, 3, 5);",
+      "SELECT user_id, MAX(date_changed) AS latest_change FROM password_history GROUP BY user_id;",
+      "SELECT user_id, username, session_id FROM user_accounts INNER JOIN user_sessions ON user_accounts.user_id = user_sessions.user_id WHERE last_activity > '2022-01-01';",
+      "SELECT u.user_id, u.username, r.reset_code, r.reset_timestamp FROM user_accounts u JOIN password_resets r ON u.user_id = r.user_id WHERE r.reset_timestamp BETWEEN '2022-01-01' AND '2022-06-30';"
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_session_logs (\n  session_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  user_id INT,\n  ip_address VARCHAR(15),\n  duration INT,\n  data_usage INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    data_usage INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_errors (\n    error_id INT PRIMARY KEY,\n    session_id INT,\n    error_message TEXT,\n    error_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_user_sessions (\n  user_id INT PRIMARY KEY,\n  session_id INT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  duration INTERVAL,\n  status VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_gateway_sessions (\n  gateway_id INT PRIMARY KEY,\n  session_id INT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  duration INTERVAL,\n  status VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_logs (\n  log_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    ip_address VARCHAR(15) NOT NULL,\n    login_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    login_time TIMESTAMP NOT NULL,\n    logout_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES vpn_users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_traffic_logs (\n    log_id INT PRIMARY KEY,\n    session_id INT NOT NULL,\n    logging_time TIMESTAMP NOT NULL,\n    traffic_amount INT NOT NULL,\n    FOREIGN KEY (session_id) REFERENCES vpn_sessions(session_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_errors (\n    error_id INT PRIMARY KEY,\n    session_id INT NOT NULL,\n    error_message VARCHAR(255) NOT NULL,\n    error_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (session_id) REFERENCES vpn_sessions(session_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_logs (\n    log_id INT PRIMARY KEY,\n    session_id INT,\n    log_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50) NOT NULL,\n    country VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    user_id INT,\n    last_login TIMESTAMP\n);"
+      }
+    ]
+  }
+]

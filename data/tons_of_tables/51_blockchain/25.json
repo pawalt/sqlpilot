@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loan_requests (\n    request_id UUID PRIMARY KEY,\n    borrower_id UUID NOT NULL,\n    loan_amount DECIMAL NOT NULL,\n    request_date DATE,\n    request_status VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LoanRequests (\n   id INT PRIMARY KEY,\n   requester_name VARCHAR(255),\n   loan_amount DECIMAL(10, 2),\n   request_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE LoanApprovals (\n   approval_id INT PRIMARY KEY,\n   request_id INT,\n   approval_date TIMESTAMP,\n   approver_name VARCHAR(255),\n   approved_amount DECIMAL(10, 2),\n   CONSTRAINT fk_request_id FOREIGN KEY (request_id) REFERENCES LoanRequests(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loan_requests ( \n  request_id UUID PRIMARY KEY, \n  borrower_name VARCHAR(255), \n  loan_amount DECIMAL(10, 2), \n  request_date DATE \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loan_approvals ( \n  approval_id UUID PRIMARY KEY, \n  request_id UUID, \n  approval_date DATE, \n  approved_by VARCHAR(255), \n  approval_status VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loan_tracking ( \n  tracking_id UUID PRIMARY KEY, \n  request_id UUID, \n  approval_id UUID, \n  tracking_date DATE, \n  tracking_status VARCHAR(50) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE decentralized_loan_requests (\n    request_id INT PRIMARY KEY,\n    borrower_name VARCHAR(50),\n    loan_amount DECIMAL(10, 2),\n    request_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE decentralized_loan_approvals (\n    approval_id INT PRIMARY KEY,\n    request_id INT,\n    approver_name VARCHAR(50),\n    approval_date DATE,\n    approved_amount DECIMAL(10, 2),\n    FOREIGN KEY (request_id) REFERENCES decentralized_loan_requests(request_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE decentralized_loan_payments (\n    payment_id INT PRIMARY KEY,\n    loan_approval_id INT,\n    payment_date DATE,\n    payment_amount DECIMAL(10, 2),\n    FOREIGN KEY (loan_approval_id) REFERENCES decentralized_loan_approvals(approval_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE decentralized_loan_reports (\n    report_id INT PRIMARY KEY,\n    request_id INT,\n    approval_id INT,\n    payment_id INT,\n    report_date DATE,\n    report_summary TEXT,\n    FOREIGN KEY (request_id) REFERENCES decentralized_loan_requests(request_id),\n    FOREIGN KEY (approval_id) REFERENCES decentralized_loan_approvals(approval_id),\n    FOREIGN KEY (payment_id) REFERENCES decentralized_loan_payments(payment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loan_requests (\n  request_id INT PRIMARY KEY,\n  borrower_name VARCHAR(255),\n  loan_amount DECIMAL,\n  request_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE loan_approvals (\n  approval_id INT PRIMARY KEY,\n  request_id INT,\n  approver_name VARCHAR(255),\n  approval_date DATE,\n  FOREIGN KEY (request_id) REFERENCES loan_requests(request_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE loan_statuses (\n  status_id INT PRIMARY KEY,\n  request_id INT,\n  approval_id INT,\n  status VARCHAR(50),\n  FOREIGN KEY (request_id) REFERENCES loan_requests(request_id),\n  FOREIGN KEY (approval_id) REFERENCES loan_approvals(approval_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE borrowers (\n  borrower_id INT PRIMARY KEY,\n  borrower_name VARCHAR(255),\n  contact_number VARCHAR(20),\n  email_address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE approvers (\n  approver_id INT PRIMARY KEY,\n  approver_name VARCHAR(255),\n  role VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_tracking ( malware_id INT PRIMARY KEY, malware_name VARCHAR(255), infected_device_id INT, date_detected TIMESTAMP )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwarePropagation (\n    malware_id INT PRIMARY KEY,\n    malware_name VARCHAR(50),\n    propagation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE InfectedDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    infected_date DATE,\n    status VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Malware (\n    malware_id INT PRIMARY KEY,\n    malware_name VARCHAR(50) NOT NULL,\n    propagation_date DATE,\n    containment_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InfectedDevices (\n   device_id INT PRIMARY KEY,\n   device_name VARCHAR(50) NOT NULL,\n   device_type VARCHAR(50),\n   infection_date DATE,\n   last_scan_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InfectionHistory (\n   infection_id INT PRIMARY KEY,\n   malware_id INT,\n   device_id INT,\n   infection_date DATE,\n   containment_date DATE,\n   FOREIGN KEY (malware_id) REFERENCES Malware(malware_id),\n   FOREIGN KEY (device_id) REFERENCES InfectedDevices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Malware (malware_id INT PRIMARY KEY, malware_name VARCHAR(50) NOT NULL, malware_type VARCHAR(20) NOT NULL, propagation_method VARCHAR(50) NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE InfectedDevices (device_id INT PRIMARY KEY, device_name VARCHAR(50) NOT NULL, device_type VARCHAR(20) NOT NULL, infection_status VARCHAR(20) NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE MalwarePropagation (propagation_id INT PRIMARY KEY, malware_id INT NOT NULL, device_id INT NOT NULL, propagation_date TIMESTAMP NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceStatus (status_id INT PRIMARY KEY, device_id INT NOT NULL, current_status VARCHAR(20) NOT NULL, last_checked TIMESTAMP NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_propagation (\n    malware_id INT PRIMARY KEY,\n    malware_name VARCHAR(255),\n    detection_date DATE,\n    containment_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE infected_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    infection_date DATE,\n    last_communication DATETIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_devices (\n    malware_id INT,\n    device_id INT,\n    PRIMARY KEY (malware_id, device_id),\n    FOREIGN KEY (malware_id) REFERENCES malware_propagation(malware_id),\n    FOREIGN KEY (device_id) REFERENCES infected_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE containment_logs (\n    log_id INT PRIMARY KEY,\n    malware_id INT,\n    device_id INT,\n    containment_date DATE,\n    action_taken VARCHAR(255),\n    FOREIGN KEY (malware_id) REFERENCES malware_propagation(malware_id),\n    FOREIGN KEY (device_id) REFERENCES infected_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE containment_reports (\n    report_id INT PRIMARY KEY,\n    report_date DATE,\n    report_description TEXT,\n    report_summary TEXT\n);"
+      }
+    ]
+  }
+]

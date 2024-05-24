@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fitness_plans (\n  patient_id INT NOT NULL,\n  activity_level VARCHAR(50) NOT NULL,\n  plan_description TEXT,\n  PRIMARY KEY (patient_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PatientFitnessPlan (\n  patient_id INT PRIMARY KEY,\n  plan_name VARCHAR(50),\n  activity_level VARCHAR(20),\n  target_calories_per_day INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ActivityRecord (\n  record_id INT PRIMARY KEY,\n  patient_id INT,\n  date DATE,\n  steps_count INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient ( \n    patient_id SERIAL PRIMARY KEY, \n    name VARCHAR(50) NOT NULL, \n    age INT NOT NULL, \n    gender VARCHAR(10) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wearable_device ( \n    device_id SERIAL PRIMARY KEY, \n    patient_id INT REFERENCES patient(patient_id), \n    device_name VARCHAR(50) NOT NULL, \n    activity_level VARCHAR(20) NOT NULL, \n    heart_rate INT NOT NULL, \n    steps_count INT NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fitness_plan ( \n    plan_id SERIAL PRIMARY KEY, \n    patient_id INT REFERENCES patient(patient_id), \n    plan_description TEXT NOT NULL, \n    calories_goal INT NOT NULL, \n    duration_days INT NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_info (\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR(255),\n    age INT,\n    gender VARCHAR(10),\n    weight DECIMAL,\n    height DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE activity_data (\n    activity_id UUID PRIMARY KEY,\n    patient_id UUID,\n    activity_date DATE,\n    steps_count INT,\n    calories_burned DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fitness_plan (\n    plan_id UUID PRIMARY KEY,\n    patient_id UUID,\n    plan_name VARCHAR(255),\n    plan_description TEXT,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE wearable_devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    patient_id UUID\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    age INT,\n    weight FLOAT,\n    height FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE wearable_devices (\n    device_id INT PRIMARY KEY,\n    device_type VARCHAR(50),\n    patient_id INT,\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE activity_levels (\n    activity_id INT PRIMARY KEY,\n    time TIMESTAMP,\n    steps INT,\n    calories_burned FLOAT,\n    device_id INT,\n    FOREIGN KEY (device_id) REFERENCES wearable_devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fitness_plans (\n    plan_id INT PRIMARY KEY,\n    plan_name VARCHAR(50),\n    plan_description TEXT,\n    patient_id INT,\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE plan_progress (\n    progress_id INT PRIMARY KEY,\n    progress_date DATE,\n    progress_percentage FLOAT,\n    plan_id INT,\n    FOREIGN KEY (plan_id) REFERENCES fitness_plans(plan_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_routes (\n  route_id INT PRIMARY KEY,\n  vehicle_id INT,\n  start_location VARCHAR(100),\n  end_location VARCHAR(100),\n  distance DECIMAL(10,2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_locations (\n  location_id INT PRIMARY KEY,\n  address VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_routes (\n  route_id INT PRIMARY KEY,\n  start_location_id INT NOT NULL,\n  end_location_id INT NOT NULL,\n  distance FLOAT NOT NULL,\n  CONSTRAINT fk_start FOREIGN KEY (start_location_id) REFERENCES delivery_locations(location_id),\n  CONSTRAINT fk_end FOREIGN KEY (end_location_id) REFERENCES delivery_locations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_locations (\n    id UUID PRIMARY KEY,\n    location_name STRING,\n    latitude DOUBLE PRECISION,\n    longitude DOUBLE PRECISION\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id UUID PRIMARY KEY,\n    vehicle_type STRING,\n    max_capacity INTEGER,\n    current_capacity INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id UUID PRIMARY KEY,\n    vehicle_id UUID REFERENCES vehicles(vehicle_id),\n    start_location_id UUID REFERENCES delivery_locations(id),\n    end_location_id UUID REFERENCES delivery_locations(id),\n    distance DOUBLE PRECISION\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DeliveryLocations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    latitude DECIMAL(10, 8) NOT NULL,\n    longitude DECIMAL(11, 8) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_name VARCHAR(255) NOT NULL,\n    max_capacity INT NOT NULL,\n    current_load INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Routes (\n    route_id INT PRIMARY KEY,\n    vehicle_id INT,\n    start_location_id INT,\n    end_location_id INT,\n    distance DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (vehicle_id) REFERENCES Vehicles(vehicle_id),\n    FOREIGN KEY (start_location_id) REFERENCES DeliveryLocations(location_id),\n    FOREIGN KEY (end_location_id) REFERENCES DeliveryLocations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShortestPaths (\n    path_id INT PRIMARY KEY,\n    route_id INT,\n    sequence_no INT NOT NULL,\n    location_id INT NOT NULL,\n    FOREIGN KEY (route_id) REFERENCES Routes(route_id),\n    FOREIGN KEY (location_id) REFERENCES DeliveryLocations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DeliveryLocations (\n    id INT PRIMARY KEY,\n    location_name TEXT,\n    latitude DECIMAL,\n    longitude DECIMAL\n);\n\nCREATE TABLE Vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type TEXT,\n    capacity INT\n);\n\nCREATE TABLE Routes (\n    route_id INT PRIMARY KEY,\n    vehicle_id INT,\n    start_location_id INT,\n    end_location_id INT,\n    distance DECIMAL\n);\n\nCREATE TABLE LocationsGraph (\n    location_id INT PRIMARY KEY,\n    connected_locations JSONB\n);\n\nCREATE TABLE ShortestPaths (\n    path_id INT PRIMARY KEY,\n    route_id INT,\n    path JSONB\n);"
+      }
+    ]
+  }
+]

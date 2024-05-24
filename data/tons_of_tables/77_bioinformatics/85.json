@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE microbiome_data (\n  sample_id UUID PRIMARY KEY,\n  patient_id UUID,\n  bacteria_name TEXT,\n  abundance FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE microbiome_samples (\n    sample_id INT NOT NULL,\n    bacteria_name VARCHAR(255) NOT NULL,\n    abundance DECIMAL NOT NULL,\n    sample_date DATE NOT NULL,\n    PRIMARY KEY (sample_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE microbiome_predictions (\n    prediction_id INT NOT NULL,\n    sample_id INT NOT NULL,\n    bacteria_name VARCHAR(255) NOT NULL,\n    predicted_abundance DECIMAL NOT NULL,\n    prediction_date DATE NOT NULL,\n    PRIMARY KEY (prediction_id),\n    FOREIGN KEY (sample_id) REFERENCES microbiome_samples(sample_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE microbiome_composition (\n  sample_id INT NOT NULL,\n  species_name VARCHAR(255) NOT NULL,\n  abundance DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_metadata (\n  sample_id INT NOT NULL,\n  collection_date DATE NOT NULL,\n  location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE prediction_results (\n  prediction_id INT NOT NULL,\n  sample_id INT NOT NULL,\n  predicted_species VARCHAR(255) NOT NULL,\n  probability DECIMAL(5, 4) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE microbiome_samples (sample_id INT PRIMARY KEY,\nbarcode VARCHAR(255),\nsequence VARCHAR(255),\nspecies VARCHAR(255),\ndate_collected DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE microbiome_composition (composition_id INT PRIMARY KEY,\nsample_id INT,\nspecies VARCHAR(255),\nabundance FLOAT,\nFOREIGN KEY(sample_id) REFERENCES microbiome_samples(sample_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE microbiome_metadata (metadata_id INT PRIMARY KEY,\nsample_id INT,\ngenotype VARCHAR(255),\nphenotype VARCHAR(255),\nFOREIGN KEY(sample_id) REFERENCES microbiome_samples(sample_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE microbiome_predictions (prediction_id INT PRIMARY KEY,\nsample_id INT,\nmodel VARCHAR(255),\npredicted_species VARCHAR(255),\nprediction_date DATE,\nFOREIGN KEY(sample_id) REFERENCES microbiome_samples(sample_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE microbiome_samples (\n  sample_id INT PRIMARY KEY,\n  date_collected DATE,\n  bacteria_species VARCHAR(255),\n  abundance FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_metadata (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(255),\n  age INT,\n  gender VARCHAR(10),\n  location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE microbiome_taxonomy (\n  bacteria_species VARCHAR(255) PRIMARY KEY,\n  phylum VARCHAR(50),\n  class VARCHAR(50),\n  order_name VARCHAR(50),\n  family VARCHAR(50),\n  genus VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_factors (\n  factor_id INT PRIMARY KEY,\n  factor_name VARCHAR(50),\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE microbiome_predictions (\n  prediction_id INT PRIMARY KEY,\n  sample_id INT,\n  prediction_date DATE,\n  predicted_species VARCHAR(255),\n  confidence_level FLOAT\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE flight_schedule (\n    flight_id INT PRIMARY KEY,\n    flight_name VARCHAR(100),\n    departure_airport VARCHAR(50),\n    arrival_airport VARCHAR(50),\n    departure_time TIMESTAMP,\n    arrival_time TIMESTAMP,\n    price DECIMAL(10,2),\n    available_seats INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FlightSchedules (\n  flight_id INT PRIMARY KEY,\n  flight_name VARCHAR(50),\n  departure_time TIMESTAMP,\n  arrival_time TIMESTAMP,\n  available_seats INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Pricing (\n  pricing_id INT PRIMARY KEY,\n  flight_id INT,\n  ticket_type VARCHAR(20),\n  price DECIMAL(10, 2),\n  FOREIGN KEY (flight_id) REFERENCES FlightSchedules(flight_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE flight_schedules (\n  flight_id INT PRIMARY KEY,\n  airline VARCHAR(255),\n  departure_time TIMESTAMP,\n  arrival_time TIMESTAMP,\n  departure_location VARCHAR(255),\n  arrival_location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE pricing (\n  pricing_id INT PRIMARY KEY,\n  flight_id INT REFERENCES flight_schedules(flight_id),\n  price DECIMAL(10,2),\n  currency VARCHAR(3),\n  discount_available BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE availability (\n  availability_id INT PRIMARY KEY,\n  flight_id INT REFERENCES flight_schedules(flight_id),\n  available_seats INT,\n  booked_seats INT,\n  min_seats_for_booking INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FlightSchedules (\n  flight_id INT PRIMARY KEY,\n  flight_number VARCHAR(10),\n  departure_airport VARCHAR(50),\n  arrival_airport VARCHAR(50),\n  departure_time TIMESTAMP,\n  arrival_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Pricing (\n  pricing_id INT PRIMARY KEY,\n  flight_id INT,\n  ticket_type VARCHAR(50),\n  price DECIMAL,\n  FOREIGN KEY (flight_id) REFERENCES FlightSchedules(flight_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Availability (\n  availability_id INT PRIMARY KEY,\n  flight_id INT,\n  date DATE,\n  available_seats INT,\n  FOREIGN KEY (flight_id) REFERENCES FlightSchedules(flight_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reservations (\n  reservation_id INT PRIMARY KEY,\n  customer_name VARCHAR(100),\n  flight_id INT,\n  date DATE,\n  ticket_type VARCHAR(50),\n  FOREIGN KEY (flight_id) REFERENCES FlightSchedules(flight_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE flights (\n  flight_id SERIAL PRIMARY KEY,\n  flight_number VARCHAR(10) NOT NULL,\n  departure_city VARCHAR(50) NOT NULL,\n  arrival_city VARCHAR(50) NOT NULL,\n  departure_time TIMESTAMP NOT NULL,\n  arrival_time TIMESTAMP NOT NULL,\n  price DECIMAL(10,2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE airlines (\n  airline_id SERIAL PRIMARY KEY,\n  airline_name VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE airports (\n  airport_id SERIAL PRIMARY KEY,\n  airport_code VARCHAR(10) NOT NULL,\n  airport_name VARCHAR(100) NOT NULL,\n  city VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE passengers (\n  passenger_id SERIAL PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  phone_number VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reservations (\n  reservation_id SERIAL PRIMARY KEY,\n  passenger_id INT NOT NULL,\n  flight_id INT NOT NULL,\n  reservation_date DATE NOT NULL,\n  FOREIGN KEY (passenger_id) REFERENCES passengers(passenger_id),\n  FOREIGN KEY (flight_id) REFERENCES flights(flight_id)\n)"
+      }
+    ]
+  }
+]

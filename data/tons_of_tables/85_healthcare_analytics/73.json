@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vital_signs (\n    patient_id UUID,\n    heart_rate INT,\n    blood_pressure VARCHAR,\n    oxygen_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VitalSigns (\n    patient_id INT,\n    heart_rate INT,\n    blood_pressure INT,\n    temperature DECIMAL,\n    timestamp TIMESTAMP\n);\n\nCREATE TABLE Alerts (\n    alert_id INT,\n    patient_id INT,\n    alert_message TEXT,\n    alert_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient_Data (\n  patient_id INT PRIMARY KEY,\n  heart_rate INT,\n  blood_pressure_systolic INT,\n  blood_pressure_diastolic INT,\n  body_temperature FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Alert_Log (\n  alert_id INT PRIMARY KEY,\n  patient_id INT,\n  alert_type VARCHAR,\n  alert_timestamp TIMESTAMP,\n  FOREIGN KEY (patient_id) REFERENCES Patient_Data(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Provider_Alerts (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR,\n  alert_id INT,\n  read_status BOOLEAN,\n  FOREIGN KEY (alert_id) REFERENCES Alert_Log(alert_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255),\n    age INT,\n    gender VARCHAR(10),\n    address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vitals (\n    vital_id INT PRIMARY KEY,\n    patient_id INT,\n    heart_rate INT,\n    blood_pressure VARCHAR(20),\n    temperature FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    patient_id INT,\n    alert_msg VARCHAR(255),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_type VARCHAR(50),\n    location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient (\n patient_id INT PRIMARY KEY,\n patient_name VARCHAR(50) NOT NULL,\n patient_age INT,\n patient_gender CHAR(1) CHECK(patient_gender IN ('M', 'F'))\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE VitalSigns (\n vital_signs_id INT PRIMARY KEY,\n patient_id INT,\n heart_rate INT,\n blood_pressure VARCHAR(10),\n temperature DECIMAL(5,2),\n FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorData (\n sensor_id INT PRIMARY KEY,\n sensor_location VARCHAR(50),\n sensor_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (\n alert_id INT PRIMARY KEY,\n patient_id INT,\n alert_message VARCHAR(255),\n alert_datetime TIMESTAMP,\n FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AlertLog (\n log_id INT PRIMARY KEY,\n alert_id INT,\n alert_status VARCHAR(20),\n alert_resolved BOOLEAN,\n alert_resolved_by VARCHAR(50),\n alert_resolved_datetime TIMESTAMP,\n FOREIGN KEY (alert_id) REFERENCES Alerts(alert_id)\n);\n"
+      }
+    ]
+  }
+]

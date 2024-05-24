@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_settings (\n  device_id INT PRIMARY KEY,\n  setting_name VARCHAR(255),\n  setting_value VARCHAR(255),\n  last_updated TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DeviceSettings (\n    device_id INT PRIMARY KEY,\n    setting_name VARCHAR(255),\n    setting_value VARCHAR(255),\n    updated_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceStatus (\n    device_id INT PRIMARY KEY,\n    status BOOLEAN,\n    last_checked TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_settings (\n  device_id INT PRIMARY KEY,\n  setting_name VARCHAR(50) NOT NULL,\n  setting_value TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_groups (\n  group_id INT PRIMARY KEY,\n  group_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_assignments (\n  assignment_id INT PRIMARY KEY,\n  device_id INT NOT NULL,\n  group_id INT NOT NULL,\n  FOREIGN KEY (device_id) REFERENCES device_settings(device_id),\n  FOREIGN KEY (group_id) REFERENCES device_groups(group_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices ( \n    id INT PRIMARY KEY, \n    name VARCHAR(255) NOT NULL, \n    manufacturer VARCHAR(255) NOT NULL, \n    config_settings JSONB NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories ( \n    id INT PRIMARY KEY, \n    name VARCHAR(255) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_categories ( \n    device_id INT NOT NULL, \n    category_id INT NOT NULL, \n    PRIMARY KEY (device_id, category_id), \n    FOREIGN KEY (device_id) REFERENCES devices(id), \n    FOREIGN KEY (category_id) REFERENCES categories(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE settings_history ( \n    id SERIAL PRIMARY KEY, \n    device_id INT NOT NULL, \n    config_settings JSONB NOT NULL, \n    updated_at TIMESTAMP NOT NULL DEFAULT NOW(), \n    FOREIGN KEY (device_id) REFERENCES devices(id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_settings (\n    setting_id INT PRIMARY KEY,\n    device_id INT REFERENCES devices(device_id),\n    setting_name VARCHAR(50) NOT NULL,\n    setting_value VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    permission_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id INT PRIMARY KEY,\n    device_id INT REFERENCES devices(device_id),\n    log_message TEXT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

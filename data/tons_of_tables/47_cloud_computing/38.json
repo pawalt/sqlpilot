@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS sensor_data (\n    id UUID PRIMARY KEY,\n    sensor_type TEXT,\n    reading TIMESTAMP,\n    value FLOAT,\n    location TEXT,\n    crop_id UUID,\n    irrigation_status BOOLEAN,\n    UNIQUE (id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors_data (\n    sensor_id INT PRIMARY KEY,\n    sensor_name VARCHAR(50),\n    temperature FLOAT,\n    humidity FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_data (\n    irrigation_id INT PRIMARY KEY,\n    irrigation_date DATE,\n    irrigation_volume FLOAT,\n    crop_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SensorData (\n    sensor_id INT PRIMARY KEY,\n    sensor_type VARCHAR(50),\n    sensor_location VARCHAR(100),\n    reading_time TIMESTAMP,\n    temperature FLOAT,\n    moisture FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    sensor_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Measurements (\n    measurement_id INT PRIMARY KEY,\n    sensor_id INT NOT NULL,\n    measurement_time TIMESTAMP NOT NULL,\n    temperature FLOAT NOT NULL,\n    humidity FLOAT NOT NULL,\n    rain_intensity FLOAT NOT NULL,\n    FOREIGN KEY (sensor_id) REFERENCES Sensors(sensor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Crops (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(255) NOT NULL,\n    crop_type VARCHAR(50) NOT NULL,\n    planting_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Irrigation_System (\n    system_id INT PRIMARY KEY,\n    system_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    sensor_id INT NOT NULL,\n    crop_id INT NOT NULL,\n    FOREIGN KEY (sensor_id) REFERENCES Sensors(sensor_id),\n    FOREIGN KEY (crop_id) REFERENCES Crops(crop_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Sensors (\n    sensor_id INTEGER PRIMARY KEY,\n    sensor_type VARCHAR(50),\n    location VARCHAR(50),\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Measurements (\n    measurement_id SERIAL PRIMARY KEY,\n    sensor_id INTEGER REFERENCES Sensors(sensor_id),\n    value FLOAT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Crops (\n    crop_id SERIAL PRIMARY KEY,\n    crop_name VARCHAR(50),\n    crop_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Fields (\n    field_id SERIAL PRIMARY KEY,\n    field_name VARCHAR(50),\n    crop_id INTEGER REFERENCES Crops(crop_id),\n    area FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IrrigationSchedule (\n    schedule_id SERIAL PRIMARY KEY,\n    field_id INTEGER REFERENCES Fields(field_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    frequency VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

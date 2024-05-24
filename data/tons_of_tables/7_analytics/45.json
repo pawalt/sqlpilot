@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    user_id UUID PRIMARY KEY,\n    time_spent INT,\n    platform_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n  user_id UUID PRIMARY KEY,\n  session_id UUID,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP\n);\n\nCREATE TABLE user_average_time_spent (\n  user_id UUID PRIMARY KEY,\n  average_time_minutes INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    registration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE content_view (\n    view_id INT PRIMARY KEY,\n    user_id INT,\n    content_id INT,\n    duration_minutes INT,\n    view_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username TEXT NOT NULL,\n    user_age INT,\n    user_gender TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE actions (\n    action_id INT PRIMARY KEY,\n    session_id INT REFERENCES sessions(session_id),\n    action_type TEXT,\n    action_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_avg_time_spent (\n    user_id INT REFERENCES users(user_id),\n    avg_time_spent FLOAT,\n    PRIMARY KEY (user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    session_duration_minutes INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n    activity_id INT PRIMARY KEY,\n    session_id INT,\n    activity_name VARCHAR(255),\n    activity_duration_minutes INT,\n    FOREIGN KEY (session_id) REFERENCES user_sessions(session_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content (\n    content_id INT PRIMARY KEY,\n    content_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_content_ratings (\n    user_id INT,\n    content_id INT,\n    rating FLOAT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (content_id) REFERENCES content(content_id),\n    PRIMARY KEY (user_id, content_id)\n);"
+      }
+    ]
+  }
+]

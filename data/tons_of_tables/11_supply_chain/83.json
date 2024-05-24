@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE return_shipments (id INT PRIMARY KEY,\nreturn_tracking_number VARCHAR(50) NOT NULL,\nreturn_reason TEXT,\nreturn_date DATE,\nprocessing_status VARCHAR(20) DEFAULT 'Pending',\nreceiver_name VARCHAR(100),\nreceiver_address TEXT,\nreceived_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE return_shipments (\n  shipment_id INT PRIMARY KEY,\n  tracking_number VARCHAR(50) NOT NULL,\n  return_reason VARCHAR(255),\n  return_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE processing_centers (\n  center_id INT PRIMARY KEY,\n  center_name VARCHAR(100) NOT NULL,\n  city VARCHAR(50),\n  state VARCHAR(50),\n  country VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE return_shipments (\n  shipment_id INT PRIMARY KEY,\n  return_reason TEXT,\n  return_status TEXT,\n  return_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE return_processing (\n  processing_id INT PRIMARY KEY,\n  processed_by VARCHAR(50),\n  processing_date DATE,\n  return_quantity INT,\n  returned_shipment_id INT REFERENCES return_shipments(shipment_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE return_logs (\n  log_id INT PRIMARY KEY,\n  log_description TEXT,\n  log_timestamp TIMESTAMP,\n  related_processing_id INT REFERENCES return_processing(processing_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE return_shipments (\n  shipment_id INT PRIMARY KEY,\n  customer_id INT,\n  return_date DATE,\n  status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE return_items (\n  item_id INT PRIMARY KEY,\n  shipment_id INT,\n  returned_date DATE,\n  item_name VARCHAR(100),\n  quantity INT,\n  status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE return_processing (\n  processing_id INT PRIMARY KEY,\n  shipment_id INT,\n  processed_date DATE,\n  processing_type VARCHAR(50),\n  processing_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE processing_centers (\n  center_id INT PRIMARY KEY,\n  center_name VARCHAR(100),\n  location VARCHAR(200),\n  contact_number VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE return_shipments (\n    id UUID PRIMARY KEY,\n    shipment_id UUID,\n    return_reason TEXT,\n    return_date TIMESTAMP,\n    processing_status VARCHAR\n);\n\nCREATE TABLE return_products (\n    id UUID PRIMARY KEY,\n    product_id UUID,\n    quantity INT,\n    return_shipment_id UUID,\n    condition TEXT\n);\n\nCREATE TABLE return_customers (\n    customer_id UUID PRIMARY KEY,\n    name TEXT,\n    email TEXT,\n    address TEXT,\n    phone_number TEXT\n);\n\nCREATE TABLE return_receipts (\n    receipt_id UUID PRIMARY KEY,\n    return_shipment_id UUID,\n    received_date TIMESTAMP,\n    received_by TEXT,\n    remarks TEXT\n);\n\nCREATE TABLE return_processing (\n    id UUID PRIMARY KEY,\n    return_receipt_id UUID,\n    processed_date TIMESTAMP,\n    processed_by TEXT,\n    processing_status VARCHAR\n);"
+      }
+    ]
+  }
+]

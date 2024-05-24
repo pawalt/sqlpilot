@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM videos ORDER BY title ASC;",
+      "SELECT title, description FROM videos WHERE tags @> ARRAY['fun']::varchar[];",
+      "SELECT title FROM videos WHERE title ILIKE '%tutorial%';",
+      "SELECT * FROM videos WHERE video_id = 'abc123';",
+      "SELECT title, tags FROM videos ORDER BY video_id DESC;",
+      "SELECT title, description FROM videos WHERE video_id = '123e4567-e89b-12d3-a456-426614174001';",
+      "SELECT * FROM videos WHERE tags @> ARRAY['tag1'];",
+      "SELECT title, description FROM videos ORDER BY title DESC;",
+      "SELECT video_id, title, tags FROM videos WHERE tags && ARRAY['tag1', 'tag2'];",
+      "SELECT video_id, title, description FROM videos WHERE title ILIKE '%tutorial%';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM videos;",
+      "SELECT title, description FROM videos WHERE video_id = 1;",
+      "SELECT video_id, title, JSONB_ARRAY_LENGTH(tags) AS tags_count FROM videos WHERE video_id = 2;",
+      "SELECT * FROM videos ORDER BY title ASC;",
+      "SELECT video_id, title, JSONB_ARRAY_ELEMENTS(tags) AS tag FROM videos WHERE video_id = 3;",
+      "SELECT * FROM videos;",
+      "SELECT title, description, tags FROM videos WHERE video_id = 1;",
+      "SELECT video_id, title, views FROM videos JOIN video_stats ON videos.video_id = video_stats.video_id;",
+      "SELECT title, likes, dislikes FROM videos WHERE tags @> '{\"genre\": \"comedy\"}';",
+      "SELECT * FROM video_stats WHERE views > 10000 ORDER BY likes DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM videos;",
+      "SELECT title, description FROM videos ORDER BY title ASC;",
+      "SELECT video_id, title, category_name FROM videos JOIN video_categories ON videos.video_id = video_categories.video_id JOIN categories ON video_categories.category_id = categories.category_id;",
+      "SELECT * FROM videos WHERE title LIKE '%fun%';",
+      "SELECT * FROM videos ORDER BY title DESC LIMIT 3;",
+      "SELECT video_id, title FROM videos WHERE video_id = '123e4567-e89b-12d3-a456-426614174000'",
+      "SELECT title, tags FROM videos WHERE title LIKE '%tutorial%'",
+      "SELECT * FROM videos WHERE description ILIKE '%interesting%'",
+      "SELECT v.*, c.category_name FROM videos v LEFT JOIN video_categories vc ON v.video_id = vc.video_id LEFT JOIN categories c ON vc.category_id = c.category_id",
+      "SELECT v.title, jsonb_array_elements_text(v.tags) AS tag FROM videos v WHERE v.video_id = '123e4567-e89b-12d3-a456-426614174000'"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM videos WHERE video_id = 1;",
+      "SELECT title, description FROM videos WHERE video_id = 2;",
+      "SELECT actor_name FROM video_actors WHERE actor_id = 3;",
+      "SELECT category_name FROM video_categories WHERE category_id = 1;",
+      "SELECT title, rating FROM videos JOIN video_ratings ON videos.video_id = video_ratings.video_id WHERE video_ratings.rating > 4;",
+      "SELECT * FROM videos WHERE video_id = 1;",
+      "SELECT title, description FROM videos ORDER BY title ASC;",
+      "SELECT video_id, title, tags FROM videos WHERE video_id IN (1, 2, 3);",
+      "SELECT v.title, va.actor_name, vr.rating FROM videos v JOIN video_actors va ON v.video_id = va.actor_id JOIN video_ratings vr ON v.video_id = vr.video_id WHERE vr.rating >= 4 ORDER BY v.title;",
+      "SELECT DISTINCT vc.category_name, COUNT(vr.rating) as rating_count FROM video_categories vc LEFT JOIN videos v ON vc.category_id = v.video_id LEFT JOIN video_ratings vr ON v.video_id = vr.video_id GROUP BY vc.category_name ORDER BY rating_count DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM videos;",
+      "SELECT id, title FROM video_titles WHERE id = 1;",
+      "SELECT tag FROM video_tags WHERE id IN (1, 2, 3);",
+      "SELECT video_url, duration FROM videos ORDER BY duration DESC;",
+      "SELECT v.video_url, vt.tag FROM videos v INNER JOIN video_tags vt ON v.id = vt.id;",
+      "SELECT * FROM video_titles",
+      "SELECT v.video_url, vt.tag FROM videos v JOIN video_metadata vm ON v.id = vm.video_id JOIN video_tags vt ON vt.id = vm.tag_id",
+      "SELECT vd.id, vd.description, vt.tag FROM video_descriptions vd JOIN video_metadata vm ON vd.id = vm.description_id JOIN video_tags vt ON vt.id = vm.tag_id",
+      "SELECT vt.tag, vt.id FROM video_metadata vm JOIN video_tags vt ON vt.id = vm.tag_id GROUP BY vt.tag, vt.id HAVING COUNT(vm.id) > 1",
+      "SELECT vt.tag, COUNT(vt.id) AS tag_count FROM video_tags vt JOIN video_metadata vm ON vt.id = vm.tag_id GROUP BY vt.tag ORDER BY tag_count DESC"
+    ]
+  }
+]

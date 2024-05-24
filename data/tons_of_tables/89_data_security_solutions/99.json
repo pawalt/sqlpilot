@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id UUID PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id SERIAL PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n\nCREATE TABLE authentication_components (\n    id SERIAL PRIMARY KEY,\n    component_name VARCHAR(50) NOT NULL,\n    component_type VARCHAR(50) NOT NULL,\n    component_key_id INT NOT NULL,\n    FOREIGN KEY (component_key_id) REFERENCES encryption_keys(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "Create Table encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA,\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "Create Table encryption_logs (\n    log_id UUID PRIMARY KEY,\n    key_id UUID,\n    action VARCHAR(20),\n    user_id UUID,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "Create Table encryption_settings (\n    setting_id UUID PRIMARY KEY,\n    key_name VARCHAR(50),\n    key_value TEXT,\n    created_by VARCHAR(50),\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_value VARCHAR(255) NOT NULL,\n    creation_date TIMESTAMP NOT NULL,\n    expiration_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_components (\n    component_id INT PRIMARY KEY,\n    component_name VARCHAR(50) NOT NULL,\n    component_type VARCHAR(50) NOT NULL,\n    last_accessed TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_access_logs (\n    log_id INT PRIMARY KEY,\n    key_id INT NOT NULL,\n    component_id INT NOT NULL,\n    access_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id),\n    FOREIGN KEY (component_id) REFERENCES authentication_components(component_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_rotation_logs (\n    rotation_id INT PRIMARY KEY,\n    key_id INT NOT NULL,\n    rotation_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  key_id SERIAL PRIMARY KEY,\n  key_name VARCHAR(50) NOT NULL,\n  key_value TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  password_hash TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n  session_id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  session_token TEXT NOT NULL,\n  expiration_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_permissions (\n  permission_id SERIAL PRIMARY KEY,\n  key_id INT NOT NULL,\n  user_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_log (\n  log_id SERIAL PRIMARY KEY,\n  log_message TEXT NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

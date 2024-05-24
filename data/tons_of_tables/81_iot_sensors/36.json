@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensor_alerts (\n    alert_id UUID PRIMARY KEY,\n    sensor_id UUID,\n    sensor_type TEXT,\n    reading_value FLOAT,\n    reading_timestamp TIMESTAMP,\n    alert_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensor_readings (\n    sensor_id INT PRIMARY KEY,\n    value FLOAT,\n    reading_time TIMESTAMP,\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    alert_message VARCHAR(255),\n    sensor_id INT,\n    alert_time TIMESTAMP,\n    FOREIGN KEY (sensor_id) REFERENCES sensor_readings(sensor_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensor_readings (\n  sensor_id INT PRIMARY KEY,\n  reading_timestamp TIMESTAMP,\n  reading_value FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies (\n  anomaly_id INT PRIMARY KEY,\n  sensor_id INT,\n  anomaly_timestamp TIMESTAMP,\n  anomaly_details TEXT,\n  FOREIGN KEY (sensor_id) REFERENCES sensor_readings(sensor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n  alert_id INT PRIMARY KEY,\n  anomaly_id INT,\n  alert_timestamp TIMESTAMP,\n  alert_message TEXT,\n  is_resolved BOOLEAN,\n  FOREIGN KEY (anomaly_id) REFERENCES anomalies(anomaly_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SensorReadings (\n    sensor_id INT PRIMARY KEY,\n    reading_value FLOAT,\n    reading_time TIMESTAMP,\n    sensor_location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlertRules (\n    rule_id INT PRIMARY KEY,\n    rule_name TEXT,\n    sensor_parameter TEXT,\n    abnormal_threshold FLOAT,\n    alert_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (\n    alert_id INT PRIMARY KEY,\n    rule_id INT,\n    sensor_id INT,\n    alert_time TIMESTAMP,\n    alert_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_name TEXT,\n    sensor_type TEXT,\n    sensor_location TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SensorReadings (\n    sensor_id INT PRIMARY KEY,\n    reading_value DECIMAL,\n    reading_timestamp TIMESTAMP,\n    location VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CropDiseases (\n    disease_id INT PRIMARY KEY,\n    disease_name VARCHAR,\n    disease_symptoms TEXT,\n    affected_crops VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IrrigationSystems (\n    system_id INT PRIMARY KEY,\n    system_name VARCHAR,\n    irrigation_capacity DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (\n    alert_id INT PRIMARY KEY,\n    alert_message TEXT,\n    alert_timestamp TIMESTAMP,\n    sensor_id INT,\n    FOREIGN KEY (sensor_id) REFERENCES SensorReadings(sensor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlertsHistory (\n    history_id INT PRIMARY KEY,\n    alert_id INT,\n    acknowledged BOOLEAN\n    FOREIGN KEY (alert_id) REFERENCES Alerts(alert_id)\n);"
+      }
+    ]
+  }
+]

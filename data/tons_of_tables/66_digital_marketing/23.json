@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_subscriptions (\n  email_id INT PRIMARY KEY,\n  email_address TEXT NOT NULL,\n  segment TEXT,\n  engagement_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_subscriptions (\n    subscription_id UUID PRIMARY KEY,\n    email_address VARCHAR(255) NOT NULL,\n    subscription_date TIMESTAMP,\n    is_active BOOLEAN\n);\n\nCREATE TABLE customer_segments (\n    segment_id SERIAL PRIMARY KEY,\n    customer_id UUID,\n    segment_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SubscriptionList (\n    subscription_id INT PRIMARY KEY,\n    email_address VARCHAR(255),\n    subscription_date DATE,\n    engagement_level ENUM('low', 'medium', 'high')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerSegment (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(255),\n    segment_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerEngagement (\n    engagement_id INT PRIMARY KEY,\n    customer_id INT,\n    engagement_date DATE,\n    engagement_type ENUM('open', 'click', 'purchase')\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Email_Subscribers (\n    subscriber_id INT PRIMARY KEY,\n    email_address VARCHAR(255) UNIQUE,\n    subscription_date TIMESTAMP,\n    engagement_level VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Engagement_Segments (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(100) UNIQUE,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Subscriber_Attributes (\n    attribute_id INT PRIMARY KEY,\n    subscriber_id INT,\n    attribute_name VARCHAR(100),\n    attribute_value TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Segment_Subscriptions (\n    segment_id INT,\n    subscriber_id INT,\n    subscription_date TIMESTAMP,\n    PRIMARY KEY (segment_id, subscriber_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SubscriptionLists (\n    list_id INT PRIMARY KEY,\n    list_name VARCHAR(255) NOT NULL,\n    created_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id INT PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    engagement_level ENUM('Low', 'Medium', 'High')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Subscription (\n    subscription_id INT PRIMARY KEY,\n    list_id INT,\n    customer_id INT,\n    subscription_date DATE,\n    FOREIGN KEY (list_id) REFERENCES SubscriptionLists(list_id),\n    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EngagementLevels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerEngagement (\n    customer_id INT,\n    level_id INT,\n    engagement_date DATE,\n    PRIMARY KEY (customer_id, level_id),\n    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),\n    FOREIGN KEY (level_id) REFERENCES EngagementLevels(level_id)\n);\n"
+      }
+    ]
+  }
+]

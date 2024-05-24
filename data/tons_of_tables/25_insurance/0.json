@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE member_information (\n    policy_number INT PRIMARY KEY,\n    coverage_details TEXT,\n    contact_information TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MemberInformation (\n  policy_number INT PRIMARY KEY,\n  coverage_details TEXT,\n  contact_information VARCHAR NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ClaimsInformation (\n  claim_id INT PRIMARY KEY,\n  policy_number INT REFERENCES MemberInformation(policy_number),\n  date_of_claim DATE,\n  claim_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n    member_id INT PRIMARY KEY,\n    policy_number VARCHAR(50) NOT NULL,\n    coverage_details VARCHAR(255),\n    contact_information VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id INT PRIMARY KEY,\n    policy_number VARCHAR(50) NOT NULL,\n    policy_type VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contacts (\n    contact_id INT PRIMARY KEY,\n    member_id INT,\n    contact_name VARCHAR(100),\n    contact_email VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Members (\n    member_id SERIAL PRIMARY KEY,\n    policy_number VARCHAR(50),\n    coverage_details TEXT,\n    contact_name VARCHAR(100),\n    contact_email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n    policy_id SERIAL PRIMARY KEY,\n    policy_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    member_id INTEGER REFERENCES Members(member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Claims (\n    claim_id SERIAL PRIMARY KEY,\n    claim_number VARCHAR(50),\n    claim_date DATE,\n    amount DECIMAL(10, 2),\n    policy_id INTEGER REFERENCES Policies(policy_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Contacts (\n    contact_id SERIAL PRIMARY KEY,\n    member_id INTEGER REFERENCES Members(member_id),\n    contact_type VARCHAR(50),\n    phone_number VARCHAR(20),\n    address TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Members (\n    member_id INT PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n    policy_number INT PRIMARY KEY,\n    coverage_details TEXT,\n    member_id INT REFERENCES Members(member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ContactInformation (\n    contact_id INT PRIMARY KEY,\n    member_id INT REFERENCES Members(member_id),\n    address VARCHAR(100),\n    city VARCHAR(50),\n    state VARCHAR(50),\n    postal_code VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Claims (\n    claim_id INT PRIMARY KEY,\n    policy_number INT REFERENCES Policies(policy_number),\n    claim_description TEXT,\n    claim_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n    payment_id INT PRIMARY KEY,\n    claim_id INT REFERENCES Claims(claim_id),\n    payment_amount DECIMAL(10, 2),\n    payment_date DATE\n);"
+      }
+    ]
+  }
+]

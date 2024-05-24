@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM encryption_keys;",
+      "SELECT key_name, key_value FROM encryption_keys ORDER BY key_name DESC;",
+      "SELECT key_id, encryption_type FROM encryption_keys WHERE key_id = 5;",
+      "SELECT * FROM encryption_keys WHERE encryption_type = 'AES';",
+      "SELECT key_name, key_value, encryption_type FROM encryption_keys ORDER BY key_value ASC;",
+      "SELECT key_id, key_name, key_value, encryption_type FROM encryption_keys WHERE key_id = 1;",
+      "SELECT key_name, key_id, encryption_type, key_value FROM encryption_keys WHERE key_name LIKE '%master%' ORDER BY key_id DESC;",
+      "SELECT COUNT(key_id) AS total_keys, encryption_type FROM encryption_keys GROUP BY encryption_type HAVING total_keys > 1;",
+      "SELECT * FROM encryption_keys WHERE encryption_type = 'AES' AND key_value LIKE '1%' ORDER BY key_id ASC;",
+      "SELECT key_name, CONCAT(key_name, ' - ', encryption_type) AS key_info FROM encryption_keys WHERE LENGTH(key_name) > 10 LIMIT 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM encryption_keys;",
+      "SELECT key_id, key_value FROM encryption_keys WHERE created_at > '2022-01-01';",
+      "SELECT cert_name, expiry_date FROM certificates WHERE cert_name LIKE '%SSL%';",
+      "SELECT cert_id, cert_data FROM certificates ORDER BY expiry_date DESC;",
+      "SELECT key_id, key_value, created_at FROM encryption_keys WHERE key_value = 'secret key';",
+      "SELECT * FROM encryption_keys WHERE key_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT key_id, key_value FROM encryption_keys ORDER BY created_at DESC;",
+      "SELECT cert_name, expiry_date FROM certificates WHERE expiry_date > '2022-01-01';",
+      "SELECT cert_name, cert_data FROM certificates WHERE cert_name LIKE '%production%';",
+      "SELECT * FROM certificates WHERE cert_id IN ('123e4567-e89b-12d3-a456-426614174001', '123e4567-e89b-12d3-a456-426614174002');"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM encryption_keys;",
+      "SELECT id, key_name, created_at FROM encryption_keys ORDER BY created_at DESC;",
+      "SELECT key_name, key_value FROM encryption_keys WHERE key_name = 'MasterKey';",
+      "SELECT cert_id, cert_name, expiration_date FROM certificates WHERE expiration_date > '2022-01-01';",
+      "SELECT mapping_id, key_id, cert_id FROM key_certificate_mapping ORDER BY created_at ASC;",
+      "SELECT key_name, key_value FROM encryption_keys WHERE id = 1;",
+      "SELECT cert_name, expiration_date FROM certificates WHERE expiration_date > '2022-01-01';",
+      "SELECT key_name, cert_name, created_at FROM encryption_keys JOIN key_certificate_mapping ON encryption_keys.id = key_certificate_mapping.key_id JOIN certificates ON key_certificate_mapping.cert_id = certificates.cert_id;",
+      "SELECT * FROM certificates WHERE expiration_date < CURRENT_DATE;",
+      "SELECT COUNT(*) FROM key_certificate_mapping WHERE key_id = 2;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM encryption_keys;",
+      "SELECT key_id, key_value FROM encryption_keys ORDER BY key_id DESC;",
+      "SELECT key_id, key_value, key_description FROM encryption_keys WHERE key_description IS NOT NULL;",
+      "SELECT * FROM certificates WHERE cert_description LIKE '%example%';",
+      "SELECT c.cert_id, k.key_id FROM certificates c INNER JOIN key_usage ku ON c.cert_id = ku.cert_id INNER JOIN encryption_keys k ON ku.key_id = k.key_id;",
+      "SELECT key_id, key_value, key_description FROM encryption_keys ORDER BY key_id DESC;",
+      "SELECT * FROM certificates WHERE cert_description ILIKE 'important%';",
+      "SELECT key_id, cert_id FROM key_usage WHERE key_id = 'ec67dcdc-3d77-43d9-b03e-1a2db0227211';",
+      "SELECT * FROM key_usage WHERE cert_id IN (SELECT cert_id FROM certificates WHERE LENGTH(cert_data) > 1000);",
+      "SELECT * FROM key_permissions ORDER BY permission_name;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM encryption_keys;",
+      "SELECT key_name, key_value, encryption_date FROM encryption_keys ORDER BY encryption_date DESC;",
+      "SELECT * FROM certificates WHERE expiration_date > NOW() ORDER BY expiration_date;",
+      "SELECT key_name, cert_name, expiration_date FROM encryption_keys JOIN key_cert_mapping ON encryption_keys.key_id = key_cert_mapping.key_id JOIN certificates ON key_cert_mapping.cert_id = certificates.cert_id;",
+      "SELECT key_id, description FROM key_usage WHERE description ILIKE '%secure%';",
+      "SELECT * FROM encryption_keys WHERE key_name = 'Master Key';",
+      "SELECT key_id, key_name, encryption_date FROM encryption_keys WHERE encryption_date > '2022-01-01';",
+      "SELECT cert_name, expiration_date FROM certificates WHERE expiration_date < '2022-12-31' ORDER BY expiration_date DESC;",
+      "SELECT kc.mapping_id, k.key_name, c.cert_name FROM key_cert_mapping kc INNER JOIN encryption_keys k ON kc.key_id = k.key_id INNER JOIN certificates c ON kc.cert_id = c.cert_id;",
+      "SELECT kr.rotation_id, k.key_name, kr.rotation_date, ku.description FROM key_rotation kr LEFT JOIN encryption_keys k ON kr.key_id = k.key_id LEFT JOIN key_usage ku ON k.key_id = ku.key_id WHERE kr.rotation_date BETWEEN '2022-01-01' AND '2022-12-31';"
+    ]
+  }
+]

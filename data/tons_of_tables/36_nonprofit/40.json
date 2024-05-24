@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donors (\n  donor_id SERIAL PRIMARY KEY,\n  donor_name TEXT NOT NULL,\n  donation_amount DECIMAL NOT NULL,\n  donation_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donors (\n  donor_id SERIAL PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(15) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contributions (\n  contribution_id SERIAL PRIMARY KEY,\n  donor_id INT REFERENCES donors(donor_id),\n  amount DECIMAL(10, 2) NOT NULL,\n  contribution_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donors (\n  donor_id INT PRIMARY KEY,\n  donor_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100),\n  phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contributions (\n  contribution_id INT PRIMARY KEY,\n  donor_id INT,\n  amount DECIMAL(10, 2) NOT NULL,\n  date_contributed DATE,\n  FOREIGN KEY (donor_id) REFERENCES donors(donor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE donation_categories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(50) NOT NULL,\n  description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donors (\n  donor_id INT PRIMARY KEY,\n  donor_name VARCHAR(50),\n  donor_email VARCHAR(100),\n  donor_phone VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE donations (\n  donation_id INT PRIMARY KEY,\n  donor_id INT,\n  donation_amount DECIMAL(10, 2),\n  donation_date TIMESTAMP,\n  FOREIGN KEY (donor_id) REFERENCES donors(donor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(100),\n  project_description TEXT,\n  project_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_contributions (\n  contribution_id INT PRIMARY KEY,\n  donor_id INT,\n  project_id INT,\n  contribution_amount DECIMAL(10, 2),\n  contribution_date TIMESTAMP,\n  FOREIGN KEY (donor_id) REFERENCES donors(donor_id),\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donors (\n    donor_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donations (\n    donation_id INT PRIMARY KEY,\n    donor_id INT,\n    amount DECIMAL(10, 2),\n    donation_date DATE,\n    FOREIGN KEY (donor_id) REFERENCES donors(donor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    name VARCHAR(100),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donations_campaigns (\n    donation_id INT,\n    campaign_id INT,\n    PRIMARY KEY (donation_id, campaign_id),\n    FOREIGN KEY (donation_id) REFERENCES donations(donation_id),\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donor_interactions (\n    interaction_id INT PRIMARY KEY,\n    donor_id INT,\n    interaction_date DATE,\n    notes TEXT,\n    FOREIGN KEY (donor_id) REFERENCES donors(donor_id)\n);"
+      }
+    ]
+  }
+]

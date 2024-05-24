@@ -1,0 +1,46 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blacklist_accounts\n(\n    account_id INT NOT NULL,\n    account_holder VARCHAR(100) NOT NULL,\n    reason VARCHAR(255) NOT NULL,\n    date_added DATE NOT NULL,\n    PRIMARY KEY (account_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraud_accounts ( \n    account_id INT PRIMARY KEY, \n    account_name VARCHAR(255) NOT NULL, \n    blacklist_reason TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraudulent_transactions ( \n    transaction_id INT PRIMARY KEY, \n    account_id INT NOT NULL, \n    transaction_amount DECIMAL(10, 2) NOT NULL, \n    transaction_date DATE NOT NULL, \n    FOREIGN KEY (account_id) REFERENCES fraud_accounts(account_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraudulent_accounts (\n    account_id INT NOT NULL,\n    account_name VARCHAR(255) NOT NULL,\n    reason_for_blacklist TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blacklist_history (\n    transaction_id INT NOT NULL,\n    account_id INT NOT NULL,\n    blacklist_date DATE NOT NULL,\n    note TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraudulent_patterns (\n    pattern_id INT NOT NULL,\n    pattern_description TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraudulent_accounts (\n    account_id INT PRIMARY KEY,\n    account_number VARCHAR(20) NOT NULL,\n    account_type VARCHAR(10) NOT NULL,\n    blacklisted BOOLEAN\n);\n\nCREATE TABLE flagged_transactions (\n    transaction_id INT PRIMARY KEY,\n    account_id INT NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date DATE NOT NULL,\n    reason VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE blacklist_logs (\n    log_id INT PRIMARY KEY,\n    account_id INT NOT NULL,\n    action_taken VARCHAR(50) NOT NULL,\n    log_date TIMESTAMP NOT NULL\n);\n\nCREATE TABLE account_notes (\n    note_id INT PRIMARY KEY,\n    account_id INT NOT NULL,\n    note_text TEXT NOT NULL,\n    note_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraudulent_accounts (\n    id INT PRIMARY KEY,\n    account_number INT UNIQUE,\n    account_holder VARCHAR(255),\n    fraud_reason TEXT\n);\n\nCREATE TABLE fraud_patterns (\n    id INT PRIMARY KEY,\n    pattern_name VARCHAR(255) UNIQUE,\n    description TEXT\n);\n\nCREATE TABLE fraud_reports (\n    id INT PRIMARY KEY,\n    report_id INT UNIQUE,\n    account_number INT,\n    report_date DATE,\n    report_details TEXT\n);\n\nCREATE TABLE blacklist_reasons (\n    id INT PRIMARY KEY,\n    reason_code INT UNIQUE,\n    reason_description VARCHAR(255)\n);\n\nCREATE TABLE blacklist_accounts (\n    id INT PRIMARY KEY,\n    account_number INT UNIQUE,\n    blacklisted_date DATE,\n    reason_code INT\n);"
+      }
+    ]
+  }
+]

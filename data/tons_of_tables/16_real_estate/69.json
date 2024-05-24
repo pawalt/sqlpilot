@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sustainable_building_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(100),\n  material_type VARCHAR(50),\n  material_description TEXT,\n  cost_per_unit DECIMAL(10, 2),\n  availability_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sustainable_materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    material_type VARCHAR(255),\n    material_source VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE construction_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_location VARCHAR(255),\n    material_id INT,\n    FOREIGN KEY (material_id) REFERENCES sustainable_materials(material_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_materials (\n    material_id INT PRIMARY KEY,\n    material_name TEXT NOT NULL,\n    material_type TEXT,\n    sustainability_rating INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name TEXT NOT NULL,\n    location TEXT,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE material_usage (\n    usage_id INT PRIMARY KEY,\n    project_id INT,\n    material_id INT,\n    quantity_used INT,\n    CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES projects(project_id),\n    CONSTRAINT fk_material FOREIGN KEY (material_id) REFERENCES building_materials(material_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sustainable_building_materials (id INT PRIMARY KEY, material_name VARCHAR(50), material_type VARCHAR(50), sustainability_rating INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_properties (material_id INT PRIMARY KEY, property_name VARCHAR(50), property_value VARCHAR(50));"
+      },
+      {
+        "table_schema": "CREATE TABLE construction_projects (project_id INT PRIMARY KEY, project_name VARCHAR(100), start_date DATE, end_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_material_mapping (project_id INT, material_id INT, quantity INT, FOREIGN KEY (project_id) REFERENCES construction_projects(project_id), FOREIGN KEY (material_id) REFERENCES sustainable_building_materials(id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_materials(\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255),\n  material_type VARCHAR(100),\n  sustainability_rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_suppliers(\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(255),\n  contact_information VARCHAR(100),\n  location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE construction_projects(\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_materials(\n  project_id INT,\n  material_id INT,\n  quantity INT,\n  FOREIGN KEY (project_id) REFERENCES construction_projects(project_id),\n  FOREIGN KEY (material_id) REFERENCES building_materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_prices(\n  material_id INT,\n  supplier_id INT,\n  price DECIMAL(10, 2),\n  date_effective DATE,\n  FOREIGN KEY (material_id) REFERENCES building_materials(material_id),\n  FOREIGN KEY (supplier_id) REFERENCES material_suppliers(supplier_id)\n);"
+      }
+    ]
+  }
+]

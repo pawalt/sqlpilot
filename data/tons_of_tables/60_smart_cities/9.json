@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_storage (\n    id SERIAL PRIMARY KEY,\n    system_name VARCHAR(100) NOT NULL,\n    storage_capacity DECIMAL NOT NULL,\n    efficiency FLOAT NOT NULL,\n    location VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_storage_systems ( \n    id INT PRIMARY KEY, \n    system_name VARCHAR(50), \n    capacity DECIMAL(10,2), \n    efficiency FLOAT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption_logs ( \n    log_id SERIAL PRIMARY KEY, \n    system_id INT REFERENCES energy_storage_systems(id), \n    date_timestamp TIMESTAMP, \n    energy_consumed DECIMAL(10,2) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyStorageSystems (\n    id SERIAL PRIMARY KEY,\n    system_name VARCHAR(255) NOT NULL,\n    capacity DECIMAL,\n    efficiency DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n    id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    system_id INT,\n    consumed_energy DECIMAL,\n    FOREIGN KEY (system_id) REFERENCES EnergyStorageSystems(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProduction (\n    id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    system_id INT,\n    produced_energy DECIMAL,\n    FOREIGN KEY (system_id) REFERENCES EnergyStorageSystems(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_storage_systems (\n    id UUID PRIMARY KEY,\n    type VARCHAR(50),\n    capacity DECIMAL,\n    location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    id UUID PRIMARY KEY,\n    system_id UUID,\n    timestamp TIMESTAMP,\n    consumption DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_production (\n    id UUID PRIMARY KEY,\n    system_id UUID,\n    timestamp TIMESTAMP,\n    production DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_optimization (\n    id UUID PRIMARY KEY,\n    optimization_id UUID,\n    timestamp TIMESTAMP,\n    optimization_type VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyStorageSystems (\n  id INT NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  capacity DECIMAL NOT NULL,\n  efficiency DECIMAL NOT NULL,\n  PRIMARY KEY (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n  id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  system_id INT NOT NULL,\n  energy_consumed DECIMAL NOT NULL,\n  PRIMARY KEY (id),\n  FOREIGN KEY (system_id) REFERENCES EnergyStorageSystems(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProduction (\n  id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  system_id INT NOT NULL,\n  energy_produced DECIMAL NOT NULL,\n  PRIMARY KEY (id),\n  FOREIGN KEY (system_id) REFERENCES EnergyStorageSystems(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n  id INT NOT NULL,\n  system_id INT NOT NULL,\n  log_description TEXT,\n  log_date DATE NOT NULL,\n  PRIMARY KEY (id),\n  FOREIGN KEY (system_id) REFERENCES EnergyStorageSystems(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyOptimization (\n  id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  system_id INT NOT NULL,\n  optimization_metric DECIMAL NOT NULL,\n  PRIMARY KEY (id),\n  FOREIGN KEY (system_id) REFERENCES EnergyStorageSystems(id)\n);"
+      }
+    ]
+  }
+]

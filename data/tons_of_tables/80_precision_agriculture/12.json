@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteWeatherData (\n  satellite_image_id INT,\n  weather_id INT,\n  vegetation_health FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_image_data (\n    image_id UUID PRIMARY KEY,\n    image_data BYTEA,\n    image_timestamp TIMESTAMP,\n    image_location VARCHAR,\n    vegetation_health_score FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_data (\n    weather_id UUID PRIMARY KEY,\n    weather_timestamp TIMESTAMP,\n    weather_location VARCHAR,\n    temperature FLOAT,\n    humidity FLOAT,\n    precipitation FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    image_id INT PRIMARY KEY,\n    image_url TEXT,\n    capture_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_data (\n    weather_id INT PRIMARY KEY,\n    location TEXT,\n    temperature FLOAT,\n    humidity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vegetation_health (\n    health_id INT PRIMARY KEY,\n    image_id INT,\n    weather_id INT,\n    health_index FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_data BYTEA,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_data (\n    weather_id INT PRIMARY KEY,\n    weather_date DATE,\n    temperature FLOAT,\n    humidity FLOAT,\n    wind_speed FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vegetation_health (\n    health_id INT PRIMARY KEY,\n    observation_date DATE,\n    health_index FLOAT,\n    vegetation_type VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_join (\n    image_id INT,\n    weather_id INT,\n    health_id INT,\n    FOREIGN KEY (image_id) REFERENCES satellite_images(image_id),\n    FOREIGN KEY (weather_id) REFERENCES weather_data(weather_id),\n    FOREIGN KEY (health_id) REFERENCES vegetation_health(health_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n  image_id INT PRIMARY KEY,\n  image_url VARCHAR(255),\n  capture_date DATE,\n  satellite_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_data (\n  weather_id INT PRIMARY KEY,\n  temperature FLOAT,\n  humidity FLOAT,\n  wind_speed FLOAT,\n  precipitation FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vegetation_health (\n  health_id INT PRIMARY KEY,\n  vegetation_type VARCHAR(50),\n  health_status VARCHAR(50),\n  health_index FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE image_weather_mapping (\n  mapping_id INT PRIMARY KEY,\n  image_id INT,\n  weather_id INT,\n  FOREIGN KEY (image_id) REFERENCES satellite_images(image_id),\n  FOREIGN KEY (weather_id) REFERENCES weather_data(weather_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE image_health_mapping (\n  mapping_id INT PRIMARY KEY,\n  image_id INT,\n  health_id INT,\n  FOREIGN KEY (image_id) REFERENCES satellite_images(image_id),\n  FOREIGN KEY (health_id) REFERENCES vegetation_health(health_id)\n)"
+      }
+    ]
+  }
+]

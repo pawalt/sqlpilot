@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(100),\n    access_level INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(50) NOT NULL,\n    description VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(100) NOT NULL,\n  access_level INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_home_systems (\n  system_id UUID PRIMARY KEY,\n  system_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES authorized_users(user_id),\n  system_id UUID REFERENCES smart_home_systems(system_id),\n  access_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(100) NOT NULL,\n  access_level ENUM('admin', 'user')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_home_systems (\n  system_id INT PRIMARY KEY,\n  system_name VARCHAR(50) NOT NULL,\n  system_ip_address VARCHAR(15) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access_rights (\n  user_id INT,\n  system_id INT,\n  CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES authorized_users(user_id),\n  CONSTRAINT fk_system_id FOREIGN KEY (system_id) REFERENCES smart_home_systems(system_id),\n  PRIMARY KEY (user_id, system_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id INT PRIMARY KEY,\n  user_id INT,\n  system_id INT,\n  access_time TIMESTAMP,\n  CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES authorized_users(user_id),\n  CONSTRAINT fk_system_id FOREIGN KEY (system_id) REFERENCES smart_home_systems(system_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_home_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    location VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_devices (\n    user_id INT,\n    device_id INT,\n    FOREIGN KEY (user_id) REFERENCES authorized_users(user_id),\n    FOREIGN KEY (device_id) REFERENCES smart_home_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES authorized_users(user_id)\n);"
+      }
+    ]
+  }
+]

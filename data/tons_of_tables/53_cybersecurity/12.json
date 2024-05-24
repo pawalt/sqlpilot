@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_controls (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    role VARCHAR(20),\n    access_level INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_controls (\n    user_id INT PRIMARY KEY,\n    role VARCHAR(50),\n    access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    data_info TEXT,\n    data_category VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_controls (\n    user_id INT,\n    role VARCHAR(50),\n    data_access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT,\n    data_name VARCHAR(100),\n    data_value TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_privacy (\n    organization_id INT,\n    data_privacy_policy TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Organizations (\n   org_id UUID PRIMARY KEY,\n   org_name VARCHAR(255) NOT NULL,\n   security_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n   user_id UUID PRIMARY KEY,\n   username VARCHAR(50) NOT NULL,\n   password VARCHAR(50) NOT NULL,\n   org_id UUID REFERENCES Organizations(org_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DataDocuments (\n   doc_id UUID PRIMARY KEY,\n   doc_name VARCHAR(100) NOT NULL,\n   doc_owner UUID REFERENCES Users(user_id),\n   security_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLogs (\n   log_id UUID PRIMARY KEY,\n   user_id UUID REFERENCES Users(user_id),\n   doc_id UUID REFERENCES DataDocuments(doc_id),\n   access_time TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE organizations (\n  organization_id UUID PRIMARY KEY,\n  organization_name TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username TEXT,\n  password TEXT,\n  organization_id UUID REFERENCES organizations(organization_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n  data_id UUID PRIMARY KEY,\n  data_value TEXT,\n  organization_id UUID REFERENCES organizations(organization_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n  access_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  data_id UUID REFERENCES sensitive_data(data_id),\n  access_level TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_privacy (\n  privacy_id UUID PRIMARY KEY,\n  organization_id UUID REFERENCES organizations(organization_id),\n  privacy_policy TEXT\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE camera_footage (\n    camera_id INT PRIMARY KEY,\n    timestamp TIMESTAMPTZ,\n    footage_url TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_camera_footage (\n  camera_id INT,\n  timestamp TIMESTAMP,\n  footage BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_lighting_automation (\n  lighting_id INT,\n  timestamp TIMESTAMP,\n  lighting_mode VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_camera_logging (\n    camera_id INTEGER,\n    timestamp TIMESTAMP,\n    event_type VARCHAR(50),\n    PRIMARY KEY (camera_id, timestamp)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_lighting_automation (\n    light_id INTEGER,\n    timestamp TIMESTAMP,\n    setting VARCHAR(50),\n    PRIMARY KEY (light_id, timestamp)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE surveillance_control (\n    control_id INTEGER,\n    scenario VARCHAR(50),\n    timestamp TIMESTAMP,\n    PRIMARY KEY (control_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_camera_footage (\n  camera_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  footage_url VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lighting_automation (\n  automation_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  lighting_action VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE surveillance_log (\n  log_id INT PRIMARY KEY,\n  camera_id INT,\n  automation_id INT,\n  timestamp TIMESTAMP,\n  log_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE synchronization_schedule (\n  schedule_id INT PRIMARY KEY,\n  automation_id INT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  status VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_camera_footage (\n    footage_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    camera_id VARCHAR(100),\n    footage_url TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lighting_automation (\n    automation_id UUID PRIMARY KEY,\n    automation_name VARCHAR(100),\n    light_control BOOLEAN,\n    automation_schedule TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE surveillance_logs (\n    log_id UUID PRIMARY KEY,\n    event_type VARCHAR(100),\n    event_description TEXT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE camera_lighting_mapping (\n    mapping_id UUID PRIMARY KEY,\n    camera_id VARCHAR(100),\n    automation_id UUID,\n    FOREIGN KEY (camera_id) REFERENCES security_camera_footage(camera_id) ON DELETE CASCADE,\n    FOREIGN KEY (automation_id) REFERENCES lighting_automation(automation_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cameras (\n    camera_id VARCHAR(100) PRIMARY KEY,\n    camera_location VARCHAR(100),\n    camera_type VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM goods_tracking",
+      "SELECT shipment_id, product_id, inbound_time FROM goods_tracking ORDER BY inbound_time DESC",
+      "SELECT product_id, outbound_time FROM goods_tracking WHERE RFID_tag = 'ABC123'",
+      "SELECT shipment_id, inbound_time, outbound_time FROM goods_tracking WHERE product_id = '123e4567-e89b-12d3-a456-426614174000'",
+      "SELECT * FROM goods_tracking WHERE shipment_id = '98765432-1234-5678-5678-192837465930'",
+      "SELECT * FROM goods_tracking WHERE outbound_time < '2021-10-01';",
+      "SELECT product_id, inbound_time FROM goods_tracking WHERE RFID_tag = 'XYZ' ORDER BY inbound_time DESC;",
+      "SELECT shipment_id FROM goods_tracking WHERE inbound_time > '2021-09-01' AND outbound_time IS NOT NULL;",
+      "SELECT AVG(DATE_PART('day', outbound_time - inbound_time)) AS avg_transit_time FROM goods_tracking;",
+      "SELECT COUNT(*), DATE_TRUNC('month', inbound_time) AS month FROM goods_tracking GROUP BY month ORDER BY month ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM IncomingGoods;",
+      "SELECT id, product_name, quantity FROM IncomingGoods WHERE quantity > 10;",
+      "SELECT product_name, quantity FROM IncomingGoods WHERE product_name LIKE 'apple%';",
+      "SELECT * FROM OutgoingGoods ORDER BY id DESC;",
+      "SELECT id, rfid_tag FROM OutgoingGoods WHERE quantity < 5;",
+      "SELECT * FROM IncomingGoods WHERE product_name = 'Apple' ORDER BY quantity DESC;",
+      "SELECT product_name, quantity FROM OutgoingGoods WHERE quantity > 10 ORDER BY product_name ASC;",
+      "SELECT id, rfid_tag FROM IncomingGoods WHERE quantity BETWEEN 5 AND 10;",
+      "SELECT * FROM OutgoingGoods WHERE id IN (1, 3, 5);",
+      "SELECT product_name, quantity FROM IncomingGoods WHERE rfid_tag LIKE '%AB%' ORDER BY id ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Goods;",
+      "SELECT goods_name, goods_category FROM Goods WHERE goods_category='Electronics';",
+      "SELECT goods_name, goods_category, RFID_tag FROM Goods ORDER BY goods_name ASC;",
+      "SELECT * FROM IncomingGoods WHERE quantity > 10 ORDER BY received_date DESC;",
+      "SELECT goods_name, received_date, destination FROM Goods JOIN OutgoingGoods ON Goods.goods_id = OutgoingGoods.goods_id WHERE destination='Warehouse';",
+      "SELECT goods_name, goods_category FROM Goods WHERE RFID_tag = '1234'",
+      "SELECT * FROM Goods ORDER BY goods_name DESC",
+      "SELECT goods_name, goods_category, received_date FROM Goods JOIN IncomingGoods ON Goods.goods_id = IncomingGoods.goods_id",
+      "SELECT goods_name, goods_category, dispatched_date, destination FROM Goods JOIN OutgoingGoods ON Goods.goods_id = OutgoingGoods.goods_id WHERE destination = 'Warehouse'",
+      "SELECT incoming_id, quantity, received_date FROM IncomingGoods WHERE quantity > 10"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM incoming_goods;",
+      "SELECT item_name, quantity FROM outgoing_goods;",
+      "SELECT id, item_code FROM incoming_goods ORDER BY item_name DESC;",
+      "SELECT * FROM cross_docking WHERE dock_number = 1;",
+      "SELECT id, name, role FROM employee WHERE role = 'Manager';",
+      "SELECT * FROM incoming_goods WHERE quantity > 100 ORDER BY item_name DESC;",
+      "SELECT item_name, item_code, quantity FROM outgoing_goods WHERE quantity < 50 ORDER BY item_code;",
+      "SELECT ig.item_name, ig.quantity, c.dock_number FROM incoming_goods ig JOIN cross_docking c ON ig.id = c.incoming_goods_id WHERE c.time_stamp BETWEEN '2023-01-01' AND '2023-06-30';",
+      "SELECT e.name, e.role, o.quantity FROM employee e LEFT JOIN outgoing_goods o ON e.id = o.id WHERE o.rfid_tag IS NULL;",
+      "SELECT DISTINCT ig.item_name, og.item_name FROM incoming_goods ig, outgoing_goods og WHERE ig.item_code = og.item_code;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM goods;",
+      "SELECT id, product_name FROM goods WHERE id = 1;",
+      "SELECT product_name, rfid_tag FROM goods ORDER BY product_name DESC;",
+      "SELECT * FROM incoming_goods WHERE arrival_time > '2022-01-01 00:00:00';",
+      "SELECT id, goods_id, action_type FROM cross_docking_logs WHERE action_time BETWEEN '2022-01-01 00:00:00' AND '2022-03-01 23:59:59';",
+      "SELECT * FROM goods\nJOIN incoming_goods ON goods.id = incoming_goods.goods_id\nJOIN outgoing_goods ON goods.id = outgoing_goods.goods_id",
+      "SELECT goods.product_name, incoming_goods.arrival_time FROM goods\nJOIN incoming_goods ON goods.id = incoming_goods.goods_id",
+      "SELECT goods.product_name, outgoing_goods.departure_time FROM goods\nJOIN outgoing_goods ON goods.id = outgoing_goods.goods_id",
+      "SELECT cdc.location, cdl.action_type FROM cross_docking_center AS cdc\nJOIN cross_docking_logs AS cdl ON cdc.id = cdl.goods_id",
+      "SELECT cdc.capacity, cdl.action_type, cdl.action_time FROM cross_docking_center AS cdc\nJOIN cross_docking_logs AS cdl ON cdc.id = cdl.goods_id"
+    ]
+  }
+]

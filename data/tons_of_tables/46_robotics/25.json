@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_costs_and_material_usage_reports (\n    project_id UUID PRIMARY KEY,\n    project_name TEXT,\n    material_used TEXT,\n    material_cost DECIMAL(10, 2),\n    labor_cost DECIMAL(10, 2),\n    total_cost DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_costs (\n    project_id INT,\n    material_id INT,\n    cost DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_usage (\n    project_id INT,\n    material_id INT,\n    quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProductionCosts (\n\tproject_id INT,\n\tmaterial_cost DECIMAL(10, 2),\n\tpersonnel_cost DECIMAL(10, 2),\n\ttotal_cost DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialUsage (\n\tproject_id INT,\n\tmaterial_type VARCHAR(50),\n\tmaterial_quantity INT,\n\tmaterial_unit VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PrintingProjects (\n\tproject_id INT,\n\tproject_name VARCHAR(50),\n\tproject_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_cost_report (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    production_cost DECIMAL(10, 2),\n    material_used TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_supply (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    cost_per_unit DECIMAL(8, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_material_usage (\n    project_id INT,\n    material_id INT,\n    quantity_used INT,\n    FOREIGN KEY (project_id) REFERENCES project_cost_report(project_id),\n    FOREIGN KEY (material_id) REFERENCES material_supply(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_status (\n    project_id INT PRIMARY KEY,\n    status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR,\n  project_description TEXT,\n  project_start_date DATE,\n  project_end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR,\n  material_cost_per_unit DECIMAL,\n  material_quantity_used DECIMAL,\n  material_usage_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Printers (\n  printer_id INT PRIMARY KEY,\n  printer_name VARCHAR,\n  printer_type VARCHAR,\n  printer_purchase_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionCosts (\n  cost_id INT PRIMARY KEY,\n  cost_description TEXT,\n  cost_amount DECIMAL,\n  cost_project_id INT,\n  FOREIGN KEY (cost_project_id) REFERENCES Projects(project_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialUsage (\n  usage_id INT PRIMARY KEY,\n  usage_material_id INT,\n  usage_project_id INT,\n  usage_quantity_used DECIMAL,\n  FOREIGN KEY (usage_material_id) REFERENCES Materials(material_id),\n  FOREIGN KEY (usage_project_id) REFERENCES Projects(project_id)\n)"
+      }
+    ]
+  }
+]

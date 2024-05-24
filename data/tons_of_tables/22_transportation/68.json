@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  origin_station VARCHAR(50) NOT NULL,\n  destination_station VARCHAR(50) NOT NULL,\n  distance FLOAT NOT NULL,\n  time_required FLOAT NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE train_routes (\n   route_id INT PRIMARY KEY,\n   route_name VARCHAR(50),\n   route_distance DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE train_stations (\n   station_id INT PRIMARY KEY,\n   station_name VARCHAR(50),\n   station_location VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stations (\n  station_id INT PRIMARY KEY,\n  station_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  departure_station_id INT,\n  arrival_station_id INT,\n  distance FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE train_schedule (\n  schedule_id INT PRIMARY KEY,\n  route_id INT,\n  departure_time TIMESTAMP,\n  arrival_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Station (\n  station_id INT PRIMARY KEY,\n  station_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Route (\n  route_id INT PRIMARY KEY,\n  origin_station_id INT,\n  destination_station_id INT,\n  distance_km FLOAT,\n  FOREIGN KEY (origin_station_id) REFERENCES Station(station_id),\n  FOREIGN KEY (destination_station_id) REFERENCES Station(station_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Train (\n  train_id INT PRIMARY KEY,\n  train_name VARCHAR(255) NOT NULL,\n  capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Schedule (\n  schedule_id INT PRIMARY KEY,\n  route_id INT,\n  train_id INT,\n  departure_time TIMESTAMP,\n  arrival_time TIMESTAMP,\n  FOREIGN KEY (route_id) REFERENCES Route(route_id),\n  FOREIGN KEY (train_id) REFERENCES Train(train_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id SERIAL PRIMARY KEY,\n    start_station VARCHAR(255) NOT NULL,\n    end_station VARCHAR(255) NOT NULL,\n    distance_km FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE stations (\n    station_id SERIAL PRIMARY KEY,\n    station_name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trains (\n    train_id SERIAL PRIMARY KEY,\n    train_name VARCHAR(255) NOT NULL,\n    capacity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id SERIAL PRIMARY KEY,\n    train_id INT NOT NULL,\n    route_id INT NOT NULL,\n    departure_time TIMESTAMP NOT NULL,\n    arrival_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (train_id) REFERENCES trains (train_id),\n    FOREIGN KEY (route_id) REFERENCES routes (route_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE passengers (\n    passenger_id SERIAL PRIMARY KEY,\n    passenger_name VARCHAR(255) NOT NULL,\n    train_id INT NOT NULL,\n    schedule_id INT NOT NULL,\n    seat_number INT NOT NULL,\n    FOREIGN KEY (train_id) REFERENCES trains (train_id),\n    FOREIGN KEY (schedule_id) REFERENCES schedules (schedule_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EducationalOpportunities (\n  opportunity_id UUID PRIMARY KEY,\n  opportunity_name TEXT NOT NULL,\n  organization_name TEXT NOT NULL,\n  location TEXT,\n  start_date DATE,\n  end_date DATE,\n  status TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Opportunities (\n  opportunity_id INT PRIMARY KEY,\n  opportunity_name VARCHAR(255),\n  opportunity_type VARCHAR(100),\n  provider_name VARCHAR(255),\n  location VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Participants (\n  participant_id INT PRIMARY KEY,\n  full_name VARCHAR(255),\n  age INT,\n  gender VARCHAR(10),\n  nationality VARCHAR(100),\n  education_level VARCHAR(50),\n  opportunity_id INT,\n  FOREIGN KEY (opportunity_id) REFERENCES Opportunities(opportunity_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recordings (\n    recording_id SERIAL PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    date_recorded DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE educational_opportunities (\n    opportunity_id SERIAL PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    organization VARCHAR(255),\n    location VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tracking_records (\n    record_id SERIAL PRIMARY KEY,\n    opportunity_id INT REFERENCES educational_opportunities(opportunity_id),\n    recording_id INT REFERENCES recordings(recording_id),\n    date_tracked DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE opportunities (\n  opportunity_id SERIAL PRIMARY KEY,\n  opportunity_name VARCHAR(100) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  is_active BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n  participant_id SERIAL PRIMARY KEY,\n  participant_name VARCHAR(100) NOT NULL,\n  participant_age INT,\n  contact_email VARCHAR(100),\n  registration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE registrations (\n  registration_id SERIAL PRIMARY KEY,\n  participant_id INT REFERENCES participants(participant_id),\n  opportunity_id INT REFERENCES opportunities(opportunity_id),\n  registration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE progress_tracking (\n  tracking_id SERIAL PRIMARY KEY,\n  registration_id INT REFERENCES registrations(registration_id),\n  progress_status VARCHAR(50),\n  progress_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Referral (\n  referral_id UUID PRIMARY KEY,\n  referral_date TIMESTAMP,\n  referral_type VARCHAR(50),\n  referral_source VARCHAR(50),\n  referral_reason TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Opportunity (\n  opportunity_id UUID PRIMARY KEY,\n  opportunity_title VARCHAR(100),\n  organization_name VARCHAR(100),\n  opportunity_description TEXT,\n  opportunity_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Participant (\n  participant_id UUID PRIMARY KEY,\n  participant_name VARCHAR(100),\n  participant_gender VARCHAR(10),\n  participant_age INT,\n  participant_nationality VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Enrollment (\n  enrollment_id UUID PRIMARY KEY,\n  participant_id UUID REFERENCES Participant(participant_id),\n  opportunity_id UUID REFERENCES Opportunity(opportunity_id),\n  enrollment_date TIMESTAMP,\n  enrollment_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Completion (\n  completion_id UUID PRIMARY KEY,\n  enrollment_id UUID REFERENCES Enrollment(enrollment_id),\n  completion_date DATE,\n  completion_status VARCHAR(20)\n);"
+      }
+    ]
+  }
+]

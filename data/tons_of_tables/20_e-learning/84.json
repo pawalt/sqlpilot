@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    role VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    role VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    resource VARCHAR(50) NOT NULL,\n    access_level VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(100) NOT NULL,\n    course_description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    course_id INT NOT NULL,\n    can_access_materials BOOLEAN,\n    can_access_assessments BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(255) NOT NULL,\n  email VARCHAR(255) NOT NULL,\n  password VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n  role_id INT PRIMARY KEY,\n  role_name VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id INT PRIMARY KEY,\n  permission_name VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  user_id INT,\n  role_id INT,\n  PRIMARY KEY (user_id, role_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (role_id) REFERENCES roles(role_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(100) UNIQUE,\n    password VARCHAR(100),\n    role VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n    course_id UUID PRIMARY KEY,\n    course_name VARCHAR(100),\n    instructor_id UUID REFERENCES users(user_id),\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE course_materials (\n    material_id UUID PRIMARY KEY,\n    course_id UUID REFERENCES courses(course_id),\n    material_name VARCHAR(100),\n    material_type VARCHAR(20),\n    material_link VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE assessments (\n    assessment_id UUID PRIMARY KEY,\n    course_id UUID REFERENCES courses(course_id),\n    assessment_name VARCHAR(100),\n    due_date DATE,\n    max_score INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id UUID REFERENCES users(user_id),\n    course_id UUID REFERENCES courses(course_id),\n    permission_level VARCHAR(20),\n    PRIMARY KEY (user_id, course_id)\n)"
+      }
+    ]
+  }
+]

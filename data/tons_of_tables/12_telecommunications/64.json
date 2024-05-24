@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE settings_satellite_communication (\n    id UUID PRIMARY KEY,\n    satellite_name VARCHAR(255),\n    antenna_type VARCHAR(50),\n    frequency_band VARCHAR(50),\n    beam_width DECIMAL(5, 2),\n    polarization VARCHAR(20),\n    elevation_angle DECIMAL(5, 2),\n    azimuth_angle DECIMAL(5, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_equipment_settings (\n  id INT PRIMARY KEY,\n  equipment_name VARCHAR(255),\n  transmission_frequency DECIMAL,\n  modulation_type VARCHAR(50),\n  encryption_enabled BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(100),\n  latitude DECIMAL,\n  longitude DECIMAL,\n  elevation DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_equipment_configurations (\n    id UUID PRIMARY KEY,\n    equipment_name STRING,\n    frequency_hertz FLOAT,\n    signal_quality INTEGER\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_locations (\n    location_id UUID PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    country STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE site_configurations (\n    site_id UUID PRIMARY KEY,\n    site_name STRING,\n    equipment_id UUID,\n    location_id UUID,\n    FOREIGN KEY (equipment_id) REFERENCES satellite_equipment_configurations(id),\n    FOREIGN KEY (location_id) REFERENCES satellite_locations(location_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_devices(\n  id SERIAL PRIMARY KEY,\n  device_name VARCHAR(50) NOT NULL,\n  device_description TEXT,\n  location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_types(\n  id SERIAL PRIMARY KEY,\n  type_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_settings(\n  id SERIAL PRIMARY KEY,\n  device_id INTEGER NOT NULL,\n  setting_name VARCHAR(50) NOT NULL,\n  setting_value VARCHAR(100) NOT NULL,\n  FOREIGN KEY (device_id) REFERENCES satellite_devices(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE technician_logs(\n  id SERIAL PRIMARY KEY,\n  log_date DATE NOT NULL,\n  device_id INTEGER NOT NULL,\n  log_description TEXT,\n  FOREIGN KEY (device_id) REFERENCES satellite_devices(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_communication_equipment_settings (\n    id INT PRIMARY KEY,\n    equipment_name VARCHAR(255),\n    frequency_range VARCHAR(50),\n    transmission_power INT,\n    antenna_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_antennas (\n    id INT PRIMARY KEY,\n    antenna_type VARCHAR(50),\n    antenna_gain FLOAT,\n    bandwidth VARCHAR(50),\n    polarization VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_transponders (\n    id INT PRIMARY KEY,\n    transponder_id INT,\n    frequency_range VARCHAR(50),\n    modulation_type VARCHAR(20),\n    bitrate VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_channels (\n    id INT PRIMARY KEY,\n    channel_id INT,\n    frequency_range VARCHAR(50),\n    encryption_type VARCHAR(20),\n    compression_type VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_gateways (\n    id INT PRIMARY KEY,\n    gateway_id INT,\n    location VARCHAR(255),\n    connection_type VARCHAR(20),\n    bandwidth INT\n)"
+      }
+    ]
+  }
+]

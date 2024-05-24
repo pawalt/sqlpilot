@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE nfts (\n    id INT PRIMARY KEY,\n    nft_name VARCHAR(255),\n    owner_id INT,\n    price DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE nft_owners (\n    nft_owner_id INT PRIMARY KEY,\n    nft_owner_name VARCHAR(255)\n);\n\nCREATE TABLE nfts (\n    nft_id INT PRIMARY KEY,\n    nft_name VARCHAR(255),\n    nft_owner_id INT,\n    FOREIGN KEY (nft_owner_id) REFERENCES nft_owners(nft_owner_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE nfts (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  owner_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_nfts (\n  user_id INT,\n  nft_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (nft_id) REFERENCES nfts(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE nfts (\n    nft_id UUID PRIMARY KEY,\n    nft_name VARCHAR(100) NOT NULL,\n    owner_id UUID NOT NULL,\n    CONSTRAINT fk_owner FOREIGN KEY (owner_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_nfts (\n    user_nft_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    nft_id UUID NOT NULL,\n    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id),\n    CONSTRAINT fk_nft FOREIGN KEY (nft_id) REFERENCES nfts(nft_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    login_time TIMESTAMP NOT NULL,\n    CONSTRAINT fk_session_user FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE nfts (\n    nft_id UUID PRIMARY KEY,\n    nft_name VARCHAR(100) NOT NULL,\n    nft_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_nfts (\n    user_id UUID REFERENCES users(user_id),\n    nft_id UUID REFERENCES nfts(nft_id),\n    PRIMARY KEY (user_id, nft_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users_balances (\n    user_id UUID REFERENCES users(user_id),\n    balance DECIMAL(18, 2) DEFAULT 0,\n    PRIMARY KEY (user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE nft_transactions (\n    transaction_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    nft_id UUID REFERENCES nfts(nft_id),\n    transaction_date TIMESTAMP NOT NULL,\n    transaction_type VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  }
+]

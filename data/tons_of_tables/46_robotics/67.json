@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LocationData (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR,\n    event_date TIMESTAMP,\n    event_location VARCHAR,\n    event_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_description TEXT,\n    event_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE virtual_locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    location_description TEXT,\n    event_id INT,\n    FOREIGN KEY (event_id) REFERENCES virtual_events(event_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id UUID PRIMARY KEY,\n  location_name STRING,\n  capacity INT,\n  address STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n  event_id UUID PRIMARY KEY,\n  event_name STRING,\n  location_id UUID REFERENCES locations(location_id),\n  event_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n  attendee_id UUID PRIMARY KEY,\n  attendee_name STRING,\n  event_id UUID REFERENCES events(event_id),\n  registration_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id UUID PRIMARY KEY,\n    event_name STRING,\n    event_description STRING,\n    event_date TIMESTAMP,\n    event_location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id UUID PRIMARY KEY,\n    attendee_name STRING,\n    attendee_email STRING,\n    event_id UUID REFERENCES events(event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id UUID PRIMARY KEY,\n    location_name STRING,\n    location_description STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_locations (\n    event_id UUID REFERENCES events(event_id),\n    location_id UUID REFERENCES locations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Location (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    latitude DECIMAL(10, 8),\n    longitude DECIMAL(11, 8),\n    capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Event (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    location_id INT,\n    date DATE,\n    time TIME,\n    FOREIGN KEY (location_id) REFERENCES Location(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Attendee (\n    attendee_id INT PRIMARY KEY,\n    attendee_name VARCHAR(255) NOT NULL,\n    event_id INT,\n    registration_date DATE,\n    FOREIGN KEY (event_id) REFERENCES Event(event_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Organizer (\n    organizer_id INT PRIMARY KEY,\n    organizer_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Event_Organizer (\n    event_id INT,\n    organizer_id INT,\n    PRIMARY KEY (event_id, organizer_id),\n    FOREIGN KEY (event_id) REFERENCES Event(event_id),\n    FOREIGN KEY (organizer_id) REFERENCES Organizer(organizer_id)\n);\n"
+      }
+    ]
+  }
+]

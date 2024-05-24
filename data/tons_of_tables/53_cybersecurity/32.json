@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CreditCardInfo (\n  id INT,\n  card_number VARCHAR(16),\n  card_holder_name VARCHAR(50),\n  expiration_date DATE,\n  cvv VARCHAR(3),\n  billing_address VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE credit_cards (\n    id INT PRIMARY KEY,\n    card_number VARCHAR(16),\n    card_holder_name VARCHAR(255),\n    expiration_date DATE,\n    cvv VARCHAR(3)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    card_id INT,\n    amount DECIMAL(10, 2),\n    transaction_date TIMESTAMP,\n    location VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CreditCards (\n    id UUID PRIMARY KEY,\n    card_number VARCHAR(16) NOT NULL,\n    card_holder_name VARCHAR(50) NOT NULL,\n    expiration_date DATE NOT NULL,\n    cvv VARCHAR(4) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    id UUID PRIMARY KEY,\n    credit_card_id UUID NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    amount DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FraudulentTransactions (\n    id UUID PRIMARY KEY,\n    transaction_id UUID NOT NULL,\n    fraudulent_reason TEXT,\n    fraudulent_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CreditCards (\n  id UUID PRIMARY KEY,\n  card_number VARCHAR(16) NOT NULL,\n  card_holder_name VARCHAR(255) NOT NULL,\n  expiration_date DATE NOT NULL,\n  cvv VARCHAR(3) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IdentityThieves (\n  id UUID PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) NOT NULL UNIQUE,\n  password VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n  id UUID PRIMARY KEY,\n  card_id UUID NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  transaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FraudulentActivity (\n  id UUID PRIMARY KEY,\n  transaction_id UUID NOT NULL,\n  reason TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE credit_cards (\n  id SERIAL PRIMARY KEY,\n  card_number VARCHAR(16) NOT NULL,\n  card_holder VARCHAR(100) NOT NULL,\n  expiration_date DATE NOT NULL,\n  cvv VARCHAR(3) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  id SERIAL PRIMARY KEY,\n  card_id INTEGER NOT NULL,\n  amount NUMERIC(10, 2) NOT NULL,\n  transaction_date TIMESTAMP NOT NULL,\n  FOREIGN KEY (card_id) REFERENCES credit_cards(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fraudsters (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  organization VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_transactions (\n  id SERIAL PRIMARY KEY,\n  transaction_id INTEGER NOT NULL,\n  fraudster_id INTEGER NOT NULL,\n  details TEXT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  FOREIGN KEY (transaction_id) REFERENCES transactions(id),\n  FOREIGN KEY (fraudster_id) REFERENCES fraudsters(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE stolen_cards (\n  id SERIAL PRIMARY KEY,\n  card_id INTEGER NOT NULL,\n  fraudster_id INTEGER NOT NULL,\n  reason TEXT NOT NULL,\n  date_stolen DATE NOT NULL,\n  FOREIGN KEY (card_id) REFERENCES credit_cards(id),\n  FOREIGN KEY (fraudster_id) REFERENCES fraudsters(id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_data( \n   id SERIAL PRIMARY KEY, \n   image_name VARCHAR(255) NOT NULL, \n   image_data BYTEA NOT NULL, \n   label VARCHAR(50) NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id SERIAL PRIMARY KEY,\n    image_data BYTEA,\n    image_label VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    metadata_id SERIAL PRIMARY KEY,\n    image_id INTEGER REFERENCES images(image_id),\n    image_name VARCHAR(100),\n    image_size INTEGER\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_data (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id INT PRIMARY KEY,\n    label_name VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    image_id INT,\n    label_id INT,\n    FOREIGN KEY (image_id) REFERENCES image_data(image_id),\n    FOREIGN KEY (label_id) REFERENCES labels(label_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    id SERIAL PRIMARY KEY,\n    image_name VARCHAR(255) NOT NULL,\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id SERIAL PRIMARY KEY,\n    label_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    image_id INT REFERENCES images(id),\n    label_id INT REFERENCES labels(label_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_results (\n    result_id SERIAL PRIMARY KEY,\n    image_id INT REFERENCES images(id),\n    label_id INT REFERENCES labels(label_id),\n    prediction FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    id INT PRIMARY KEY,\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    id INT PRIMARY KEY,\n    label_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    image_id INT,\n    label_id INT,\n    FOREIGN KEY (image_id) REFERENCES images(id),\n    FOREIGN KEY (label_id) REFERENCES labels(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE networks (\n    id INT PRIMARY KEY,\n    network_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_layers (\n    id INT PRIMARY KEY,\n    network_id INT,\n    layer_name VARCHAR(255),\n    FOREIGN KEY (network_id) REFERENCES networks(id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE flexible_work_arrangements (\n  id INT,\n  employee_name VARCHAR(50),\n  department VARCHAR(50),\n  work_arrangement_type VARCHAR(50),\n  communication_rating INT,\n  collaboration_rating INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_collaboration (\n\tteam_id INT NOT NULL,\n\tteam_name VARCHAR(255) NOT NULL,\n\tflexible_work_arrangement BOOLEAN NOT NULL,\n\tteam_size INT,\n\tPRIMARY KEY (team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_history (\n\tmessage_id INT NOT NULL,\n\tteam_id INT NOT NULL,\n\tmessage_content VARCHAR(1000) NOT NULL,\n\tcommunication_date DATE NOT NULL,\n\tPRIMARY KEY (message_id),\n\tFOREIGN KEY (team_id) REFERENCES team_collaboration(team_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE impact_of_flexible_work_arrangements (\n    employee_id INT PRIMARY KEY,\n    team_id INT,\n    work_hours INT,\n    communication_rating INT,\n    collaboration_rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_collaboration (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(50),\n    team_size INT,\n    team_leader VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_data (\n    employee_id INT,\n    communication_channel VARCHAR(50),\n    message_count INT,\n    message_sent_date TIMESTAMP,\n    FOREIGN KEY (employee_id) REFERENCES impact_of_flexible_work_arrangements(employee_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamMembers (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(255),\n    role VARCHAR(50),\n    department VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamCommunication (\n    conversation_id INT PRIMARY KEY,\n    start_date DATETIME,\n    end_date DATETIME,\n    initiated_by INT,\n    conversation_topic VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WorkArrangements (\n    arrangement_id INT PRIMARY KEY,\n    member_id INT,\n    start_date DATETIME,\n    end_date DATETIME,\n    arrangement_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CollaborationMetrics (\n    metric_id INT PRIMARY KEY,\n    conversation_id INT,\n    arrangement_id INT,\n    messages_sent INT,\n    calls_made INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members( id INT PRIMARY KEY, name TEXT, role TEXT, department TEXT );\nCREATE TABLE team_projects( id INT PRIMARY KEY, project_name TEXT, start_date DATE, end_date DATE, team_lead INT REFERENCES team_members(id) );\nCREATE TABLE project_tasks( task_id INT PRIMARY KEY, task_name TEXT, status TEXT, assigned_to INT REFERENCES team_members(id), project_id INT REFERENCES team_projects(id) );\nCREATE TABLE communication_log( log_id INT PRIMARY KEY, timestamp TIMESTAMP, sender_id INT REFERENCES team_members(id), receiver_id INT REFERENCES team_members(id), message TEXT );\nCREATE TABLE collaboration_metrics( metric_id INT PRIMARY KEY, project_id INT REFERENCES team_projects(id), communication_score INT, collaboration_score INT );\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM referral_programs ORDER BY referral_date DESC LIMIT 10",
+      "SELECT participant_id, referral_code FROM referral_programs WHERE referral_date > '2022-01-01'",
+      "SELECT participant_id, referrer_id FROM referral_programs WHERE referral_code = 'ABCDE'",
+      "SELECT DISTINCT referrer_id FROM referral_programs",
+      "SELECT * FROM referral_programs WHERE referrer_id IS NULL",
+      "SELECT participant_id, referral_code, referral_date FROM referral_programs WHERE referral_date >= '2022-01-01' ORDER BY referral_date DESC LIMIT 10",
+      "SELECT * FROM referral_programs WHERE referral_code LIKE 'RE%' AND participant_id IN ('123e4567-e89b-12d3-a456-426614174000','223e4567-e89b-12d3-a456-426614174001')",
+      "SELECT participant_id, referral_code, referrer_id, referral_date FROM referral_programs WHERE referrer_id IS NOT NULL ORDER BY referral_date ASC LIMIT 5",
+      "SELECT COUNT(DISTINCT referrer_id) AS total_referrers, COUNT(participant_id) AS total_participants FROM referral_programs WHERE referral_date >= '2022-01-01'",
+      "SELECT * FROM referral_programs WHERE referral_code IS NOT NULL ORDER BY participant_id ASC LIMIT 20"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM referrals;",
+      "SELECT referral_code, referral_date FROM referrals WHERE referred_to = 123;",
+      "SELECT DISTINCT referral_code, referral_date FROM referrals ORDER BY referral_date DESC;",
+      "SELECT referral_code, COUNT(*) AS total_referrals FROM referrals GROUP BY referral_code HAVING total_referrals > 2;",
+      "SELECT r.referral_code, rw.reward_amount FROM referrals r INNER JOIN rewards rw ON r.id = rw.referral_id;",
+      "SELECT * FROM referrals WHERE referral_code = 'ABC123';",
+      "SELECT id, referral_code, referral_date FROM referrals WHERE referred_by = 1001 ORDER BY referral_date DESC LIMIT 10;",
+      "SELECT r.id, r.referral_code, re.reward_amount FROM referrals r JOIN rewards re ON r.id = re.referral_id WHERE re.reward_amount > 50 ORDER BY re.reward_date ASC;",
+      "SELECT COUNT(DISTINCT referred_by) AS total_referrers FROM referrals;",
+      "SELECT r.referral_code, COUNT(re.reward_amount) AS total_rewards FROM referrals r LEFT JOIN rewards re ON r.id = re.referral_id GROUP BY r.referral_code HAVING total_rewards > 0 ORDER BY total_rewards DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM referrals;",
+      "SELECT referral_id, referring_user_id, referred_user_id FROM referrals WHERE referral_date > '2022-01-01';",
+      "SELECT * FROM rewards ORDER BY reward_date DESC;",
+      "SELECT user_id, SUM(reward_amount) AS total_reward FROM rewards GROUP BY user_id;",
+      "SELECT referral_id, action_type, action_date FROM referral_history WHERE action_type = 'completed' ORDER BY action_date ASC;",
+      "SELECT * FROM referrals WHERE referral_date > NOW() ORDER BY referral_date DESC LIMIT 10;",
+      "SELECT referring_user_id, COUNT(*) AS TotalReferrals FROM referrals GROUP BY referring_user_id HAVING COUNT(*) > 2;",
+      "SELECT r.*, rh.action_type FROM referrals r JOIN referral_history rh ON r.referral_id = rh.referral_id WHERE rh.action_date BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT SUM(rw.reward_amount) AS TotalRewards FROM rewards rw WHERE rw.reward_date >= '2022-01-01';",
+      "SELECT referring_user_id, COUNT(*) AS TotalRewards FROM referrals r JOIN rewards rw ON r.referring_user_id = rw.user_id GROUP BY referring_user_id ORDER BY COUNT(*) DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM ReferralPrograms;",
+      "SELECT program_name, start_date FROM ReferralPrograms ORDER BY start_date DESC;",
+      "SELECT user_id, full_name FROM Users WHERE email LIKE 'example%';",
+      "SELECT * FROM Referrals WHERE referee_id = 1 ORDER BY referral_date ASC;",
+      "SELECT user_id, reward_amount FROM Rewards WHERE reward_amount > 100.00;",
+      "SELECT * FROM Users WHERE user_id = 1",
+      "SELECT full_name, email FROM Users WHERE full_name LIKE '%John%'",
+      "SELECT program_name, start_date, end_date FROM ReferralPrograms ORDER BY start_date DESC",
+      "SELECT referral_code FROM Users WHERE user_id = 2",
+      "SELECT * FROM Referrals WHERE referee_id = 3"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users;",
+      "SELECT first_name, last_name, email FROM users WHERE id = '6168104f-e1e9-4537-b0d0-a962c6dde554';",
+      "SELECT r.referral_code, u.first_name, u.last_name, r.referral_date FROM referrals r JOIN users u ON u.id = r.referred_by;",
+      "SELECT r.referral_code, COUNT(*) AS total_rewards FROM referrals r JOIN rewards rw ON r.id = rw.referral_id GROUP BY r.referral_code;",
+      "SELECT u.first_name, u.last_name, COUNT(t.amount) AS total_transactions FROM users u LEFT JOIN transactions t ON u.id = t.user_id GROUP BY u.first_name, u.last_name;",
+      "SELECT * FROM referrals ORDER BY referral_date DESC, id ASC LIMIT 3;",
+      "SELECT r.referral_code, u.first_name, u.last_name, r.referral_date FROM referrals r JOIN users u ON r.referred_by = u.id WHERE u.first_name LIKE 'A%' ORDER BY u.last_name ASC;",
+      "SELECT u.first_name, COUNT(r.id) AS total_referrals FROM users u LEFT JOIN referrals r ON u.id = r.referred_by GROUP BY u.first_name HAVING COUNT(r.id) > 1 ORDER BY total_referrals DESC;",
+      "SELECT r.referral_code, COUNT(rh.id) AS total_actions FROM referrals r LEFT JOIN referrals_history rh ON r.id = rh.referral_id GROUP BY r.referral_code ORDER BY total_actions DESC LIMIT 5;",
+      "SELECT u.first_name, SUM(re.reward_amount) AS total_rewards FROM users u LEFT JOIN rewards re ON u.id = re.referral_id GROUP BY u.first_name ORDER BY total_rewards DESC, u.first_name DESC LIMIT 3;"
+    ]
+  }
+]

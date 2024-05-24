@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE remote_work_survey_data (\n    survey_id INT,\n    respondent_id INT,\n    remote_work_experience VARCHAR,\n    remote_work_preference VARCHAR,\n    satisfaction_rating INT,\n    feedback TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE survey_data (\n  id SERIAL PRIMARY KEY,\n  question TEXT NOT NULL,\n  response TEXT,\n  respondent_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE respondent_info (\n  respondent_id SERIAL PRIMARY KEY,\n  name TEXT NOT NULL,\n  age INT,\n  email TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE remote_work_preferences (\n    employee_id INT PRIMARY KEY,\n    preferred_work_location VARCHAR,\n    work_hours_per_day INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE remote_work_experiences (\n    employee_id INT PRIMARY KEY,\n    remote_work_duration INT,\n    productivity_rating INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE remote_work_feedback (\n    feedback_id INT PRIMARY KEY,\n    employee_id INT,\n    feedback_text TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SurveyRespondents (\n    respondent_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    job_title VARCHAR(255),\n    company VARCHAR(255),\n    age INT,\n    gender VARCHAR(10),\n    remote_work_experience VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyQuestions (\n    question_id INT PRIMARY KEY,\n    question_text TEXT,\n    question_type VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyResponses (\n    response_id INT PRIMARY KEY,\n    respondent_id INT,\n    question_id INT,\n    response_value TEXT,\n    CONSTRAINT fk_respondent FOREIGN KEY (respondent_id) REFERENCES SurveyRespondents(respondent_id),\n    CONSTRAINT fk_question FOREIGN KEY (question_id) REFERENCES SurveyQuestions(question_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyResults (\n    result_id INT PRIMARY KEY,\n    respondent_id INT,\n    overall_satisfaction INT,\n    work_life_balance_rating INT,\n    remote_collaboration_rating INT,\n    CONSTRAINT fk_respondent_results FOREIGN KEY (respondent_id) REFERENCES SurveyRespondents(respondent_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE survey_participants (\n    id INT PRIMARY KEY,\n    name VARCHAR,\n    email VARCHAR,\n    age INT,\n    gender VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE survey_responses (\n    participant_id INT,\n    question_id INT,\n    response TEXT,\n    FOREIGN KEY (participant_id) REFERENCES survey_participants(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE survey_questions (\n    id INT PRIMARY KEY,\n    question TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE work_preferences (\n    id INT PRIMARY KEY,\n    participant_id INT,\n    preference TEXT,\n    FOREIGN KEY (participant_id) REFERENCES survey_participants(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE work_experiences (\n    id INT PRIMARY KEY,\n    participant_id INT,\n    experience TEXT,\n    FOREIGN KEY (participant_id) REFERENCES survey_participants(id)\n)"
+      }
+    ]
+  }
+]

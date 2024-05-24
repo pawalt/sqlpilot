@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_estate_ownership (\n  id SERIAL PRIMARY KEY,\n  property_address VARCHAR(255) NOT NULL,\n  owner_name VARCHAR(100) NOT NULL,\n  owner_email VARCHAR(255) NOT NULL,\n  transfer_date TIMESTAMP NOT NULL,\n  blockchain_hash VARCHAR(64) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Property (\n    id INT PRIMARY KEY,\n    address VARCHAR(255) NOT NULL,\n    owner_id INT NOT NULL,\n    blockchain_hash VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE Ownership (\n    id INT PRIMARY KEY,\n    property_id INT NOT NULL,\n    owner_id INT NOT NULL,\n    transfer_date DATE NOT NULL,\n    blockchain_signature VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RealEstateOwners (\n  owner_id INT PRIMARY KEY,\n  owner_name VARCHAR(255) NOT NULL,\n  owner_address VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RealEstateProperties (\n  property_id INT PRIMARY KEY,\n  property_address VARCHAR(255) NOT NULL,\n  property_value DECIMAL(10, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PropertyTransfers (\n  transfer_id INT PRIMARY KEY,\n  property_id INT,\n  previous_owner_id INT,\n  new_owner_id INT,\n  transaction_hash VARCHAR(255) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_owners (\n    owner_id UUID PRIMARY KEY,\n    owner_name VARCHAR(100) NOT NULL,\n    email_address VARCHAR(255) NOT NULL,\n    phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE properties (\n    property_id UUID PRIMARY KEY,\n    property_address VARCHAR(255) NOT NULL,\n    property_type VARCHAR(50),\n    owner_id UUID REFERENCES property_owners(owner_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE property_transactions (\n    transaction_id UUID PRIMARY KEY,\n    property_id UUID REFERENCES properties(property_id),\n    seller_id UUID REFERENCES property_owners(owner_id),\n    buyer_id UUID REFERENCES property_owners(owner_id),\n    transaction_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_records (\n    block_id UUID PRIMARY KEY,\n    transaction_id UUID REFERENCES property_transactions(transaction_id),\n    block_hash TEXT NOT NULL,\n    previous_block_hash TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_estate_owners (\n    owner_id UUID primary key,\n    owner_name VARCHAR(50),\n    property_address VARCHAR(100),\n    blockchain_transaction_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_listings (\n    listing_id UUID primary key,\n    property_address VARCHAR(100),\n    listing_price DECIMAL(12, 2),\n    listing_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n    transaction_id UUID primary key,\n    sender_address VARCHAR(100),\n    receiver_address VARCHAR(100),\n    transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_transfers (\n    transfer_id UUID primary key,\n    property_address VARCHAR(100),\n    previous_owner_id UUID,\n    new_owner_id UUID,\n    transfer_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_history (\n    history_id UUID primary key,\n    property_address VARCHAR(100),\n    event_description TEXT,\n    event_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

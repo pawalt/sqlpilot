@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HeatMapData (\n  region_id INT,\n  region_name VARCHAR(50),\n  population_density FLOAT,\n  crime_rate FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE heat_map_data (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(50),\n  population_density FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crime_data (\n  crime_id INT PRIMARY KEY,\n  region_id INT,\n  crime_type VARCHAR(50),\n  crime_rate FLOAT,\n  FOREIGN KEY (region_id) REFERENCES heat_map_data(region_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PopulationDensity (\n  region_id INT,\n  region_name TEXT,\n  population INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CrimeRates (\n  region_id INT,\n  region_name TEXT,\n  crime_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Regions (\n  region_id INT,\n  region_name TEXT,\n  latitude FLOAT,\n  longitude FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE heat_maps ( region_id INT, region_name VARCHAR(50), population_density INT, crime_rate FLOAT )"
+      },
+      {
+        "table_schema": "CREATE TABLE regions ( region_id INT, region_name VARCHAR(50), latitude DECIMAL(9,6), longitude DECIMAL(9,6) )"
+      },
+      {
+        "table_schema": "CREATE TABLE population_data ( population_id INT, region_id INT, year INT, population_count INT )"
+      },
+      {
+        "table_schema": "CREATE TABLE crime_data ( crime_id INT, region_id INT, year INT, crime_type VARCHAR(50), crime_count INT )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE region_data (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(50) NOT NULL,\n    population_density FLOAT NOT NULL,\n    crime_rate FLOAT NOT NULL\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE heat_map_data (\n    map_id INT PRIMARY KEY,\n    region_id INT REFERENCES region_data(region_id),\n    map_image BYTEA NOT NULL,\n    map_date DATE NOT NULL\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL UNIQUE,\n    email VARCHAR(50) NOT NULL UNIQUE\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE map_preferences (\n    user_id INT REFERENCES user_data(user_id),\n    map_id INT REFERENCES heat_map_data(map_id),\n    display_mode VARCHAR(20) NOT NULL\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE heatmap_logs (\n    log_id INT PRIMARY KEY,\n    map_id INT REFERENCES heat_map_data(map_id),\n    user_id INT REFERENCES user_data(user_id),\n    log_date TIMESTAMP NOT NULL\n)\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE User_Profile (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    avatar_url VARCHAR(200),\n    age INT,\n    location VARCHAR(100),\n    bio TEXT,\n    created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    avatar_url VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id SERIAL PRIMARY KEY,\n    user_id UUID,\n    can_create_event BOOLEAN,\n    can_join_event BOOLEAN,\n    can_add_friend BOOLEAN,\n    FOREIGN KEY (user_id) REFERENCES user_profiles(user_id) ON DELETE CASCADE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    profile_pic_url TEXT,\n    last_login TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT REFERENCES user_profiles(user_id),\n    permission_id INT REFERENCES permissions(permission_id),\n    PRIMARY KEY (user_id, permission_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    age INT,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    profile_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    avatar_url VARCHAR(200),\n    bio TEXT,\n    location VARCHAR(100),\n    last_login TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL UNIQUE,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT REFERENCES users(user_id),\n    permission_id INT REFERENCES permissions(permission_id),\n    PRIMARY KEY (user_id, permission_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    role VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE profiles (\n    profile_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    bio TEXT,\n    avatar_url VARCHAR(255),\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id SERIAL PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    can_create BOOLEAN,\n    can_edit BOOLEAN,\n    can_delete BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE friendships (\n    friendship_id UUID PRIMARY KEY,\n    user_id_1 UUID REFERENCES users(user_id),\n    user_id_2 UUID REFERENCES users(user_id),\n    friendship_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    message TEXT,\n    is_read BOOLEAN,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]

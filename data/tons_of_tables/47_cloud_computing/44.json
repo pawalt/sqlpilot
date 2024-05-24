@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(100),\n    key_value VARCHAR(255),\n    encryption_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE certificates (\n    cert_id UUID PRIMARY KEY,\n    cert_name VARCHAR(255) NOT NULL,\n    cert_data TEXT NOT NULL,\n    expiry_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE certificates (\n    cert_id INT PRIMARY KEY,\n    cert_name VARCHAR(50) NOT NULL,\n    cert_data BYTEA NOT NULL,\n    expiration_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_certificate_mapping (\n    mapping_id INT PRIMARY KEY,\n    key_id INT NOT NULL,\n    cert_id INT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(id),\n    FOREIGN KEY (cert_id) REFERENCES certificates(cert_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA NOT NULL,\n    key_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE certificates (\n    cert_id UUID PRIMARY KEY,\n    cert_data BYTEA NOT NULL,\n    cert_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_usage (\n    key_id UUID,\n    cert_id UUID,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id),\n    FOREIGN KEY (cert_id) REFERENCES certificates(cert_id),\n    PRIMARY KEY (key_id, cert_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_permissions (\n    permission_id UUID PRIMARY KEY,\n    permission_name TEXT NOT NULL,\n    permission_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value BYTEA NOT NULL,\n    encryption_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE certificates (\n    cert_id UUID PRIMARY KEY,\n    cert_name VARCHAR(50) NOT NULL,\n    cert_data BYTEA NOT NULL,\n    expiration_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_cert_mapping (\n    mapping_id UUID PRIMARY KEY,\n    key_id UUID REFERENCES encryption_keys(key_id),\n    cert_id UUID REFERENCES certificates(cert_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_usage (\n    usage_id UUID PRIMARY KEY,\n    key_id UUID REFERENCES encryption_keys(key_id),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_rotation (\n    rotation_id UUID PRIMARY KEY,\n    key_id UUID REFERENCES encryption_keys(key_id),\n    rotation_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PlantGenetics (\n  plant_id SERIAL PRIMARY KEY,\n  plant_name VARCHAR(50) NOT NULL,\n  genetic_code TEXT,\n  growth_stage INTEGER,\n  modification_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n    crop_id SERIAL PRIMARY KEY,\n    crop_name VARCHAR(50) NOT NULL,\n    crop_species VARCHAR(50) NOT NULL,\n    origin_country VARCHAR(50),\n    genetic_information JSON\n);\n\nCREATE TABLE candidates_for_modification (\n    candidate_id SERIAL PRIMARY KEY,\n    candidate_name VARCHAR(50) NOT NULL,\n    crop_id INT REFERENCES crops(crop_id),\n    modification_method VARCHAR(50) NOT NULL,\n    confirmation_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(255) NOT NULL,\n    crop_species VARCHAR(255) NOT NULL,\n    genetic_traits TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_modifications (\n    modification_id INT PRIMARY KEY,\n    modification_type VARCHAR(255) NOT NULL,\n    modification_target VARCHAR(255) NOT NULL,\n    modification_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_modifications (\n    id INT PRIMARY KEY,\n    crop_id INT,\n    modification_id INT,\n    FOREIGN KEY (crop_id) REFERENCES crops(crop_id),\n    FOREIGN KEY (modification_id) REFERENCES genetic_modifications(modification_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n    id INT PRIMARY KEY,\n    crop_name VARCHAR(50) NOT NULL,\n    crop_family VARCHAR(50) NOT NULL,\n    crop_origin VARCHAR(50),\n    genetic_code TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_modifications (\n    id INT PRIMARY KEY,\n    modification_type VARCHAR(50) NOT NULL,\n    modification_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_varieties (\n    id INT PRIMARY KEY,\n    crop_id INT,\n    variety_name VARCHAR(50) NOT NULL,\n    variety_description TEXT,\n    FOREIGN KEY (crop_id) REFERENCES crops(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE modification_history (\n    id INT PRIMARY KEY,\n    crop_variety_id INT,\n    modification_id INT,\n    modification_date DATE,\n    FOREIGN KEY (crop_variety_id) REFERENCES crop_varieties(id),\n    FOREIGN KEY (modification_id) REFERENCES genetic_modifications(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_species (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_markers (\n  marker_id INT PRIMARY KEY,\n  marker_name VARCHAR(50) NOT NULL,\n  chromosome INT,\n  position INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_samples (\n  sample_id INT PRIMARY KEY,\n  species_id INT,\n  marker_id INT,\n  genotype VARCHAR(100),\n  FOREIGN KEY (species_id) REFERENCES crop_species(species_id),\n  FOREIGN KEY (marker_id) REFERENCES genetic_markers(marker_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_labs (\n  lab_id INT PRIMARY KEY,\n  lab_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lab_reports (\n  report_id INT PRIMARY KEY,\n  lab_id INT,\n  sample_id INT,\n  analysis_result VARCHAR(200),\n  FOREIGN KEY (lab_id) REFERENCES research_labs(lab_id),\n  FOREIGN KEY (sample_id) REFERENCES crop_samples(sample_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_status (\n id SERIAL PRIMARY KEY,\n user_id INT,\n connection_status VARCHAR(50),\n uptime INTERVAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_connections (\n    id INT PRIMARY KEY,\n    username TEXT,\n    connection_status TEXT,\n    connection_time TIMESTAMP,\n    uptime_minutes INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_uptime (\n    user_id INT,\n    connection_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    uptime_minutes INT,\n    FOREIGN KEY (user_id) REFERENCES vpn_connections(id),\n    FOREIGN KEY (connection_id) REFERENCES vpn_connections(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_users (user_id INT PRIMARY KEY,\nusername VARCHAR(255) NOT NULL,\npassword VARCHAR(255) NOT NULL,\nvpn_ip VARCHAR(15) NOT NULL,\nconnected BOOLEAN DEFAULT FALSE,\nlast_connection TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_sessions (session_id INT PRIMARY KEY,\nuser_id INT NOT NULL,\nstart_time TIMESTAMP NOT NULL,\nend_time TIMESTAMP,\nstatus VARCHAR(50) NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_logs(log_id INT PRIMARY KEY,\nsession_id INT NOT NULL,\nlog_time TIMESTAMP NOT NULL,\nlog_message TEXT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    ip_address VARCHAR(15) NOT NULL,\n    vpn_status BOOLEAN NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_servers (\n    server_id INT PRIMARY KEY,\n    server_name VARCHAR(50) NOT NULL,\n    location VARCHAR(50) NOT NULL,\n    connection_limit INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_connections (\n    connection_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    server_id INT NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_logs (\n    log_id INT PRIMARY KEY,\n    connection_id INT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_servers (\n    server_id UUID PRIMARY KEY,\n    server_address VARCHAR(100),\n    location VARCHAR(50),\n    status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_connections (\n    connection_id UUID PRIMARY KEY,\n    user_id UUID,\n    server_id UUID,\n    connection_start TIMESTAMP,\n    connection_end TIMESTAMP,\n    status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_logs (\n    log_id UUID PRIMARY KEY,\n    connection_id UUID,\n    log_timestamp TIMESTAMP,\n    log_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_usage_stats (\n    stats_id UUID PRIMARY KEY,\n    user_id UUID,\n    connection_id UUID,\n    data_transfer BIGINT,\n    uptime_seconds BIGINT\n);"
+      }
+    ]
+  }
+]

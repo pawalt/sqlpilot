@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkConfigurations (\n    id INT PRIMARY KEY,\n    network_name VARCHAR(255),\n    ip_address VARCHAR(15),\n    subnet_mask VARCHAR(15),\n    gateway_address VARCHAR(15),\n    dns_server VARCHAR(15)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_settings (\n    id INT PRIMARY KEY,\n    interface_name VARCHAR(50) NOT NULL,\n    ip_address VARCHAR(15) NOT NULL,\n    subnet_mask VARCHAR(15) NOT NULL,\n    gateway VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE switch_mapping (\n    id INT PRIMARY KEY,\n    switch_name VARCHAR(50) NOT NULL,\n    interface_id INT NOT NULL,\n    port_number INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    ip_address VARCHAR(15),\n    port INT,\n    status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkSettings (\n    setting_id INT PRIMARY KEY,\n    setting_name VARCHAR(50),\n    setting_value VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkLogs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    log_time TIMESTAMP,\n    log_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    ip_address VARCHAR(15),\n    mac_address VARCHAR(17)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkSettings (\n    setting_id INT PRIMARY KEY,\n    device_id INT,\n    setting_name VARCHAR(50),\n    setting_value VARCHAR(100),\n    FOREIGN KEY (device_id) REFERENCES NetworkDevices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VLANConfiguration (\n    vlan_id INT PRIMARY KEY,\n    vlan_name VARCHAR(50),\n    subnet VARCHAR(15),\n    gateway VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkLogs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    log_message TEXT,\n    log_time TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES NetworkDevices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_config (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    ip_address VARCHAR(15),\n    subnet_mask VARCHAR(15),\n    gateway VARCHAR(15),\n    dns_server VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device (\n    id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    configuration_id INT,\n    FOREIGN KEY (configuration_id) REFERENCES network_config(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE network_vlan (\n    id INT PRIMARY KEY,\n    vlan_name VARCHAR(50),\n    vlan_id INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE port_config (\n    id INT PRIMARY KEY,\n    port_number INT,\n    device_id INT,\n    vlan_id INT,\n    FOREIGN KEY (device_id) REFERENCES device(id),\n    FOREIGN KEY (vlan_id) REFERENCES network_vlan(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_log (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR(15),\n    destination_ip VARCHAR(15),\n    port_number INT,\n    vlan_id INT,\n    FOREIGN KEY (port_number) REFERENCES port_config(port_number),\n    FOREIGN KEY (vlan_id) REFERENCES network_vlan(id)\n)"
+      }
+    ]
+  }
+]

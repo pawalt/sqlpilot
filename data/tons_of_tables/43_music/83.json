@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MusicTheoryExercises(\n  exercise_id INT PRIMARY KEY,\n  exercise_topic VARCHAR(50),\n  difficulty_level VARCHAR(20),\n  question TEXT,\n  correct_answer TEXT,\n  explanation TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE exercises (\n    exercise_id UUID PRIMARY KEY,\n    exercise_title TEXT,\n    exercise_description TEXT,\n    difficulty_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quizzes (\n    quiz_id UUID PRIMARY KEY,\n    quiz_title TEXT,\n    quiz_description TEXT,\n    total_questions INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE music_exercises (\n  exercise_id INT PRIMARY KEY,\n  exercise_title VARCHAR(255),\n  exercise_content TEXT,\n  difficulty_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE music_quizzes (\n  quiz_id INT PRIMARY KEY,\n  quiz_title VARCHAR(255),\n  quiz_questions JSON,\n  time_limit INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE student_progress (\n  student_id INT PRIMARY KEY,\n  exercise_id INT,\n  quiz_id INT,\n  completion_status BOOLEAN,\n  FOREIGN KEY (exercise_id) REFERENCES music_exercises(exercise_id),\n  FOREIGN KEY (quiz_id) REFERENCES music_quizzes(quiz_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE exercises (\n    exercise_id SERIAL PRIMARY KEY,\n    exercise_name VARCHAR(50) NOT NULL,\n    difficulty_level INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quizzes (\n    quiz_id SERIAL PRIMARY KEY,\n    quiz_name VARCHAR(50) NOT NULL,\n    total_marks INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE student_scores (\n    student_id SERIAL PRIMARY KEY,\n    quiz_id INT NOT NULL,\n    score INT NOT NULL,\n    FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE student_progress (\n    student_id SERIAL PRIMARY KEY,\n    exercise_id INT NOT NULL,\n    completed BOOLEAN NOT NULL,\n    FOREIGN KEY (exercise_id) REFERENCES exercises(exercise_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE exercises (exercise_id INT PRIMARY KEY, exercise_title VARCHAR(255), exercise_description TEXT, difficulty_level INT) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE quizzes (quiz_id INT PRIMARY KEY, quiz_title VARCHAR(255), quiz_description TEXT, total_questions INT) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE questions (question_id INT PRIMARY KEY, question_text TEXT, correct_answer VARCHAR(255), explanation TEXT, quiz_id INT REFERENCES quizzes(quiz_id)) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE answers (answer_id INT PRIMARY KEY, answer_text VARCHAR(255), is_correct BOOLEAN, question_id INT REFERENCES questions(question_id)) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE student_progress (student_id INT, quiz_id INT REFERENCES quizzes(quiz_id), score INT, attempts INT) \n"
+      }
+    ]
+  }
+]

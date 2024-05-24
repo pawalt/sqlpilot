@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomicVariations (\n    variant_id UUID PRIMARY KEY,\n    gene_name VARCHAR(255),\n    chromosome VARCHAR(10),\n    position INT,\n    ref_allele VARCHAR(1),\n    alt_allele VARCHAR(1),\n    zygosity VARCHAR(10),\n    population_frequency FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genomic_variations (\n  id SERIAL PRIMARY KEY,\n  variation_name VARCHAR(100) NOT NULL,\n  chromosome VARCHAR(10) NOT NULL,\n  start_position INT NOT NULL,\n  end_position INT NOT NULL,\n  nucleotide_change VARCHAR(10) NOT NULL,\n  gene_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_diseases (\n  id SERIAL PRIMARY KEY,\n  disease_name VARCHAR(100) NOT NULL,\n  affected_gene VARCHAR(50) NOT NULL,\n  description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_variations (\n    id SERIAL PRIMARY KEY,\n    variation_name VARCHAR(100) NOT NULL,\n    gene_name VARCHAR(100) NOT NULL,\n    chromosome_number INT NOT NULL,\n    position INT NOT NULL,\n    variant_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n    id SERIAL PRIMARY KEY,\n    patient_name VARCHAR(100) NOT NULL,\n    age INT NOT NULL,\n    gender VARCHAR(10) NOT NULL,\n    genetic_variation_id INT NOT NULL,\n    FOREIGN KEY (genetic_variation_id) REFERENCES genetic_variations(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE diseases (\n    id SERIAL PRIMARY KEY,\n    disease_name VARCHAR(100) NOT NULL,\n    description TEXT NOT NULL,\n    affected_genes VARCHAR(100) NOT NULL,\n    diagnosis_age INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Variations ( \n  variation_id SERIAL PRIMARY KEY, \n  gene_name VARCHAR(255), \n  chromosome VARCHAR(10), \n  position INTEGER, \n  variation_type VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Samples ( \n  sample_id SERIAL PRIMARY KEY, \n  sample_name VARCHAR(255), \n  gender VARCHAR(10), \n  age INTEGER \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Diseases ( \n  disease_id SERIAL PRIMARY KEY, \n  disease_name VARCHAR(255), \n  related_gene VARCHAR(255), \n  diagnostic_method VARCHAR(100) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Studies ( \n  study_id SERIAL PRIMARY KEY, \n  study_name VARCHAR(255), \n  researcher_name VARCHAR(255), \n study_date DATE \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Gene (gene_id INT PRIMARY KEY,\n gene_name VARCHAR(255) NOT NULL,\n chromosome VARCHAR(10) NOT NULL,\n start_position INT NOT NULL,\n end_position INT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Variation (variation_id INT PRIMARY KEY,\n gene_id INT NOT NULL,\n variation_type VARCHAR(50) NOT NULL,\n impact_level VARCHAR(50) NOT NULL,\n FOREIGN KEY (gene_id) REFERENCES Gene(gene_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Sample (sample_id INT PRIMARY KEY,\n patient_id INT NOT NULL,\n sample_type VARCHAR(50) NOT NULL,\n collection_date DATE NOT NULL,\n FOREIGN KEY (patient_id) REFERENCES Patient(patient_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE VariationData (data_id INT PRIMARY KEY,\n variation_id INT NOT NULL,\n sample_id INT NOT NULL,\n zygosity VARCHAR(10) NOT NULL,\n data_value VARCHAR(255) NOT NULL,\n FOREIGN KEY (variation_id) REFERENCES Variation(variation_id),\n FOREIGN KEY (sample_id) REFERENCES Sample(sample_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Patient (patient_id INT PRIMARY KEY,\n patient_name VARCHAR(255) NOT NULL,\n DOB DATE NOT NULL,\n gender VARCHAR(10) NOT NULL);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_coverage_tracking (\n    topic_id INT,\n    media_source VARCHAR(255),\n    number_of_mentions INT,\n    sentiment_analysis VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_mentions (\n    id SERIAL PRIMARY KEY,\n    topic VARCHAR(255) NOT NULL,\n    mention_date DATE NOT NULL,\n    mention_count INT NOT NULL,\n    sentiment_score DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_analysis (\n    id SERIAL PRIMARY KEY,\n    mention_id INT NOT NULL,\n    sentiment_type VARCHAR(50) NOT NULL,\n    sentiment_confidence DECIMAL,\n    FOREIGN KEY (mention_id) REFERENCES media_mentions(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_mentions (\n    mention_id INT PRIMARY KEY,\n    topic_id INT,\n    mention_date DATE,\n    media_source VARCHAR(255),\n    sentiment VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE topics (\n    topic_id INT PRIMARY KEY,\n    topic_name VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE media_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_coverage_mentions (\n    mention_id UUID PRIMARY KEY,\n    mention_date DATE,\n    topic VARCHAR,\n    media_source VARCHAR,\n    mention_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_analysis (\n    analysis_id UUID PRIMARY KEY,\n    analysis_date DATE,\n    mention_id UUID REFERENCES media_coverage_mentions(mention_id),\n    sentiment_score FLOAT,\n    sentiment_category VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE media_sources (\n    source_id UUID PRIMARY KEY,\n    source_name VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE topics (\n    topic_id UUID PRIMARY KEY,\n    topic_name VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_mentions (\n    id INT PRIMARY KEY,\n    topic VARCHAR(255),\n    mention_date DATE,\n    mention_count INT,\n    sentiment VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_mentions (\n    id INT PRIMARY KEY,\n    media_id INT,\n    platform VARCHAR(50),\n    user_id INT,\n    mention_date DATE,\n    sentiment VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE news_articles (\n    id INT PRIMARY KEY,\n    article_id INT,\n    headline VARCHAR(255),\n    publication_date DATE,\n    sentiment VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_analysis (\n    id INT PRIMARY KEY,\n    mention_id INT,\n    analysis_date DATE,\n    sentiment_score FLOAT,\n    positive_words TEXT,\n    negative_words TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trending_topics (\n    id INT PRIMARY KEY,\n    topic VARCHAR(255),\n    trending_date DATE,\n    mention_count INT,\n    sentiment VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

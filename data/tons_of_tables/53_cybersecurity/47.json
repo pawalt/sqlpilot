@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_forensics_data (\n    id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_size INT,\n    file_type VARCHAR(50),\n    upload_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareSamples (\n    sample_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_size INT,\n    md5_checksum VARCHAR(32),\n    detection_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ForensicReports (\n    report_id INT PRIMARY KEY,\n    sample_id INT,\n    analyzed_by VARCHAR(100),\n    analysis_result TEXT,\n    report_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_files (\n    id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_type VARCHAR(50),\n    file_size INT,\n    scan_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_reports (\n    report_id INT PRIMARY KEY,\n    file_id INT,\n    report_text TEXT,\n    report_date DATE,\n    FOREIGN KEY (file_id) REFERENCES malware_files(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_analysis (\n    analysis_id INT PRIMARY KEY,\n    report_id INT,\n    analysis_result TEXT,\n    analysis_date DATE,\n    FOREIGN KEY (report_id) REFERENCES malware_reports(report_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_samples (\n\tsample_id INT PRIMARY KEY,\n\tfile_hash STRING,\n\tfile_type STRING,\n\tfile_size INT,\n\tdetection_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE infected_devices (\n\tdevice_id INT PRIMARY KEY,\n\tdevice_name STRING,\n\tdevice_type STRING,\n\tlast_seen TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE forensic_reports (\n\treport_id INT PRIMARY KEY,\n\tsample_id INT,\n\tdevice_id INT,\n\treport_date DATE,\n\tanalysis_results STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysts (\n\tanalyst_id INT PRIMARY KEY,\n\tanalyst_name STRING,\n\tanalyst_role STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_reports (\n    report_id INT PRIMARY KEY,\n    report_date DATE,\n    malware_type VARCHAR(255),\n    analysis_result TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_samples (\n    sample_id INT PRIMARY KEY,\n    report_id INT,\n    sample_name VARCHAR(255),\n    sample_hash VARCHAR(64),\n    sample_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE infected_machines (\n    machine_id INT PRIMARY KEY,\n    ip_address VARCHAR(15),\n    os_version VARCHAR(50),\n    last_infected_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_signatures (\n    signature_id INT PRIMARY KEY,\n    signature_text TEXT,\n    signature_type VARCHAR(50),\n    created_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_logs (\n    log_id INT PRIMARY KEY,\n    report_id INT,\n    log_timestamp TIMESTAMP,\n    log_message TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_routes (\n  driver_id UUID PRIMARY KEY,\n  route_name TEXT NOT NULL,\n  current_location POINT NOT NULL,\n  last_updated_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n    driver_id UUID PRIMARY KEY,\n    driver_name VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE locations (\n    location_id UUID PRIMARY KEY,\n    driver_id UUID NOT NULL,\n    latitude DECIMAL(10, 6) NOT NULL,\n    longitude DECIMAL(10, 6) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE driver_routes (\n   driver_id INT,\n   route_name VARCHAR(50),\n   current_location VARCHAR(100),\n   last_update TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE driver_locations (\n   driver_id INT,\n   location_id INT,\n   location_name VARCHAR(50),\n   latitude DECIMAL,\n   longitude DECIMAL,\n   last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes_history (\n   route_id INT,\n   driver_id INT,\n   start_location VARCHAR(100),\n   end_location VARCHAR(100),\n   distance DECIMAL,\n   start_time TIMESTAMP,\n   end_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n    driver_id INT NOT NULL PRIMARY KEY,\n    driver_name VARCHAR(50) NOT NULL,\n    vehicle_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id INT NOT NULL PRIMARY KEY,\n    driver_id INT NOT NULL,\n    start_location VARCHAR(100),\n    end_location VARCHAR(100),\n    distance_km FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT NOT NULL PRIMARY KEY,\n    route_id INT NOT NULL,\n    location_name VARCHAR(100),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_status (\n    vehicle_id INT NOT NULL PRIMARY KEY,\n    driver_id INT NOT NULL,\n    status VARCHAR(20),\n    last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n  driver_id INT PRIMARY KEY,\n  driver_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  driver_id INT,\n  route_name TEXT,\n  start_location TEXT,\n  end_location TEXT,\n  FOREIGN KEY (driver_id) REFERENCES drivers(driver_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  route_id INT,\n  location_name TEXT,\n  latitude DECIMAL,\n  longitude DECIMAL,\n  FOREIGN KEY (route_id) REFERENCES routes(route_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_types (\n  type_id INT PRIMARY KEY,\n  type_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n  vehicle_id INT PRIMARY KEY,\n  type_id INT,\n  vehicle_name TEXT,\n  driver_id INT,\n  FOREIGN KEY (type_id) REFERENCES vehicle_types(type_id),\n  FOREIGN KEY (driver_id) REFERENCES drivers(driver_id)\n);"
+      }
+    ]
+  }
+]

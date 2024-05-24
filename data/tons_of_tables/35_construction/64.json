@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_performance_data (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    network_speed INT,\n    latency INT,\n    packet_loss_rate DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    location VARCHAR(100),\n    install_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_data (\n    data_id INT PRIMARY KEY,\n    device_id INT,\n    timestamp TIMESTAMP,\n    cpu_utilization FLOAT,\n    memory_utilization FLOAT,\n    storage_utilization FLOAT,\n    network_traffic FLOAT,\n    CONSTRAINT fk_device_id FOREIGN KEY (device_id) REFERENCES network_devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_devices (\n  id INT PRIMARY KEY,\n  device_name VARCHAR(255),\n  ip_address VARCHAR(15),\n  location VARCHAR(100),\n  last_modified TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n  metric_id INT PRIMARY KEY,\n  device_id INT,\n  metric_name VARCHAR(50),\n  metric_value FLOAT,\n  timestamp TIMESTAMP,\n  FOREIGN KEY (device_id) REFERENCES network_devices(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bottlenecks (\n  bottleneck_id INT PRIMARY KEY,\n  device_id INT,\n  bottleneck_description TEXT,\n  timestamp TIMESTAMP,\n  FOREIGN KEY (device_id) REFERENCES network_devices(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    device_id UUID PRIMARY KEY,\n    device_name STRING,\n    device_type STRING,\n    location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_data (\n    data_id UUID PRIMARY KEY,\n    device_id UUID,\n    timestamp TIMESTAMP,\n    cpu_usage FLOAT,\n    memory_usage FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trends (\n    trend_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    trend_type STRING,\n    trend_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bottlenecks (\n    bottleneck_id UUID PRIMARY KEY,\n    device_id UUID,\n    timestamp TIMESTAMP,\n    issue_description STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    last_update TIMESTAMP,\n    location VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_performance (\n    performance_id INT PRIMARY KEY,\n    device_id INT,\n    cpu_utilization FLOAT,\n    memory_utilization FLOAT,\n    network_utilization FLOAT,\n    storage_utilization FLOAT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES network_devices(device_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE network_traffic (\n    traffic_id INT PRIMARY KEY,\n    device_id INT,\n    source_ip VARCHAR(15),\n    destination_ip VARCHAR(15),\n    data_size INT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES network_devices(device_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE network_errors (\n    error_id INT PRIMARY KEY,\n    device_id INT,\n    error_message VARCHAR(255),\n    timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES network_devices(device_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE network_bottlenecks (\n    bottleneck_id INT PRIMARY KEY,\n    device_id INT,\n    bottleneck_type VARCHAR(50),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES network_devices(device_id)\n)"
+      }
+    ]
+  }
+]

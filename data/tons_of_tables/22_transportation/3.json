@@ -1,0 +1,46 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_maintenance_schedule (\n    vehicle_id INT,\n    maintenance_type VARCHAR(50),\n    maintenance_date DATE,\n    technician_id INT,\n    scheduled_by VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VehicleSchedule (\n    vehicle_id INT PRIMARY KEY,\n    service_date DATE NOT NULL,\n    service_type VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE ServiceHistory (\n    service_id INT PRIMARY KEY,\n    vehicle_id INT NOT NULL,\n    service_date DATE NOT NULL,\n    service_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE service_schedules (\n  schedule_id UUID PRIMARY KEY,\n  vehicle_id UUID,\n  service_date DATE,\n  service_type VARCHAR,\n  mechanic_id UUID\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Vehicle (id INT PRIMARY KEY,\nmake VARCHAR(255),\nmodel VARCHAR(255),\nyear INT,\nlicense_plate VARCHAR(15));"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceType (id INT PRIMARY KEY,\ntype_name VARCHAR(255),\ndescription TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE ServiceSchedule (id INT PRIMARY KEY,\nvehicle_id INT REFERENCES Vehicle(id),\nmaintenance_type_id INT REFERENCES MaintenanceType(id),\nschedule_date TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLog (id INT PRIMARY KEY,\nservice_schedule_id INT REFERENCES ServiceSchedule(id),\nnotes TEXT,\ncompleted BOOLEAN);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Vehicle (\n    vehicle_id INT PRIMARY KEY,\n    make VARCHAR(50) NOT NULL,\n    model VARCHAR(50) NOT NULL,\n    year INT NOT NULL,\n    license_plate VARCHAR(15) UNIQUE NOT NULL\n);\n\nCREATE TABLE MaintenanceSchedule (\n    schedule_id INT PRIMARY KEY,\n    vehicle_id INT NOT NULL,\n    technician_id INT NOT NULL,\n    scheduled_date DATE NOT NULL,\n    service_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_id),\n    FOREIGN KEY (technician_id) REFERENCES Technician(technician_id)\n);\n\nCREATE TABLE Technician (\n    technician_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    specialization VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE MaintenanceLog (\n    log_id INT PRIMARY KEY,\n    schedule_id INT NOT NULL,\n    service_date DATE NOT NULL,\n    service_cost DECIMAL(10, 2) NOT NULL,\n    notes TEXT,\n    FOREIGN KEY (schedule_id) REFERENCES MaintenanceSchedule(schedule_id)\n);\n\nCREATE TABLE PartsInventory (\n    part_id INT PRIMARY KEY,\n    part_name VARCHAR(50) NOT NULL,\n    quantity_in_stock INT NOT NULL,\n    unit_price DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  }
+]

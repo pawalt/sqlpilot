@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences_metadata (\n  id SERIAL PRIMARY KEY,\n  sequence_name VARCHAR(255) NOT NULL,\n  sequence_data TEXT NOT NULL,\n  created_at TIMESTAMPTZ DEFAULT NOW()\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  sequence_id INT PRIMARY KEY,\n  sequence_name VARCHAR(50) NOT NULL,\n  sequence_data TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE metadata (\n  metadata_id INT PRIMARY KEY,\n  sequence_id INT NOT NULL,\n  metadata_key VARCHAR(50) NOT NULL,\n  metadata_value TEXT NOT NULL,\n  FOREIGN KEY (sequence_id) REFERENCES dna_sequences(sequence_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n    id UUID PRIMARY KEY,\n    sequence TEXT NOT NULL,\n    name TEXT,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_metadata (\n    id UUID PRIMARY KEY,\n    sequence_id UUID REFERENCES dna_sequences(id),\n    region TEXT,\n    gene_name TEXT,\n    organism TEXT,\n    CONSTRAINT fk_sequence_id FOREIGN KEY(sequence_id) REFERENCES dna_sequences(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_tags (\n    id UUID PRIMARY KEY,\n    sequence_id UUID REFERENCES dna_sequences(id),\n    tag TEXT,\n    CONSTRAINT fk_sequence_id FOREIGN KEY(sequence_id) REFERENCES dna_sequences(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n\tdna_id INT PRIMARY KEY,\n\tsequence VARCHAR(100) NOT NULL,\n\torganism VARCHAR(50) NOT NULL,\n\tlength INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genes (\n\tgene_id INT PRIMARY KEY,\n\tgene_name VARCHAR(50) NOT NULL,\n\tdna_id INT,\n\tFOREIGN KEY (dna_id) REFERENCES dna_sequences(dna_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE proteins (\n\tprotein_id INT PRIMARY KEY,\n\tprotein_name VARCHAR(50) NOT NULL,\n\tdna_id INT,\n\tFOREIGN KEY (dna_id) REFERENCES dna_sequences(dna_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n\tannotation_id INT PRIMARY KEY,\n\tannotation_text TEXT NOT NULL,\n\tprotein_id INT,\n\tFOREIGN KEY (protein_id) REFERENCES proteins(protein_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  id INT PRIMARY KEY,\n  sequence TEXT NOT NULL,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_metadata (\n  metadata_id INT PRIMARY KEY,\n  sequence_id INT,\n  metadata_key TEXT NOT NULL,\n  metadata_value TEXT NOT NULL,\n  FOREIGN KEY (sequence_id) REFERENCES dna_sequences(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_tags (\n  tag_id INT PRIMARY KEY,\n  sequence_id INT,\n  tag TEXT NOT NULL,\n  FOREIGN KEY (sequence_id) REFERENCES dna_sequences(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_annotations (\n  annotation_id INT PRIMARY KEY,\n  sequence_id INT,\n  annotation TEXT NOT NULL,\n  FOREIGN KEY (sequence_id) REFERENCES dna_sequences(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_references (\n  reference_id INT PRIMARY KEY,\n  sequence_id INT,\n  reference_link TEXT NOT NULL,\n  FOREIGN KEY (sequence_id) REFERENCES dna_sequences(id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_impact (\n    id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    packaging_material VARCHAR(255),\n    packaging_weight FLOAT,\n    carbon_footprint FLOAT,\n    recycling_code VARCHAR(10)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PackagingMaterials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  material_type VARCHAR(50) NOT NULL,\n  carbon_footprint DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductPackaging (\n  packaging_id INT PRIMARY KEY,\n  product_id INT NOT NULL,\n  material_id INT NOT NULL,\n  quantity INT NOT NULL,\n  FOREIGN KEY (product_id) REFERENCES Products (product_id),\n  FOREIGN KEY (material_id) REFERENCES PackagingMaterials (material_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Product (\n    product_id INT PRIMARY KEY,\n    product_name STRING,\n    packaging_material STRING,\n    weight DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PackagingMaterials (\n    material_id INT PRIMARY KEY,\n    material_name STRING,\n    material_type STRING,\n    recyclable BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnvironmentalImpact (\n    impact_id INT PRIMARY KEY,\n    product_id INT,\n    material_id INT,\n    impact_score DECIMAL,\n    FOREIGN KEY (product_id) REFERENCES Product(product_id),\n    FOREIGN KEY (material_id) REFERENCES PackagingMaterials(material_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n  id INT PRIMARY KEY,\n  material_name VARCHAR,\n  material_type VARCHAR,\n  impact_factor DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  id INT PRIMARY KEY,\n  product_name VARCHAR,\n  product_category VARCHAR,\n  packaging_material_id INT,\n  CONSTRAINT fk_packaging_material FOREIGN KEY (packaging_material_id) REFERENCES packaging_materials(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n  id INT PRIMARY KEY,\n  product_id INT,\n  ship_date DATE,\n  quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact (\n  id INT PRIMARY KEY,\n  product_id INT,\n  impact_score DECIMAL,\n  CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES products(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  material_type VARCHAR(50) NOT NULL,\n  recyclable BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE product_information (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(50) NOT NULL,\n  product_description TEXT,\n  packaging_material_id INT REFERENCES packaging_materials(material_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact (\n  impact_id INT PRIMARY KEY,\n  impact_type VARCHAR(50),\n  impact_description TEXT,\n  environmental_score INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE product_impact (\n  product_id INT REFERENCES product_information(product_id),\n  impact_id INT REFERENCES environmental_impact(impact_id),\n  impact_value INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_feedback (\n  feedback_id INT PRIMARY KEY,\n  user_id INT,\n  feedback_text TEXT,\n  rating INT\n)"
+      }
+    ]
+  }
+]

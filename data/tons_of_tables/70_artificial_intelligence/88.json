@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SensorData (\n    sensor_id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMPTZ,\n    sensor_value FLOAT,\n    anomaly_flag BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    sensor_id INT PRIMARY KEY,\n    sensor_name VARCHAR(255),\n    location VARCHAR(255),\n    reading FLOAT,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    anomaly_id INT PRIMARY KEY,\n    sensor_id INT,\n    anomaly_type VARCHAR(255),\n    anomaly_description VARCHAR(255),\n    detection_date DATE,\n    FOREIGN KEY (sensor_id) REFERENCES sensor_data(sensor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (id INT PRIMARY KEY,\n sensor_name VARCHAR(50),\n sensor_type VARCHAR(50),\n location VARCHAR(50),\n timestamp TIMESTAMP,\n reading FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies (id INT PRIMARY KEY,\n sensor_id INT,\n anomaly_type VARCHAR(50),\n detected_at TIMESTAMP,\n severity VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies_log (id INT PRIMARY KEY,\n anomaly_id INT,\n log_description TEXT,\n logged_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id SERIAL PRIMARY KEY,\n    sensor_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE readings (\n    reading_id SERIAL PRIMARY KEY,\n    sensor_id INT REFERENCES sensors(sensor_id),\n    value FLOAT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    anomaly_id SERIAL PRIMARY KEY,\n    reading_id INT REFERENCES readings(reading_id),\n    anomaly_type VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id SERIAL PRIMARY KEY,\n    anomaly_id INT REFERENCES anomalies(anomaly_id),\n    alert_message TEXT NOT NULL,\n    alert_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    id INT PRIMARY KEY,\n    date TIMESTAMP,\n    sensor_id INT,\n    anomaly_type VARCHAR(50),\n    severity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_name VARCHAR(50),\n    location VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE readings (\n    id INT PRIMARY KEY,\n    sensor_id INT,\n    reading_value FLOAT,\n    date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies_history (\n    id INT PRIMARY KEY,\n    anomaly_id INT,\n    date TIMESTAMP,\n    remediation VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies_detection (\n    id INT PRIMARY KEY,\n    anomaly_id INT,\n    sensor_id INT,\n    detection_method VARCHAR(50),\n    detection_date TIMESTAMP\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE treaties (\n  treaty_id UUID PRIMARY KEY,\n  treaty_name STRING,\n  signing_country STRING,\n  signing_date DATE,\n  compliance_status STRING\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE treaty_agreements (\n    treaty_id SERIAL PRIMARY KEY,\n    treaty_name TEXT NOT NULL,\n    country_signatory TEXT NOT NULL,\n    date_signed DATE NOT NULL,\n    compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE human_rights_violations (\n    violation_id SERIAL PRIMARY KEY,\n    violation_details TEXT NOT NULL,\n    country_perpetrator TEXT NOT NULL,\n    date_occurred DATE NOT NULL,\n    reported_by TEXT,\n    resolution_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE treaties (\n    treaty_id INT PRIMARY KEY,\n    treaty_name STRING,\n    country_signed STRING,\n    signing_date DATE,\n    compliance_status STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE treaty_signatories (\n    signatory_id INT PRIMARY KEY,\n    treaty_id INT REFERENCES treaties(treaty_id),\n    signatory_name STRING,\n    signatory_country STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE treaty_amendments (\n    amendment_id INT PRIMARY KEY,\n    treaty_id INT REFERENCES treaties(treaty_id),\n    amendment_text STRING,\n    amendment_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE treaties (\n  id INT PRIMARY KEY,\n  treaty_name VARCHAR(255),\n  signatory_countries VARCHAR(255),\n  date_signed DATE,\n  human_rights_compliance BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE treaty_categories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(255),\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE treaty_ratifications (\n  ratification_id INT PRIMARY KEY,\n  treaty_id INT,\n  ratifying_country VARCHAR(255),\n  ratification_date DATE,\n  foreign_policy_impact BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE treaty_amendments (\n  amendment_id INT PRIMARY KEY,\n  treaty_id INT,\n  amendment_date DATE,\n  amendment_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE international_agreements (\n    agreement_id UUID PRIMARY KEY,\n    agreement_name VARCHAR(255) NOT NULL,\n    country_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE treaty_status (\n    status_id UUID PRIMARY KEY,\n    agreement_id UUID REFERENCES international_agreements(agreement_id),\n    status VARCHAR(50) NOT NULL,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agreement_parties (\n    party_id UUID PRIMARY KEY,\n    agreement_id UUID REFERENCES international_agreements(agreement_id),\n    party_name VARCHAR(255) NOT NULL,\n    party_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_reports (\n    report_id UUID PRIMARY KEY,\n    agreement_id UUID REFERENCES international_agreements(agreement_id),\n    party_id UUID REFERENCES agreement_parties(party_id),\n    compliance_rating DECIMAL(5, 2),\n    review_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE treaty_comments (\n    comment_id UUID PRIMARY KEY,\n    agreement_id UUID REFERENCES international_agreements(agreement_id),\n    comment_text TEXT NOT NULL,\n    commenter_name VARCHAR(100),\n    comment_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

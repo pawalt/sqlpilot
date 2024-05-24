@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE nano_material_inventory (\n  material_id SERIAL PRIMARY KEY,\n  material_name VARCHAR(255),\n  quantity INT,\n  supplier VARCHAR(255),\n  usage_tracking BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE nano_materials_inventory (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    quantity INT,\n    supplier VARCHAR(255),\n    purchase_date DATE\n); \n\nCREATE TABLE material_usage_tracking (\n    tracking_id INT PRIMARY KEY,\n    material_id INT,\n    usage_quantity INT,\n    usage_date DATE,\n    department VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE nano_materials (\n    material_id INT PRIMARY KEY,\n    material_name TEXT,\n    quantity INT,\n    unit TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE usage_tracking (\n    tracking_id INT PRIMARY KEY,\n    material_id INT,\n    quantity_used INT,\n    usage_date DATE,\n    FOREIGN KEY (material_id) REFERENCES nano_materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supply_chain (\n    shipment_id INT PRIMARY KEY,\n    material_id INT,\n    quantity_shipped INT,\n    ship_date DATE,\n    delivery_date DATE,\n    FOREIGN KEY (material_id) REFERENCES nano_materials(material_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NanoMaterials (\n    id SERIAL PRIMARY KEY,\n    material_name VARCHAR(100) NOT NULL,\n    supplier VARCHAR(100) NOT NULL,\n    quantity DECIMAL NOT NULL,\n    unit VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UsageLogs (\n    id SERIAL PRIMARY KEY,\n    material_id INT NOT NULL,\n    usage_date DATE NOT NULL,\n    amount_used DECIMAL NOT NULL,\n    employee_id INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    id SERIAL PRIMARY KEY,\n    supplier_name VARCHAR(100) NOT NULL,\n    contact_person VARCHAR(100) NOT NULL,\n    contact_number VARCHAR(15) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Employees (\n    id SERIAL PRIMARY KEY,\n    employee_name VARCHAR(100) NOT NULL,\n    department VARCHAR(100) NOT NULL,\n    designation VARCHAR(100) NOT NULL,\n    contact_number VARCHAR(15) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Materials (material_id INT PRIMARY KEY, material_name VARCHAR(255) NOT NULL, material_type VARCHAR(255) NOT NULL, quantity INT NOT NULL, location VARCHAR(255) NOT NULL, expiration_date DATE)"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (supplier_id INT PRIMARY KEY, supplier_name VARCHAR(255) NOT NULL, contact_person VARCHAR(255), email VARCHAR(255) NOT NULL, phone_number VARCHAR(15) NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Inventory (inventory_id INT PRIMARY KEY, material_id INT NOT NULL, quantity INT NOT NULL, location VARCHAR(255) NOT NULL, FOREIGN KEY (material_id) REFERENCES Materials(material_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE UsageRecords (record_id INT PRIMARY KEY, material_id INT NOT NULL, quantity_used INT NOT NULL, usage_date DATE NOT NULL, FOREIGN KEY (material_id) REFERENCES Materials(material_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders (order_id INT PRIMARY KEY, material_id INT NOT NULL, supplier_id INT NOT NULL, quantity_ordered INT NOT NULL, order_date DATE NOT NULL, delivery_date DATE, FOREIGN KEY (material_id) REFERENCES Materials(material_id), FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id))"
+      }
+    ]
+  }
+]

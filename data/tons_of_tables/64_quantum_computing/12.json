@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuit_configurations (\n    id UUID PRIMARY KEY,\n    circuit_name VARCHAR(50),\n    circuit_description TEXT,\n    qubit_count INT,\n    gate_operations JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumCircuits (\n    circuit_id SERIAL PRIMARY KEY,\n    circuit_name VARCHAR(255) NOT NULL,\n    circuit_description TEXT,\n    qubits_count INT,\n    gates_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ErrorCorrectionCodes (\n    code_id SERIAL PRIMARY KEY,\n    code_name VARCHAR(255) NOT NULL,\n    code_description TEXT,\n    code_length INT,\n    redundancy_factor INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumCircuits (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(50),\n    circuit_description TEXT,\n    qubit_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Errors (\n    error_id INT PRIMARY KEY,\n    error_type VARCHAR(50),\n    error_description TEXT,\n    error_probability FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ErrorRecords (\n    record_id INT PRIMARY KEY,\n    circuit_id INT,\n    error_id INT,\n    error_timestamp TIMESTAMP,\n    FOREIGN KEY (circuit_id) REFERENCES QuantumCircuits(circuit_id),\n    FOREIGN KEY (error_id) REFERENCES Errors(error_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(255),\n    circuit_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id INT PRIMARY KEY,\n    circuit_id INT,\n    qubit_name VARCHAR(50),\n    qubit_state VARCHAR(10),\n    FOREIGN KEY (circuit_id) REFERENCES quantum_circuits(circuit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gates (\n    gate_id INT PRIMARY KEY,\n    circuit_id INT,\n    gate_name VARCHAR(50),\n    gate_operation VARCHAR(50),\n    gate_qubit_id INT,\n    FOREIGN KEY (circuit_id) REFERENCES quantum_circuits(circuit_id),\n    FOREIGN KEY (gate_qubit_id) REFERENCES qubits(qubit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE error_correction (\n    error_code_id INT PRIMARY KEY,\n    circuit_id INT,\n    error_code_type VARCHAR(50),\n    error_correction_method VARCHAR(50),\n    error_probability FLOAT,\n    FOREIGN KEY (circuit_id) REFERENCES quantum_circuits(circuit_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(255),\n    circuit_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id INT PRIMARY KEY,\n    qubit_name VARCHAR(255),\n    qubit_state VARCHAR(10),\n    circuit_id INT,\n    FOREIGN KEY (circuit_id) REFERENCES quantum_circuits(circuit_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gates (\n    gate_id INT PRIMARY KEY,\n    gate_name VARCHAR(255),\n    gate_type VARCHAR(50),\n    qubit_id INT,\n    FOREIGN KEY (qubit_id) REFERENCES qubits(qubit_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE error_correction (\n    correction_id INT PRIMARY KEY,\n    error_description TEXT,\n    gate_id INT,\n    FOREIGN KEY (gate_id) REFERENCES gates(gate_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE syndrome_measurement (\n    measurement_id INT PRIMARY KEY,\n    syndrome_result VARCHAR(10),\n    correction_id INT,\n    FOREIGN KEY (correction_id) REFERENCES error_correction(correction_id)\n);\n"
+      }
+    ]
+  }
+]

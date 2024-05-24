@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rural_infrastructure_projects (\n id INT PRIMARY KEY,\n project_name VARCHAR(255),\n location VARCHAR(255),\n start_date DATE,\n end_date DATE,\n budget DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rural_areas_infrastructure_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    project_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_monitoring_data (\n    data_id INT PRIMARY KEY,\n    project_id INT,\n    monitoring_date DATE,\n    progress_status VARCHAR(20),\n    CONSTRAINT FK_project_id FOREIGN KEY (project_id) REFERENCES rural_areas_infrastructure_projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id SERIAL PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(12, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE impact_indicators (\n    indicator_id SERIAL PRIMARY KEY,\n    indicator_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    weightage DECIMAL(4, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_impact (\n    project_id INT REFERENCES projects(project_id),\n    indicator_id INT REFERENCES impact_indicators(indicator_id),\n    impact_score DECIMAL(5, 2) NOT NULL,\n    PRIMARY KEY (project_id, indicator_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InfrastructureProjects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_type VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImpactAssessment (\n    assessment_id INT PRIMARY KEY,\n    project_id INT,\n    impact_rating INT,\n    assessment_date DATE,\n    FOREIGN KEY (project_id) REFERENCES InfrastructureProjects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Stakeholders (\n    stakeholder_id INT PRIMARY KEY,\n    stakeholder_name VARCHAR(255),\n    stakeholder_type VARCHAR(50),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES InfrastructureProjects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EvaluationMetrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_description TEXT,\n    metric_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rural_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_locations (\n    location_id INT PRIMARY KEY,\n    project_id INT,\n    location_name VARCHAR(255),\n    latitude DECIMAL,\n    longitude DECIMAL,\n    FOREIGN KEY (project_id) REFERENCES rural_projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_impact (\n    impact_id INT PRIMARY KEY,\n    project_id INT,\n    impact_type VARCHAR(50),\n    impact_description TEXT,\n    metrics VARCHAR(255),\n    FOREIGN KEY (project_id) REFERENCES rural_projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE evaluation_reports (\n    report_id INT PRIMARY KEY,\n    project_id INT,\n    report_date DATE,\n    evaluator VARCHAR(100),\n    findings TEXT,\n    FOREIGN KEY (project_id) REFERENCES rural_projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_metrics (\n    metric_id INT PRIMARY KEY,\n    project_id INT,\n    metric_name VARCHAR(50),\n    value DECIMAL,\n    unit VARCHAR(20),\n    FOREIGN KEY (project_id) REFERENCES rural_projects(project_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,49 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE landfill_sites (\n    site_id INT PRIMARY KEY,\n    site_name VARCHAR(255) NOT NULL,\n    latitude DECIMAL(10, 8) NOT NULL,\n    longitude DECIMAL(11, 8) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE landfill_sites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(100) NOT NULL,\n  latitude FLOAT NOT NULL,\n  longitude FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE site_coordinates (\n  site_id INT,\n  measurement_date DATE NOT NULL,\n  latitude FLOAT NOT NULL,\n  longitude FLOAT NOT NULL,\n  FOREIGN KEY (site_id) REFERENCES landfill_sites(site_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE landfill_sites (\n    site_id INT PRIMARY KEY,\n    site_name VARCHAR(255) NOT NULL,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL\n);\n\nCREATE TABLE landfill_coordinates (\n    coordinate_id INT PRIMARY KEY,\n    site_id INT REFERENCES landfill_sites(site_id),\n    coordinate_name VARCHAR(255) NOT NULL,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL\n);\n\nCREATE TABLE site_activity (\n    activity_id INT PRIMARY KEY,\n    site_id INT REFERENCES landfill_sites(site_id),\n    activity_type VARCHAR(100) NOT NULL,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE landfill_sites (\n    site_id INT PRIMARY KEY,\n    site_name TEXT,\n    location_geom GEOMETRY,\n    coordinates TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE landfill_coordinates (\n    coordinate_id INT PRIMARY KEY,\n    site_id INT,\n    latitude DOUBLE PRECISION,\n    longitude DOUBLE PRECISION,\n    FOREIGN KEY (site_id) REFERENCES landfill_sites(site_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE landfill_tracking (\n    tracking_id INT PRIMARY KEY,\n    site_id INT,\n    date_recorded DATE,\n    opened BOOLEAN,\n    FOREIGN KEY (site_id) REFERENCES landfill_sites(site_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE landfill_logs (\n    log_id INT PRIMARY KEY,\n    site_id INT,\n    log_info TEXT,\n    log_date TIMESTAMP,\n    FOREIGN KEY (site_id) REFERENCES landfill_sites(site_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE landfill_sites (\n    site_id INT PRIMARY KEY,\n    site_name VARCHAR(255) NOT NULL,\n    site_location VARCHAR(255) NOT NULL,\n    longitude DECIMAL(10,6) NOT NULL,\n    latitude DECIMAL(10,6) NOT NULL\n);\n\nCREATE TABLE landfill_site_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE site_managers (\n    manager_id INT PRIMARY KEY,\n    manager_name VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE waste_types (\n    waste_type_id INT PRIMARY KEY,\n    waste_type_name VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE waste_disposal_records (\n    record_id INT PRIMARY KEY,\n    site_id INT NOT NULL,\n    manager_id INT NOT NULL,\n    waste_type_id INT NOT NULL,\n    quantity DECIMAL(10,2) NOT NULL,\n    disposal_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

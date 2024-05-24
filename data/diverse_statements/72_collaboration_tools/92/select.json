@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM reviews;",
+      "SELECT review_text, reviewer_name FROM reviews WHERE review_id = 100;",
+      "SELECT reviewer_name, review_date FROM reviews WHERE approval_status = 'Approved';",
+      "SELECT review_id, review_text, approval_status FROM reviews WHERE review_date > '2022-01-01';",
+      "SELECT * FROM reviews ORDER BY approval_status ASC, review_date DESC;",
+      "SELECT * FROM reviews WHERE approval_status = 'approved' ORDER BY review_date DESC;",
+      "SELECT reviewer_name, review_text FROM reviews WHERE review_id > 100 ORDER BY reviewer_name ASC;",
+      "SELECT review_text, review_date FROM reviews WHERE reviewer_name LIKE 'J%' ORDER BY review_date ASC;",
+      "SELECT reviewer_name, review_date FROM reviews WHERE approval_status = 'pending' AND review_date > '2021-01-01' ORDER BY review_date DESC;",
+      "SELECT * FROM reviews WHERE review_text LIKE '%great%' OR review_text LIKE '%excellent%' ORDER BY review_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM reviews ORDER BY review_id DESC;",
+      "SELECT reviewer_name, review_text FROM reviews WHERE approval_status = 'approved';",
+      "SELECT review_id, reviewer_name, approval_status FROM reviews WHERE review_id > 100;",
+      "SELECT review_text FROM reviews WHERE review_id IN (1, 3, 5);",
+      "SELECT * FROM approval_workflows WHERE approval_step = 2 AND approver_user = 'John Doe';",
+      "SELECT * FROM reviews WHERE review_id = 1;",
+      "SELECT reviewer_name, review_text FROM reviews WHERE review_id = 2 AND approval_status = 'approved';",
+      "SELECT approval_step, approver_user FROM approval_workflows WHERE review_id = 3 ORDER BY approval_date DESC;",
+      "SELECT DISTINCT reviewer_name FROM reviews WHERE approval_status = 'pending' OR approval_status = 'rejected';",
+      "SELECT review_id, reviewer_name, approval_status FROM reviews JOIN approval_workflows ON reviews.review_id = approval_workflows.review_id WHERE approval_step = 2;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM reviews WHERE approval_status='approved';",
+      "SELECT reviewer_id, review_text FROM reviews WHERE reviewer_id=2;",
+      "SELECT review_text FROM reviews WHERE id=3;",
+      "SELECT id, name FROM reviewers ORDER BY name DESC;",
+      "SELECT * FROM approval_workflows WHERE status='pending' ORDER BY reviewer_id ASC;",
+      "SELECT * FROM reviews WHERE approval_status = 'approved';",
+      "SELECT id, review_text FROM reviews WHERE reviewer_id = 1 ORDER BY id DESC;",
+      "SELECT r.id, r.review_text, rw.name FROM reviews r JOIN reviewers rw ON r.reviewer_id = rw.id WHERE r.approval_status = 'pending' ORDER BY rw.name ASC, r.id ASC;",
+      "SELECT r.id AS review_id, rw.name AS reviewer_name, aw.status AS approval_status FROM reviews r JOIN reviewers rw ON r.reviewer_id = rw.id JOIN approval_workflows aw ON r.id = aw.review_id WHERE rw.name LIKE 'J%' AND aw.status IN ('approved', 'pending') ORDER BY rw.name ASC, aw.status DESC, r.id DESC;",
+      "SELECT rw.name AS reviewer_name, COUNT(r.id) AS review_count FROM reviewers rw LEFT JOIN reviews r ON r.reviewer_id = rw.id GROUP BY rw.name HAVING COUNT(r.id) > 0 ORDER BY review_count DESC, rw.name ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM review_data",
+      "SELECT review_id, reviewer_name, rating FROM review_data",
+      "SELECT review_text FROM review_data WHERE rating > 3",
+      "SELECT * FROM moderation_workflow ORDER BY moderation_id DESC",
+      "SELECT review_id, assigned_to FROM moderation_workflow WHERE status = 'pending'",
+      "SELECT * FROM review_data;",
+      "SELECT review_id, reviewer_name FROM review_data WHERE rating > 3;",
+      "SELECT review_text FROM review_data ORDER BY review_id DESC;",
+      "SELECT rd.review_id, mw.status, u.username FROM review_data rd JOIN moderation_workflow mw ON rd.review_id = mw.review_id JOIN users u ON u.user_id = mw.moderation_id;",
+      "SELECT r.role_name, count(u.user_id) AS num_users FROM roles r LEFT JOIN users u ON r.role_id = u.user_id GROUP BY r.role_name;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM reviews WHERE rating > 3;",
+      "SELECT user_id, username FROM users ORDER BY username ASC;",
+      "SELECT review_text FROM reviews WHERE review_id = 3;",
+      "SELECT * FROM moderation_status WHERE moderator_id = 5 AND review_status = 'pending';",
+      "SELECT review_id, moderator_id, approval_date FROM approval_history WHERE approved_status = TRUE ORDER BY approval_date DESC;",
+      "SELECT * FROM reviews WHERE rating > 3 ORDER BY review_id DESC LIMIT 5;",
+      "SELECT user_id, review_text FROM reviews WHERE approved = TRUE AND rating < 4 ORDER BY review_id ASC;",
+      "SELECT r.review_id, u.username, r.rating, r.review_text FROM reviews r JOIN users u ON r.user_id = u.user_id WHERE r.approved = TRUE ORDER BY u.username, r.rating DESC;",
+      "SELECT u.username, a.approval_date FROM users u INNER JOIN approval_history a ON u.user_id = a.moderator_id ORDER BY a.approval_date DESC LIMIT 10;",
+      "SELECT r.review_id, ms.review_status, m.username AS moderator FROM reviews r JOIN moderation_status ms ON r.review_id = ms.review_id JOIN moderators m ON ms.moderator_id = m.moderator_id WHERE ms.review_status = 'pending' ORDER BY m.approval_limit DESC LIMIT 3;"
+    ]
+  }
+]

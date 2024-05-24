@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consumption_data (\n    facility_id INT PRIMARY KEY,\n    consumption_date DATE,\n    energy_usage_kwh DECIMAL(10,2),\n    facility_location VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consumption_data ( \n    facility_id INT NOT NULL, \n    timestamp TIMESTAMP NOT NULL, \n    energy_consumption FLOAT NOT NULL, \n    PRIMARY KEY (facility_id, timestamp) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE facilities ( \n    facility_id INT PRIMARY KEY, \n    facility_name TEXT NOT NULL, \n    location TEXT NOT NULL, \n    operational_cost FLOAT NOT NULL \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facility_data (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    total_energy_consumption DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_meter (\n    meter_id INT PRIMARY KEY,\n    facility_id INT NOT NULL,\n    meter_type VARCHAR(50) NOT NULL,\n    last_reading_date DATE NOT NULL,\n    current_reading DECIMAL(10,2) NOT NULL,\n    CONSTRAINT fk_facility FOREIGN KEY (facility_id) REFERENCES facility_data(facility_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_cost (\n    cost_id INT PRIMARY KEY,\n    meter_id INT NOT NULL,\n    cost_per_kwh DECIMAL(8,4) NOT NULL,\n    billing_period_start DATE NOT NULL,\n    billing_period_end DATE NOT NULL,\n    CONSTRAINT fk_meter FOREIGN KEY (meter_id) REFERENCES energy_meter(meter_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE buildings (\n    building_id INT PRIMARY KEY,\n    facility_id INT NOT NULL,\n    building_name VARCHAR(50) NOT NULL,\n    building_size_sqft INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_meters (\n    meter_id INT PRIMARY KEY,\n    building_id INT NOT NULL,\n    meter_type VARCHAR(50) NOT NULL,\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_usage (\n    usage_id INT PRIMARY KEY,\n    meter_id INT NOT NULL,\n    usage_date DATE NOT NULL,\n    energy_consumed_kwh DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facility (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE energy_meter (\n    id INT PRIMARY KEY,\n    facility_id INT NOT NULL,\n    meter_type VARCHAR(50) NOT NULL,\n    unit VARCHAR(20) NOT NULL,\n    installation_date DATE NOT NULL,\n    FOREIGN KEY (facility_id) REFERENCES facility (id)\n);\n\nCREATE TABLE energy_reading (\n    id INT PRIMARY KEY,\n    meter_id INT NOT NULL,\n    reading_date DATE NOT NULL,\n    reading DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (meter_id) REFERENCES energy_meter (id)\n);\n\nCREATE TABLE facility_manager (\n    id INT PRIMARY KEY,\n    facility_id INT NOT NULL,\n    manager_name VARCHAR(100) NOT NULL,\n    manager_email VARCHAR(100) NOT NULL,\n    FOREIGN KEY (facility_id) REFERENCES facility (id)\n);\n\nCREATE TABLE facility_address (\n    id INT PRIMARY KEY,\n    facility_id INT NOT NULL,\n    address_line VARCHAR(255) NOT NULL,\n    city VARCHAR(100) NOT NULL,\n    state VARCHAR(50) NOT NULL,\n    zip_code VARCHAR(10) NOT NULL,\n    FOREIGN KEY (facility_id) REFERENCES facility (id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImageryData (\n    id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    capture_date DATE,\n    resolution FLOAT,\n    cloud_coverage FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n  image_id INT PRIMARY KEY,\n  image_name VARCHAR(255),\n  image_timestamp TIMESTAMP,\n  image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_tags (\n  tag_id INT PRIMARY KEY,\n  tag_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n    image_id INT,\n    image_name VARCHAR(255),\n    capture_date DATE,\n    image_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n    metadata_id INT,\n    image_id INT,\n    metadata_key VARCHAR(50),\n    metadata_value VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageAnalysisResults (\n    analysis_id INT,\n    image_id INT,\n    analysis_date DATE,\n    analysis_result JSONB\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_type VARCHAR(50),\n    image_resolution FLOAT,\n    image_path VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageAnalysisResults (\n    result_id INT PRIMARY KEY,\n    image_id INT,\n    analysis_date TIMESTAMP,\n    analysis_type VARCHAR(50),\n    analysis_result TEXT,\n    FOREIGN KEY (image_id) REFERENCES SatelliteImages(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageTags (\n    tag_id INT PRIMARY KEY,\n    image_id INT,\n    tag_name VARCHAR(50),\n    tag_confidence FLOAT,\n    FOREIGN KEY (image_id) REFERENCES SatelliteImages(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageVisualizations (\n    visualization_id INT PRIMARY KEY,\n    image_id INT,\n    visualization_type VARCHAR(50),\n    visualization_data TEXT,\n    FOREIGN KEY (image_id) REFERENCES SatelliteImages(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    id SERIAL PRIMARY KEY,\n    image_name VARCHAR(50) NOT NULL,\n    image_date DATE NOT NULL,\n    image_resolution FLOAT NOT NULL,\n    image_url TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_metadata (\n    metadata_id SERIAL PRIMARY KEY,\n    image_id INT REFERENCES satellite_images(id),\n    satellite_name VARCHAR(50) NOT NULL,\n    capture_date DATE NOT NULL,\n    capture_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_analysis_results (\n    analysis_id SERIAL PRIMARY KEY,\n    image_id INT REFERENCES satellite_images(id),\n    analyzed_date DATE NOT NULL,\n    analysis_result TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_visualization (\n    visualization_id SERIAL PRIMARY KEY,\n    image_id INT REFERENCES satellite_images(id),\n    visualization_type VARCHAR(50) NOT NULL,\n    visualization_url TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_observations (\n    observation_id SERIAL PRIMARY KEY,\n    image_id INT REFERENCES satellite_images(id),\n    observation_date DATE NOT NULL,\n    observation_details TEXT\n);"
+      }
+    ]
+  }
+]

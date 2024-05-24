@@ -1,0 +1,49 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE whiteboard_image (\n    image_id UUID PRIMARY KEY,\n    image_data BYTEA NOT NULL,\n    created_by_user TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    annotations JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_files (\n    id UUID PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_size INT,\n    file_type VARCHAR(50),\n    created_at TIMESTAMP,\n    user_id UUID\n);\nCREATE TABLE annotations (\n    id UUID PRIMARY KEY,\n    annotation_text TEXT,\n    annotation_color VARCHAR(20),\n    annotation_type VARCHAR(20),\n    created_at TIMESTAMP,\n    user_id UUID,\n    image_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id UUID PRIMARY KEY,\n    image_data BYTEA NOT NULL,\n    uploaded_by_user_id UUID NOT NULL,\n    upload_timestamp TIMESTAMP NOT NULL\n);\n\nCREATE TABLE annotations (\n    annotation_id UUID PRIMARY KEY,\n    image_id UUID REFERENCES images(image_id),\n    annotation_text TEXT NOT NULL,\n    created_by_user_id UUID NOT NULL,\n    creation_timestamp TIMESTAMP NOT NULL\n);\n\nCREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username TEXT UNIQUE NOT NULL,\n    email TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_files (\n    file_id UUID PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_data BYTEA\n);\n\nCREATE TABLE annotations (\n    annotation_id UUID PRIMARY KEY,\n    file_id UUID REFERENCES image_files(file_id),\n    user_id UUID,\n    annotation_text TEXT,\n    created_at TIMESTAMP\n);\n\nCREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(255)\n);\n\nCREATE TABLE whiteboard (\n    whiteboard_id UUID PRIMARY KEY,\n    file_id UUID REFERENCES image_files(file_id),\n    user_id UUID REFERENCES users(user_id),\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Images (\n    image_id INT PRIMARY KEY,\n    image_name TEXT,\n    image_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username TEXT,\n    email TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Annotations (\n    annotation_id INT PRIMARY KEY,\n    annotation_text TEXT,\n    user_id INT,\n    image_id INT,\n    FOREIGN KEY (user_id) REFERENCES Users(user_id),\n    FOREIGN KEY (image_id) REFERENCES Images(image_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Whiteboards (\n    whiteboard_id INT PRIMARY KEY,\n    whiteboard_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Whiteboard_Images (\n    whiteboard_id INT,\n    image_id INT,\n    FOREIGN KEY (whiteboard_id) REFERENCES Whiteboards(whiteboard_id),\n    FOREIGN KEY (image_id) REFERENCES Images(image_id)\n);\n"
+      }
+    ]
+  }
+]

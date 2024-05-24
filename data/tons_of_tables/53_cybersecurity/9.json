@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EncryptionKeys (\n  key_id UUID PRIMARY KEY,\n  key_name VARCHAR(255) NOT NULL,\n  key_value BYTEA NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    encryption_key VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    encrypted_data TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n   id SERIAL PRIMARY KEY,\n   key_name VARCHAR(50) NOT NULL,\n   key_value VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n   id SERIAL PRIMARY KEY,\n   data_name VARCHAR(50) NOT NULL,\n   data_value VARCHAR(100) NOT NULL,\n   encryption_key_id INT,\n   FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_logs (\n   id SERIAL PRIMARY KEY,\n   log_description TEXT NOT NULL,\n   log_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n   encryption_key_id INT,\n   FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTES,\n    key_description STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id UUID PRIMARY KEY,\n    data_value STRING,\n    encryption_key_id UUID REFERENCES encryption_keys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_access_logs (\n    log_id UUID PRIMARY KEY,\n    log_timestamp TIMESTAMP,\n    user_id UUID,\n    action_taken STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_rotation_history (\n    rotation_id UUID PRIMARY KEY,\n    key_id UUID REFERENCES encryption_keys(key_id),\n    rotation_timestamp TIMESTAMP,\n    rotation_reason STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id BIGSERIAL PRIMARY KEY,\n    data_value TEXT NOT NULL,\n    encrypted_key_id UUID REFERENCES encryption_keys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    user_id INT REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_access (\n    access_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    data_id INT REFERENCES sensitive_data(data_id)\n);"
+      }
+    ]
+  }
+]

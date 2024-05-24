@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE race_registration (\n  event_id UUID PRIMARY KEY,\n  event_name VARCHAR NOT NULL,\n  registration_date DATE NOT NULL,\n  payment_status BOOLEAN NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_details (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE registration_info (\n    registration_id UUID PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    event_id UUID,\n    registration_date TIMESTAMP NOT NULL,\n    payment_status BOOLEAN NOT NULL,\n    FOREIGN KEY (event_id) REFERENCES event_details(event_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_details (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_location VARCHAR(255),\n    event_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE registration_dates (\n    registration_id INT PRIMARY KEY,\n    event_id INT,\n    registration_start_date DATE,\n    registration_end_date DATE,\n    FOREIGN KEY (event_id) REFERENCES event_details(event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_status (\n    payment_id INT PRIMARY KEY,\n    registration_id INT,\n    amount DECIMAL(10,2),\n    payment_date DATE,\n    status ENUM('pending', 'completed'),\n    FOREIGN KEY (registration_id) REFERENCES registration_dates(registration_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE race_event (\n  event_id UUID PRIMARY KEY,\n  event_name VARCHAR(255) NOT NULL,\n  event_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participant (\n  participant_id UUID PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  phone_number VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE registration (\n  registration_id UUID PRIMARY KEY,\n  event_id UUID NOT NULL,\n  participant_id UUID NOT NULL,\n  registration_date TIMESTAMP NOT NULL,\n  payment_status VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment (\n  payment_id UUID PRIMARY KEY,\n  registration_id UUID NOT NULL,\n  payment_date TIMESTAMP NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_details (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_location VARCHAR(255),\n    event_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE registration_dates (\n    registration_id INT PRIMARY KEY,\n    event_id INT REFERENCES event_details(event_id),\n    registration_start_date DATE,\n    registration_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_status (\n    payment_id INT PRIMARY KEY,\n    registration_id INT REFERENCES registration_dates(registration_id),\n    amount_paid DECIMAL(10,2),\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    registration_id INT REFERENCES registration_dates(registration_id),\n    participant_name VARCHAR(255),\n    participant_age INT,\n    participant_gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE race_categories (\n    category_id INT PRIMARY KEY,\n    event_id INT REFERENCES event_details(event_id),\n    category_name VARCHAR(50),\n    category_distance FLOAT,\n    category_age_range VARCHAR(20)\n);"
+      }
+    ]
+  }
+]

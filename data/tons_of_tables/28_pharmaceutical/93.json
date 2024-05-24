@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE pharmaceutical_patents (\n    id INT PRIMARY KEY,\n    patent_number VARCHAR(255),\n    licensing_agreement_id INT,\n    royalty DECIMAL(10, 2),\n    expiry_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE pharmaceutical_patents ( \n    patent_id INT PRIMARY KEY, \n    patent_name VARCHAR(255), \n    licensing_agreement_terms TEXT, \n    royalties DECIMAL(10, 2), \n    expiry_date DATE \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pharmaceutical_companies ( \n    company_id INT PRIMARY KEY, \n    company_name VARCHAR(255), \n    headquarters_location VARCHAR(255), \n    contact_email VARCHAR(255), \n    established_date DATE \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE pharmaceutical_patents (\n    patent_id SERIAL PRIMARY KEY,\n    patent_name TEXT NOT NULL,\n    patent_owner TEXT NOT NULL,\n    licensing_terms TEXT,\n    royalty_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE licensing_agreements (\n    agreement_id SERIAL PRIMARY KEY,\n    patent_id INT REFERENCES pharmaceutical_patents(patent_id),\n    licensee TEXT NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE royalty_payments (\n    payment_id SERIAL PRIMARY KEY,\n    agreement_id INT REFERENCES licensing_agreements(agreement_id),\n    payment_amount DECIMAL NOT NULL,\n    payment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patents (id SERIAL PRIMARY KEY,\n    patent_number VARCHAR(255) NOT NULL,\n    patent_description TEXT,\n    expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE license_agreements (id SERIAL PRIMARY KEY,\n    licensee_name VARCHAR(255) NOT NULL,\n    licensor_name VARCHAR(255) NOT NULL,\n    agreement_date DATE,\n    effective_date DATE,\n    expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE royalty_terms (id SERIAL PRIMARY KEY,\n    agreement_id INTEGER REFERENCES license_agreements(id),\n    royalty_percentage DECIMAL(5, 2) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agreements_history (id SERIAL PRIMARY KEY,\n    agreement_id INTEGER REFERENCES license_agreements(id),\n    modification_date DATE,\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE licensing_agreements (\n    agreement_id INT PRIMARY KEY,\n    company_name VARCHAR(255),\n    term_start_date DATE,\n    term_end_date DATE,\n    royalty_percentage DECIMAL(5,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patents (\n    patent_id INT PRIMARY KEY,\n    patent_name VARCHAR(255),\n    patent_owner VARCHAR(255),\n    expiry_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE licensees (\n    licensee_id INT PRIMARY KEY,\n    licensee_name VARCHAR(255),\n    license_start_date DATE,\n    license_end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    agreement_id INT,\n    payment_date DATE,\n    amount DECIMAL(10,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE agreements_documents (\n    document_id INT PRIMARY KEY,\n    agreement_id INT,\n    document_name VARCHAR(255),\n    document_type VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE secure_connections (\n    connection_id INT PRIMARY KEY,\n    connection_name VARCHAR(255) NOT NULL,\n    certificate_path VARCHAR(255) NOT NULL,\n    certificate_key_path VARCHAR(255) NOT NULL,\n    status ENUM('active', 'inactive')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE secure_connections (\n    id SERIAL PRIMARY KEY,\n    client_id INT,\n    server_id INT,\n    connection_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ssl_certificates (\n    id SERIAL PRIMARY KEY,\n    certificate_name VARCHAR(100),\n    certificate_type VARCHAR(50),\n    certificate_issued_by VARCHAR(100),\n    expiry_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE secure_connections (\n    id SERIAL PRIMARY KEY,\n    connection_name VARCHAR(50) NOT NULL,\n    connection_type VARCHAR(20) NOT NULL,\n    certificate_file BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ssl_certificates (\n    certificate_id SERIAL PRIMARY KEY,\n    certificate_name VARCHAR(50) NOT NULL,\n    expiration_date DATE NOT NULL,\n    issuer_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_channel (\n    channel_id SERIAL PRIMARY KEY,\n    channel_name VARCHAR(50) NOT NULL,\n    channel_type VARCHAR(20) NOT NULL,\n    associated_cert_id INTEGER REFERENCES ssl_certificates(certificate_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE secure_connections (\n    connection_id INT PRIMARY KEY,\n    connection_name VARCHAR(50) NOT NULL,\n    connection_host VARCHAR(100) NOT NULL,\n    connection_port INT,\n    connection_protocol VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ssl_certificates (\n    cert_id INT PRIMARY KEY,\n    cert_name VARCHAR(50) NOT NULL,\n    cert_expiry_date DATE,\n    cert_public_key BLOB,\n    cert_private_key BLOB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE connection_logs (\n    log_id INT PRIMARY KEY,\n    connection_id INT,\n    log_timestamp TIMESTAMP,\n    log_message TEXT,\n    FOREIGN KEY (connection_id) REFERENCES secure_connections(connection_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE secure_connection(\n    id SERIAL PRIMARY KEY,\n    client_id INT NOT NULL,\n    server_id INT NOT NULL,\n    ssl_certificate TEXT,\n    encryption_key TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ssl_certificates(\n    certificate_id SERIAL PRIMARY KEY,\n    certificate_name TEXT NOT NULL,\n    certificate_data BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE client_connections(\n    connection_id SERIAL PRIMARY KEY,\n    client_id INT NOT NULL,\n    server_id INT NOT NULL,\n    connection_status VARCHAR(20) NOT NULL,\n    connection_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE server_connections(\n    connection_id SERIAL PRIMARY KEY,\n    server_id INT NOT NULL,\n    client_id INT NOT NULL,\n    connection_status VARCHAR(20) NOT NULL,\n    connection_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_tools(\n    tool_id SERIAL PRIMARY KEY,\n    tool_name TEXT NOT NULL,\n    tool_description TEXT\n);"
+      }
+    ]
+  }
+]

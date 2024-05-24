@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DataRetentionPolicy (\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    retention_duration INT,\n    creation_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(255),\n    retention_period INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_logs (\n    log_id INT PRIMARY KEY,\n    log_message TEXT,\n    log_timestamp TIMESTAMP,\n    policy_id INT,\n    FOREIGN KEY (policy_id) REFERENCES retention_policies(policy_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    retention_period INTERVAL,\n    enforcement_enabled BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE outdated_data (\n    data_id UUID PRIMARY KEY,\n    data_content TEXT,\n    created_at TIMESTAMP,\n    expires_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE relevant_information (\n    info_id SERIAL PRIMARY KEY,\n    info_content JSONB,\n    relevant BOOLEAN,\n    deletion_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n   policy_id INT PRIMARY KEY,\n   policy_name VARCHAR(255) NOT NULL,\n   retention_days INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE retained_data (\n   data_id INT PRIMARY KEY,\n   data_content TEXT NOT NULL,\n   created_date TIMESTAMP DEFAULT now()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_categories (\n   category_id INT PRIMARY KEY,\n   category_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_mapping (\n   mapping_id INT PRIMARY KEY,\n   data_id INT REFERENCES retained_data(data_id),\n   category_id INT REFERENCES data_categories(category_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_retention_policy (\n  policy_id SERIAL PRIMARY KEY,\n  policy_name VARCHAR(100) NOT NULL,\n  retention_period INTERVAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_table (\n  data_id SERIAL PRIMARY KEY,\n  data_name VARCHAR(100) NOT NULL,\n  data_content TEXT NOT NULL,\n  creation_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE expired_data (\n  expired_data_id SERIAL PRIMARY KEY,\n  data_id INTEGER REFERENCES data_table(data_id),\n  expired_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_category (\n  category_id SERIAL PRIMARY KEY,\n  category_name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_categorization (\n  categorization_id SERIAL PRIMARY KEY,\n  data_id INTEGER REFERENCES data_table(data_id),\n  category_id INTEGER REFERENCES data_category(category_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamRoster (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(255) NOT NULL,\n  team_captain VARCHAR(50),\n  member_count INT,\n  substitution VARBINARY\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE teams (\n    team_id INTEGER PRIMARY KEY,\n    team_name TEXT,\n    team_captain TEXT,\n    team_coach TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INTEGER PRIMARY KEY,\n    player_name TEXT,\n    player_position TEXT,\n    player_jersey_number INTEGER,\n    team_id INTEGER,\n    FOREIGN KEY (team_id) REFERENCES teams(team_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(100),\n    age INT,\n    role VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50),\n    responsibilities TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE substitutions (\n    substitution_id INT PRIMARY KEY,\n    member_id INT,\n    substitution_date DATE,\n    reason TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members(\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR(255),\n  role VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE teams(\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(255),\n  captain_id INT,\n  FOREIGN KEY (captain_id) REFERENCES team_members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE roles(\n  role_id INT PRIMARY KEY,\n  role_name VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE substitutions(\n  substitution_id INT PRIMARY KEY,\n  team_id INT,\n  member_id INT,\n  substitute_id INT,\n  FOREIGN KEY (team_id) REFERENCES teams(team_id),\n  FOREIGN KEY (member_id) REFERENCES team_members(member_id),\n  FOREIGN KEY (substitute_id) REFERENCES team_members(member_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Team (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamMember (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    team_id INT NOT NULL,\n    role VARCHAR(50) NOT NULL,\n    FOREIGN KEY (team_id) REFERENCES Team(team_id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Role (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Substitution (\n    substitution_id INT PRIMARY KEY,\n    team_id INT NOT NULL,\n    member_id INT NOT NULL,\n    role_id INT NOT NULL,\n    substitute_member_id INT NOT NULL,\n    substitution_date DATE NOT NULL,\n    FOREIGN KEY (team_id) REFERENCES Team(team_id) ON DELETE CASCADE,\n    FOREIGN KEY (member_id) REFERENCES TeamMember(member_id) ON DELETE CASCADE,\n    FOREIGN KEY (role_id) REFERENCES Role(role_id) ON DELETE CASCADE,\n    FOREIGN KEY (substitute_member_id) REFERENCES TeamMember(member_id) ON DELETE CASCADE\n);\n"
+      }
+    ]
+  }
+]

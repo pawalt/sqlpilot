@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory_levels (\n    product_id INT NOT NULL,\n    product_name VARCHAR(255) NOT NULL,\n    current_stock INT NOT NULL,\n    optimal_stock INT NOT NULL,\n    restock_threshold INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Inventory (\n    item_id INT PRIMARY KEY,\n    item_name TEXT,\n    quantity INT,\n    last_restock_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RestockHistory (\n    restock_id INT PRIMARY KEY,\n    item_id INT,\n    restock_date DATE,\n    quantity_added INT,\n    restock_location TEXT,\n    FOREIGN KEY (item_id) REFERENCES Inventory(item_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory_items (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(50) NOT NULL,\n    item_category VARCHAR(50),\n    quantity_in_stock INT,\n    restock_threshold INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(50) NOT NULL,\n    supplier_address VARCHAR(100),\n    contact_email VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE restock_orders (\n    order_id INT PRIMARY KEY,\n    item_id INT,\n    supplier_id INT,\n    quantity_ordered INT,\n    order_date TIMESTAMP,\n    FOREIGN KEY (item_id) REFERENCES inventory_items(item_id),\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    category VARCHAR(50),\n    quantity INT,\n    price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id INT PRIMARY KEY,\n    warehouse_name VARCHAR(100),\n    location VARCHAR(255),\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    product_id INT,\n    warehouse_id INT,\n    quantity INT,\n    last_stocked DATE,\n    PRIMARY KEY (product_id, warehouse_id),\n    FOREIGN KEY (product_id) REFERENCES products(product_id),\n    FOREIGN KEY (warehouse_id) REFERENCES warehouses(warehouse_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE restocking_logs (\n    log_id INT PRIMARY KEY,\n    product_id INT,\n    warehouse_id INT,\n    restocked_quantity INT,\n    restock_date TIMESTAMP,\n    FOREIGN KEY (product_id) REFERENCES products(product_id),\n    FOREIGN KEY (warehouse_id) REFERENCES warehouses(warehouse_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InventoryItems (id INT PRIMARY KEY,\nitem_name VARCHAR(50) NOT NULL,\nquantity INT NOT NULL,\nprice DECIMAL(10,2) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (supplier_id INT PRIMARY KEY,\nsupplier_name VARCHAR(50) NOT NULL,\ncontact_person VARCHAR(50),\nphone_number VARCHAR(15));"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders (order_id INT PRIMARY KEY,\nitem_id INT,\nquantity INT,\norder_date DATE,\nFOREIGN KEY (item_id) REFERENCES InventoryItems(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Sales (sale_id INT PRIMARY KEY,\nitem_id INT,\nquantity_sold INT,\nsale_date DATE,\nFOREIGN KEY (item_id) REFERENCES InventoryItems(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Stockouts (stockout_id INT PRIMARY KEY,\nitem_id INT,\nstockout_date DATE,\nFOREIGN KEY (item_id) REFERENCES InventoryItems(id));"
+      }
+    ]
+  }
+]

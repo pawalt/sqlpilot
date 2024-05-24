@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Bioenergy_Research (\n\tid INT PRIMARY KEY,\n\tresearcher_name VARCHAR(255),\n\tfeedstock_type VARCHAR(255),\n\tenergy_output DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiomassFeedstocks ( \n  biomass_id INT NOT NULL, \n  biomass_name VARCHAR(50) NOT NULL, \n  energy_output FLOAT NOT NULL, \n  PRIMARY KEY (biomass_id) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers ( \n  researcher_id INT NOT NULL, \n  researcher_name VARCHAR(50) NOT NULL, \n  research_field VARCHAR(50) NOT NULL, \n  affiliation VARCHAR(100) NOT NULL, \n  PRIMARY KEY (researcher_id) \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiomassFeedstocks (\n    feedstock_id INT PRIMARY KEY,\n    feedstock_name VARCHAR(255) NOT NULL,\n    energy_output DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255) NOT NULL,\n    affiliation VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchResults (\n    result_id INT PRIMARY KEY,\n    feedstock_id INT REFERENCES BiomassFeedstocks(feedstock_id),\n    researcher_id INT REFERENCES Researchers(researcher_id),\n    energy_measurement DECIMAL(10, 2) NOT NULL,\n    date_recorded DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiomassFeedstocks (\n    feedstock_id INT PRIMARY KEY,\n    feedstock_name VARCHAR(50),\n    energy_output FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(50),\n    research_field VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchProjects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    researcher_id INT,\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyOutputs (\n    output_id INT PRIMARY KEY,\n    feedstock_id INT,\n    output_date TIMESTAMP,\n    energy_output FLOAT,\n    project_id INT,\n    FOREIGN KEY (feedstock_id) REFERENCES BiomassFeedstocks(feedstock_id),\n    FOREIGN KEY (project_id) REFERENCES ResearchProjects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiomassFeedstocks (\n  biomass_id INT PRIMARY KEY,\n  biomass_name VARCHAR(255),\n  energy_output DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(255),\n  research_affiliation VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchProjects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentLogs (\n  log_id INT PRIMARY KEY,\n  project_id INT,\n  researcher_id INT,\n  biomass_id INT,\n  experiment_date DATE,\n  energy_output DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE LabEquipment (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(255),\n  location VARCHAR(255)\n)"
+      }
+    ]
+  }
+]

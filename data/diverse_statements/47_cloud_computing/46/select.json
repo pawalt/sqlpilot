@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM sensitive_data_changes;",
+      "SELECT timestamp, user_id, change_description FROM sensitive_data_changes;",
+      "SELECT id, old_value, new_value FROM sensitive_data_changes WHERE user_id = 123;",
+      "SELECT * FROM sensitive_data_changes ORDER BY timestamp DESC;",
+      "SELECT id, user_id, change_description FROM sensitive_data_changes WHERE timestamp > '2022-01-01';",
+      "SELECT * FROM sensitive_data_changes WHERE user_id = 123 ORDER BY timestamp DESC;",
+      "SELECT id, timestamp, user_id FROM sensitive_data_changes WHERE change_description LIKE '%password%' ORDER BY id ASC;",
+      "SELECT user_id, change_description FROM sensitive_data_changes WHERE timestamp BETWEEN '2022-01-01' AND '2022-02-01' ORDER BY user_id ASC, timestamp DESC;",
+      "SELECT DISTINCT user_id FROM sensitive_data_changes WHERE new_value IS NOT NULL ORDER BY user_id ASC;",
+      "SELECT id, change_description, old_value FROM sensitive_data_changes WHERE id IN (1, 5, 10) ORDER BY id DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM passwords;",
+      "SELECT username, password_hash FROM passwords WHERE id = 1;",
+      "SELECT id, username, last_updated FROM passwords ORDER BY last_updated DESC;",
+      "SELECT id, username, password_hash FROM passwords WHERE username = 'user1';",
+      "SELECT access_level, last_accessed FROM access_controls WHERE user_id = 2 ORDER BY last_accessed ASC;",
+      "SELECT * FROM passwords ORDER BY last_updated DESC;",
+      "SELECT id, username FROM passwords WHERE username LIKE 'A%' ORDER BY id ASC;",
+      "SELECT id, username, access_level FROM passwords p JOIN access_controls ac ON p.id = ac.user_id WHERE ac.access_level = 'Admin';",
+      "SELECT COUNT(*) AS total_passwords FROM passwords;",
+      "SELECT id, username, last_updated FROM passwords WHERE username = 'John' AND last_updated > '2021-01-01' ORDER BY id ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM passwords;",
+      "SELECT id, user_id, timestamp FROM access_controls WHERE access_level = 2;",
+      "SELECT action, user_id, timestamp FROM audit_logs WHERE table_name = 'access_controls' ORDER BY timestamp DESC;",
+      "SELECT id, password_hash FROM passwords WHERE id = 3;",
+      "SELECT * FROM access_controls WHERE user_id = 5 ORDER BY timestamp ASC;",
+      "SELECT * FROM passwords ORDER BY timestamp DESC LIMIT 10;",
+      "SELECT id, password_hash, timestamp FROM passwords WHERE user_id = 5;",
+      "SELECT * FROM access_controls WHERE user_id = 3 ORDER BY access_level ASC;",
+      "SELECT id, action FROM audit_logs WHERE timestamp >= '2022-01-01' ORDER BY id DESC;",
+      "SELECT user_id, table_name FROM audit_logs WHERE action = 'UPDATE' ORDER BY timestamp ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users;",
+      "SELECT id, username, email FROM users ORDER BY id DESC;",
+      "SELECT username, password FROM users WHERE id = 2;",
+      "SELECT email FROM users WHERE username = 'john_doe';",
+      "SELECT id, password FROM users WHERE email LIKE '%@domain.com';",
+      "SELECT * FROM users WHERE id = 1;",
+      "SELECT username, email FROM users ORDER BY username DESC;",
+      "SELECT user_logs.action, user_logs.timestamp, users.username FROM user_logs JOIN users ON user_logs.user_id = users.id;",
+      "SELECT users.username, access_controls.resource FROM users LEFT JOIN access_controls ON users.id = access_controls.user_id;",
+      "SELECT users.username, password_history.old_password FROM users JOIN password_history ON users.id = password_history.user_id ORDER BY password_history.timestamp DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM passwords;",
+      "SELECT user_id, password_hash FROM passwords WHERE user_id = 1;",
+      "SELECT DISTINCT access_level FROM access_controls ORDER BY access_level DESC;",
+      "SELECT access_id, user_id, access_level FROM access_controls WHERE granted_at >= '2022-01-01';",
+      "SELECT change_id, password_id, changed_by, change_timestamp, old_password_hash FROM password_changes ORDER BY change_timestamp DESC;",
+      "SELECT user_id, password_hash FROM passwords ORDER BY user_id DESC LIMIT 5;",
+      "SELECT * FROM access_controls WHERE access_level = 'Admin' OR access_level = 'Manager';",
+      "SELECT * FROM password_changes WHERE change_timestamp >= '2022-01-01' ORDER BY change_timestamp DESC LIMIT 3;",
+      "SELECT user_id, count(*) FROM access_controls GROUP BY user_id HAVING count(*) > 1;",
+      "SELECT p.user_id, ac.access_level FROM passwords p JOIN access_controls ac ON p.user_id = ac.user_id;"
+    ]
+  }
+]

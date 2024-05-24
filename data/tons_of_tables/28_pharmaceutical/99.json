@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitor_patents (\n    patent_id UUID PRIMARY KEY,\n    patent_name VARCHAR(255),\n    competitor_name VARCHAR(255),\n    industry_sector VARCHAR(100),\n    patent_filing_date DATE,\n    patent_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitor_patents (\n\tpatent_id SERIAL PRIMARY KEY,\n\tpatent_name VARCHAR(255) NOT NULL,\n\tcompany_name VARCHAR(255) NOT NULL,\n\tpublication_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pharmaceutical_strategies (\n\tstrategy_id SERIAL PRIMARY KEY,\n\tstrategy_name VARCHAR(255) NOT NULL,\n\tdescription TEXT,\n\texecution_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CompetitorPatents (\n    patent_id SERIAL PRIMARY KEY,\n    patent_name VARCHAR(255),\n    competitor_name VARCHAR(255),\n    publication_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PatentInfringements (\n    infringement_id SERIAL PRIMARY KEY,\n    patent_id INT REFERENCES CompetitorPatents(patent_id),\n    infringement_date DATE,\n    legal_action_taken VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MarketAnalysis (\n    analysis_id SERIAL PRIMARY KEY,\n    patent_id INT REFERENCES CompetitorPatents(patent_id),\n    market_trend VARCHAR(255),\n    analysis_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patents (\n    patent_id INT PRIMARY KEY,\n    company_name VARCHAR(255),\n    patent_title VARCHAR(255),\n    publication_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE companies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255),\n    headquarters_address VARCHAR(255),\n    industry VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_owners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(255),\n    contact_email VARCHAR(100),\n    company_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_usage (\n    usage_id INT PRIMARY KEY,\n    patent_id INT,\n    usage_description TEXT,\n    usage_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitor_patents (\n    patent_id INT PRIMARY KEY,\n    patent_name VARCHAR(255),\n    industry_sector VARCHAR(255),\n    patent_description TEXT,\n    patent_owner VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_inventors (\n    inventor_id INT PRIMARY KEY,\n    inventor_name VARCHAR(255),\n    inventor_company VARCHAR(255),\n    patent_id INT,\n    FOREIGN KEY (patent_id) REFERENCES competitor_patents(patent_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_citations (\n    citation_id INT PRIMARY KEY,\n    citing_patent_id INT,\n    cited_patent_id INT,\n    citation_date DATE,\n    FOREIGN KEY (citing_patent_id) REFERENCES competitor_patents(patent_id),\n    FOREIGN KEY (cited_patent_id) REFERENCES competitor_patents(patent_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_analysis (\n    analysis_id INT PRIMARY KEY,\n    patent_id INT,\n    analysis_date DATE,\n    analysis_result TEXT,\n    FOREIGN KEY (patent_id) REFERENCES competitor_patents(patent_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patent_files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_format VARCHAR(50),\n    file_size INT,\n    patent_id INT,\n    FOREIGN KEY (patent_id) REFERENCES competitor_patents(patent_id)\n);"
+      }
+    ]
+  }
+]

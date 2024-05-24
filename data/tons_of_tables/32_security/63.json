@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA NOT NULL,\n    key_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  key_id SERIAL PRIMARY KEY,\n  key_name VARCHAR(50) NOT NULL,\n  key_value VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_encryption (\n  data_id SERIAL PRIMARY KEY,\n  encrypted_data BYTEA NOT NULL,\n  encryption_key_id INT REFERENCES encryption_keys(key_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id SERIAL PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    encryption_key BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encrypted_data (\n    data_id SERIAL PRIMARY KEY,\n    data_content TEXT NOT NULL,\n    encryption_key_id INT NOT NULL,\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE decryption_logs (\n    log_id SERIAL PRIMARY KEY,\n    decryption_time TIMESTAMP NOT NULL,\n    decryption_result VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id UUID PRIMARY KEY,\n    key_name VARCHAR(255) NOT NULL,\n    key_value TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_encrypted (\n    data_id UUID PRIMARY KEY,\n    encrypted_data TEXT NOT NULL,\n    encryption_key_id UUID NOT NULL,\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_decrypted (\n    data_id UUID PRIMARY KEY,\n    decrypted_data TEXT NOT NULL,\n    decryption_key_id UUID NOT NULL,\n    FOREIGN KEY (decryption_key_id) REFERENCES encryption_keys(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE key_management (\n    management_id UUID PRIMARY KEY,\n    key_name VARCHAR(255) NOT NULL,\n    is_active BOOL NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    encryption_key BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_encryption (\n    data_id INT PRIMARY KEY,\n    encrypted_data BLOB,\n    key_id INT,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE decryption_logs (\n    log_id INT PRIMARY KEY,\n    decryption_date TIMESTAMP,\n    data_id INT,\n    FOREIGN KEY (data_id) REFERENCES data_encryption(data_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access (\n    user_id INT PRIMARY KEY,\n    access_level VARCHAR(20),\n    key_id INT,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    audit_id INT PRIMARY KEY,\n    action VARCHAR(50),\n    action_date TIMESTAMP,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES user_access(user_id)\n);"
+      }
+    ]
+  }
+]

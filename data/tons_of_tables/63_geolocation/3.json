@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeofencedLocations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255) NOT NULL,\n  latitude DECIMAL(10, 8) NOT NULL,\n  longitude DECIMAL(11, 8) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofenced_locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(50),\n  latitude DECIMAL(10, 8),\n  longitude DECIMAL(11, 8)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access_permissions (\n  user_id INT PRIMARY KEY,\n  location_id INT,\n  permission_level VARCHAR(20),\n  FOREIGN KEY (location_id) REFERENCES geofenced_locations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id BIGINT PRIMARY KEY,\n    username TEXT NOT NULL,\n    proximity_threshold FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Locations (\n    location_id BIGINT PRIMARY KEY,\n    location_name TEXT NOT NULL,\n    location_lat FLOAT NOT NULL,\n    location_lng FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Permissions (\n    permission_id BIGINT PRIMARY KEY,\n    user_id BIGINT NOT NULL,\n    location_id BIGINT NOT NULL,\n    permission_level TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    location_id INT,\n    permission_level VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50),\n    latitude DECIMAL(10,8),\n    longitude DECIMAL(11,8)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE proximity_rules (\n    rule_id INT PRIMARY KEY,\n    location_id INT,\n    distance_threshold DECIMAL(10,2),\n    permission_level VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    location_id INT,\n    access_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofenced_locations (\n    location_id UUID PRIMARY KEY,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL,\n    radius DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_permissions (\n    permission_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    location_id UUID REFERENCES geofenced_locations(location_id),\n    permission_level INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_location (\n    user_id UUID REFERENCES users(user_id),\n    last_known_location_id UUID REFERENCES geofenced_locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    timestamp TIMESTAMP NOT NULL,\n    activity_description TEXT\n);"
+      }
+    ]
+  }
+]

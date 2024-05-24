@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n    asset_id SERIAL PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    asset_size INT NOT NULL,\n    blockchain_transaction_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE music_assets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255),\n    artist_name VARCHAR(255),\n    genre VARCHAR(50),\n    blockchain_transaction_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE artwork_assets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255),\n    artist_name VARCHAR(255),\n    medium VARCHAR(50),\n    blockchain_transaction_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DigitalAssets (\n    asset_id SERIAL PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    asset_description TEXT,\n    owner_id INT NOT NULL,\n    blockchain_transaction_id VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AssetOwners (\n    owner_id SERIAL PRIMARY KEY,\n    owner_name VARCHAR(255) NOT NULL,\n    owner_email VARCHAR(255) UNIQUE,\n    owner_address VARCHAR(255) NOT NULL,\n    owner_public_key TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BlockchainTransactions (\n    transaction_id SERIAL PRIMARY KEY,\n    transaction_hash VARCHAR(100) UNIQUE,\n    block_number INT NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    confirmation_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE music_files (\n    id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_type VARCHAR(50),\n    artist_name VARCHAR(100),\n    duration INT,\n    upload_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE artwork (\n    id INT PRIMARY KEY,\n    artwork_name VARCHAR(255),\n    artist_name VARCHAR(100),\n    medium VARCHAR(50),\n    size VARCHAR(50),\n    creation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n    id INT PRIMARY KEY,\n    transaction_id VARCHAR(255),\n    asset_id INT,\n    transaction_date DATE,\n    proof_of_ownership BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_ownership (\n    id INT PRIMARY KEY,\n    asset_id INT,\n    owner_name VARCHAR(100),\n    owner_email VARCHAR(100),\n    owner_address VARCHAR(255),\n    ownership_start_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    artist_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    upload_date TIMESTAMP,\n    blockchain_tx_id VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_owners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    tx_id INT PRIMARY KEY,\n    from_owner_id INT,\n    to_owner_id INT,\n    asset_id INT,\n    tx_date TIMESTAMP,\n    FOREIGN KEY (from_owner_id) REFERENCES asset_owners(owner_id),\n    FOREIGN KEY (to_owner_id) REFERENCES asset_owners(owner_id),\n    FOREIGN KEY (asset_id) REFERENCES digital_assets(asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE royalties (\n    royalty_id INT PRIMARY KEY,\n    royalty_amount DECIMAL,\n    recipient_owner_id INT,\n    asset_id INT,\n    tx_id INT,\n    FOREIGN KEY (recipient_owner_id) REFERENCES asset_owners(owner_id),\n    FOREIGN KEY (asset_id) REFERENCES digital_assets(asset_id),\n    FOREIGN KEY (tx_id) REFERENCES transactions(tx_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain (\n    block_id INT PRIMARY KEY,\n    block_hash VARCHAR(255),\n    previous_block_id INT,\n    timestamp TIMESTAMP,\n    tx_id INT,\n    FOREIGN KEY (previous_block_id) REFERENCES blockchain(block_id),\n    FOREIGN KEY (tx_id) REFERENCES transactions(tx_id)\n);"
+      }
+    ]
+  }
+]

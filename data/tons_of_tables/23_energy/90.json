@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_data (id INT PRIMARY KEY, storage_unit_id INT, production DECIMAL, consumption DECIMAL, timestamp TIMESTAMP)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE storage_units (\n    storage_id INT PRIMARY KEY,\n    production_data FLOAT,\n    consumption_data FLOAT\n);\n\nCREATE TABLE energy_tracking (\n    tracking_id INT PRIMARY KEY,\n    storage_id INT,\n    time_stamp TIMESTAMP,\n    production FLOAT,\n    consumption FLOAT,\n    FOREIGN KEY (storage_id) REFERENCES storage_units(storage_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE storage_units (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_production (\n    id INT PRIMARY KEY,\n    storage_unit_id INT,\n    production_date DATE,\n    production_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    id INT PRIMARY KEY,\n    storage_unit_id INT,\n    consumption_date DATE,\n    consumption_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_storage_unit (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    production_data NUMERIC,\n    consumption_data NUMERIC\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE solar_panel (\n    id INT PRIMARY KEY,\n    serial_number VARCHAR(20) NOT NULL,\n    unit_id INT,\n    efficiency DECIMAL,\n    FOREIGN KEY (unit_id) REFERENCES energy_storage_unit(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE wind_turbine (\n    id INT PRIMARY KEY,\n    serial_number VARCHAR(20) NOT NULL,\n    unit_id INT,\n    rotor_diameter DECIMAL,\n    FOREIGN KEY (unit_id) REFERENCES energy_storage_unit(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE battery (\n    id INT PRIMARY KEY,\n    capacity DECIMAL NOT NULL,\n    technology VARCHAR(50) NOT NULL,\n    unit_id INT,\n    FOREIGN KEY (unit_id) REFERENCES energy_storage_unit(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE storage_units (\n  id INT PRIMARY KEY,\n  unit_name VARCHAR(255) NOT NULL,\n  capacity DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_production (\n  id INT PRIMARY KEY,\n  unit_id INT NOT NULL,\n  production_date DATE NOT NULL,\n  production_amount DECIMAL NOT NULL,\n  FOREIGN KEY (unit_id) REFERENCES storage_units(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n  id INT PRIMARY KEY,\n  unit_id INT NOT NULL,\n  consumption_date DATE NOT NULL,\n  consumption_amount DECIMAL NOT NULL,\n  FOREIGN KEY (unit_id) REFERENCES storage_units(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE unit_location (\n  id INT PRIMARY KEY,\n  unit_id INT NOT NULL,\n  location_name VARCHAR(255) NOT NULL,\n  longitude DECIMAL NOT NULL,\n  latitude DECIMAL NOT NULL,\n  FOREIGN KEY (unit_id) REFERENCES storage_units(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n  id INT PRIMARY KEY,\n  unit_id INT NOT NULL,\n  log_date DATE NOT NULL,\n  log_description TEXT,\n  FOREIGN KEY (unit_id) REFERENCES storage_units(id)\n);"
+      }
+    ]
+  }
+]

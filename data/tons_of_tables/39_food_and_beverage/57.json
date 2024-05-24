@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE farm_to_table_deliveries (\n    delivery_id SERIAL PRIMARY KEY,\n    delivery_date DATE,\n    source_location VARCHAR,\n    destination_location VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FarmDeliveries (\n    delivery_id INT PRIMARY KEY,\n    source_farm VARCHAR(255),\n    destination_table VARCHAR(255),\n    delivery_date DATE,\n    delivery_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliveryTracking (\n    tracking_id INT PRIMARY KEY,\n    delivery_id INT,\n    location VARCHAR(255),\n    tracking_timestamp TIMESTAMP,\n    FOREIGN KEY (delivery_id) REFERENCES FarmDeliveries(delivery_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE farm_products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    supplier_id INT,\n    delivery_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    contact_email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_routes (\n    route_id INT PRIMARY KEY,\n    supplier_id INT,\n    driver_id INT,\n    delivery_date DATE,\n    delivery_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DeliveryRoutes (\n    route_id INT PRIMARY KEY,\n    origin_address VARCHAR(255),\n    destination_address VARCHAR(255),\n    delivery_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliveryStatus (\n    status_id INT PRIMARY KEY,\n    route_id INT REFERENCES DeliveryRoutes(route_id),\n    current_status VARCHAR(50),\n    last_updated TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliveryLogs (\n    log_id INT PRIMARY KEY,\n    route_id INT REFERENCES DeliveryRoutes(route_id),\n    log_message VARCHAR(255),\n    log_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliveryVehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type VARCHAR(50),\n    max_capacity INT,\n    current_capacity INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_routes (\n    route_id INT PRIMARY KEY,\n    start_location VARCHAR(50) NOT NULL,\n    end_location VARCHAR(50) NOT NULL,\n    distance DECIMAL(8,2) NOT NULL,\n    delivery_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type VARCHAR(50) NOT NULL,\n    capacity DECIMAL(8,2) NOT NULL,\n    availability BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    contact_number VARCHAR(15),\n    email VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50) NOT NULL,\n    category VARCHAR(50),\n    price DECIMAL(8,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    product_id INT NOT NULL,\n    quantity INT NOT NULL,\n    order_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

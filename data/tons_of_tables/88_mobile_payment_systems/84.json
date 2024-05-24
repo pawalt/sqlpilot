@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserPermissions (\n  id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  permission_level INT NOT NULL,\n  qr_code_access BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT NOT NULL,\n    permission_type VARCHAR(50) NOT NULL,\n    PRIMARY KEY (user_id)\n);\n\nCREATE TABLE payment_processing_tools (\n    tool_id INT NOT NULL,\n    tool_name VARCHAR(50) NOT NULL,\n    tool_description TEXT,\n    PRIMARY KEY (tool_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT,\n    permission_level INT,\n    qr_code_access BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT,\n    role_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT REFERENCES users(user_id),\n    role_id INT REFERENCES roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT,\n    role_id INT,\n    PRIMARY KEY (user_id, role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles_permissions (\n    role_id INT,\n    permission_id INT,\n    PRIMARY KEY (role_id, permission_id),\n    FOREIGN KEY (role_id) REFERENCES user_roles(role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT,\n    permission_name VARCHAR(255),\n    PRIMARY KEY (permission_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT,\n    user_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    PRIMARY KEY (session_id),\n    FOREIGN KEY (user_id) REFERENCES user_roles(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qr_code_access (\n    user_id INT,\n    qr_code_id INT,\n    access_granted BOOLEAN,\n    PRIMARY KEY (user_id, qr_code_id),\n    FOREIGN KEY (user_id) REFERENCES user_roles(user_id)\n);"
+      }
+    ]
+  }
+]

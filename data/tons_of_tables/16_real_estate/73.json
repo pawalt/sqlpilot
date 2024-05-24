@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_data (\n    property_id UUID PRIMARY KEY,\n    assessment_value DECIMAL,\n    tax_records JSONB,\n    ownership_history JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_assessments (\n  id UUID PRIMARY KEY,\n  property_id UUID NOT NULL,\n  assessment_date DATE NOT NULL,\n  assessed_value DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ownership_history (\n  id UUID PRIMARY KEY,\n  property_id UUID NOT NULL,\n  owner_id UUID NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_assessments ( \n    id UUID PRIMARY KEY, \n    address VARCHAR(255), \n    assessment_value DECIMAL, \n    assessment_date DATE \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_records ( \n    id UUID PRIMARY KEY, \n    property_id UUID REFERENCES property_assessments(id), \n    tax_amount DECIMAL, \n    tax_date DATE \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ownership_history ( \n    id UUID PRIMARY KEY, \n    property_id UUID REFERENCES property_assessments(id), \n    owner_name VARCHAR(255), \n    ownership_start_date DATE, \n    ownership_end_date DATE \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_assessments(\n    property_id INT PRIMARY KEY,\n    assessment_value DECIMAL,\n    assessment_date DATE,\n    assessed_by VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_records(\n    tax_id INT PRIMARY KEY,\n    property_id INT,\n    tax_year INT,\n    tax_amount DECIMAL,\n    tax_paid BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ownership_history(\n    ownership_id INT PRIMARY KEY,\n    property_id INT,\n    owner_name VARCHAR(100),\n    ownership_start_date DATE,\n    ownership_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE market_research(\n    research_id INT PRIMARY KEY,\n    property_id INT,\n    research_topic VARCHAR(100),\n    research_date DATE,\n    researcher_name VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_assessments (\n  property_id INT PRIMARY KEY,\n  address VARCHAR(255),\n  assessment_value DECIMAL(10,2),\n  assessment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_records (\n  tax_id INT PRIMARY KEY,\n  property_id INT,\n  tax_year INT,\n  tax_amount DECIMAL(10,2),\n  FOREIGN KEY (property_id) REFERENCES property_assessments(property_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ownership_history (\n  transaction_id INT PRIMARY KEY,\n  property_id INT,\n  owner_name VARCHAR(255),\n  transaction_date DATE,\n  FOREIGN KEY (property_id) REFERENCES property_assessments(property_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE market_research_data (\n  research_id INT PRIMARY KEY,\n  property_id INT,\n  research_topic VARCHAR(255),\n  researcher_name VARCHAR(255),\n  research_date DATE,\n  FOREIGN KEY (property_id) REFERENCES property_assessments(property_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_images (\n  image_id INT PRIMARY KEY,\n  property_id INT,\n  image_url VARCHAR(255),\n  caption TEXT,\n  FOREIGN KEY (property_id) REFERENCES property_assessments(property_id)\n);"
+      }
+    ]
+  }
+]

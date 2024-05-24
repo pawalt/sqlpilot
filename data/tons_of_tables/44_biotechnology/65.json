@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiodiversityData (\n  id INT PRIMARY KEY,\n  species_name VARCHAR(50),\n  ecosystem VARCHAR(50),\n  population_count INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ecosystems (id INT PRIMARY KEY, name VARCHAR(50) NOT NULL, location VARCHAR(50) NOT NULL);\nCREATE TABLE species (id INT PRIMARY KEY, name VARCHAR(50) NOT NULL, ecosystem_id INT NOT NULL REFERENCES ecosystems(id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE species (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    scientific_name VARCHAR(255) NOT NULL,\n    ecosystem_id INT REFERENCES ecosystems(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ecosystems (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE species_population (\n    species_id INT REFERENCES species(id),\n    ecosystem_id INT REFERENCES ecosystems(id),\n    population_count INT NOT NULL,\n    last_observed DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50) NOT NULL,\n  ecosystem_id INT,\n  gender VARCHAR(10),\n  species_type VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Ecosystems (\n  ecosystem_id INT PRIMARY KEY,\n  ecosystem_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100),\n  habitat_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Observations (\n  observation_id INT PRIMARY KEY,\n  species_id INT,\n  observation_date DATE,\n  observer_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Habitats (\n  habitat_id INT PRIMARY KEY,\n  habitat_name VARCHAR(50) NOT NULL,\n  ecosystem_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species (\n  id INT PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  ecosystem_id INT,\n  FOREIGN KEY (ecosystem_id) REFERENCES Ecosystems(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Ecosystems (\n  id INT PRIMARY KEY,\n  name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Observations (\n  id INT PRIMARY KEY,\n  species_id INT,\n  ecosystem_id INT,\n  date_observed DATE,\n  FOREIGN KEY (species_id) REFERENCES Species(id),\n  FOREIGN KEY (ecosystem_id) REFERENCES Ecosystems(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n  id INT PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  specialization VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchResults (\n  id INT PRIMARY KEY,\n  researcher_id INT,\n  observation_id INT,\n  result TEXT,\n  FOREIGN KEY (researcher_id) REFERENCES Researchers(id),\n  FOREIGN KEY (observation_id) REFERENCES Observations(id)\n);\n"
+      }
+    ]
+  }
+]

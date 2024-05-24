@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hashtags (\n    hashtag_id UUID PRIMARY KEY,\n    hashtag_name STRING,\n    post_id UUID,\n    post_date TIMESTAMP,\n    post_content STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hashtags (\n    hashtag_id INT PRIMARY KEY,\n    hashtag_name VARCHAR(255)\n);\n\nCREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    post_content TEXT,\n    hashtag_id INT,\n    FOREIGN KEY (hashtag_id) REFERENCES hashtags(hashtag_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hashtags (\n    hashtag_id SERIAL PRIMARY KEY,\n    hashtag_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id SERIAL PRIMARY KEY,\n    post_content TEXT NOT NULL,\n    hashtag_id INT REFERENCES hashtags(hashtag_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hashtag_frequency (\n    frequency_id SERIAL PRIMARY KEY,\n    hashtag_id INT REFERENCES hashtags(hashtag_id),\n    frequency_count INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hashtags (id INT, tag VARCHAR(255) NOT NULL, frequency INT, PRIMARY KEY (id));"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (id INT, content TEXT, created_at TIMESTAMP, PRIMARY KEY (id));"
+      },
+      {
+        "table_schema": "CREATE TABLE post_hashtags (post_id INT, hashtag_id INT, FOREIGN KEY (post_id) REFERENCES posts(id), FOREIGN KEY (hashtag_id) REFERENCES hashtags(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE tag_stats (tag_id INT, total_usage INT, last_used TIMESTAMP, PRIMARY KEY (tag_id), FOREIGN KEY (tag_id) REFERENCES hashtags(id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hashtags (\n    id INT PRIMARY KEY,\n    hashtag VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    id INT PRIMARY KEY,\n    post_content TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    hashtag_id INT,\n    FOREIGN KEY (hashtag_id) REFERENCES hashtags(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_posts (\n    user_id INT,\n    post_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(id),\n    FOREIGN KEY (post_id) REFERENCES posts(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE post_hashtags (\n    post_id INT,\n    hashtag_id INT,\n    FOREIGN KEY (post_id) REFERENCES posts(id),\n    FOREIGN KEY (hashtag_id) REFERENCES hashtags(id)\n);"
+      }
+    ]
+  }
+]

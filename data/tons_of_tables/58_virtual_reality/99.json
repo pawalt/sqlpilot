@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ExperimentResults (\n  experiment_id UUID PRIMARY KEY,\n  experiment_name STRING,\n  experiment_date DATE,\n  experiment_duration INTERVAL,\n  experiment_result JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n  experiment_id BIGINT PRIMARY KEY,\n  experiment_name VARCHAR(255),\n  experiment_date DATE,\n  result_data JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_metrics (\n  metric_id INT PRIMARY KEY,\n  experiment_id BIGINT,\n  metric_name VARCHAR(255),\n  metric_value FLOAT,\n  FOREIGN KEY (experiment_id) REFERENCES experiment_results(experiment_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ExperimentData (\n    experiment_id INT,\n    experiment_date DATE,\n    experiment_name VARCHAR(255),\n    sample_id INT,\n    result_value FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SampleDetails (\n    sample_id INT,\n    sample_name VARCHAR(255),\n    sample_type VARCHAR(50),\n    created_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentLogs (\n    log_id INT,\n    experiment_id INT,\n    log_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255) NOT NULL,\n    experiment_description TEXT,\n    experiment_date TIMESTAMP,\n    researcher_id INT,\n    CONSTRAINT fk_researcher FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements (\n    measurement_id INT PRIMARY KEY,\n    experiment_id INT,\n    measurement_value FLOAT,\n    measurement_time TIMESTAMP,\n    CONSTRAINT fk_experiment FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255) NOT NULL,\n    researcher_email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments_history (\n    history_id INT PRIMARY KEY,\n    experiment_id INT,\n    change_description TEXT,\n    change_time TIMESTAMP,\n    CONSTRAINT fk_experiment_history FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    experiment_date DATE,\n    researcher_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255),\n    researcher_department VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    result_value FLOAT,\n    result_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments_metadata (\n    experiment_id INT,\n    metadata_key VARCHAR(255),\n    metadata_value TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experimental_conditions (\n    condition_id INT PRIMARY KEY,\n    condition_name VARCHAR(255),\n    condition_description TEXT\n);\n"
+      }
+    ]
+  }
+]

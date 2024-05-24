@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PropertyValuations (\n    property_id UUID PRIMARY KEY,\n    property_address VARCHAR(255),\n    property_value DECIMAL,\n    appraisal_date DATE,\n    appraiser_name VARCHAR(100),\n    blockchain_hash VARCHAR(256)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_valuations (\n    property_id UUID PRIMARY KEY,\n    property_address TEXT,\n    valuation_amount DECIMAL\n);\n\nCREATE TABLE appraisals (\n    appraisal_id UUID PRIMARY KEY,\n    property_id UUID REFERENCES property_valuations(property_id),\n    appraiser_name TEXT,\n    appraisal_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Property_Valuations (\n  id INT PRIMARY KEY,\n  property_id INT,\n  valuation_amount DECIMAL,\n  appraisal_date DATE,\n  appraiser_name VARCHAR(50),\n  blockchain_hash TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Properties (\n  id INT PRIMARY KEY,\n  property_address VARCHAR(100),\n  property_type VARCHAR(50),\n  year_built DATE,\n  owner_name VARCHAR(50),\n  owner_contact VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Appraisers (\n  id INT PRIMARY KEY,\n  appraiser_name VARCHAR(50),\n  specialty VARCHAR(50),\n  certification_number VARCHAR(20),\n  contact_info VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_valuations (\n    property_id INT PRIMARY KEY,\n    property_address VARCHAR(255) NOT NULL,\n    appraisal_value DECIMAL(10, 2),\n    appraisal_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appraisers (\n    appraiser_id INT PRIMARY KEY,\n    appraiser_name VARCHAR(255) NOT NULL,\n    appraiser_license_number VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n    transaction_id INT PRIMARY KEY,\n    property_id INT,\n    appraiser_id INT,\n    transaction_hash VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_blocks (\n    block_id INT PRIMARY KEY,\n    block_hash VARCHAR(255) NOT NULL,\n    previous_block_hash VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_valuations (\n    property_id INT PRIMARY KEY,\n    property_address VARCHAR(255),\n    property_value DECIMAL(10,2),\n    appraisal_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_owners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(100),\n    owner_email VARCHAR(100),\n    property_id INT,\n    FOREIGN KEY (property_id) REFERENCES property_valuations(property_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appraisers (\n    appraiser_id INT PRIMARY KEY,\n    appraiser_name VARCHAR(100),\n    certification_number VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_records (\n    record_id INT PRIMARY KEY,\n    transaction_hash VARCHAR(255),\n    timestamp TIMESTAMP,\n    property_id INT,\n    appraiser_id INT,\n    FOREIGN KEY (property_id) REFERENCES property_valuations(property_id),\n    FOREIGN KEY (appraiser_id) REFERENCES appraisers(appraiser_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE valuation_history (\n    valuation_id INT PRIMARY KEY,\n    property_id INT,\n    appraisal_date DATE,\n    property_value DECIMAL(10,2),\n    appraiser_id INT,\n    FOREIGN KEY (property_id) REFERENCES property_valuations(property_id),\n    FOREIGN KEY (appraiser_id) REFERENCES appraisers(appraiser_id)\n);"
+      }
+    ]
+  }
+]

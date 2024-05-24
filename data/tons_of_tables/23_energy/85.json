@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LoadSheddingStrategy (\n    area_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    status BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LoadSheddingStrategies (\n\tstrategy_id INT PRIMARY KEY,\n\tstrategy_name VARCHAR(50) NOT NULL,\n\tdata_source VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE RealTimeData (\n\tdata_id INT PRIMARY KEY,\n\ttimestamp TIMESTAMP NOT NULL,\n\tdemand INT NOT NULL,\n\tstatus VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE load_shedding_strategies (\n    strategy_id SERIAL PRIMARY KEY,\n    strategy_name TEXT NOT NULL,\n    load_threshold INT NOT NULL,\n    strategy_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE real_time_data (\n    data_id SERIAL PRIMARY KEY,\n    sensor_id TEXT NOT NULL,\n    data_value FLOAT NOT NULL,\n    timestamp TIMESTAMPTZ NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blackout_avoidance (\n    avoidance_id SERIAL PRIMARY KEY,\n    strategy_id INT REFERENCES load_shedding_strategies(strategy_id),\n    blackout_location TEXT NOT NULL,\n    avoidance_time TIMESTAMPTZ NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LoadSheddingZone (\n    zone_id INT PRIMARY KEY,\n    zone_name VARCHAR(255),\n    schedule_start_time TIMESTAMP,\n    schedule_end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PowerConsumption (\n    consumption_id INT PRIMARY KEY,\n    zone_id INT,\n    consumption_amount DECIMAL,\n    measurement_time TIMESTAMP,\n    FOREIGN KEY (zone_id) REFERENCES LoadSheddingZone(zone_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LoadSheddingStrategy (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    strategy_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StrategyZoneMapping (\n    mapping_id INT PRIMARY KEY,\n    strategy_id INT,\n    zone_id INT,\n    FOREIGN KEY (strategy_id) REFERENCES LoadSheddingStrategy(strategy_id),\n    FOREIGN KEY (zone_id) REFERENCES LoadSheddingZone(zone_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE load_shedding_strategies (\n  strategy_id INT PRIMARY KEY,\n  strategy_name VARCHAR(50),\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE real_time_data (\n  data_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  load_amount INT,\n  voltage FLOAT,\n  frequency FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE blackout_history (\n  blackout_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  duration INT,\n  affected_area VARCHAR(100),\n  cause TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_messages (\n  message_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  message_text TEXT,\n  sender VARCHAR(50),\n  receiver VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n  user_id INT PRIMARY KEY,\n  notification_type VARCHAR(50),\n  preferred_time TIME,\n  email VARCHAR(100),\n  phone_number VARCHAR(20)\n)"
+      }
+    ]
+  }
+]

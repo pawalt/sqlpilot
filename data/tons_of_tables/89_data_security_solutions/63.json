@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_configuration_settings (\n\tid INT PRIMARY KEY,\n\tserver_name VARCHAR(50),\n\tserver_ip VARCHAR(15),\n\tprotocol VARCHAR(10),\n\tencryption_method VARCHAR(20),\n\tmax_users INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_servers (\n  id INT PRIMARY KEY,\n  server_name VARCHAR(50),\n  server_ip VARCHAR(15),\n  port INT,\n  is_active BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_settings (\n  id INT PRIMARY KEY,\n  vpn_id INT,\n  setting_name VARCHAR(50),\n  setting_value TEXT,\n  FOREIGN KEY (vpn_id) REFERENCES vpn_servers(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_servers (\n    id UUID PRIMARY KEY,\n    server_name VARCHAR,\n    server_ip VARCHAR,\n    location VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_clients (\n    id UUID PRIMARY KEY,\n    client_name VARCHAR,\n    client_ip VARCHAR,\n    connected_server_id UUID,\n    FOREIGN KEY (connected_server_id) REFERENCES vpn_servers(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_configuration (\n    id UUID PRIMARY KEY,\n    server_id UUID,\n    setting_name VARCHAR,\n    setting_value VARCHAR,\n    FOREIGN KEY (server_id) REFERENCES vpn_servers(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VPN_Servers (\n    server_id INT PRIMARY KEY,\n    server_name VARCHAR(255) NOT NULL,\n    server_ip VARCHAR(15) NOT NULL,\n    max_connections INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VPN_Clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(255) NOT NULL,\n    client_ip VARCHAR(15) NOT NULL,\n    client_location VARCHAR(50),\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VPN_Configurations (\n    config_id INT PRIMARY KEY,\n    server_id INT REFERENCES VPN_Servers(server_id),\n    client_id INT REFERENCES VPN_Clients(client_id),\n    active_connection BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VPN_Logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    server_id INT REFERENCES VPN_Servers(server_id),\n    client_id INT REFERENCES VPN_Clients(client_id),\n    log_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VPN_Server_Configurations (\n    id SERIAL PRIMARY KEY,\n    server_name VARCHAR(50) NOT NULL,\n    ip_address VARCHAR(15) NOT NULL,\n    port INTEGER NOT NULL,\n    encryption_key TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VPN_Users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VPN_Connection_Logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INTEGER NOT NULL,\n    connection_timestamp TIMESTAMP NOT NULL,\n    disconnect_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VPN_Servers (\n    server_id SERIAL PRIMARY KEY,\n    server_name VARCHAR(50) NOT NULL,\n    ip_address VARCHAR(15) NOT NULL,\n    status BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VPN_Settings (\n    setting_id SERIAL PRIMARY KEY,\n    setting_name VARCHAR(50) NOT NULL,\n    setting_value TEXT\n);"
+      }
+    ]
+  }
+]

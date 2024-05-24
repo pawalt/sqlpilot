@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_material_prices (\n   material_id INT PRIMARY KEY,\n   material_name VARCHAR(255),\n   price DECIMAL(10,2),\n   date_recorded DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BuildingMaterials (\n  material_id INT PRIMARY KEY,\n  material_name TEXT,\n  price DECIMAL,\n  supplier_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialTrends (\n  trend_id INT PRIMARY KEY,\n  material_id INT,\n  observation_date DATE,\n  price DECIMAL,\n  FOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    price DECIMAL(10, 2),\n    date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE material_suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    contact_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE price_trends (\n    trend_id INT PRIMARY KEY,\n    material_id INT,\n    price DECIMAL(10, 2),\n    date TIMESTAMP,\n    FOREIGN KEY (material_id) REFERENCES building_materials(material_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_materials (\n    id INT PRIMARY KEY,\n    material_name TEXT,\n    price DECIMAL,\n    date_added DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    id INT PRIMARY KEY,\n    supplier_name TEXT,\n    location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_prices (\n    id INT PRIMARY KEY,\n    material_id INT REFERENCES building_materials(id),\n    supplier_id INT REFERENCES suppliers(id),\n    price DECIMAL,\n    date_recorded DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_availability (\n    material_id INT REFERENCES building_materials(id),\n    supplier_id INT REFERENCES suppliers(id),\n    available_quantity INT,\n    last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BuildingMaterials (\n\tmaterial_id INT PRIMARY KEY,\n\tmaterial_name TEXT,\n\tprice DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialStyles (\n\tstyle_id INT PRIMARY KEY,\n\tstyle_name TEXT,\n\tmaterial_id INT,\n\tFOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PriceHistory (\n\thistory_id INT PRIMARY KEY,\n\tmaterial_id INT,\n\tprice DECIMAL,\n\thistory_date DATE,\n\tFOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n\tsupplier_id INT PRIMARY KEY,\n\tsupplier_name TEXT,\n\tmaterial_id INT,\n\tFOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RegionalPrices (\n\tregion_id INT PRIMARY KEY,\n\tprice DECIMAL,\n\thistory_id INT,\n\tsupplier_id INT,\n\thistory_date DATE,\n\tFOREIGN KEY (history_id) REFERENCES PriceHistory(history_id),\n\tFOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);\n"
+      }
+    ]
+  }
+]

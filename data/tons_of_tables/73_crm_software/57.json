@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_program (\n  user_id UUID PRIMARY KEY,\n  user_name VARCHAR(255) NOT NULL,\n  loyalty_points INT DEFAULT 0\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE frequent_shoppers ( \n    shopper_id INT PRIMARY KEY, \n    shopper_name VARCHAR(50), \n    total_points INT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases ( \n    purchase_id INT PRIMARY KEY, \n    shopper_id INT REFERENCES frequent_shoppers(shopper_id), \n    purchase_amount DECIMAL(10, 2), \n    purchase_date DATE \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id UUID PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  total_spent DECIMAL,\n  join_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n  reward_id UUID PRIMARY KEY,\n  description VARCHAR(255),\n  point_value INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id UUID PRIMARY KEY,\n  customer_id UUID,\n  transaction_amount DECIMAL,\n  transaction_date TIMESTAMPTZ,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    loyalty_points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n    purchase_id INT PRIMARY KEY,\n    customer_id INT,\n    purchase_amount DECIMAL,\n    purchase_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id INT PRIMARY KEY,\n    reward_description VARCHAR(255),\n    points_required INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE redeemed_rewards (\n    redemption_id INT PRIMARY KEY,\n    customer_id INT,\n    reward_id INT,\n    redemption_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n    FOREIGN KEY (reward_id) REFERENCES rewards(reward_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    name STRING,\n    email STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    customer_id UUID,\n    amount DECIMAL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id UUID PRIMARY KEY,\n    customer_id UUID,\n    points INT,\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n    purchase_id UUID PRIMARY KEY,\n    customer_id UUID,\n    transaction_id UUID,\n    purchase_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE offers (\n    offer_id UUID PRIMARY KEY,\n    offer_name STRING,\n    discount_percentage INT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solo_travel_trends (\n  travel_id INT PRIMARY KEY,\n  traveler_name VARCHAR(50),\n  destination VARCHAR(100),\n  travel_date DATE,\n  travel_purpose TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solo_travelers (\n   traveler_id INT PRIMARY KEY,\n   traveler_name VARCHAR(50),\n   gender VARCHAR(10),\n   age INT,\n   country_of_origin VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE travel_logs (\n   log_id INT PRIMARY KEY,\n   traveler_id INT,  \n   destination VARCHAR(100),  \n   duration_days INT,  \n   travel_purpose VARCHAR(100),\n   FOREIGN KEY (traveler_id) REFERENCES solo_travelers(traveler_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solo_travelers (\n  traveler_id INT PRIMARY KEY,\n  traveler_name VARCHAR(50),\n  destination VARCHAR(100),\n  travel_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE travel_activities (\n  activity_id INT PRIMARY KEY,\n  activity_name VARCHAR(50),\n  activity_type VARCHAR(50),\n  activity_date DATE,\n  traveler_id INT,\n  FOREIGN KEY (traveler_id) REFERENCES solo_travelers(traveler_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE travel_ratings (\n  rating_id INT PRIMARY KEY,\n  activity_id INT,\n  rating FLOAT,\n  review TEXT,\n  FOREIGN KEY (activity_id) REFERENCES travel_activities(activity_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solo_travelers (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    country_of_origin VARCHAR(50),\n    age INT,\n    gender VARCHAR(10),\n    date_joined DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE solo_destinations (\n    destination_id INT PRIMARY KEY,\n    destination_name VARCHAR(100) NOT NULL,\n    country VARCHAR(50),\n    region VARCHAR(50),\n    travel_purpose TEXT,\n    rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE solo_trips (\n    trip_id INT PRIMARY KEY,\n    user_id INT,\n    destination_id INT,\n    start_date DATE,\n    end_date DATE,\n    duration_days INT,\n    cost FLOAT,\n    FOREIGN KEY (user_id) REFERENCES solo_travelers(user_id),\n    FOREIGN KEY (destination_id) REFERENCES solo_destinations(destination_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trip_reviews (\n    review_id INT PRIMARY KEY,\n    trip_id INT,\n    user_id INT,\n    review_text TEXT,\n    rating INT,\n    review_date DATE,\n    FOREIGN KEY (trip_id) REFERENCES solo_trips(trip_id),\n    FOREIGN KEY (user_id) REFERENCES solo_travelers(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SoloTravelers (\n  traveler_id INT PRIMARY KEY,\n  traveler_name VARCHAR(255),\n  age INT,\n  gender VARCHAR(10),\n  country_of_origin VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TravelDestinations (\n  destination_id INT PRIMARY KEY,\n  destination_name VARCHAR(255),\n  region VARCHAR(100),\n  popular_activities TEXT,\n  average_rating FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TravelHistory (\n  history_id INT PRIMARY KEY,\n  traveler_id INT,\n  destination_id INT,\n  travel_date DATE,\n  total_duration INT,\n  FOREIGN KEY (traveler_id) REFERENCES SoloTravelers(traveler_id),\n  FOREIGN KEY (destination_id) REFERENCES TravelDestinations(destination_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TravelExpenses (\n  expense_id INT PRIMARY KEY,\n  history_id INT,\n  accommodation_cost FLOAT,\n  transportation_cost FLOAT,\n  food_cost FLOAT,\n  total_cost FLOAT,\n  FOREIGN KEY (history_id) REFERENCES TravelHistory(history_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TravelReviews (\n  review_id INT PRIMARY KEY,\n  history_id INT,\n  rating INT,\n  review_text TEXT,\n  review_date DATE,\n  FOREIGN KEY (history_id) REFERENCES TravelHistory(history_id)\n)"
+      }
+    ]
+  }
+]

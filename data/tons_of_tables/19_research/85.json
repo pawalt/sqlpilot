@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_training (\n  researcher_id INT,\n  researcher_name VARCHAR(255),\n  training_completed BOOLEAN,\n  training_score FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researchers ( \n    researcher_id INT PRIMARY KEY, \n    name VARCHAR(50), \n    department VARCHAR(50), \n    completion_status BOOLEAN \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_courses ( \n    course_id INT PRIMARY KEY, \n    course_name VARCHAR(50), \n    course_description TEXT, \n    completion_date DATE \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ethics_compliance_officers (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    department VARCHAR(50),\n    email VARCHAR(100) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE training_completion (\n    id INT PRIMARY KEY,\n    researcher_id INT,\n    completion_date DATE,\n    status VARCHAR(20),\n    CONSTRAINT fk_researcher_id FOREIGN KEY (researcher_id) REFERENCES researchers(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    department TEXT,\n    email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_modules (\n    module_id INT PRIMARY KEY,\n    module_name TEXT NOT NULL,\n    module_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_completion (\n    completion_id INT PRIMARY KEY,\n    researcher_id INT REFERENCES researchers(researcher_id),\n    module_id INT REFERENCES training_modules(module_id),\n    completion_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_officers (\n    officer_id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    department TEXT,\n    email TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ethics_compliance_officers (\n\tofficer_id INT PRIMARY KEY,\n\tofficer_name VARCHAR(50) NOT NULL,\n\tofficer_email VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n\tresearcher_id INT PRIMARY KEY,\n\tresearcher_name VARCHAR(50) NOT NULL,\n\tresearcher_email VARCHAR(50) UNIQUE,\n\tofficer_id INT REFERENCES ethics_compliance_officers(officer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_courses (\n\tcourse_id INT PRIMARY KEY,\n\tcourse_name VARCHAR(50) NOT NULL,\n\tcourse_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE researcher_training (\n\tresearcher_id INT REFERENCES researchers(researcher_id),\n\tcourse_id INT REFERENCES training_courses(course_id),\n\tcompletion_date DATE,\n\tPRIMARY KEY (researcher_id, course_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_progress (\n\tresearcher_id INT REFERENCES researchers(researcher_id),\n\tcourse_id INT REFERENCES training_courses(course_id),\n\tprogress_percentage INT CHECK (progress_percentage >= 0 AND progress_percentage <= 100),\n\tPRIMARY KEY (researcher_id, course_id)\n);"
+      }
+    ]
+  }
+]

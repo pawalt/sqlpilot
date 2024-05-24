@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM changes_tracking ORDER BY timestamp DESC LIMIT 5",
+      "SELECT id, timestamp FROM changes_tracking WHERE id = '123e4567-e89b-12d3-a456-426614174000'",
+      "SELECT * FROM changes_tracking WHERE timestamp >= '2022-01-01' AND timestamp <= '2022-01-31'",
+      "SELECT id, ST_AsText(geospatial_data) FROM changes_tracking WHERE ST_Distance(geospatial_data, ST_GeomFromText('POINT(1 1)')) < 10",
+      "SELECT id, timestamp FROM changes_tracking ORDER BY timestamp ASC",
+      "SELECT * FROM changes_tracking ORDER BY timestamp DESC LIMIT 5",
+      "SELECT id, timestamp FROM changes_tracking WHERE timestamp >= '2021-01-01' AND geospatial_data IS NOT NULL",
+      "SELECT id, timestamp, ST_AsText(geospatial_data) AS location FROM changes_tracking WHERE ST_Distance(geospatial_data, 'POINT(0 0)') < 1000",
+      "SELECT id, timestamp, ST_X(geospatial_data) AS longitude, ST_Y(geospatial_data) AS latitude FROM changes_tracking WHERE EXTRACT(YEAR FROM timestamp) = 2022",
+      "SELECT id, timestamp, ST_Distance(geospatial_data, 'POINT(5 5)') AS distance_to_point FROM changes_tracking WHERE ST_DWithin(geospatial_data, 'POINT(5 5)', 10)"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM geospatial_changes;",
+      "SELECT id, change_description FROM geospatial_changes WHERE id = 1;",
+      "SELECT * FROM geospatial_changes ORDER BY change_timestamp DESC;",
+      "SELECT * FROM user_tracking WHERE location = point(10, 20);",
+      "SELECT user_id, location FROM user_tracking ORDER BY last_updated ASC;",
+      "SELECT id, coordinates, change_description, change_timestamp FROM geospatial_changes WHERE id = 1;",
+      "SELECT * FROM geospatial_changes WHERE change_timestamp < NOW();",
+      "SELECT change_description, change_timestamp FROM geospatial_changes ORDER BY change_timestamp DESC;",
+      "SELECT user_id, location FROM user_tracking WHERE ST_DWithin(location, 'POINT(10 10)', 100);",
+      "SELECT user_id, location, last_updated FROM user_tracking WHERE last_updated BETWEEN '2021-01-01' AND '2021-12-31';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM geospatial_data_changes;",
+      "SELECT change_id, timestamp, location FROM geospatial_data_changes ORDER BY timestamp DESC;",
+      "SELECT update_id, timestamp, updated_location, previous_location FROM geospatial_data_updates WHERE update_id = 1;",
+      "SELECT * FROM geospatial_data_history ORDER BY entry_id DESC LIMIT 10;",
+      "SELECT entry_id, timestamp, location_history->'coordinates' AS coordinates FROM geospatial_data_history WHERE timestamp >= '2022-01-01';",
+      "SELECT * FROM geospatial_data_changes ORDER BY timestamp DESC LIMIT 5;",
+      "SELECT update_id, updated_location, previous_location FROM geospatial_data_updates WHERE timestamp >= '2022-01-01' AND timestamp <= '2022-01-31' ORDER BY timestamp ASC;",
+      "SELECT change_id, timestamp, location FROM geospatial_data_changes INNER JOIN geospatial_data_updates ON geospatial_data_changes.change_id = geospatial_data_updates.update_id WHERE timestamp >= '2022-01-01';",
+      "SELECT * FROM geospatial_data_history WHERE location_history ->> 'city' = 'New York' ORDER BY entry_id DESC, timestamp ASC LIMIT 10;",
+      "SELECT change_id, timestamp, location FROM geospatial_data_changes WHERE EXTRACT(YEAR FROM timestamp) = 2021 ORDER BY change_id DESC LIMIT 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users;",
+      "SELECT user_id, username, location FROM users WHERE user_id = 1;",
+      "SELECT user_id, username FROM users WHERE location IS NOT NULL;",
+      "SELECT user_id, username FROM users ORDER BY username ASC;",
+      "SELECT * FROM user_activity ORDER BY activity_timestamp DESC;",
+      "SELECT * FROM users WHERE user_id = 1;",
+      "SELECT username, location FROM users WHERE ST_Intersects(location, (SELECT geospatial_data FROM changes_over_time WHERE id = 1));",
+      "SELECT * FROM user_activity WHERE activity_type = 'login' ORDER BY activity_timestamp DESC;",
+      "SELECT change_id, change_type, description FROM change_types WHERE change_id IN (SELECT id FROM changes_over_time);",
+      "SELECT user_id, COUNT(activity_id) AS activity_count FROM user_activity GROUP BY user_id HAVING activity_count > 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM changes ORDER BY change_timestamp DESC LIMIT 5;",
+      "SELECT object_id, geometry FROM spatial_data WHERE object_id IN (1, 2, 3, 4, 5);",
+      "SELECT name, description FROM objects WHERE object_id = 3;",
+      "SELECT * FROM users WHERE username = 'john_doe';",
+      "SELECT object_id, field_name, old_value, new_value FROM history WHERE object_id = 10 ORDER BY change_timestamp ASC;",
+      "SELECT * FROM changes ORDER BY change_timestamp DESC LIMIT 10;",
+      "SELECT object_id, change_type, change_timestamp FROM changes WHERE object_id = 100 ORDER BY change_timestamp ASC;",
+      "SELECT users.username, changes.change_type, history.field_name FROM users INNER JOIN changes ON users.user_id = changes.user_id INNER JOIN history ON changes.object_id = history.object_id WHERE users.username = 'john_doe' AND history.field_name = 'description';",
+      "SELECT objects.name, spatial_data.geometry FROM objects INNER JOIN spatial_data ON objects.object_id = spatial_data.object_id WHERE spatial_data.creation_timestamp > '2021-01-01';",
+      "SELECT users.username, COUNT(changes.id) AS change_count FROM users LEFT JOIN changes ON users.user_id = changes.user_id GROUP BY users.username HAVING COUNT(changes.id) > 5 ORDER BY change_count DESC;"
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_infrastructure_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    location VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_infrastructure_projects (\n project_id UUID PRIMARY KEY,\n project_name VARCHAR(255),\n start_date DATE,\n end_date DATE,\n project_manager VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_logs (\n log_id SERIAL PRIMARY KEY,\n project_id UUID,\n log_date TIMESTAMP,\n log_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date TIMESTAMP NOT NULL,\n    end_date TIMESTAMP,\n    project_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectManagers (\n    manager_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES Projects(project_id),\n    manager_name VARCHAR(100) NOT NULL,\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectTasks (\n    task_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES Projects(project_id),\n    task_name VARCHAR(100) NOT NULL,\n    due_date TIMESTAMP,\n    status VARCHAR(20) DEFAULT 'In Progress'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    project_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    project_id INT,\n    location_name VARCHAR(255),\n    address VARCHAR(255),\n    city VARCHAR(100),\n    state VARCHAR(50),\n    country VARCHAR(50),\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id INT PRIMARY KEY,\n    project_id INT,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    task_status VARCHAR(50),\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE progress (\n    progress_id INT PRIMARY KEY,\n    task_id INT,\n    progress_date DATE,\n    percentage_complete INT,\n    remarks TEXT,\n    FOREIGN KEY (task_id) REFERENCES tasks(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name STRING,\n    start_date DATE,\n    end_date DATE,\n    location STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id UUID PRIMARY KEY,\n    task_name STRING,\n    project_id UUID,\n    assigned_to STRING,\n    status STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id UUID PRIMARY KEY,\n    material_name STRING,\n    quantity INTEGER,\n    project_id UUID,\n    supplier STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE budget (\n    budget_id UUID PRIMARY KEY,\n    project_id UUID,\n    total_budget DECIMAL,\n    spent_budget DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE progress (\n    progress_id UUID PRIMARY KEY,\n    project_id UUID,\n    task_id UUID,\n    completion_percentage INTEGER\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkCoverage (\n  location_id INT PRIMARY KEY,\n  location_name STRING,\n  region STRING,\n  network_type STRING,\n  coverage_area FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_nodes (\n  node_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  latitude DECIMAL(10, 6),\n  longitude DECIMAL(10, 6),\n  node_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_edges (\n  edge_id INT PRIMARY KEY,\n  start_node_id INT,\n  end_node_id INT,\n  distance DECIMAL(10, 2),\n  bandwidth INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regions (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(50),\n  coverage_area INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(50),\n  region_id INT,\n  FOREIGN KEY (region_id) REFERENCES regions(region_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE network_devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(50),\n  location_id INT,\n  FOREIGN KEY (location_id) REFERENCES locations(location_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50) NOT NULL,\n    latitude DECIMAL(10, 8),\n    longitude DECIMAL(11, 8)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE networks (\n    network_id INT PRIMARY KEY,\n    network_name VARCHAR(50) NOT NULL,\n    deployment_date DATE,\n    technology VARCHAR(30)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE coverage_areas (\n    area_id INT PRIMARY KEY,\n    area_name VARCHAR(50) NOT NULL,\n    coverage_type VARCHAR(20),\n    coverage_range DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_usage (\n    usage_id INT PRIMARY KEY,\n    network_id INT,\n    area_id INT,\n    usage_date DATE,\n    data_usage DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_areas (\n  area_id INT PRIMARY KEY,\n  area_name VARCHAR(50) NOT NULL,\n  coverage_type VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE network_nodes (\n  node_id INT PRIMARY KEY,\n  node_name VARCHAR(50) NOT NULL,\n  node_location VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE networks (\n  network_id INT PRIMARY KEY,\n  network_name VARCHAR(50) NOT NULL,\n  network_type VARCHAR(20) NOT NULL,\n  coverage_area_id INT NOT NULL,\n  FOREIGN KEY (coverage_area_id) REFERENCES coverage_areas(area_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE node_connections (\n  connection_id INT PRIMARY KEY,\n  source_node_id INT NOT NULL,\n  destination_node_id INT NOT NULL,\n  connection_type VARCHAR(20) NOT NULL,\n  FOREIGN KEY (source_node_id) REFERENCES network_nodes(node_id),\n  FOREIGN KEY (destination_node_id) REFERENCES network_nodes(node_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE usage_statistics (\n  statistics_id INT PRIMARY KEY,\n  node_id INT NOT NULL,\n  usage_date DATE NOT NULL,\n  total_traffic INT NOT NULL,\n  FOREIGN KEY (node_id) REFERENCES network_nodes(node_id)\n)"
+      }
+    ]
+  }
+]

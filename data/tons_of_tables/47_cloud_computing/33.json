@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyConsumptionPatterns (\n    device_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    energy_consumed DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    power_consumption DECIMAL(10, 2)\n);\n\nCREATE TABLE power_usage (\n    usage_id INT PRIMARY KEY,\n    device_id INT,\n    usage_date DATE,\n    usage_time TIME,\n    energy_consumed DECIMAL(10, 2),\n    CONSTRAINT fk_device_id FOREIGN KEY (device_id) REFERENCES energy_devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Device (\n\tdevice_id INT PRIMARY KEY,\n\tdevice_name TEXT NOT NULL,\n\tsmart_home_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n\tconsumption_id SERIAL PRIMARY KEY,\n\tdevice_id INT,\n\tenergy_consumed DECIMAL,\n\ttimestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SmartHome (\n\tsmart_home_id SERIAL PRIMARY KEY,\n\tsmart_home_name TEXT NOT NULL,\n\tlocation TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartDevices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(255),\n  location VARCHAR(255),\n  power_consumption FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyLogs (\n  log_id INT PRIMARY KEY,\n  device_id INT,\n  log_timestamp TIMESTAMP,\n  energy_consumed FLOAT,\n  FOREIGN KEY (device_id) REFERENCES SmartDevices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceStatus (\n  status_id INT PRIMARY KEY,\n  device_id INT,\n  status VARCHAR(50),\n  FOREIGN KEY (device_id) REFERENCES SmartDevices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PowerOptimization (\n  optimization_id INT PRIMARY KEY,\n  device_id INT,\n  optimization_date DATE,\n  optimization_result VARCHAR(255),\n  FOREIGN KEY (device_id) REFERENCES SmartDevices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    power_consumption FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_usage (\n    usage_id UUID PRIMARY KEY,\n    device_id UUID REFERENCES smart_devices(device_id),\n    timestamp TIMESTAMP NOT NULL,\n    energy_consumed FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE power_optimization (\n    optimization_id UUID PRIMARY KEY,\n    device_id UUID REFERENCES smart_devices(device_id),\n    optimization_date DATE NOT NULL,\n    optimized_power_consumption FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE usage_patterns (\n    pattern_id UUID PRIMARY KEY,\n    device_id UUID REFERENCES smart_devices(device_id),\n    usage_pattern JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_homes (\n    home_id UUID PRIMARY KEY,\n    home_name VARCHAR(50) NOT NULL,\n    address VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  }
+]

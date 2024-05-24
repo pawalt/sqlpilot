@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_licenses (\n    id UUID PRIMARY KEY,\n    software_name VARCHAR(255),\n    license_key VARCHAR(255),\n    expiration_date DATE,\n    is_compliant BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE licenses (\n    license_id UUID PRIMARY KEY,\n    software_name VARCHAR(255),\n    license_key VARCHAR(255),\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_data (\n    data_id SERIAL PRIMARY KEY,\n    company_name VARCHAR(255),\n    license_id UUID,\n    is_compliant BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_licenses (\n    license_id UUID PRIMARY KEY,\n    software_name VARCHAR(255),\n    license_type VARCHAR(50),\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_data (\n    data_id UUID PRIMARY KEY,\n    license_id UUID REFERENCES software_licenses(license_id),\n    compliance_status VARCHAR(50),\n    audit_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email VARCHAR(255),\n    organization VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_licenses (\n    license_id INT PRIMARY KEY,\n    software_name VARCHAR(255),\n    license_type VARCHAR(50),\n    license_key VARCHAR(100),\n    issue_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email VARCHAR(100),\n    phone_number VARCHAR(20),\n    company_name VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_data (\n    compliance_id INT PRIMARY KEY,\n    license_id INT,\n    customer_id INT,\n    compliance_status VARCHAR(20),\n    expiry_date DATE,\n    FOREIGN KEY (license_id) REFERENCES software_licenses(license_id),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_info (\n    billing_id INT PRIMARY KEY,\n    customer_id INT,\n    billing_address VARCHAR(255),\n    card_number VARCHAR(16),\n    expiry_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_licenses (\n    license_id INT PRIMARY KEY,\n    software_name VARCHAR(255),\n    license_type VARCHAR(50),\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE license_users (\n    user_id INT PRIMARY KEY,\n    license_id INT,\n    user_name VARCHAR(255),\n    user_email VARCHAR(255),\n    user_role VARCHAR(50),\n    FOREIGN KEY (license_id) REFERENCES software_licenses(license_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_data (\n    compliance_id INT PRIMARY KEY,\n    software_name VARCHAR(255),\n    compliance_status VARCHAR(50),\n    last_checked_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    log_description TEXT,\n    log_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES license_users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE license_audit (\n    audit_id INT PRIMARY KEY,\n    license_id INT,\n    audit_result VARCHAR(50),\n    audit_date TIMESTAMP,\n    FOREIGN KEY (license_id) REFERENCES software_licenses(license_id)\n);"
+      }
+    ]
+  }
+]

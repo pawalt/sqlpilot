@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofencing_notifications (\n    id UUID PRIMARY KEY,\n    notification_name STRING,\n    notification_message STRING,\n    geofence_polygon GEOMETRY(POLYGON)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_locations (\n    geofence_id INT PRIMARY KEY,\n    geofence_name TEXT,\n    geofence_area GEOGRAPHY,\n    alert_radius INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_locations (\n    user_id INT PRIMARY KEY,\n    user_name TEXT,\n    user_location GEOGRAPHY,\n    last_updated TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofences (\n    id INT PRIMARY KEY,\n    name TEXT,\n    boundary GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    id INT PRIMARY KEY,\n    name TEXT,\n    coordinates GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    id INT PRIMARY KEY,\n    location_id INT,\n    message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_areas (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(255),\n  area GEOGRAPHY,\n  created_at TIMESTAMPTZ DEFAULT (now() at time zone 'utc'),\n  updated_at TIMESTAMPTZ DEFAULT (now() at time zone 'utc')\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  id SERIAL PRIMARY KEY,\n  username VARCHAR(100) NOT NULL,\n  email VARCHAR(255) UNIQUE,\n  location GEOGRAPHY,\n  created_at TIMESTAMPTZ DEFAULT (now() at time zone 'utc'),\n  updated_at TIMESTAMPTZ DEFAULT (now() at time zone 'utc')\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n  id SERIAL PRIMARY KEY,\n  user_id INTEGER REFERENCES users(id),\n  message TEXT,\n  location GEOGRAPHY,\n  triggered_at TIMESTAMPTZ DEFAULT (now() at time zone 'utc'),\n  created_at TIMESTAMPTZ DEFAULT (now() at time zone 'utc')\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n  id SERIAL PRIMARY KEY,\n  geofence_id INTEGER REFERENCES geofence_areas(id),\n  message TEXT,\n  created_at TIMESTAMPTZ DEFAULT (now() at time zone 'utc')\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_areas (\n id INT PRIMARY KEY,\n area_name TEXT,\n geo_polygon GEOGRAPHY(MULTIPOLYGON)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n user_id INT PRIMARY KEY,\n username TEXT,\n email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_locations (\n location_id INT PRIMARY KEY,\n user_id INT,\n location GEOGRAPHY(POINT),\n timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n notification_id INT PRIMARY KEY,\n user_id INT,\n message TEXT,\n notification_type TEXT,\n timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n alert_id INT PRIMARY KEY,\n user_id INT,\n alert_message TEXT,\n alert_type TEXT,\n alert_location GEOGRAPHY(POINT),\n timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

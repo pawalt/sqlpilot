@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_championships (\n    team_id UUID PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    championships_won INT NOT NULL,\n    runner_up_finishes INT NOT NULL,\n    playoff_appearances INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_championships (\n    team_id UUID PRIMARY KEY,\n    team_name VARCHAR(50) NOT NULL,\n    championships_won INT,\n    runner_up_finishes INT,\n    playoff_appearances INT\n);\n\nCREATE TABLE playoff_history (\n    team_id UUID PRIMARY KEY,\n    team_name VARCHAR(50) NOT NULL,\n    playoff_season INT,\n    result VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamChampionships (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(100) NOT NULL,\n  championships_won INT,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RunnerUpFinishes (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(100) NOT NULL,\n  runner_up_finishes INT,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PlayoffAppearances (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(100) NOT NULL,\n  playoff_appearances INT,\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_championships (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(50),\n    championships_won INT,\n    runner_up_finishes INT,\n    playoff_appearances INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_players (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50),\n    team_id INT,\n    FOREIGN KEY (team_id) REFERENCES team_championships(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE playoff_results (\n    playoff_id INT PRIMARY KEY,\n    playoff_season VARCHAR(10),\n    playoff_champion_team_id INT,\n    playoff_runner_up_team_id INT,\n    FOREIGN KEY (playoff_champion_team_id) REFERENCES team_championships(team_id),\n    FOREIGN KEY (playoff_runner_up_team_id) REFERENCES team_championships(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE playoff_stats (\n    playoff_id INT,\n    team_id INT,\n    playoff_round INT,\n    playoff_outcome VARCHAR(10),\n    PRIMARY KEY (playoff_id, team_id),\n    FOREIGN KEY (playoff_id) REFERENCES playoff_results(playoff_id),\n    FOREIGN KEY (team_id) REFERENCES team_championships(team_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE teams (id INT PRIMARY KEY, team_name VARCHAR(255) NOT NULL, championships INT DEFAULT 0, runner_ups INT DEFAULT 0, playoff_appearances INT DEFAULT 0);"
+      },
+      {
+        "table_schema": "CREATE TABLE championships (id INT PRIMARY KEY, team_id INT, year INT, FOREIGN KEY (team_id) REFERENCES teams(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE runner_ups (id INT PRIMARY KEY, team_id INT, year INT, FOREIGN KEY (team_id) REFERENCES teams(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE playoff_appearances (id INT PRIMARY KEY, team_id INT, year INT, result VARCHAR(255), FOREIGN KEY (team_id) REFERENCES teams(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE seasons (id INT PRIMARY KEY, year INT, start_date DATE, end_date DATE);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parts_inventory (\n    part_id SERIAL PRIMARY KEY,\n    part_name VARCHAR(100) NOT NULL,\n    part_category VARCHAR(50) NOT NULL,\n    part_quantity INT NOT NULL,\n    part_supplier VARCHAR(100) NOT NULL,\n    purchase_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parts (\n  part_id INT PRIMARY KEY,\n  part_name VARCHAR(255) NOT NULL,\n  quantity INT,\n  price DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE components (\n  component_id INT PRIMARY KEY,\n  component_name VARCHAR(255) NOT NULL,\n  part_id INT,\n  FOREIGN KEY (part_id) REFERENCES parts(part_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Parts (\n\tid INT PRIMARY KEY,\n\tname TEXT,\n\tquantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Components (\n\tid INT PRIMARY KEY,\n\tname TEXT,\n\tpart_id INT REFERENCES Parts(id),\n\tquantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Assemblies (\n\tid INT PRIMARY KEY,\n\tname TEXT,\n\tcomponent_id INT REFERENCES Components(id),\n\tquantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parts (\n  part_id INT PRIMARY KEY,\n  part_name VARCHAR(50) NOT NULL,\n  quantity INT NOT NULL,\n  price DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE components (\n  component_id INT PRIMARY KEY,\n  component_name VARCHAR(50) NOT NULL,\n  part_id INT NOT NULL,\n  FOREIGN KEY (part_id) REFERENCES parts(part_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouses (\n  warehouse_id INT PRIMARY KEY,\n  location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n  part_id INT,\n  warehouse_id INT,\n  quantity INT NOT NULL,\n  PRIMARY KEY (part_id, warehouse_id),\n  FOREIGN KEY (part_id) REFERENCES parts(part_id),\n  FOREIGN KEY (warehouse_id) REFERENCES warehouses(warehouse_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parts (\n    part_id UUID PRIMARY KEY,\n    part_name VARCHAR(255) NOT NULL,\n    quantity INT NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE components (\n    component_id UUID PRIMARY KEY,\n    component_name VARCHAR(255) NOT NULL,\n    part_id UUID REFERENCES parts(part_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vendors (\n    vendor_id UUID PRIMARY KEY,\n    vendor_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id UUID PRIMARY KEY,\n    part_id UUID REFERENCES parts(part_id) ON DELETE CASCADE,\n    quantity INT NOT NULL,\n    vendor_id UUID REFERENCES vendors(vendor_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    inventory_id UUID REFERENCES inventory(inventory_id) ON DELETE CASCADE,\n    transaction_date TIMESTAMP NOT NULL,\n    quantity INT NOT NULL\n);"
+      }
+    ]
+  }
+]

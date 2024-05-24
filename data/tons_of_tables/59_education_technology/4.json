@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE student_accounts (\n    student_id INT PRIMARY KEY,\n    full_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication (\n    auth_id INT PRIMARY KEY,\n    student_id INT REFERENCES students(student_id),\n    token VARCHAR(100) NOT NULL,\n    expiration_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n   student_id INT PRIMARY KEY,\n   student_name VARCHAR(50),\n   student_email VARCHAR(100),\n   student_password VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n   course_id INT PRIMARY KEY,\n   course_name VARCHAR(50),\n   course_description VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE enrollment (\n   enrollment_id INT PRIMARY KEY,\n   student_id INT,\n   course_id INT,\n   enrollment_date DATE,\n   FOREIGN KEY (student_id) REFERENCES students(student_id),\n   FOREIGN KEY (course_id) REFERENCES courses(course_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(50) NOT NULL,\n    student_email VARCHAR(100) UNIQUE,\n    student_password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(50) NOT NULL,\n    course_description TEXT,\n    course_credits INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE enrollments (\n    enrollment_id INT PRIMARY KEY,\n    student_id INT REFERENCES students(student_id),\n    course_id INT REFERENCES courses(course_id),\n    enrollment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    student_id INT REFERENCES students(student_id),\n    permission_level ENUM('read', 'write', 'admin')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (student_id INT PRIMARY KEY, student_name VARCHAR(50), student_email VARCHAR(50), student_password VARCHAR(50));"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (course_id INT PRIMARY KEY, course_name VARCHAR(50), course_description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE enrollments (enrollment_id INT PRIMARY KEY, student_id INT, course_id INT, enrollment_date DATE, FOREIGN KEY (student_id) REFERENCES students(student_id), FOREIGN KEY (course_id) REFERENCES courses(course_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE grades (grade_id INT PRIMARY KEY, enrollment_id INT, grade DECIMAL(5,2), FOREIGN KEY (enrollment_id) REFERENCES enrollments(enrollment_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (attempt_id INT PRIMARY KEY, student_id INT, attempt_time TIMESTAMP, success BOOLEAN, FOREIGN KEY (student_id) REFERENCES students(student_id));"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name VARCHAR(255),\n    contract_details TEXT,\n    contract_start_date TIMESTAMP,\n    contract_end_date TIMESTAMP,\n    insured_address VARCHAR(255),\n    premium_amount DECIMAL(10, 2),\n    payout_amount DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id SERIAL PRIMARY KEY,\n    contract_name VARCHAR(255) NOT NULL,\n    contract_details TEXT,\n    creation_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_parameters (\n    parameter_id SERIAL PRIMARY KEY,\n    contract_id INT REFERENCES smart_contracts(contract_id) ON DELETE CASCADE,\n    parameter_name VARCHAR(255) NOT NULL,\n    parameter_value TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name VARCHAR(255),\n    contract_address VARCHAR(255),\n    creator_address VARCHAR(255),\n    creation_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_parameters (\n    parameter_id UUID PRIMARY KEY,\n    contract_id UUID,\n    parameter_name VARCHAR(255),\n    parameter_type VARCHAR(50),\n    parameter_value JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE insurance_platforms (\n    platform_id UUID PRIMARY KEY,\n    platform_name VARCHAR(255),\n    platform_address VARCHAR(255),\n    supported_contracts JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id INT PRIMARY KEY,\n    contract_name VARCHAR(255),\n    contract_address VARCHAR(255),\n    contract_balance DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_parameters (\n    parameter_id INT PRIMARY KEY,\n    contract_id INT,\n    parameter_name VARCHAR(255),\n    parameter_value VARCHAR(255),\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE insurance_platforms (\n    platform_id INT PRIMARY KEY,\n    platform_name VARCHAR(255),\n    platform_address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE platform_contracts (\n    platform_contract_id INT PRIMARY KEY,\n    platform_id INT,\n    contract_id INT,\n    FOREIGN KEY (platform_id) REFERENCES insurance_platforms(platform_id),\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartContracts (\n    contract_id INT PRIMARY KEY,\n    contract_address VARCHAR(255),\n    contract_name VARCHAR(255),\n    contract_code TEXT,\n    deploy_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(255),\n    user_address VARCHAR(255),\n    user_type ENUM('admin', 'participant')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE InsurancePolicies (\n    policy_id INT PRIMARY KEY,\n    contract_id INT,\n    user_id INT,\n    start_date DATE,\n    end_date DATE,\n    premium DECIMAL(10, 2),\n    status ENUM('active', 'expired', 'canceled')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Claims (\n    claim_id INT PRIMARY KEY,\n    policy_id INT,\n    user_id INT,\n    claim_date DATE,\n    claim_amount DECIMAL(10, 2),\n    status ENUM('pending', 'approved', 'rejected')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Documents (\n    document_id INT PRIMARY KEY,\n    claim_id INT,\n    document_type ENUM('photo', 'pdf', 'text'),\n    document_content TEXT\n);\n"
+      }
+    ]
+  }
+]

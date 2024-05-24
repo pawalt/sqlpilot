@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genomic_data (\n  experiment_id SERIAL PRIMARY KEY,\n  sample_id INT,\n  chromosome VARCHAR(10),\n  position INT,\n  nucleotide VARCHAR(1)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Experiment (\n  experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR(255),\n  experiment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SequencingData (\n  sequencing_id INT PRIMARY KEY,\n  experiment_id INT,\n  sequence_data TEXT,\n  sequencing_date TIMESTAMP,\n  FOREIGN KEY (experiment_id) REFERENCES Experiment(experiment_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment_data (\n  experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR(255),\n  sample_id INT,\n  sequencing_data TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_information (\n  sample_id INT PRIMARY KEY,\n  sample_name VARCHAR(255),\n  organism VARCHAR(255),\n  tissue_type VARCHAR(255),\n  experiment_id INT,\n  FOREIGN KEY (experiment_id) REFERENCES experiment_data(experiment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n  result_id INT PRIMARY KEY,\n  sample_id INT,\n  analysis_date DATE,\n  result_summary TEXT,\n  FOREIGN KEY (sample_id) REFERENCES sample_information(sample_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n  experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR(50),\n  experiment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE samples (\n  sample_id INT PRIMARY KEY,\n  experiment_id INT,\n  sample_name VARCHAR(50),\n  sample_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequencing_results (\n  result_id INT PRIMARY KEY,\n  sample_id INT,\n  sequencing_date DATE,\n  sequencing_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n  analysis_id INT PRIMARY KEY,\n  result_id INT,\n  analysis_date DATE,\n  analysis_report TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (experiment_id UUID PRIMARY KEY,\n  experiment_name TEXT,\n  experiment_date DATE,\n  researcher_name TEXT,\n  notes TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE samples (sample_id UUID PRIMARY KEY,\n  sample_name TEXT,\n  sample_type TEXT,\n  experiment_id UUID,\n  FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE sequencing_results (result_id UUID PRIMARY KEY,\n  sample_id UUID,\n  sequencing_date DATE,\n  sequencing_data BYTEA,\n  FOREIGN KEY (sample_id) REFERENCES samples(sample_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (analysis_id UUID PRIMARY KEY,\n  result_id UUID,\n  analysis_date DATE,\n  analysis_method TEXT,\n  analysis_report TEXT,\n  FOREIGN KEY (result_id) REFERENCES sequencing_results(result_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (annotation_id UUID PRIMARY KEY,\n  result_id UUID,\n  annotation_type TEXT,\n  annotation_data JSON,\n  FOREIGN KEY (result_id) REFERENCES sequencing_results(result_id))"
+      }
+    ]
+  }
+]

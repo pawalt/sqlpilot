@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Journals (\n    journal_id INT PRIMARY KEY,\n    journal_title VARCHAR(255),\n    author_name VARCHAR(255),\n    submission_date TIMESTAMP,\n    review_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Journals (\n  id INT PRIMARY KEY,\n  title VARCHAR(255),\n  editor VARCHAR(100),\n  submission_date DATE,\n  status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PeerReview (\n  review_id INT PRIMARY KEY,\n  journal_id INT,\n  reviewer_name VARCHAR(100),\n  review_date DATE,\n  comments TEXT,\n  status VARCHAR(50),\n  FOREIGN KEY (journal_id) REFERENCES Journals(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Journals (\n  journal_id INT PRIMARY KEY,\n  journal_name VARCHAR(255) NOT NULL,\n  submission_date DATE,\n  review_status ENUM('pending', 'in_progress', 'completed'),\n  reviewer_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Reviewers (\n  reviewer_id INT PRIMARY KEY,\n  reviewer_name VARCHAR(255) NOT NULL,\n  expertise_area VARCHAR(255),\n  email VARCHAR(255) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Reviews (\n  review_id INT PRIMARY KEY,\n  journal_id INT,\n  reviewer_id INT,\n  review_date DATE,\n  overall_rating INT,\n  comments TEXT,\n  FOREIGN KEY (journal_id) REFERENCES Journals(journal_id),\n  FOREIGN KEY (reviewer_id) REFERENCES Reviewers(reviewer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Journals (\n\tjournal_id INT PRIMARY KEY,\n\tjournal_name VARCHAR(255) NOT NULL,\n\tpeer_review_status VARCHAR(50),\n\tsql_database_used BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Authors (\n\tauthor_id INT PRIMARY KEY,\n\tauthor_name VARCHAR(255) NOT NULL,\n\tjournal_id INT,\n\tFOREIGN KEY (journal_id) REFERENCES Journals(journal_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Reviewers (\n\treviewer_id INT PRIMARY KEY,\n\treviewer_name VARCHAR(255) NOT NULL,\n\tjournal_id INT,\n\tpaper_id INT,\n\treview_status VARCHAR(50),\n\tFOREIGN KEY (journal_id) REFERENCES Journals(journal_id),\n\tFOREIGN KEY (paper_id) REFERENCES Papers(paper_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Papers (\n\tpaper_id INT PRIMARY KEY,\n\tpaper_title VARCHAR(255) NOT NULL,\n\tjournal_id INT,\n\tauthor_id INT,\n\tstatus VARCHAR(50),\n\tFOREIGN KEY (journal_id) REFERENCES Journals(journal_id),\n\tFOREIGN KEY (author_id) REFERENCES Authors(author_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Journals (\n  journal_id INT PRIMARY KEY,\n  journal_name VARCHAR(255),\n  editor_id INT,\n  submission_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Reviewers (\n  reviewer_id INT PRIMARY KEY,\n  reviewer_name VARCHAR(255),\n  expertise_area VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Articles (\n  article_id INT PRIMARY KEY,\n  article_title VARCHAR(255),\n  journal_id INT,\n  submission_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Reviews (\n  review_id INT PRIMARY KEY,\n  article_id INT,\n  reviewer_id INT,\n  review_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Review_Status (\n  status_id INT PRIMARY KEY,\n  review_id INT,\n  status VARCHAR(50),\n  status_date DATE\n)"
+      }
+    ]
+  }
+]

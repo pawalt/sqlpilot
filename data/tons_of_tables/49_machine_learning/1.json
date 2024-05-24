@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reinforcement_learning_models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50) NOT NULL,\n    model_type VARCHAR(50) NOT NULL,\n    performance_score FLOAT NOT NULL,\n    training_time_hours FLOAT NOT NULL,\n    validation_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_performance ( \n    model_id SERIAL PRIMARY KEY, \n    model_name VARCHAR(255) NOT NULL, \n    training_episodes INT NOT NULL, \n    validation_episodes INT NOT NULL, \n    training_time INTERVAL NOT NULL, \n    last_updated TIMESTAMP NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_results ( \n    result_id SERIAL PRIMARY KEY, \n    model_id INT NOT NULL, \n    test_episodes INT NOT NULL, \n    test_accuracy DECIMAL(5,2) NOT NULL, \n    test_loss DECIMAL(5,2) NOT NULL, \n    test_time INTERVAL NOT NULL, \n    test_date DATE NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(255) NOT NULL,\n    created_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance (\n    performance_id UUID PRIMARY KEY,\n    model_id UUID NOT NULL,\n    performance_metric VARCHAR(255) NOT NULL,\n    performance_value FLOAT NOT NULL,\n    recorded_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (model_id) REFERENCES models(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_logs (\n    log_id UUID PRIMARY KEY,\n    model_id UUID NOT NULL,\n    training_epoch INT NOT NULL,\n    training_loss FLOAT NOT NULL,\n    training_accuracy FLOAT NOT NULL,\n    training_timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (model_id) REFERENCES models(model_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_performance (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    training_episodes INT,\n    training_time FLOAT,\n    training_accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE episode_results (\n    result_id INT PRIMARY KEY,\n    model_id INT REFERENCES model_performance(model_id),\n    episode_number INT,\n    episode_reward FLOAT,\n    episode_length INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metadata (\n    metadata_id INT PRIMARY KEY,\n    model_id INT REFERENCES model_performance(model_id),\n    model_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_hyperparameters (\n    hyperparams_id INT PRIMARY KEY,\n    model_id INT REFERENCES model_performance(model_id),\n    learning_rate FLOAT,\n    batch_size INT,\n    hidden_layers INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ModelPerformance (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    training_episodes INT,\n    validation_episodes INT,\n    training_time_hours FLOAT,\n    validation_accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingLogs (\n    log_id INT PRIMARY KEY,\n    model_id INT,\n    log_timestamp TIMESTAMP,\n    training_loss FLOAT,\n    validation_loss FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelArchitectures (\n    architecture_id INT PRIMARY KEY,\n    model_id INT,\n    architecture_name VARCHAR(255),\n    layers INT,\n    nodes_per_layer INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EvaluationMetrics (\n    evaluation_id INT PRIMARY KEY,\n    model_id INT,\n    evaluation_date DATE,\n    precision FLOAT,\n    recall FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE HardwareResources (\n    resource_id INT PRIMARY KEY,\n    model_id INT,\n    resource_type VARCHAR(255),\n    cpu_cores INT,\n    gpu_memory_GB INT\n);"
+      }
+    ]
+  }
+]

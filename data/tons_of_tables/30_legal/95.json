@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n    log_id INT PRIMARY KEY,\n    mediator_id INT,\n    party_id INT,\n    log_timestamp TIMESTAMP,\n    log_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediator_logs (\n  mediator_id INT PRIMARY KEY,\n  party_id INT,\n  communication_date DATETIME,\n  communication_medium VARCHAR(50),\n  communication_content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE party_logs (\n  party_id INT PRIMARY KEY,\n  mediator_id INT,\n  communication_date DATETIME,\n  communication_medium VARCHAR(50),\n  communication_content TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediators (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone VARCHAR(20),\n    organization VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE parties_involved (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    role VARCHAR(50) NOT NULL,\n    address VARCHAR(100),\n    phone VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n    id INT PRIMARY KEY,\n    mediator_id INT NOT NULL,\n    party_id INT NOT NULL,\n    communication_date DATE NOT NULL,\n    communication_type VARCHAR(20) NOT NULL,\n    communication_details TEXT,\n    FOREIGN KEY (mediator_id) REFERENCES mediators(id),\n    FOREIGN KEY (party_id) REFERENCES parties_involved(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediators (\n  id INT PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parties_involved (\n  id INT PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n  id INT PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  mediator_id INT,\n  party_id INT,\n  message TEXT NOT NULL,\n  FOREIGN KEY (mediator_id) REFERENCES mediators(id),\n  FOREIGN KEY (party_id) REFERENCES parties_involved(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logs_attachments (\n  id INT PRIMARY KEY,\n  log_id INT,\n  attachment_path VARCHAR(200) NOT NULL,\n  FOREIGN KEY (log_id) REFERENCES communication_logs(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediator (id INT PRIMARY KEY,name VARCHAR(255),email VARCHAR(255),phone_number VARCHAR(20),created_at TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE party (id INT PRIMARY KEY,name VARCHAR(255),email VARCHAR(255),phone_number VARCHAR(20),created_at TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_log (id INT PRIMARY KEY,mediator_id INT,party_id INT,message TEXT,sent_at TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE conflict (id INT PRIMARY KEY,name VARCHAR(255),description TEXT,started_at TIMESTAMP)"
+      }
+    ]
+  }
+]

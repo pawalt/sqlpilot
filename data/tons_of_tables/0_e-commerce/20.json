@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_payments (\n    customer_id INT PRIMARY KEY,\n    card_number VARCHAR(16),\n    card_expiry DATE,\n    cvv INT,\n    payment_amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer (customer_id INT PRIMARY KEY,\n  customer_name VARCHAR,\n  phone_number VARCHAR,\n  email VARCHAR,\n  address VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment (payment_id INT PRIMARY KEY,\n  customer_id INT,\n  payment_amount DECIMAL,\n  payment_date DATE,\n  payment_method VARCHAR,\n  FOREIGN KEY (customer_id) REFERENCES customer(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_email VARCHAR(100),\n    customer_phone VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n    method_id INT PRIMARY KEY,\n    customer_id INT,\n    method_type VARCHAR(50),\n    method_details VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT,\n    transaction_amount DECIMAL(10,2),\n    transaction_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_details (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    card_number VARCHAR(16) NOT NULL,\n    card_expiry_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_history (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT NOT NULL REFERENCES customer_details(customer_id),\n    transaction_date DATE NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n    method_id INT PRIMARY KEY,\n    method_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_payment_methods (\n    customer_id INT NOT NULL REFERENCES customer_details(customer_id),\n    method_id INT NOT NULL REFERENCES payment_methods(method_id),\n    PRIMARY KEY(customer_id, method_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_email VARCHAR(100),\n    credit_card_number VARCHAR(16),\n    security_code VARCHAR(3),\n    expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT,\n    transaction_amount DECIMAL(10, 2),\n    transaction_date TIMESTAMP,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n    method_id INT PRIMARY KEY,\n    customer_id INT,\n    payment_type VARCHAR(20),\n    payment_account VARCHAR(50),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_addresses (\n    address_id INT PRIMARY KEY,\n    customer_id INT,\n    address_line1 VARCHAR(100),\n    address_line2 VARCHAR(100),\n    city VARCHAR(50),\n    state VARCHAR(50),\n    zip_code VARCHAR(10),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id INT PRIMARY KEY,\n    transaction_id INT,\n    payment_method_id INT,\n    payment_date TIMESTAMP,\n    payment_amount DECIMAL(10, 2),\n    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id),\n    FOREIGN KEY (payment_method_id) REFERENCES payment_methods(method_id)\n);"
+      }
+    ]
+  }
+]

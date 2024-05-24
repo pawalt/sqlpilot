@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CoursePrerequisites (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(255) NOT NULL,\n    prerequisites TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE course_prerequisites (\ncourse_id INT PRIMARY KEY,\nprerequisite_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE course_sequence (\nsequence_id SERIAL PRIMARY KEY,\ncourse_id INT,\nnext_course_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Course (course_id INT PRIMARY KEY, course_name VARCHAR, credits INT, semester_offered INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE Prerequisite (course_id INT, prereq_id INT, PRIMARY KEY (course_id, prereq_id), FOREIGN KEY (course_id) REFERENCES Course(course_id), FOREIGN KEY (prereq_id) REFERENCES Course(course_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE StudentProgression (student_id INT, course_id INT, semester_taken INT, grade VARCHAR, PRIMARY KEY (student_id, course_id), FOREIGN KEY (student_id) REFERENCES Student(student_id), FOREIGN KEY (course_id) REFERENCES Course(course_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Course (course_id INT PRIMARY KEY, course_name VARCHAR(255) NOT NULL, credits INT NOT NULL);\nCREATE TABLE Prerequisite (prereq_id INT PRIMARY KEY, course_id INT NOT NULL, prereq_course_id INT NOT NULL, FOREIGN KEY (course_id) REFERENCES Course(course_id), FOREIGN KEY (prereq_course_id) REFERENCES Course(course_id));\nCREATE TABLE CourseSequence (sequence_id INT PRIMARY KEY, course_id INT NOT NULL, sequence_num INT NOT NULL, FOREIGN KEY (course_id) REFERENCES Course(course_id));\nCREATE TABLE StudentProgression (student_id INT PRIMARY KEY, course_id INT NOT NULL, sequence_id INT NOT NULL, semester_completed INT NOT NULL, grade VARCHAR(2) NOT NULL, FOREIGN KEY (course_id) REFERENCES Course(course_id), FOREIGN KEY (sequence_id) REFERENCES CourseSequence(sequence_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Course (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(100),\n    credits INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Prerequisite (\n    prerequisite_id INT PRIMARY KEY,\n    course_id INT,\n    prereq_course_id INT,\n    FOREIGN KEY (course_id) REFERENCES Course(course_id),\n    FOREIGN KEY (prereq_course_id) REFERENCES Course(course_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sequence (\n    sequence_id INT PRIMARY KEY,\n    course_id INT,\n    sequence_number INT,\n    FOREIGN KEY (course_id) REFERENCES Course(course_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Student (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(100),\n    major VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Enrollment (\n    enrollment_id INT PRIMARY KEY,\n    student_id INT,\n    course_id INT,\n    completed BOOLEAN,\n    FOREIGN KEY (student_id) REFERENCES Student(student_id),\n    FOREIGN KEY (course_id) REFERENCES Course(course_id)\n);\n"
+      }
+    ]
+  }
+]

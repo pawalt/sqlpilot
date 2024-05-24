@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS users (\n    user_id UUID PRIMARY KEY,\n    username TEXT NOT NULL,\n    email TEXT NOT NULL UNIQUE,\n    last_login TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    friend_list JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE messages (\n    message_id INT PRIMARY KEY,\n    sender_id INT NOT NULL,\n    recipient_id INT NOT NULL,\n    message_text TEXT,\n    sent_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE friend_lists (\n    friends_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    friend_id INT NOT NULL,\n    friend_status VARCHAR(10) DEFAULT 'pending'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE messages (\n    message_id INT PRIMARY KEY,\n    sender_id INT NOT NULL,\n    receiver_id INT NOT NULL,\n    message_text TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE User ( user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(50) NOT NULL, friend_list JSONB )"
+      },
+      {
+        "table_schema": "CREATE TABLE Friends ( user_id INT, friend_id INT, PRIMARY KEY (user_id, friend_id) )"
+      },
+      {
+        "table_schema": "CREATE TABLE Messages ( message_id SERIAL PRIMARY KEY, sender_id INT, receiver_id INT, message_text TEXT, timestamp TIMESTAMPTZ )"
+      },
+      {
+        "table_schema": "CREATE TABLE Notifications ( notification_id SERIAL PRIMARY KEY, user_id INT, notification_text TEXT, created_at TIMESTAMPTZ )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    birth_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE friends (\n    user_id INT,\n    friend_id INT,\n    PRIMARY KEY (user_id, friend_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (friend_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE messages (\n    message_id INT PRIMARY KEY,\n    sender_user_id INT,\n    receiver_user_id INT,\n    message_text TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (sender_user_id) REFERENCES users(user_id),\n    FOREIGN KEY (receiver_user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id INT PRIMARY KEY,\n    user_id INT,\n    notification_text TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blocked_users (\n    user_id INT,\n    blocked_user_id INT,\n    PRIMARY KEY (user_id, blocked_user_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (blocked_user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CarbonOffsetProjects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100),\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE,\n    carbon_saved DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_offset_projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    greenhouse_gas_type VARCHAR(50),\n    efficiency_rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_monitoring (\n    monitoring_id UUID PRIMARY KEY,\n    project_id UUID,\n    monitoring_date DATE,\n    carbon_offset_metric FLOAT,\n    CONSTRAINT fk_project_id\n        FOREIGN KEY (project_id)\n        REFERENCES carbon_offset_projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_offset_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    carbon_offset_amount DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_measurements (\n    measurement_id INT PRIMARY KEY,\n    project_id INT,\n    measurement_date DATE,\n    efficiency_score DECIMAL(5,2),\n    emissions_reduction DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_partners (\n    partner_id INT PRIMARY KEY,\n    project_id INT,\n    partner_name VARCHAR(50),\n    partner_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE offset_data (\n    data_id INT PRIMARY KEY,\n    project_id INT,\n    offset_amount DECIMAL(10,2),\n    offset_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_partners (\n    partner_id INT PRIMARY KEY,\n    partner_name VARCHAR(255),\n    partner_description TEXT,\n    partnership_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_metrics (\n    metric_id INT PRIMARY KEY,\n    project_id INT,\n    metric_name VARCHAR(255),\n    metric_value DECIMAL(10,2),\n    metric_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CarbonOffsetProjects (\n  project_id SERIAL PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  project_type VARCHAR(100) NOT NULL,\n  project_location VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  project_status VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectMetrics (\n  metric_id SERIAL PRIMARY KEY,\n  project_id INT NOT NULL,\n  metric_name VARCHAR(100) NOT NULL,\n  metric_value FLOAT NOT NULL,\n  metric_date DATE NOT NULL,\n  FOREIGN KEY (project_id) REFERENCES CarbonOffsetProjects (project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectParticipants (\n  participant_id SERIAL PRIMARY KEY,\n  project_id INT NOT NULL,\n  participant_name VARCHAR(255) NOT NULL,\n  participant_role VARCHAR(100) NOT NULL,\n  participant_contact VARCHAR(255) NOT NULL,\n  FOREIGN KEY (project_id) REFERENCES CarbonOffsetProjects (project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectExpenses (\n  expense_id SERIAL PRIMARY KEY,\n  project_id INT NOT NULL,\n  expense_description TEXT,\n  expense_amount FLOAT NOT NULL,\n  expense_date DATE NOT NULL,\n  FOREIGN KEY (project_id) REFERENCES CarbonOffsetProjects (project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectReports (\n  report_id SERIAL PRIMARY KEY,\n  project_id INT NOT NULL,\n  report_title VARCHAR(255) NOT NULL,\n  report_description TEXT,\n  report_date DATE NOT NULL,\n  FOREIGN KEY (project_id) REFERENCES CarbonOffsetProjects (project_id)\n);\n"
+      }
+    ]
+  }
+]

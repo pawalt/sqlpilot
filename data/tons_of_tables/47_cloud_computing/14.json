@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_behavior_tracking (\n    user_id INT,\n    event_type VARCHAR,\n    event_timestamp TIMESTAMP,\n    product_id INT,\n    session_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    signup_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    activity_type VARCHAR(50),\n    timestamp TIMESTAMP,\n    product_id INT,\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profile (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    join_date TIMESTAMP\n);\n\nCREATE TABLE product_catalog (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(100),\n    category VARCHAR(50),\n    price DECIMAL(10, 2),\n    description TEXT\n);\n\nCREATE TABLE user_activity (\n    activity_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES user_profile(user_id),\n    product_id UUID REFERENCES product_catalog(product_id),\n    activity_type VARCHAR(50),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE User (user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Product (product_id INT PRIMARY KEY, product_name VARCHAR(100) NOT NULL, category VARCHAR(50) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE PurchaseHistory (purchase_id INT PRIMARY KEY, user_id INT NOT NULL, product_id INT NOT NULL, purchase_date DATE NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Recommendation (recommendation_id INT PRIMARY KEY, user_id INT NOT NULL, recommended_product_id INT NOT NULL, recommendation_date DATE NOT NULL);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    registration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    category VARCHAR(50),\n    price DECIMAL(10, 2) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    order_date TIMESTAMP NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    product_id UUID REFERENCES products(product_id),\n    interaction_type VARCHAR(20) NOT NULL,\n    interaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recommendations (\n    user_id UUID REFERENCES users(user_id),\n    product_id UUID REFERENCES products(product_id),\n    recommendation_score FLOAT NOT NULL,\n    PRIMARY KEY (user_id, product_id)\n);"
+      }
+    ]
+  }
+]

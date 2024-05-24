@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_wallet_keys (\n key_id INT PRIMARY KEY,\n wallet_address VARCHAR(255) UNIQUE,\n key_type VARCHAR(50),\n key_value TEXT,\n created_at TIMESTAMPTZ\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_wallets (\n    wallet_id INT PRIMARY KEY,\n    wallet_address VARCHAR(255) NOT NULL,\n    public_key VARCHAR(512) NOT NULL,\n    private_key VARCHAR(1024) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_transactions (\n    transaction_id INT PRIMARY KEY,\n    wallet_id INT,\n    transaction_type VARCHAR(50) NOT NULL,\n    amount DECIMAL(18, 8) NOT NULL,\n    transaction_timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (wallet_id) REFERENCES blockchain_wallets(wallet_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE keys (\n    key_id UUID PRIMARY KEY,\n    wallet_id UUID,\n    key_type VARCHAR(20),\n    key_value TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n    wallet_id UUID PRIMARY KEY,\n    wallet_name VARCHAR(50),\n    owner_name VARCHAR(50),\n    creation_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    wallet_id UUID,\n    transaction_type VARCHAR(20),\n    amount DECIMAL(20, 2),\n    transaction_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallets (\n    wallet_id UUID PRIMARY KEY,\n    public_key VARCHAR(255),\n    private_key VARCHAR(255),\n    owner_name VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    wallet_id UUID,\n    amount DECIMAL,\n    transaction_type VARCHAR(50),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blocks (\n    block_id UUID PRIMARY KEY,\n    prev_block_id UUID,\n    block_data TEXT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(255),\n    email VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Wallets (\n    wallet_id INT PRIMARY KEY,\n    public_key TEXT,\n    private_key TEXT,\n    wallet_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id INT PRIMARY KEY,\n    wallet_id INT REFERENCES Wallets(wallet_id),\n    amount DECIMAL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Blocks (\n    block_id INT PRIMARY KEY,\n    prev_block_id INT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Addresses (\n    address_id INT PRIMARY KEY,\n    wallet_id INT REFERENCES Wallets(wallet_id),\n    address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PublicKeyHistory (\n    history_id INT PRIMARY KEY,\n    wallet_id INT REFERENCES Wallets(wallet_id),\n    public_key TEXT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

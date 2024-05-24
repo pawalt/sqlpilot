@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_vehicle_movement (\n  vehicle_id INT PRIMARY KEY,\n  zone_id INT,\n  latitude FLOAT,\n  longitude FLOAT,\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_tracking (\n    vehicle_id INT PRIMARY KEY,\n    zone_id INT,\n    location TEXT,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_tracking (\n    zone_id INT PRIMARY KEY,\n    zone_name TEXT,\n    zone_description TEXT,\n    zone_manager TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_zones (\n    zone_id UUID PRIMARY KEY,\n    zone_name VARCHAR(50) NOT NULL,\n    zone_location GEOGRAPHY NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id UUID PRIMARY KEY,\n    vehicle_name VARCHAR(50) NOT NULL,\n    vehicle_type VARCHAR(50) NOT NULL,\n    zone_id UUID NOT NULL,\n    FOREIGN KEY (zone_id) REFERENCES delivery_zones(zone_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_movements (\n    movement_id UUID PRIMARY KEY,\n    vehicle_id UUID NOT NULL,\n    movement_timestamp TIMESTAMP NOT NULL,\n    current_location GEOGRAPHY NOT NULL,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_zones (\n  zone_id INT PRIMARY KEY,\n  zone_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_name TEXT,\n  zone_id INT,\n  FOREIGN KEY (zone_id) REFERENCES delivery_zones(zone_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_tracking (\n  tracking_id INT PRIMARY KEY,\n  vehicle_id INT,\n  timestamp TIMESTAMP,\n  latitude FLOAT,\n  longitude FLOAT,\n  FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_status (\n  status_id INT PRIMARY KEY,\n  vehicle_id INT,\n  status TEXT,\n  timestamp TIMESTAMP,\n  FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DeliveryZones (\n  zone_id INT PRIMARY KEY,\n  zone_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Vehicles (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_name VARCHAR(50) NOT NULL,\n  vehicle_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE VehicleMovements (\n  movement_id INT PRIMARY KEY,\n  vehicle_id INT NOT NULL,\n  zone_id INT NOT NULL,\n  movement_time TIMESTAMP NOT NULL,\n  FOREIGN KEY (vehicle_id) REFERENCES Vehicles(vehicle_id),\n  FOREIGN KEY (zone_id) REFERENCES DeliveryZones(zone_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Drivers (\n  driver_id INT PRIMARY KEY,\n  driver_name VARCHAR(50) NOT NULL,\n  driver_license VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Assignments (\n  assignment_id INT PRIMARY KEY,\n  driver_id INT NOT NULL,\n  zone_id INT NOT NULL,\n  assignment_date DATE NOT NULL,\n  FOREIGN KEY (driver_id) REFERENCES Drivers(driver_id),\n  FOREIGN KEY (zone_id) REFERENCES DeliveryZones(zone_id)\n);\n"
+      }
+    ]
+  }
+]

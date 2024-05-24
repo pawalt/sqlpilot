@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biodegradable_waste_collection_sites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  schedule_day VARCHAR(50) NOT NULL,\n  schedule_time TIME NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionSites (\n    site_id INT PRIMARY KEY,\n    site_name VARCHAR(50) NOT NULL,\n    site_location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionSchedules (\n    schedule_id INT PRIMARY KEY,\n    site_id INT,\n    collection_day VARCHAR(20) NOT NULL,\n    collection_time TIME NOT NULL,\n    CONSTRAINT fk_site_id FOREIGN KEY (site_id) REFERENCES WasteCollectionSites (site_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biodegradable_waste_collection_sites (\n    site_id INT PRIMARY KEY,\n    site_name VARCHAR(255),\n    location VARCHAR(255),\n    capacity DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection_schedules (\n    schedule_id INT PRIMARY KEY,\n    site_id INT,\n    day_of_week VARCHAR(10),\n    start_time TIME,\n    end_time TIME,\n    FOREIGN KEY (site_id) REFERENCES biodegradable_waste_collection_sites(site_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection_records (\n    record_id INT PRIMARY KEY,\n    schedule_id INT,\n    collection_date DATE,\n    collected_quantity DECIMAL,\n    FOREIGN KEY (schedule_id) REFERENCES waste_collection_schedules(schedule_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE collection_sites (\n  site_id UUID PRIMARY KEY,\n  site_name TEXT NOT NULL,\n  address TEXT NOT NULL,\n  city TEXT NOT NULL,\n  capacity INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collection_schedules (\n  schedule_id UUID PRIMARY KEY,\n  site_id UUID REFERENCES collection_sites(site_id),\n  day_of_week TEXT NOT NULL,\n  collection_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collected_waste (\n  collection_id UUID PRIMARY KEY,\n  schedule_id UUID REFERENCES collection_schedules(schedule_id),\n  waste_type TEXT NOT NULL,\n  weight FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection_employees (\n  employee_id UUID PRIMARY KEY,\n  employee_name TEXT NOT NULL,\n  employee_role TEXT,\n  hire_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiodegradableSites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(255),\n  site_location VARCHAR(255),\n  site_capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionSchedules (\n  schedule_id INT PRIMARY KEY,\n  site_id INT REFERENCES BiodegradableSites(site_id),\n  collection_date DATE,\n  collection_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteTypes (\n  waste_type_id INT PRIMARY KEY,\n  waste_type_name VARCHAR(255),\n  waste_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SiteAssignments (\n  assignment_id INT PRIMARY KEY,\n  site_id INT REFERENCES BiodegradableSites(site_id),\n  collector_id INT,\n  assignment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteCollectionHistory (\n  collection_id INT PRIMARY KEY,\n  site_id INT REFERENCES BiodegradableSites(site_id),\n  schedule_id INT REFERENCES CollectionSchedules(schedule_id),\n  collection_date DATE,\n  waste_type_id INT REFERENCES WasteTypes(waste_type_id)\n);\n"
+      }
+    ]
+  }
+]

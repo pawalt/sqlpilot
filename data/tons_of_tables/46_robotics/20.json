@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CADFiles (\n    id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_path VARCHAR(255),\n    upload_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cad_models (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    file_path TEXT,\n    date_uploaded DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE print_logs (\n    log_id INT PRIMARY KEY,\n    model_id INT,\n    print_status VARCHAR(50),\n    printer_name VARCHAR(100),\n    date_printed TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CADFiles (\n    id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_size INT,\n    uploaded_by VARCHAR(100),\n    uploaded_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Printers (\n    printer_id INT PRIMARY KEY,\n    printer_name VARCHAR(100),\n    printer_type VARCHAR(50),\n    printer_location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PrintJobs (\n    job_id INT PRIMARY KEY,\n    CAD_file_id INT,\n    printer_id INT,\n    job_status VARCHAR(50),\n    job_started_at TIMESTAMP,\n    job_completed_at TIMESTAMP,\n    FOREIGN KEY (CAD_file_id) REFERENCES CADFiles(id),\n    FOREIGN KEY (printer_id) REFERENCES Printers(printer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cad_models (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    file_path VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parts (\n    part_id SERIAL PRIMARY KEY,\n    model_id INT NOT NULL,\n    part_name VARCHAR(50) NOT NULL,\n    part_file_path VARCHAR(255) NOT NULL,\n    FOREIGN KEY (model_id) REFERENCES cad_models(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE printing_history (\n    print_id SERIAL PRIMARY KEY,\n    model_id INT NOT NULL,\n    print_date DATE NOT NULL,\n    print_status VARCHAR(20) NOT NULL,\n    FOREIGN KEY (model_id) REFERENCES cad_models(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE printer_settings (\n    setting_id SERIAL PRIMARY KEY,\n    model_id INT NOT NULL,\n    layer_height FLOAT NOT NULL,\n    print_speed INT NOT NULL,\n    FOREIGN KEY (model_id) REFERENCES cad_models(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE 3d_models (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    file_path TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE printers (\n    id INT PRIMARY KEY,\n    printer_brand VARCHAR(255),\n    printer_model VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE materials (\n    id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    material_type VARCHAR(255),\n    cost_per_kg DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE print_jobs (\n    id INT PRIMARY KEY,\n    model_id INT,\n    printer_id INT,\n    material_id INT,\n    date_requested DATE,\n    date_completed DATE,\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE print_logs (\n    id INT PRIMARY KEY,\n    print_job_id INT,\n    log_text TEXT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

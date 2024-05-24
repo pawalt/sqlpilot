@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id UUID PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    deletion_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id INT,\n    user_name VARCHAR(50),\n    data_type VARCHAR(50),\n    data_value TEXT,\n    deletion_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deletion_log (\n    log_id INT,\n    user_id INT,\n    deletion_timestamp TIMESTAMP,\n    deleted_data_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data(id INT PRIMARY KEY,\n user_name VARCHAR(50),\n email VARCHAR(100),\n data_description TEXT,\n deletion_date TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE deletion_log(log_id INT PRIMARY KEY,\n user_id INT,\n delete_date TIMESTAMP,\n delete_reason TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_privacy_rights(id INT PRIMARY KEY,\n user_id INT,\n data_privacy_agreement TEXT,\n additional_notes TEXT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    deletion_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE company (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(100) NOT NULL,\n    admin_user_id INT,\n    deletion_date TIMESTAMP,\n    FOREIGN KEY (admin_user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data (\n    data_id INT PRIMARY KEY,\n    user_id INT,\n    data_content TEXT,\n    deletion_policy VARCHAR(50),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deletion_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    deleted_data_id INT,\n    deletion_timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (deleted_data_id) REFERENCES user_data(data_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50),\n    email VARCHAR(100),\n    data_erasure_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    activity_name VARCHAR(100),\n    activity_date DATE,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_erasure_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    erased_data_type VARCHAR(50),\n    erased_date DATE,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_retention_policy (\n    policy_id INT PRIMARY KEY,\n    data_type VARCHAR(50),\n    retention_period INT,\n    delete_after_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_processing_activities (\n    process_id INT PRIMARY KEY,\n    user_id INT,\n    activity_description TEXT,\n    processing_date DATE,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  }
+]

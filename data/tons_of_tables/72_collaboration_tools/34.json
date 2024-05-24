@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MeetingRoles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    role_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE participant_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    role_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_privileges (\n    privilege_id INT PRIMARY KEY,\n    privilege_name VARCHAR(50) NOT NULL,\n    privilege_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE participants (\n  participant_id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE,\n  role VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_roles (\n  role_id INT PRIMARY KEY,\n  role_name VARCHAR(50) NOT NULL,\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE role_privileges (\n  privilege_id INT PRIMARY KEY,\n  privilege_name VARCHAR(50) NOT NULL,\n  role_id INT REFERENCES meeting_roles(role_id),\n  description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ParticipantRoles (\n    participant_id UUID PRIMARY KEY,\n    role_name TEXT,\n    privileges JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingModerators (\n    moderator_id UUID PRIMARY KEY,\n    moderator_name TEXT,\n    moderator_email TEXT UNIQUE,\n    moderator_role TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingParticipants (\n    participant_id UUID PRIMARY KEY,\n    participant_name TEXT,\n    participant_email TEXT UNIQUE,\n    participant_roles JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingAttendees (\n    attendee_id UUID PRIMARY KEY,\n    attendee_name TEXT,\n    attendee_email TEXT UNIQUE,\n    attended_meeting_id UUID\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255),\n    role VARCHAR(50),\n    privilege VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Meetings (\n    meeting_id INT PRIMARY KEY,\n    meeting_topic VARCHAR(255),\n    meeting_date DATE,\n    moderator_id INT,\n    FOREIGN KEY (moderator_id) REFERENCES Participants(participant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50),\n    role_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Privileges (\n    privilege_id INT PRIMARY KEY,\n    privilege_name VARCHAR(50),\n    privilege_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RolePrivileges (\n    role_id INT,\n    privilege_id INT,\n    PRIMARY KEY (role_id, privilege_id),\n    FOREIGN KEY (role_id) REFERENCES Roles(role_id),\n    FOREIGN KEY (privilege_id) REFERENCES Privileges(privilege_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE renewable_energy_compliance_data (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100),\n    project_location VARCHAR(255),\n    regulatory_agency VARCHAR(100),\n    compliance_status VARCHAR(50),\n    date_last_checked DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance_data (\n    id INT PRIMARY KEY,\n    project_name VARCHAR,\n    location VARCHAR,\n    compliance_status VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR,\n    policy_description TEXT,\n    compliance_level VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    compliance_level VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulations (\n    regulation_id INT PRIMARY KEY,\n    regulation_name VARCHAR(255) NOT NULL,\n    requirement VARCHAR(500),\n    enforcement_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE violations (\n    violation_id INT PRIMARY KEY,\n    project_id INT,\n    violation_description VARCHAR(500),\n    violation_date DATE,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance_data (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    compliance_status BOOLEAN,\n    regulatory_body VARCHAR(100)\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(255),\n    policy_description TEXT,\n    policy_status BOOLEAN\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_location VARCHAR(100),\n    start_date DATE,\n    end_date DATE\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_logs (\n    log_id INT PRIMARY KEY,\n    project_id INT,\n    timestamp DATETIME,\n    action_taken VARCHAR(100),\n    remarks TEXT\n)\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    compliance_status ENUM('Compliant', 'Non-compliant'),\n    CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n\nCREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    total_cost DECIMAL(10, 2),\n    CONSTRAINT chk_total_cost CHECK (total_cost >= 0)\n);\n\nCREATE TABLE regulatory_documents (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    document_type VARCHAR(50),\n    upload_date DATE,\n    is_approved BOOLEAN\n);\n\nCREATE TABLE inspections (\n    inspection_id INT PRIMARY KEY,\n    project_id INT,\n    inspection_date DATE,\n    inspector_name VARCHAR(100) NOT NULL,\n    inspection_result TEXT,\n    CONSTRAINT fk_project_inspection FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n\nCREATE TABLE penalties (\n    penalty_id INT PRIMARY KEY,\n    project_id INT,\n    penalty_date DATE,\n    penalty_amount DECIMAL(8, 2),\n    reason TEXT,\n    CONSTRAINT fk_project_penalty FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      }
+    ]
+  }
+]

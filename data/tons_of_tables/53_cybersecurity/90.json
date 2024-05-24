@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_authentication (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password_hash TEXT,\n    email VARCHAR(100) UNIQUE,\n    registration_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    login_timestamp TIMESTAMP NOT NULL,\n    logout_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id INT REFERENCES users(id) ON DELETE CASCADE,\n    session_token VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    login_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    user_id INT REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_resets (\n    reset_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    reset_code VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    attempt_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash BYTEA NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    phone_number VARCHAR(15) UNIQUE,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,\n    login_time TIMESTAMP NOT NULL,\n    last_activity TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_tokens (\n    token_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,\n    token_value BYTEA NOT NULL,\n    token_type VARCHAR(20) NOT NULL,\n    expiration_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_reset_requests (\n    request_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,\n    request_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,\n    ip_address VARCHAR(50) NOT NULL,\n    login_time TIMESTAMP NOT NULL,\n    success BOOLEAN NOT NULL\n);"
+      }
+    ]
+  }
+]

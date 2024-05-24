@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_data_changes (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    user_id INT,\n    change_description TEXT,\n    old_value TEXT,\n    new_value TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE passwords (\n  id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password_hash VARCHAR(100) NOT NULL,\n  last_updated TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n  id INT PRIMARY KEY,\n  user_id INT,\n  access_level VARCHAR(20) NOT NULL,\n  last_accessed TIMESTAMP NOT NULL,\n  FOREIGN KEY (user_id) REFERENCES passwords(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE passwords (\n    id SERIAL PRIMARY KEY,\n    password_hash TEXT NOT NULL,\n    user_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n    id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_level INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    id SERIAL PRIMARY KEY,\n    action TEXT NOT NULL,\n    table_name TEXT NOT NULL,\n    user_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    action VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n    control_id INT PRIMARY KEY,\n    user_id INT,\n    resource VARCHAR(50) NOT NULL,\n    access_level VARCHAR(20) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_history (\n    history_id INT PRIMARY KEY,\n    user_id INT,\n    old_password VARCHAR(100) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE passwords (\n    password_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    last_updated TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n    access_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_level VARCHAR(50) NOT NULL,\n    granted_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_changes (\n    change_id SERIAL PRIMARY KEY,\n    password_id INT NOT NULL,\n    changed_by INT NOT NULL,\n    change_timestamp TIMESTAMP NOT NULL,\n    old_password_hash VARCHAR(255) NOT NULL,\n    new_password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_changes (\n    change_id SERIAL PRIMARY KEY,\n    access_id INT NOT NULL,\n    changed_by INT NOT NULL,\n    change_timestamp TIMESTAMP NOT NULL,\n    old_access_level VARCHAR(50) NOT NULL,\n    new_access_level VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_log (\n    log_id SERIAL PRIMARY KEY,\n    action_performed VARCHAR(100) NOT NULL,\n    user_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

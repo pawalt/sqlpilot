@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE knowledge_base_articles (\n    article_id INT PRIMARY KEY,\n    article_title VARCHAR(255) NOT NULL,\n    created_by VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    last_modified_by VARCHAR(100),\n    last_modified_at TIMESTAMP,\n    content TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE version_control_articles (\n  article_id UUID PRIMARY KEY,\n  article_title VARCHAR(255) NOT NULL,\n  author VARCHAR(100) NOT NULL,\n  created_at TIMESTAMP NOT NULL,\n  last_modified TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE revision_history (\n  revision_id UUID PRIMARY KEY,\n  article_id UUID NOT NULL,\n  revision_number INT NOT NULL,\n  revision_date TIMESTAMP NOT NULL,\n  revision_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n  article_id INT PRIMARY KEY,\n  title TEXT,\n  content TEXT,\n  created_at TIMESTAMP,\n  author TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE revisions (\n  revision_id INT PRIMARY KEY,\n  article_id INT,\n  revision_number INT,\n  revised_content TEXT,\n  revised_by TEXT,\n  revision_date TIMESTAMP,\n  FOREIGN KEY (article_id) REFERENCES articles(article_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username TEXT,\n  email TEXT,\n  role TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    content TEXT NOT NULL,\n    author VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE revisions (\n    revision_id INT PRIMARY KEY,\n    article_id INT REFERENCES articles(article_id),\n    revision_date TIMESTAMP NOT NULL,\n    revised_content TEXT NOT NULL,\n    revised_by VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authors (\n    author_id INT PRIMARY KEY,\n    author_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE revision_comments (\n    comment_id INT PRIMARY KEY,\n    revision_id INT REFERENCES revisions(revision_id),\n    comment_text TEXT NOT NULL,\n    commented_by VARCHAR(100) NOT NULL,\n    commented_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE article_versions (\n  article_id UUID PRIMARY KEY,\n  version_number INT,\n  author_id UUID,\n  revision_date TIMESTAMP,\n  content TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE authors (\n  author_id UUID PRIMARY KEY,\n  author_name VARCHAR,\n  email VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE revisions (\n  revision_id UUID PRIMARY KEY,\n  article_id UUID,\n  version_number INT,\n  editor_id UUID,\n  revision_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE editors (\n  editor_id UUID PRIMARY KEY,\n  editor_name VARCHAR,\n  email VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE article_categories (\n  category_id UUID PRIMARY KEY,\n  category_name VARCHAR\n)"
+      }
+    ]
+  }
+]

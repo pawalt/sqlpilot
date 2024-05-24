@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HedgeFundData (\n    fund_id INT PRIMARY KEY,\n    fund_name VARCHAR(50),\n    manager_id INT,\n    total_assets DECIMAL(12,2),\n    inception_date DATE,\n    strategy VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hedge_funds (\n    fund_id INT,\n    fund_name VARCHAR(50),\n    total_assets DECIMAL(18,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fund_data (\n    data_id INT,\n    fund_id INT,\n    data_source VARCHAR(50),\n    data_type VARCHAR(50),\n    data_value DECIMAL(18,2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HedgeFundInvestors (\n    investor_id INT PRIMARY KEY,\n    investor_name VARCHAR(255),\n    investment_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE HedgeFundHoldings (\n    holding_id INT PRIMARY KEY,\n    holding_name VARCHAR(255),\n    shares_held INT,\n    market_value DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE HedgeFundManagers (\n    manager_id INT PRIMARY KEY,\n    manager_name VARCHAR(255),\n    experience_years INT,\n    performance_rating DECIMAL(3, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hedge_fund_accounts (\n    account_id INT PRIMARY KEY,\n    fund_name VARCHAR(50),\n    investor_name VARCHAR(50),\n    investment_amount DECIMAL(15, 2),\n    investment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hedge_fund_positions (\n    position_id INT PRIMARY KEY,\n    account_id INT,\n    symbol VARCHAR(10),\n    quantity INT,\n    market_value DECIMAL(15, 2),\n    FOREIGN KEY (account_id) REFERENCES hedge_fund_accounts(account_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hedge_fund_trades (\n    trade_id INT PRIMARY KEY,\n    position_id INT,\n    trade_date DATE,\n    trade_type VARCHAR(10),\n    trade_amount DECIMAL(15, 2),\n    FOREIGN KEY (position_id) REFERENCES hedge_fund_positions(position_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hedge_fund_performance (\n    performance_id INT PRIMARY KEY,\n    fund_name VARCHAR(50),\n    year INT,\n    returns DECIMAL(10, 2),\n    benchmark_returns DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hedge_funds (\n  id INT PRIMARY KEY,\n  fund_name VARCHAR(255),\n  manager_name VARCHAR(255),\n  strategy VARCHAR(255),\n  assets_under_management DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE positions (\n  id INT PRIMARY KEY,\n  fund_id INT,\n  symbol VARCHAR(10),\n  quantity DECIMAL,\n  price DECIMAL,\n  FOREIGN KEY (fund_id) REFERENCES hedge_funds(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trades (\n  id INT PRIMARY KEY,\n  position_id INT,\n  trade_date DATE,\n  trade_type VARCHAR(10),\n  quantity DECIMAL,\n  price DECIMAL,\n  FOREIGN KEY (position_id) REFERENCES positions(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE market_data (\n  id INT PRIMARY KEY,\n  symbol VARCHAR(10),\n  date DATE,\n  open_price DECIMAL,\n  high_price DECIMAL,\n  low_price DECIMAL,\n  close_price DECIMAL,\n  volume INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance (\n  id INT PRIMARY KEY,\n  fund_id INT,\n  date DATE,\n  returns DECIMAL,\n  benchmark_returns DECIMAL,\n  FOREIGN KEY (fund_id) REFERENCES hedge_funds(id)\n);"
+      }
+    ]
+  }
+]

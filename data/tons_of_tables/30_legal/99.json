@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE confidential_data (\n  id INT PRIMARY KEY,\n  sensitive_info TEXT NOT NULL,\n  access_level VARCHAR(10) CHECK (access_level IN ('restricted', 'confidential', 'top secret')),\n  access_granted_by INT,\n  encryption_key VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50),\n    email VARCHAR(100),\n    role VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    data_content TEXT,\n    data_type VARCHAR(50),\n    data_owner VARCHAR(50),\n    encryption_key VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE role (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    access_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    role_id INT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_control (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    access_level VARCHAR(10) DEFAULT 'standard'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_key (\n    key_id INT PRIMARY KEY,\n    key_value VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_security (\n    data_id INT PRIMARY KEY,\n    data_content TEXT NOT NULL,\n    encrypted BOOLEAN DEFAULT true,\n    encryption_algorithm VARCHAR(50) DEFAULT 'AES-256'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id INT PRIMARY KEY,\n    event_type VARCHAR(50) NOT NULL,\n    event_time TIMESTAMP NOT NULL,\n    user_id INT,\n    foreign key (user_id) references access_control(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(100),\n    email VARCHAR(100),\n    access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50),\n    description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50),\n    description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT,\n    role_id INT,\n    PRIMARY KEY (user_id, role_id),\n    FOREIGN KEY (user_id) REFERENCES users(id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_id INT,\n    permission_id INT,\n    PRIMARY KEY (role_id, permission_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id),\n    FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_gate_operations (\n    id INT PRIMARY KEY,\n    gate_name VARCHAR(50),\n    operation_type VARCHAR(50),\n    qubit_order INT,\n    gate_result VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumGatesOperations (\n  id INT PRIMARY KEY,\n  gate_name VARCHAR(50) NOT NULL,\n  operation_type VARCHAR(100) NOT NULL,\n  quantum_states TEXT,\n  execution_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumGatesResults (\n  id INT PRIMARY KEY,\n  operation_id INT,\n  result_state TEXT,\n  execution_status VARCHAR(20) NOT NULL,\n  execution_time TIMESTAMP,\n  FOREIGN KEY (operation_id) REFERENCES QuantumGatesOperations(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_gates (\n    gate_id UUID PRIMARY KEY,\n    gate_type VARCHAR(50),\n    qubit_id INT,\n    operation_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gate_operations (\n    operation_id UUID PRIMARY KEY,\n    gate_id UUID REFERENCES quantum_gates(gate_id),\n    operation_type VARCHAR(50),\n    success BOOLEAN,\n    execution_time INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gate_results (\n    result_id UUID PRIMARY KEY,\n    operation_id UUID REFERENCES gate_operations(operation_id),\n    result_data JSONB,\n    result_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_gates_operations (\n    gate_id SERIAL PRIMARY KEY,\n    gate_name VARCHAR(50) NOT NULL,\n    operation_description TEXT,\n    operation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gate_results (\n    result_id SERIAL PRIMARY KEY,\n    gate_id INT REFERENCES quantum_gates_operations(gate_id),\n    result_data JSONB,\n    execution_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qubit_states (\n    qubit_id SERIAL PRIMARY KEY,\n    qubit_name VARCHAR(50) NOT NULL,\n    current_state TEXT,\n    gate_id INT REFERENCES quantum_gates_operations(gate_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE circuit_history (\n    history_id SERIAL PRIMARY KEY,\n    circuit_name VARCHAR(50) NOT NULL,\n    performed_operations JSON,\n    execution_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_gates_operations (\n    operation_id INT PRIMARY KEY,\n    gate_name VARCHAR(50),\n    operation_time TIMESTAMP,\n    qubit_used INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE operation_results (\n    result_id INT PRIMARY KEY,\n    operation_id INT,\n    result_value VARCHAR(50),\n    result_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(50),\n    circuit_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id INT PRIMARY KEY,\n    qubit_name VARCHAR(50),\n    qubit_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gate_mapping (\n    mapping_id INT PRIMARY KEY,\n    gate_id INT,\n    circuit_id INT,\n    qubit_id INT,\n    mapping_description TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE therapist_resources (\n  resource_id INT PRIMARY KEY,\n  resource_name VARCHAR(255),\n  resource_type VARCHAR(100),\n  description TEXT,\n  created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE therapists ( therapist_id INT PRIMARY KEY, therapist_name VARCHAR(255) NOT NULL, specialty VARCHAR(255) NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE resources ( resource_id INT PRIMARY KEY, resource_name VARCHAR(255) NOT NULL, description TEXT, category VARCHAR(100) NOT NULL );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE therapists (\n  therapist_id UUID PRIMARY KEY,\n  therapist_name VARCHAR(255),\n  therapist_specialty VARCHAR(100),\n  therapist_location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n  resource_id UUID PRIMARY KEY,\n  resource_name VARCHAR(255),\n  resource_category VARCHAR(100),\n  resource_type VARCHAR(100),\n  resource_link VARCHAR(255),\n  therapist_id UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n  session_id UUID PRIMARY KEY,\n  session_date TIMESTAMP,\n  session_notes TEXT,\n  therapist_id UUID,\n  resource_id UUID\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE therapists ( therapist_id SERIAL PRIMARY KEY, therapist_name VARCHAR(50) NOT NULL, therapist_specialty VARCHAR(50) NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE resources ( resource_id SERIAL PRIMARY KEY, resource_name VARCHAR(100) NOT NULL, resource_type VARCHAR(50), resource_url VARCHAR(255) );"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions ( session_id SERIAL PRIMARY KEY, therapist_id INT NOT NULL, start_time TIMESTAMP NOT NULL, end_time TIMESTAMP NOT NULL, location VARCHAR(100) );"
+      },
+      {
+        "table_schema": "CREATE TABLE materials ( material_id SERIAL PRIMARY KEY, resource_id INT NOT NULL, material_name VARCHAR(100) NOT NULL, material_type VARCHAR(50), material_description TEXT );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE therapists ( \n therapist_id INT PRIMARY KEY, \n therapist_name VARCHAR(50) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clients ( \n client_id INT PRIMARY KEY, \n client_name VARCHAR(50) NOT NULL, \n therapist_id INT NOT NULL, \n CONSTRAINT fk_therapist_id FOREIGN KEY (therapist_id) REFERENCES therapists(therapist_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resources ( \n resource_id INT PRIMARY KEY, \n resource_name VARCHAR(100) NOT NULL, \n resource_description TEXT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions ( \n session_id INT PRIMARY KEY, \n session_date DATE NOT NULL, \n therapist_id INT NOT NULL, \n client_id INT NOT NULL, \n CONSTRAINT fk_therapist_id_sessions FOREIGN KEY (therapist_id) REFERENCES therapists(therapist_id), \n CONSTRAINT fk_client_id_sessions FOREIGN KEY (client_id) REFERENCES clients(client_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE session_materials ( \n session_material_id INT PRIMARY KEY, \n session_id INT NOT NULL, \n resource_id INT NOT NULL, \n quantity INT NOT NULL, \n CONSTRAINT fk_session_id_mat FOREIGN KEY (session_id) REFERENCES sessions(session_id), \n CONSTRAINT fk_resource_id_mat FOREIGN KEY (resource_id) REFERENCES resources(resource_id) \n);"
+      }
+    ]
+  }
+]

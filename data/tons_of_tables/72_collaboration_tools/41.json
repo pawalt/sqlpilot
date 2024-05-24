@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id UUID PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_size INT NOT NULL,\n    upload_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id UUID PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_size BIGINT NOT NULL,\n    upload_date TIMESTAMPTZ NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_metadata (\n    metadata_id UUID PRIMARY KEY,\n    file_id UUID REFERENCES files(file_id),\n    description TEXT,\n    tags JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE file_metadata (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_size INT,\n    upload_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_tags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_relations (\n    relation_id INT PRIMARY KEY,\n    file_id INT,\n    tag_id INT,\n    FOREIGN KEY (file_id) REFERENCES file_metadata(file_id),\n    FOREIGN KEY (tag_id) REFERENCES file_tags(tag_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FileMetadata (\n  file_id INT PRIMARY KEY,\n  file_name VARCHAR(255) NOT NULL,\n  file_size INT NOT NULL,\n  upload_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FileTags (\n  tag_id INT PRIMARY KEY,\n  file_id INT,\n  tag_name VARCHAR(50) NOT NULL,\n  FOREIGN KEY (file_id) REFERENCES FileMetadata(file_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FilePermissions (\n  permission_id INT PRIMARY KEY,\n  file_id INT,\n  user_id INT,\n  permission_type VARCHAR(10) NOT NULL,\n  FOREIGN KEY (file_id) REFERENCES FileMetadata(file_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FileVersions (\n  version_id INT PRIMARY KEY,\n  file_id INT,\n  version_number INT NOT NULL,\n  version_description TEXT,\n  FOREIGN KEY (file_id) REFERENCES FileMetadata(file_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FilesMetadata (\n    file_id UUID PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_size INT NOT NULL,\n    upload_date TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FileTags (\n    tag_id UUID PRIMARY KEY,\n    tag_name VARCHAR(50) NOT NULL,\n    file_id UUID NOT NULL,\n    FOREIGN KEY (file_id) REFERENCES FilesMetadata (file_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FilePermissions (\n    permission_id UUID PRIMARY KEY,\n    permission_type VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FileComments (\n    comment_id UUID PRIMARY KEY,\n    comment_text TEXT NOT NULL,\n    file_id UUID NOT NULL,\n    user_id UUID NOT NULL,\n    comment_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (file_id) REFERENCES FilesMetadata (file_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FileLogs (\n    log_id UUID PRIMARY KEY,\n    log_description TEXT NOT NULL,\n    log_date TIMESTAMP NOT NULL,\n    file_id UUID NOT NULL,\n    FOREIGN KEY (file_id) REFERENCES FilesMetadata (file_id)\n)"
+      }
+    ]
+  }
+]

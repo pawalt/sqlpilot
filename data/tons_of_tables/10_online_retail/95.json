@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WebsiteTraffic (\n    VisitorID INT PRIMARY KEY,\n    PageVisited VARCHAR(255),\n    VisitDateTime TIMESTAMP,\n    DeviceType VARCHAR(50),\n    ReferrerPage VARCHAR(255),\n    ConversionStatus BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE page_views (\n  id UUID PRIMARY KEY,\n  user_id UUID,\n  page_id UUID,\n  timestamp TIMESTAMP,\n  device_type VARCHAR,\n  browser VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions (\n  id UUID PRIMARY KEY,\n  user_id UUID,\n  conversion_type VARCHAR,\n  conversion_timestamp TIMESTAMP,\n  purchase_amount DECIMAL,\n  product_id UUID\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE website_traffic (\n    visitor_id UUID PRIMARY KEY,\n    page_visited TEXT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    visitor_id UUID REFERENCES website_traffic(visitor_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conversion_rates (\n    conversion_id UUID PRIMARY KEY,\n    session_id UUID REFERENCES user_sessions(session_id),\n    conversion_type TEXT,\n    conversion_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE website_traffic_metrics (\n    id SERIAL PRIMARY KEY,\n    page_url TEXT,\n    visitor_ip TEXT,\n    timestamp TIMESTAMP,\n    page_views INTEGER\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    user_id SERIAL PRIMARY KEY,\n    username TEXT,\n    action TEXT,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conversion_rates (\n    conversion_id SERIAL PRIMARY KEY,\n    page_url TEXT,\n    conversion_type TEXT,\n    conversion_rate REAL,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id SERIAL PRIMARY KEY,\n    user_id INTEGER,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE website_visitors (visitor_id INT, visit_timestamp TIMESTAMP, source_url VARCHAR(255), page_visited VARCHAR(255), conversion_goal BOOLEAN);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (user_id INT, username VARCHAR(50), email VARCHAR(100), subscription_status BOOLEAN, last_login TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_sources (source_id INT, source_name VARCHAR(50), traffic_type VARCHAR(50), marketing_campaign VARCHAR(100), is_paid_source BOOLEAN);"
+      },
+      {
+        "table_schema": "CREATE TABLE conversion_metrics (conversion_id INT, visitor_id INT, conversion_timestamp TIMESTAMP, conversion_goal VARCHAR(50), conversion_value DECIMAL(10, 2));"
+      },
+      {
+        "table_schema": "CREATE TABLE page_views (view_id INT, visitor_id INT, page_visited VARCHAR(255), view_timestamp TIMESTAMP, time_spent_seconds INT);"
+      }
+    ]
+  }
+]

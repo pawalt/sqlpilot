@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InsurancePolicies (\n  policy_id INT PRIMARY KEY,\n  policy_holder_name VARCHAR(255),\n  policy_start_date DATE,\n  policy_end_date DATE,\n  policy_type ENUM('Life', 'Health', 'Auto'),\n  premium_amount DECIMAL(10, 2),\n  insured_amount DECIMAL(10, 2),\n  is_active BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id UUID PRIMARY KEY,\n    policy_number VARCHAR(50) NOT NULL,\n    policy_holder_name VARCHAR(100) NOT NULL,\n    policy_start_date DATE NOT NULL,\n    policy_end_date DATE NOT NULL,\n    policy_amount DECIMAL(10, 2) NOT NULL,\n    policy_status VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    document_id UUID PRIMARY KEY,\n    document_name VARCHAR(100) NOT NULL,\n    document_type VARCHAR(50) NOT NULL,\n    document_content BYTEA NOT NULL,\n    document_owner VARCHAR(100) NOT NULL,\n    upload_date TIMESTAMP NOT NULL,\n    policy_id UUID REFERENCES policies(policy_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_holders (\n    policy_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    date_of_birth DATE,\n    address VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_details (\n    policy_id INT PRIMARY KEY,\n    policy_type VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    premium_amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_documents (\n    document_id INT PRIMARY KEY,\n    policy_id INT,\n    document_name VARCHAR(100),\n    document_type VARCHAR(50),\n    document_content TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PolicyHolder ( \n  id INT PRIMARY KEY, \n  name VARCHAR(255) NOT NULL, \n  email VARCHAR(255) NOT NULL, \n  phone VARCHAR(20) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyContract ( \n  policy_id INT PRIMARY KEY, \n  holder_id INT NOT NULL, \n  start_date DATE NOT NULL, \n  end_date DATE NOT NULL, \n  amount DECIMAL(10, 2) NOT NULL, \n  FOREIGN KEY (holder_id) REFERENCES PolicyHolder(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyDocument ( \n  document_id INT PRIMARY KEY, \n  policy_id INT NOT NULL, \n  document_type VARCHAR(50) NOT NULL, \n  document_data TEXT NOT NULL, \n  FOREIGN KEY (policy_id) REFERENCES PolicyContract(policy_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyLog ( \n  log_id INT PRIMARY KEY, \n  policy_id INT NOT NULL, \n  log_date TIMESTAMP NOT NULL, \n  action VARCHAR(50) NOT NULL, \n  user_id INT NOT NULL, \n  FOREIGN KEY (policy_id) REFERENCES PolicyContract(policy_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_holders (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    address VARCHAR(100),\n    age INT,\n    policy_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_documents (\n    document_id INT PRIMARY KEY,\n    policy_id INT,\n    document_type VARCHAR(50),\n    document_location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_details (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    premium_amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_issues (\n    issue_id INT PRIMARY KEY,\n    policy_id INT,\n    issue_date DATE,\n    issue_description TEXT,\n    resolved BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_payments (\n    payment_id INT PRIMARY KEY,\n    policy_id INT,\n    payment_date DATE,\n    amount_paid DECIMAL(10, 2)\n)"
+      }
+    ]
+  }
+]

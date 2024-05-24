@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_data (\n tower_id INT PRIMARY KEY,\n tower_name VARCHAR(255) NOT NULL,\n latitude DECIMAL(10, 6) NOT NULL,\n longitude DECIMAL(10, 6) NOT NULL,\n equipment_id INT,\n equipment_type VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telecommunication_towers (\n tower_id INT PRIMARY KEY,\n tower_name VARCHAR(100),\n location VARCHAR(255),\n equipment_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE equipment_data (\n equipment_id INT PRIMARY KEY,\n equipment_name VARCHAR(100),\n tower_id INT,\n status VARCHAR(50),\n FOREIGN KEY (tower_id) REFERENCES telecommunication_towers(tower_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TelecommunicationTowers (\n    tower_id INT PRIMARY KEY,\n    tower_name VARCHAR(255) NOT NULL,\n    location_lat DECIMAL(10, 6) NOT NULL,\n    location_lng DECIMAL(10, 6) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(255) NOT NULL,\n    tower_id INT,\n    FOREIGN KEY (tower_id) REFERENCES TelecommunicationTowers(tower_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n    log_id INT PRIMARY KEY,\n    tower_id INT,\n    maintenance_date DATE,\n    maintenance_details TEXT,\n    FOREIGN KEY (tower_id) REFERENCES TelecommunicationTowers(tower_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Tower (\n    tower_id INT PRIMARY KEY,\n    tower_name TEXT,\n    location_lat DOUBLE PRECISION,\n    location_long DOUBLE PRECISION\n);\n\nCREATE TABLE Equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name TEXT,\n    tower_id INT,\n    FOREIGN KEY (tower_id) REFERENCES Tower(tower_id)\n);\n\nCREATE TABLE Maintenance (\n    maintenance_id INT PRIMARY KEY,\n    equipment_id INT,\n    maintenance_date DATE,\n    description TEXT,\n    FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)\n);\n\nCREATE TABLE NetworkOptimization (\n    optimization_id INT PRIMARY KEY,\n    equipment_id INT,\n    optimization_date DATE,\n    optimization_details TEXT,\n    FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TelecommunicationTowers (\n    tower_id INT PRIMARY KEY,\n    tower_name VARCHAR(50) NOT NULL,\n    location_lat DOUBLE PRECISION NOT NULL,\n    location_long DOUBLE PRECISION NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(50) NOT NULL,\n    tower_id INT NOT NULL,\n    equipment_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (tower_id) REFERENCES TelecommunicationTowers(tower_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n    log_id INT PRIMARY KEY,\n    equipment_id INT NOT NULL,\n    maintenance_date DATE NOT NULL,\n    maintenance_details TEXT,\n    FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkCoverage (\n    coverage_id INT PRIMARY KEY,\n    tower_id INT NOT NULL,\n    coverage_type VARCHAR(50) NOT NULL,\n    coverage_percentage FLOAT NOT NULL,\n    FOREIGN KEY (tower_id) REFERENCES TelecommunicationTowers(tower_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Technicians (\n    technician_id INT PRIMARY KEY,\n    technician_name VARCHAR(50) NOT NULL,\n    technician_role VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

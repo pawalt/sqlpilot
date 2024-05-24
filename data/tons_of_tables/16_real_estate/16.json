@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_properties_ratings (\n  property_id INT PRIMARY KEY,\n  tenant_id INT,\n  rating DECIMAL,\n  feedback TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_properties (\n    property_id INT NOT NULL,\n    property_name VARCHAR(255) NOT NULL,\n    property_address TEXT NOT NULL,\n    average_rating FLOAT NOT NULL,\n    PRIMARY KEY (property_id)\n);\n\nCREATE TABLE tenant_reviews (\n    review_id INT NOT NULL,\n    property_id INT NOT NULL,\n    tenant_id INT NOT NULL,\n    review_text TEXT NOT NULL,\n    rating INT NOT NULL,\n    PRIMARY KEY (review_id),\n    FOREIGN KEY (property_id) REFERENCES rental_properties(property_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_properties ( \n    property_id INT PRIMARY KEY, \n    property_name VARCHAR(255) NOT NULL, \n    property_type VARCHAR(50), \n    address VARCHAR(255) NOT NULL, \n    rating FLOAT DEFAULT 0.0 \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tenants ( \n    tenant_id INT PRIMARY KEY, \n    first_name VARCHAR(50) NOT NULL, \n    last_name VARCHAR(50) NOT NULL, \n    email VARCHAR(100) UNIQUE \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews ( \n    review_id INT PRIMARY KEY, \n    tenant_id INT REFERENCES tenants(tenant_id), \n    property_id INT REFERENCES rental_properties(property_id), \n    rating FLOAT NOT NULL, \n    comment TEXT \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_properties (\n    property_id SERIAL PRIMARY KEY,\n    property_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    average_rating FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tenants (\n    tenant_id SERIAL PRIMARY KEY,\n    tenant_name VARCHAR(255) NOT NULL,\n    age INT,\n    occupation VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id SERIAL PRIMARY KEY,\n    property_id INT REFERENCES rental_properties(property_id),\n    tenant_id INT REFERENCES tenants(tenant_id),\n    rating INT NOT NULL,\n    feedback TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ratings (\n    rating_id SERIAL PRIMARY KEY,\n    property_id INT REFERENCES rental_properties(property_id),\n    average_rating FLOAT,\n    total_reviews INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_properties (\n   property_id UUID PRIMARY KEY,\n   property_name VARCHAR(255) NOT NULL,\n   property_type VARCHAR(50) NOT NULL,\n   location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tenants (\n   tenant_id UUID PRIMARY KEY,\n   first_name VARCHAR(50) NOT NULL,\n   last_name VARCHAR(50) NOT NULL,\n   email VARCHAR(100) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ratings (\n   rating_id UUID PRIMARY KEY,\n   property_id UUID,\n   tenant_id UUID,\n   rating_value INT NOT NULL,\n   feedback TEXT,\n   FOREIGN KEY (property_id) REFERENCES rental_properties(property_id),\n   FOREIGN KEY (tenant_id) REFERENCES tenants(tenant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n   review_id UUID PRIMARY KEY,\n   property_id UUID,\n   tenant_id UUID,\n   review_text TEXT,\n   review_date DATE,\n   FOREIGN KEY (property_id) REFERENCES rental_properties(property_id),\n   FOREIGN KEY (tenant_id) REFERENCES tenants(tenant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE average_ratings (\n   average_id UUID PRIMARY KEY,\n   property_id UUID,\n   average_rating DECIMAL(3, 2),\n   num_reviews INT,\n   FOREIGN KEY (property_id) REFERENCES rental_properties(property_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advocacy_initiatives (\n    initiative_id INT PRIMARY KEY,\n    initiative_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    milestone_1 VARCHAR(255),\n    milestone_2 VARCHAR(255),\n    deadline_1 DATE,\n    deadline_2 DATE,\n    action_item_1 TEXT,\n    action_item_2 TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advocacy_initiatives (\n  id SERIAL PRIMARY KEY,\n  initiative_name TEXT NOT NULL,\n  start_date DATE NOT NULL,\n  deadline DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE milestones (\n  id SERIAL PRIMARY KEY,\n  milestone_name TEXT NOT NULL,\n  milestone_date DATE NOT NULL,\n  completed BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advocacy_initiatives (\n    id SERIAL PRIMARY KEY,\n    initiative_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n);\n\nCREATE TABLE milestones (\n    id SERIAL PRIMARY KEY,\n    milestone_description TEXT,\n    completion_date DATE,\n    initiative_id INT,\n    FOREIGN KEY (initiative_id)\n    REFERENCES advocacy_initiatives(id)\n);\n\nCREATE TABLE action_items (\n    id SERIAL PRIMARY KEY,\n    item_description TEXT,\n    deadline DATE,\n    completed BOOLEAN,\n    milestone_id INT,\n    FOREIGN KEY (milestone_id)\n    REFERENCES milestones(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advocacy_initiatives (\n    initiative_id UUID PRIMARY KEY,\n    initiative_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE milestones (\n    milestone_id UUID PRIMARY KEY,\n    milestone_description TEXT,\n    milestone_date DATE,\n    initiative_id UUID REFERENCES advocacy_initiatives (initiative_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deadlines (\n    deadline_id UUID PRIMARY KEY,\n    deadline_description TEXT,\n    deadline_date DATE,\n    initiative_id UUID REFERENCES advocacy_initiatives (initiative_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE action_items (\n    action_item_id UUID PRIMARY KEY,\n    action_item_description TEXT,\n    status VARCHAR(50),\n    deadline_id UUID REFERENCES deadlines (deadline_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AdvocacyInitiatives (\n    id INT PRIMARY KEY,\n    initiative_name VARCHAR(255),\n    description TEXT,\n    start_date DATE,\n    deadline DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Milestones (\n    id INT PRIMARY KEY,\n    milestone_name VARCHAR(255),\n    description TEXT,\n    target_date DATE,\n    actual_date DATE,\n    initiative_id INT,\n    FOREIGN KEY (initiative_id) REFERENCES AdvocacyInitiatives(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Deadlines (\n    id INT PRIMARY KEY,\n    deadline_name VARCHAR(255),\n    due_date DATE,\n    initiative_id INT,\n    FOREIGN KEY (initiative_id) REFERENCES AdvocacyInitiatives(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ActionItems (\n    id INT PRIMARY KEY,\n    item_name VARCHAR(255),\n    description TEXT,\n    status VARCHAR(50),\n    milestone_id INT,\n    initiative_id INT,\n    FOREIGN KEY (milestone_id) REFERENCES Milestones(id),\n    FOREIGN KEY (initiative_id) REFERENCES AdvocacyInitiatives(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    id INT PRIMARY KEY,\n    username VARCHAR(100),\n    email VARCHAR(255),\n    role VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

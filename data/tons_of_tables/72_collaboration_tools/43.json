@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    id INT PRIMARY KEY,\n    file_id INT,\n    user_id INT,\n    permission_type VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(50) NOT NULL,\n    owner_id INT NOT NULL,\n    FOREIGN KEY (owner_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id SERIAL PRIMARY KEY,\n    file_name VARCHAR(100) NOT NULL,\n    owner_id INT NOT NULL,\n    FOREIGN KEY (owner_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id SERIAL PRIMARY KEY,\n    file_id INT NOT NULL,\n    user_id INT NOT NULL,\n    permission_type VARCHAR(20) NOT NULL,\n    FOREIGN KEY (file_id) REFERENCES files(file_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT,\n    file_id INT,\n    permission_level VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(100),\n    file_size INT,\n    file_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    file_id INT,\n    access_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id UUID PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    owner_id UUID NOT NULL,\n    permissions JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(255) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id UUID REFERENCES users(user_id),\n    role_id UUID REFERENCES roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_permissions (\n    file_id UUID REFERENCES files(file_id),\n    role_id UUID REFERENCES roles(role_id),\n    read_permission BOOLEAN,\n    write_permission BOOLEAN,\n    delete_permission BOOLEAN,\n    PRIMARY KEY (file_id, role_id)\n);"
+      }
+    ]
+  }
+]

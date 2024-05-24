@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dashboard_metrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_value FLOAT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dashboard_data (\n    id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP,\n    metric VARCHAR,\n    value FLOAT\n);\n\nCREATE TABLE visualization_data (\n    id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP,\n    graph_type VARCHAR,\n    graph_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Dashboard (\n  dashboard_id INT PRIMARY KEY,\n  dashboard_name VARCHAR(255) NOT NULL,\n  dashboard_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Visualization (\n  visualization_id INT PRIMARY KEY,\n  visualization_name VARCHAR(255) NOT NULL,\n  visualization_type VARCHAR(50) NOT NULL,\n  dashboard_id INT,\n  FOREIGN KEY (dashboard_id) REFERENCES Dashboard(dashboard_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MonitoringData (\n  data_id INT PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  metric_name VARCHAR(50) NOT NULL,\n  metric_value DECIMAL NOT NULL,\n  visualization_id INT,\n  FOREIGN KEY (visualization_id) REFERENCES Visualization(visualization_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dashboard_data (\n    id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    value FLOAT,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE visualization_data (\n    id INT PRIMARY KEY,\n    chart_type VARCHAR(50),\n    visualization_src TEXT,\n    data_source_id INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE business_entities (\n    entity_id INT PRIMARY KEY,\n    entity_name VARCHAR(255),\n    business_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE monitoring_logs (\n    log_id INT PRIMARY KEY,\n    log_message TEXT,\n    log_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Dashboard (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Visualization (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(50),\n    data_source_id INT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BusinessMetrics (\n    id INT PRIMARY KEY,\n    metric_name VARCHAR(255) NOT NULL,\n    value DECIMAL(10, 2),\n    date DATE,\n    time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DashboardVisualizationMapping (\n    dashboard_id INT,\n    visualization_id INT,\n    PRIMARY KEY (dashboard_id, visualization_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserRoles (\n    id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    user_id INT,\n    created_at TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES Users(id)\n);\n"
+      }
+    ]
+  }
+]

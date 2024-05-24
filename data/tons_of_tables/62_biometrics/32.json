@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_access (\n    user_id INT PRIMARY KEY,\n    palm_vein_data BYTEA,\n    access_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (id INT PRIMARY KEY,\nusername VARCHAR(50) NOT NULL,\npalm_vein_data BYTEA NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access_rights (id INT PRIMARY KEY,\nuser_id INT,\naccess_level VARCHAR(50));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    palm_vein_data BYTEA NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_rights (\n    access_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_level VARCHAR(20) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    successful_authentication BOOLEAN NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    palm_vein_data BYTEA NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access_rights (\n    user_id INT REFERENCES users(user_id),\n    level_id INT REFERENCES access_levels(level_id),\n    PRIMARY KEY (user_id, level_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    access_time TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_access_rights (\n    user_id INT PRIMARY KEY,\n    palm_vein_data BLOB,\n    access_level VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    time_stamp TIMESTAMP,\n    action VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE palm_vein_data (\n    palm_id INT PRIMARY KEY,\n    user_id INT,\n    palm_data BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_id INT,\n    permission_name VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

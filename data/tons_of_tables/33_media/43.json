@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    belief_categories TEXT[],\n    recommended_articles JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    belief_category VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recommended_articles (\n    article_id INT PRIMARY KEY,\n    article_title VARCHAR(100) NOT NULL,\n    article_content TEXT NOT NULL,\n    belief_category VARCHAR(50) NOT NULL,\n    FOREIGN KEY (belief_category) REFERENCES user_profiles(belief_category)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    belief_category VARCHAR(50),\n    belief_strength INT\n);\n\nCREATE TABLE article_recommendations (\n    article_id INT PRIMARY KEY,\n    article_title VARCHAR(100) NOT NULL,\n    article_description TEXT,\n    belief_category VARCHAR(50),\n    challenge_level INT\n);\n\nCREATE TABLE user_feedback (\n    feedback_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_profiles(user_id),\n    article_id INT REFERENCES article_recommendations(article_id),\n    rating INT,\n    feedback_comment TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    beliefs TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    title VARCHAR(100),\n    content TEXT,\n    category VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_article_history (\n    user_id INT,\n    article_id INT,\n    rating INT,\n    timestamp TIMESTAMP,\n    PRIMARY KEY (user_id, article_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recommended_articles (\n    user_id INT,\n    article_id INT,\n    recommended_at TIMESTAMP,\n    PRIMARY KEY (user_id, article_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    belief_category VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    title VARCHAR(200) NOT NULL,\n    content TEXT,\n    author VARCHAR(100),\n    published_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_article_preferences (\n    user_id INT,\n    article_id INT,\n    rating INT,\n    PRIMARY KEY (user_id, article_id),\n    FOREIGN KEY (user_id) REFERENCES user_profiles(user_id),\n    FOREIGN KEY (article_id) REFERENCES articles(article_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE belief_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE article_belief_mapping (\n    article_id INT,\n    category_id INT,\n    PRIMARY KEY (article_id, category_id),\n    FOREIGN KEY (article_id) REFERENCES articles(article_id),\n    FOREIGN KEY (category_id) REFERENCES belief_categories(category_id)\n);\n"
+      }
+    ]
+  }
+]

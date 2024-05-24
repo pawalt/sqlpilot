@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE car_parts_inventory (\n    part_id UUID PRIMARY KEY,\n    part_name VARCHAR(255) NOT NULL,\n    part_number VARCHAR(50) NOT NULL,\n    quantity_available INT NOT NULL,\n    manufacturing_location VARCHAR(100) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE car_parts (\n    part_id INT PRIMARY KEY,\n    part_name VARCHAR(50),\n    part_description TEXT,\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_process (\n    process_id INT PRIMARY KEY,\n    part_id INT REFERENCES car_parts(part_id),\n    stage_name VARCHAR(50),\n    stage_description TEXT,\n    is_completed BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE car_parts (\n   part_id INT PRIMARY KEY,\n   part_name VARCHAR(255) NOT NULL,\n   quantity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_process (\n   process_id INT PRIMARY KEY,\n   process_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE part_availability (\n   availability_id INT PRIMARY KEY,\n   part_id INT,\n   process_id INT,\n   FOREIGN KEY (part_id) REFERENCES car_parts(part_id),\n   FOREIGN KEY (process_id) REFERENCES manufacturing_process(process_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE car_parts (\n  part_id INT PRIMARY KEY,\n  part_name VARCHAR(50),\n  quantity INT,\n  location VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_process (\n  process_id INT PRIMARY KEY,\n  process_name VARCHAR(50),\n  process_description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE part_usage (\n  usage_id INT PRIMARY KEY,\n  part_id INT,\n  process_id INT,\n  usage_quantity INT,\n  FOREIGN KEY (part_id) REFERENCES car_parts(part_id),\n  FOREIGN KEY (process_id) REFERENCES manufacturing_process(process_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE part_availability (\n  availability_id INT PRIMARY KEY,\n  part_id INT,\n  available_quantity INT,\n  last_updated TIMESTAMP,\n  FOREIGN KEY (part_id) REFERENCES car_parts(part_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE car_parts (\n    part_id INT PRIMARY KEY,\n    part_name VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    manufacturer VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id INT PRIMARY KEY,\n    part_id INT NOT NULL,\n    location VARCHAR(50) NOT NULL,\n    available_quantity INT NOT NULL,\n    FOREIGN KEY (part_id) REFERENCES car_parts(part_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_process (\n    process_id INT PRIMARY KEY,\n    process_name VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE process_steps (\n    step_id INT PRIMARY KEY,\n    process_id INT NOT NULL,\n    step_name VARCHAR(50) NOT NULL,\n    step_description TEXT,\n    FOREIGN KEY (process_id) REFERENCES manufacturing_process(process_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assembly (\n    assembly_id INT PRIMARY KEY,\n    part_id INT NOT NULL,\n    process_id INT NOT NULL,\n    step_id INT NOT NULL,\n    assembly_date DATE,\n    FOREIGN KEY (part_id) REFERENCES car_parts(part_id),\n    FOREIGN KEY (process_id) REFERENCES manufacturing_process(process_id),\n    FOREIGN KEY (step_id) REFERENCES process_steps(step_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id UUID PRIMARY KEY,\n  amount DECIMAL(10,2) NOT NULL,\n  payment_date TIMESTAMP NOT NULL,\n  status VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_transactions (\n    transaction_id INT PRIMARY KEY,\n    amount DECIMAL,\n    payment_method VARCHAR(50),\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_logs (\n    log_id INT PRIMARY KEY,\n    transaction_id INT,\n    timestamp TIMESTAMP,\n    log_message VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n  gateway_id INT PRIMARY KEY,\n  gateway_name VARCHAR(255) NOT NULL,\n  gateway_url VARCHAR(255) NOT NULL,\n  api_key VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  gateway_id INT,\n  amount DECIMAL(10, 2) NOT NULL,\n  status VARCHAR(50) NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  FOREIGN KEY (gateway_id) REFERENCES payment_gateways(gateway_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  email VARCHAR(255) UNIQUE,\n  phone_number VARCHAR(20),\n  address TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    amount DECIMAL NOT NULL,\n    transaction_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n    payment_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    payment_type VARCHAR(20) NOT NULL,\n    card_number VARCHAR(16) NOT NULL,\n    expiration_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_logs (\n    log_id INT PRIMARY KEY,\n    payment_id INT NOT NULL,\n    log_message TEXT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PaymentTransactions (\n  transaction_id INT PRIMARY KEY,\n  user_id INT,\n  amount DECIMAL,\n  payment_method VARCHAR(50),\n  timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  user_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(100),\n  phone_number VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentMethods (\n  method_id INT PRIMARY KEY,\n  method_name VARCHAR(50),\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TransactionLogs (\n  log_id INT PRIMARY KEY,\n  transaction_id INT,\n  log_message TEXT,\n  log_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentGateways (\n  gateway_id INT PRIMARY KEY,\n  gateway_name VARCHAR(50),\n  gateway_url VARCHAR(255),\n  gateway_key VARCHAR(100)\n)"
+      }
+    ]
+  }
+]

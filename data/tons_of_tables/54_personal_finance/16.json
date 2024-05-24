@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reminder_system (\n  reminder_id INT PRIMARY KEY,\n  bill_name VARCHAR(255),\n  bill_amount DECIMAL(10, 2),\n  due_date DATE,\n  payment_status BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bill_reminders (\n    reminder_id UUID PRIMARY KEY,\n    bill_name VARCHAR(255) NOT NULL,\n    due_date DATE NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id UUID PRIMARY KEY,\n    reminder_id UUID REFERENCES bill_reminders(reminder_id),\n    payment_date DATE NOT NULL,\n    paid_amount DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reminders (\n  id UUID PRIMARY KEY,\n  bill_name VARCHAR(100) NOT NULL,\n  due_date DATE NOT NULL,\n  reminder_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  id UUID PRIMARY KEY,\n  reminder_id UUID NOT NULL,\n  payment_date DATE NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_log (\n  id UUID PRIMARY KEY,\n  action VARCHAR(50) NOT NULL,\n  timestamp TIMESTAMPTZ DEFAULT NOW()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reminders (\n  reminder_id UUID PRIMARY KEY,\n  bill_name VARCHAR(255),\n  due_date DATE,\n  amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(100) UNIQUE,\n  email VARCHAR(255),\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id UUID PRIMARY KEY,\n  reminder_id UUID,\n  paid_by_user_id UUID,\n  payment_date TIMESTAMP,\n  amount_paid DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n  log_id UUID PRIMARY KEY,\n  action_type VARCHAR(50),\n  action_description TEXT,\n  log_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE bills (\n    bill_id INT PRIMARY KEY,\n    bill_name VARCHAR(50) NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    due_date DATE NOT NULL,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n\nCREATE TABLE reminders (\n    reminder_id INT PRIMARY KEY,\n    reminder_text TEXT NOT NULL,\n    reminder_date DATE NOT NULL,\n    bill_id INT,\n    FOREIGN KEY (bill_id) REFERENCES bills(bill_id)\n);\n\nCREATE TABLE payment_history (\n    payment_id INT PRIMARY KEY,\n    amount_paid DECIMAL(10, 2) NOT NULL,\n    payment_date DATE NOT NULL,\n    bill_id INT,\n    FOREIGN KEY (bill_id) REFERENCES bills(bill_id)\n);\n\nCREATE TABLE notifications (\n    notification_id INT PRIMARY KEY,\n    notification_text TEXT NOT NULL,\n    notification_date DATE NOT NULL,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  }
+]

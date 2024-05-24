@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_interactions (    player_id INT,    interaction_type VARCHAR(50),    interaction_timestamp TIMESTAMP,    in_game_chat_message TEXT );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE interactions (\n  player_id UUID,\n  interaction_type VARCHAR(50),\n  interaction_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE chat_messages (\n  message_id UUID,\n  player_id UUID,\n  message_text TEXT,\n  message_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_interactions (\n    player_id INT PRIMARY KEY,\n    interaction_type VARCHAR(50),\n    interaction_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE in_game_chat (\n    chat_id INT PRIMARY KEY,\n    player_id INT,\n    message TEXT,\n    chat_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behavior_analysis (\n    analysis_id INT PRIMARY KEY,\n    player_id INT,\n    behavior_type VARCHAR(50),\n    analysis_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_interactions (\n    player_id UUID,\n    interaction_type VARCHAR,\n    interaction_timestamp TIMESTAMP,\n    interaction_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE game_chat_messages (\n    message_id UUID,\n    player_id UUID,\n    message_timestamp TIMESTAMP,\n    message_text TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behavior_analysis (\n    analysis_id UUID,\n    player_id UUID,\n    behavior_type VARCHAR,\n    behavior_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE game_sessions (\n    session_id UUID,\n    player_id UUID,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    player_level INT,\n    account_created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id INT PRIMARY KEY,\n    player_id INT NOT NULL,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    FOREIGN KEY (player_id) REFERENCES players(player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE in_game_events (\n    event_id INT PRIMARY KEY,\n    session_id INT,\n    event_type VARCHAR(50) NOT NULL,\n    event_timestamp TIMESTAMP,\n    event_description TEXT,\n    FOREIGN KEY (session_id) REFERENCES sessions(session_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE chat_messages (\n    message_id INT PRIMARY KEY,\n    session_id INT,\n    message_text TEXT,\n    sender_id INT,\n    receiver_id INT,\n    message_timestamp TIMESTAMP,\n    FOREIGN KEY (session_id) REFERENCES sessions(session_id),\n    FOREIGN KEY (sender_id) REFERENCES players(player_id),\n    FOREIGN KEY (receiver_id) REFERENCES players(player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behavior_analysis (\n    behavior_id INT PRIMARY KEY,\n    player_id INT,\n    analysis_type VARCHAR(50) NOT NULL,\n    analysis_result TEXT,\n    analysis_timestamp TIMESTAMP,\n    FOREIGN KEY (player_id) REFERENCES players(player_id)\n);"
+      }
+    ]
+  }
+]

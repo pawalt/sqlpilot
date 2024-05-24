@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FishPopulationHealth (\n   population_id INT PRIMARY KEY,\n   species VARCHAR(255),\n   population_size INT,\n   average_weight DECIMAL,\n   health_status VARCHAR(50),\n   disease_diagnosis VARCHAR(255),\n   treatment_plan TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FishHealthRecord (\n    fish_id INT PRIMARY KEY,\n    fish_species VARCHAR(255),\n    health_status VARCHAR(50),\n    disease VARCHAR(100),\n    treatment_plan TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterQualityRecord (\n    record_id INT PRIMARY KEY,\n    sample_date DATE,\n    ammonia_level FLOAT,\n    ph_level FLOAT,\n    temperature FLOAT,\n    dissolved_oxygen FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FishPopulations (\n    fish_id SERIAL PRIMARY KEY,\n    species TEXT NOT NULL,\n    location TEXT NOT NULL,\n    population_size INT NOT NULL,\n    health_status TEXT\n);\n\nCREATE TABLE DiseaseRecords (\n    record_id SERIAL PRIMARY KEY,\n    fish_id INT REFERENCES FishPopulations(fish_id),\n    disease_name TEXT NOT NULL,\n    record_date DATE NOT NULL,\n    treatment_plan TEXT\n);\n\nCREATE TABLE TreatmentHistory (\n    history_id SERIAL PRIMARY KEY,\n    record_id INT REFERENCES DiseaseRecords(record_id),\n    treatment_date DATE NOT NULL,\n    treatment_type TEXT NOT NULL,\n    treatment_success BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FishSpecies (\n    species_id UUID PRIMARY KEY,\n    species_name VARCHAR(50),\n    average_size DECIMAL,\n    habitat VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE HealthRecords (\n    record_id UUID PRIMARY KEY,\n    species_id UUID REFERENCES FishSpecies(species_id),\n    health_status BOOLEAN,\n    temperature DECIMAL,\n    water_quality VARCHAR(50),\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DiseaseRecords (\n    disease_id UUID PRIMARY KEY,\n    disease_name VARCHAR(50),\n    prevention_methods TEXT,\n    treatment_plan TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PopulationStatistics (\n    population_id UUID PRIMARY KEY,\n    species_id UUID REFERENCES FishSpecies(species_id),\n    total_population INTEGER,\n    average_age INTEGER\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Fish_Populations (\n    fish_id UUID PRIMARY KEY,\n    species VARCHAR(50) NOT NULL,\n    health_status VARCHAR(20),\n    location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Diseases (\n    disease_id UUID PRIMARY KEY,\n    disease_name VARCHAR(50) NOT NULL,\n    symptoms VARCHAR(255),\n    preventive_measures VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Treatments (\n    treatment_id UUID PRIMARY KEY,\n    disease_id UUID REFERENCES Diseases(disease_id) ON DELETE CASCADE,\n    treatment_name VARCHAR(50) NOT NULL,\n    treatment_description VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Fish_Health_Logs (\n    log_id UUID PRIMARY KEY,\n    fish_id UUID REFERENCES Fish_Populations(fish_id) ON DELETE CASCADE,\n    recorded_date DATE NOT NULL,\n    health_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Fisheries (\n    fisheries_id UUID PRIMARY KEY,\n    location VARCHAR(100) NOT NULL,\n    contact_person VARCHAR(50),\n    contact_number VARCHAR(15)\n);\n"
+      }
+    ]
+  }
+]

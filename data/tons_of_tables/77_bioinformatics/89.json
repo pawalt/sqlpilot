@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ecosystem_data (\n    id SERIAL PRIMARY KEY,\n    species_name VARCHAR(255),\n    ecosystem_type VARCHAR(255),\n    habitat VARCHAR(255),\n    latitude DECIMAL(10, 8),\n    longitude DECIMAL(11, 8),\n    temperature FLOAT,\n    humidity FLOAT,\n    precipitation FLOAT,\n    biodiversity_index INTEGER\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ecosystem_data (\n    id SERIAL PRIMARY KEY,\n    species_name VARCHAR(255) NOT NULL,\n    habitat VARCHAR(255) NOT NULL,\n    temperature FLOAT NOT NULL,\n    humidity FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE biodiversity_predictions (\n    id SERIAL PRIMARY KEY,\n    species_id INT NOT NULL,\n    prediction_date DATE NOT NULL,\n    predicted_population INT NOT NULL,\n    confidence_level FLOAT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Ecosystem_data (\n  ecosystem_id INT PRIMARY KEY,\n  ecosystem_name VARCHAR(255),\n  biodiversity_index FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Species_data (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(255),\n  species_population INT,\n  ecosystem_id INT,\n  FOREIGN KEY (ecosystem_id) REFERENCES Ecosystem_data(ecosystem_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Machine_learning (\n  ml_id INT PRIMARY KEY,\n  ml_algorithm VARCHAR(255),\n  accuracy_score FLOAT,\n  species_id INT,\n  FOREIGN KEY (species_id) REFERENCES Species_data(species_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ecosystems (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  region VARCHAR(100) NOT NULL,\n  climate VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE species (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  type VARCHAR(50) NOT NULL,\n  family VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biodiversity_data (\n  ecosystem_id INT,\n  species_id INT,\n  abundance INT,\n  CONSTRAINT fk_ecosystem FOREIGN KEY (ecosystem_id) REFERENCES ecosystems(id),\n  CONSTRAINT fk_species FOREIGN KEY (species_id) REFERENCES species(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE machine_learning_models (\n  id INT PRIMARY KEY,\n  model_name VARCHAR(100) NOT NULL,\n  accuracy FLOAT NOT NULL,\n  trained_on TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EcosystemData (\n  ecosystem_id INT PRIMARY KEY,\n  ecosystem_name VARCHAR(50) NOT NULL,\n  biodiversity_index FLOAT NOT NULL,\n  species_count INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE HabitatData (\n  habitat_id INT PRIMARY KEY,\n  ecosystem_id INT REFERENCES EcosystemData(ecosystem_id),\n  habitat_type VARCHAR(50) NOT NULL,\n  temperature FLOAT NOT NULL,\n  rainfall FLOAT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SpeciesData (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50) NOT NULL,\n  habitat_id INT REFERENCES HabitatData(habitat_id),\n  population_size INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PredictionModel (\n  model_id INT PRIMARY KEY,\n  model_name VARCHAR(50) NOT NULL,\n  accuracy FLOAT NOT NULL,\n  training_data_size INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BiodiversityPatterns (\n  pattern_id INT PRIMARY KEY,\n  ecosystem_id INT REFERENCES EcosystemData(ecosystem_id),\n  model_id INT REFERENCES PredictionModel(model_id),\n  biodiversity_score FLOAT NOT NULL\n)"
+      }
+    ]
+  }
+]

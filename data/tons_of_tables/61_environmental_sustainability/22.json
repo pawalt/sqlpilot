@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteDisposalData (\n  disposal_date TIMESTAMP,\n  location VARCHAR,\n  waste_type VARCHAR,\n  quantity DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteDisposalEvents (\n    event_id UUID PRIMARY KEY,\n    event_date DATE,\n    location VARCHAR,\n    waste_type VARCHAR,\n    quantity DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteManagementPlans (\n    plan_id UUID PRIMARY KEY,\n    plan_date DATE,\n    location VARCHAR,\n    target_reduction DECIMAL,\n    action_items TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Waste_Disposal_Data (\n  disposal_id UUID PRIMARY KEY,\n  disposal_date DATE,\n  disposal_location VARCHAR(255),\n  disposal_type VARCHAR(50),\n  disposal_weight FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Waste_Disposal_Trends (\n  trend_id UUID PRIMARY KEY,\n  trend_date DATE,\n  trend_analysis TEXT,\n  trend_impact VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Waste_Management_Strategies (\n  strategy_id UUID PRIMARY KEY,\n  strategy_name VARCHAR(100),\n  strategy_description TEXT,\n  strategy_owner VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_disposal_sites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(255),\n  location VARCHAR(255),\n  disposal_capacity INT,\n  disposal_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_records (\n  record_id INT PRIMARY KEY,\n  site_id INT,\n  disposal_date DATE,\n  waste_type VARCHAR(50),\n  amount_disposed DECIMAL(10,2),\n  FOREIGN KEY (site_id) REFERENCES waste_disposal_sites(site_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_history (\n  history_id INT PRIMARY KEY,\n  record_id INT,\n  disposal_year INT,\n  disposal_month VARCHAR(20),\n  disposal_quantity DECIMAL(10,2),\n  FOREIGN KEY (record_id) REFERENCES waste_disposal_records(record_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_management_strategies (\n  strategy_id INT PRIMARY KEY,\n  strategy_name VARCHAR(255),\n  implementation_date DATE,\n  target_reduction DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_disposal_sites (\n    site_id INT PRIMARY KEY,\n    site_name VARCHAR(255),\n    city VARCHAR(100),\n    state VARCHAR(50),\n    zip_code VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection_events (\n    event_id INT PRIMARY KEY,\n    event_date DATE,\n    site_id INT,\n    total_collected_volume DECIMAL(10, 2),\n    CONSTRAINT fk_site_id FOREIGN KEY (site_id) REFERENCES waste_disposal_sites(site_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_types (\n    type_id INT PRIMARY KEY,\n    type_name VARCHAR(100),\n    category VARCHAR(50),\n    disposal_method VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_records (\n    record_id INT PRIMARY KEY,\n    site_id INT,\n    event_id INT,\n    type_id INT,\n    quantity DECIMAL(10, 2),\n    CONSTRAINT fk_site_id FOREIGN KEY (site_id) REFERENCES waste_disposal_sites(site_id),\n    CONSTRAINT fk_event_id FOREIGN KEY (event_id) REFERENCES waste_collection_events(event_id),\n    CONSTRAINT fk_type_id FOREIGN KEY (type_id) REFERENCES waste_types(type_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_management_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(100),\n    description TEXT\n)"
+      }
+    ]
+  }
+]

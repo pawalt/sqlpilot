@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE student_payments (\n    student_id INT PRIMARY KEY,\n    payment_date DATE,\n    payment_amount DECIMAL(10, 2),\n    payment_method VARCHAR,\n    payment_status VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students ( id UUID PRIMARY KEY,\n  student_name VARCHAR(50),\n  email VARCHAR(100),\n  phone_number VARCHAR(15),\n  address TEXT\n);\n\nCREATE TABLE payments ( payment_id SERIAL PRIMARY KEY,\n  student_id UUID REFERENCES students(id),\n  payment_date DATE,\n  amount DECIMAL(10, 2),\n  transaction_id VARCHAR(30)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    dob DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    student_id INT REFERENCES students(student_id),\n    amount DECIMAL(10, 2),\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT REFERENCES payments(payment_id),\n    transaction_date DATE,\n    status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE student_payments (\n    student_id INT PRIMARY KEY,\n    payment_amount DECIMAL,\n    payment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    student_id INT,\n    payment_amount DECIMAL,\n    transaction_date TIMESTAMP,\n    FOREIGN KEY (student_id) REFERENCES student_payments(student_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE student_info (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(50),\n    student_email VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    action VARCHAR(50),\n    log_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    student_id INT,\n    amount DECIMAL(10, 2),\n    payment_date TIMESTAMP,\n    FOREIGN KEY (student_id) REFERENCES students(student_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT,\n    transaction_date TIMESTAMP,\n    transaction_type ENUM('debit', 'credit'),\n    FOREIGN KEY (payment_id) REFERENCES payments(payment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id INT PRIMARY KEY,\n    student_id INT,\n    balance DECIMAL(10, 2),\n    FOREIGN KEY (student_id) REFERENCES students(student_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    event_description TEXT\n);"
+      }
+    ]
+  }
+]

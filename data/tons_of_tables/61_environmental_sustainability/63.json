@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE funding_sources (\n    funding_id INT PRIMARY KEY,\n    source_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  funding_source_id INT,\n  FOREIGN KEY (funding_source_id) REFERENCES funding_sources(funding_source_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_sources (\n  funding_source_id INT PRIMARY KEY,\n  funding_name VARCHAR(255) NOT NULL,\n  contact_name VARCHAR(255),\n  contact_email VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE funding_sources (  id INT PRIMARY KEY,  name VARCHAR(255),  type VARCHAR(50),  amount DECIMAL(10, 2) );"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (  id INT PRIMARY KEY,  title VARCHAR(255),  start_date DATE,  end_date DATE );"
+      },
+      {
+        "table_schema": "CREATE TABLE project_funding (  project_id INT,  source_id INT,  amount DECIMAL(10, 2),  FOREIGN KEY (project_id) REFERENCES projects(id),  FOREIGN KEY (source_id) REFERENCES funding_sources(id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE funding_sources (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    amount DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_funding (\n    project_id INT REFERENCES projects(id),\n    funding_id INT REFERENCES funding_sources(id),\n    amount_allocated DECIMAL(10, 2) NOT NULL,\n    PRIMARY KEY (project_id, funding_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_status (\n    project_id INT REFERENCES projects(id),\n    status VARCHAR(50) NOT NULL,\n    last_updated TIMESTAMP,\n    PRIMARY KEY (project_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE funding_sources (\n  id INT PRIMARY KEY,\n  source_name TEXT NOT NULL,\n  amount FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id INT PRIMARY KEY,\n  project_name TEXT,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_funding (\n  project_id INT,\n  source_id INT,\n  amount FLOAT,\n FOREIGN KEY (project_id) REFERENCES projects(project_id),\n FOREIGN KEY (source_id) REFERENCES funding_sources(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_partners (\n  project_id INT,\n  partner_name TEXT,\n PRIMARY KEY (project_id, partner_name),\n FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_updates (\n  update_id INT PRIMARY KEY,\n  project_id INT,\n update_date DATE,\n update_description TEXT,\n FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      }
+    ]
+  }
+]

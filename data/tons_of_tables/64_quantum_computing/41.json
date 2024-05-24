@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE circuit_designs (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(255),\n    circuit_description TEXT,\n    configuration JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE circuits (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(255) NOT NULL,\n    configuration JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE simulations (\n    simulation_id INT PRIMARY KEY,\n    simulation_name VARCHAR(255) NOT NULL,\n    circuit_id INT,\n    FOREIGN KEY (circuit_id) REFERENCES circuits(circuit_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CircuitDesigns (\n  circuit_id INT PRIMARY KEY,\n  circuit_name VARCHAR(255),\n  quantum_gates TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CircuitConfigurations (\n  configuration_id INT PRIMARY KEY,\n  circuit_id INT,\n  gate_parameters JSON,\n  FOREIGN KEY (circuit_id) REFERENCES CircuitDesigns(circuit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumResults (\n  result_id INT PRIMARY KEY,\n  circuit_id INT,\n  simulation_result TEXT,\n  FOREIGN KEY (circuit_id) REFERENCES CircuitDesigns(circuit_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE circuits (\n    circuit_id SERIAL PRIMARY KEY,\n    circuit_name VARCHAR(255) NOT NULL,\n    circuit_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id SERIAL PRIMARY KEY,\n    qubit_name VARCHAR(255) NOT NULL,\n    qubit_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gates (\n    gate_id SERIAL PRIMARY KEY,\n    gate_name VARCHAR(255) NOT NULL,\n    gate_operation VARCHAR(50) NOT NULL,\n    gate_matrix TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE simulations (\n    simulation_id SERIAL PRIMARY KEY,\n    circuit_id INT NOT NULL,\n    qubit_id INT NOT NULL,\n    gate_id INT NOT NULL,\n    execution_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CircuitDesigns (\n    circuit_id SERIAL PRIMARY KEY,\n    circuit_name VARCHAR(50) NOT NULL,\n    circuit_description TEXT,\n    created_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CircuitComponents (\n    component_id SERIAL PRIMARY KEY,\n    component_name VARCHAR(50) NOT NULL,\n    component_type VARCHAR(50),\n    component_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumSimulations (\n    simulation_id SERIAL PRIMARY KEY,\n    simulation_name VARCHAR(50) NOT NULL,\n    simulation_description TEXT,\n    simulation_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SimulationResults (\n    result_id SERIAL PRIMARY KEY,\n    simulation_id INT REFERENCES QuantumSimulations(simulation_id),\n    result_data JSON,\n    result_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SimulationParticipants (\n    participant_id SERIAL PRIMARY KEY,\n    participant_name VARCHAR(50) NOT NULL,\n    participant_role VARCHAR(50),\n    participant_email VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

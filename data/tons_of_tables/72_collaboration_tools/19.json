@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE attendance_records (\n    id INT PRIMARY KEY,\n    employee_id INT,\n    shift_date DATE,\n    shift_start_time TIME,\n    shift_end_time TIME\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE attendance_records (\n    id UUID PRIMARY KEY,\n    member_id UUID,\n    check_in_time TIMESTAMP,\n    check_out_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shift_schedules (\n    id UUID PRIMARY KEY,\n    member_id UUID,\n    shift_start_time TIMESTAMP,\n    shift_end_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(255),\n    position VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shifts (\n    shift_id INT PRIMARY KEY,\n    shift_date DATE,\n    start_time TIME,\n    end_time TIME,\n    member_id INT REFERENCES team_members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendance (\n    attendance_id INT PRIMARY KEY,\n    shift_id INT REFERENCES shifts(shift_id),\n    member_id INT REFERENCES team_members(member_id),\n    attendance_status VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    member_email VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shifts (\n    shift_id INT PRIMARY KEY,\n    shift_date DATE NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendance_records (\n    record_id INT PRIMARY KEY,\n    member_id INT NOT NULL,\n    shift_id INT NOT NULL,\n    attendance_status VARCHAR(20) NOT NULL,\n    FOREIGN KEY (member_id) REFERENCES team_members(member_id),\n    FOREIGN KEY (shift_id) REFERENCES shifts(shift_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE staffing_coverage (\n    coverage_id INT PRIMARY KEY,\n    shift_id INT NOT NULL,\n    required_staff_count INT NOT NULL,\n    FOREIGN KEY (shift_id) REFERENCES shifts(shift_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE attendance_records (\n    record_id INT PRIMARY KEY,\n    employee_id INT,\n    date DATE,\n    check_in TIME,\n    check_out TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    position VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shifts (\n    shift_id INT PRIMARY KEY,\n    date DATE,\n    start_time TIME,\n    end_time TIME,\n    employee_id INT,\n    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id INT PRIMARY KEY,\n    date DATE,\n    shift_id INT,\n    FOREIGN KEY (shift_id) REFERENCES shifts(shift_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE teams (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(50),\n    team_lead_id INT,\n    team_member_count INT\n);"
+      }
+    ]
+  }
+]

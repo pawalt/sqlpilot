@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE business_information (\n    id INT PRIMARY KEY,\n    employee_id INT,\n    department_id INT,\n    salary DECIMAL(10, 2),\n    hire_date DATE,\n    last_updated TIMESTAMP,\n    CONSTRAINT fk_employee FOREIGN KEY (employee_id) REFERENCES employees(id),\n    CONSTRAINT fk_department FOREIGN KEY (department_id) REFERENCES departments(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    log_timestamp TIMESTAMP NOT NULL,\n    action_taken VARCHAR(100) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n  id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  action VARCHAR(100) NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n  user_id INT PRIMARY KEY,\n  full_name VARCHAR(100) NOT NULL,\n  email VARCHAR(100) NOT NULL UNIQUE,\n  role VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employees (\n   employee_id INT PRIMARY KEY,\n   employee_name VARCHAR(50) NOT NULL,\n   employee_email VARCHAR(100) UNIQUE,\n   employee_role VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n   department_id INT PRIMARY KEY,\n   department_name VARCHAR(50) NOT NULL,\n   manager_id INT,\n   CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employees(employee_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n   project_id INT PRIMARY KEY,\n   project_name VARCHAR(50) NOT NULL,\n   start_date DATE NOT NULL,\n   end_date DATE,\n   budget DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n   permission_id INT PRIMARY KEY,\n   permission_name VARCHAR(50) NOT NULL,\n   description TEXT,\n   CONSTRAINT chk_description_length CHECK (LENGTH(description) <= 500)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BusinessUsers (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    role VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FinancialData (\n    id INT PRIMARY KEY,\n    account_number VARCHAR(20) UNIQUE,\n    balance DECIMAL(15, 2) NOT NULL,\n    currency CHAR(3) NOT NULL,\n    user_id INT REFERENCES BusinessUsers(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLogs (\n    id INT PRIMARY KEY,\n    user_id INT REFERENCES BusinessUsers(id),\n    timestamp TIMESTAMP NOT NULL,\n    action VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataBackups (\n    id INT PRIMARY KEY,\n    backup_time TIMESTAMP NOT NULL,\n    backup_location VARCHAR(100) NOT NULL,\n    size_mb INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AuditTrail (\n    id INT PRIMARY KEY,\n    user_id INT REFERENCES BusinessUsers(id),\n    action VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

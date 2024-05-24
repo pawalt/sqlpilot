@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    account_created TIMESTAMP,\n    virtual_reality_level INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserProfiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    full_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    profile_image_url VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SocialConnections (\n    connection_id INT PRIMARY KEY,\n    user_id1 INT NOT NULL,\n    user_id2 INT NOT NULL,\n    connection_type VARCHAR(50) NOT NULL,\n    connection_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserProfiles (\n    userID INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    age INT,\n    profile_image BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SocialConnections (\n    connectionID INT PRIMARY KEY,\n    userID1 INT,\n    userID2 INT,\n    status VARCHAR(20) CHECK (status IN ('connected', 'pending', 'blocked')),\n    connection_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VirtualRealityHub (\n    hubID INT PRIMARY KEY,\n    hub_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100),\n    user_capacity INT,\n    online_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserProfiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    birthdate DATE,\n    profile_picture_url VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Friends (\n    friend_id INT PRIMARY KEY,\n    user_id INT,\n    friend_user_id INT,\n    status VARCHAR(20) DEFAULT 'pending',\n    FOREIGN KEY (user_id) REFERENCES UserProfiles(user_id),\n    FOREIGN KEY (friend_user_id) REFERENCES UserProfiles(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Connections (\n    connection_id INT PRIMARY KEY,\n    user_id INT,\n    connected_to_user_id INT,\n    connection_type VARCHAR(20) NOT NULL,\n    connection_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES UserProfiles(user_id),\n    FOREIGN KEY (connected_to_user_id) REFERENCES UserProfiles(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Messages (\n    message_id INT PRIMARY KEY,\n    sender_user_id INT,\n    receiver_user_id INT,\n    message_text TEXT NOT NULL,\n    sent_timestamp TIMESTAMP,\n    FOREIGN KEY (sender_user_id) REFERENCES UserProfiles(user_id),\n    FOREIGN KEY (receiver_user_id) REFERENCES UserProfiles(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserProfiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    gender VARCHAR(10),\n    age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserConnections (\n    connection_id INT PRIMARY KEY,\n    user_id INT,\n    connected_user_id INT,\n    connection_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES UserProfiles(user_id),\n    FOREIGN KEY (connected_user_id) REFERENCES UserProfiles(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserPosts (\n    post_id INT PRIMARY KEY,\n    user_id INT,\n    post_content TEXT,\n    post_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES UserProfiles(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserComments (\n    comment_id INT PRIMARY KEY,\n    post_id INT,\n    user_id INT,\n    comment_content TEXT,\n    comment_date TIMESTAMP,\n    FOREIGN KEY (post_id) REFERENCES UserPosts(post_id),\n    FOREIGN KEY (user_id) REFERENCES UserProfiles(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserLikes (\n    like_id INT PRIMARY KEY,\n    post_id INT,\n    user_id INT,\n    like_date TIMESTAMP,\n    FOREIGN KEY (post_id) REFERENCES UserPosts(post_id),\n    FOREIGN KEY (user_id) REFERENCES UserProfiles(user_id)\n);"
+      }
+    ]
+  }
+]

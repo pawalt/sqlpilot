@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DailyWasteIntake (\n  date DATE,\n  waste_type VARCHAR,\n  waste_weight DECIMAL,\n  composition VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE daily_waste_intake (\n    id UUID PRIMARY KEY,\n    date DATE,\n    waste_type VARCHAR,\n    quantity DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_composition (\n    id UUID PRIMARY KEY,\n    composition VARCHAR,\n    impact_rating INTEGER\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_intake (\n  date DATE,\n  waste_type VARCHAR,\n  weight FLOAT,\n  PRIMARY KEY (date)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_composition (\n  composition_id SERIAL PRIMARY KEY,\n  composition_name VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_categorization (\n  categorization_id SERIAL PRIMARY KEY,\n  waste_type VARCHAR,\n  composition_id INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE daily_waste_intake (\n    date DATE PRIMARY KEY,\n    organic_waste DECIMAL,\n    plastic_waste DECIMAL,\n    paper_waste DECIMAL,\n    landfill_waste DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE composition_categories (\n    category_id SERIAL PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_intake_records (\n    record_id SERIAL PRIMARY KEY,\n    date DATE REFERENCES daily_waste_intake(date),\n    category_id INT REFERENCES composition_categories(category_id),\n    weight DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact_assessment (\n    assessment_id SERIAL PRIMARY KEY,\n    record_id INT REFERENCES waste_intake_records(record_id),\n    impact_score FLOAT,\n    assessment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE daily_waste_intake (\n    waste_id UUID PRIMARY KEY,\n    date DATE,\n    quantity DECIMAL,\n    location VARCHAR,\n    disposal_method VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_composition (\n    composition_id UUID PRIMARY KEY,\n    waste_id UUID,\n    composition_type VARCHAR,\n    composition_percentage DECIMAL,\n    FOREIGN KEY (waste_id) REFERENCES daily_waste_intake(waste_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact (\n    impact_id UUID PRIMARY KEY,\n    composition_id UUID,\n    impact_type VARCHAR,\n    severity VARCHAR,\n    FOREIGN KEY (composition_id) REFERENCES waste_composition(composition_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_category (\n    category_id UUID PRIMARY KEY,\n    category_name VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE impact_assessment (\n    assessment_id UUID PRIMARY KEY,\n    impact_id UUID,\n    assessment_date DATE,\n    assessment_result VARCHAR,\n    FOREIGN KEY (impact_id) REFERENCES environmental_impact(impact_id)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DNA_Sequences (\n  id SERIAL PRIMARY KEY,\n  sequence VARCHAR(100) NOT NULL,\n  processed BOOLEAN DEFAULT false\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  id UUID PRIMARY KEY,\n  sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequencing_results (\n  id UUID PRIMARY KEY,\n  sequence_id UUID REFERENCES dna_sequences(id),\n  result TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  id UUID PRIMARY KEY,\n  sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE processing_jobs (\n  job_id SERIAL PRIMARY KEY,\n  start_time TIMESTAMP NOT NULL,\n  end_time TIMESTAMP,\n  status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n  log_id SERIAL PRIMARY KEY,\n  transaction_time TIMESTAMP NOT NULL,\n  transaction_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Sequence (\n    sequence_id INT PRIMARY KEY,\n    dna_sequence TEXT\n);\n\nCREATE TABLE ProcessingLog (\n    log_id INT PRIMARY KEY,\n    sequence_id INT REFERENCES Sequence(sequence_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);\n\nCREATE TABLE TransactionRecord (\n    record_id INT PRIMARY KEY,\n    log_id INT REFERENCES ProcessingLog(log_id),\n    transaction_type TEXT,\n    transaction_time TIMESTAMP\n);\n\nCREATE TABLE ErrorLog (\n    error_id INT PRIMARY KEY,\n    log_id INT REFERENCES ProcessingLog(log_id),\n    error_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Sequence (\n  sequence_id INT PRIMARY KEY,\n  dna_sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SequenceMetadata (\n  metadata_id INT PRIMARY KEY,\n  sequence_id INT,\n  metadata_key TEXT,\n  metadata_value TEXT,\n  CONSTRAINT fk_sequence FOREIGN KEY (sequence_id) REFERENCES Sequence(sequence_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TransactionLog (\n  log_id INT PRIMARY KEY,\n  transaction_id INT,\n  table_name TEXT,\n  operation TEXT,\n  CONSTRAINT chk_operation CHECK (operation IN ('INSERT', 'UPDATE', 'DELETE')),\n  CONSTRAINT fk_transaction FOREIGN KEY (transaction_id) REFERENCES Transaction(transaction_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transaction (\n  transaction_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  user_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE User (\n  user_id INT PRIMARY KEY,\n  username TEXT,\n  email TEXT,\n  password TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HistoricalDrivingBehaviorData (\n\tdriver_id UUID,\n\tdate DATE,\n\tdistance_traveled FLOAT,\n\tspeed_avg FLOAT,\n\tacceleration_max FLOAT,\n\tacceleration_min FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n  driver_id UUID PRIMARY KEY,\n  driver_name VARCHAR(50) NOT NULL,\n  driving_experience INT,\n  driving_style ENUM('aggressive', 'cautious', 'normal')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE driving_records (\n  record_id UUID PRIMARY KEY,\n  driver_id UUID REFERENCES drivers(driver_id),\n  record_date DATE,\n  distance_traveled INT,\n  average_speed INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_driving_data (\n  driver_id UUID,\n  driving_date DATE,\n  driving_distance FLOAT,\n  driving_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE driver_profile (\n  driver_id UUID,\n  driver_name VARCHAR,\n  driver_age INT,\n  driving_experience INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE machine_learning_data (\n  data_id UUID,\n  driver_id UUID,\n  throttle FLOAT,\n  steering_angle FLOAT,\n  brake_pressure FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DriverBehaviorData (\n  id SERIAL PRIMARY KEY,\n  driver_id INT NOT NULL,\n  timestamp TIMESTAMPTZ NOT NULL,\n  acceleration FLOAT NOT NULL,\n  speed FLOAT NOT NULL,\n  location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NavigationData (\n  id SERIAL PRIMARY KEY,\n  driver_id INT NOT NULL,\n  destination TEXT NOT NULL,\n  route TEXT NOT NULL,\n  distance FLOAT NOT NULL,\n  timestamp TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WeatherData (\n  id SERIAL PRIMARY KEY,\n  timestamp TIMESTAMPTZ NOT NULL,\n  temperature INT NOT NULL,\n  humidity INT NOT NULL,\n  precipitation TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MLModelData (\n  id SERIAL PRIMARY KEY,\n  model_name TEXT NOT NULL,\n  accuracy FLOAT NOT NULL,\n  date_created DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE driver_info (\n    driver_id UUID PRIMARY KEY,\n    driver_name VARCHAR(50),\n    driving_experience INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trip_data (\n    trip_id UUID PRIMARY KEY,\n    driver_id UUID,\n    start_location VARCHAR(100),\n    end_location VARCHAR(100),\n    distance_km FLOAT,\n    trip_duration_mins INT,\n    FOREIGN KEY (driver_id) REFERENCES driver_info(driver_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE acceleration_data (\n    acceleration_id UUID PRIMARY KEY,\n    trip_id UUID,\n    acceleration_value FLOAT,\n    acceleration_time TIMESTAMP,\n    FOREIGN KEY (trip_id) REFERENCES trip_data(trip_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE speed_data (\n    speed_id UUID PRIMARY KEY,\n    trip_id UUID,\n    speed_value FLOAT,\n    speed_time TIMESTAMP,\n    FOREIGN KEY (trip_id) REFERENCES trip_data(trip_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE braking_data (\n    braking_id UUID PRIMARY KEY,\n    trip_id UUID,\n    braking_force FLOAT,\n    braking_time TIMESTAMP,\n    FOREIGN KEY (trip_id) REFERENCES trip_data(trip_id)\n);\n"
+      }
+    ]
+  }
+]

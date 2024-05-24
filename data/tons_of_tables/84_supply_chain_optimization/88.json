@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE renewable_energy_sources (\n    id INT PRIMARY KEY,\n    source_name VARCHAR(50),\n    location VARCHAR(100),\n    capacity FLOAT,\n    utilization_percentage FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergySources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255),\n    capacity DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SupplyChainUtilization (\n    utilization_id INT PRIMARY KEY,\n    source_id INT NOT NULL,\n    utilization_date DATE NOT NULL,\n    quantity DECIMAL(10, 2) NOT NULL,\n    CONSTRAINT fk_source_id FOREIGN KEY (source_id) REFERENCES EnergySources(source_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE renewable_energy_sources (\n    id INT PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    capacity DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supply_chain_partners (\n    id INT PRIMARY KEY,\n    partner_name VARCHAR(255) NOT NULL,\n    contact_email VARCHAR(255) NOT NULL,\n    partner_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_utilization (\n    id INT PRIMARY KEY,\n    partner_id INT,\n    source_id INT,\n    utilization_percentage DECIMAL(5, 2) NOT NULL,\n    FOREIGN KEY (partner_id) REFERENCES supply_chain_partners(id),\n    FOREIGN KEY (source_id) REFERENCES renewable_energy_sources(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n\tsupplier_id INT PRIMARY KEY,\n\tsupplier_name VARCHAR(50) NOT NULL,\n\tsupplier_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n\tproduct_id INT PRIMARY KEY,\n\tproduct_name VARCHAR(50) NOT NULL,\n\tproduct_category VARCHAR(50) NOT NULL,\n\tproduct_price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergySources (\n\tsource_id INT PRIMARY KEY,\n\tsource_name VARCHAR(50) NOT NULL,\n\tsource_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SupplyChain (\n\tsupply_chain_id INT PRIMARY KEY,\n\tsupplier_id INT,\n\tproduct_id INT,\n\tsource_id INT,\n\tFOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id),\n\tFOREIGN KEY (product_id) REFERENCES Products(product_id),\n\tFOREIGN KEY (source_id) REFERENCES EnergySources(source_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergySources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255),\n    source_type VARCHAR(50),\n    source_capacity DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    supplier_location VARCHAR(100),\n    supplier_rating INT,\n    source_id INT,\n    FOREIGN KEY (source_id) REFERENCES EnergySources(source_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    product_category VARCHAR(50),\n    supplier_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders (\n    order_id INT PRIMARY KEY,\n    order_date DATE,\n    order_quantity INT,\n    product_id INT,\n    FOREIGN KEY (product_id) REFERENCES Products(product_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Shipments (\n    shipment_id INT PRIMARY KEY,\n    shipment_date DATE,\n    delivery_status VARCHAR(20),\n    order_id INT,\n    FOREIGN KEY (order_id) REFERENCES Orders(order_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteToEnergyPlantDailyWaste (\n    plant_id INT,\n    processing_date DATE,\n    waste_type VARCHAR(50),\n    amount_processed FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteToEnergyPlant (\n  plant_id INT,\n  plant_name VARCHAR(255),\n  location VARCHAR(255),\n  PRIMARY KEY (plant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteProcessing (\n  processing_id INT,\n  plant_id INT,\n  processing_date DATE,\n  waste_processed FLOAT,\n  PRIMARY KEY (processing_id),\n  FOREIGN KEY (plant_id) REFERENCES WasteToEnergyPlant(plant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_management (\n  date DATE,\n  amount_processed FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_categories (\n  category_id SERIAL PRIMARY KEY,\n  category_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE plant_information (\n  plant_id SERIAL PRIMARY KEY,\n  plant_name VARCHAR(50) UNIQUE,\n  location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_daily_summary (\n    plant_id INT,\n    date DATE,\n    waste_processed INT,\n    PRIMARY KEY (plant_id, date)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_categories (\n    category_id INT,\n    category_name VARCHAR(50),\n    PRIMARY KEY (category_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_logs (\n    log_id INT,\n    plant_id INT,\n    date DATE,\n    waste_category INT,\n    amount_processed INT,\n    PRIMARY KEY (log_id),\n    FOREIGN KEY (plant_id) REFERENCES waste_daily_summary(plant_id),\n    FOREIGN KEY (waste_category) REFERENCES waste_categories(category_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE plant_details (\n    plant_id INT,\n    plant_name VARCHAR(100),\n    location VARCHAR(100),\n    PRIMARY KEY (plant_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteToEnergyPlant (\n    plant_id INT PRIMARY KEY,\n    plant_name VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteProcessed (\n    ws_id INT PRIMARY KEY,\n    plant_id INT,\n    date_processed DATE,\n    waste_amount DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteCategories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DailyProcessed (\n    dp_id INT PRIMARY KEY,\n    ws_id INT,\n    category_id INT,\n    processing_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PlantEmployees (\n    emp_id INT PRIMARY KEY,\n    plant_id INT,\n    emp_name VARCHAR(50),\n    department VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

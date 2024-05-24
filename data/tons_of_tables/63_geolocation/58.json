@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PointsOfInterest (\n    point_id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    latitude FLOAT NOT NULL,\n    longitude FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE points_of_interest (\nid INT PRIMARY KEY,\nname VARCHAR(255) NOT NULL,\nlocation GEOMETRY NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distances (\nid1 INT REFERENCES points_of_interest(id),\nid2 INT REFERENCES points_of_interest(id),\ndistance DECIMAL(10,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE distances (\n    distance_id INT PRIMARY KEY,\n    poi_id_from INT,\n    poi_id_to INT,\n    distance DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE points_of_interest (\n    poi_id INT PRIMARY KEY,\n    poi_name VARCHAR(255),\n    latitude DECIMAL,\n    longitude DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(255),\n    age INT,\n    gender VARCHAR(10),\n    city VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE distance_matrix (\n    source_poi_id INT,\n    dest_poi_id INT,\n    distance DECIMAL,\n    PRIMARY KEY (source_poi_id, dest_poi_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE recommendations (\n    user_id INT,\n    poi_id INT,\n    score DECIMAL,\n    PRIMARY KEY (user_id, poi_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE poi_locations (\n    poi_id INT PRIMARY KEY,\n    poi_name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT,\n    poi_id INT,\n    preference_score FLOAT,\n    PRIMARY KEY (user_id, poi_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (poi_id) REFERENCES poi_locations(poi_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distance_matrix (\n    start_poi_id INT,\n    end_poi_id INT,\n    distance FLOAT,\n    PRIMARY KEY (start_poi_id, end_poi_id),\n    FOREIGN KEY (start_poi_id) REFERENCES poi_locations(poi_id),\n    FOREIGN KEY (end_poi_id) REFERENCES poi_locations(poi_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recommendations (\n    user_id INT,\n    recommended_poi_id INT,\n    relevance_score FLOAT,\n    PRIMARY KEY (user_id, recommended_poi_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (recommended_poi_id) REFERENCES poi_locations(poi_id)\n);"
+      }
+    ]
+  }
+]

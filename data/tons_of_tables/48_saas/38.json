@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FinancialData (\n    transaction_id INT PRIMARY KEY,\n    amount DECIMAL,\n    transaction_date DATE,\n    merchant VARCHAR(255),\n    account_name VARCHAR(255),\n    account_number VARCHAR(20),\n    transaction_type VARCHAR(50),\n    fraud_flag BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraud_detection (\n    transaction_id UUID PRIMARY KEY,\n    user_id UUID,\n    transaction_amount DECIMAL,\n    transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profile (\n    user_id UUID PRIMARY KEY,\n    full_name VARCHAR(255),\n    address VARCHAR(255),\n    phone_number VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL(10, 2) NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    transaction_id INT REFERENCES transactions(transaction_id),\n    alert_type VARCHAR(50) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraudulent_transactions (\n    transaction_id INT PRIMARY KEY,\n    amount DECIMAL,\n    transaction_date TIMESTAMP,\n    account_id INT,\n    fraud_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    account_id INT PRIMARY KEY,\n    user_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15),\n    registration_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suspicious_activity (\n    activity_id INT PRIMARY KEY,\n    transaction_id INT,\n    account_id INT,\n    activity_date TIMESTAMP,\n    activity_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_patterns (\n    pattern_id INT PRIMARY KEY,\n    pattern_name VARCHAR(50),\n    pattern_description TEXT,\n    detection_method VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR(255),\n    account_balance DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    account_id INT,\n    transaction_date TIMESTAMP,\n    amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    customer_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_patterns (\n    pattern_id INT PRIMARY KEY,\n    pattern_description VARCHAR(255),\n    detection_method VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flagged_transactions (\n    transaction_id INT PRIMARY KEY,\n    flag_reason VARCHAR(255),\n    flag_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

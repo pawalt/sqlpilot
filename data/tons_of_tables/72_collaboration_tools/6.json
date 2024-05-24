@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name VARCHAR(50) NOT NULL,\n    assigned_to VARCHAR(50),\n    task_description TEXT,\n    due_date DATE,\n    task_status VARCHAR(20) DEFAULT 'Pending'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name TEXT NOT NULL,\n    assigned_to TEXT NOT NULL,\n    completion_date TIMESTAMP,\n    status TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id SERIAL PRIMARY KEY,\n    member_name TEXT NOT NULL,\n    email TEXT UNIQUE,\n    role TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR(100) NOT NULL,\n  member_role VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n  task_id INT PRIMARY KEY,\n  task_name VARCHAR(100) NOT NULL,\n  task_description TEXT,\n  assigned_to INT,\n  task_status VARCHAR(20) DEFAULT 'Pending',\n  FOREIGN KEY (assigned_to) REFERENCES team_members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE task_updates (\n  update_id INT PRIMARY KEY,\n  task_id INT NOT NULL,\n  update_text TEXT,\n  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (task_id) REFERENCES tasks(task_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id UUID PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    assigned_to VARCHAR(100) NOT NULL,\n    task_description TEXT,\n    task_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id SERIAL PRIMARY KEY,\n    member_name VARCHAR(100) NOT NULL,\n    email VARCHAR(255) UNIQUE NOT NULL,\n    role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_assignments (\n    assignment_id SERIAL PRIMARY KEY,\n    task_id UUID REFERENCES tasks(task_id),\n    member_id INTEGER REFERENCES team_members(member_id),\n    assigned_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_history (\n    history_id SERIAL PRIMARY KEY,\n    task_id UUID REFERENCES tasks(task_id),\n    status VARCHAR(50) NOT NULL,\n    updated_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    assigned_to VARCHAR(100),\n    status VARCHAR(20) DEFAULT 'Pending',\n    start_date DATE,\n    due_date DATE,\n    completed_date DATE\n);\n\nCREATE TABLE team_members (\n    member_id SERIAL PRIMARY KEY,\n    member_name VARCHAR(100) NOT NULL,\n    email VARCHAR(255) UNIQUE,\n    role VARCHAR(50)\n);\n\nCREATE TABLE task_assignments (\n    assignment_id SERIAL PRIMARY KEY,\n    task_id INT REFERENCES tasks(task_id),\n    member_id INT REFERENCES team_members(member_id),\n    assigned_date DATE\n);\n\nCREATE TABLE task_comments (\n    comment_id SERIAL PRIMARY KEY,\n    task_id INT REFERENCES tasks(task_id),\n    member_id INT REFERENCES team_members(member_id),\n    comment_text TEXT,\n    comment_date TIMESTAMP\n);\n\nCREATE TABLE task_history (\n    history_id SERIAL PRIMARY KEY,\n    task_id INT REFERENCES tasks(task_id),\n    status VARCHAR(20),\n    updated_by INT REFERENCES team_members(member_id),\n    update_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

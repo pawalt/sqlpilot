@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE artists (\n  artist_id SERIAL PRIMARY KEY,\n  artist_name VARCHAR(255) NOT NULL,\n  award_name VARCHAR(255),\n  nomination_year INTEGER\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE awards (\n    id UUID PRIMARY KEY,\n    musician_id UUID NOT NULL,\n    award_category TEXT NOT NULL,\n    award_year INT NOT NULL,\n    FOREIGN KEY (musician_id) REFERENCES musicians(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE nominations (\n    id UUID PRIMARY KEY,\n    musician_id UUID NOT NULL,\n    nomination_category TEXT NOT NULL,\n    nomination_year INT NOT NULL,\n    is_winner BOOLEAN NOT NULL,\n    FOREIGN KEY (musician_id) REFERENCES musicians(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE musicians (\n    musician_id UUID PRIMARY KEY,\n    musician_name VARCHAR(255) NOT NULL,\n    genre VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE awards (\n    award_id UUID PRIMARY KEY,\n    award_name VARCHAR(255) NOT NULL,\n    award_year INT NOT NULL,\n    musician_id UUID REFERENCES musicians(musician_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE nominations (\n    nomination_id UUID PRIMARY KEY,\n    nomination_name VARCHAR(255) NOT NULL,\n    nomination_year INT NOT NULL,\n    musician_id UUID REFERENCES musicians(musician_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE musician_awards ( \n    musician_id UUID, \n    award_name TEXT, \n    nomination_year INT, \n    PRIMARY KEY (musician_id, award_name) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE musician_albums ( \n    musician_id UUID, \n    album_name TEXT, \n    release_date DATE, \n    PRIMARY KEY (musician_id, album_name) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE award_categories ( \n    category_id UUID, \n    category_name TEXT, \n    PRIMARY KEY (category_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE musician_genres ( \n    musician_id UUID, \n    genre_name TEXT, \n    PRIMARY KEY (musician_id, genre_name) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE artist ( \n    artist_id INT PRIMARY KEY, \n    artist_name VARCHAR(50) NOT NULL, \n    birth_date DATE, \n    genre VARCHAR(30) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE award ( \n    award_id INT PRIMARY KEY, \n    award_name VARCHAR(50) NOT NULL, \n    category VARCHAR(50), \n    year INT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE nomination ( \n    nomination_id INT PRIMARY KEY, \n    award_id INT, \n    artist_id INT, \n    nomination_year INT, \n    FOREIGN KEY (award_id) REFERENCES award(award_id), \n    FOREIGN KEY (artist_id) REFERENCES artist(artist_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE committee ( \n    committee_id INT PRIMARY KEY, \n    committee_name VARCHAR(50) NOT NULL, \n    category VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE committee_member ( \n    committee_id INT, \n    artist_id INT, \n    PRIMARY KEY (committee_id, artist_id), \n    FOREIGN KEY (committee_id) REFERENCES committee(committee_id), \n    FOREIGN KEY (artist_id) REFERENCES artist(artist_id) \n);"
+      }
+    ]
+  }
+]

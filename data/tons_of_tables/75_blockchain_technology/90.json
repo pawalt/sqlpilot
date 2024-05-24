@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_keys (\n    wallet_id UUID PRIMARY KEY,\n    private_key TEXT NOT NULL,\n    public_key TEXT NOT NULL,\n    encryption_key BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_keys (\n    id UUID PRIMARY KEY,\n    wallet_name VARCHAR(50) NOT NULL,\n    private_key TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    tx_id UUID PRIMARY KEY,\n    wallet_id UUID REFERENCES wallet_keys(id),\n    recipient_address VARCHAR(50) NOT NULL,\n    amount DECIMAL(18, 2) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE private_keys (\n\tprivate_key_id SERIAL PRIMARY KEY,\n\twallet_address VARCHAR(255) NOT NULL,\n\tprivate_key VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n\tuser_id SERIAL PRIMARY KEY,\n\tusername VARCHAR(50) UNIQUE,\n\tpassword_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_logs (\n\tlog_id SERIAL PRIMARY KEY,\n\tuser_id INT,\n\tencrypted_data TEXT,\n\tencryption_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE private_keys (\n  id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  public_key TEXT NOT NULL,\n  private_key TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n  id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  wallet_address VARCHAR(100) NOT NULL,\n  balance DECIMAL(18, 8) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  id SERIAL PRIMARY KEY,\n  sender_wallet_id INT NOT NULL,\n  receiver_wallet_id INT NOT NULL,\n  amount DECIMAL(18, 8) NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_private_keys (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    private_key VARCHAR(256) NOT NULL,\n    encryption_key VARCHAR(128) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(64) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    amount DECIMAL(18,8) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n    wallet_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    wallet_balance DECIMAL(18,8) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_logs (\n    log_id INT PRIMARY KEY,\n    operation VARCHAR(50) NOT NULL,\n    user_id INT NOT NULL,\n    log_message TEXT NOT NULL,\n    log_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

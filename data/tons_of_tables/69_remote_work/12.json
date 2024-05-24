@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR(50),\n  email VARCHAR(100),\n  role VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    member_email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_documents (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(100) NOT NULL,\n    document_path VARCHAR(255) NOT NULL,\n    access_level ENUM('read', 'write') DEFAULT 'read',\n    member_id INT,\n    FOREIGN KEY (member_id) REFERENCES team_members(member_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamMembers (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Documents (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(150) NOT NULL,\n    project_id INT,\n    author_id INT,\n    FOREIGN KEY (project_id) REFERENCES Projects(project_id),\n    FOREIGN KEY (author_id) REFERENCES TeamMembers(member_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n  document_id INT PRIMARY KEY,\n  document_name VARCHAR(50) NOT NULL,\n  project_id INT NOT NULL,\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborations (\n  collaboration_id INT PRIMARY KEY,\n  from_member_id INT NOT NULL,\n  to_member_id INT NOT NULL,\n  document_id INT NOT NULL,\n  FOREIGN KEY (from_member_id) REFERENCES team_members(member_id),\n  FOREIGN KEY (to_member_id) REFERENCES team_members(member_id),\n  FOREIGN KEY (document_id) REFERENCES documents(document_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id UUID PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    member_email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(50) NOT NULL,\n    project_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    document_id UUID PRIMARY KEY,\n    document_name VARCHAR(100) NOT NULL,\n    document_content TEXT,\n    project_id UUID REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborations (\n    collaboration_id UUID PRIMARY KEY,\n    document_id UUID REFERENCES documents(document_id),\n    member_id UUID REFERENCES team_members(member_id),\n    collaboration_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id UUID PRIMARY KEY,\n    document_id UUID REFERENCES documents(document_id),\n    member_id UUID REFERENCES team_members(member_id),\n    log_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM VotingRecords WHERE official_id = 1;",
+      "SELECT official_name, party_affiliation FROM VotingRecords WHERE vote_date = '2022-01-15';",
+      "SELECT official_id, decision FROM VotingRecords WHERE party_affiliation = 'Republican' ORDER BY vote_date DESC;",
+      "SELECT official_name FROM VotingRecords WHERE decision = 'Approved' ORDER BY official_id ASC;",
+      "SELECT * FROM VotingRecords WHERE party_affiliation = 'Democrat' AND vote_date BETWEEN '2022-01-01' AND '2022-01-31';",
+      "SELECT * FROM VotingRecords ORDER BY vote_date DESC, official_name ASC, party_affiliation",
+      "SELECT official_id, official_name, decision FROM VotingRecords WHERE party_affiliation = 'Republican' AND decision = 'Yes'",
+      "SELECT official_name, party_affiliation, COUNT(*) AS total_votes FROM VotingRecords GROUP BY official_name, party_affiliation HAVING COUNT(*) > 5",
+      "SELECT official_name, decision, COUNT(*) AS total_votes FROM VotingRecords WHERE vote_date >= '2022-01-01' GROUP BY official_name, decision ORDER BY total_votes DESC",
+      "SELECT official_name, party_affiliation, decision FROM VotingRecords WHERE party_affiliation IN ('Democrat', 'Republican') ORDER BY party_affiliation DESC, official_name ASC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM public_officials;",
+      "SELECT id, name FROM public_officials WHERE party_affiliation = 'Democratic';",
+      "SELECT name, position, district FROM public_officials WHERE position = 'Senator';",
+      "SELECT party_affiliation, COUNT(id) AS total_officials FROM public_officials GROUP BY party_affiliation;",
+      "SELECT voting_records.record_id, public_officials.name, voting_records.vote_decision FROM voting_records INNER JOIN public_officials ON voting_records.official_id = public_officials.id;",
+      "SELECT name, party_affiliation, position FROM public_officials WHERE id = 1;",
+      "SELECT * FROM voting_records WHERE vote_decision = 'Yes';",
+      "SELECT name, district FROM public_officials WHERE party_affiliation = 'Democratic' AND position = 'Senator';",
+      "SELECT count(name) AS total_officials FROM public_officials;",
+      "SELECT name, vote_decision, vote_date FROM voting_records WHERE vote_date BETWEEN '2022-01-01' AND '2022-12-31';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM public_officials;",
+      "SELECT id, name, position FROM public_officials WHERE party_affiliation = 'Democratic';",
+      "SELECT id, name, party_affiliation, position FROM public_officials WHERE position = 'Senator' ORDER BY name DESC;",
+      "SELECT * FROM voting_records WHERE vote_date = '2022-10-15';",
+      "SELECT motion_id, motion_description, vote_result FROM motions WHERE vote_result = 'passed';",
+      "SELECT * FROM public_officials WHERE party_affiliation = 'Democratic' ORDER BY name ASC;",
+      "SELECT name, position FROM public_officials WHERE office_location IN ('Washington DC', 'New York City') ORDER BY position DESC;",
+      "SELECT po.name, vr.vote_decision, m.motion_description FROM public_officials po JOIN voting_records vr ON po.id = vr.official_id JOIN motions m ON vr.motion_id = m.motion_id WHERE vr.vote_date = '2022-03-15' AND m.vote_result = 'Passed' ORDER BY po.name ASC;",
+      "SELECT po.name AS official_name, COUNT(vr.record_id) AS total_votes FROM public_off_officials po JOIN voting_records vr ON po.id = vr.official_id GROUP BY po.name HAVING total_votes > 10 ORDER BY total_votes DESC;",
+      "SELECT po.name, COUNT(DISTINCT vr.motion_id) AS unique_votes FROM public_officials po JOIN voting_records vr ON po.id = vr.official_id GROUP BY po.name HAVING unique_votes < 5 ORDER BY unique_votes ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM officials WHERE party = 'Democrats';",
+      "SELECT name, district FROM officials ORDER BY district ASC;",
+      "SELECT * FROM votes WHERE decision = 'Approve' AND vote_date >= '2022-01-01';",
+      "SELECT MAX(session_date) AS latest_session FROM sessions;",
+      "SELECT official_id, COUNT(vote_id) AS total_votes FROM voting_records GROUP BY official_id HAVING total_votes > 5;",
+      "SELECT * FROM officials WHERE party='Republican';",
+      "SELECT name, district FROM officials WHERE district='District 1' ORDER BY name ASC;",
+      "SELECT name, decision, vote_date FROM officials JOIN votes ON officials.id = votes.official_id WHERE decision='Yes' ORDER BY vote_date DESC;",
+      "SELECT officials.name, voting_records.vote_decision, voting_records.vote_result FROM officials JOIN voting_records ON officials.id = voting_records.official_id WHERE vote_result='Passed' ORDER BY officials.name, voting_records.vote_result ASC;",
+      "SELECT * FROM voting_records WHERE official_id IN (SELECT id FROM officials WHERE party='Democrat') ORDER BY vote_id ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM public_officials;",
+      "SELECT name, party FROM public_officials ORDER BY party DESC;",
+      "SELECT * FROM public_officials WHERE district='District 1';",
+      "SELECT id, name, district FROM public_officials WHERE party='Republican';",
+      "SELECT * FROM voting_records WHERE vote > 50 ORDER BY vote ASC;",
+      "SELECT * FROM public_officials WHERE district = 'District A';",
+      "SELECT name, party FROM public_officials ORDER BY name ASC;",
+      "SELECT p.name, c.committee_name FROM public_officials p JOIN committee_assignments ca ON p.id = ca.official_id JOIN committees c ON ca.committee_id = c.committee_id WHERE ca.start_date <= '2022-01-01' AND (ca.end_date IS NULL OR ca.end_date >= '2022-01-01');",
+      "SELECT b.bill_name, p.name AS proposer FROM bills b JOIN public_officials p ON b.proposed_by = p.id WHERE b.proposed_date >= '2021-01-01' ORDER BY b.bill_name DESC;",
+      "SELECT COUNT(*) AS total_officials, party FROM public_officials GROUP BY party HAVING COUNT(*) > 1 ORDER BY total_officials DESC;"
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE special_events (\n  event_id SERIAL PRIMARY KEY,\n  event_name TEXT NOT NULL,\n  event_date DATE,\n  event_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_location VARCHAR(255)\n);\n\nCREATE TABLE promotions (\n    promo_id INT PRIMARY KEY,\n    promo_name VARCHAR(255),\n    promo_description TEXT,\n    promo_start_date DATE,\n    promo_end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n\tevent_id INT PRIMARY KEY,\n\tevent_name VARCHAR(255),\n\tevent_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE promotions (\n\tpromotion_id INT PRIMARY KEY,\n\tpromotion_name VARCHAR(255),\n\tpromotion_desc TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_participants (\n\tparticipant_id INT PRIMARY KEY,\n\tevent_id INT,\n\tparticipant_name VARCHAR(255),\n\tFOREIGN KEY (event_id) REFERENCES events(event_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE special_events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_description TEXT,\n    event_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE promotions (\n    promotion_id INT PRIMARY KEY,\n    promotion_type VARCHAR(100),\n    promotion_description TEXT,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_guests (\n    guest_id INT PRIMARY KEY,\n    event_id INT,\n    guest_name VARCHAR(100),\n    guest_email VARCHAR(255),\n    CONSTRAINT fk_event_id FOREIGN KEY (event_id) REFERENCES special_events(event_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE promotion_customers (\n    customer_id INT PRIMARY KEY,\n    promotion_id INT,\n    customer_name VARCHAR(100),\n    customer_email VARCHAR(255),\n    CONSTRAINT fk_promotion_id FOREIGN KEY (promotion_id) REFERENCES promotions(promotion_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Events (\n    event_id INT PRIMARY KEY,\n    event_name TEXT NOT NULL,\n    event_description TEXT,\n    event_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Promotions (\n    promotion_id INT PRIMARY KEY,\n    promotion_name TEXT NOT NULL,\n    discount DECIMAL(5,2) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EventAttendees (\n    event_id INT,\n    attendee_id INT,\n    PRIMARY KEY (event_id, attendee_id),\n    FOREIGN KEY (event_id) REFERENCES Events(event_id),\n    FOREIGN KEY (attendee_id) REFERENCES Customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reservations (\n    reservation_id INT PRIMARY KEY,\n    event_id INT,\n    customer_id INT,\n    reservation_date TIMESTAMP,\n    FOREIGN KEY (event_id) REFERENCES Events(event_id),\n    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id INT PRIMARY KEY,\n    customer_name TEXT NOT NULL,\n    email TEXT NOT NULL,\n    phone_number TEXT\n);"
+      }
+    ]
+  }
+]

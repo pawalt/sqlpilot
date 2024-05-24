@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_interactions (\n    user_id UUID NOT NULL,\n    post_id UUID NOT NULL,\n    interaction_type VARCHAR(20) NOT NULL,\n    interaction_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_engagement (\n    user_id INT PRIMARY KEY,\n    post_id INT,\n    interaction_type VARCHAR(50),\n    interaction_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profile (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    followers_count INT,\n    location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_interactions (\n    user_id INT,\n    interaction_type VARCHAR(255),\n    interaction_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE post_engagement (\n    post_id INT,\n    likes_count INT,\n    comments_count INT,\n    shares_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_engagement (\n    user_id INT,\n    total_interactions INT,\n    total_likes INT,\n    total_comments INT,\n    total_shares INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    email VARCHAR(255),\n    join_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    post_content TEXT,\n    post_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    post_id INT REFERENCES posts(post_id),\n    user_id INT REFERENCES users(user_id),\n    comment_content TEXT,\n    comment_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE likes (\n    like_id INT PRIMARY KEY,\n    post_id INT REFERENCES posts(post_id),\n    user_id INT REFERENCES users(user_id),\n    like_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    join_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT,\n    post_content TEXT NOT NULL,\n    post_date DATE,\n    FOREIGN KEY (user_id) REFERENCES user_profiles(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE likes (\n    like_id INT PRIMARY KEY,\n    post_id INT,\n    user_id INT,\n    like_date DATE,\n    FOREIGN KEY (post_id) REFERENCES posts(post_id),\n    FOREIGN KEY (user_id) REFERENCES user_profiles(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    post_id INT,\n    user_id INT,\n    comment_text TEXT NOT NULL,\n    comment_date DATE,\n    FOREIGN KEY (post_id) REFERENCES posts(post_id),\n    FOREIGN KEY (user_id) REFERENCES user_profiles(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE followers (\n    follower_id INT,\n    followee_id INT,\n    follow_date DATE,\n    PRIMARY KEY (follower_id, followee_id),\n    FOREIGN KEY (follower_id) REFERENCES user_profiles(user_id),\n    FOREIGN KEY (followee_id) REFERENCES user_profiles(user_id)\n);"
+      }
+    ]
+  }
+]

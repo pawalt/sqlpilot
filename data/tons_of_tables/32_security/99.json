@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_updates (\n  update_id INT PRIMARY KEY,\n  software_name VARCHAR(255) NOT NULL,\n  version VARCHAR(50) NOT NULL,\n  release_date DATE NOT NULL,\n  patch_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_updates (\n  update_id INT PRIMARY KEY,\n  software_name VARCHAR(255),\n  version_number VARCHAR(50),\n  release_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n  patch_id INT PRIMARY KEY,\n  update_id INT,\n  patch_description TEXT,\n  patch_version VARCHAR(50),\n  FOREIGN KEY (update_id) REFERENCES software_updates(update_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_updates (\n  update_id INT PRIMARY KEY,\n  software_name VARCHAR(50),\n  version VARCHAR(20),\n  update_date DATE,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n  patch_id INT PRIMARY KEY,\n  patch_name VARCHAR(50),\n  patch_description TEXT,\n  patch_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE system_status (\n  system_id INT PRIMARY KEY,\n  system_name VARCHAR(50),\n  last_checked_date DATE,\n  status VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_updates (\n\tupdate_id SERIAL PRIMARY KEY,\n\tsoftware_name VARCHAR(50) NOT NULL,\n\tversion VARCHAR(20) NOT NULL,\n\trelease_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n\tpatch_id SERIAL PRIMARY KEY,\n\tupdate_id INT REFERENCES software_updates(update_id),\n\tpatch_name VARCHAR(50) NOT NULL,\n\tsize_mb DECIMAL(10,2) NOT NULL,\n\tpatch_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE systems (\n\tsystem_id SERIAL PRIMARY KEY,\n\tsystem_name VARCHAR(50) NOT NULL,\n\tos_version VARCHAR(20) NOT NULL,\n\tlast_checked DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE system_updates (\n\tsystem_update_id SERIAL PRIMARY KEY,\n\tsystem_id INT REFERENCES systems(system_id),\n\tupdate_id INT REFERENCES software_updates(update_id),\n\tapplied_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_updates (\n\tupdate_id INT PRIMARY KEY,\n\tsoftware_name VARCHAR(255),\n\tversion VARCHAR(50),\n\trelease_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n\tpatch_id INT PRIMARY KEY,\n\tsoftware_name VARCHAR(255),\n\tpatch_version VARCHAR(50),\n\tpatch_date DATE,\n\tFOREIGN KEY (software_name) REFERENCES software_updates(software_name)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE systems (\n\tsystem_id INT PRIMARY KEY,\n\tsystem_name VARCHAR(255),\n\tinstallation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE system_software (\n\tsystem_id INT,\n\tsoftware_name VARCHAR(255),\n\tinstalled_version VARCHAR(50),\n\tFOREIGN KEY (system_id) REFERENCES systems(system_id),\n\tPRIMARY KEY (system_id, software_name)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE system_patches (\n\tsystem_id INT,\n\tpatch_id INT,\n\tapplied_date DATE,\n\tFOREIGN KEY (system_id) REFERENCES systems(system_id),\n\tFOREIGN KEY (patch_id) REFERENCES patches(patch_id),\n\tPRIMARY KEY (system_id, patch_id)\n);"
+      }
+    ]
+  }
+]

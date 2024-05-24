@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_training_data (\n    id INT PRIMARY KEY,\n    data TEXT NOT NULL,\n    label TEXT NOT NULL,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_training_data (\n    id INT PRIMARY KEY,\n    data TEXT,\n    label VARCHAR(50),\n    created_at TIMESTAMP\n);\n\nCREATE TABLE machine_learning_models (\n    model_id SERIAL PRIMARY KEY,\n    model_name VARCHAR(100),\n    model_type VARCHAR(50),\n    training_data_id INT,\n    FOREIGN KEY (training_data_id) REFERENCES labeled_training_data(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_training_data (\n    id SERIAL PRIMARY KEY,\n    data JSONB NOT NULL,\n    label TEXT NOT NULL\n);\n\nCREATE TABLE machine_learning_models (\n    model_id UUID PRIMARY KEY,\n    model_name TEXT NOT NULL,\n    hyperparameters JSONB\n);\n\nCREATE TABLE training_logs (\n    log_id SERIAL PRIMARY KEY,\n    model_id UUID NOT NULL,\n    accuracy FLOAT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_data (\n    id INT PRIMARY KEY,\n    features JSONB,\n    label VARCHAR(255),\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id INT PRIMARY KEY,\n    data_id INT,\n    feature_vector JSONB,\n    label VARCHAR(255),\n    FOREIGN KEY (data_id) REFERENCES labeled_data(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    description TEXT,\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_training_history (\n    id INT PRIMARY KEY,\n    model_id INT,\n    training_data_id INT,\n    accuracy FLOAT,\n    loss FLOAT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (model_id) REFERENCES model(id),\n    FOREIGN KEY (training_data_id) REFERENCES training_data(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_data (\n    data_id INT PRIMARY KEY,\n    data_value VARCHAR(255),\n    label VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_labels (\n    label_id INT PRIMARY KEY,\n    label_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources_mapping (\n    mapping_id INT PRIMARY KEY,\n    data_id INT,\n    source_id INT,\n    FOREIGN KEY (data_id) REFERENCES labeled_data(data_id),\n    FOREIGN KEY (source_id) REFERENCES data_sources(source_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE labeled_data_history (\n    history_id INT PRIMARY KEY,\n    data_id INT,\n    label_id INT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (data_id) REFERENCES labeled_data(data_id),\n    FOREIGN KEY (label_id) REFERENCES data_labels(label_id)\n);\n"
+      }
+    ]
+  }
+]

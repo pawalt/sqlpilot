@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hand_geometry_data (\n  employee_id INT PRIMARY KEY,\n  hand_geometry_image BYTEA,\n  access_permissions TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Employee (\n  employee_id INT PRIMARY KEY,\n  fingerprint_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessPermissions (\n  employee_id INT PRIMARY KEY,\n  access_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id INT PRIMARY KEY,\n    employee_name TEXT,\n    hand_geometry_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_permissions (\n    permission_id INT PRIMARY KEY,\n    permission_type TEXT,\n    access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_access (\n    employee_id INT REFERENCES employees(employee_id),\n    permission_id INT REFERENCES access_permissions(permission_id),\n    PRIMARY KEY (employee_id, permission_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employee_data (\n  employee_id INT NOT NULL,\n  hand_geometry_data BLOB NOT NULL,\n  PRIMARY KEY (employee_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_permissions (\n  access_id INT NOT NULL,\n  permission_level VARCHAR(20) NOT NULL,\n  PRIMARY KEY (access_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_access (\n  employee_id INT NOT NULL,\n  access_id INT NOT NULL,\n  FOREIGN KEY (employee_id) REFERENCES employee_data(employee_id),\n  FOREIGN KEY (access_id) REFERENCES access_permissions(access_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_roles (\n  employee_id INT NOT NULL,\n  role_name VARCHAR(50) NOT NULL,\n  PRIMARY KEY (employee_id, role_name)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    hand_geometry_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_permissions (\n    permission_id INT PRIMARY KEY,\n    permission_description VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_access (\n    employee_id INT,\n    permission_id INT,\n    PRIMARY KEY(employee_id, permission_id),\n    FOREIGN KEY (employee_id) REFERENCES employees(employee_id),\n    FOREIGN KEY (permission_id) REFERENCES access_permissions(permission_id)\n);\n"
+      }
+    ]
+  }
+]

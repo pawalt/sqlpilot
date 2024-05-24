@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE education_impact_on_poverty (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    participants_count INT,\n    poverty_reduction_rate FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE education_programs (\n program_id UUID PRIMARY KEY,\n program_name STRING,\n start_date DATE,\n end_date DATE,\n impact_indicator STRING,\n participants INT,\n poverty_reduction_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_evaluation (\n evaluation_id UUID PRIMARY KEY,\n program_id UUID REFERENCES education_programs(program_id),\n evaluation_date TIMESTAMP,\n evaluation_result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE impact_evaluation (\n    evaluation_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    impact_area VARCHAR(255),\n    evaluation_date DATE,\n    impact_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_participants (\n    participant_id INT PRIMARY KEY,\n    program_id INT,\n    participant_name VARCHAR(255),\n    participant_age INT,\n    participant_gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_results (\n    result_id INT PRIMARY KEY,\n    evaluation_id INT,\n    participant_id INT,\n    result_description TEXT,\n    result_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE education_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    impact_metric FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255),\n    age INT,\n    gender VARCHAR(10),\n    program_id INT,\n    FOREIGN KEY (program_id) REFERENCES education_programs(program_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE evaluations (\n    evaluation_id INT PRIMARY KEY,\n    participant_id INT,\n    evaluation_date DATE,\n    evaluation_score FLOAT,\n    feedback TEXT,\n    FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE poverty_metrics (\n    metric_id INT PRIMARY KEY,\n    evaluation_id INT,\n    poverty_level VARCHAR(20),\n    poverty_rate FLOAT,\n    FOREIGN KEY (evaluation_id) REFERENCES evaluations(evaluation_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE education_programs (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(50),\n  program_type VARCHAR(50),\n  impact_area VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_participants (\n  participant_id INT PRIMARY KEY,\n  program_id INT,\n  participant_name VARCHAR(50),\n  participant_age INT,\n  participant_gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_evaluation (\n  evaluation_id INT PRIMARY KEY,\n  program_id INT,\n  evaluation_date DATE,\n  evaluator_name VARCHAR(50),\n  impact_rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE poverty_indicators (\n  indicator_id INT PRIMARY KEY,\n  indicator_name VARCHAR(50),\n  indicator_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_metrics (\n  metric_id INT PRIMARY KEY,\n  evaluation_id INT,\n  metric_name VARCHAR(50),\n  metric_value INT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmergencyData (\n  event_id UUID PRIMARY KEY,\n  event_date DATE,\n  event_type VARCHAR(50),\n  event_location VARCHAR(100),\n  casualties INT,\n  rescue_teams_dispatched INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_incidents (\n    incident_id INT PRIMARY KEY,\n    incident_date DATE,\n    location VARCHAR(255),\n    incident_type VARCHAR(50),\n    severity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_responders (\n    responder_id INT PRIMARY KEY,\n    name VARCHAR(100),\n    department VARCHAR(50),\n    phone_number VARCHAR(15),\n    email VARCHAR(100),\n    incident_id INT,\n    FOREIGN KEY (incident_id) REFERENCES emergency_incidents(incident_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmergencyEvents (\n    event_id INT PRIMARY KEY,\n    event_type VARCHAR(50),\n    event_date TIMESTAMP,\n    location VARCHAR(100),\n    event_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EmergencyResponders (\n    responder_id INT PRIMARY KEY,\n    responder_name VARCHAR(50),\n    responder_type VARCHAR(50),\n    deployment_date TIMESTAMP,\n    department VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentReports (\n    report_id INT PRIMARY KEY,\n    event_id INT REFERENCES EmergencyEvents(event_id),\n    responder_id INT REFERENCES EmergencyResponders(responder_id),\n    report_date TIMESTAMP,\n    report_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_calls (\n   id INT,\n   call_date DATE,\n   call_time TIME,\n   caller_name VARCHAR(50),\n   caller_location VARCHAR(100),\n   emergency_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE response_team (\n   team_id INT,\n   team_name VARCHAR(50),\n   team_lead VARCHAR(50),\n   team_members INT,\n   availability_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents (\n   incident_id INT,\n   incident_date DATE,\n   incident_time TIME,\n   incident_location VARCHAR(100),\n   incident_description TEXT,\n   incident_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n   resource_id INT,\n   resource_name VARCHAR(50),\n   resource_type VARCHAR(50),\n   resource_quantity INT,\n   resource_location VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergencies (\n    id INT PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    event_date DATE NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    severity INT NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE response_teams (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(100) NOT NULL,\n    team_lead VARCHAR(100) NOT NULL,\n    team_size INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(100) NOT NULL,\n    resource_type VARCHAR(100) NOT NULL,\n    quantity INT NOT NULL,\n    location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents (\n    incident_id INT PRIMARY KEY,\n    event_id INT NOT NULL,\n    team_id INT NOT NULL,\n    incident_date DATE NOT NULL,\n    status VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_logs (\n    log_id INT PRIMARY KEY,\n    incident_id INT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL,\n    description TEXT\n);\n"
+      }
+    ]
+  }
+]

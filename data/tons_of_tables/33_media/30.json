@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SubscriberInformation (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    address VARCHAR(255),\n    subscription_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    address VARCHAR(100) NOT NULL,\n    subscription_status BOOLEAN\n);\n\nCREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    subscriber_id INT REFERENCES subscribers(id),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n    subscriber_id       INT PRIMARY KEY,\n    name                VARCHAR(255) NOT NULL,\n    address             VARCHAR(255) NOT NULL,\n    subscription_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    subscriber_id   INT NOT NULL,\n    start_date      DATE NOT NULL,\n    end_date        DATE NOT NULL,\n    status          VARCHAR(20) NOT NULL,\n    FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscription_payments (\n    payment_id     INT PRIMARY KEY,\n    subscription_id INT NOT NULL,\n    amount         DECIMAL(10, 2) NOT NULL,\n    payment_date   DATE NOT NULL,\n    FOREIGN KEY (subscription_id) REFERENCES subscriptions(subscription_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n    subscriber_id UUID PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    address TEXT NOT NULL,\n    subscription_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id UUID PRIMARY KEY,\n    subscriber_id UUID REFERENCES subscribers(subscriber_id),\n    start_date DATE,\n    end_date DATE,\n    active_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE magazines (\n    magazine_id UUID PRIMARY KEY,\n    magazine_name VARCHAR(50) NOT NULL,\n    publication_frequency VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subscription_history (\n    history_id UUID PRIMARY KEY,\n    subscription_id UUID REFERENCES subscriptions(subscription_id),\n    action_date TIMESTAMP,\n    action_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n    subscriber_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    address VARCHAR(255),\n    subscription_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    subscriber_id INT,\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(50),\n    FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE magazines (\n    magazine_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    price DECIMAL(8,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriber_magazines (\n    subscriber_id INT,\n    magazine_id INT,\n    PRIMARY KEY (subscriber_id, magazine_id),\n    FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id),\n    FOREIGN KEY (magazine_id) REFERENCES magazines(magazine_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    subscriber_id INT,\n    amount DECIMAL(8,2),\n    date DATE,\n    FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id)\n);"
+      }
+    ]
+  }
+]

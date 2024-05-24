@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM soil_nutrient_reports;",
+      "SELECT report_id, report_date FROM soil_nutrient_reports ORDER BY report_date DESC;",
+      "SELECT * FROM soil_nutrient_reports WHERE report_id = 1;",
+      "SELECT report_id, nutrient_levels FROM soil_nutrient_reports WHERE recommended_fertilizers @> ARRAY['Nitrogen'];",
+      "SELECT DISTINCT recommended_fertilizers[1] AS first_fertilizer, recommended_fertilizers[2] AS second_fertilizer FROM soil_nutrient_reports;",
+      "SELECT * FROM soil_nutrient_reports WHERE report_date = '2021-07-15';",
+      "SELECT report_id, report_date, nutrient_levels->>'nitrogen' AS nitrogen_level FROM soil_nutrient_reports WHERE nutrient_levels->>'phosphorus' > '0.5';",
+      "SELECT report_id, jsonb_array_length(nutrient_levels->'potassium') AS potassium_levels_count FROM soil_nutrient_reports WHERE report_date >= '2021-01-01' ORDER BY potassium_levels_count DESC;",
+      "SELECT report_id, unnest(recommended_fertilizers) AS fertilizer_type FROM soil_nutrient_reports WHERE recommended_fertilizers @> ARRAY['NPK', 'DAP'];",
+      "SELECT report_id, report_date, jsonb_set(nutrient_levels, '{nitrogen}', to_jsonb(50), true) AS updated_nutrient_levels FROM soil_nutrient_reports WHERE report_date <= '2021-12-31';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM SoilNutrientDeficiencies WHERE deficiency_level > 2;",
+      "SELECT nutrient_type, deficiency_level FROM SoilNutrientDeficiencies WHERE soil_type = 'Clay';",
+      "SELECT * FROM FertilizerRecommendations WHERE recommended_dosage >= 5.0;",
+      "SELECT id, nutrient_type, application_method FROM FertilizerRecommendations WHERE nutrient_type = 'Nitrogen';",
+      "SELECT id, fertilizer_type FROM FertilizerRecommendations ORDER BY recommended_dosage DESC;",
+      "SELECT * FROM SoilNutrientDeficiencies ORDER BY deficiency_level DESC, report_date ASC;",
+      "SELECT nutrient_type, deficiency_level, report_date FROM SoilNutrientDeficiencies WHERE soil_type = 'Clay' AND deficiency_level > 5;",
+      "SELECT nutrient_type, SUM(deficiency_level) AS total_deficiency_level FROM SoilNutrientDeficiencies GROUP BY nutrient_type ORDER BY total_deficiency_level DESC;",
+      "SELECT r.fertilizer_type, r.application_method, r.recommended_dosage, n.nutrient_type FROM FertilizerRecommendations r JOIN SoilNutrientDeficiencies n ON r.nutrient_type = n.nutrient_type;",
+      "SELECT * FROM SoilNutrientDeficiencies WHERE report_date BETWEEN '2021-01-01' AND '2021-12-31' ORDER BY report_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM soil_nutrient_deficiencies LIMIT 10;",
+      "SELECT report_id, deficiency_level, deficiency_value, report_date FROM soil_nutrient_deficiencies WHERE deficiency_level = 'Severe';",
+      "SELECT nutrient_type, deficiency_level FROM soil_nutrient_deficiencies ORDER BY nutrient_type ASC;",
+      "SELECT * FROM historical_data WHERE recording_date >= '2022-01-01' AND recording_date <= '2022-03-31';",
+      "SELECT recommendation_id, nutrient_type, recommended_fertilizer FROM fertilizer_recommendations WHERE application_rate > 5.0 ORDER BY recommendation_id DESC;",
+      "SELECT * FROM soil_nutrient_deficiencies WHERE deficiency_level = 'Severe' ORDER BY area_id DESC;",
+      "SELECT area_id, nutrient_type, deficiency_value FROM soil_nutrient_deficiencies WHERE report_date >= '2022-01-01' AND report_date <= '2022-12-31';",
+      "SELECT recommendation_id, nutrient_type, recommended_fertilizer FROM fertilizer_recommendations WHERE application_rate > 50 ORDER BY recommendation_id ASC;",
+      "SELECT area_id, deficiency_value FROM soil_nutrient_deficiencies WHERE deficiency_level = 'Moderate' OR deficiency_level = 'Severe';",
+      "SELECT * FROM historical_data WHERE recording_date BETWEEN '2022-01-01' AND '2022-06-30' ORDER BY nutrient_value DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM soil_samples;",
+      "SELECT location, nitrogen_level, phosphorus_level FROM soil_samples ORDER BY nitrogen_level DESC;",
+      "SELECT sample_id, location FROM soil_samples WHERE potassium_level > 0.5;",
+      "SELECT recommendation_id, crop_type, application_rate FROM fertilizer_recommendations WHERE application_rate < 10;",
+      "SELECT user_id, username FROM users WHERE email LIKE '%@example.com%';",
+      "SELECT * FROM soil_samples WHERE sample_id = 1;",
+      "SELECT location, nitrogen_level FROM soil_samples WHERE nitrogen_level > 2.5;",
+      "SELECT * FROM historical_data ORDER BY date DESC;",
+      "SELECT sample_id, location, nitrogen_level, phosphorus_level FROM soil_samples WHERE potassium_level < 1.0;",
+      "SELECT user_id, username FROM users WHERE email LIKE '%example.com%';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM nutrient_deficiencies ORDER BY severity DESC;",
+      "SELECT id, soil_type, nutrient_type FROM nutrient_deficiencies WHERE severity > 3;",
+      "SELECT * FROM fertilizers WHERE price < 50.00;",
+      "SELECT nutrient_levels->>'phosphorus' AS phosphorus_level FROM historical_data WHERE soil_type = 'Clay';",
+      "SELECT id, username, email FROM users ORDER BY date_registered ASC;",
+      "SELECT * FROM nutrient_deficiencies ORDER BY severity DESC, id ASC LIMIT 5;",
+      "SELECT * FROM fertilizers WHERE price > 50 ORDER BY price DESC LIMIT 5;",
+      "SELECT nf.id, nf.fertilizer_name, nf.price, hd.nutrient_levels->>'nitrogen' AS nitrogen_level FROM fertilizers nf INNER JOIN historical_data hd ON nf.nutrient_type = hd.soil_type WHERE hd.date_recorded >= '2022-01-01' ORDER BY nf.price ASC, nf.id DESC LIMIT 5;",
+      "SELECT r.id, r.date_recommended, u.username FROM recommendations r INNER JOIN users u ON r.deficiency_id = u.id WHERE r.date_recommended >= '2022-01-01' ORDER BY r.date_recommended DESC, u.username ASC LIMIT 5;",
+      "SELECT nd.id, nd.nutrient_type, COUNT(r.id) AS recommendation_count FROM nutrient_deficiencies nd LEFT JOIN recommendations r ON nd.id = r.deficiency_id GROUP BY nd.id, nd.nutrient_type ORDER BY recommendation_count DESC, nd.id ASC LIMIT 5;"
+    ]
+  }
+]

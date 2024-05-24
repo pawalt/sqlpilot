@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qr_payments (\n    payment_id INT PRIMARY KEY,\n    amount DECIMAL,\n    qr_code VARCHAR(255),\n    payment_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qr_payments (\n    payment_id UUID PRIMARY KEY,\n    amount DECIMAL,\n    qr_code TEXT,\n    payment_status TEXT\n);\n\nCREATE TABLE confirmation_messages (\n    message_id UUID PRIMARY KEY,\n    payment_id UUID REFERENCES qr_payments(payment_id),\n    message_text TEXT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qr_code_payments (\n    id SERIAL PRIMARY KEY,\n    qr_code_id UUID NOT NULL,\n    amount DECIMAL NOT NULL,\n    payment_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE confirmation_messages (\n    id SERIAL PRIMARY KEY,\n    message_text TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL DEFAULT current_timestamp\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    id SERIAL PRIMARY KEY,\n    qr_code_id UUID NOT NULL,\n    payment_amount DECIMAL NOT NULL,\n    payment_timestamp TIMESTAMP NOT NULL DEFAULT current_timestamp\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qr_codes (\n    id INT PRIMARY KEY,\n    qr_code VARCHAR(255) NOT NULL,\n    payment_amount DECIMAL(10, 2) NOT NULL,\n    payment_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    id INT PRIMARY KEY,\n    payment_id INT NOT NULL,\n    qr_code_id INT NOT NULL,\n    payment_date TIMESTAMP,\n    FOREIGN KEY (qr_code_id) REFERENCES qr_codes(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE confirmation_messages (\n    id INT PRIMARY KEY,\n    payment_id INT NOT NULL,\n    message_body TEXT,\n    sent_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    id INT PRIMARY KEY,\n    payment_id INT NOT NULL,\n    payment_date TIMESTAMP,\n    payment_amount DECIMAL(10, 2) NOT NULL,\n    payment_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Payments (\n  payment_id INT PRIMARY KEY,\n  payment_amount DECIMAL,\n  payment_date TIMESTAMP,\n  qr_code_id VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QRCodeMessages (\n  qr_code_id VARCHAR PRIMARY KEY,\n  confirmation_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SuccessfulPayments (\n  success_payment_id INT PRIMARY KEY,\n  payment_id INT REFERENCES Payments(payment_id),\n  qr_code_id VARCHAR REFERENCES Payments(qr_code_id),\n  success_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FailedPayments (\n  failed_payment_id INT PRIMARY KEY,\n  payment_id INT REFERENCES Payments(payment_id),\n  failure_reason TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentHistory (\n  history_id INT PRIMARY KEY,\n  payment_id INT REFERENCES Payments(payment_id),\n  status VARCHAR,\n  time_stamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

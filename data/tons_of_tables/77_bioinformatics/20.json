@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protein_identification (\n  id INT PRIMARY KEY,\n  protein_name VARCHAR(255),\n  peptide_sequence TEXT,\n  peptide_mass FLOAT,\n  retention_time FLOAT,\n  abundance FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinData (\n    id SERIAL PRIMARY KEY,\n    protein_name VARCHAR(255) NOT NULL,\n    sequence TEXT NOT NULL,\n    molecular_weight FLOAT NOT NULL,\n    mass_spec_data JSONB\n);\n\nCREATE TABLE QuantificationData (\n    id SERIAL PRIMARY KEY,\n    protein_id INTEGER REFERENCES ProteinData(id),\n    experiment_date DATE NOT NULL,\n    intensity FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE proteins (\n    protein_id UUID PRIMARY KEY,\n    protein_name VARCHAR(255),\n    protein_sequence TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE peptides (\n    peptide_id UUID PRIMARY KEY,\n    peptide_sequence TEXT,\n    protein_id UUID,\n    FOREIGN KEY (protein_id) REFERENCES proteins(protein_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE spectra (\n    spectrum_id UUID PRIMARY KEY,\n    peptide_id UUID,\n    intensity FLOAT,\n    retention_time FLOAT,\n    FOREIGN KEY (peptide_id) REFERENCES peptides(peptide_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE proteins (\n    id INT PRIMARY KEY,\n    protein_name VARCHAR(255),\n    molecular_weight DECIMAL,\n    sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE spectra (\n    id INT PRIMARY KEY,\n    spectrum_name VARCHAR(255),\n    retention_time DECIMAL,\n    intensity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE peptide_hits (\n    id INT PRIMARY KEY,\n    peptide_sequence TEXT,\n    mass_error DECIMAL,\n    confidence_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experimental_conditions (\n    id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    temperature DECIMAL,\n    ph DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Proteins (\n    protein_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    sequence TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Peptides (\n    peptide_id INT PRIMARY KEY,\n    sequence TEXT,\n    protein_id INT,\n    FOREIGN KEY (protein_id) REFERENCES Proteins(protein_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Spectra (\n    spectrum_id INT PRIMARY KEY,\n    spectrum_data BLOB,\n    peptide_id INT,\n    FOREIGN KEY (peptide_id) REFERENCES Peptides(peptide_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (\n    exp_id INT PRIMARY KEY,\n    exp_name VARCHAR(255),\n    exp_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Quantification (\n    quant_id INT PRIMARY KEY,\n    value DOUBLE,\n    spectrum_id INT,\n    FOREIGN KEY (spectrum_id) REFERENCES Spectra(spectrum_id)\n)"
+      }
+    ]
+  }
+]

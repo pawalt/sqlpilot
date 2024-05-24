@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_usage_monitoring (\n  facility_id INT,\n  timestamp TIMESTAMP,\n  water_flow_rate DECIMAL(10,2),\n  water_pressure DECIMAL(10,2),\n  water_temperature DECIMAL(5,2),\n  PRIMARY KEY (facility_id, timestamp)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(255),\n    city VARCHAR(255),\n    state VARCHAR(255),\n    water_usage DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage_logs (\n    log_id INT PRIMARY KEY,\n    facility_id INT,\n    log_date DATE,\n    water_consumption DECIMAL,\n    CONSTRAINT fk_facility_id FOREIGN KEY (facility_id) REFERENCES production_facilities(facility_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Water_Usage (\n  Facility_ID INT,\n  Date DATE,\n  Water_Consumed DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Facilities (\n  Facility_ID INT PRIMARY KEY,\n  Facility_Name VARCHAR(50),\n  Location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Production_Schedule (\n  Facility_ID INT,\n  Production_Date DATE,\n  Production_Amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Facilities (\n  facility_id INT PRIMARY KEY,\n  facility_name TEXT,\n  location TEXT,\n  water_usage FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterMeters (\n  meter_id INT PRIMARY KEY,\n  facility_id INT,\n  meter_type TEXT,\n  meter_reading FLOAT,\n  FOREIGN KEY (facility_id) REFERENCES Facilities(facility_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterConsumption (\n  consumption_id INT PRIMARY KEY,\n  meter_id INT,\n  consumption_date DATE,\n  consumption_amount FLOAT,\n  FOREIGN KEY (meter_id) REFERENCES WaterMeters(meter_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SustainabilityMetrics (\n  metric_id INT PRIMARY KEY,\n  facility_id INT,\n  metric_name TEXT,\n  metric_value FLOAT,\n  foreign key (facility_id) references Facilities(facility_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterSources (\n  id INT PRIMARY KEY,\n  source_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  water_capacity DECIMAL,\n  last_inspection_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterConsumption (\n  id INT PRIMARY KEY,\n  source_id INT NOT NULL,\n  consumption_date DATE,\n  consumption_amount DECIMAL,\n  CONSTRAINT fk_water_sources FOREIGN KEY (source_id) REFERENCES WaterSources(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionFacilities (\n  id INT PRIMARY KEY,\n  facility_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  production_capacity DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FacilityWaterUsage (\n  id INT PRIMARY KEY,\n  facility_id INT NOT NULL,\n  source_id INT NOT NULL,\n  usage_date DATE,\n  water_used DECIMAL,\n  CONSTRAINT fk_production_facilities FOREIGN KEY (facility_id) REFERENCES ProductionFacilities(id),\n  CONSTRAINT fk_water_sources FOREIGN KEY (source_id) REFERENCES WaterSources(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SustainabilityMetrics (\n  id INT PRIMARY KEY,\n  metric_name VARCHAR(50) NOT NULL,\n  metric_description VARCHAR(200),\n  target_value DECIMAL\n);\n"
+      }
+    ]
+  }
+]

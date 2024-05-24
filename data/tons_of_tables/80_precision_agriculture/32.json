@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    role VARCHAR(20) NOT NULL,\n    access_level INT NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id) NOT NULL,\n    permission_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT,\n    role VARCHAR(50) NOT NULL,\n    system_access BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_systems (\n    system_id INT PRIMARY KEY,\n    system_name VARCHAR(100) NOT NULL,\n    location VARCHAR(100),\n    owner_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT,\n    permission_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(50) NOT NULL,\n  email VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id INT PRIMARY KEY,\n  permission_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n  user_id INT,\n  permission_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_systems (\n  system_id INT PRIMARY KEY,\n  system_name VARCHAR(50) NOT NULL,\n  user_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100),\n    role VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_systems (\n    system_id INT PRIMARY KEY,\n    system_name VARCHAR(100) NOT NULL,\n    location VARCHAR(100),\n    active BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT REFERENCES users(user_id),\n    permission_id INT REFERENCES permissions(permission_id),\n    PRIMARY KEY (user_id, permission_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE system_permissions (\n    system_id INT REFERENCES irrigation_systems(system_id),\n    permission_id INT REFERENCES permissions(permission_id),\n    PRIMARY KEY (system_id, permission_id)\n);\n"
+      }
+    ]
+  }
+]

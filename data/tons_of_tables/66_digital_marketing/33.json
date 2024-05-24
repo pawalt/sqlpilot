@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE duplicate_content_issues (\n    id INT PRIMARY KEY,\n    url VARCHAR(255),\n    content TEXT,\n    status ENUM('duplicate', 'resolved'),\n    found_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE duplicate_content_issues (\n    id INT PRIMARY KEY,\n    page_url VARCHAR(255),\n    duplicate_content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resolved_duplicate_content (\n    id INT PRIMARY KEY,\n    original_url VARCHAR(255),\n    resolved_content TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WebsitePages (\n    page_id INT PRIMARY KEY,\n    page_title VARCHAR(255) NOT NULL,\n    content TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DuplicatePages (\n    duplicate_id INT PRIMARY KEY,\n    page_id INT NOT NULL,\n    duplicate_content TEXT NOT NULL,\n    FOREIGN KEY (page_id) REFERENCES WebsitePages(page_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DuplicateIssues (\n    issue_id INT PRIMARY KEY,\n    duplicate_id INT NOT NULL,\n    issue_description TEXT NOT NULL,\n    resolution TEXT,\n    FOREIGN KEY (duplicate_id) REFERENCES DuplicatePages(duplicate_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE website_pages (\n    page_id INT PRIMARY KEY,\n    page_url VARCHAR(255) NOT NULL,\n    content TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE duplicate_content (\n    duplicate_id INT PRIMARY KEY,\n    parent_page_id INT NOT NULL,\n    duplicate_page_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content_issues (\n    issue_id INT PRIMARY KEY,\n    page_id INT NOT NULL,\n    issue_description TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resolved_issues (\n    resolved_id INT PRIMARY KEY,\n    issue_id INT NOT NULL,\n    resolution TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Duplicate_Content_Report (\n    report_id INT PRIMARY KEY,\n    report_name VARCHAR(255),\n    report_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Duplicate_Content_URL (\n    url_id INT PRIMARY KEY,\n    url VARCHAR(255),\n    content TEXT,\n    report_id INT,\n    FOREIGN KEY (report_id) REFERENCES Duplicate_Content_Report(report_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Duplicate_Content_Fix (\n    fix_id INT PRIMARY KEY,\n    fix_name VARCHAR(255),\n    fix_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Content_Issues_Log (\n    log_id INT PRIMARY KEY,\n    log_date TIMESTAMP,\n    issue_description TEXT,\n    url_id INT,\n    fix_id INT,\n    FOREIGN KEY (url_id) REFERENCES Duplicate_Content_URL(url_id),\n    FOREIGN KEY (fix_id) REFERENCES Duplicate_Content_Fix(fix_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Content_Quality (\n    quality_id INT PRIMARY KEY,\n    evaluation_date DATE,\n    url_id INT,\n    content_quality VARCHAR(50),\n    FOREIGN KEY (url_id) REFERENCES Duplicate_Content_URL(url_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM purchase_requests;",
+      "SELECT item_name, quantity, total_price FROM purchase_requests WHERE request_id = 123;",
+      "SELECT requester_name, approval_status FROM purchase_requests WHERE approval_status='Approved' ORDER BY requester_name ASC;",
+      "SELECT request_id, item_name, approver_name FROM purchase_requests WHERE total_price > 1000 ORDER BY request_id DESC;",
+      "SELECT * FROM purchase_requests WHERE requester_name='John Doe' AND approval_status='Pending';",
+      "SELECT * FROM purchase_requests WHERE quantity > 10 ORDER BY total_price DESC;",
+      "SELECT item_name, requester_name, total_price FROM purchase_requests WHERE approval_status = 'Approved';",
+      "SELECT requester_name, total_price FROM purchase_requests WHERE requester_name LIKE 'John%' AND approval_status = 'Pending';",
+      "SELECT * FROM purchase_requests WHERE total_price BETWEEN 100.00 AND 500.00 AND approver_name IS NULL;",
+      "SELECT COUNT(request_id) AS total_requests, SUM(quantity) AS total_quantity FROM purchase_requests WHERE approval_status = 'Approved';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM purchase_requests;",
+      "SELECT requester_name, request_date FROM purchase_requests ORDER BY request_date DESC;",
+      "SELECT request_id, total_amount FROM purchase_requests WHERE status='Pending';",
+      "SELECT requester_name, SUM(total_amount) AS total_spent FROM purchase_requests GROUP BY requester_name;",
+      "SELECT * FROM approval_stages WHERE approved = true ORDER BY stage_name ASC;",
+      "SELECT * FROM purchase_requests;",
+      "SELECT requester_name, total_amount FROM purchase_requests WHERE status = 'pending';",
+      "SELECT request_date, total_amount FROM purchase_requests WHERE total_amount > 1000 ORDER BY request_date DESC;",
+      "SELECT requester_name, SUM(total_amount) AS total_spent FROM purchase_requests GROUP BY requester_name HAVING total_spent > 5000 ORDER BY total_spent DESC;",
+      "SELECT pr.request_id, ps.stage_name, ps.approver_name, ps.approval_date FROM purchase_requests pr INNER JOIN approval_stages ps ON pr.request_id = ps.request_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM purchase_requests;",
+      "SELECT id, requester_name, total_amount FROM purchase_requests WHERE total_amount > 1000;",
+      "SELECT approval_id, approver_name, approval_date FROM approval_workflow ORDER BY approval_date DESC;",
+      "SELECT pr.id, pr.requester_name, aw.approver_name, aw.approval_date FROM purchase_requests pr INNER JOIN approval_workflow aw ON pr.id = aw.request_id;",
+      "SELECT al.log_id, al.approval_id, al.action_performed, al.action_date, aw.approver_name FROM approval_logs al INNER JOIN approval_workflow aw ON al.approval_id = aw.approval_id WHERE al.action_date >= '2022-01-01';",
+      "SELECT * FROM purchase_requests ORDER BY request_date DESC;",
+      "SELECT requester_name, total_amount FROM purchase_requests WHERE total_amount > 1000;",
+      "SELECT * FROM approval_workflow WHERE approver_name = 'John Doe';",
+      "SELECT pr.requester_name, aw.approver_name, al.action_performed FROM purchase_requests AS pr LEFT JOIN approval_workflow AS aw ON pr.id = aw.request_id LEFT JOIN approval_logs AS al ON aw.approval_id = al.approval_id;",
+      "SELECT pr.requester_name, COUNT(al.log_id) AS num_actions FROM purchase_requests AS pr INNER JOIN approval_workflow AS aw ON pr.id = aw.request_id INNER JOIN approval_logs AS al ON aw.approval_id = al.approval_id GROUP BY pr.requester_name HAVING COUNT(al.log_id) > 2;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM purchase_requests;",
+      "SELECT id, request_date, total_amount FROM purchase_requests WHERE status = 'pending';",
+      "SELECT id, item_name, quantity, price FROM request_items WHERE quantity > 10 ORDER BY price DESC;",
+      "SELECT name, email, role FROM approvers WHERE role = 'manager' ORDER BY name ASC;",
+      "SELECT approvals.approval_date, approvals.status, approvers.name FROM approvals INNER JOIN approvers ON approvals.approver_id = approvers.id WHERE approvals.status = 'approved';",
+      "SELECT * FROM purchase_requests;",
+      "SELECT id, request_date, total_amount, status FROM purchase_requests WHERE status = 'Pending';",
+      "SELECT pr.id, pr.total_amount, ri.item_name, ri.quantity, ri.price FROM purchase_requests pr JOIN request_items ri ON pr.id = ri.request_id;",
+      "SELECT r.name AS approver_name, r.email AS approver_email, a.approval_date, a.status FROM approvers r JOIN approvals a ON r.id = a.approver_id;",
+      "SELECT pr.id, pr.total_amount, ri.item_name, ri.quantity, ri.price FROM purchase_requests pr JOIN request_items ri ON pr.id = ri.request_id WHERE pr.status = 'Approved';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM PurchaseRequests;",
+      "SELECT requester_name, request_date FROM PurchaseRequests WHERE approval_status = 'Pending';",
+      "SELECT item_name, quantity, unit_price FROM PurchaseItems ORDER BY unit_price DESC;",
+      "SELECT approver_name, email_address FROM Approvers WHERE approver_id = 1;",
+      "SELECT pr.request_id, pr.requester_name, ph.approval_date, ps.status_name FROM PurchaseRequests pr JOIN ApprovalHistory ph ON pr.request_id = ph.request_id JOIN PurchaseStatus ps ON ph.history_id = ps.status_id;",
+      "SELECT * FROM PurchaseRequests;",
+      "SELECT requester_name, request_date FROM PurchaseRequests WHERE approval_status='Pending';",
+      "SELECT item_name, quantity, unit_price FROM PurchaseItems WHERE unit_price > 100;",
+      "SELECT approver_name, email_address FROM Approvers WHERE approver_id IN (SELECT approver_id FROM ApprovalHistory WHERE approval_date > '2022-01-01');",
+      "SELECT pr.requester_name, ps.status_name FROM PurchaseRequests pr JOIN PurchaseStatus ps ON pr.approval_status = ps.status_name;"
+    ]
+  }
+]

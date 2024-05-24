@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TemperatureMonitoring (\n    shipment_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    temperature FLOAT,\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE temperature_sensors (\n  sensor_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  temperature DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cross_docking_transfers (\n  transfer_id INT PRIMARY KEY,\n  transfer_date TIMESTAMP,\n  product_id INT,\n  from_location VARCHAR(255),\n  to_location VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE temperature_logs (\n    log_id INT PRIMARY KEY,\n    product_name VARCHAR(100),\n    temperature FLOAT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE docking_locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transfer_logs (\n    transfer_id INT PRIMARY KEY,\n    from_location_id INT,\n    to_location_id INT,\n    product_name VARCHAR(100),\n    status VARCHAR(50),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProductInventory (\n    id SERIAL PRIMARY KEY,\n    product_name TEXT NOT NULL,\n    temperature_requirements TEXT,\n    quantity INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Warehouse (\n    id SERIAL PRIMARY KEY,\n    warehouse_name TEXT NOT NULL,\n    location TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TransferLogs (\n    id SERIAL PRIMARY KEY,\n    warehouse_id INTEGER REFERENCES Warehouse(id),\n    product_id INTEGER REFERENCES ProductInventory(id),\n    transfer_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TemperatureLog (\n    id SERIAL PRIMARY KEY,\n    product_id INTEGER REFERENCES ProductInventory(id),\n    temperature FLOAT,\n    log_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE temperature_sensors (\n sensor_id INT PRIMARY KEY,\n location VARCHAR(50),\n temperature DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n product_id INT PRIMARY KEY,\n name VARCHAR(50),\n temperature_sensitive BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cross_docking (\n transfer_id INT PRIMARY KEY,\n from_location VARCHAR(50),\n to_location VARCHAR(50),\n transfer_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transfer_log (\n log_id INT PRIMARY KEY,\n transfer_id INT,\n sensor_id INT,\n temperature DECIMAL,\n log_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n alert_id INT PRIMARY KEY,\n log_id INT,\n alert_type VARCHAR(50),\n alert_message TEXT\n);"
+      }
+    ]
+  }
+]

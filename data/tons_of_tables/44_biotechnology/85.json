@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_development_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(50),\n    resources_allocated DECIMAL(10,2),\n    lead_scientist VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DrugDevelopmentProjects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    allocated_budget DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResourceAllocation (\n    allocation_id INT PRIMARY KEY,\n    project_id INT,\n    resource_name VARCHAR(255),\n    resource_type VARCHAR(100),\n    allocated_amount DECIMAL,\n    FOREIGN KEY (project_id) REFERENCES DrugDevelopmentProjects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_projects (\n  project_id SERIAL PRIMARY KEY,\n  project_name VARCHAR(100) NOT NULL,\n  project_description TEXT,\n  start_date DATE NOT NULL,\n  end_date DATE,\n  progress DECIMAL(5, 2) DEFAULT 0.0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n  resource_id SERIAL PRIMARY KEY,\n  resource_name VARCHAR(100) NOT NULL,\n  resource_type VARCHAR(50) NOT NULL,\n  quantity INT NOT NULL,\n  cost DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_resources (\n  project_id INT NOT NULL,\n  resource_id INT NOT NULL,\n  allocation_date DATE NOT NULL,\n  quantity_allocated INT NOT NULL,\n  PRIMARY KEY (project_id, resource_id),\n  FOREIGN KEY (project_id) REFERENCES drug_projects(project_id),\n  FOREIGN KEY (resource_id) REFERENCES resources(resource_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_projects (\n\tproject_id INT PRIMARY KEY,\n\tproject_name VARCHAR(255) NOT NULL,\n\tdrug_name VARCHAR(255) NOT NULL,\n\tresearch_area VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_team (\n\tteam_id INT PRIMARY KEY,\n\tteam_name VARCHAR(255) NOT NULL,\n\tdepartment VARCHAR(255) NOT NULL,\n\tlead_researcher VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_resources (\n\tresource_id INT PRIMARY KEY,\n\tproject_id INT NOT NULL,\n\tresource_type VARCHAR(255) NOT NULL,\n\tquantity INT NOT NULL,\n\tFOREIGN KEY (project_id) REFERENCES drug_projects (project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_progress (\n\tprogress_id INT PRIMARY KEY,\n\tproject_id INT NOT NULL,\n\tmilestone VARCHAR(255) NOT NULL,\n\tcompletion_date DATE NOT NULL,\n\tFOREIGN KEY (project_id) REFERENCES drug_projects (project_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Drug_Projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    budget DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Research_Teams (\n    team_id UUID PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    leader_id UUID,\n    project_id UUID NOT NULL,\n    FOREIGN KEY (project_id) REFERENCES Drug_Projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id UUID PRIMARY KEY,\n    researcher_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Experimental_Data (\n    data_id UUID PRIMARY KEY,\n    project_id UUID NOT NULL,\n    data_type VARCHAR(50) NOT NULL,\n    data_value TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Resources (\n    resource_id UUID PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    resource_type VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL\n);\n"
+      }
+    ]
+  }
+]

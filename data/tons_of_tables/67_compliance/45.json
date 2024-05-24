@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatData (\n    threat_id INT PRIMARY KEY,\n    threat_type VARCHAR(255),\n    threat_description TEXT,\n    threat_level INT,\n    threat_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threats (\n    threat_id INT PRIMARY KEY,\n    threat_name VARCHAR(255),\n    threat_type VARCHAR(50),\n    threat_description TEXT,\n    threat_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    strategy_description TEXT,\n    threat_id INT REFERENCES threats(threat_id),\n    implementation_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatData (\n    threat_id INT PRIMARY KEY,\n    threat_type VARCHAR(50) NOT NULL,\n    threat_description TEXT,\n    threat_severity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MitigationStrategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(50) NOT NULL,\n    strategy_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Incidents (\n    incident_id INT PRIMARY KEY,\n    incident_date DATE NOT NULL,\n    incident_description TEXT,\n    threat_id INT,\n    strategy_id INT,\n    FOREIGN KEY (threat_id) REFERENCES ThreatData(threat_id),\n    FOREIGN KEY (strategy_id) REFERENCES MitigationStrategies(strategy_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threats (\n    threat_id INT PRIMARY KEY,\n    threat_name VARCHAR(50) NOT NULL,\n    threat_type VARCHAR(50) NOT NULL,\n    threat_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE targets (\n    target_id INT PRIMARY KEY,\n    target_name VARCHAR(50) NOT NULL,\n    target_ip_address VARCHAR(15) NOT NULL,\n    target_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attacks (\n    attack_id INT PRIMARY KEY,\n    attack_type VARCHAR(50) NOT NULL,\n    attack_date DATE,\n    threat_id INT,\n    target_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(100) NOT NULL,\n    strategy_description TEXT,\n    target_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threats (\n  threat_id INT PRIMARY KEY,\n  threat_type VARCHAR(50),\n  threat_description TEXT,\n  threat_severity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE attacks (\n  attack_id INT PRIMARY KEY,\n  threat_id INT REFERENCES threats(threat_id),\n  attack_type VARCHAR(50),\n  attack_date DATE,\n  attack_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation (\n  mitigation_id INT PRIMARY KEY,\n  threat_id INT REFERENCES threats(threat_id),\n  mitigation_strategy TEXT,\n  mitigation_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE affected_systems (\n  system_id INT PRIMARY KEY,\n  system_name VARCHAR(50),\n  threat_id INT REFERENCES threats(threat_id),\n  system_status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  threat_id INT REFERENCES threats(threat_id),\n  role VARCHAR(20)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voter_registration (\n    voter_id INT PRIMARY KEY,\n    voter_name VARCHAR(50),\n    address VARCHAR(100),\n    date_of_birth DATE,\n    registration_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voter_registration (\n    voter_id INT PRIMARY KEY,\n    full_name VARCHAR(100),\n    address VARCHAR(255),\n    date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_history (\n    voting_year INT,\n    voter_id INT,\n    party_affiliation VARCHAR(50),\n    registration_status ENUM('active', 'inactive'),\n    FOREIGN KEY (voter_id) REFERENCES voter_registration(voter_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voters (\n    voter_id UUID PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    age INT NOT NULL,\n    address VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_history (\n    voter_id UUID REFERENCES voters(voter_id),\n    registration_date DATE NOT NULL,\n    last_updated TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_district (\n    district_id UUID PRIMARY KEY,\n    district_name VARCHAR(50) NOT NULL,\n    total_voters INT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voter (voter_id UUID PRIMARY KEY,\nfull_name VARCHAR(50) NOT NULL,\naddress VARCHAR(100) NOT NULL,\nregistration_date DATE);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_district (district_id UUID PRIMARY KEY,\ndistrict_name VARCHAR(50) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_status (status_id UUID PRIMARY KEY,\nstatus_name VARCHAR(20) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_history (history_id UUID PRIMARY KEY,\nvoter_id UUID REFERENCES voter(voter_id),\nstatus_id UUID REFERENCES voter_status(status_id),\nchange_date TIMESTAMP);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voters (\n    voter_id SERIAL PRIMARY KEY,\n    voter_name VARCHAR(50) NOT NULL,\n    voter_age INT NOT NULL,\n    voter_address VARCHAR(100) NOT NULL,\n    registration_date TIMESTAMPTZ NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_address (\n    address_id SERIAL PRIMARY KEY,\n    voter_id INT REFERENCES voters(voter_id),\n    street_address VARCHAR(100) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    state VARCHAR(20) NOT NULL,\n    zip_code VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_contact (\n    contact_id SERIAL PRIMARY KEY,\n    voter_id INT REFERENCES voters(voter_id),\n    email VARCHAR(50),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_history (\n    history_id SERIAL PRIMARY KEY,\n    voter_id INT REFERENCES voters(voter_id),\n    voting_status VARCHAR(10) NOT NULL,\n    last_voted_date TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_district (\n    district_id SERIAL PRIMARY KEY,\n    district_name VARCHAR(50) NOT NULL,\n    registered_voters INT NOT NULL,\n    last_updated TIMESTAMPTZ\n);"
+      }
+    ]
+  }
+]

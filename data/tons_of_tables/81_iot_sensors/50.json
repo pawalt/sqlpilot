@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_locations (\n  vehicle_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  longitude FLOAT NOT NULL,\n  latitude FLOAT NOT NULL,\n  speed FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Locations (\n    location_id SERIAL PRIMARY KEY,\n    vehicle_id INT NOT NULL,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL,\n    last_updated TIMESTAMP\n);\n\nCREATE TABLE Routes (\n    route_id SERIAL PRIMARY KEY,\n    vehicle_id INT NOT NULL,\n    start_location_id INT NOT NULL,\n    end_location_id INT NOT NULL,\n    distance DECIMAL NOT NULL,\n    estimated_time INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_locations (\n    vehicle_id INT PRIMARY KEY,\n    location_geometry GEOGRAPHY,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id INT PRIMARY KEY,\n    start_location GEOGRAPHY,\n    end_location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_routes (\n    vehicle_id INT,\n    route_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicle_locations(vehicle_id),\n    FOREIGN KEY (route_id) REFERENCES routes(route_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_name VARCHAR(50),\n  location_lat FLOAT,\n  location_long FLOAT,\n  last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(50),\n  start_location VARCHAR(100),\n  end_location VARCHAR(100),\n  distance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stops (\n  stop_id INT PRIMARY KEY,\n  stop_name VARCHAR(50),\n  location_lat FLOAT,\n  location_long FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE route_steps (\n  step_id INT PRIMARY KEY,\n  route_id INT,\n  stop_id INT,\n  sequence_num INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_location (\n  vehicle_id INT PRIMARY KEY,\n  latitude DECIMAL,\n  longitude DECIMAL,\n  timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE route (\n  route_id INT PRIMARY KEY,\n  start_location VARCHAR,\n  end_location VARCHAR,\n  distance INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE driver (\n  driver_id INT PRIMARY KEY,\n  name VARCHAR,\n  license_plate VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trip (\n  trip_id INT PRIMARY KEY,\n  vehicle_id INT,\n  driver_id INT,\n  route_id INT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE alert (\n  alert_id INT PRIMARY KEY,\n  trip_id INT,\n  alert_type VARCHAR,\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  }
+]

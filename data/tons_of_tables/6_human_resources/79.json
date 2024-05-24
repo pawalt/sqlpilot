@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkingContacts (\n\tcontact_id INT PRIMARY KEY,\n\tcontact_name VARCHAR(50),\n\tcontact_email VARCHAR(50),\n\tcontact_phone VARCHAR(13),\n\tlast_contact_date DATE,\n\tfollow_up_required BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE networking_contacts (\n  contact_id INT PRIMARY KEY,\n  contact_name VARCHAR(50) NOT NULL,\n  contact_email VARCHAR(50) NOT NULL,\n  last_contact_date DATE,\n  follow_up_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE follow_up_history (\n  follow_up_id INT PRIMARY KEY,\n  contact_id INT,\n  follow_up_date DATE,\n  follow_up_description TEXT,\n  follow_up_result TEXT,\n  FOREIGN KEY (contact_id) REFERENCES networking_contacts(contact_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE contacts (\n    contact_id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    phone_number VARCHAR(15),\n    company VARCHAR(100),\n    last_contacted_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id SERIAL PRIMARY KEY,\n    contact_id INT NOT NULL,\n    interaction_date DATE,\n    interaction_type VARCHAR(50),\n    notes TEXT,\n    FOREIGN KEY (contact_id) REFERENCES contacts(contact_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE follow_ups (\n    follow_up_id SERIAL PRIMARY KEY,\n    interaction_id INT NOT NULL,\n    follow_up_date DATE,\n    follow_up_type VARCHAR(50),\n    status VARCHAR(20),\n    FOREIGN KEY (interaction_id) REFERENCES interactions(interaction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_contacts (\n  contact_id INT PRIMARY KEY,\n  full_name VARCHAR(255),\n  company_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(15),\n  last_contact_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE follow_ups (\n  follow_up_id INT PRIMARY KEY,\n  contact_id INT,\n  follow_up_date DATE,\n  topic VARCHAR(255),\n  outcome VARCHAR(255),\n  FOREIGN KEY (contact_id) REFERENCES network_contacts(contact_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_methods (\n  method_id INT PRIMARY KEY,\n  method_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE contact_notes (\n  note_id INT PRIMARY KEY,\n  contact_id INT,\n  note_text TEXT,\n  note_date DATE,\n  FOREIGN KEY (contact_id) REFERENCES network_contacts(contact_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE contacts (\n    contact_id UUID PRIMARY KEY,\n    name VARCHAR,\n    email VARCHAR,\n    phone_number VARCHAR,\n    company VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id UUID PRIMARY KEY,\n    contact_id UUID,\n    interaction_date DATE,\n    communication_channel VARCHAR,\n    outcome TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE follow_ups (\n    follow_up_id UUID PRIMARY KEY,\n    interaction_id UUID,\n    follow_up_date DATE,\n    follow_up_type VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR,\n    event_date DATE,\n    location VARCHAR,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE notes (\n    note_id UUID PRIMARY KEY,\n    interaction_id UUID,\n    note_date DATE,\n    content TEXT\n);\n"
+      }
+    ]
+  }
+]

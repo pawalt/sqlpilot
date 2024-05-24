@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_operations (\n    operation_id INT PRIMARY KEY,\n    operation_name VARCHAR(50) NOT NULL,\n    ai_model_id INT NOT NULL,\n    operation_type VARCHAR(50) NOT NULL,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    status VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AI_Systems (\n    id INT PRIMARY KEY,\n    system_name VARCHAR(50) NOT NULL,\n    integration_type VARCHAR(50) NOT NULL,\n    managed_operations BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Network_Operations (\n    id INT PRIMARY KEY,\n    operation_id INT NOT NULL,\n    operation_description VARCHAR(100) NOT NULL,\n    operation_status BOOLEAN,\n    ai_system_id INT,\n    FOREIGN KEY (ai_system_id) REFERENCES AI_Systems(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AI_Systems (\n    system_id INT PRIMARY KEY,\n    system_name TEXT,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Network_Operations (\n    operation_id INT PRIMARY KEY,\n    operation_type TEXT,\n    operation_status TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE 5G_Service_Quality (\n    service_id INT PRIMARY KEY,\n    service_name TEXT,\n    service_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    firmware_version VARCHAR(50),\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_operations (\n    operation_id INT PRIMARY KEY,\n    operation_name VARCHAR(255),\n    operation_type VARCHAR(50),\n    started_at TIMESTAMP,\n    completed_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ai_models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_type VARCHAR(50),\n    trained_on TIMESTAMP,\n    accuracy DECIMAL(5,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE service_quality (\n    report_id INT PRIMARY KEY,\n    device_id INT,\n    operation_id INT,\n    model_id INT,\n    quality_score DECIMAL(5,2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_devices (\n   device_id SERIAL PRIMARY KEY,\n   device_name VARCHAR(50) NOT NULL,\n   device_type VARCHAR(50) NOT NULL,\n   device_location VARCHAR(100) NOT NULL,\n   device_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_users (\n   user_id SERIAL PRIMARY KEY,\n   user_name VARCHAR(50) NOT NULL,\n   user_email VARCHAR(100) NOT NULL,\n   user_role VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_traffic (\n   traffic_id SERIAL PRIMARY KEY,\n   device_id INTEGER REFERENCES network_devices(device_id),\n   user_id INTEGER REFERENCES network_users(user_id),\n   traffic_data JSONB NOT NULL,\n   traffic_timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ai_models (\n   model_id SERIAL PRIMARY KEY,\n   model_name VARCHAR(50) NOT NULL,\n   model_description TEXT,\n   model_accuracy DECIMAL(5,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ai_predictions (\n   prediction_id SERIAL PRIMARY KEY,\n   model_id INTEGER REFERENCES ai_models(model_id),\n   traffic_id INTEGER REFERENCES network_traffic(traffic_id),\n   prediction_data JSONB NOT NULL,\n   prediction_timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

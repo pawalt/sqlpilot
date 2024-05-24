@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM email_subject_ab_testing;",
+      "SELECT email_id, subject_line FROM email_subject_ab_testing WHERE test_group = 1;",
+      "SELECT email_id, subject_line, open_rate FROM email_subject_ab_testing ORDER BY open_rate DESC;",
+      "SELECT email_id, subject_line FROM email_subject_ab_testing WHERE open_rate > 20;",
+      "SELECT * FROM email_subject_ab_testing ORDER BY test_group ASC;",
+      "SELECT email_id, subject_line, open_rate, test_group FROM email_subject_ab_testing WHERE test_group = 1;",
+      "SELECT subject_line, open_rate FROM email_subject_ab_testing WHERE open_rate > 10.00;",
+      "SELECT * FROM email_subject_ab_testing WHERE email_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT subject_line, test_group FROM email_subject_ab_testing WHERE test_group IN (1, 2) ORDER BY open_rate DESC;",
+      "SELECT email_id, subject_line, open_rate FROM email_subject_ab_testing WHERE subject_line LIKE '%special%';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_subjects;",
+      "SELECT id, subject_line FROM email_subjects;",
+      "SELECT subject_line, open_rate FROM email_subjects;",
+      "SELECT open_rate, subject_line FROM email_subjects;",
+      "SELECT * FROM ab_test_results;",
+      "SELECT * FROM email_subjects ORDER BY subject_line DESC;",
+      "SELECT id, subject_line, open_rate FROM email_subjects WHERE open_rate > 0.5;",
+      "SELECT id, subject_line, open_rate FROM email_subjects WHERE open_rate < 0.2 ORDER BY id DESC;",
+      "SELECT es.id, es.subject_line, ab.open_rate_variation FROM email_subjects es JOIN ab_test_results ab ON es.id = ab.subject_line_id WHERE ab.open_rate_variation > 0.1 ORDER BY es.id ASC;",
+      "SELECT AVG(open_rate) AS average_open_rate FROM email_subjects;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_subject_lines;",
+      "SELECT subject_line, open_rate FROM email_subject_lines WHERE experiment_id = 1;",
+      "SELECT * FROM experiment_logs ORDER BY timestamp DESC;",
+      "SELECT user_id, name FROM user_profiles WHERE subscription_date > '2022-01-01';",
+      "SELECT subject_line, open_rate FROM email_subject_lines ORDER BY open_rate DESC;",
+      "SELECT experiment_id, subject_line, open_rate FROM email_subject_lines WHERE open_rate > 0.5 ORDER BY experiment_id DESC;",
+      "SELECT * FROM user_profiles WHERE subscription_date < '2022-01-01' ORDER BY user_id DESC;",
+      "SELECT e.experiment_id, e.subject_line, u.name FROM email_subject_lines e INNER JOIN user_profiles u ON e.experiment_id = u.user_id;",
+      "SELECT u.name, e.subject_line, el.action FROM user_profiles u INNER JOIN email_subject_lines e ON u.user_id = e.experiment_id INNER JOIN experiment_logs el ON e.experiment_id = el.experiment_id;",
+      "SELECT e.experiment_id, e.subject_line, COUNT(el.log_id) AS log_count FROM email_subject_lines e LEFT JOIN experiment_logs el ON e.experiment_id = el.experiment_id GROUP BY e.experiment_id ORDER BY log_count DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_campaigns",
+      "SELECT campaign_id, campaign_name FROM email_campaigns",
+      "SELECT subject_line FROM email_subjects",
+      "SELECT email_id, recipient_email FROM emails_sent",
+      "SELECT open_rate, click_through_rate FROM email_stats",
+      "SELECT * FROM email_campaigns WHERE campaign_id = 1;",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns WHERE start_date >= '2022-01-01';",
+      "SELECT es.recipient_email, es.sent_date, es.opened, es.subject_id, es.email_id, ec.campaign_name FROM emails_sent es JOIN email_campaigns ec ON es.email_id = ec.campaign_id;",
+      "SELECT es.recipient_email, es.sent_date, es.opened, ec.campaign_name, es.email_id FROM email_campaigns ec JOIN emails_sent es ON ec.campaign_id = es.email_id WHERE es.opened = 1;",
+      "SELECT es.recipient_email, es.sent_date, es.opened, es.email_id, ec.campaign_name, es.subject_id, esr.open_rate FROM emails_sent es JOIN email_campaigns ec ON es.email_id = ec.campaign_id JOIN email_stats esr ON es.email_id = esr.email_id WHERE esr.open_rate > 20;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_campaigns ORDER BY start_date DESC, campaign_name;",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns WHERE test_group = 1;",
+      "SELECT subject_line, recipient_email FROM email_subjects JOIN emails ON email_subjects.subject_id = emails.subject_id WHERE send_date = '2022-01-15' ORDER BY recipient_email ASC;",
+      "SELECT group_name FROM test_groups WHERE group_id = 2;",
+      "SELECT email_id, open_date, open_time FROM open_rates WHERE email_id IN (SELECT email_id FROM emails WHERE subject_id = 4);",
+      "SELECT * FROM email_campaigns WHERE campaign_id = 1 ORDER BY start_date DESC, end_date ASC LIMIT 5;",
+      "SELECT campaign_name, start_date, end_date FROM email_campaigns WHERE test_group = 2 ORDER BY start_date LIMIT 10;",
+      "SELECT ec.campaign_name, es.subject_line, e.recipient_email FROM email_campaigns ec JOIN email_subjects es ON ec.campaign_id = es.campaign_id JOIN emails e ON es.subject_id = e.subject_id WHERE ec.start_date BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT ec.campaign_id, ec.campaign_name, COUNT(oe.open_rate_id) AS total_opens FROM email_campaigns ec LEFT JOIN email_subjects es ON ec.campaign_id = es.campaign_id LEFT JOIN emails e ON es.subject_id = e.subject_id LEFT JOIN open_rates oe ON e.email_id = oe.email_id GROUP BY ec.campaign_id, ec.campaign_name;",
+      "SELECT MAX(open_date) AS last_open_date, MIN(open_date) AS first_open_date, AVG(DATEDIFF(open_date, send_date)) AS avg_days_to_open FROM open_rates WHERE email_id = 10;"
+    ]
+  }
+]

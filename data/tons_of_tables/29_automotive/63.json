@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE traffic_signals (\n  signal_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  signal_color VARCHAR(50),\n  timing_settings JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE traffic_signals (\n  signal_id UUID PRIMARY KEY,\n  location VARCHAR,\n  signal_color VARCHAR,\n  timer_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signal_timing (\n  timing_id UUID PRIMARY KEY,\n  signal_id UUID,\n  timing_start TIMESTAMP,\n  timing_end TIMESTAMP,\n  timing_status VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Traffic_Lights (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    location VARCHAR(100),\n    signal_type VARCHAR(20),\n    signal_timing INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Intersection_Coordinates (\n    id INT PRIMARY KEY,\n    intersection_name VARCHAR(50),\n    latitude DECIMAL(10, 8),\n    longitude DECIMAL(11, 8)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Traffic_Patterns (\n    id INT PRIMARY KEY,\n    pattern_name VARCHAR(50),\n    pattern_description TEXT,\n    signal_ids JSON,\n    pattern_timing INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE traffic_signals (\n   signal_id INT PRIMARY KEY,\n   location VARCHAR(255),\n   signal_color VARCHAR(50),\n   timing_schedule VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signal_history (\n   history_id INT PRIMARY KEY,\n   signal_id INT,\n   date_time DATETIME,\n   change_type VARCHAR(50),\n   CONSTRAINT fk_signal FOREIGN KEY (signal_id) REFERENCES traffic_signals(signal_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signal_logs (\n   log_id INT PRIMARY KEY,\n   signal_id INT,\n   log_description TEXT,\n   log_time DATETIME,\n   CONSTRAINT fk_signal_logs FOREIGN KEY (signal_id) REFERENCES traffic_signals(signal_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n   maintenance_id INT PRIMARY KEY,\n   signal_id INT,\n   maintenance_date DATE,\n   maintenance_type VARCHAR(50),\n   CONSTRAINT fk_maintenance FOREIGN KEY (signal_id) REFERENCES traffic_signals(signal_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE traffic_signals (\n    signal_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    cycle_time INT,\n    green_time INT,\n    yellow_time INT,\n    red_time INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE signal_timing (\n    timing_id INT PRIMARY KEY,\n    signal_id INT,\n    start_time TIME,\n    end_time TIME,\n    day_of_week VARCHAR(10),\n    CONSTRAINT fk_signal_id\n        FOREIGN KEY (signal_id)\n        REFERENCES traffic_signals(signal_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_cameras (\n    camera_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    purpose VARCHAR(100),\n    signal_id INT,\n    CONSTRAINT fk_signal_id\n        FOREIGN KEY (signal_id)\n        REFERENCES traffic_signals(signal_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_detection (\n    detection_id INT PRIMARY KEY,\n    camera_id INT,\n    vehicle_type VARCHAR(50),\n    speed INT,\n    timestamp TIMESTAMP,\n    CONSTRAINT fk_camera_id\n        FOREIGN KEY (camera_id)\n        REFERENCES traffic_cameras(camera_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_reports (\n    report_id INT PRIMARY KEY,\n    description TEXT,\n    timestamp TIMESTAMP,\n    location VARCHAR(255),\n    severity VARCHAR(20)\n)"
+      }
+    ]
+  }
+]

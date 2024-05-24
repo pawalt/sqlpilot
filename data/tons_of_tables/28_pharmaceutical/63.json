@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials_inventory (\n    material_id    INT PRIMARY KEY,\n    material_name  VARCHAR(50),\n    quantity       INT,\n    location       VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  quantity_in_stock INT NOT NULL,\n  reorder_level INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE production_orders (\n  order_id INT PRIMARY KEY,\n  material_id INT,\n  quantity_needed INT NOT NULL,\n  order_date DATE,\n  due_date DATE,\n  FOREIGN KEY (material_id) REFERENCES packaging_materials(material_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(50),\n    material_type VARCHAR(50),\n    quantity_in_stock INT,\n    reorder_threshold INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    material_id INT,\n    quantity_ordered INT,\n    order_date TIMESTAMP,\n    delivery_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stockouts (\n    stockout_id INT PRIMARY KEY,\n    material_id INT,\n    stockout_date TIMESTAMP,\n    resolved_date TIMESTAMP,\n    stockout_reason TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    quantity_in_stock INT,\n    reorder_level INT,\n    unit_price DECIMAL(10,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    contact_person VARCHAR(255),\n    phone_number VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE purchase_orders (\n    order_id INT PRIMARY KEY,\n    supplier_id INT,\n    material_id INT,\n    quantity_ordered INT,\n    order_date DATE,\n    CONSTRAINT fk_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id),\n    CONSTRAINT fk_material_id FOREIGN KEY (material_id) REFERENCES packaging_materials(material_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_transactions (\n    transaction_id INT PRIMARY KEY,\n    material_id INT,\n    transaction_type ENUM('purchase', 'consume'),\n    quantity_changed INT,\n    new_quantity INT,\n    transaction_date TIMESTAMP,\n    CONSTRAINT fk_material_id FOREIGN KEY (material_id) REFERENCES packaging_materials(material_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n  id INT PRIMARY KEY,\n  material_name VARCHAR(50),\n  quantity INT,\n  unit_of_measurement VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(50),\n  contact_person VARCHAR(50),\n  contact_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n  purchase_id INT PRIMARY KEY,\n  material_id INT,\n  supplier_id INT,\n  purchase_date DATE,\n  quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_level (\n  material_id INT,\n  current_stock INT,\n  critical_threshold INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_orders (\n  order_id INT PRIMARY KEY,\n  material_id INT,\n  quantity_required INT,\n  order_date DATE,\n  expected_completion_date DATE\n);"
+      }
+    ]
+  }
+]

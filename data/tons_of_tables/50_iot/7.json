@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_locks_status (\n  lock_id INT PRIMARY KEY,\n  lock_name VARCHAR(255),\n  entry_timestamp TIMESTAMP,\n  exit_timestamp TIMESTAMP,\n  user_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_locks (\n    lock_id INT PRIMARY KEY,\n    lock_name VARCHAR(50),\n    lock_location VARCHAR(50),\n    lock_status VARCHAR(50),\n    entry_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lock_access_logs (\n    log_id INT PRIMARY KEY,\n    lock_id INT,\n    access_time TIMESTAMP,\n    user_id INT,\n    access_type VARCHAR(50),\n    FOREIGN KEY (lock_id) REFERENCES smart_locks(lock_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_locks (\n    lock_id UUID PRIMARY KEY,\n    lock_name VARCHAR(50),\n    owner_name VARCHAR(50),\n    entry_log TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lock_access (\n    access_id UUID PRIMARY KEY,\n    lock_id UUID REFERENCES smart_locks(lock_id),\n    user_id UUID,\n    access_type VARCHAR(10),\n    access_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    avatar_url TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartLocks (\n    lock_id INT PRIMARY KEY,\n    lock_name VARCHAR(50) NOT NULL,\n    lock_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    user_email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLogs (\n    log_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    lock_id INT NOT NULL,\n    access_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (\n    alert_id INT PRIMARY KEY,\n    log_id INT NOT NULL,\n    alert_type VARCHAR(50) NOT NULL,\n    alert_message TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_locks (\n    lock_id INT PRIMARY KEY,\n    lock_name VARCHAR(255),\n    lock_location VARCHAR(255),\n    is_locked BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lock_events (\n    event_id INT PRIMARY KEY,\n    lock_id INT,\n    event_type VARCHAR(50),\n    event_timestamp TIMESTAMP,\n    FOREIGN KEY (lock_id) REFERENCES smart_locks(lock_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(100),\n    user_email VARCHAR(255),\n    user_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_log (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    lock_id INT,\n    access_timestamp TIMESTAMP,\n    is_successful BOOLEAN,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (lock_id) REFERENCES smart_locks(lock_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    lock_id INT,\n    alert_type VARCHAR(50),\n    alert_description TEXT,\n    alert_timestamp TIMESTAMP,\n    FOREIGN KEY (lock_id) REFERENCES smart_locks(lock_id)\n);"
+      }
+    ]
+  }
+]

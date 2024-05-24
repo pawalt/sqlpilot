@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE edge_devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(50),\n  latitude DECIMAL,\n  longitude DECIMAL,\n  last_reported TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (id INT PRIMARY KEY,\nname VARCHAR(50),\nlatitude FLOAT,\nlongitude FLOAT);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (location_id INT PRIMARY KEY,\ndevice_id INT,\ntimestamp TIMESTAMP,\nlatitude FLOAT,\nlongitude FLOAT,\nFOREIGN KEY (device_id) REFERENCES devices(id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE edge_devices (\n  device_id UUID PRIMARY KEY,\n  device_name VARCHAR(50),\n  latitude FLOAT,\n  longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_status (\n  status_id SERIAL PRIMARY KEY,\n  device_id UUID,\n  status VARCHAR(50),\n  last_update TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_history (\n  history_id SERIAL PRIMARY KEY,\n  device_id UUID,\n  event VARCHAR(100),\n  event_timestamp TIMESTAMPTZ\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n id INT PRIMARY KEY,\n device_name VARCHAR(255),\n device_type VARCHAR(50),\n location_lat DOUBLE PRECISION,\n location_long DOUBLE PRECISION\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_status (\n id INT PRIMARY KEY,\n device_id INT,\n status VARCHAR(20),\n last_updated TIMESTAMP,\n FOREIGN KEY (device_id) REFERENCES devices(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_history (\n id INT PRIMARY KEY,\n device_id INT,\n event_type VARCHAR(50),\n event_description TEXT,\n event_timestamp TIMESTAMP,\n FOREIGN KEY (device_id) REFERENCES devices(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_alerts (\n id INT PRIMARY KEY,\n device_id INT,\n alert_type VARCHAR(50),\n alert_message TEXT,\n alert_timestamp TIMESTAMP,\n FOREIGN KEY (device_id) REFERENCES devices(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE edge_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    latitude DECIMAL(9, 6),\n    longitude DECIMAL(9, 6)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_status (\n    device_id INT,\n    status VARCHAR(20),\n    last_updated TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES edge_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_alerts (\n    alert_id INT PRIMARY KEY,\n    device_id INT,\n    alert_type VARCHAR(50),\n    alert_message TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES edge_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_tracking (\n    device_id INT,\n    track_date DATE,\n    track_time TIME,\n    latitude DECIMAL(9, 6),\n    longitude DECIMAL(9, 6),\n    FOREIGN KEY (device_id) REFERENCES edge_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    log_message TEXT,\n    log_timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES edge_devices(device_id)\n);"
+      }
+    ]
+  }
+]

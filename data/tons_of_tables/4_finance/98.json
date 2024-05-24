@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_payments (\n payment_id INT PRIMARY KEY,\n card_number VARCHAR(50),\n card_holder_name VARCHAR(100),\n expiration_date DATE,\n cvv VARCHAR(10),\n encrypted_card_info BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_cards (\n   id UUID NOT NULL,\n   card_number TEXT NOT NULL,\n   card_holder TEXT NOT NULL,\n   expiration_date DATE NOT NULL,\n   cvv TEXT NOT NULL,\n   encrypted_data BYTEA NOT NULL,\n   PRIMARY KEY (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n   transaction_id UUID NOT NULL,\n   card_id UUID NOT NULL,\n   amount DECIMAL NOT NULL,\n   transaction_date TIMESTAMP NOT NULL,\n   status VARCHAR(20) NOT NULL,\n   PRIMARY KEY (transaction_id),\n   FOREIGN KEY (card_id) REFERENCES payment_cards(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_cards (\n    card_id SERIAL PRIMARY KEY,\n    card_holder_name VARCHAR(50) NOT NULL,\n    card_number VARCHAR(16) NOT NULL,\n    expiry_date DATE NOT NULL,\n    cvv SMALLINT NOT NULL,\n    encrypted_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    card_id INTEGER REFERENCES payment_cards(card_id),\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_cards (\n    card_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    card_number VARCHAR(16) NOT NULL,\n    expiration_date DATE NOT NULL,\n    cvv VARCHAR(3) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    card_id UUID NOT NULL,\n    amount DECIMAL NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n    wallet_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    balance DECIMAL NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cards (\n  card_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(user_id),\n  card_number VARCHAR(16) NOT NULL,\n  expiry_date DATE NOT NULL,\n  cvv VARCHAR(3) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(user_id),\n  card_id INT REFERENCES cards(card_id),\n  amount DECIMAL(10, 2) NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n  wallet_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(user_id),\n  balance DECIMAL(10, 2) DEFAULT 0.00\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokens (\n  token_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(user_id),\n  token_value UUID UNIQUE NOT NULL,\n  expiration TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

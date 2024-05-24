@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    product_quantity INT NOT NULL,\n    product_price DECIMAL(10, 2) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  quantity INT NOT NULL,\n  last_updated TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_availability (\n  product_id INT PRIMARY KEY,\n  is_available BOOLEAN NOT NULL,\n  last_checked TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(255),\n    product_description TEXT,\n    available_quantity INT,\n    price DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id SERIAL PRIMARY KEY,\n    product_id UUID,\n    location VARCHAR(100),\n    quantity INT,\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_updates (\n    block_id SERIAL PRIMARY KEY,\n    product_id UUID,\n    updated_quantity INT,\n    updated_at TIMESTAMP,\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    quantity INT NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_availability (\n    product_id INT PRIMARY KEY,\n    available BOOLEAN NOT NULL,\n    last_updated TIMESTAMP NOT NULL DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_updates (\n    update_id SERIAL PRIMARY KEY,\n    product_id INT NOT NULL,\n    update_description TEXT NOT NULL,\n    update_time TIMESTAMP NOT NULL DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE e-commerce_stores (\n    store_id SERIAL PRIMARY KEY,\n    store_name VARCHAR(255) NOT NULL,\n    total_sales DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Inventory (\n    product_id SERIAL PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    quantity INT NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductAvailability (\n    product_id INT REFERENCES Inventory(product_id),\n    available_quantity INT NOT NULL,\n    last_update TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BlockchainTransactions (\n    transaction_id SERIAL PRIMARY KEY,\n    product_id INT REFERENCES Inventory(product_id),\n    transaction_type VARCHAR(50) NOT NULL,\n    transaction_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EcommerceStores (\n    store_id SERIAL PRIMARY KEY,\n    store_name VARCHAR(255) NOT NULL,\n    store_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StoreInventory (\n    store_id INT REFERENCES EcommerceStores(store_id),\n    product_id INT REFERENCES Inventory(product_id),\n    stock_quantity INT NOT NULL\n);"
+      }
+    ]
+  }
+]

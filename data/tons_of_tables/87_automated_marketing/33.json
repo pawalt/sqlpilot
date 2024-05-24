@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audience_segmentation (\n  audience_id INT PRIMARY KEY,\n  audience_name VARCHAR(255),\n  age_range VARCHAR(50),\n  location VARCHAR(100),\n  interests VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AudienceSegments ( \n    segment_id UUID PRIMARY KEY, \n    segment_name VARCHAR(100), \n    audience_size INT, \n    description TEXT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AudienceMembers ( \n    member_id UUID PRIMARY KEY, \n    segment_id UUID REFERENCES AudienceSegments(segment_id), \n    member_name VARCHAR(100), \n    email VARCHAR(100), \n    age INT, \n    gender VARCHAR(10) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AudienceSegments (\n  id UUID PRIMARY KEY,\n  segment_name VARCHAR(255),\n  segment_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SegmentMembers (\n  member_id UUID,\n  segment_id UUID,\n  join_date DATE,\n  PRIMARY KEY (member_id, segment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SegmentMetrics (\n  metric_id SERIAL PRIMARY KEY,\n  segment_id UUID,\n  metric_name VARCHAR(255),\n  metric_value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AudienceSegments (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SegmentAttributes (\n    attribute_id INT PRIMARY KEY,\n    attribute_name VARCHAR(50) NOT NULL,\n    type VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SegmentMembership (\n    member_id INT,\n    segment_id INT,\n    PRIMARY KEY (member_id, segment_id),\n    FOREIGN KEY (member_id) REFERENCES Users(user_id),\n    FOREIGN KEY (segment_id) REFERENCES AudienceSegments(segment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    age INT,\n    gender VARCHAR(10)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audience_segments (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(255),\n    segment_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audience_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(255),\n    member_email VARCHAR(255),\n    segment_id INT,\n    FOREIGN KEY (segment_id) REFERENCES audience_segments(segment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE demographics (\n    member_id INT,\n    age INT,\n    gender VARCHAR(10),\n    income DECIMAL(10,2),\n    FOREIGN KEY (member_id) REFERENCES audience_members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE location_data (\n    member_id INT,\n    country VARCHAR(50),\n    city VARCHAR(50),\n    postal_code VARCHAR(10),\n    FOREIGN KEY (member_id) REFERENCES audience_members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_data (\n    member_id INT,\n    purchase_history TEXT,\n    behavior_score INT,\n    FOREIGN KEY (member_id) REFERENCES audience_members(member_id)\n);\n"
+      }
+    ]
+  }
+]

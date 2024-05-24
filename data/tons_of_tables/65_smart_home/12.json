@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_Access_Control (\n\tdevice_id INT PRIMARY KEY,\n\tdevice_name VARCHAR(255) NOT NULL,\n\tuser_id INT NOT NULL,\n\tpassword VARCHAR(50) NOT NULL,\n\taccess_level VARCHAR(20) DEFAULT 'User',\n\tauthentication_token UUID\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_control_table (\n    device_id UUID PRIMARY KEY,\n    user_id UUID,\n    access_level INT,\n    access_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n\nCREATE TABLE device_info_table (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    date_added DATE,\n    last_connection_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(255) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    owner_id UUID NOT NULL,\n    location VARCHAR(100),\n    created_at TIMESTAMP NOT NULL\n);\n\nCREATE TABLE permissions (\n    permission_id UUID PRIMARY KEY,\n    device_id UUID NOT NULL,\n    user_id UUID NOT NULL,\n    permission_type VARCHAR(20) NOT NULL,\n    granted BOOLEAN NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n\nCREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    role VARCHAR(20) NOT NULL,\n    last_login TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_control (\n    device_id UUID PRIMARY KEY,\n    user_id UUID,\n    permission_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id UUID PRIMARY KEY,\n    permission_name VARCHAR(50),\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iot_devices (\n    id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    location VARCHAR(100),\n    owner_id INT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_permissions (\n    permission_id INT PRIMARY KEY,\n    device_id INT,\n    user_id INT,\n    permission_type VARCHAR(50),\n    granted_at TIMESTAMP,\n    revoked_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    password VARCHAR(100),\n    role VARCHAR(50),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50),\n    permissions JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    user_id INT,\n    action_type VARCHAR(50),\n    action_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

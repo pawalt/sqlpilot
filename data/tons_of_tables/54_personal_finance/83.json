@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE underwriting_process (\n  applicant_id INT PRIMARY KEY,\n  age INT,\n  income DECIMAL,\n  credit_score INT,\n  approved_policy BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_information (\n  policy_id INT PRIMARY KEY,\n  applicant_name VARCHAR(255),\n  policy_type VARCHAR(50),\n  policy_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_factors (\n  risk_id INT PRIMARY KEY,\n  policy_id INT REFERENCES policy_information(policy_id),\n  credit_score INT,\n  income DECIMAL(10, 2),\n  health_condition VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE risk_factors (\n  factor_id INT PRIMARY KEY,\n  factor_name VARCHAR(50) NOT NULL,\n  weight FLOAT NOT NULL\n);\n\nCREATE TABLE policy_applications (\n  application_id SERIAL PRIMARY KEY,\n  applicant_name VARCHAR(100) NOT NULL,\n  policy_type VARCHAR(50) NOT NULL,\n  application_date DATE NOT NULL\n);\n\nCREATE TABLE policy_eligibility (\n  eligibility_id SERIAL PRIMARY KEY,\n  application_id INT REFERENCES policy_applications(application_id),\n  factor_id INT REFERENCES risk_factors(factor_id),\n  eligibility_status BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RiskFactors (\n    id INT PRIMARY KEY,\n    age INT,\n    credit_score INT,\n    income DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyEligibility (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    policy_type VARCHAR(255),\n    is_eligible BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerData (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    address VARCHAR(255),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyHistory (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    policy_id INT,\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE applicants (\n  id UUID PRIMARY KEY,\n  name VARCHAR(50),\n  age INT,\n  occupation VARCHAR(50),\n  income DECIMAL(10, 2),\n  credit_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n  policy_id UUID PRIMARY KEY,\n  policy_name VARCHAR(100),\n  coverage_amount DECIMAL(12, 2),\n  premium_amount DECIMAL(10, 2),\n  deductible DECIMAL(8, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_factors (\n  risk_id UUID PRIMARY KEY,\n  factor_name VARCHAR(100),\n  weight DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_applications (\n  application_id UUID PRIMARY KEY,\n  applicant_id UUID,\n  policy_id UUID,\n  application_date DATE,\n  status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE underwriting_results (\n  result_id UUID PRIMARY KEY,\n  application_id UUID,\n  policy_id UUID,\n  risk_score DECIMAL(5, 2),\n  approval_status VARCHAR(10),\n  remarks VARCHAR(255)\n);"
+      }
+    ]
+  }
+]

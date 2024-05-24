@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE task_dependencies (\n    task_id INT PRIMARY KEY,\n    dependency_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE task_dependencies (\n    task_id INT PRIMARY KEY,\n    dependent_task_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_executions (\n    execution_id INT PRIMARY KEY,\n    task_id INT,\n    execution_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TaskDependencies (\n  task_id INT PRIMARY KEY,\n  dependent_task_id INT,\n  FOREIGN KEY (dependent_task_id) REFERENCES TaskDependencies(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskDetails (\n  task_id INT PRIMARY KEY,\n  task_name VARCHAR(255),\n  task_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskSchedule (\n  schedule_id INT PRIMARY KEY,\n  task_id INT,\n  scheduled_time TIMESTAMP,\n  FOREIGN KEY (task_id) REFERENCES TaskDetails(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    dependency_id INT,\n    CONSTRAINT fk_dependency FOREIGN KEY(dependency_id) REFERENCES tasks(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_dependencies (\n    dependency_id SERIAL PRIMARY KEY,\n    depends_on_id INT,\n    dependent_id INT,\n    CONSTRAINT fk_depends_on FOREIGN KEY(depends_on_id) REFERENCES tasks(task_id),\n    CONSTRAINT fk_dependent FOREIGN KEY(dependent_id) REFERENCES tasks(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assigned_tasks (\n    assignment_id SERIAL PRIMARY KEY,\n    task_id INT,\n    assignee VARCHAR(100) NOT NULL,\n    deadline DATE,\n    CONSTRAINT fk_task FOREIGN KEY(task_id) REFERENCES tasks(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_history (\n    history_id SERIAL PRIMARY KEY,\n    task_id INT,\n    execution_date TIMESTAMP NOT NULL,\n    status VARCHAR(50) NOT NULL,\n    remarks VARCHAR(255),\n    CONSTRAINT fk_task_history FOREIGN KEY(task_id) REFERENCES tasks(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n task_id INT PRIMARY KEY,\n task_name VARCHAR(255) NOT NULL,\n dependency_id INT,\n FOREIGN KEY(dependency_id) REFERENCES tasks(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dependencies (\n dependency_id INT PRIMARY KEY,\n dependency_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_dependencies (\n task_id INT,\n dependency_id INT,\n PRIMARY KEY(task_id, dependency_id),\n FOREIGN KEY(task_id) REFERENCES tasks(task_id),\n FOREIGN KEY(dependency_id) REFERENCES dependencies(dependency_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_logs (\n log_id INT PRIMARY KEY,\n task_id INT,\n log_message TEXT,\n timestamp TIMESTAMP,\n FOREIGN KEY(task_id) REFERENCES tasks(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_status (\n status_id INT PRIMARY KEY,\n task_id INT,\n status VARCHAR(50) NOT NULL,\n FOREIGN KEY(task_id) REFERENCES tasks(task_id)\n);"
+      }
+    ]
+  }
+]

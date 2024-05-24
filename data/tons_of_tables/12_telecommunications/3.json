@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_tracking (\n  device_id UUID PRIMARY KEY,\n  device_name VARCHAR(255),\n  device_type VARCHAR(50),\n  location_latitude FLOAT,\n  location_longitude FLOAT,\n  network_provider VARCHAR(100),\n  last_update TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_usage (\n    device_id INT PRIMARY KEY,\n    usage_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_location (\n    device_id INT PRIMARY KEY,\n    location_data JSONB\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tracking_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    location_id INT,\n    last_update TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude DECIMAL(10, 8),\n    longitude DECIMAL(11, 8),\n    region VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_usage (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    timestamp TIMESTAMP,\n    data_usage DECIMAL(10, 2),\n    FOREIGN KEY (device_id) REFERENCES tracking_devices(device_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_info (\n    device_id UUID PRIMARY KEY,\n    device_name TEXT,\n    device_type TEXT,\n    location_id UUID,\n    CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES location_info(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE location_info (\n    location_id UUID PRIMARY KEY,\n    location_name TEXT,\n    country TEXT,\n    region TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_usage (\n    usage_id UUID PRIMARY KEY,\n    device_id UUID,\n    data_usage INT,\n    network_type TEXT,\n    CONSTRAINT fk_device FOREIGN KEY (device_id) REFERENCES device_info(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_activity (\n    activity_id UUID PRIMARY KEY,\n    location_id UUID,\n    connection_type TEXT,\n    activity_time TIMESTAMP,\n    CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES location_info(location_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Device (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    location_id INT,\n    manufacture_date DATE,\n    last_usage_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Location (\n    location_id INT PRIMARY KEY,\n    country VARCHAR(50),\n    city VARCHAR(50),\n    latitude FLOAT,\n    longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Network (\n    network_id INT PRIMARY KEY,\n    network_name VARCHAR(100),\n    network_type VARCHAR(50),\n    bandwidth_limit INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Usage (\n    usage_id INT PRIMARY KEY,\n    device_id INT,\n    network_id INT,\n    usage_date DATE,\n    data_transferred FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ErrorLog (\n    log_id INT PRIMARY KEY,\n    error_message TEXT,\n    log_timestamp TIMESTAMP,\n    device_id INT\n);\n"
+      }
+    ]
+  }
+]

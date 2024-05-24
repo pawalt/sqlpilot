@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emissions_data (\n    trip_id INT PRIMARY KEY,\n    transportation_mode VARCHAR(50),\n    distance_km DECIMAL,\n    emissions_kg DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE modes_of_transport (\n  mode_id SERIAL PRIMARY KEY,\n  mode_name VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE trip_emissions (\n  trip_id SERIAL PRIMARY KEY,\n  mode_id INT NOT NULL,\n  distance_km FLOAT NOT NULL,\n  carbon_emissions_kg FLOAT NOT NULL\n   FOREIGN KEY (mode_id) REFERENCES modes_of_transport(mode_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transportation_modes (\n    mode_id INT PRIMARY KEY,\n    mode_name VARCHAR(50) NOT NULL,\n    emission_factor DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trips (\n    trip_id INT PRIMARY KEY,\n    mode_id INT NOT NULL,\n    distance DECIMAL(10,2) NOT NULL,\n    emission DECIMAL(10,2) NOT NULL,\n    FOREIGN KEY (mode_id) REFERENCES transportation_modes(mode_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE carbon_footprint (\n    trip_id INT PRIMARY KEY,\n    total_emission DECIMAL(10,2) NOT NULL,\n    carbon_tax DECIMAL(10,2) NOT NULL,\n    FOREIGN KEY (trip_id) REFERENCES trips(trip_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transportation_modes (\n    mode_id INT PRIMARY KEY,\n    mode_name VARCHAR(50) NOT NULL,\n    emission_factor DECIMAL(10, 2) NOT NULL\n);\n\nCREATE TABLE trips (\n    trip_id INT PRIMARY KEY,\n    mode_id INT REFERENCES transportation_modes(mode_id),\n    distance DECIMAL(10, 2) NOT NULL,\n    date DATE NOT NULL\n);\n\nCREATE TABLE emissions (\n    trip_id INT REFERENCES trips(trip_id),\n    carbon_footprint DECIMAL(10, 2) NOT NULL\n);\n\nCREATE TABLE countries (\n    country_id INT PRIMARY KEY,\n    country_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transportation_modes (\n    mode_id SERIAL PRIMARY KEY,\n    mode_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trips (\n    trip_id SERIAL PRIMARY KEY,\n    mode_id INT REFERENCES transportation_modes(mode_id),\n    distance FLOAT NOT NULL,\n    date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emissions (\n    emission_id SERIAL PRIMARY KEY,\n    trip_id INT REFERENCES trips(trip_id),\n    emission_amount FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE carbon_footprint (\n    footprint_id SERIAL PRIMARY KEY,\n    trip_id INT REFERENCES trips(trip_id),\n    carbon_footprint_value FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  }
+]

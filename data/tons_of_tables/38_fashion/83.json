@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SalesDataFashionCollection (\n    sale_id INT PRIMARY KEY,\n    collection_name VARCHAR(50),\n    designer_name VARCHAR(50),\n    sale_date DATE,\n    total_sales DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fashion_collections (\n    collection_id INT PRIMARY KEY,\n    collection_name VARCHAR(255),\n    designer_name VARCHAR(255),\n    year INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sales_data (\n    sale_id INT PRIMARY KEY,\n    collection_id INT,\n    sale_date DATE,\n    sale_amount DECIMAL(10, 2)\n    FOREIGN KEY (collection_id) REFERENCES fashion_collections(collection_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SalesData (\n    sale_id INT PRIMARY KEY,\n    collection_name VARCHAR(50),\n    sale_date DATE,\n    sale_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FashionDesigners (\n    designer_id INT PRIMARY KEY,\n    designer_name VARCHAR(50),\n    designer_specialization VARCHAR(50),\n    designer_experience INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FashionTrends (\n    trend_id INT PRIMARY KEY,\n    trend_name VARCHAR(50),\n    trend_description TEXT,\n    trend_season VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FashionCollections (\n    collection_id UUID PRIMARY KEY,\n    collection_name VARCHAR(100),\n    designer_name VARCHAR(100),\n    design_theme VARCHAR(100),\n    launch_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SalesData (\n    sale_id UUID PRIMARY KEY,\n    collection_id UUID,\n    sale_date TIMESTAMP,\n    sale_amount DECIMAL,\n    FOREIGN KEY (collection_id) REFERENCES FashionCollections(collection_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FashionShows (\n    show_id UUID PRIMARY KEY,\n    show_date TIMESTAMP,\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrendsAnalysis (\n    analysis_id UUID PRIMARY KEY,\n    collection_id UUID,\n    trend_description TEXT,\n    analysis_date TIMESTAMP,\n    FOREIGN KEY (collection_id) REFERENCES FashionCollections(collection_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Collection (\n    collection_id UUID PRIMARY KEY,\n    collection_name TEXT NOT NULL,\n    designer_name TEXT NOT NULL,\n    launch_date DATE\n);\n\nCREATE TABLE ClothingItem (\n    item_id SERIAL PRIMARY KEY,\n    item_name TEXT NOT NULL,\n    collection_id UUID REFERENCES Collection(collection_id),\n    category TEXT NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);\n\nCREATE TABLE SalesRecord (\n    record_id SERIAL PRIMARY KEY,\n    item_id INTEGER REFERENCES ClothingItem(item_id),\n    sale_date DATE NOT NULL,\n    quantity INTEGER NOT NULL,\n    total_price DECIMAL(10, 2) NOT NULL\n);\n\nCREATE TABLE Customer (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name TEXT NOT NULL,\n    email TEXT UNIQUE\n);\n\nCREATE TABLE PurchaseRecord (\n    purchase_id SERIAL PRIMARY KEY,\n    customer_id INTEGER REFERENCES Customer(customer_id),\n    item_id INTEGER REFERENCES ClothingItem(item_id),\n    purchase_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

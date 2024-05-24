@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE circulation (\n    route_id INT PRIMARY KEY,\n    newspaper_name VARCHAR(255),\n    magazine_name VARCHAR(255),\n    quantity_distributed INT,\n    delivery_schedule VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE newspapers (\n  newspaper_id INT PRIMARY KEY,\n  newspaper_name VARCHAR(255) NOT NULL,\n  distribution_route_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE magazines (\n  magazine_id INT PRIMARY KEY,\n  magazine_name VARCHAR(255) NOT NULL,\n  quantity_distributed INT NOT NULL,\n  delivery_schedule VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE distribution_routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(255),\n  start_location VARCHAR(255),\n  end_location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantities_distributed (\n  distribution_id INT PRIMARY KEY,\n  route_id INT,\n  newspaper_quantity INT,\n  magazine_quantity INT,\n  FOREIGN KEY (route_id) REFERENCES distribution_routes(route_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_schedules (\n  schedule_id INT PRIMARY KEY,\n  distribution_id INT,\n  delivery_date DATE,\n  delivery_time TIME,\n  FOREIGN KEY (distribution_id) REFERENCES quantities_distributed(distribution_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE circulation_route (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE newspaper_distribution (\n  distribution_id INT PRIMARY KEY,\n  newspaper_id INT NOT NULL,\n  route_id INT NOT NULL,\n  quantity_distributed INT NOT NULL,\n  distribution_date DATE NOT NULL,\n  FOREIGN KEY (route_id) REFERENCES circulation_route(route_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE magazine_distribution (\n  distribution_id INT PRIMARY KEY,\n  magazine_id INT NOT NULL,\n  route_id INT NOT NULL,\n  quantity_distributed INT NOT NULL,\n  distribution_date DATE NOT NULL,\n  FOREIGN KEY (route_id) REFERENCES circulation_route(route_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_schedule (\n  delivery_id INT PRIMARY KEY,\n  route_id INT NOT NULL,\n  delivery_time TIME NOT NULL,\n  delivery_day VARCHAR(10) NOT NULL,\n  FOREIGN KEY (route_id) REFERENCES circulation_route(route_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE circulation_routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(100) NOT NULL,\n  area_covered VARCHAR(200) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE newspapers (\n  newspaper_id INT PRIMARY KEY,\n  newspaper_name VARCHAR(100) NOT NULL,\n  language VARCHAR(50) NOT NULL,\n  publication_frequency VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE magazines (\n  magazine_id INT PRIMARY KEY,\n  magazine_name VARCHAR(100) NOT NULL,\n  category VARCHAR(50) NOT NULL,\n  publisher VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution ( \n  distribution_id INT PRIMARY KEY,\n  publication_id INT NOT NULL,\n  route_id INT NOT NULL,\n  quantity_distributed INT NOT NULL,\n  distribution_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_schedules (\n  schedule_id INT PRIMARY KEY,\n  route_id INT NOT NULL,\n  delivery_day VARCHAR(20) NOT NULL,\n  delivery_time TIME NOT NULL\n);"
+      }
+    ]
+  }
+]

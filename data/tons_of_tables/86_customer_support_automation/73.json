@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE KnowledgeBaseContent (\n    content_id INT PRIMARY KEY,\n    title TEXT NOT NULL,\n    author TEXT,\n    category TEXT,\n    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE content_metadata (\n    content_id INT PRIMARY KEY,\n    title VARCHAR(255),\n    author VARCHAR(100),\n    created_at TIMESTAMP,\n    last_modified_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content_tags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE content_metadata (\n    id INT PRIMARY KEY,\n    title VARCHAR(255),\n    author VARCHAR(100),\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tag_metadata (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50),\n    description VARCHAR(255),\n    content_id INT,\n    FOREIGN KEY (content_id) REFERENCES content_metadata(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_metadata (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    creation_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Content_Metadata (\n  content_id INT PRIMARY KEY,\n  content_title VARCHAR(255),\n  content_body TEXT,\n  author_id INT,\n  created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Content_Tags (\n  tag_id INT PRIMARY KEY,\n  tag_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Content_Authors (\n  author_id INT PRIMARY KEY,\n  author_name VARCHAR(100),\n  author_email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Content_Relationships (\n  relationship_id INT PRIMARY KEY,\n  content_id INT,\n  tag_id INT,\n  FOREIGN KEY (content_id) REFERENCES Content_Metadata(content_id),\n  FOREIGN KEY (tag_id) REFERENCES Content_Tags(tag_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE metadata_content (\n    content_id UUID PRIMARY KEY,\n    content_title TEXT NOT NULL,\n    author_name TEXT,\n    category TEXT,\n    creation_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content_tags (\n    tag_id UUID PRIMARY KEY,\n    content_id UUID REFERENCES metadata_content(content_id) ON DELETE CASCADE,\n    tag_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content_comments (\n    comment_id UUID PRIMARY KEY,\n    content_id UUID REFERENCES metadata_content(content_id) ON DELETE CASCADE,\n    commenter_name TEXT,\n    comment_text TEXT,\n    comment_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content_ratings (\n    rating_id UUID PRIMARY KEY,\n    content_id UUID REFERENCES metadata_content(content_id) ON DELETE CASCADE,\n    rating_value INTEGER,\n    rating_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content_views (\n    view_id UUID PRIMARY KEY,\n    content_id UUID REFERENCES metadata_content(content_id) ON DELETE CASCADE,\n    viewer_ip_address INET,\n    view_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

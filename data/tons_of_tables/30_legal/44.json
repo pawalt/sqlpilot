@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE court_cases (\n    case_id SERIAL PRIMARY KEY,\n    case_name VARCHAR(100) NOT NULL,\n    case_type VARCHAR(50) NOT NULL,\n    case_status VARCHAR(20) DEFAULT 'Active',\n    filing_date DATE,\n    hearing_date DATE,\n    judge VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE court_cases (\n    case_id UUID PRIMARY KEY,\n    case_number VARCHAR(50) NOT NULL,\n    case_type VARCHAR(50) NOT NULL,\n    case_status VARCHAR(20) DEFAULT 'Pending',\n    case_description TEXT,\n    filing_date DATE\n);\n\nCREATE TABLE legal_documents (\n    document_id UUID PRIMARY KEY,\n    document_name VARCHAR(100) NOT NULL,\n    document_type VARCHAR(50) NOT NULL,\n    document_content TEXT,\n    case_id UUID REFERENCES court_cases(case_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE court_cases (\n    case_id INT PRIMARY KEY,\n    case_name VARCHAR(255),\n    case_type VARCHAR(50),\n    case_status VARCHAR(50),\n    filing_date DATE,\n    court_location VARCHAR(100),\n    case_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE legal_documents (\n    doc_id INT PRIMARY KEY,\n    case_id INT,\n    doc_type VARCHAR(50),\n    doc_content TEXT,\n    doc_date DATE,\n    doc_status VARCHAR(50),\n    FOREIGN KEY (case_id) REFERENCES court_cases(case_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE court_users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(100),\n    user_role VARCHAR(50),\n    user_email VARCHAR(100),\n    user_phone VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE court_cases (\n  case_id INT PRIMARY KEY,\n  case_number VARCHAR(255) NOT NULL,\n  case_type VARCHAR(50),\n  court_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE legal_documents (\n  doc_id INT PRIMARY KEY,\n  doc_name VARCHAR(255) NOT NULL,\n  doc_type VARCHAR(50),\n  case_id INT,\n  FOREIGN KEY (case_id) REFERENCES court_cases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lawyers (\n  lawyer_id INT PRIMARY KEY,\n  lawyer_name VARCHAR(255) NOT NULL,\n  expertise_area VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE case_history (\n  history_id INT PRIMARY KEY,\n  case_id INT,\n  lawyer_id INT,\n  action_taken TEXT,\n  date_action DATE,\n  FOREIGN KEY (case_id) REFERENCES court_cases(case_id),\n  FOREIGN KEY (lawyer_id) REFERENCES lawyers(lawyer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CourtCases (\n    case_id UUID PRIMARY KEY,\n    case_number VARCHAR(50),\n    case_title VARCHAR(100),\n    case_description TEXT,\n    filing_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE LegalDocuments (\n    doc_id UUID PRIMARY KEY,\n    doc_title VARCHAR(100),\n    doc_type VARCHAR(50),\n    case_id UUID REFERENCES CourtCases(case_id),\n    create_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Judges (\n    judge_id UUID PRIMARY KEY,\n    judge_name VARCHAR(100),\n    judge_role VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Lawyers (\n    lawyer_id UUID PRIMARY KEY,\n    lawyer_name VARCHAR(100),\n    lawyer_specialty VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CourtSessions (\n    session_id UUID PRIMARY KEY,\n    case_id UUID REFERENCES CourtCases(case_id),\n    judge_id UUID REFERENCES Judges(judge_id),\n    start_datetime TIMESTAMP,\n    end_datetime TIMESTAMP\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE construction_costs_expenses (\n    project_id INT,\n    project_name VARCHAR(255),\n    cost_type VARCHAR(50),\n    cost_amount DECIMAL(10, 2),\n    expense_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE construction_costs (cost_id INT, project_name VARCHAR(255), cost_amount DECIMAL(10,2), cost_category VARCHAR(50));\nCREATE TABLE expenses (expense_id INT, project_name VARCHAR(255), expense_amount DECIMAL(10,2), expense_category VARCHAR(50));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE construction_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n    expense_id INT PRIMARY KEY,\n    project_id INT,\n    expense_type VARCHAR(100),\n    amount DECIMAL(10, 2),\n    expense_date DATE,\n    FOREIGN KEY (project_id) REFERENCES construction_projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    salary DECIMAL(10, 2),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES construction_projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE construction_projects (\n project_id INT PRIMARY KEY,\n project_name VARCHAR(255),\n start_date DATE,\n end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n expense_id INT PRIMARY KEY,\n project_id INT,\n expense_category VARCHAR(100),\n expense_amount DECIMAL(10, 2),\n expense_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE materials (\n material_id INT PRIMARY KEY,\n material_name VARCHAR(255),\n material_category VARCHAR(100),\n material_price DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE labor_costs (\n labor_id INT PRIMARY KEY,\n labor_name VARCHAR(255),\n labor_category VARCHAR(100),\n labor_rate DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project (project_id UUID PRIMARY KEY,\nproject_name VARCHAR(255) NOT NULL,\nstart_date DATE,\nend_date DATE,\nproject_manager VARCHAR(255));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE expense (expense_id UUID PRIMARY KEY,\nproject_id UUID REFERENCES project(project_id),\nexpense_date DATE,\nexpense_description VARCHAR(255),\namount DECIMAL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cost_category (category_id UUID PRIMARY KEY,\ncategory_name VARCHAR(255) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cost_item (item_id UUID PRIMARY KEY,\nitem_name VARCHAR(255) NOT NULL,\ncategory_id UUID REFERENCES cost_category(category_id),\ncost DECIMAL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_expense (project_id UUID REFERENCES project(project_id),\nexpense_id UUID REFERENCES expense(expense_id),\nFOREIGN KEY (project_id, expense_id) REFERENCES project(project_id, expense_id));\n"
+      }
+    ]
+  }
+]

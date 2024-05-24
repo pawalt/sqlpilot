@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_time TIME,\n    location VARCHAR(255),\n    organizer VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CulturalEvents (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_location VARCHAR(255),\n    tickets_available INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Performances (\n    performance_id INT PRIMARY KEY,\n    event_id INT,\n    artist_name VARCHAR(255),\n    start_time TIME,\n    end_time TIME,\n    ticket_price DECIMAL(10,2),\n    FOREIGN KEY (event_id) REFERENCES CulturalEvents(event_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cultural_events (\n    event_id SERIAL PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    event_date DATE,\n    event_location VARCHAR(100),\n    event_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performances (\n    performance_id SERIAL PRIMARY KEY,\n    event_id INT REFERENCES cultural_events(event_id),\n    performer_name VARCHAR(100),\n    performance_type VARCHAR(50),\n    performance_duration INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE schedule (\n    schedule_id SERIAL PRIMARY KEY,\n    event_id INT REFERENCES cultural_events(event_id),\n    performance_id INT REFERENCES performances(performance_id),\n    schedule_date DATE,\n    start_time TIME,\n    end_time TIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Events (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date TIMESTAMP,\n    location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Venues (\n    venue_id UUID PRIMARY KEY,\n    venue_name VARCHAR(255),\n    address VARCHAR(255),\n    capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Performances (\n    performance_id UUID PRIMARY KEY,\n    perfomance_name VARCHAR(255),\n    event_id UUID REFERENCES Events(event_id),\n    venue_id UUID REFERENCES Venues(venue_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Tickets (\n    ticket_id UUID PRIMARY KEY,\n    performance_id UUID REFERENCES Performances(performance_id),\n    price DECIMAL(10,2),\n    available_quantity INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Event (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR(255) NOT NULL,\n  event_date DATE,\n  event_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Venue (\n  venue_id INT PRIMARY KEY,\n  venue_name VARCHAR(255) NOT NULL,\n  venue_capacity INT,\n  venue_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Performer (\n  performer_id INT PRIMARY KEY,\n  performer_name VARCHAR(255) NOT NULL,\n  performer_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Schedule (\n  schedule_id INT PRIMARY KEY,\n  event_id INT,\n  venue_id INT,\n  performer_id INT,\n  schedule_date DATE,\n  FOREIGN KEY (event_id) REFERENCES Event(event_id),\n  FOREIGN KEY (venue_id) REFERENCES Venue(venue_id),\n  FOREIGN KEY (performer_id) REFERENCES Performer(performer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Ticket (\n  ticket_id INT PRIMARY KEY,\n  schedule_id INT,\n  ticket_price DECIMAL(10,2),\n  ticket_status VARCHAR(20),\n  FOREIGN KEY (schedule_id) REFERENCES Schedule(schedule_id)\n);"
+      }
+    ]
+  }
+]

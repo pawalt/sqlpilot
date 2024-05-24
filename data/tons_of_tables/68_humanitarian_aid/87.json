@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consumption_data (\n  building_id INT PRIMARY KEY,\n  date DATE,\n  energy_consumed DECIMAL,\n  energy_source VARCHAR(50),\n  carbon_footprint DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consumption_data (\n    building_id INT,\n    date DATE,\n    energy_consumed DECIMAL,\n    PRIMARY KEY (building_id, date)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_efficiency (\n    building_id INT,\n    efficiency_rating INT,\n    carbon_footprint DECIMAL,\n    PRIMARY KEY (building_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE buildings (\n  building_id UUID PRIMARY KEY,\n  building_name VARCHAR(255) NOT NULL,\n  address VARCHAR(255) NOT NULL,\n  total_energy_consumed DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_meters (\n  meter_id UUID PRIMARY KEY,\n  building_id UUID REFERENCES buildings(building_id),\n  meter_type VARCHAR(50) NOT NULL,\n  installation_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n  consumption_id UUID PRIMARY KEY,\n  meter_id UUID REFERENCES energy_meters(meter_id),\n  consumption_date DATE NOT NULL,\n  energy_consumed DECIMAL(10,2) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE buildings (\n    building_id INT PRIMARY KEY,\n    building_name VARCHAR(255),\n    address VARCHAR(255),\n    built_year INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_readings (\n    reading_id INT PRIMARY KEY,\n    building_id INT,\n    reading_date DATE,\n    consumption DECIMAL,\n    CONSTRAINT fk_building FOREIGN KEY (building_id) REFERENCES buildings(building_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_costs (\n    cost_id INT PRIMARY KEY,\n    reading_id INT,\n    cost DECIMAL,\n    CONSTRAINT fk_reading FOREIGN KEY (reading_id) REFERENCES energy_readings(reading_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_efficiency (\n    building_id INT PRIMARY KEY,\n    efficiency_rating DECIMAL,\n    carbon_offset DECIMAL,\n    CONSTRAINT fk_building FOREIGN KEY (building_id) REFERENCES buildings(building_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Building (\n    building_id UUID PRIMARY KEY,\n    building_name VARCHAR(255),\n    address VARCHAR(255),\n    area_sqft INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n    consumption_id UUID PRIMARY KEY,\n    building_id UUID REFERENCES Building(building_id),\n    date DATE,\n    energy_kwh DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EfficiencyImprovements (\n    improvement_id UUID PRIMARY KEY,\n    building_id UUID REFERENCES Building(building_id),\n    improvement_type VARCHAR(255),\n    cost DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CarbonFootprint (\n    footprint_id UUID PRIMARY KEY,\n    building_id UUID REFERENCES Building(building_id),\n    footprint_metric DECIMAL,\n    date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergySource (\n    source_id UUID PRIMARY KEY,\n    source_name VARCHAR(255),\n    source_type VARCHAR(255),\n    carbon_intensity DECIMAL\n);\n"
+      }
+    ]
+  }
+]

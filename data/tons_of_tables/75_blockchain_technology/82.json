@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grid_maintenance_schedule (\n    schedule_id UUID PRIMARY KEY,\n    asset_id UUID NOT NULL,\n    maintenance_type VARCHAR(50) NOT NULL,\n    maintenance_date DATE NOT NULL,\n    duration_hours INT NOT NULL,\n    maintenance_cost DECIMAL(10,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n    schedule_id SERIAL PRIMARY KEY,\n    maintenance_task TEXT NOT NULL,\n    frequency INT NOT NULL,\n    last_completed_date DATE\n);\n\nCREATE TABLE maintenance_records (\n    record_id SERIAL PRIMARY KEY,\n    schedule_id INT REFERENCES maintenance_schedule(schedule_id),\n    maintenance_date DATE NOT NULL,\n    maintenance_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grid_maintenance_schedule (record_id INT PRIMARY KEY, equipment_id INT, maintenance_date DATE, completed BOOLEAN);"
+      },
+      {
+        "table_schema": "CREATE TABLE equipment (equipment_id INT PRIMARY KEY, equipment_name VARCHAR(50), location VARCHAR(50), last_maintenance_date DATE, status VARCHAR(20));"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_log (log_id INT PRIMARY KEY, maintenance_date DATE, equipment_id INT, technician_name VARCHAR(50), details TEXT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grid_maintenance (\n    maintenance_id INT PRIMARY KEY,\n    equipment_id INT,\n    maintenance_date DATE,\n    maintenance_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(50),\n    equipment_type VARCHAR(50),\n    manufacturer VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_log (\n    log_id INT PRIMARY KEY,\n    maintenance_id INT,\n    log_date TIMESTAMP,\n    log_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_cost (\n    cost_id INT PRIMARY KEY,\n    maintenance_id INT,\n    cost DECIMAL(10,2),\n    currency VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GridMaintenanceSchedule (\n    id UUID PRIMARY KEY,\n    grid_id UUID,\n    maintenance_date DATE,\n    maintenance_type TEXT,\n    maintenance_desc TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceHistory (\n    id UUID PRIMARY KEY,\n    schedule_id UUID,\n    maintenance_date DATE,\n    maintenance_type TEXT,\n    maintenance_result TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n    id UUID PRIMARY KEY,\n    maintenance_id UUID,\n    log_date TIMESTAMP,\n    log_description TEXT,\n    log_status TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceCost (\n    id UUID PRIMARY KEY,\n    maintenance_id UUID,\n    material_cost DECIMAL,\n    labor_cost DECIMAL,\n    total_cost DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BlockchainMetadata (\n    id UUID PRIMARY KEY,\n    block_id UUID,\n    timestamp TIMESTAMP,\n    description TEXT\n)"
+      }
+    ]
+  }
+]

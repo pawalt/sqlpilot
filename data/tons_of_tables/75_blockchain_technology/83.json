@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartMeterData (\n  id UUID PRIMARY KEY,\n  meter_id UUID NOT NULL,\n  reading_date DATE NOT NULL,\n  reading_time TIME NOT NULL,\n  consumption_kwh DECIMAL NOT NULL,\n  voltage DECIMAL NOT NULL,\n  CONSTRAINT fk_meter_id FOREIGN KEY (meter_id) REFERENCES Meters (id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_meter_data (\n    id INT PRIMARY KEY,\n    meter_id INT NOT NULL,\n    reading_timestamp TIMESTAMP NOT NULL,\n    reading_value FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_distribution (\n    distribution_id INT PRIMARY KEY,\n    distribution_point VARCHAR(255) NOT NULL,\n    voltage_level INT NOT NULL,\n    current_load FLOAT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_meters (\n    meter_id INT PRIMARY KEY,\n    street_address VARCHAR(255),\n    city VARCHAR(100),\n    state VARCHAR(2),\n    zip_code VARCHAR(10),\n    install_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meter_readings (\n    reading_id INT PRIMARY KEY,\n    meter_id INT,\n    reading_date DATE,\n    reading_value DECIMAL(10,2),\n    FOREIGN KEY (meter_id) REFERENCES smart_meters(meter_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    consumption_id INT PRIMARY KEY,\n    meter_id INT,\n    consumption_date DATE,\n    consumption_value DECIMAL(10,2),\n    FOREIGN KEY (meter_id) REFERENCES smart_meters(meter_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_meters (\n    meter_id SERIAL PRIMARY KEY,\n    location VARCHAR(255) NOT NULL,\n    manufacturer VARCHAR(255) NOT NULL,\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE electricity_readings (\n    reading_id SERIAL PRIMARY KEY,\n    meter_id INT REFERENCES smart_meters(meter_id),\n    reading_date TIMESTAMP,\n    reading_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    consumption_id SERIAL PRIMARY KEY,\n    meter_id INT REFERENCES smart_meters(meter_id),\n    date DATE,\n    consumed_energy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    anomaly_id SERIAL PRIMARY KEY,\n    meter_id INT REFERENCES smart_meters(meter_id),\n    anomaly_date TIMESTAMP,\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_meters (\n    id INT PRIMARY KEY,\n    meter_id INT,\n    location VARCHAR(255),\n    install_date DATE,\n    last_reading DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE readings (\n    reading_id INT PRIMARY KEY,\n    meter_id INT,\n    reading_value DECIMAL,\n    reading_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    address VARCHAR(255),\n    phone_number VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE usage_history (\n    id INT PRIMARY KEY,\n    meter_id INT,\n    usage_date DATE,\n    usage_value DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(255),\n    address VARCHAR(255),\n    contact_email VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

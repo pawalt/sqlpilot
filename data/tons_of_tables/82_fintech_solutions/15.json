@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FraudMonitoring (\n   id SERIAL PRIMARY KEY,\n   activity_time TIMESTAMP,\n   activity_description TEXT,\n   user_id INT,\n   is_fraudulent BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraudulent_activities (\n    id INT PRIMARY KEY,\n    activity_type VARCHAR(50),\n    activity_description TEXT,\n    activity_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_reporting (\n    report_id INT PRIMARY KEY,\n    reporter_name VARCHAR(50),\n    report_date TIMESTAMP,\n    fraud_activity_id INT,\n    FOREIGN KEY (fraud_activity_id) REFERENCES fraudulent_activities(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraudulent_activities (\n    id INT PRIMARY KEY,\n    activity_description TEXT,\n    activity_date TIMESTAMP,\n    detected_by VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    registration_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n    report_id INT PRIMARY KEY,\n    user_id INT,\n    activity_id INT,\n    report_date TIMESTAMP,\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),\n    CONSTRAINT fk_activity_id FOREIGN KEY (activity_id) REFERENCES fraudulent_activities(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraudulent_activities (\n    activity_id INT PRIMARY KEY,\n    activity_type VARCHAR(255),\n    user_id INT,\n    report_date TIMESTAMP,\n    reported_by VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE activity_details (\n    detail_id INT PRIMARY KEY,\n    activity_id INT,\n    detail_description TEXT,\n    reported_by VARCHAR(255),\n    report_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_reports (\n    report_id INT PRIMARY KEY,\n    user_id INT,\n    fraud_type VARCHAR(255),\n    report_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE report_details (\n    detail_id INT PRIMARY KEY,\n    report_id INT,\n    detail_description TEXT,\n    reported_by VARCHAR(255),\n    report_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FraudulentActivities (\n    activity_id UUID PRIMARY KEY,\n    user_id UUID,\n    activity_description TEXT,\n    activity_date TIMESTAMP,\n    reported_by UUID\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SuspectUsers (\n    user_id UUID PRIMARY KEY,\n    username TEXT,\n    email TEXT,\n    phone_number TEXT,\n    registration_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportedActivities (\n    report_id UUID PRIMARY KEY,\n    activity_id UUID,\n    report_date TIMESTAMP,\n    reporter_id UUID,\n    report_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE InvestigationLogs (\n    log_id UUID PRIMARY KEY,\n    report_id UUID,\n    log_date TIMESTAMP,\n    investigator_id UUID,\n    log_details TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FraudulentPatterns (\n    pattern_id UUID PRIMARY KEY,\n    activity_description TEXT,\n    pattern_description TEXT,\n    detection_date TIMESTAMP,\n    confirmed_fraud BOOLEAN\n)"
+      }
+    ]
+  }
+]

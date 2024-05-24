@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE arbitrage_trading (\n    id INT PRIMARY KEY,\n    exchange_name VARCHAR(255),\n    asset_name VARCHAR(255),\n    buy_price DECIMAL,\n    sell_price DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Exchange (\n    id INT PRIMARY KEY,\n    exchange_name VARCHAR(50) NOT NULL,\n    location VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE Trade (\n    trade_id INT PRIMARY KEY,\n    exchange_id INT NOT NULL,\n    asset_name VARCHAR(50) NOT NULL,\n    quantity DECIMAL NOT NULL,\n    price DECIMAL NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE exchanges (\n    exchange_id UUID PRIMARY KEY,\n    exchange_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    price DECIMAL(18,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trades (\n    trade_id UUID PRIMARY KEY,\n    asset_id UUID NOT NULL,\n    exchange_id UUID NOT NULL,\n    trade_type VARCHAR(10) NOT NULL,\n    quantity INT NOT NULL,\n    executed_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ArbitrageExchange (\n    id UUID PRIMARY KEY,\n    exchange_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExchangePrices (\n    id UUID PRIMARY KEY,\n    exchange_id UUID REFERENCES ArbitrageExchange(id),\n    currency_pair VARCHAR(20) NOT NULL,\n    buy_price DECIMAL(18, 8) NOT NULL,\n    sell_price DECIMAL(18, 8) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ArbitrageOpportunities (\n    id UUID PRIMARY KEY,\n    exchange_id UUID REFERENCES ArbitrageExchange(id),\n    currency_pair VARCHAR(20) NOT NULL,\n    profit_margin DECIMAL(18, 8) NOT NULL,\n    feasible BOOLEAN NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Trades (\n    id UUID PRIMARY KEY,\n    opportunity_id UUID REFERENCES ArbitrageOpportunities(id),\n    trade_type VARCHAR(10) NOT NULL,\n    trade_amount DECIMAL(18, 8) NOT NULL,\n    executed_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE exchange_1 (\n    id INT PRIMARY KEY,\n    exchange_name VARCHAR(255),\n    pair VARCHAR(50),\n    price DECIMAL(10, 2),\n    volume DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE exchange_2 (\n    id INT PRIMARY KEY,\n    exchange_name VARCHAR(255),\n    pair VARCHAR(50),\n    price DECIMAL(10, 2),\n    volume DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_history (\n    id INT PRIMARY KEY,\n    trade_timestamp TIMESTAMP,\n    pair VARCHAR(50),\n    action VARCHAR(10),\n    quantity DECIMAL(10, 2),\n    price DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    account_balance DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE arbitrage_opportunities (\n    id INT PRIMARY KEY,\n    pair VARCHAR(50),\n    exchange_1_price DECIMAL(10, 2),\n    exchange_2_price DECIMAL(10, 2),\n    potential_profit DECIMAL(10, 2)\n)"
+      }
+    ]
+  }
+]

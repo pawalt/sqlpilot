@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investment_portfolio (\n  portfolio_id INT PRIMARY KEY,\n  client_id INT,\n  portfolio_name VARCHAR(255),\n  total_investment DECIMAL(12,2),\n  risk_exposure DECIMAL(8,2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolios (\n    portfolio_id SERIAL PRIMARY KEY,\n    portfolio_name VARCHAR(255) NOT NULL,\n    risk_exposure DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE investments (\n    investment_id SERIAL PRIMARY KEY,\n    portfolio_id INTEGER REFERENCES portfolios(portfolio_id),\n    investment_name VARCHAR(255) NOT NULL,\n    amount DECIMAL,\n    risk_level ENUM('low', 'medium', 'high')\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investment_portfolio (\n  id INT PRIMARY KEY,\n  portfolio_name VARCHAR(255),\n  total_value DECIMAL(10, 2),\n  risk_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_assets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(255),\n  asset_type VARCHAR(50),\n  asset_value DECIMAL(10, 2),\n  portfolio_id INT,\n  FOREIGN KEY (portfolio_id) REFERENCES investment_portfolio(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_exposure (\n  id INT PRIMARY KEY,\n  asset_id INT,\n  risk_factor FLOAT,\n  FOREIGN KEY (asset_id) REFERENCES investment_assets(asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolio ( \n    portfolio_id UUID PRIMARY KEY, \n    portfolio_name VARCHAR(255) NOT NULL, \n    total_value DECIMAL(10, 2) NOT NULL, \n    risk_level VARCHAR(50) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE investment ( \n    investment_id UUID PRIMARY KEY, \n    investment_name VARCHAR(255) NOT NULL, \n    amount_invested DECIMAL(10, 2) NOT NULL, \n    investment_date DATE \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset ( \n    asset_id UUID PRIMARY KEY, \n    asset_name VARCHAR(255) NOT NULL, \n    asset_type VARCHAR(50), \n    asset_value DECIMAL(10, 2) NOT NULL \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE exposure ( \n    exposure_id UUID PRIMARY KEY, \n    portfolio_id UUID REFERENCES portfolio(portfolio_id), \n    asset_id UUID REFERENCES asset(asset_id), \n    exposure_amount DECIMAL(10, 2) NOT NULL \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investment_portfolios (\n    portfolio_id INT PRIMARY KEY,\n    portfolio_name TEXT,\n    risk_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE portfolio_assets (\n    asset_id INT PRIMARY KEY,\n    portfolio_id INT REFERENCES investment_portfolios(portfolio_id),\n    asset_name TEXT,\n    asset_type TEXT,\n    quantity INT,\n    value DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_classes (\n    class_id INT PRIMARY KEY,\n    class_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_allocations (\n    allocation_id INT PRIMARY KEY,\n    asset_id INT REFERENCES portfolio_assets(asset_id),\n    class_id INT REFERENCES asset_classes(class_id),\n    percentage FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_metrics (\n    metric_id INT PRIMARY KEY,\n    date DATE,\n    portfolio_id INT REFERENCES investment_portfolios(portfolio_id),\n    exposure FLOAT\n);"
+      }
+    ]
+  }
+]

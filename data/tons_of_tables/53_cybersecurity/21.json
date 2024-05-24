@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IOCs (\n  ioc_id INT PRIMARY KEY,\n  ioc_type VARCHAR(50) NOT NULL,\n  ioc_value TEXT NOT NULL,\n  detected_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IOCs (\n    id UUID PRIMARY KEY,\n    indicator TEXT NOT NULL,\n    type TEXT NOT NULL,\n    details TEXT,\n    created_at TIMESTAMP NOT NULL\n);\n\nCREATE TABLE Threats (\n    id UUID PRIMARY KEY,\n    threat_name TEXT NOT NULL,\n    severity TEXT NOT NULL,\n    description TEXT,\n    ioc_id UUID REFERENCES IOCs(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IOCs (\n  id SERIAL PRIMARY KEY,\n  indicator_type VARCHAR(50),\n  indicator_value TEXT UNIQUE,\n  description TEXT,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Threats (\n  id SERIAL PRIMARY KEY,\n  threat_type VARCHAR(50),\n  threat_description TEXT,\n  severity INTEGER,\n  status VARCHAR(20),\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Incidents (\n  id SERIAL PRIMARY KEY,\n  incident_type VARCHAR(50),\n  incident_description TEXT,\n  incident_date DATE,\n  is_resolved BOOLEAN,\n  created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE indicators_of_compromise (\n    id UUID PRIMARY KEY,\n    ioc_type VARCHAR(50),\n    ioc_value TEXT,\n    description TEXT,\n    severity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE threats (\n    threat_id UUID PRIMARY KEY,\n    ioc_id UUID REFERENCES indicators_of_compromise(id),\n    threat_name VARCHAR(100),\n    detection_date TIMESTAMP,\n    threat_level VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE affected_systems (\n    system_id UUID PRIMARY KEY,\n    threat_id UUID REFERENCES threats(threat_id),\n    system_name VARCHAR(100),\n    affected_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE investigations (\n    investigation_id UUID PRIMARY KEY,\n    threat_id UUID REFERENCES threats(threat_id),\n    investigator_name VARCHAR(100),\n    start_date TIMESTAMP,\n    end_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE indicators_of_compromise (\n    id INT PRIMARY KEY,\n    hash TEXT,\n    type TEXT,\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE threat_actors (\n    id INT PRIMARY KEY,\n    name TEXT,\n    country TEXT,\n    group TEXT,\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compromised_systems (\n    id INT PRIMARY KEY,\n    ip_address TEXT,\n    hostname TEXT,\n    operating_system TEXT,\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents (\n    id INT PRIMARY KEY,\n    date TIMESTAMP,\n    severity TEXT,\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE actions (\n    id INT PRIMARY KEY,\n    action_type TEXT,\n    action_description TEXT,\n    executed_by TEXT\n)"
+      }
+    ]
+  }
+]

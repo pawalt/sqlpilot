@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drone_inventory (\n\tid INT PRIMARY KEY,\n\titem_name VARCHAR(255),\n\titem_type VARCHAR(50),\n\tquantity INT,\n\tlocation VARCHAR(100),\n\tlast_maintenance_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Drone_Equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(50),\n    quantity INT,\n    last_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Spare_Parts (\n    part_id INT PRIMARY KEY,\n    part_name VARCHAR(50),\n    quantity INT,\n    compatible_equipment VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(255),\n    quantity INT,\n    location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE spare_parts (\n    part_id INT PRIMARY KEY,\n    part_name VARCHAR(255),\n    quantity INT,\n    location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE equipment_spare_parts (\n    relation_id INT PRIMARY KEY,\n    equipment_id INT,\n    part_id INT,\n    quantity_needed INT,\n    FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id),\n    FOREIGN KEY (part_id) REFERENCES spare_parts(part_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Drones (\n    drone_id UUID PRIMARY KEY,\n    drone_model TEXT NOT NULL,\n    purchase_date DATE,\n    location TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SpareParts (\n    part_id UUID PRIMARY KEY,\n    part_name TEXT NOT NULL,\n    part_type TEXT,\n    quantity INT,\n    supplier TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Inventory (\n    inventory_id UUID PRIMARY KEY,\n    drone_id UUID NOT NULL,\n    part_id UUID NOT NULL,\n    quantity INT,\n    entry_date DATE,\n    FOREIGN KEY (drone_id) REFERENCES Drones(drone_id),\n    FOREIGN KEY (part_id) REFERENCES SpareParts(part_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n    log_id UUID PRIMARY KEY,\n    drone_id UUID NOT NULL,\n    maintenance_type TEXT,\n    maintenance_date DATE,\n    duration INT,\n    technician TEXT,\n    FOREIGN KEY (drone_id) REFERENCES Drones(drone_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Drones (\n\tdrone_id INT PRIMARY KEY,\n\tdrone_name VARCHAR(50),\n\tdrone_model VARCHAR(50),\n\tdrone_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Spare_Parts (\n\tpart_id INT PRIMARY KEY,\n\tpart_name VARCHAR(50),\n\tpart_type VARCHAR(50),\n\tpart_quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Drone_Inventory (\n\tinventory_id INT PRIMARY KEY,\n\tdrone_id INT,\n\tpart_id INT,\n\tquantity INT,\n\tFOREIGN KEY (drone_id) REFERENCES Drones(drone_id),\n\tFOREIGN KEY (part_id) REFERENCES Spare_Parts(part_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Maintenance_Log (\n\tlog_id INT PRIMARY KEY,\n\tdrone_id INT,\n\tmaintenance_date DATE,\n\tmaintenance_type VARCHAR(50),\n\tFOREIGN KEY (drone_id) REFERENCES Drones(drone_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Repair_Schedule (\n\tschedule_id INT PRIMARY KEY,\n\tdrone_id INT,\n\trepair_date DATE,\n\trepair_type VARCHAR(50),\n\tFOREIGN KEY (drone_id) REFERENCES Drones(drone_id)\n);\n"
+      }
+    ]
+  }
+]

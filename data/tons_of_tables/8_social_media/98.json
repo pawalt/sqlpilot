@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_sentiment_analysis (\n    user_id INT,\n    username VARCHAR(50),\n    post_text TEXT,\n    post_date DATE,\n    sentiment_score FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE analysts (\n    analyst_id UUID PRIMARY KEY,\n    analyst_name VARCHAR(255),\n    analyst_specialization VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_data (\n    data_id UUID PRIMARY KEY,\n    post_text TEXT,\n    post_date TIMESTAMP,\n    sentiment_score DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tweets (\n    tweet_id INT PRIMARY KEY,\n    content TEXT NOT NULL,\n    user_id INT,\n    date_posted TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_analysis (\n    analysis_id INT PRIMARY KEY,\n    tweet_id INT,\n    positive_sentiment BOOLEAN,\n    negative_sentiment BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public.twitter_users (\n   user_id INT PRIMARY KEY,\n   user_name VARCHAR(50),\n   user_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE public.tweets (\n   tweet_id INT PRIMARY KEY,\n   user_id INT REFERENCES public.twitter_users(user_id),\n   tweet_text TEXT,\n   tweet_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE public.sentiment_analysis (\n   tweet_id INT REFERENCES public.tweets(tweet_id),\n   sentiment_score FLOAT,\n   sentiment_category VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE public.analysis_results (\n   analysis_id INT PRIMARY KEY,\n   tweet_id INT REFERENCES public.tweets(tweet_id),\n   analyst_name VARCHAR(50),\n   analysis_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SocialMediaUsers (\n    user_id INT,\n    username VARCHAR(50),\n    account_created_at TIMESTAMP,\n    followers_count INT,\n    PRIMARY KEY (user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SocialMediaPosts (\n    post_id INT,\n    user_id INT,\n    post_content TEXT,\n    post_created_at TIMESTAMP,\n    PRIMARY KEY (post_id),\n    FOREIGN KEY (user_id) REFERENCES SocialMediaUsers(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SentimentAnalysisResults (\n    analysis_id INT,\n    post_id INT,\n    analysis_result VARCHAR(20),\n    analysis_timestamp TIMESTAMP,\n    PRIMARY KEY (analysis_id),\n    FOREIGN KEY (post_id) REFERENCES SocialMediaPosts(post_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PoliticalAnalysts (\n    analyst_id INT,\n    analyst_name VARCHAR(50),\n    analyst_role VARCHAR(50),\n    PRIMARY KEY (analyst_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AnalystSentiments (\n    analysis_id INT,\n    analyst_id INT,\n    sentiment_score FLOAT,\n    sentiment_category VARCHAR(20),\n    PRIMARY KEY (analysis_id, analyst_id),\n    FOREIGN KEY (analysis_id) REFERENCES SentimentAnalysisResults(analysis_id),\n    FOREIGN KEY (analyst_id) REFERENCES PoliticalAnalysts(analyst_id)\n);"
+      }
+    ]
+  }
+]

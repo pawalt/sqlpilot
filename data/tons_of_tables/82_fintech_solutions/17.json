@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_subscription (\n    user_id INT PRIMARY KEY,\n    subscription_plan VARCHAR(50),\n    billing_information TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_subscription_plans (\n    user_id UUID,\n    plan_id UUID,\n    active BOOLEAN,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_information (\n    user_id UUID,\n    payment_method STRING,\n    card_number STRING,\n    billing_address STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    subscription_plan VARCHAR(50) NOT NULL,\n    billing_address VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subscription_plans (\n    plan_id INT PRIMARY KEY,\n    plan_name VARCHAR(50) NOT NULL,\n    plan_cost DECIMAL(10, 2) NOT NULL,\n    features JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_information (\n    user_id INT REFERENCES users(user_id),\n    payment_method VARCHAR(50) NOT NULL,\n    next_billing_date DATE NOT NULL,\n    card_type VARCHAR(20) NOT NULL,\n    card_number VARCHAR(16) NOT NULL,\n    PRIMARY KEY(user_id, payment_method)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    subscription_plan VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing (\n    billing_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    billing_date DATE NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    billing_id INT NOT NULL,\n    payment_date DATE NOT NULL,\n    payment_amount DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (billing_id) REFERENCES billing(billing_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    plan_name VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    subscription_plan VARCHAR(50) NOT NULL,\n    billing_address VARCHAR(200) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    start_date DATE NOT NULL,\n    end_date DATE,\n    status VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL(10, 2) NOT NULL,\n    payment_date DATE NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE invoices (\n    invoice_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    subscription_id INT REFERENCES subscriptions(subscription_id),\n    total_amount DECIMAL(10, 2) NOT NULL,\n    issue_date DATE NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_history (\n    history_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    payment_id INT REFERENCES payments(payment_id),\n    invoice_id INT REFERENCES invoices(invoice_id),\n    action VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  }
+]

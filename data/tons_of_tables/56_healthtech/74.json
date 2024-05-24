@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_variations (\n  id SERIAL PRIMARY KEY,\n  gene_name VARCHAR(50),\n  chromosome_number INT,\n  variation_type VARCHAR(50),\n  population_frequency FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PopulationGeneticVariations (\n  population_id INT PRIMARY KEY,\n  genetic_variation_id INT,\n  allele VARCHAR(10),\n  frequency DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GenomicData (\n  genetic_variation_id INT PRIMARY KEY,\n  gene_name VARCHAR(50),\n  chromosome VARCHAR(10),\n  position INT,\n  nucleotide_change VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Population (id INT PRIMARY KEY,\nname VARCHAR(100),\ngenetic_variation VARCHAR(100));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GenomicData (id INT PRIMARY KEY,\npopulation_id INT,\nchromosome_number INT,\nbase_pair_start INT,\nbase_pair_end INT,\nbase_pair_sequence VARCHAR(200));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AnalysisResults (id INT PRIMARY KEY,\ngenomic_data_id INT,\nresult_type VARCHAR(100),\nresult_description TEXT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE population_genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(50),\n    gene_sequence TEXT,\n    population_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE population_data (\n    population_id INT PRIMARY KEY,\n    population_name VARCHAR(50),\n    country VARCHAR(50),\n    region VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_variations (\n    variation_id INT PRIMARY KEY,\n    gene_id INT,\n    variation_description TEXT,\n    variation_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE population_genotypes (\n    genotype_id INT PRIMARY KEY,\n    population_id INT,\n    gene_id INT,\n    genotype VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Population (\n  population_id INT PRIMARY KEY,\n  population_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Individual (\n  individual_id INT PRIMARY KEY,\n  individual_name VARCHAR(50) NOT NULL,\n  population_id INT,\n  FOREIGN KEY (population_id) REFERENCES Population(population_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GenomicData (\n  data_id INT PRIMARY KEY,\n  individual_id INT,\n  genome_data BYTEA NOT NULL,\n  FOREIGN KEY (individual_id) REFERENCES Individual(individual_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Variant (\n  variant_id INT PRIMARY KEY,\n  variant_name VARCHAR(50) NOT NULL,\n  genomic_data_id INT,\n  FOREIGN KEY (genomic_data_id) REFERENCES GenomicData(data_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genes (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(50) NOT NULL,\n  variant_id INT,\n  FOREIGN KEY (variant_id) REFERENCES Variant(variant_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE weather_data (\n  id INT PRIMARY KEY,\n  date DATE,\n  temperature FLOAT,\n  humidity FLOAT,\n  precipitation FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE weather_data (\n  id INT PRIMARY KEY,\n  date DATE,\n  temperature FLOAT,\n  humidity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE location_data (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255),\n  zipcode INT,\n  latitude FLOAT,\n  longitude FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE weather_station (\n    id UUID PRIMARY KEY,\n    station_name STRING NOT NULL,\n    location STRING NOT NULL,\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE temperature_data (\n    id UUID PRIMARY KEY,\n    station_id UUID NOT NULL REFERENCES weather_station(id),\n    temperature FLOAT NOT NULL,\n    recorded_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE humidity_data (\n    id UUID PRIMARY KEY,\n    station_id UUID NOT NULL REFERENCES weather_station(id),\n    humidity FLOAT NOT NULL,\n    recorded_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE weather_data (\n    id INT PRIMARY KEY,\n    date DATE,\n    temperature FLOAT,\n    humidity FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE location (\n    location_id INT PRIMARY KEY,\n    city VARCHAR(50),\n    country VARCHAR(50),\n    latitude FLOAT,\n    longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    sensor_id INT PRIMARY KEY,\n    location_id INT,\n    temperature FLOAT,\n    humidity FLOAT,\n    FOREIGN KEY (location_id) REFERENCES location(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    sensor_id INT,\n    alert_message VARCHAR(255),\n    alert_timestamp TIMESTAMP,\n    FOREIGN KEY (sensor_id) REFERENCES sensor_data(sensor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WeatherData (\n    id INT PRIMARY KEY,\n    temperature FLOAT,\n    humidity FLOAT,\n    wind_speed FLOAT,\n    rainfall FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Location (\n    location_id INT PRIMARY KEY,\n    city VARCHAR(50),\n    country VARCHAR(50),\n    latitude FLOAT,\n    longitude FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Sensor (\n    sensor_id INT PRIMARY KEY,\n    sensor_type VARCHAR(50),\n    installation_date DATE,\n    location_id INT,\n    FOREIGN KEY (location_id) REFERENCES Location(location_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Reading (\n    reading_id INT PRIMARY KEY,\n    sensor_id INT,\n    timestamp TIMESTAMP,\n    temperature FLOAT,\n    humidity FLOAT,\n    wind_speed FLOAT,\n    rainfall FLOAT,\n    FOREIGN KEY (sensor_id) REFERENCES Sensor(sensor_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (\n    alert_id INT PRIMARY KEY,\n    reading_id INT,\n    alert_type VARCHAR(50),\n    alert_message TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (reading_id) REFERENCES Reading(reading_id)\n)"
+      }
+    ]
+  }
+]

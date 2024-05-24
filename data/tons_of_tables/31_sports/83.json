@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_roster (\n    team_id INT,\n    player_name VARCHAR(50),\n    position VARCHAR(50),\n    is_active BOOL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_roster (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR,\n    active_players INT,\n    player_positions JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_info (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR,\n    team_id INT,\n    position VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_roster (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(100),\n    coach_name VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(100),\n    position VARCHAR(50),\n    team_id INT REFERENCES team_roster(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE game (\n    game_id INT PRIMARY KEY,\n    game_date DATE,\n    team1_id INT REFERENCES team_roster(team_id),\n    team2_id INT REFERENCES team_roster(team_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team (team_id INT PRIMARY KEY,\n            team_name VARCHAR(50) NOT NULL,\n            coach_name VARCHAR(50) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player (player_id INT PRIMARY KEY,\n            player_name VARCHAR(50) NOT NULL,\n            position VARCHAR(50) NOT NULL,\n            team_id INT REFERENCES team(team_id) ON DELETE CASCADE);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE game (game_id INT PRIMARY KEY,\n            game_date DATE NOT NULL,\n            location VARCHAR(100) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE game_player (game_id INT REFERENCES game(game_id) ON DELETE CASCADE,\n            player_id INT REFERENCES player(player_id) ON DELETE CASCADE,\n            game_score INT,\n            PRIMARY KEY (game_id, player_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Team (\n    team_id UUID PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Player (\n    player_id UUID PRIMARY KEY,\n    player_name VARCHAR(255) NOT NULL,\n    position VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamRoster (\n    roster_id UUID PRIMARY KEY,\n    team_id UUID,\n    player_id UUID,\n    FOREIGN KEY (team_id) REFERENCES Team(team_id),\n    FOREIGN KEY (player_id) REFERENCES Player(player_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Position (\n    position_id UUID PRIMARY KEY,\n    position_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamPosition (\n    team_id UUID,\n    position_id UUID,\n    FOREIGN KEY (team_id) REFERENCES Team(team_id),\n    FOREIGN KEY (position_id) REFERENCES Position(position_id),\n    PRIMARY KEY (team_id, position_id)\n);\n"
+      }
+    ]
+  }
+]

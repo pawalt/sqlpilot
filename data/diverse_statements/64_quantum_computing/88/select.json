@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM audit_trails;",
+      "SELECT id, transaction_id, transaction_type FROM audit_trails WHERE transaction_type = 'sale';",
+      "SELECT transaction_type, timestamp FROM audit_trails ORDER BY timestamp DESC;",
+      "SELECT id, transaction_data->'customer_name' AS customer_name FROM audit_trails WHERE transaction_data->>'total_amount' > '1000';",
+      "SELECT COUNT(*), date_trunc('hour', timestamp) AS hour FROM audit_trails GROUP BY hour;",
+      "SELECT * FROM audit_trails WHERE transaction_type = 'Payment' ORDER BY timestamp DESC;",
+      "SELECT id, transaction_id, timestamp FROM audit_trails WHERE transaction_data->>'amount' > '100' ORDER BY timestamp DESC;",
+      "SELECT DISTINCT transaction_id, COUNT(*) AS transaction_count FROM audit_trails WHERE timestamp >= '2022-01-01' GROUP BY transaction_id HAVING COUNT(*) > 1;",
+      "SELECT * FROM audit_trails WHERE transaction_data @> '{\"status\": \"approved\"}' ORDER BY timestamp DESC LIMIT 10;",
+      "SELECT id, transaction_id, transaction_type, timestamp FROM audit_trails WHERE transaction_data @> '{\"user_id\": \"12345\"}' AND timestamp BETWEEN '2022-01-01' AND '2022-02-01';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM quantum_transactions WHERE transaction_id = 1;",
+      "SELECT sender, receiver, amount FROM quantum_transactions WHERE amount > 100;",
+      "SELECT transaction_id, sender, receiver, transaction_date FROM quantum_transactions WHERE sender = 'Alice';",
+      "SELECT * FROM quantum_transactions ORDER BY amount DESC;",
+      "SELECT transaction_id, receiver, transaction_date FROM quantum_transactions WHERE transaction_date > '2022-01-01';",
+      "SELECT * FROM quantum_transactions WHERE amount > 100 ORDER BY transaction_date DESC",
+      "SELECT sender, receiver, amount FROM quantum_transactions WHERE sender = 'Alice'",
+      "SELECT COUNT(*) AS transaction_count, SUM(amount) AS total_amount FROM quantum_transactions WHERE receiver = 'Bob' GROUP BY receiver",
+      "SELECT transaction_id, sender, receiver, amount FROM quantum_transactions WHERE amount < 50 ORDER BY transaction_id ASC",
+      "SELECT log_message, log_timestamp FROM audit_trail WHERE log_timestamp > '2022-01-01'"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM quantum_transactions;",
+      "SELECT transaction_id, transaction_type, transaction_amount FROM quantum_transactions WHERE transaction_type='Credit';",
+      "SELECT user_id, COUNT(transaction_id) AS total_transactions FROM quantum_transactions GROUP BY user_id;",
+      "SELECT * FROM user_logs ORDER BY action_date DESC;",
+      "SELECT key_name, key_value FROM quantum_keys WHERE key_name LIKE '%quantum%';",
+      "SELECT * FROM quantum_transactions ORDER BY transaction_date DESC LIMIT 10;",
+      "SELECT user_id, SUM(transaction_amount) FROM quantum_transactions GROUP BY user_id HAVING SUM(transaction_amount) > 1000;",
+      "SELECT user_id, COUNT(*) FROM user_logs GROUP BY user_id ORDER BY COUNT(*) DESC;",
+      "SELECT transaction_type, AVG(transaction_amount) AS avg_amount FROM quantum_transactions WHERE transaction_date > '2022-01-01' GROUP BY transaction_type;",
+      "SELECT * FROM quantum_keys WHERE key_name LIKE '%quantum%' LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM quantum_communication_transactions;",
+      "SELECT sender, receiver, amount FROM quantum_communication_transactions WHERE amount > 1000;",
+      "SELECT transaction_id, sender, receiver, transaction_date FROM quantum_communication_transactions ORDER BY transaction_date DESC;",
+      "SELECT audit_id, action, audit_timestamp FROM quantum_transaction_audit WHERE action = 'update';",
+      "SELECT log_id, action, log_timestamp FROM quantum_transaction_log WHERE transaction_id = 5;",
+      "SELECT * FROM quantum_communication_transactions ORDER BY transaction_date DESC LIMIT 5;",
+      "SELECT sender, receiver, amount FROM quantum_communication_transactions WHERE amount > 1000 ORDER BY amount ASC;",
+      "SELECT qc.transaction_id, qc.sender, qt.action, qt.log_timestamp FROM quantum_communication_transactions qc JOIN quantum_transaction_log qt ON qc.transaction_id = qt.transaction_id ORDER BY qc.transaction_id ASC LIMIT 5;",
+      "SELECT * FROM quantum_communication_transactions WHERE sender = 'Alice' OR receiver = 'Bob' ORDER BY transaction_id DESC LIMIT 5;",
+      "SELECT error_id, error_message, error_timestamp FROM quantum_transaction_errors ORDER BY error_timestamp DESC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM quantum_communication_transactions",
+      "SELECT transaction_id, sender, receiver, amount FROM quantum_communication_transactions WHERE status='pending'",
+      "SELECT user_id, username, email, role FROM users ORDER BY username DESC",
+      "SELECT log_id, transaction_id, log_date, log_type FROM transaction_logs LIMIT 5 OFFSET 2",
+      "SELECT log_date, log_type, description FROM system_logs WHERE user_id=101",
+      "SELECT sender, receiver, amount FROM quantum_communication_transactions WHERE amount > 1000 ORDER BY amount DESC",
+      "SELECT * FROM transaction_logs JOIN quantum_communication_transactions ON transaction_logs.transaction_id = quantum_communication_transactions.transaction_id WHERE quantum_communication_transactions.sender = 'Alice'",
+      "SELECT username, email FROM users WHERE role = 'admin' ORDER BY username ASC",
+      "SELECT log_date, action, details FROM user_logs WHERE user_id = 123456 ORDER BY log_date DESC",
+      "SELECT log_id, log_date, description FROM system_logs WHERE user_id IS NULL ORDER BY log_date"
+    ]
+  }
+]

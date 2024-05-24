@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field_moisture_data (\n    field_id INT PRIMARY KEY,\n    field_name TEXT,\n    soil_moisture_level FLOAT,\n    last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field_data ( \n    field_id UUID PRIMARY KEY, \n    field_name STRING NOT NULL, \n    soil_moisture_level FLOAT NOT NULL, \n    last_updated TIMESTAMP NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule ( \n    schedule_id UUID PRIMARY KEY, \n    field_id UUID REFERENCES field_data(field_id), \n    irrigation_date TIMESTAMP NOT NULL, \n    irrigation_duration INTERVAL NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fields (\n    field_id SERIAL PRIMARY KEY,\n    field_name VARCHAR(255) NOT NULL,\n    soil_moisture_level DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_schedules (\n    schedule_id SERIAL PRIMARY KEY,\n    field_id INT REFERENCES fields(field_id),\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE moisture_readings (\n    reading_id SERIAL PRIMARY KEY,\n    field_id INT REFERENCES fields(field_id),\n    reading_time TIMESTAMP NOT NULL,\n    moisture_level DECIMAL NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field (field_id INT PRIMARY KEY,\n field_name VARCHAR(255),\n location VARCHAR(255),\n soil_moisture_level DECIMAL);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop (crop_id INT PRIMARY KEY,\n crop_name VARCHAR(255),\n plant_date DATE,\n field_id INT REFERENCES field(field_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule (schedule_id INT PRIMARY KEY,\n field_id INT REFERENCES field(field_id),\n start_date DATE,\n end_date DATE,\n amount_of_water DECIMAL);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (reading_id INT PRIMARY KEY,\n field_id INT REFERENCES field(field_id),\n reading_date TIMESTAMP,\n moisture_reading DECIMAL);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field(\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE soil_moisture(\n  id INT PRIMARY KEY,\n  field_id INT,\n  moisture_level DECIMAL(5,2),\n  timestamp TIMESTAMP,\n  FOREIGN KEY (field_id) REFERENCES field(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_schedule(\n  id INT PRIMARY KEY,\n  field_id INT,\n  start_time TIME,\n  end_time TIME,\n  duration INT,\n  FOREIGN KEY (field_id) REFERENCES field(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_log(\n  id INT PRIMARY KEY,\n  field_id INT,\n  action VARCHAR(255),\n  timestamp TIMESTAMP,\n  FOREIGN KEY (field_id) REFERENCES field(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE moisture_threshold(\n  id INT PRIMARY KEY,\n  field_id INT,\n  threshold DECIMAL(5,2),\n  timestamp TIMESTAMP,\n  FOREIGN KEY (field_id) REFERENCES field(id)\n);\n"
+      }
+    ]
+  }
+]

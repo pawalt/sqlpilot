@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data_sets (\n  id INT PRIMARY KEY,\n  data TEXT NOT NULL,\n  annotations JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data_sets (\n    id INT PRIMARY KEY,\n    data_set_name VARCHAR(255),\n    data_set_description TEXT\n);\n\nCREATE TABLE annotations (\n    id INT PRIMARY KEY,\n    data_set_id INT,\n    annotation_text TEXT,\n    annotation_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE datasets (\n    id INTEGER PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    source_url VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n    id INTEGER PRIMARY KEY,\n    dataset_id INTEGER REFERENCES datasets(id),\n    annotation TEXT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    id INTEGER PRIMARY KEY,\n    dataset_id INTEGER REFERENCES datasets(id),\n    task_name VARCHAR(255),\n    task_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE datasets (\n    dataset_id UUID PRIMARY KEY,\n    dataset_name TEXT NOT NULL,\n    dataset_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n    annotation_id UUID PRIMARY KEY,\n    dataset_id UUID NOT NULL,\n    annotation_text TEXT NOT NULL,\n    label TEXT NOT NULL,\n    FOREIGN KEY (dataset_id) REFERENCES datasets(dataset_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id UUID PRIMARY KEY,\n    task_name TEXT NOT NULL,\n    task_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE task_annotations (\n    task_annotation_id UUID PRIMARY KEY,\n    task_id UUID NOT NULL,\n    annotation_id UUID NOT NULL,\n    FOREIGN KEY (task_id) REFERENCES tasks(task_id),\n    FOREIGN KEY (annotation_id) REFERENCES annotations(annotation_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data_sets (\n  id INT PRIMARY KEY,\n  data TEXT,\n  task_type TEXT,\n  annotations JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n  id INT PRIMARY KEY,\n  annotation TEXT,\n  confidence FLOAT,\n  data_set_id INT REFERENCES training_data_sets(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n  id INT PRIMARY KEY,\n  task_name TEXT,\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username TEXT,\n  email TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE datasets (\n  id INT PRIMARY KEY,\n  name TEXT,\n  source TEXT,\n  task_id INT REFERENCES tasks(id)\n)"
+      }
+    ]
+  }
+]

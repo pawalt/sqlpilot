@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE furniture_inventory (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(255) NOT NULL,\n    item_category VARCHAR(50) NOT NULL,\n    item_price DECIMAL(10, 2) NOT NULL,\n    item_quantity INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    category VARCHAR(255),\n    price DECIMAL(10, 2)\n);\n\nCREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    product_id INT,\n    quantity INT,\n    total_price DECIMAL(10, 2),\n    order_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE furniture (\n  id SERIAL PRIMARY KEY,\n  item_name VARCHAR(255) NOT NULL,\n  category VARCHAR(50) NOT NULL,\n  price DECIMAL(10, 2) NOT NULL,\n  quantity INT NOT NULL,\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id SERIAL PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  phone_number VARCHAR(15) NOT NULL,\n  address TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n  order_id SERIAL PRIMARY KEY,\n  customer_id INT REFERENCES customers(customer_id),\n  item_id INT REFERENCES furniture(id),\n  quantity INT NOT NULL,\n  order_date DATE NOT NULL,\n  status VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE high_end_furniture (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    quantity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE staging_services (\n    id INT PRIMARY KEY,\n    service_type VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE furniture_inventory (\n    id INT PRIMARY KEY,\n    furniture_id INT NOT NULL,\n    quantity INT NOT NULL,\n    FOREIGN KEY (furniture_id) REFERENCES high_end_furniture(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE staging_orders (\n    id INT PRIMARY KEY,\n    order_date DATE,\n    total_price DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(50) DEFAULT 'Pending',\n    customer_name VARCHAR(255) NOT NULL,\n    customer_email VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE furniture (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(255),\n    item_type VARCHAR(50),\n    material VARCHAR(50),\n    price DECIMAL(10, 2),\n    quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vendors (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255),\n    contact_person VARCHAR(100),\n    phone_number VARCHAR(15),\n    email VARCHAR(100),\n    address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id INT PRIMARY KEY,\n    item_id INT,\n    vendor_id INT,\n    quantity INT,\n    date_added DATE,\n    FOREIGN KEY (item_id) REFERENCES furniture(item_id),\n    FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    order_date DATE,\n    total_amount DECIMAL(10, 2),\n    payment_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE order_items (\n    order_item_id INT PRIMARY KEY,\n    order_id INT,\n    item_id INT,\n    quantity INT,\n    item_price DECIMAL(10, 2),\n    total_price DECIMAL(10, 2),\n    FOREIGN KEY (order_id) REFERENCES orders(order_id),\n    FOREIGN KEY (item_id) REFERENCES furniture(item_id)\n);\n"
+      }
+    ]
+  }
+]

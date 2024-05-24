@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parent_teacher_conferences (\n    conference_id INT PRIMARY KEY,\n    parent_name TEXT,\n    teacher_name TEXT,\n    conference_date DATE,\n    agenda TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parent_conferences (\n conference_id SERIAL PRIMARY KEY,\n parent_name VARCHAR(50) NOT NULL,\n parent_email VARCHAR(100) NOT NULL,\n parent_phone VARCHAR(20) NOT NULL,\n scheduled_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE teacher_availability (\n teacher_id SERIAL PRIMARY KEY,\n teacher_name VARCHAR(50) NOT NULL,\n teacher_email VARCHAR(100) NOT NULL,\n available_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parent_table (\n    parent_id UUID PRIMARY KEY,\n    parent_name VARCHAR(50) NOT NULL,\n    parent_email VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE teacher_table (\n    teacher_id UUID PRIMARY KEY,\n    teacher_name VARCHAR(50) NOT NULL,\n    teacher_email VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conference_table (\n    conference_id UUID PRIMARY KEY,\n    parent_id UUID NOT NULL,\n    teacher_id UUID NOT NULL,\n    conference_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parent (\n  parent_id INT PRIMARY KEY,\n  parent_name VARCHAR(50) NOT NULL,\n  email VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE teacher (\n  teacher_id INT PRIMARY KEY,\n  teacher_name VARCHAR(50) NOT NULL,\n  subject_taught VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conference_schedule (\n  conference_id INT PRIMARY KEY,\n  parent_id INT,\n  teacher_id INT,\n  scheduled_time DATETIME,\n  agenda TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conference_attendance (\n  attendance_id INT PRIMARY KEY,\n  conference_id INT,\n  parent_id INT,\n  teacher_id INT,\n  attended BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parents (\n    parent_id INT PRIMARY KEY,\n    parent_name VARCHAR(50) NOT NULL,\n    parent_email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE teachers (\n    teacher_id INT PRIMARY KEY,\n    teacher_name VARCHAR(50) NOT NULL,\n    teacher_email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE conference_rooms (\n    room_id INT PRIMARY KEY,\n    room_name VARCHAR(50) NOT NULL,\n    room_location VARCHAR(100) NOT NULL,\n    max_capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE conference_schedules (\n    schedule_id INT PRIMARY KEY,\n    room_id INT REFERENCES conference_rooms(room_id),\n    conference_date DATE NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE agenda_items (\n    agenda_id INT PRIMARY KEY,\n    schedule_id INT REFERENCES conference_schedules(schedule_id),\n    item_description TEXT NOT NULL\n);\n"
+      }
+    ]
+  }
+]

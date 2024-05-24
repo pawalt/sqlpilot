@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    permissions JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id INT PRIMARY KEY,\n  user_id INT,\n  platform_name VARCHAR(50) NOT NULL,\n  can_trade BOOLEAN,\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    password VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(255) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT,\n    permission_id INT,\n    FOREIGN KEY (user_id) REFERENCES user_accounts(user_id),\n    FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT,\n    permission_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (permission_id) REFERENCES permissions(permission_id),\n    PRIMARY KEY (user_id, permission_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    permission_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES user_accounts(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cryptocurrency_exchange (\n    exchange_id INT PRIMARY KEY,\n    exchange_name VARCHAR(50) NOT NULL,\n    location VARCHAR(50) NOT NULL,\n    supported_currencies TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE account_permissions (\n    account_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    exchange_id INT NOT NULL,\n    permission_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES user_accounts(user_id),\n    FOREIGN KEY (exchange_id) REFERENCES cryptocurrency_exchange(exchange_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_history (\n    trade_id INT PRIMARY KEY,\n    account_id INT NOT NULL,\n    trade_date TIMESTAMP NOT NULL,\n    trade_amount DECIMAL(18, 8) NOT NULL,\n    trade_currency VARCHAR(10) NOT NULL,\n    FOREIGN KEY (account_id) REFERENCES account_permissions(account_id)\n);\n"
+      }
+    ]
+  }
+]

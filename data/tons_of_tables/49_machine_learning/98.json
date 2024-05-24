@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE algorithm_specific_rules (\n    id INT PRIMARY KEY,\n    rule_name VARCHAR(255) NOT NULL,\n    condition VARCHAR(255) NOT NULL,\n    CONSTRAINT unique_rule_name_condition UNIQUE(rule_name, condition)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT,\n    order_date DATE,\n    total_amount DECIMAL,\n    CONSTRAINT chk_total_amount CHECK (total_amount >= 0)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50),\n    price DECIMAL,\n    stock_quantity INT,\n    CONSTRAINT chk_stock_quantity CHECK (stock_quantity >= 0)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AlgorithmRules (\n    rule_id INT PRIMARY KEY,\n    rule_name VARCHAR(50) NOT NULL,\n    rule_description TEXT,\n    condition_query TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RuleParameters (\n    parameter_id INT PRIMARY KEY,\n    rule_id INT REFERENCES AlgorithmRules(rule_id),\n    parameter_name VARCHAR(50) NOT NULL,\n    parameter_type VARCHAR(50) NOT NULL,\n    CONSTRAINT fk_rule_param FOREIGN KEY (rule_id) REFERENCES AlgorithmRules(rule_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataSamples (\n    sample_id INT PRIMARY KEY,\n    rule_id INT REFERENCES AlgorithmRules(rule_id),\n    input_data TEXT NOT NULL,\n    output_data TEXT NOT NULL,\n    CONSTRAINT fk_rule_data FOREIGN KEY (rule_id) REFERENCES AlgorithmRules(rule_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Orders (\n    order_id INT PRIMARY KEY,\n    product_id INT NOT NULL,\n    quantity INT CHECK(quantity > 0),\n    CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES Products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50) NOT NULL,\n    price DECIMAL(10, 2) CHECK(price > 0),\n    CONSTRAINT uc_product_name UNIQUE (product_name)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE,\n    CONSTRAINT ck_email CHECK (email LIKE '%@%')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Shipping (\n    shipping_id INT PRIMARY KEY,\n    order_id INT NOT NULL,\n    ship_date DATE NOT NULL,\n    status ENUM('Shipped', 'In Transit', 'Delivered') DEFAULT 'In Transit',\n    CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES Orders(order_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    age INT CHECK (age >= 18),\n    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Posts (\n    post_id INT PRIMARY KEY,\n    user_id INT REFERENCES Users(user_id),\n    post_content VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Comments (\n    comment_id INT PRIMARY KEY,\n    post_id INT REFERENCES Posts(post_id),\n    user_id INT REFERENCES Users(user_id),\n    comment_text TEXT NOT NULL,\n    comment_date DATE DEFAULT CURRENT_DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Likes (\n    like_id INT PRIMARY KEY,\n    post_id INT REFERENCES Posts(post_id),\n    user_id INT REFERENCES Users(user_id),\n    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Followers (\n    follower_id INT PRIMARY KEY,\n    user_id INT REFERENCES Users(user_id),\n    follower_user_id INT REFERENCES Users(user_id),\n    follow_date DATE DEFAULT CURRENT_DATE\n);"
+      }
+    ]
+  }
+]

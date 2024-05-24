@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quality_control_data (\n    id INT PRIMARY KEY,\n    product_id INT,\n    defect_count INT,\n    production_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE defects ( \n    defect_id SERIAL PRIMARY KEY, \n    defect_type VARCHAR(50) NOT NULL, \n    defect_description TEXT, \n    timestamp TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspections ( \n    inspection_id SERIAL PRIMARY KEY, \n    defect_id INT REFERENCES defects(defect_id), \n    inspector_id INT NOT NULL, \n    inspection_date DATE, \n    defect_status VARCHAR(20), \n    inspection_result VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quality_control_data (\n  id INT PRIMARY KEY,\n  product_name VARCHAR(50),\n  date TIMESTAMP,\n  defect_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_details (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(50),\n  category VARCHAR(50),\n  manufacturer VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE statistical_analysis (\n  analysis_id INT PRIMARY KEY,\n  analysis_name VARCHAR(50),\n  analysis_date TIMESTAMP,\n  defect_count INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE defects (\n   id INT PRIMARY KEY,\n   defect_name VARCHAR(255),\n   defect_type ENUM('minor', 'major', 'critical'),\n   defect_severity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n   id INT PRIMARY KEY,\n   product_name VARCHAR(255),\n   manufacturing_date DATE,\n   manufacturer VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspections (\n   id INT PRIMARY KEY,\n   product_id INT REFERENCES products(id),\n   inspector_name VARCHAR(255),\n   inspection_date DATE,\n   defect_id INT REFERENCES defects(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE defect_rates (\n   id INT PRIMARY KEY,\n   product_id INT REFERENCES products(id),\n   defect_percentage DECIMAL(5,2),\n   report_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE defects (\n  defect_id SERIAL PRIMARY KEY,\n  defect_description TEXT,\n  defect_type TEXT,\n  defect_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id SERIAL PRIMARY KEY,\n  product_name TEXT,\n  production_date DATE,\n  defect_id INT REFERENCES defects(defect_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements (\n  measurement_id SERIAL PRIMARY KEY,\n  product_id INT REFERENCES products(product_id),\n  measurement_value FLOAT,\n  measurement_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE operators (\n  operator_id SERIAL PRIMARY KEY,\n  operator_name TEXT,\n  operator_role TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inspections (\n  inspection_id SERIAL PRIMARY KEY,\n  inspection_date DATE,\n  product_id INT REFERENCES products(product_id),\n  operator_id INT REFERENCES operators(operator_id)\n)"
+      }
+    ]
+  }
+]

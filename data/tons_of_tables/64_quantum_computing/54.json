@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id UUID PRIMARY KEY,\n    qubit_value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id INT PRIMARY KEY,\n    qubit_value FLOAT\n);\n\nCREATE TABLE error_correction_codes (\n    code_id INT PRIMARY KEY,\n    code_name VARCHAR(50),\n    qubit_id INT,\n    FOREIGN KEY (qubit_id) REFERENCES qubits(qubit_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubits (\n  qubit_id INT PRIMARY KEY,\n  qubit_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE error_correction_codes (\n  code_id INT PRIMARY KEY,\n  code_type VARCHAR(50) NOT NULL,\n  qubit_id INT,\n  FOREIGN KEY (qubit_id) REFERENCES qubits(qubit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE error_correction_procedures (\n  procedure_id INT PRIMARY KEY,\n  procedure_name VARCHAR(50) NOT NULL,\n  code_id INT,\n  FOREIGN KEY (code_id) REFERENCES error_correction_codes(code_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id INT PRIMARY KEY,\n    qubit_name VARCHAR(255),\n    qubit_state VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE error_correction_codes (\n    code_id INT PRIMARY KEY,\n    code_name VARCHAR(255),\n    code_description TEXT,\n    qubit_id INT,\n    FOREIGN KEY (qubit_id) REFERENCES qubits(qubit_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE error_correction_procedures (\n    procedure_id INT PRIMARY KEY,\n    procedure_name VARCHAR(255),\n    procedure_details TEXT,\n    code_id INT,\n    FOREIGN KEY (code_id) REFERENCES error_correction_codes(code_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE qubits_error_correction (\n    qubit_id INT,\n    code_id INT,\n    PRIMARY KEY (qubit_id, code_id),\n    FOREIGN KEY (qubit_id) REFERENCES qubits(qubit_id),\n    FOREIGN KEY (code_id) REFERENCES error_correction_codes(code_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubits (\n  qubit_id INT PRIMARY KEY,\n  qubit_value VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE error_correction_codes (\n  ecc_id INT PRIMARY KEY,\n  ecc_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE error_correction_procedures (\n  ecp_id INT PRIMARY KEY,\n  ecp_description TEXT NOT NULL,\n  ecc_id INT NOT NULL,\n  FOREIGN KEY (ecc_id) REFERENCES error_correction_codes(ecc_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE qubit_error_corrections (\n  qec_id INT PRIMARY KEY,\n  qubit_id INT NOT NULL,\n  ecp_id INT NOT NULL,\n  FOREIGN KEY (qubit_id) REFERENCES qubits(qubit_id),\n  FOREIGN KEY (ecp_id) REFERENCES error_correction_procedures(ecp_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE code_qubit_mapping (\n  mapping_id INT PRIMARY KEY,\n  ecc_id INT NOT NULL,\n  qubit_id INT NOT NULL,\n  FOREIGN KEY (ecc_id) REFERENCES error_correction_codes(ecc_id),\n  FOREIGN KEY (qubit_id) REFERENCES qubits(qubit_id)\n);\n"
+      }
+    ]
+  }
+]

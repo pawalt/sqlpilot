@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_trends (\n    id INT PRIMARY KEY,\n    hashtag VARCHAR(255),\n    trend_date DATE,\n    trend_time TIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hashtags (\n  hashtag_id SERIAL PRIMARY KEY,\n  hashtag_text VARCHAR(255) NOT NULL,\n  trending_rank INT,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SocialMediaPosts (\n  post_id SERIAL PRIMARY KEY,\n  post_text TEXT NOT NULL,\n  post_date DATE,\n  hashtag_id INT,\n  FOREIGN KEY (hashtag_id) REFERENCES Hashtags(hashtag_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SocialMediaPosts (\n    post_id INT PRIMARY KEY,\n    post_content TEXT,\n    post_author TEXT,\n    post_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Hashtags (\n    hashtag_id INT PRIMARY KEY,\n    hashtag_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PostHashtags (\n    post_id INT,\n    hashtag_id INT,\n    PRIMARY KEY (post_id, hashtag_id),\n    FOREIGN KEY (post_id) REFERENCES SocialMediaPosts(post_id),\n    FOREIGN KEY (hashtag_id) REFERENCES Hashtags(hashtag_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TrendingHashtags (\n    hashtag_id UUID PRIMARY KEY,\n    hashtag_name TEXT NOT NULL,\n    post_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SocialMediaPosts (\n    post_id UUID PRIMARY KEY,\n    post_content TEXT NOT NULL,\n    post_date TIMESTAMP,\n    post_likes INT,\n    hashtag_id UUID REFERENCES TrendingHashtags(hashtag_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserProfiles (\n    user_id UUID PRIMARY KEY,\n    username TEXT NOT NULL,\n    followers_count INT,\n    following_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE HashtagUsage (\n    usage_id UUID PRIMARY KEY,\n    post_id UUID REFERENCES SocialMediaPosts(post_id),\n    hashtag_id UUID REFERENCES TrendingHashtags(hashtag_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE NOT NULL,\n    followers INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    post_content TEXT NOT NULL,\n    likes INT,\n    comments INT,\n    post_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hashtags (\n    hashtag_id INT PRIMARY KEY,\n    hashtag_name VARCHAR(30) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE post_hashtags (\n    post_id INT REFERENCES posts(post_id),\n    hashtag_id INT REFERENCES hashtags(hashtag_id),\n    PRIMARY KEY(post_id, hashtag_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trends (\n    trend_id INT PRIMARY KEY,\n    trend_name VARCHAR(50) UNIQUE NOT NULL,\n    trend_description TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_medical_records (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50),\n  date_of_birth DATE,\n  medical_history TEXT,\n  prescribed_medications TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (patient_id SERIAL PRIMARY KEY,\npatient_name VARCHAR(255) NOT NULL,\ndob DATE NOT NULL,\naddress VARCHAR(255),\ncontact_number VARCHAR(20) UNIQUE);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_records (record_id SERIAL PRIMARY KEY,\npatient_id INT NOT NULL,\ndate DATE NOT NULL,\ndoctor VARCHAR(255) NOT NULL,\ncondition VARCHAR(255) NOT NULL,\nFOREIGN KEY (patient_id) REFERENCES patients(patient_id));\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255),\n    dob DATE,\n    gender VARCHAR(10),\n    address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_records (\n    record_id INT PRIMARY KEY,\n    patient_id INT,\n    diagnosis TEXT,\n    medication TEXT,\n    prescription_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_healthcare (\n    block_id INT PRIMARY KEY,\n    patient_id INT,\n    block_hash VARCHAR(64),\n    previous_block_hash VARCHAR(64),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    dob DATE NOT NULL,\n    gender TEXT,\n    address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalRecords (\n    record_id INT PRIMARY KEY,\n    patient_id INT,\n    record_date DATE NOT NULL,\n    diagnosis TEXT,\n    treatment TEXT,\n    FOREIGN KEY(patient_id) REFERENCES Patients(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Doctors (\n    doctor_id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    specialization TEXT,\n    hospital TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointments (\n    appointment_id INT PRIMARY KEY,\n    patient_id INT,\n    doctor_id INT,\n    appointment_date DATE NOT NULL,\n    reason TEXT,\n    FOREIGN KEY(patient_id) REFERENCES Patients(patient_id),\n    FOREIGN KEY(doctor_id) REFERENCES Doctors(doctor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients ( patient_id INT PRIMARY KEY, patient_name VARCHAR(255) NOT NULL, date_of_birth DATE NOT NULL, gender ENUM('M', 'F', 'Other') NOT NULL, blood_type VARCHAR(3) )\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalRecords ( record_id INT PRIMARY KEY, patient_id INT NOT NULL, record_date DATE NOT NULL, diagnosis VARCHAR(255) NOT NULL, prescription TEXT, FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE CASCADE )\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Doctors ( doctor_id INT PRIMARY KEY, doctor_name VARCHAR(255) NOT NULL, specialization VARCHAR(255) NOT NULL, experience_years INT NOT NULL )\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointments ( appointment_id INT PRIMARY KEY, patient_id INT NOT NULL, doctor_id INT NOT NULL, appointment_date DATETIME NOT NULL, status ENUM('Scheduled', 'Cancelled', 'Completed') NOT NULL, FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE CASCADE, FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id) ON DELETE CASCADE )\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BlockchainData ( block_id INT PRIMARY KEY, patient_id INT NOT NULL, record_id INT NOT NULL, block_hash VARCHAR(64) UNIQUE NOT NULL, previous_block_hash VARCHAR(64) NOT NULL, timestamp DATETIME NOT NULL, nonce INT NOT NULL, FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE CASCADE, FOREIGN KEY (record_id) REFERENCES MedicalRecords(record_id) ON DELETE CASCADE )\n"
+      }
+    ]
+  }
+]

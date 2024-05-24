@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyEfficiencyRatings (\n  appliance_id INT PRIMARY KEY,\n  appliance_name VARCHAR(50) NOT NULL,\n  energy_rating INT NOT NULL,\n  manufacturer VARCHAR(50) NOT NULL,\n  price DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_efficiency_ratings (\n  appliance_id INT PRIMARY KEY,\n  appliance_name VARCHAR(255),\n  energy_rating VARCHAR(10),\n  efficiency_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consumer_choices (\n  consumer_id INT PRIMARY KEY,\n  appliance_id INT,\n  date_purchase DATE,\n  price DECIMAL(10,2),\n  FOREIGN KEY (appliance_id) REFERENCES energy_efficiency_ratings(appliance_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE appliances (\n  appliance_id INT PRIMARY KEY,\n  appliance_name VARCHAR(255),\n  energy_rating VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consumers (\n  consumer_id INT PRIMARY KEY,\n  consumer_name VARCHAR(255),\n  location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ratings (\n  rating_id INT PRIMARY KEY,\n  appliance_id INT,\n  consumer_id INT,\n  rating DECIMAL(3,2),\n  date_rated DATE,\n  FOREIGN KEY (appliance_id) REFERENCES appliances(appliance_id),\n  FOREIGN KEY (consumer_id) REFERENCES consumers(consumer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE appliance_makes (\n  make_id INT PRIMARY KEY,\n  make_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appliance_types (\n  type_id INT PRIMARY KEY,\n  type_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appliances (\n  appliance_id INT PRIMARY KEY,\n  make_id INT,\n  type_id INT,\n  model VARCHAR(50),\n  energy_rating VARCHAR(10),\n  FOREIGN KEY(make_id) REFERENCES appliance_makes(make_id),\n  FOREIGN KEY(type_id) REFERENCES appliance_types(type_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consumer_ratings (\n  consumer_id INT PRIMARY KEY,\n  appliance_id INT,\n  rating FLOAT,\n  review TEXT,\n  FOREIGN KEY(appliance_id) REFERENCES appliances(appliance_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyEfficiencyRatings (\n   appliance_id INT PRIMARY KEY,\n   appliance_name VARCHAR(255),\n   efficiency_rating DECIMAL(4,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ApplianceCategories (\n   category_id INT PRIMARY KEY,\n   category_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Consumers (\n   consumer_id INT PRIMARY KEY,\n   consumer_name VARCHAR(255),\n   address VARCHAR(255),\n   city VARCHAR(255),\n   state VARCHAR(2),\n   zipcode VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AppliancePurchases (\n   purchase_id INT PRIMARY KEY,\n   consumer_id INT,\n   appliance_id INT,\n   purchase_date DATE,\n   FOREIGN KEY (consumer_id) REFERENCES Consumers(consumer_id),\n   FOREIGN KEY (appliance_id) REFERENCES EnergyEfficiencyRatings(appliance_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RatingsHistory (\n   history_id INT PRIMARY KEY,\n   appliance_id INT,\n   efficiency_rating DECIMAL(4,2),\n   rating_date DATE,\n   FOREIGN KEY (appliance_id) REFERENCES EnergyEfficiencyRatings(appliance_id)\n);"
+      }
+    ]
+  }
+]

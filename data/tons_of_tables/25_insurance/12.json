@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_coverage_details (\n   policy_id INT PRIMARY KEY,\n   coverage_type VARCHAR(255),\n   premium_amount DECIMAL(10, 2),\n   coverage_limit DECIMAL(12, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PolicyCoverageDetails (\n    policy_id INT PRIMARY KEY,\n    coverage_type VARCHAR(255),\n    premium_amount DECIMAL(10, 2),\n    coverage_limit DECIMAL(12, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyHolders (\n    holder_id INT PRIMARY KEY,\n    policy_id INT,\n    holder_name VARCHAR(255),\n    holder_address TEXT,\n    FOREIGN KEY (policy_id) REFERENCES PolicyCoverageDetails(policy_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_type (\n  coverage_id INT PRIMARY KEY,\n  coverage_name VARCHAR(255) NOT NULL,\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE premium_details (\n  premium_id INT PRIMARY KEY,\n  coverage_id INT NOT NULL,\n  premium_amount DECIMAL(10,2) NOT NULL,\n  FOREIGN KEY (coverage_id) REFERENCES coverage_type(coverage_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE coverage_limits (\n  limit_id INT PRIMARY KEY,\n  coverage_id INT NOT NULL,\n  max_limit DECIMAL(10,2) NOT NULL,\n  FOREIGN KEY (coverage_id) REFERENCES coverage_type(coverage_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_type (\n  coverage_type_id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE premium_amount (\n  premium_id INT PRIMARY KEY,\n  coverage_type_id INT,\n  amount DECIMAL(10, 2) NOT NULL,\n  FOREIGN KEY (coverage_type_id) REFERENCES coverage_type(coverage_type_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE coverage_limits (\n  limit_id INT PRIMARY KEY,\n  coverage_type_id INT,\n  min_limit DECIMAL(10, 2) NOT NULL,\n  max_limit DECIMAL(10, 2) NOT NULL,\n  FOREIGN KEY (coverage_type_id) REFERENCES coverage_type(coverage_type_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_details (\n  policy_id INT PRIMARY KEY,\n  coverage_type_id INT,\n  premium_id INT,\n  limit_id INT,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  FOREIGN KEY (coverage_type_id) REFERENCES coverage_type(coverage_type_id),\n  FOREIGN KEY (premium_id) REFERENCES premium_amount(premium_id),\n  FOREIGN KEY (limit_id) REFERENCES coverage_limits(limit_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PolicyCoverageDetails (\n    policy_id INT PRIMARY KEY,\n    coverage_type VARCHAR(50),\n    premium_amount DECIMAL(10, 2),\n    coverage_limits TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyHolders (\n    holder_id INT PRIMARY KEY,\n    policy_id INT,\n    holder_name VARCHAR(100),\n    holder_address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PremiumPayments (\n    payment_id INT PRIMARY KEY,\n    policy_id INT,\n    payment_date DATE,\n    amount_paid DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CoverageLimits (\n    limit_id INT PRIMARY KEY,\n    coverage_type VARCHAR(50),\n    max_limit DECIMAL(12, 2),\n    min_limit DECIMAL(12, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyRenewals (\n    renewal_id INT PRIMARY KEY,\n    policy_id INT,\n    renewal_date DATE,\n    new_premium_amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  }
+]

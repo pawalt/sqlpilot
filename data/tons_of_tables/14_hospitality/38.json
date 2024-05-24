@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE attendee_preferences (\n  attendee_id INT PRIMARY KEY,\n  name VARCHAR,\n  age INT,\n  gender VARCHAR,\n  interests VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    attendee_name VARCHAR(50),\n    attendee_email VARCHAR(100),\n    attendee_preferences JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(50),\n    event_type VARCHAR(50),\n    event_date DATE,\n    event_location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EventAttendees (\n    attendee_id UUID PRIMARY KEY,\n    name VARCHAR NOT NULL,\n    email VARCHAR NOT NULL,\n    age INT,\n    preference VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EventActivities (\n    activity_id UUID PRIMARY KEY,\n    activity_name VARCHAR NOT NULL,\n    description TEXT,\n    location VARCHAR,\n    date DATE,\n    time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EventPreferences (\n    preference_id UUID PRIMARY KEY,\n    attendee_id UUID REFERENCES EventAttendees(attendee_id),\n    activity_id UUID REFERENCES EventActivities(activity_id),\n    preference_score INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id UUID PRIMARY KEY,\n    name VARCHAR,\n    email VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR,\n    event_date DATE,\n    location VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    preference_id UUID PRIMARY KEY,\n    attendee_id UUID,\n    food_preference VARCHAR,\n    drink_preference VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE activities (\n    activity_id UUID PRIMARY KEY,\n    event_id UUID,\n    activity_name VARCHAR,\n    activity_type VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    full_name VARCHAR(100),\n    email VARCHAR(100),\n    age INT,\n    gender VARCHAR(10),\n    preferences JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(100),\n    date DATE,\n    location VARCHAR(100),\n    capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE event_attendees (\n    event_id INT,\n    attendee_id INT,\n    status VARCHAR(20),\n    PRIMARY KEY (event_id, attendee_id),\n    FOREIGN KEY (event_id) REFERENCES events(event_id),\n    FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE event_activities (\n    activity_id INT PRIMARY KEY,\n    activity_name VARCHAR(100),\n    description TEXT,\n    capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE attendee_activities (\n    attendee_id INT,\n    activity_id INT,\n    registration_date TIMESTAMP,\n    PRIMARY KEY (attendee_id, activity_id),\n    FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id),\n    FOREIGN KEY (activity_id) REFERENCES event_activities(activity_id)\n)"
+      }
+    ]
+  }
+]

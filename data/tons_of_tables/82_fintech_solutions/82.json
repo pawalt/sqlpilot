@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT REFERENCES users (user_id),\n    token VARCHAR(100) NOT NULL,\n    last_login TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash TEXT NOT NULL,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    token VARCHAR(100) UNIQUE NOT NULL,\n    expiration_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    action VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(20) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    account_type VARCHAR(50) NOT NULL,\n    balance DECIMAL(10, 2) DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    session_token VARCHAR(100) NOT NULL,\n    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    action_type VARCHAR(50) NOT NULL,\n    action_description TEXT,\n    log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(20) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_questions (\n    question_id UUID PRIMARY KEY,\n    question_text TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_security_answers (\n    answer_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    question_id UUID REFERENCES security_questions(question_id),\n    answer_text TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    log_timestamp TIMESTAMP,\n    action_taken VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

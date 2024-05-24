@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InfectiousDiseases (\n  id SERIAL PRIMARY KEY,\n  disease_name TEXT,\n  location GEOGRAPHY(POINT),\n  start_date DATE,\n  end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id UUID PRIMARY KEY,\n  location GEOGRAPHY(POINT),\n  age INT,\n  gender VARCHAR(10)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InfectiousDiseaseCases (\nid INT PRIMARY KEY,\ncountry VARCHAR(255),\ncity VARCHAR(255),\nlatitude FLOAT,\nlongitude FLOAT,\ndate DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DiseaseSpreadAnalysis (\nanalysis_id INT PRIMARY KEY,\nsource_city VARCHAR(255),\ntarget_city VARCHAR(255),\nsimulation_result VARCHAR(255),\nspread_probability FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DiseaseControlMeasures (\nmeasure_id INT PRIMARY KEY,\nmeasure_name VARCHAR(255),\nmeasure_description TEXT,\nimplementation_date DATE,\nmeasure_effectiveness FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_data (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_data (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255),\n    age INT,\n    gender VARCHAR(10),\n    location_id INT REFERENCES location_data(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE infection_data (\n    infection_id INT PRIMARY KEY,\n    patient_id INT REFERENCES patient_data(patient_id),\n    infection_type VARCHAR(50),\n    detection_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE spread_analysis (\n    analysis_id INT PRIMARY KEY,\n    infection_id INT REFERENCES infection_data(infection_id),\n    analysis_date DATE,\n    most_affected_location VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Locations (\n    location_id INT PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id INT PRIMARY KEY,\n    location_id INT,\n    age INT,\n    gender VARCHAR(10),\n    FOREIGN KEY (location_id) REFERENCES Locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Diseases (\n    disease_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Infections (\n    infection_id INT PRIMARY KEY,\n    patient_id INT,\n    disease_id INT,\n    date_infected TIMESTAMP,\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),\n    FOREIGN KEY (disease_id) REFERENCES Diseases(disease_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SpreadAnalysis (\n    analysis_id INT PRIMARY KEY,\n    location_id INT,\n    disease_id INT,\n    date_analyzed TIMESTAMP,\n    affected_population INT,\n    FOREIGN KEY (location_id) REFERENCES Locations(location_id),\n    FOREIGN KEY (disease_id) REFERENCES Diseases(disease_id)\n);"
+      }
+    ]
+  }
+]

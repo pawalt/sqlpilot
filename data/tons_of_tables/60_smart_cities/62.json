@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_usage_data (\n    facility_id INT,\n    water_meter_id INT,\n    usage_date DATE,\n    usage_amount DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_usage_data (\n    id INT PRIMARY KEY,\n    facility_id INT,\n    water_usage DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name TEXT,\n    location TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterConsumption (\n    building_id INT,\n    date DATE,\n    consumption FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Buildings (\n    building_id INT PRIMARY KEY,\n    building_name VARCHAR(255),\n    address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(255),\n    facility_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facility (\n    facility_id UUID PRIMARY KEY,\n    facility_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_meter (\n    meter_id UUID PRIMARY KEY,\n    facility_id UUID REFERENCES facility(facility_id),\n    meter_location VARCHAR(255) NOT NULL,\n    reading DECIMAL(10,2) NOT NULL,\n    reading_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n    usage_id UUID PRIMARY KEY,\n    meter_id UUID REFERENCES water_meter(meter_id),\n    usage_amount DECIMAL(10,2) NOT NULL,\n    usage_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE building (\n    building_id UUID PRIMARY KEY,\n    facility_id UUID REFERENCES facility(facility_id),\n    building_name VARCHAR(255) NOT NULL,\n    building_type VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE green_building_facility (\n    id INT PRIMARY KEY,\n    facility_name VARCHAR(255),\n    location VARCHAR(255)\n);\n\nCREATE TABLE water_usage_data (\n    data_id INT PRIMARY KEY,\n    facility_id INT,\n    usage_date DATE,\n    total_water_used DECIMAL(10,2),\n    CONSTRAINT fk_facility FOREIGN KEY (facility_id) REFERENCES green_building_facility(id)\n);\n\nCREATE TABLE water_meter (\n    meter_id INT PRIMARY KEY,\n    facility_id INT,\n    meter_number VARCHAR(10),\n    CONSTRAINT fk_facility_meter FOREIGN KEY (facility_id) REFERENCES green_building_facility(id)\n);\n\nCREATE TABLE monthly_water_usage (\n    usage_id INT PRIMARY KEY,\n    meter_id INT,\n    reading_date DATE,\n    water_used DECIMAL(10,2),\n    CONSTRAINT fk_meter_usage FOREIGN KEY (meter_id) REFERENCES water_meter(meter_id)\n);\n\nCREATE TABLE billing_info (\n    billing_id INT PRIMARY KEY,\n    facility_id INT,\n    billing_date DATE,\n    total_amount DECIMAL(10,2),\n    CONSTRAINT fk_facility_billing FOREIGN KEY (facility_id) REFERENCES green_building_facility(id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_energy_consumption (\n    plant_id INT PRIMARY KEY,\n    plant_name VARCHAR(255),\n    energy_consumption_kwh DECIMAL(10,2),\n    production_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_plants (\n  plant_id INT PRIMARY KEY,\n  plant_name VARCHAR(100),\n  city VARCHAR(100),\n  country VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n  consumption_id INT PRIMARY KEY,\n  plant_id INT,\n  month VARCHAR(20),\n  year INT,\n  energy_consumed DECIMAL(10,2),\n  FOREIGN KEY (plant_id) REFERENCES packaging_plants(plant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_plants (\n    plant_id INT PRIMARY KEY,\n    plant_name VARCHAR(50),\n    location VARCHAR(100),\n    total_energy_consumption DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption_records (\n    record_id INT PRIMARY KEY,\n    plant_id INT,\n    energy_consumed DECIMAL,\n    date DATE,\n    FOREIGN KEY (plant_id) REFERENCES packaging_plants(plant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_types (\n    type_id INT PRIMARY KEY,\n    type_name VARCHAR(50),\n    material_type VARCHAR(50),\n    recyclable BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Packaging_Plants (\n  plant_id INT PRIMARY KEY,\n  plant_name VARCHAR(100),\n  location VARCHAR(255),\n  energy_consumption DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Production_Lines (\n  line_id INT PRIMARY KEY,\n  line_name VARCHAR(100),\n  line_capacity DECIMAL,\n  plant_id INT,\n  FOREIGN KEY (plant_id) REFERENCES Packaging_Plants(plant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(100),\n  line_id INT,\n  FOREIGN KEY (line_id) REFERENCES Production_Lines(line_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Energy_Usage (\n  usage_id INT PRIMARY KEY,\n  date DATE,\n  energy_consumed DECIMAL,\n  product_id INT,\n  FOREIGN KEY (product_id) REFERENCES Products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_plants (\n    plant_id INT PRIMARY KEY,\n    plant_name VARCHAR(255),\n    location VARCHAR(255),\n    total_energy_consumed DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_production (\n    production_id INT PRIMARY KEY,\n    plant_id INT,\n    production_date DATE,\n    total_output DECIMAL,\n    FOREIGN KEY (plant_id) REFERENCES packaging_plants(plant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE plant_energy_sources (\n    plant_id INT,\n    source_id INT,\n    energy_consumed DECIMAL,\n    FOREIGN KEY (plant_id) REFERENCES packaging_plants(plant_id),\n    FOREIGN KEY (source_id) REFERENCES energy_sources(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    log_id INT PRIMARY KEY,\n    plant_id INT,\n    maintenance_date DATE,\n    maintenance_type VARCHAR(100),\n    details TEXT,\n    FOREIGN KEY (plant_id) REFERENCES packaging_plants(plant_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE returned_items (\n  item_id INT PRIMARY KEY,\n  item_name VARCHAR(255),\n  return_date DATE,\n  return_status VARCHAR(50),\n  inspection_status VARCHAR(50),\n  refund_amount DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE returned_items (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(255),\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logistics_stages (\n    stage_id INT PRIMARY KEY,\n    stage_name VARCHAR(100),\n    duration_minutes INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE returned_items (\n    item_id INT PRIMARY KEY,\n    return_date DATE,\n    returned_by VARCHAR(50),\n    status ENUM('received', 'processed', 'completed')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE return_processing (\n    process_id INT PRIMARY KEY,\n    item_id INT REFERENCES returned_items(item_id),\n    processing_date DATE,\n    processing_location VARCHAR(50),\n    processing_status ENUM('in_progress', 'completed')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE return_shipping (\n    shipment_id INT PRIMARY KEY,\n    process_id INT REFERENCES return_processing(process_id),\n    shipping_date DATE,\n    shipping_carrier VARCHAR(50),\n    shipping_status ENUM('shipped', 'delivered')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ReturnedItems (\n  id INT PRIMARY KEY,\n  item_name VARCHAR,\n  return_date DATE,\n  return_reason TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspection (\n  id INT PRIMARY KEY,\n  inspection_date DATE,\n  inspector VARCHAR,\n  inspection_result VARCHAR,\n  inspection_notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Repair (\n  id INT PRIMARY KEY,\n  repair_date DATE,\n  technician VARCHAR,\n  repair_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reshipment (\n  id INT PRIMARY KEY,\n  reshipment_date DATE,\n  destination_address VARCHAR,\n  shipping_method VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE returned_items ( \n    item_id UUID PRIMARY KEY, \n    return_status VARCHAR(50), \n    return_timestamp TIMESTAMPTZ \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE return_processing ( \n    return_id UUID PRIMARY KEY, \n    item_id UUID REFERENCES returned_items(item_id), \n    processing_stage VARCHAR(50), \n    processing_timestamp TIMESTAMPTZ \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE return_inspection ( \n    inspection_id UUID PRIMARY KEY, \n    return_id UUID REFERENCES return_processing(return_id), \n    inspection_date DATE, \n    inspected_by VARCHAR(100) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE return_resolution ( \n    resolution_id UUID PRIMARY KEY, \n    return_id UUID REFERENCES return_processing(return_id), \n    resolution_status VARCHAR(50), \n    resolution_timestamp TIMESTAMPTZ \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE return_disposition ( \n    disposition_id UUID PRIMARY KEY, \n    return_id UUID REFERENCES return_processing(return_id), \n    disposition_type VARCHAR(50), \n    disposed_by VARCHAR(100), \n    disposal_timestamp TIMESTAMPTZ \n);"
+      }
+    ]
+  }
+]

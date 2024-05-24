@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_authentication (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    security_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password_hash VARCHAR(100),\n    security_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    access_time TIMESTAMP,\n    success BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users_auth (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_settings (\n    setting_id INT PRIMARY KEY,\n    user_id INT,\n    two_factor_auth BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP DEFAULT NOW()\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id UUID PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_role_permissions (\n    role_id UUID,\n    permission_id UUID,\n    PRIMARY KEY(role_id, permission_id),\n    FOREIGN KEY (role_id) REFERENCES user_roles(role_id),\n    FOREIGN KEY (permission_id) REFERENCES user_permissions(permission_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users_auth (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    user_id INT,\n    role_name VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users_auth(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    session_token VARCHAR(100) NOT NULL,\n    login_time TIMESTAMP NOT NULL,\n    logout_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE password_history (\n    history_id INT PRIMARY KEY,\n    user_id INT,\n    password VARCHAR(50) NOT NULL,\n    change_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users_auth(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    action VARCHAR(100) NOT NULL,\n    log_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users_auth(user_id)\n);"
+      }
+    ]
+  }
+]

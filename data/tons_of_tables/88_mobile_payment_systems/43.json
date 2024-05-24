@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraud_detection (\n    entry_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    transaction_amount DECIMAL NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    is_fraud BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraud_entries (\n    entry_id INT PRIMARY KEY,\n    entry_date DATE,\n    customer_id INT,\n    transaction_amount DECIMAL,\n    is_fraud BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_patterns (\n    pattern_id INT PRIMARY KEY,\n    pattern_description TEXT,\n    fraud_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraud_detection_data (id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  transaction_amount FLOAT NOT NULL,\n  transaction_date TIMESTAMP NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_users (id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  registration_date TIMESTAMP NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_alerts (id INT PRIMARY KEY,\n  alert_id INT NOT NULL,\n  user_id INT NOT NULL,\n  alert_message VARCHAR(255) NOT NULL,\n  alert_date TIMESTAMP NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraud_detection_users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n    transaction_id SERIAL PRIMARY KEY,\n    user_id INT,\n    amount DECIMAL,\n    transaction_timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES fraud_detection_users(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suspicious_transactions (\n    trans_id SERIAL PRIMARY KEY,\n    transaction_id INT,\n    user_id INT,\n    amount DECIMAL,\n    suspicious_reason TEXT,\n    FOREIGN KEY (transaction_id) REFERENCES transaction_logs(transaction_id),\n    FOREIGN KEY (user_id) REFERENCES fraud_detection_users(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_patterns (\n    pattern_id SERIAL PRIMARY KEY,\n    description TEXT,\n    pattern_source TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n\tcustomer_id INT PRIMARY KEY,\n\tcustomer_name VARCHAR(50),\n\taccount_balance DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n\ttransaction_id INT PRIMARY KEY,\n\tcustomer_id INT,\n\ttransaction_amount DECIMAL,\n\ttransaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flagged_transactions (\n\ttransaction_id INT PRIMARY KEY,\n\tcustomer_id INT,\n\tflag_reason VARCHAR(100),\n\tflagged_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suspicious_activity (\n\tsuspicious_id INT PRIMARY KEY,\n\tcustomer_id INT,\n\tsuspicious_description VARCHAR(200),\n\tsuspicious_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n\talert_id INT PRIMARY KEY,\n\tcustomer_id INT,\n\talert_message VARCHAR(250),\n\talert_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

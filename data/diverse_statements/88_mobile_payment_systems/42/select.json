@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM transaction_fees;",
+      "SELECT transaction_id, sender_user_id, transaction_amount FROM transaction_fees WHERE sender_user_id = 100;",
+      "SELECT receiver_user_id, fee_percentage FROM transaction_fees WHERE fee_percentage > 0.5;",
+      "SELECT sender_user_id, transaction_amount FROM transaction_fees WHERE sender_user_id = 200 ORDER BY transaction_amount DESC;",
+      "SELECT * FROM transaction_fees WHERE fee_percentage BETWEEN 0.1 AND 0.5 ORDER BY receiver_user_id ASC, transaction_amount DESC;",
+      "SELECT * FROM transaction_fees WHERE transaction_id = 100",
+      "SELECT sender_user_id, receiver_user_id, transaction_amount FROM transaction_fees WHERE fee_percentage > 0.5 ORDER BY fee_percentage DESC",
+      "SELECT transaction_id, sender_user_id, receiver_user_id, transaction_amount, fee_percentage FROM transaction_fees WHERE sender_user_id = 500 AND receiver_user_id = 700",
+      "SELECT SUM(transaction_amount) AS total_amount FROM transaction_fees WHERE receiver_user_id IN (600, 800, 1000)",
+      "SELECT AVG(fee_percentage) AS average_fee_percentage FROM transaction_fees"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM transaction;",
+      "SELECT sender_id, receiver_id, amount FROM transaction WHERE amount > 100;",
+      "SELECT receiver_id, fee FROM transaction WHERE fee > 0.5;",
+      "SELECT transaction_id, sender_id, receiver_id, amount, fee FROM transaction WHERE sender_id = 100;",
+      "SELECT transaction_id, fee, fee_percentage, calculated_fee FROM fee_calculation WHERE transaction_id = 10;",
+      "SELECT * FROM transaction WHERE amount > 100 AND fee < 10 ORDER BY transaction_id ASC LIMIT 5;",
+      "SELECT sender_id, receiver_id, amount+fee AS total_amount FROM transaction JOIN fee_calculation ON transaction.transaction_id = fee_calculation.transaction_id WHERE fee_percentage > 0.5;",
+      "SELECT receiver_id, SUM(amount) AS total_received FROM transaction GROUP BY receiver_id HAVING total_received > 5000 ORDER BY total_received DESC;",
+      "SELECT t.sender_id, t.receiver_id, fc.calculated_fee AS fee_amount FROM transaction t INNER JOIN fee_calculation fc ON t.transaction_id = fc.transaction_id WHERE fc.calculated_fee IS NOT NULL;",
+      "SELECT t.sender_id, t.receiver_id, fc.fee_percentage, fc.calculated_fee FROM transaction t LEFT JOIN fee_calculation fc ON t.transaction_id = fc.transaction_id WHERE fc.calculated_fee IS NULL;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM transaction_fees;",
+      "SELECT payment_id, amount, currency, fee FROM transaction_fees ORDER BY payment_id DESC;",
+      "SELECT user_id, user_name, email FROM users WHERE account_balance > 1000;",
+      "SELECT transaction_id, sender_id, receiver_id, payment_amount, fee_amount FROM transactions WHERE payment_amount > 500 ORDER BY payment_amount ASC;",
+      "SELECT user_id, user_name, email, account_balance FROM users WHERE user_id = 10;",
+      "SELECT * FROM users WHERE account_balance > 1000 ORDER BY user_name DESC;",
+      "SELECT transaction_id, payment_amount, fee_amount FROM transactions WHERE sender_id = 101 AND receiver_id = 102;",
+      "SELECT user_name, email FROM users WHERE email LIKE '%@example.com';",
+      "SELECT sender_id, receiver_id, payment_amount+fee_amount AS total_amount FROM transactions WHERE payment_amount > 500 ORDER BY total_amount DESC;",
+      "SELECT payment_id, SUM(amount) AS total_amount FROM transaction_fees GROUP BY payment_id HAVING total_amount > 1000;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users WHERE user_id = 1;",
+      "SELECT username, balance FROM users WHERE user_id = 3;",
+      "SELECT user_id, email FROM users WHERE balance > 100.00;",
+      "SELECT * FROM transactions ORDER BY timestamp DESC;",
+      "SELECT user_id, SUM(amount) AS total_amount FROM transactions GROUP BY user_id;",
+      "SELECT * FROM users ORDER BY username DESC, balance ASC LIMIT 10",
+      "SELECT user_id, username, email, balance FROM users INNER JOIN transactions ON users.user_id = transactions.user_id WHERE amount > 100 ORDER BY timestamp DESC",
+      "SELECT users.username, transactions.amount, transactions.fee FROM users LEFT JOIN transactions ON users.user_id = transactions.user_id WHERE transactions.fee > (SELECT base_fee FROM fees WHERE fee_type='transfer')",
+      "SELECT users.username, payment_methods.method_name, payment_methods.fee_rate FROM users JOIN payment_methods ON users.user_id = payment_methods.user_id ORDER BY payment_methods.fee_rate DESC",
+      "SELECT username, SUM(amount) AS total_amount FROM users JOIN transactions ON users.user_id = transactions.user_id GROUP BY username HAVING total_amount > 1000"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM transactions;",
+      "SELECT sender_id, receiver_id, amount FROM transactions WHERE amount > 1000;",
+      "SELECT username, balance FROM users ORDER BY balance DESC;",
+      "SELECT transaction_id, amount, timestamp FROM transactions WHERE timestamp > '2022-01-01';",
+      "SELECT fee_id, fee_percentage, min_fee, max_fee FROM fees;",
+      "SELECT * FROM transactions WHERE amount > 1000 ORDER BY timestamp DESC;",
+      "SELECT t.transaction_id, u.username, t.amount, th.fee_amount FROM transactions t JOIN users u ON t.sender_id = u.user_id JOIN transactions_history th ON t.transaction_id = th.transaction_id WHERE u.balance < 0 ORDER BY t.amount ASC;",
+      "SELECT u.username, SUM(t.amount) AS total_transaction_amount FROM users u JOIN transactions t ON u.user_id = t.sender_id GROUP BY u.username HAVING total_transaction_amount > 5000;",
+      "SELECT t.transaction_id, u.username, tf.fee_id FROM transactions t JOIN users u ON t.sender_id = u.user_id JOIN transaction_fees tf ON t.transaction_id = tf.transaction_id WHERE tf.fee_id IS NOT NULL AND t.amount > 200 ORDER BY t.timestamp ASC;",
+      "SELECT t.transaction_id, t.amount, f.min_fee, f.max_fee FROM transactions t JOIN fees f ON t.amount BETWEEN f.min_fee AND f.max_fee WHERE f.fee_percentage > 2.5 ORDER BY t.amount DESC;"
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fake_accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR(50),\n    account_type VARCHAR(20),\n    account_status VARCHAR(20),\n    propaganda_content TEXT,\n    political_affiliation VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fake_accounts (\n    account_id INT PRIMARY KEY,\n    username TEXT,\n    email TEXT,\n    created_at TIMESTAMP,\n    is_fake BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE propaganda_posts (\n    post_id INT PRIMARY KEY,\n    account_id INT,\n    post_content TEXT,\n    created_at TIMESTAMP,\n    is_propaganda BOOLEAN,\n    FOREIGN KEY (account_id) REFERENCES fake_accounts(account_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Accounts(\n    account_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    is_fake BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Posts(\n    post_id INT PRIMARY KEY,\n    account_id INT,\n    post_content TEXT NOT NULL,\n    post_date DATE NOT NULL,\n    FOREIGN KEY (account_id) REFERENCES Accounts(account_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Investigations(\n    investigation_id INT PRIMARY KEY,\n    account_id INT,\n    investigator_id INT,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    outcome TEXT,\n    FOREIGN KEY (account_id) REFERENCES Accounts(account_id),\n    FOREIGN KEY (investigator_id) REFERENCES Investigators(investigator_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fake_accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR(100),\n    is_bot BOOLEAN,\n    follower_count INT,\n    is_verified BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_posts (\n    post_id INT PRIMARY KEY,\n    account_id INT,\n    post_content TEXT,\n    post_date TIMESTAMP,\n    is_promoted BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flagged_accounts (\n    account_id INT PRIMARY KEY,\n    reason TEXT,\n    flag_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE propaganda_links (\n    link_id INT PRIMARY KEY,\n    post_id INT,\n    link_url VARCHAR(255),\n    created_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE propaganda_accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR(50) NOT NULL,\n    follower_count INT,\n    creation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    account_id INT REFERENCES propaganda_accounts(account_id),\n    post_content TEXT,\n    post_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    post_id INT REFERENCES posts(post_id),\n    commenter_id INT REFERENCES propaganda_accounts(account_id),\n    comment_text TEXT,\n    comment_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE hashtags (\n    hashtag_id INT PRIMARY KEY,\n    hashtag_text VARCHAR(50) UNIQUE,\n    post_id INT REFERENCES posts(post_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE investigations (\n    investigation_id INT PRIMARY KEY,\n    post_id INT REFERENCES posts(post_id),\n    reason TEXT,\n    investigator_id INT REFERENCES propaganda_accounts(account_id),\n    investigation_date DATE\n);\n"
+      }
+    ]
+  }
+]

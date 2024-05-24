@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerSatisfactionData (\n    survey_id INT PRIMARY KEY,\n    customer_id INT,\n    satisfaction_score INT,\n    feedback_text TEXT,\n    survey_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SurveyData (\n    survey_id UUID PRIMARY KEY,\n    customer_id UUID,\n    survey_date DATE,\n    satisfaction_level INT,\n    comments TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FeedbackData (\n    feedback_id UUID PRIMARY KEY,\n    customer_id UUID,\n    feedback_date DATE,\n    feedback_text TEXT,\n    response_time INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE survey_responses (\n  response_id INT PRIMARY KEY,\n  customer_id INT,\n  survey_date DATE,\n  satisfaction_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_comments (\n  comment_id INT PRIMARY KEY,\n  response_id INT,\n  comment_text TEXT,\n  comment_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  email_address VARCHAR(100),\n  phone_number VARCHAR(15)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  customer_email VARCHAR(100) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE surveys (\n  survey_id INT PRIMARY KEY,\n  survey_date DATE NOT NULL,\n  survey_rating INT CHECK (survey_rating >= 1 AND survey_rating <= 5),\n  customer_id INT REFERENCES customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n  feedback_id INT PRIMARY KEY,\n  feedback_text TEXT NOT NULL,\n  survey_id INT REFERENCES surveys(survey_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE survey_results (\n  result_id INT PRIMARY KEY,\n  result_value DECIMAL(5,2) NOT NULL,\n  survey_id INT REFERENCES surveys(survey_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_surveys (\n    survey_id INT PRIMARY KEY,\n    customer_id INT,\n    survey_date DATE,\n    satisfaction_score INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_comments (\n    feedback_id INT PRIMARY KEY,\n    survey_id INT,\n    customer_id INT,\n    comment_text TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_profiles (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    customer_email VARCHAR(255),\n    customer_phone VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE survey_questions (\n    question_id INT PRIMARY KEY,\n    question_text TEXT,\n    question_type VARCHAR(50),\n    active BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE survey_responses (\n    response_id INT PRIMARY KEY,\n    survey_id INT,\n    question_id INT,\n    response_value TEXT\n)"
+      }
+    ]
+  }
+]

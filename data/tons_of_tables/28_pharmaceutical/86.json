@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE whistleblower_complaints (\n    complaint_id INT PRIMARY KEY,\n    complaint_text TEXT,\n    whistleblower_name TEXT,\n    complaint_date TIMESTAMP,\n    investigation_status TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE whistleblower_complaints (\n    complaint_id INT PRIMARY KEY,\n    complainant_name TEXT,\n    complaint_text TEXT,\n    complaint_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE complaint_response (\n    response_id INT PRIMARY KEY,\n    complaint_id INT,\n    response_text TEXT,\n    response_date TIMESTAMP,\n    FOREIGN KEY (complaint_id) REFERENCES whistleblower_complaints(complaint_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE whistleblower_complaints (\n    complaint_id SERIAL PRIMARY KEY,\n    complainant_name VARCHAR(255) NOT NULL,\n    complaint_date DATE NOT NULL,\n    complaint_description TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE whistleblower_reports (\n    report_id SERIAL PRIMARY KEY,\n    complaint_id INT NOT NULL,\n    reported_date DATE NOT NULL,\n    report_description TEXT NOT NULL,\n    CONSTRAINT fk_complaint_id FOREIGN KEY (complaint_id) REFERENCES whistleblower_complaints(complaint_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE whistleblower_actions (\n    action_id SERIAL PRIMARY KEY,\n    report_id INT NOT NULL,\n    action_date DATE NOT NULL,\n    action_taken TEXT NOT NULL,\n    CONSTRAINT fk_report_id FOREIGN KEY (report_id) REFERENCES whistleblower_reports(report_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE whistleblower_complaints (\n  complaint_id INT PRIMARY KEY,\n  employee_id INT,\n  complaint_date DATE,\n  complaint_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n  employee_id INT PRIMARY KEY,\n  employee_name TEXT,\n  department TEXT,\n  position TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE investigations (\n  investigation_id INT PRIMARY KEY,\n  complaint_id INT,\n  investigator_id INT,\n  investigation_date DATE,\n  findings TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE investigators (\n  investigator_id INT PRIMARY KEY,\n  investigator_name TEXT,\n  department TEXT,\n  years_of_experience INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE whistleblower_complaints (\n    id SERIAL PRIMARY KEY,\n    complaint_date DATE,\n    complainant_name VARCHAR(50),\n    complaint_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE whistleblower_allegations (\n    id SERIAL PRIMARY KEY,\n    complaint_id INT,\n    allegation_type VARCHAR(50),\n    allegation_description TEXT,\n    FOREIGN KEY (complaint_id) REFERENCES whistleblower_complaints(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE whistleblower_investigations (\n    id SERIAL PRIMARY KEY,\n    complaint_id INT,\n    investigator_name VARCHAR(50),\n    investigation_status VARCHAR(50),\n    FOREIGN KEY (complaint_id) REFERENCES whistleblower_complaints(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE whistleblower_reports (\n    id SERIAL PRIMARY KEY,\n    investigation_id INT,\n    report_date DATE,\n    report_details TEXT,\n    FOREIGN KEY (investigation_id) REFERENCES whistleblower_investigations(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE whistleblower_actions (\n    id SERIAL PRIMARY KEY,\n    report_id INT,\n    action_taken VARCHAR(50),\n    action_date DATE,\n    FOREIGN KEY (report_id) REFERENCES whistleblower_reports(id)\n);"
+      }
+    ]
+  }
+]

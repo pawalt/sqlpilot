@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_parameters (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    layer_name VARCHAR(255),\n    weight_type VARCHAR(50),\n    weight_value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_weights (\n    model_id INT PRIMARY KEY,\n    layer_name VARCHAR(255),\n    weight BLOB\n);\n\nCREATE TABLE model_parameters (\n    param_id INT PRIMARY KEY,\n    model_id INT,\n    parameter_name VARCHAR(255),\n    parameter_value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_weights ( \n    id INT PRIMARY KEY, \n    model_id INT, \n    layer_name TEXT, \n    weight_data BYTEA \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parameters ( \n    id INT PRIMARY KEY, \n    model_id INT, \n    parameter_name TEXT, \n    parameter_value FLOAT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inference_results ( \n    id INT PRIMARY KEY, \n    model_id INT, \n    input_data BYTEA, \n    output_data BYTEA \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_weights (\n    model_id INT PRIMARY KEY,\n    weight_name VARCHAR(255),\n    weight_type VARCHAR(50),\n    weight_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parameters (\n    parameter_id INT PRIMARY KEY,\n    model_id INT REFERENCES model_weights(model_id),\n    parameter_name VARCHAR(255),\n    parameter_type VARCHAR(50),\n    parameter_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inference_results (\n    inference_id INT PRIMARY KEY,\n    model_id INT REFERENCES model_weights(model_id),\n    input_data BLOB,\n    output_data BLOB,\n    inference_time FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_logs (\n    log_id INT PRIMARY KEY,\n    model_id INT REFERENCES model_weights(model_id),\n    training_loss FLOAT,\n    training_accuracy FLOAT,\n    training_time FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_weights (\n    id INT PRIMARY KEY,\n    layer_name VARCHAR(50),\n    weight_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE parameter_settings (\n    id INT PRIMARY KEY,\n    parameter_name VARCHAR(50),\n    parameter_value FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inference_results (\n    id INT PRIMARY KEY,\n    inference_id INT,\n    result_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_architecture (\n    id INT PRIMARY KEY,\n    layer_name VARCHAR(50),\n    activation_function VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_history (\n    id INT PRIMARY KEY,\n    epoch_number INT,\n    loss_value FLOAT,\n    accuracy FLOAT\n);\n"
+      }
+    ]
+  }
+]

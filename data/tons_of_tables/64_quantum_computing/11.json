@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_evolution (\n  state_id SERIAL PRIMARY KEY,\n  state_description TEXT,\n  time_stamp TIMESTAMPTZ\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_states (\n    id INT PRIMARY KEY,\n    state_name VARCHAR(255),\n    wave_function TEXT,\n    time_stamp TIMESTAMP\n);\n\nCREATE TABLE state_measurements (\n    measurement_id INT PRIMARY KEY,\n    state_id INT,\n    measurement_value FLOAT,\n    measurement_time TIMESTAMP,\n    FOREIGN KEY (state_id) REFERENCES quantum_states(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_states (\n    state_id INT PRIMARY KEY,\n    state_name VARCHAR(50) NOT NULL,\n    state_description TEXT,\n    measurement_result BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE state_changes (\n    change_id INT PRIMARY KEY,\n    state_id INT REFERENCES quantum_states(state_id),\n    change_time TIMESTAMP NOT NULL,\n    change_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements (\n    measurement_id INT PRIMARY KEY,\n    state_id INT REFERENCES quantum_states(state_id),\n    measurement_time TIMESTAMP NOT NULL,\n    measured_value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_states (\n    state_id INT PRIMARY KEY,\n    state_description TEXT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_gates (\n    gate_id INT PRIMARY KEY,\n    gate_name TEXT,\n    unitary_matrix TEXT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_operators (\n    operator_id INT PRIMARY KEY,\n    operator_name TEXT,\n    matrix_representation TEXT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_measurements (\n    measurement_id INT PRIMARY KEY,\n    measurement_name TEXT,\n    outcome TEXT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_states (\n    state_id INT PRIMARY KEY,\n    state_name VARCHAR(50) NOT NULL,\n    state_description TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE state_changes (\n    change_id INT PRIMARY KEY,\n    state_id INT,\n    change_type ENUM('quantum_rotation', 'quantum_translation'),\n    change_description TEXT,\n    change_time TIMESTAMP,\n    FOREIGN KEY (state_id) REFERENCES quantum_states(state_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE state_measurements (\n    measurement_id INT PRIMARY KEY,\n    state_id INT,\n    measurement_result BOOLEAN,\n    measurement_time TIMESTAMP,\n    FOREIGN KEY (state_id) REFERENCES quantum_states(state_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE state_relations (\n    relation_id INT PRIMARY KEY,\n    parent_state_id INT,\n    child_state_id INT,\n    relation_type ENUM('entanglement', 'superposition'),\n    FOREIGN KEY (parent_state_id) REFERENCES quantum_states(state_id),\n    FOREIGN KEY (child_state_id) REFERENCES quantum_states(state_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_systems (\n    system_id INT PRIMARY KEY,\n    system_name VARCHAR(50) NOT NULL,\n    system_description TEXT,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Registration (\n    registration_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    company_name VARCHAR(255),\n    registration_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProductRegistrations (\n  registration_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  registration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ApplicationRates (\n  application_id INT PRIMARY KEY,\n  registration_id INT,\n  application_rate FLOAT,\n  application_date DATE,\n  FOREIGN KEY (registration_id) REFERENCES ProductRegistrations(registration_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n  id INT PRIMARY KEY,\n  name TEXT,\n  registration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE application_rates (\n  id INT PRIMARY KEY,\n  product_id INT REFERENCES products(id),\n  application_rate DECIMAL,\n  application_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE residue_levels (\n  id INT PRIMARY KEY,\n  product_id INT REFERENCES products(id),\n  residue_level DECIMAL,\n  test_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_registrations (\n    registration_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    company_name VARCHAR(255),\n    registration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE application_rates (\n    application_id INT PRIMARY KEY,\n    registration_id INT,\n    application_date DATE,\n    rate DECIMAL(10, 2),\n    FOREIGN KEY (registration_id) REFERENCES product_registrations (registration_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE residue_levels (\n    residue_id INT PRIMARY KEY,\n    registration_id INT,\n    sample_date DATE,\n    residue_level DECIMAL(10, 2),\n    FOREIGN KEY (registration_id) REFERENCES product_registrations (registration_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE companies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255),\n    country VARCHAR(50),\n    contact_person VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProductRegistrations (\n    registration_id UUID PRIMARY KEY,\n    product_name VARCHAR(255),\n    manufacturer VARCHAR(255),\n    registration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ApplicationRates (\n    application_id UUID PRIMARY KEY,\n    registration_id UUID REFERENCES ProductRegistrations(registration_id),\n    application_date DATE,\n    application_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResidueLevels (\n    residue_id UUID PRIMARY KEY,\n    registration_id UUID REFERENCES ProductRegistrations(registration_id),\n    residue_date DATE,\n    residue_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Companies (\n    company_id UUID PRIMARY KEY,\n    company_name VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CompanyProducts (\n    company_id UUID REFERENCES Companies(company_id),\n    registration_id UUID REFERENCES ProductRegistrations(registration_id),\n    PRIMARY KEY (company_id, registration_id)\n);"
+      }
+    ]
+  }
+]

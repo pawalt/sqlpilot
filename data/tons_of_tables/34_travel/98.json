@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HistoricalBattles (\n  battle_id INT PRIMARY KEY,\n  battle_name VARCHAR(255),\n  battle_date DATE,\n  location VARCHAR(255),\n  participant_id INT,\n  outcome VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_battles (\n    battle_id UUID PRIMARY KEY,\n    battle_name STRING,\n    battle_date DATE,\n    location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name STRING,\n    battle_id UUID REFERENCES historical_battles(battle_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Battles (\n\tbattle_id INT PRIMARY KEY,\n\tbattle_name VARCHAR(255),\n\tbattle_date DATE,\n\tlocation VARCHAR(255),\n\toutcome VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Participants (\n\tparticipant_id INT PRIMARY KEY,\n\tparticipant_name VARCHAR(255),\n\tparticipant_role VARCHAR(50),\n\tbattle_id INT,\n\tFOREIGN KEY (battle_id) REFERENCES Battles(battle_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Outcomes (\n\toutcome_id INT PRIMARY KEY,\n\tparticipant_id INT,\n\toutcome_description TEXT,\n\tFOREIGN KEY (participant_id) REFERENCES Participants(participant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_battles (\n  battle_id INT PRIMARY KEY,\n  battle_name VARCHAR(255),\n  battle_date DATE,\n  location VARCHAR(255),\n  outcome VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE battle_participants (\n  participant_id INT PRIMARY KEY,\n  battle_id INT,\n  participant_name VARCHAR(255),\n  army_name VARCHAR(255),\n  army_size INT,\n  FOREIGN KEY (battle_id) REFERENCES historical_battles(battle_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE battle_outcomes (\n  outcome_id INT PRIMARY KEY,\n  battle_id INT,\n  winning_army VARCHAR(255),\n  losing_army VARCHAR(255),\n  victory_type VARCHAR(100),\n  FOREIGN KEY (battle_id) REFERENCES historical_battles(battle_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE battle_details (\n  detail_id INT PRIMARY KEY,\n  battle_id INT,\n  description TEXT,\n  duration_hours INT,\n  weather_conditions VARCHAR(255),\n  FOREIGN KEY (battle_id) REFERENCES historical_battles(battle_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE battles (\n    battle_id UUID PRIMARY KEY,\n    battle_name VARCHAR(255) NOT NULL,\n    battle_date DATE NOT NULL,\n    location VARCHAR(255),\n    outcome VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    role VARCHAR(50),\n    army_id UUID,\n    battle_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE armies (\n    army_id UUID PRIMARY KEY,\n    army_name VARCHAR(255) NOT NULL,\n    total_soldiers INT,\n    commander_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE battles_outcomes (\n    outcome_id UUID PRIMARY KEY,\n    battle_id UUID,\n    outcome_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE battles_participants (\n    id UUID PRIMARY KEY,\n    participant_id UUID,\n    battle_id UUID\n);"
+      }
+    ]
+  }
+]

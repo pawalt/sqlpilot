@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tournament_prizes (\n  tournament_id INT NOT NULL,\n  prize_money DECIMAL NOT NULL,\n  reward_item VARCHAR(255) NOT NULL,\n  winner_id INT NOT NULL,\n  PRIMARY KEY (tournament_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id UUID PRIMARY KEY,\n    tournament_id UUID NOT NULL,\n    player_id UUID NOT NULL,\n    reward_amount INT NOT NULL,\n    reward_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tournaments (\n    tournament_id UUID PRIMARY KEY,\n    tournament_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    prize_pool INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tournaments (\n  tournament_id INT PRIMARY KEY,\n  tournament_name VARCHAR(255) NOT NULL,\n  game_title VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n  reward_id INT PRIMARY KEY,\n  reward_type VARCHAR(50) NOT NULL,\n  reward_amount DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE winners (\n  winner_id INT PRIMARY KEY,\n  tournament_id INT NOT NULL,\n  reward_id INT NOT NULL,\n  winner_name VARCHAR(255) NOT NULL,\n  FOREIGN KEY (tournament_id) REFERENCES tournaments(tournament_id),\n  FOREIGN KEY (reward_id) REFERENCES rewards(reward_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tournaments (\n  id INT PRIMARY KEY,\n  tournament_name VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  prize_pool DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE teams (\n  id INT PRIMARY KEY,\n  team_name VARCHAR(255) NOT NULL,\n  country VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n  id INT PRIMARY KEY,\n  player_name VARCHAR(255) NOT NULL,\n  team_id INT NOT NULL,\n  role VARCHAR(50) NOT NULL,\n  earnings DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_rewards (\n  id INT PRIMARY KEY,\n  player_id INT NOT NULL,\n  reward_description TEXT NOT NULL,\n  reward_amount DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tournament (\n    tournament_id SERIAL PRIMARY KEY,\n    tournament_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player (\n    player_id SERIAL PRIMARY KEY,\n    player_name VARCHAR(255) NOT NULL,\n    team_id INT,\n    FOREIGN KEY (team_id) REFERENCES team(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team (\n    team_id SERIAL PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    country VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reward (\n    reward_id SERIAL PRIMARY KEY,\n    reward_name VARCHAR(255) NOT NULL,\n    amount DECIMAL,\n    tournament_id INT,\n    FOREIGN KEY (tournament_id) REFERENCES tournament(tournament_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE prize_money (\n    prize_id SERIAL PRIMARY KEY,\n    prize_amount DECIMAL NOT NULL,\n    tournament_id INT,\n    player_id INT,\n    FOREIGN KEY (tournament_id) REFERENCES tournament(tournament_id),\n    FOREIGN KEY (player_id) REFERENCES player(player_id)\n);\n"
+      }
+    ]
+  }
+]

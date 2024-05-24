@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_retention_policy (\n\tid INT PRIMARY KEY,\n\tpolicy_name VARCHAR(255) NOT NULL,\n\tretention_period INTERVAL NOT NULL,\n\tis_active BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    retention_period INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_records (\n    record_id INT PRIMARY KEY,\n    record_data VARCHAR(255),\n    creation_date TIMESTAMPTZ,\n    policy_id INT,\n    FOREIGN KEY (policy_id) REFERENCES retention_policies(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_retention_policies (\n    policy_id UUID PRIMARY KEY,\n    policy_name VARCHAR(100),\n    retention_period INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_categories (\n    category_id UUID PRIMARY KEY,\n    category_name VARCHAR(100),\n    data_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_entries (\n    entry_id UUID PRIMARY KEY,\n    category_id UUID REFERENCES data_categories(category_id),\n    entry_data JSONB,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policy (\n  id INT PRIMARY KEY,\n  policy_name VARCHAR(50) NOT NULL,\n  retention_period INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE retention_data (\n  data_id INT PRIMARY KEY,\n  data_name VARCHAR(100) NOT NULL,\n  data_value TEXT NOT NULL,\n  creation_date TIMESTAMP NOT NULL,\n  policy_id INT,\n  FOREIGN KEY (policy_id) REFERENCES retention_policy(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE deletion_logs (\n  log_id INT PRIMARY KEY,\n  data_id INT NOT NULL,\n  deletion_date TIMESTAMP NOT NULL,\n  FOREIGN KEY (data_id) REFERENCES retention_data(data_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_logs (\n  compliance_id INT PRIMARY KEY,\n  log_id INT NOT NULL,\n  compliance_status VARCHAR(20) NOT NULL,\n  FOREIGN KEY (log_id) REFERENCES deletion_logs(log_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DataRetentionPolicies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(255),\n    retention_period INT,\n    last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    email VARCHAR(255),\n    registration_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE UserActivities (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    activity_type ENUM('login', 'logout', 'view'),\n    activity_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DeletedDataLogs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    deletion_date DATE,\n    deleted_rows INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PoliciesAuditLogs (\n    log_id INT PRIMARY KEY,\n    policy_id INT,\n    action_type ENUM('create', 'update', 'delete'),\n    audit_date TIMESTAMP\n)"
+      }
+    ]
+  }
+]

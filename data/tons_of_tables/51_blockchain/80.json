@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    participant_id INT PRIMARY KEY,\n    access_level VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(50) NOT NULL,\n    access_level VARCHAR(10) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL,\n    permission_description TEXT,\n    access_level_id INT,\n    FOREIGN KEY (access_level_id) REFERENCES blockchain_participants(participant_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_network_participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(50) NOT NULL,\n    access_level VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participant_permissions (\n    participant_id INT REFERENCES blockchain_network_participants(participant_id),\n    permission_id INT REFERENCES access_permissions(permission_id),\n    PRIMARY KEY (participant_id, permission_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (permission_id INT PRIMARY KEY, role VARCHAR(50) NOT NULL, access_level VARCHAR(20) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, password_hash VARCHAR(100) NOT NULL, role VARCHAR(50) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (role_id INT PRIMARY KEY, role_name VARCHAR(50) NOT NULL, description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_participants (participant_id INT PRIMARY KEY, user_id INT NOT NULL, permission_id INT NOT NULL, FOREIGN KEY(user_id) REFERENCES users(user_id), FOREIGN KEY(permission_id) REFERENCES permissions(permission_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_user_permissions (\n   user_id INT PRIMARY KEY,\n   user_name VARCHAR(255) NOT NULL,\n   access_level ENUM('admin', 'read', 'write') NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_role_permissions (\n   role_id INT PRIMARY KEY,\n   role_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_network_permissions (\n   network_id INT PRIMARY KEY,\n   network_name VARCHAR(255) NOT NULL,\n   permissions TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_user_roles (\n   user_id INT,\n   role_id INT,\n   FOREIGN KEY (user_id) REFERENCES blockchain_user_permissions(user_id),\n   FOREIGN KEY (role_id) REFERENCES blockchain_role_permissions(role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_role_network (\n   role_id INT,\n   network_id INT,\n   FOREIGN KEY (role_id) REFERENCES blockchain_role_permissions(role_id),\n   FOREIGN KEY (network_id) REFERENCES blockchain_network_permissions(network_id)\n);"
+      }
+    ]
+  }
+]

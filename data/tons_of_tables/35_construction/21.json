@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_transportation_usage (\n    user_id UUID PRIMARY KEY,\n    route_id INT,\n    travel_date DATE,\n    start_station VARCHAR,\n    end_station VARCHAR,\n    fare DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_transportation_users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50),\n    user_age INT,\n    total_rides INT\n);\n\nCREATE TABLE public_transportation_rides (\n    ride_id INT PRIMARY KEY,\n    user_id INT,\n    ride_date DATE,\n    start_location VARCHAR(100),\n    end_location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_transportation_users (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(50),\n    user_age INT,\n    user_email VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_routes (\n    route_id UUID PRIMARY KEY,\n    route_name VARCHAR(50),\n    route_type VARCHAR(20),\n    start_location VARCHAR(100),\n    end_location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE route_usage_stats (\n    usage_id UUID PRIMARY KEY,\n    route_id UUID REFERENCES transportation_routes(route_id),\n    user_id UUID REFERENCES public_transportation_users(user_id),\n    usage_date DATE,\n    number_of_trips INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_transport_stops (\n    stop_id UUID PRIMARY KEY,\n    stop_name STRING,\n    stop_location STRING,\n    total_passengers INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE public_transport_routes (\n    route_id UUID PRIMARY KEY,\n    route_name STRING,\n    route_description STRING,\n    frequency INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE passenger_records (\n    record_id UUID PRIMARY KEY,\n    passenger_id UUID,\n    route_id UUID,\n    stop_id UUID,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE route_statistics (\n    route_id UUID PRIMARY KEY,\n    total_passenger_count INT,\n    average_frequency FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Routes (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(50) NOT NULL,\n    vehicle_type VARCHAR(50) NOT NULL,\n    frequency INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Trips (\n    trip_id INT PRIMARY KEY,\n    route_id INT REFERENCES Routes(route_id),\n    user_id INT REFERENCES Users(user_id),\n    fare DECIMAL(10, 2) NOT NULL,\n    trip_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Stations (\n    station_id INT PRIMARY KEY,\n    station_name VARCHAR(50) NOT NULL,\n    location POINT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Tickets (\n    ticket_id INT PRIMARY KEY,\n    trip_id INT REFERENCES Trips(trip_id),\n    user_id INT REFERENCES Users(user_id),\n    ticket_type VARCHAR(50) NOT NULL,\n    ticket_price DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  }
+]

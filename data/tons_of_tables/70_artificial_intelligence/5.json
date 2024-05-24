@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE search_engine_content (\n    id INT PRIMARY KEY,\n    text_content TEXT,\n    created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE documents (\n    doc_id INT PRIMARY KEY,\n    title TEXT,\n    content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE search_index (\n    keyword VARCHAR(255),\n    doc_id INT,\n    FOREIGN KEY (doc_id) REFERENCES documents(doc_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE content_data (\n    id SERIAL PRIMARY KEY,\n    content TEXT NOT NULL\n);\n\nCREATE TABLE keywords (\n    id SERIAL PRIMARY KEY,\n    keyword VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE content_keywords (\n    content_id INT NOT NULL,\n    keyword_id INT NOT NULL,\n    FOREIGN KEY (content_id) REFERENCES content_data(id),\n    FOREIGN KEY (keyword_id) REFERENCES keywords(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE documents (\n    id UUID PRIMARY KEY,\n    content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE words (\n    id UUID PRIMARY KEY,\n    word VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE word_occurrences (\n    id UUID PRIMARY KEY,\n    document_id UUID REFERENCES documents(id),\n    word_id UUID REFERENCES words(id),\n    position INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE search_index (\n    word_id UUID REFERENCES words(id),\n    document_id UUID REFERENCES documents(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE documents (\n    document_id INT PRIMARY KEY,\n    title TEXT,\n    content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE words (\n    word_id SERIAL PRIMARY KEY,\n    word TEXT UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_words (\n    document_id INT,\n    word_id INT,\n    FOREIGN KEY (document_id) REFERENCES documents(document_id),\n    FOREIGN KEY (word_id) REFERENCES words(word_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE search_history (\n    search_id SERIAL PRIMARY KEY,\n    query TEXT,\n    search_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE search_results (\n    search_id INT,\n    document_id INT,\n    relevance FLOAT,\n    FOREIGN KEY (search_id) REFERENCES search_history(search_id),\n    FOREIGN KEY (document_id) REFERENCES documents(document_id)\n);"
+      }
+    ]
+  }
+]

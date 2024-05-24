@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE multi_factor_authentication (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20) NOT NULL,\n    verified_phone BOOLEAN,\n    verified_email BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_questions (\n    question_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    question VARCHAR(100) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_methods (\n    method_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,\n    method_type VARCHAR(50) NOT NULL,\n    is_enabled BOOLEAN NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT current_timestamp\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_log (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,\n    method_id INT REFERENCES verification_methods(method_id) ON DELETE CASCADE,\n    log_timestamp TIMESTAMPTZ DEFAULT current_timestamp\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password_hash VARCHAR(100),\n    phone_number VARCHAR(20),\n    email VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    timestamp TIMESTAMP,\n    success BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    user_id INT REFERENCES users(user_id),\n    action VARCHAR(50),\n    details VARCHAR(200)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE session_tokens (\n    token_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    token VARCHAR(200),\n    expiry_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(100),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    device_name VARCHAR(50),\n    device_type VARCHAR(20),\n    last_login TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    device_id INT REFERENCES devices(device_id),\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_questions (\n    question_id INT PRIMARY KEY,\n    question_text VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_security_answers (\n    user_id INT REFERENCES users(id),\n    question_id INT REFERENCES security_questions(question_id),\n    answer TEXT,\n    PRIMARY KEY (user_id, question_id)\n);\n"
+      }
+    ]
+  }
+]

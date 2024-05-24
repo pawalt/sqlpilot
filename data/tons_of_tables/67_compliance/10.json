@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_personal_data (\n    id INT PRIMARY KEY,\n    full_name TEXT,\n    email TEXT,\n    phone_number TEXT,\n    address TEXT,\n    postal_code TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    first_name VARCHAR,\n    last_name VARCHAR,\n    email VARCHAR,\n    phone_number VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    address_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    street_address VARCHAR,\n    city VARCHAR,\n    postal_code VARCHAR,\n    country VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    address_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    street_address VARCHAR(100) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    postal_code VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    order_date TIMESTAMP NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    address_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    street_address VARCHAR(255),\n    city VARCHAR(100),\n    postal_code VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE credit_cards (\n    card_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    card_number VARCHAR(16),\n    expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    sensitive_info VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id UUID PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    age INT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(id),\n    street VARCHAR(100) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    postal_code VARCHAR(10) NOT NULL,\n    country VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_info (\n    id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(id),\n    data TEXT,\n    encryption_key BYTEA,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE activity_logs (\n    id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(id),\n    action VARCHAR(50) NOT NULL,\n    time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(id),\n    permission_type VARCHAR(50) NOT NULL,\n    granted BOOLEAN DEFAULT FALSE\n);"
+      }
+    ]
+  }
+]

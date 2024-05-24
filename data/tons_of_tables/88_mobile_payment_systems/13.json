@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_security (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    security_question VARCHAR(255) NOT NULL,\n    security_answer VARCHAR(255) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL(15, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    log_description TEXT NOT NULL,\n    log_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL(10, 2) NOT NULL,\n    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n    wallet_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    balance DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    action VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    security_question VARCHAR(100) NOT NULL,\n    security_answer VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_accounts(user_id),\n    transaction_date TIMESTAMP NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n    log_id INT PRIMARY KEY,\n    transaction_id INT REFERENCES transactions(transaction_id),\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cryptocurrency_wallets (\n    wallet_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_accounts(user_id),\n    wallet_address VARCHAR(100) NOT NULL,\n    balance DECIMAL(10, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP NOT NULL,\n    user_id INT REFERENCES user_accounts(user_id),\n    action_performed VARCHAR(100) NOT NULL\n)"
+      }
+    ]
+  }
+]

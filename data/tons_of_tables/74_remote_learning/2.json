@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CourseSchedule (\n  course_id INT PRIMARY KEY,\n  course_name VARCHAR(255) NOT NULL,\n  class_timing TIME NOT NULL,\n  capacity INT NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE class_timings (\n    id SERIAL PRIMARY KEY,\n    class_name VARCHAR(255) NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL,\n    capacity INT\n);\n\nCREATE TABLE class_capacity (\n    id SERIAL PRIMARY KEY,\n    class_id INT REFERENCES class_timings(id),\n    date DATE NOT NULL,\n    available_seats INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE course_schedule (\n    course_id VARCHAR PRIMARY KEY,\n    course_name VARCHAR NOT NULL,\n    class_time TIMESTAMP NOT NULL,\n    capacity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE class_capacity (\n    class_id INT PRIMARY KEY,\n    class_time TIMESTAMP NOT NULL,\n    current_capacity INT NOT NULL,\n    max_capacity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE class_enrollment (\n    enrollment_id INT PRIMARY KEY,\n    course_id VARCHAR NOT NULL,\n    class_id INT NOT NULL,\n    student_id INT NOT NULL,\n    enrollment_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE course_schedule (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(255),\n    class_timing TIME,\n    class_capacity INT\n);\n\nCREATE TABLE class_capacity (\n    class_id INT PRIMARY KEY,\n    class_capacity INT,\n    class_availability BOOLEAN\n);\n\nCREATE TABLE course_details (\n    course_id INT PRIMARY KEY,\n    instructor_name VARCHAR(255),\n    course_description TEXT\n);\n\nCREATE TABLE course_registration (\n    student_id INT PRIMARY KEY,\n    course_id INT,\n    registration_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE course_schedule (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(255),\n    class_timings TIMESTAMP,\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE course_class (\n    class_id INT PRIMARY KEY,\n    course_id INT,\n    class_date DATE,\n    class_time TIME,\n    class_capacity INT,\n    FOREIGN KEY(course_id) REFERENCES course_schedule(course_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE instructor (\n    instructor_id INT PRIMARY KEY,\n    instructor_name VARCHAR(255),\n    expertise_area VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE student (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(255),\n    student_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE enrollment (\n    enrollment_id INT PRIMARY KEY,\n    student_id INT,\n    class_id INT,\n    enrollment_date TIMESTAMP,\n    FOREIGN KEY(student_id) REFERENCES student(student_id),\n    FOREIGN KEY(class_id) REFERENCES course_class(class_id)\n);"
+      }
+    ]
+  }
+]

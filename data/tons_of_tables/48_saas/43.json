@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    address VARCHAR(150),\n    encrypted_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    encrypted_data TEXT NOT NULL,\n    encryption_key VARCHAR(200) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    password_hash VARCHAR(255),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_details (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(100),\n    address VARCHAR(255),\n    phone_number VARCHAR(20),\n    date_of_birth DATE,\n    encrypted_ssn VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    action VARCHAR(50),\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  password VARCHAR(255) NOT NULL,\n  date_created TIMESTAMP NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users (id) ON DELETE CASCADE,\n  street_address VARCHAR(255) NOT NULL,\n  city VARCHAR(50) NOT NULL,\n  postal_code VARCHAR(20) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE credit_cards (id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users (id) ON DELETE CASCADE,\n  card_number VARCHAR(20) UNIQUE NOT NULL,\n  expiration_date DATE NOT NULL,\n  security_code VARCHAR(4) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users (id) ON DELETE CASCADE,\n  data_description TEXT NOT NULL,\n  encrypted_data BYTEA NOT NULL,\n  access_level VARCHAR(10) NOT NULL);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(255),\n    email VARCHAR(255),\n    password_hash TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    address_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    street_address TEXT,\n    city VARCHAR(100),\n    postal_code VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE credit_cards (\n    card_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    card_number VARCHAR(16),\n    expiry_date DATE,\n    cvv VARCHAR(3)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    order_date DATE,\n    total_amount DECIMAL(10, 2),\n    is_shipped BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    sensitive_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    data_type VARCHAR(50),\n    encrypted_data BYTEA\n);"
+      }
+    ]
+  }
+]

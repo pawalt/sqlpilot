@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory (\n  warehouse_id INT PRIMARY KEY,\n  product_id INT,\n  quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id SERIAL PRIMARY KEY,\n    warehouse_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    item_id SERIAL PRIMARY KEY,\n    item_name VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    warehouse_id INT NOT NULL,\n    FOREIGN KEY (warehouse_id) REFERENCES warehouses(warehouse_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id INT PRIMARY KEY,\n    location VARCHAR(255) NOT NULL,\n    capacity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    price INT NOT NULL,\n    quantity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    warehouse_id INT NOT NULL,\n    product_id INT NOT NULL,\n    quantity INT NOT NULL,\n    FOREIGN KEY (warehouse_id) REFERENCES warehouses(warehouse_id),\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id INT PRIMARY KEY,\n    warehouse_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_items (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(50) NOT NULL,\n    warehouse_id INT NOT NULL,\n    quantity INT NOT NULL,\n    FOREIGN KEY (warehouse_id) REFERENCES warehouses(warehouse_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    activity_type VARCHAR(50) NOT NULL,\n    activity_date DATE NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id INT PRIMARY KEY,\n    location TEXT,\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    item_id INT PRIMARY KEY,\n    item_name TEXT,\n    quantity INT,\n    warehouse_id INT REFERENCES warehouses(warehouse_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name TEXT,\n    price DECIMAL,\n    category TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n    shipment_id INT PRIMARY KEY,\n    item_id INT REFERENCES inventory(item_id),\n    quantity INT,\n    destination TEXT,\n    status TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    message TEXT,\n    warehouse_id INT REFERENCES warehouses(warehouse_id)\n);"
+      }
+    ]
+  }
+]

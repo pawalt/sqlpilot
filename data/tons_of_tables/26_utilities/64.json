@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_usage (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(50),\n    energy_value FLOAT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(50) NOT NULL,\n    energy_usage DECIMAL NOT NULL\n);\n\nCREATE TABLE energy_data (\n    data_id INT PRIMARY KEY,\n    facility_id INT REFERENCES energy_facilities(facility_id),\n    timestamp TIMESTAMP NOT NULL,\n    usage DECIMAL NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_facilities (\n    facility_id UUID PRIMARY KEY,\n    facility_name STRING,\n    location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_metering (\n    meter_id UUID PRIMARY KEY,\n    facility_id UUID,\n    timestamp TIMESTAMP,\n    energy_usage FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_users (\n    user_id UUID PRIMARY KEY,\n    username STRING,\n    email STRING,\n    facility_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facility (\n id INT PRIMARY KEY,\n name VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE building (\n id INT PRIMARY KEY,\n facility_id INT REFERENCES facility(id),\n name VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE room (\n id INT PRIMARY KEY,\n building_id INT REFERENCES building(id),\n name VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_usage (\n id INT PRIMARY KEY,\n room_id INT REFERENCES room(id),\n timestamp TIMESTAMP,\n energy_usage FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facility (facility_id INT, facility_name VARCHAR(255), location VARCHAR(255), PRIMARY KEY (facility_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_meter (meter_id INT, facility_id INT, meter_name VARCHAR(255), meter_type VARCHAR(50), PRIMARY KEY (meter_id), FOREIGN KEY (facility_id) REFERENCES facility(facility_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_reading (reading_id INT, meter_id INT, reading_value FLOAT, reading_timestamp TIMESTAMP, PRIMARY KEY (reading_id), FOREIGN KEY (meter_id) REFERENCES energy_meter(meter_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE alert (alert_id INT, meter_id INT, alert_message VARCHAR(255), alert_timestamp TIMESTAMP, PRIMARY KEY (alert_id), FOREIGN KEY (meter_id) REFERENCES energy_meter(meter_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_data (dashboard_id INT, facility_id INT, total_energy_usage FLOAT, data_timestamp TIMESTAMP, PRIMARY KEY (dashboard_id), FOREIGN KEY (facility_id) REFERENCES facility(facility_id));"
+      }
+    ]
+  }
+]

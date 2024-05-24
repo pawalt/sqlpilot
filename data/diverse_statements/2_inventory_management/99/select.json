@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM inventory_allocation;",
+      "SELECT id, product_id, quantity FROM inventory_allocation WHERE allocated = true;",
+      "SELECT product_id, quantity FROM inventory_allocation WHERE allocation_rule_id = 1;",
+      "SELECT quantity, allocated FROM inventory_allocation WHERE product_id = 5;",
+      "SELECT id, product_id, allocation_rule_id FROM inventory_allocation WHERE quantity > 10;",
+      "SELECT * FROM inventory_allocation WHERE allocated = true;",
+      "SELECT id, product_id, quantity FROM inventory_allocation WHERE allocation_rule_id = 1 ORDER BY quantity DESC;",
+      "SELECT product_id, COUNT(*) AS total_allocations FROM inventory_allocation GROUP BY product_id HAVING total_allocations > 1;",
+      "SELECT id, product_id FROM inventory_allocation WHERE quantity BETWEEN 100 AND 200;",
+      "SELECT * FROM inventory_allocation WHERE allocation_rule_id IN (1, 2, 3) ORDER BY id ASC, product_id DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM inventory_allocation_rules;",
+      "SELECT rule_name, min_inventory FROM inventory_allocation_rules WHERE max_inventory > 10;",
+      "SELECT MAX(allocated_amount) FROM allocated_inventory;",
+      "SELECT * FROM allocated_inventory WHERE allocation_date BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT rule_name, max_inventory, min_inventory FROM inventory_allocation_rules ORDER BY rule_id DESC;",
+      "SELECT * FROM inventory_allocation_rules WHERE min_inventory > 50 ORDER BY rule_id DESC;",
+      "SELECT rule_name, max_inventory FROM inventory_allocation_rules WHERE rule_name LIKE '%A%' ORDER BY rule_name ASC;",
+      "SELECT rule_id, SUM(allocated_amount) AS total_allocated FROM allocated_inventory GROUP BY rule_id HAVING total_allocated > 100;",
+      "SELECT * FROM allocated_inventory WHERE allocation_date BETWEEN '2022-01-01' AND '2022-03-31' ORDER BY allocation_id ASC;",
+      "SELECT rule_id, rule_name, min_inventory, max_inventory FROM inventory_allocation_rules ORDER BY rule_name DESC, min_inventory ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM InventoryRules;",
+      "SELECT rule_name, allocation_criteria FROM InventoryRules WHERE allocation_quantity > 0;",
+      "SELECT item_name, item_quantity FROM InventoryItems ORDER BY item_quantity DESC;",
+      "SELECT rule_id, item_id, allocated_quantity FROM InventoryAllocations WHERE allocated_quantity < 100;",
+      "SELECT rule_name, item_name, allocated_quantity FROM InventoryRules JOIN InventoryAllocations ON InventoryRules.id = InventoryAllocations.rule_id JOIN InventoryItems ON InventoryAllocations.item_id = InventoryItems.item_id;",
+      "SELECT rule_name, allocation_quantity FROM InventoryRules WHERE id = 1;",
+      "SELECT * FROM InventoryItems WHERE item_quantity > 100;",
+      "SELECT rule_name, item_name, item_category, allocated_quantity FROM InventoryRules JOIN InventoryAllocations ON InventoryRules.id = InventoryAllocations.rule_id JOIN InventoryItems ON InventoryAllocations.item_id = InventoryItems.item_id;",
+      "SELECT * FROM InventoryItems ORDER BY item_quantity DESC;",
+      "SELECT rule_name, item_name, allocated_quantity FROM InventoryRules JOIN InventoryAllocations ON InventoryRules.id = InventoryAllocations.rule_id JOIN InventoryItems ON InventoryAllocations.item_id = InventoryItems.item_id WHERE item_category = 'Electronics';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM allocation_rules ORDER BY rule_id ASC LIMIT 5;",
+      "SELECT rule_name, max_quantity FROM allocation_rules WHERE min_quantity > 50;",
+      "SELECT product_name, quantity FROM product_inventory WHERE quantity < 10 ORDER BY quantity DESC;",
+      "SELECT customer_id, product_id, quantity_ordered FROM customer_orders WHERE order_date BETWEEN '2022-01-01' AND '2022-12-31' ORDER BY quantity_ordered ASC;",
+      "SELECT order_id, allocation_date FROM allocated_inventory WHERE allocated_quantity >= 100 ORDER BY order_id DESC;",
+      "SELECT * FROM product_inventory WHERE quantity > 100",
+      "SELECT product_name, quantity, date_added FROM product_inventory ORDER BY date_added DESC",
+      "SELECT a.order_id, p.product_name, a.allocated_quantity, ar.rule_name FROM allocated_inventory a JOIN product_inventory p ON a.rule_id = p.product_id JOIN allocation_rules ar ON a.rule_id = ar.rule_id",
+      "SELECT oi.product_name, ai.allocated_quantity, ar.rule_name FROM allocated_inventory ai JOIN product_inventory oi ON ai.product_id = oi.product_id JOIN allocation_rules ar ON ai.rule_id = ar.rule_id WHERE ai.allocated_quantity BETWEEN 10 AND 50",
+      "SELECT ar.rule_name, ar.min_quantity, ar.max_quantity, COUNT(ai.allocation_id) AS total_allocations FROM allocation_rules ar LEFT JOIN allocated_inventory ai ON ar.rule_id = ai.rule_id GROUP BY ar.rule_name, ar.min_quantity, ar.max_quantity"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM products;",
+      "SELECT product_id, product_name FROM products WHERE price > 50;",
+      "SELECT warehouse_name, location FROM warehouses ORDER BY warehouse_name DESC;",
+      "SELECT rule_id, rule_name, rule_description FROM inventory_allocation_rules WHERE rule_id = 3;",
+      "SELECT product_name, category, price FROM products WHERE category = 'Electronics';",
+      "SELECT * FROM products WHERE price > 50 ORDER BY product_name DESC;",
+      "SELECT product_name, category, price FROM products WHERE category = 'Electronics' ORDER BY price ASC;",
+      "SELECT product_name, category, warehouse_name FROM products p INNER JOIN inventory i ON p.product_id = i.product_id INNER JOIN warehouses w ON i.warehouse_id = w.warehouse_id WHERE i.quantity > 100 ORDER BY product_name ASC, warehouse_name DESC;",
+      "SELECT rule_id, rule_name, rule_description FROM inventory_allocation_rules ORDER BY rule_id DESC;",
+      "SELECT p.product_name, w.warehouse_name, i.quantity, al.allocated_quantity FROM products p INNER JOIN inventory i ON p.product_id = i.product_id INNER JOIN warehouses w ON i.warehouse_id = w.warehouse_id INNER JOIN allocation_log al ON i.product_id = al.product_id AND i.warehouse_id = al.warehouse_id ORDER BY p.product_name ASC, al.allocation_date DESC;"
+    ]
+  }
+]

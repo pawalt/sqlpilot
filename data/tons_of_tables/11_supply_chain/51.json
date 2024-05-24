@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_maintenance (\n    vehicle_id INT,\n    service_date DATE,\n    service_type VARCHAR(100),\n    part_replaced VARCHAR(100),\n    cost DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE services ( \n   service_id INT PRIMARY KEY, \n   vehicle_id INT, \n   service_date TIMESTAMP, \n   service_description TEXT, \n   cost DECIMAL \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE parts_replaced ( \n   part_id INT PRIMARY KEY, \n   service_id INT, \n   part_name TEXT, \n   part_cost DECIMAL \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(255) NOT NULL,\n    service_date DATE NOT NULL,\n    service_type VARCHAR(50) NOT NULL,\n    cost DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parts_replaced (\n    part_id INT PRIMARY KEY,\n    part_name VARCHAR(255) NOT NULL,\n    part_number VARCHAR(50) NOT NULL,\n    part_cost DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE costs_incurred (\n    cost_id INT PRIMARY KEY,\n    cost_category VARCHAR(255) NOT NULL,\n    cost_amount DECIMAL(10, 2) NOT NULL,\n    cost_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE services (\n service_id SERIAL PRIMARY KEY,\n service_date DATE NOT NULL,\n vehicle_id INT NOT NULL,\n service_type VARCHAR(50) NOT NULL,\n service_description TEXT,\n service_cost DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parts_replaced (\n part_id SERIAL PRIMARY KEY,\n part_name VARCHAR(100) NOT NULL,\n part_cost DECIMAL(10, 2) NOT NULL,\n service_id INT NOT NULL,\n FOREIGN KEY (service_id) REFERENCES services(service_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_costs (\n cost_id SERIAL PRIMARY KEY,\n service_id INT NOT NULL,\n part_id INT NOT NULL,\n labor_cost DECIMAL(10, 2) NOT NULL,\n total_cost DECIMAL(10, 2) NOT NULL,\n FOREIGN KEY (service_id) REFERENCES services(service_id),\n FOREIGN KEY (part_id) REFERENCES parts_replaced(part_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n vehicle_id SERIAL PRIMARY KEY,\n vehicle_make VARCHAR(50) NOT NULL,\n vehicle_model VARCHAR(50) NOT NULL,\n vehicle_year INT NOT NULL\n);}"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Services (service_id UUID PRIMARY KEY,\n    service_name STRING,\n    vehicle_id UUID,\n    service_date DATE,\n    mechanic_name STRING,\n    service_description STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PartsReplaced (part_id UUID PRIMARY KEY,\n    part_name STRING,\n    vehicle_id UUID,\n    part_cost DECIMAL,\n    replacement_date DATE,\n    mechanic_name STRING,\n    part_description STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CostsIncurred (cost_id UUID PRIMARY KEY,\n    cost_type STRING,\n    vehicle_id UUID,\n    cost_amount DECIMAL,\n    cost_date DATE,\n    description STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Vehicles (vehicle_id UUID PRIMARY KEY,\n    vehicle_make STRING,\n    vehicle_model STRING,\n    vehicle_year INT,\n    vin_number STRING UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Mechanics (mechanic_id UUID PRIMARY KEY,\n    mechanic_name STRING,\n    mechanic_phone STRING,\n    mechanic_email STRING,\n    mechanic_specialization STRING\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE StemCellResearchInstitutions (\n  institution_id INT PRIMARY KEY,\n  institution_name VARCHAR(255) NOT NULL,\n  location VARCHAR(100),\n  research_focus TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stemcell_research_institutions (\n    institution_id INT PRIMARY KEY,\n    institution_name VARCHAR(255),\n    location VARCHAR(255),\n    established_year INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    lead_researcher VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    institution_id INT,\n    FOREIGN KEY (institution_id) REFERENCES stemcell_research_institutions(institution_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Institutions (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  title VARCHAR(50),\n  institution_id INT,\n  FOREIGN KEY (institution_id) REFERENCES Institutions(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchProjects (\n  id INT PRIMARY KEY,\n  title VARCHAR(100),\n  description TEXT,\n  researcher_id INT,\n  start_date DATE,\n  end_date DATE,\n  FOREIGN KEY (researcher_id) REFERENCES Researchers(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    institution VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE samples (\n    sample_id INT PRIMARY KEY,\n    donor_id INT,\n    collection_date TIMESTAMP,\n    preservation_method VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE findings (\n    finding_id INT PRIMARY KEY,\n    project_id INT,\n    researcher_id INT,\n    finding_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Institutes (\n    institute_id INT PRIMARY KEY,\n    institute_name VARCHAR(255),\n    address VARCHAR(255),\n    contact_email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255),\n    institute_id INT,\n    field_of_research VARCHAR(255),\n    FOREIGN KEY (institute_id) REFERENCES Institutes(institute_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchProjects (\n    project_id INT PRIMARY KEY,\n    project_title VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    researcher_id INT,\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DataSamples (\n    sample_id INT PRIMARY KEY,\n    sample_type VARCHAR(255),\n    project_id INT,\n    researcher_id INT,\n    FOREIGN KEY (project_id) REFERENCES ResearchProjects(project_id),\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DataSharing (\n    sharing_id INT PRIMARY KEY,\n    project_id INT,\n    sharing_institute_id INT,\n    permission_level VARCHAR(50),\n    FOREIGN KEY (project_id) REFERENCES ResearchProjects(project_id),\n    FOREIGN KEY (sharing_institute_id) REFERENCES Institutes(institute_id)\n);\n"
+      }
+    ]
+  }
+]

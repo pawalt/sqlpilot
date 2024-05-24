@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM audit_trail WHERE id = 1;",
+      "SELECT user_id, action, timestamp FROM audit_trail WHERE action = 'login' ORDER BY timestamp DESC;",
+      "SELECT id, user_id, action, timestamp FROM audit_trail WHERE timestamp > '2022-01-01';",
+      "SELECT id, action, details FROM audit_trail WHERE user_id = 5 AND action LIKE '%logout%' ORDER BY id;",
+      "SELECT * FROM audit_trail WHERE details IS NOT NULL;",
+      "SELECT * FROM audit_trail WHERE user_id = 1 ORDER BY timestamp DESC;",
+      "SELECT id, user_id, action FROM audit_trail WHERE action LIKE '%login%' ORDER BY timestamp ASC;",
+      "SELECT user_id, action, timestamp FROM audit_trail WHERE action = 'update' ORDER BY user_id, timestamp DESC;",
+      "SELECT id, action, details FROM audit_trail WHERE timestamp BETWEEN '2022-01-01' AND '2022-02-01' ORDER BY id DESC;",
+      "SELECT * FROM audit_trail WHERE details IS NOT NULL ORDER BY id, timestamp ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT voter_id, candidate_id, vote_timestamp FROM votes WHERE voter_id = 1;",
+      "SELECT voter_id, candidate_id, vote_timestamp FROM votes WHERE candidate_id = 3;",
+      "SELECT * FROM audit_trail WHERE action = 'DELETE';",
+      "SELECT user_id, table_affected, timestamp FROM audit_trail ORDER BY timestamp DESC;",
+      "SELECT voter_id, vote_timestamp FROM votes WHERE vote_timestamp > '2022-01-01' AND vote_timestamp < '2022-06-01';",
+      "SELECT voter_id, candidate_id FROM votes WHERE voter_id = 100 ORDER BY vote_timestamp DESC;",
+      "SELECT * FROM votes WHERE candidate_id = 200 AND vote_timestamp >= '2022-01-01' ORDER BY voter_id ASC;",
+      "SELECT voter_id, COUNT(candidate_id) AS total_votes FROM votes GROUP BY voter_id HAVING COUNT(candidate_id) > 2;",
+      "SELECT user_id, table_affected, timestamp FROM audit_trail WHERE action = 'UPDATE' AND user_id IN (1, 2, 3) ORDER BY timestamp DESC LIMIT 10;",
+      "SELECT DISTINCT user_id, COUNT(DISTINCT table_affected) AS tables_affected FROM audit_trail GROUP BY user_id HAVING COUNT(DISTINCT table_affected) > 1 ORDER BY tables_affected DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM votes;",
+      "SELECT voter_id, voter_name FROM voters ORDER BY registration_date DESC;",
+      "SELECT candidate_name, party_affiliation FROM candidates WHERE party_affiliation = 'Independent';",
+      "SELECT voter_name, registration_date FROM voters WHERE registration_date > '2022-01-01';",
+      "SELECT candidate_name, party_affiliation FROM candidates ORDER BY candidate_id DESC;",
+      "SELECT voter_id, voter_name, registration_date FROM voters WHERE registration_date >= '2022-01-01';",
+      "SELECT candidate_name, party_affiliation FROM candidates WHERE candidate_id IN (1, 3, 5);",
+      "SELECT voter_name, candidate_name, timestamp FROM voters JOIN votes ON voters.voter_id = votes.voter_id JOIN candidates ON votes.candidate_id = candidates.candidate_id WHERE voters.voter_name LIKE 'John%' AND candidates.party_affiliation = 'Republican';",
+      "SELECT COUNT(*) AS total_votes, candidate_name FROM votes JOIN candidates ON votes.candidate_id = candidates.candidate_id GROUP BY candidate_name ORDER BY total_votes DESC;",
+      "SELECT voter_name, candidate_name, timestamp FROM votes JOIN voters ON votes.voter_id = voters.voter_id JOIN candidates ON votes.candidate_id = candidates.candidate_id WHERE voters.registration_date >= '2022-06-01' AND candidates.party_affiliation = 'Democratic';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM voting_audit_trail ORDER BY action_timestamp DESC;",
+      "SELECT voter_name, voter_email FROM voters WHERE registration_date = '2022-01-01';",
+      "SELECT candidate_name, candidate_party, total_votes FROM candidates WHERE total_votes > 1000 ORDER BY total_votes DESC;",
+      "SELECT voted_candidate_id, COUNT(*) as total_votes FROM voting_results GROUP BY voted_candidate_id HAVING total_votes > 500;",
+      "SELECT * FROM voting_results WHERE voting_location = 'City Hall' ORDER BY voting_timestamp ASC;",
+      "SELECT * FROM voting_audit_trail WHERE voter_id = 123;",
+      "SELECT voter_name, voter_email FROM voters WHERE registration_date > '2022-01-01';",
+      "SELECT candidate_name, candidate_party, total_votes FROM candidates ORDER BY total_votes DESC;",
+      "SELECT voted_candidate_id, COUNT(*) AS total_votes FROM voting_results GROUP BY voted_candidate_id;",
+      "SELECT * FROM voting_results WHERE voting_location LIKE '%City%' ORDER BY voting_timestamp DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Election;",
+      "SELECT name, status, started_at FROM Election;",
+      "SELECT id, name, ended_at FROM Election WHERE status = 'ongoing';",
+      "SELECT * FROM Voter WHERE age > 25;",
+      "SELECT id, vote_option, voted_at FROM Vote ORDER BY voted_at DESC;",
+      "SELECT * FROM Election WHERE status = 'active' ORDER BY started_at DESC;",
+      "SELECT id, name FROM Voter WHERE age >= 18 ORDER BY registered_at ASC;",
+      "SELECT v.id, v.vote_option, e.name FROM Vote v JOIN Election e ON v.election_id = e.id WHERE v.voted_at BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT a.action, a.user_id, u.username FROM AuditTrail a JOIN User u ON a.user_id = u.id WHERE a.action_timestamp >= '2022-06-01' ORDER BY a.action_timestamp DESC;",
+      "SELECT v.id AS vote_id, v.vote_option, e.name AS election_name, a.action_timestamp AS voted_at FROM Vote v JOIN Election e ON v.election_id = e.id JOIN AuditTrail a ON v.id = a.row_id WHERE a.table_name = 'Vote' AND a.action = 'insert' ORDER BY voted_at ASC;"
+    ]
+  }
+]

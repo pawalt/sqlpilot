@@ -1,0 +1,52 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(50) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  total_sales DECIMAL(10, 2) DEFAULT 0.00\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n  id INT PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);\n\nCREATE TABLE campaign_sales (\n  id INT PRIMARY KEY,\n  campaign_id INT,\n  sale_amount DECIMAL(10, 2),\n  sale_date DATE,\n  FOREIGN KEY (campaign_id) REFERENCES marketing_campaigns(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n  campaign_id UUID PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sales_records (\n  sale_id UUID PRIMARY KEY,\n  campaign_id UUID,\n  sale_amount DECIMAL,\n  sale_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n  performance_id UUID PRIMARY KEY,\n  campaign_id UUID,\n  conversion_rate DECIMAL,\n  ROI DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (campaign_id INT, campaign_name VARCHAR(50), start_date DATE, end_date DATE, PRIMARY KEY (campaign_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (sale_id INT, sale_amount DECIMAL(10, 2), sale_date DATE, campaign_id INT, FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE products (product_id INT, product_name VARCHAR(50), price DECIMAL(10, 2), PRIMARY KEY (product_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_sales (campaign_id INT, product_id INT, sale_id INT, quantity INT, FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id), FOREIGN KEY (product_id) REFERENCES products(product_id), FOREIGN KEY (sale_id) REFERENCES sales(sale_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n    campaign_id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);\n\nCREATE TABLE Channels (\n    channel_id SERIAL PRIMARY KEY,\n    channel_name VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE Sales (\n    sale_id SERIAL PRIMARY KEY,\n    sale_date DATE NOT NULL,\n    sale_amount DECIMAL(10,2) NOT NULL,\n    campaign_id INT NOT NULL,\n    FOREIGN KEY (campaign_id) REFERENCES Campaigns(campaign_id)\n);\n\nCREATE TABLE Campaign_Channel (\n    campaign_id INT NOT NULL,\n    channel_id INT NOT NULL,\n    PRIMARY KEY (campaign_id, channel_id),\n    FOREIGN KEY (campaign_id) REFERENCES Campaigns(campaign_id),\n    FOREIGN KEY (channel_id) REFERENCES Channels(channel_id)\n);\n\nCREATE TABLE Campaign_Sale (\n    campaign_id INT NOT NULL,\n    sale_id INT NOT NULL,\n    PRIMARY KEY (campaign_id, sale_id),\n    FOREIGN KEY (campaign_id) REFERENCES Campaigns(campaign_id),\n    FOREIGN KEY (sale_id) REFERENCES Sales(sale_id)\n);"
+      }
+    ]
+  }
+]

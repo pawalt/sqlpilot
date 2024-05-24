@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_records (\n    record_id UUID PRIMARY KEY,\n    patient_id UUID,\n    device_id UUID,\n    record_data JSONB,\n    created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_records (\n    record_id INT PRIMARY KEY,\n    patient_id INT NOT NULL,\n    record_type VARCHAR(100) NOT NULL,\n    record_date DATE NOT NULL,\n    record_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE iot_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(100) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    device_location VARCHAR(100),\n    device_owner VARCHAR(100) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id SERIAL PRIMARY KEY,\n  full_name VARCHAR(100) NOT NULL,\n  date_of_birth DATE,\n  gender VARCHAR(10),\n  medical_history TEXT,\n  CONSTRAINT patient_id_unique UNIQUE(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalDevices (\n  device_id SERIAL PRIMARY KEY,\n  device_name VARCHAR(50) NOT NULL,\n  device_type VARCHAR(50),\n  manufacturer VARCHAR(50),\n  CONSTRAINT device_id_unique UNIQUE(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControl (\n  access_id SERIAL PRIMARY KEY,\n  device_id INT REFERENCES MedicalDevices(device_id),\n  patient_id INT REFERENCES Patients(patient_id),\n  permission_level VARCHAR(20),\n  CONSTRAINT access_id_unique UNIQUE(access_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    birth_date DATE,\n    gender VARCHAR(10),\n    address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalRecords (\n    record_id INT PRIMARY KEY,\n    patient_id INT NOT NULL,\n    record_date DATE,\n    diagnosis TEXT,\n    treatment TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IoTDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50),\n    status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControl (\n    device_id INT NOT NULL,\n    patient_id INT NOT NULL,\n    access_level VARCHAR(20),\n    CONSTRAINT fk_device FOREIGN KEY (device_id) REFERENCES IoTDevices(device_id),\n    CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_records (\n    record_id UUID NOT NULL,\n    patient_id UUID NOT NULL,\n    doctor_id UUID NOT NULL,\n    diagnosis TEXT,\n    prescription TEXT,\n    timestamp TIMESTAMP NOT NULL,\n    PRIMARY KEY (record_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_iot_devices (\n    device_id UUID NOT NULL,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    device_location VARCHAR(100),\n    PRIMARY KEY (device_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    user_id UUID NOT NULL,\n    device_id UUID NOT NULL,\n    access_level VARCHAR(20) NOT NULL,\n    grant_timestamp TIMESTAMP NOT NULL,\n    PRIMARY KEY (user_id, device_id),\n    FOREIGN KEY (device_id) REFERENCES medical_iot_devices(device_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id UUID NOT NULL,\n    contract_name VARCHAR(100) NOT NULL,\n    contract_details TEXT,\n    deployment_timestamp TIMESTAMP NOT NULL,\n    PRIMARY KEY (contract_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID NOT NULL,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    role VARCHAR(20) NOT NULL,\n    PRIMARY KEY (user_id)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advocacy_campaigns (\n  campaign_id INT, \n  campaign_name VARCHAR(255), \n  policy_changes TEXT, \n  public_awareness BOOLEAN, \n  community_engagement INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advocacy_campaigns (\n    campaign_id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    policy_changes TEXT,\n    public_awareness BOOLEAN DEFAULT FALSE,\n    community_engagement INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_participants (\n    participant_id SERIAL PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    campaign_id INTEGER REFERENCES advocacy_campaigns(campaign_id) ON DELETE CASCADE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_changes (\n    policy_id UUID PRIMARY KEY,\n    policy_name TEXT,\n    impact_score INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE public_awareness (\n    awareness_id UUID PRIMARY KEY,\n    campaign_name TEXT,\n    awareness_level INTEGER,\n    reach INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE community_engagement (\n    engagement_id UUID PRIMARY KEY,\n    event_name TEXT,\n    participants INTEGER\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_changes (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(255) NOT NULL,\n    policy_description TEXT,\n    date_enacted DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE public_awareness (\n    awareness_id INT PRIMARY KEY,\n    awareness_topic VARCHAR(255) NOT NULL,\n    awareness_description TEXT,\n    awareness_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE community_engagement (\n    engagement_id INT PRIMARY KEY,\n    engagement_type VARCHAR(50) NOT NULL,\n    engagement_description TEXT,\n    engagement_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_impact (\n    impact_id INT PRIMARY KEY,\n    campaign_id INT NOT NULL,\n    policy_id INT NOT NULL,\n    awareness_id INT NOT NULL,\n    engagement_id INT NOT NULL,\n    impact_date DATE,\n    impact_score INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AdvocacyCampaigns (campaign_id INT PRIMARY KEY, campaign_name VARCHAR(255) NOT NULL, start_date DATE, end_date DATE, impact_description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyChanges (change_id INT PRIMARY KEY, policy_name VARCHAR(255) NOT NULL, change_date DATE, change_description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE PublicAwareness (awareness_id INT PRIMARY KEY, awareness_topic VARCHAR(255) NOT NULL, awareness_date DATE, awareness_description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE CommunityEngagement (engagement_id INT PRIMARY KEY, community_name VARCHAR(255) NOT NULL, engagement_date DATE, engagement_description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE AdvocacyMetrics (metric_id INT PRIMARY KEY, campaign_id INT, change_id INT, awareness_id INT, engagement_id INT, impact_score FLOAT, FOREIGN KEY (campaign_id) REFERENCES AdvocacyCampaigns(campaign_id), FOREIGN KEY (change_id) REFERENCES PolicyChanges(change_id), FOREIGN KEY (awareness_id) REFERENCES PublicAwareness(awareness_id), FOREIGN KEY (engagement_id) REFERENCES CommunityEngagement(engagement_id));"
+      }
+    ]
+  }
+]

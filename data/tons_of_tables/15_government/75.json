@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE budget_allocation (\n  program_name VARCHAR(255),\n  program_code INT,\n  allocated_amount DECIMAL(10, 2),\n  allocation_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE budget_allocation (\n  program_id INT PRIMARY KEY,\n  program_name TEXT,\n  budget_amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE program_expenses (\n  expense_id INT PRIMARY KEY,\n  program_id INT,\n  expense_category TEXT,\n  expense_amount DECIMAL,\n  FOREIGN KEY (program_id) REFERENCES budget_allocation(program_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislative_programs (\n program_id INT PRIMARY KEY,\n program_name VARCHAR(255) NOT NULL,\n budget DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE budget_changes (\n change_id INT PRIMARY KEY,\n program_id INT NOT NULL,\n change_amount DECIMAL(10, 2) NOT NULL,\n change_date DATE NOT NULL,\n FOREIGN KEY (program_id) REFERENCES legislative_programs(program_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_expenses (\n expense_id INT PRIMARY KEY,\n program_id INT NOT NULL,\n expense_description TEXT,\n expense_amount DECIMAL(10, 2) NOT NULL,\n expense_date DATE NOT NULL,\n FOREIGN KEY (program_id) REFERENCES legislative_programs(program_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE budget_allocation (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(255),\n  budget_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE department (\n  department_id INT PRIMARY KEY,\n  department_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_department (\n  id INT PRIMARY KEY,\n  program_id INT,\n  department_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction (\n  transaction_id INT PRIMARY KEY,\n  program_id INT,\n  department_id INT,\n  amount_spent DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislative_programs (\n\tprogram_id INT PRIMARY KEY,\n\tprogram_name VARCHAR(255),\n\tbudget_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE budget_allocation (\n\tallocation_id INT PRIMARY KEY,\n\tprogram_id INT,\n\tallocated_amount DECIMAL,\n\tFOREIGN KEY (program_id) REFERENCES legislative_programs(program_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE budget_categories (\n\tcategory_id INT PRIMARY KEY,\n\tcategory_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_categories (\n\tprogram_id INT,\n\tcategory_id INT,\n\tPRIMARY KEY (program_id, category_id),\n\tFOREIGN KEY (program_id) REFERENCES legislative_programs(program_id),\n\tFOREIGN KEY (category_id) REFERENCES budget_categories(category_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_expenditures (\n\texpenditure_id INT PRIMARY KEY,\n\tprogram_id INT,\n\texpenditure_amount DECIMAL,\n\texpenditure_date DATE,\n\tFOREIGN KEY (program_id) REFERENCES legislative_programs(program_id)\n);"
+      }
+    ]
+  }
+]

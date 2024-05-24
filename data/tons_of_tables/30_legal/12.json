@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE women_rights_advocacy (\n    organization_id INT PRIMARY KEY,\n    organization_name TEXT NOT NULL,\n    initiative TEXT,\n    impact TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE organizations (\n    org_id INT PRIMARY KEY,\n    org_name VARCHAR(255) NOT NULL,\n    org_type VARCHAR(50) NOT NULL,\n    org_location VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE initiatives (\n    initiative_id INT PRIMARY KEY,\n    org_id INT REFERENCES organizations(org_id),\n    initiative_name VARCHAR(255) NOT NULL,\n    initiative_description TEXT,\n    initiative_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE women_rights_advocacy_organizations (\n    organization_id SERIAL PRIMARY KEY,\n    organization_name VARCHAR(100) NOT NULL,\n    location VARCHAR(100),\n    founding_year INT,\n    mission_statement TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE initiatives (\n    initiative_id SERIAL PRIMARY KEY,\n    initiative_name VARCHAR(100) NOT NULL,\n    organization_id INT REFERENCES women_rights_advocacy_organizations(organization_id),\n    start_date DATE,\n    end_date DATE,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE impact (\n    impact_id SERIAL PRIMARY KEY,\n    initiative_id INT REFERENCES initiatives(initiative_id),\n    impact_type VARCHAR(50) NOT NULL,\n    impact_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE organizations ( \n    org_id SERIAL PRIMARY KEY, \n    org_name VARCHAR(100) NOT NULL, \n    location VARCHAR(100), \n    founding_year INT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE initiatives ( \n    init_id SERIAL PRIMARY KEY, \n    init_name VARCHAR(100) NOT NULL, \n    start_date DATE, \n    end_date DATE, \n    org_id INT REFERENCES organizations(org_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE impact ( \n    impact_id SERIAL PRIMARY KEY, \n    impact_description TEXT, \n    impact_date DATE, \n    init_id INT REFERENCES initiatives(init_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE members ( \n    member_id SERIAL PRIMARY KEY, \n    member_name VARCHAR(100) NOT NULL, \n    member_email VARCHAR(100), \n    start_date DATE, \n    org_id INT REFERENCES organizations(org_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE organizations (\n  org_id INT PRIMARY KEY,\n  org_name VARCHAR(255),\n  org_mission TEXT,\n  org_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE initiatives (\n  initiative_id INT PRIMARY KEY,\n  initiative_name VARCHAR(255),\n  initiative_description TEXT,\n  org_id INT,\n  FOREIGN KEY (org_id) REFERENCES organizations(org_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE impact_metrics (\n  metric_id INT PRIMARY KEY,\n  metric_name VARCHAR(255),\n  metric_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE initiative_impact (\n  impact_id INT PRIMARY KEY,\n  initiative_id INT,\n  metric_id INT,\n  impact_value DECIMAL,\n  FOREIGN KEY (initiative_id) REFERENCES initiatives(initiative_id),\n  FOREIGN KEY (metric_id) REFERENCES impact_metrics(metric_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n  report_id INT PRIMARY KEY,\n  report_title VARCHAR(255),\n  report_date DATE,\n  initiative_id INT,\n  impact_id INT,\n  FOREIGN KEY (initiative_id) REFERENCES initiatives(initiative_id),\n  FOREIGN KEY (impact_id) REFERENCES initiative_impact(impact_id)\n);"
+      }
+    ]
+  }
+]

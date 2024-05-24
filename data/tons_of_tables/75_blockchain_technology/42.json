@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE identity_verification (\n    id INT PRIMARY KEY,\n    full_name VARCHAR(255) NOT NULL,\n    date_of_birth DATE NOT NULL,\n    government_id VARCHAR(50) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE identity_verification_data (\n    participant_id INT PRIMARY KEY,\n    full_name VARCHAR,\n    date_of_birth DATE,\n    nationality VARCHAR,\n    document_type VARCHAR,\n    document_number VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_contract_network (\n    contract_id INT PRIMARY KEY,\n    contract_name VARCHAR,\n    participants_approved INT,\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE identity_verification_data (\n    participant_id INT PRIMARY KEY,\n    full_name VARCHAR(255),\n    date_of_birth DATE,\n    address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE document_verification (\n    document_id INT PRIMARY KEY,\n    participant_id INT,\n    document_type VARCHAR(50),\n    document_number VARCHAR(50),\n    verification_status BOOLEAN,\n    FOREIGN KEY (participant_id) REFERENCES identity_verification_data(participant_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_participants (\n    participant_id INT PRIMARY KEY,\n    organization_name VARCHAR(100),\n    verification_level VARCHAR(50),\n    is_verified BOOLEAN,\n    FOREIGN KEY (participant_id) REFERENCES identity_verification_data(participant_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IdentityVerificationData (\n    id INT PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    identity_number VARCHAR(20) NOT NULL,\n    verification_status BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SmartContractParticipants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(50) NOT NULL,\n    contract_address VARCHAR(50) NOT NULL,\n    verification_status BOOLEAN NOT NULL,\n    FOREIGN KEY (participant_id) REFERENCES IdentityVerificationData(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IdentityRecords (\n    record_id INT PRIMARY KEY,\n    participant_id INT NOT NULL,\n    record_date DATE NOT NULL,\n    record_details TEXT NOT NULL,\n    FOREIGN KEY (participant_id) REFERENCES SmartContractParticipants(participant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VerificationHistory (\n    verification_id INT PRIMARY KEY,\n    participant_id INT NOT NULL,\n    verification_date DATE NOT NULL,\n    verification_result BOOLEAN NOT NULL,\n    FOREIGN KEY (participant_id) REFERENCES SmartContractParticipants(participant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IdentityVerification (\n    participant_id INT PRIMARY KEY,\n    full_name VARCHAR(100),\n    address VARCHAR(150),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE IdentityDocuments (\n    document_id INT PRIMARY KEY,\n    participant_id INT,\n    document_type VARCHAR(50),\n    document_number VARCHAR(50),\n    document_expiry_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE VerificationHistory (\n    verification_id INT PRIMARY KEY,\n    participant_id INT,\n    verification_date TIMESTAMP,\n    verifier_name VARCHAR(100),\n    verification_result BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ContractParticipants (\n    contract_id INT,\n    participant_id INT,\n    contract_start_date DATE,\n    contract_end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE IdentityFlags (\n    participant_id INT,\n    identity_flag VARCHAR(50),\n    flag_description VARCHAR(150),\n    flag_date DATE\n)"
+      }
+    ]
+  }
+]

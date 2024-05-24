@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiopharmaceuticalProducts (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  manufacturer VARCHAR(255),\n  distribution_facility VARCHAR(255),\n  storage_conditions TEXT,\n  storage_temperature DECIMAL,\n  expiration_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Distribution (\nid SERIAL PRIMARY KEY,\nproduct_name VARCHAR(255) NOT NULL,\nquantity INT NOT NULL,\nlocation VARCHAR(255) NOT NULL,\nstorage_conditions VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Storage (\nid SERIAL PRIMARY KEY,\nlocation VARCHAR(255) NOT NULL,\ntemperature FLOAT NOT NULL,\nhumidity FLOAT NOT NULL,\nlast_updated TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biopharmaceutical_products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR,\n    storage_condition VARCHAR,\n    distribution_center_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution_centers (\n    center_id INT PRIMARY KEY,\n    center_name VARCHAR,\n    location VARCHAR,\n    temperature_controlled BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_distribution (\n    distribution_id INT PRIMARY KEY,\n    product_id INT,\n    center_id INT,\n    distribution_date DATE,\n    quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DistributionCenters (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location VARCHAR(255),\n    capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    description TEXT,\n    storage_condition VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Shipments (\n    id INT PRIMARY KEY,\n    product_id INT,\n    from_center_id INT,\n    to_center_id INT,\n    quantity INT,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE QualityControl (\n    id INT PRIMARY KEY,\n    product_id INT,\n    center_id INT,\n    temperature FLOAT,\n    humidity FLOAT,\n    FOREIGN KEY (product_id) REFERENCES Products(id),\n    FOREIGN KEY (center_id) REFERENCES DistributionCenters(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    storage_conditions VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DistributionCenters (\n    distribution_center_id INT PRIMARY KEY,\n    center_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Shipments (\n    shipment_id INT PRIMARY KEY,\n    product_id INT,\n    distribution_center_id INT,\n    quantity INT NOT NULL,\n    shipment_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QualityControl (\n    qc_id INT PRIMARY KEY,\n    product_id INT,\n    distribution_center_id INT,\n    temperature FLOAT NOT NULL,\n    humidity FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrackingLogs (\n    log_id INT PRIMARY KEY,\n    product_id INT,\n    distribution_center_id INT,\n    action VARCHAR(255) NOT NULL,\n    log_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

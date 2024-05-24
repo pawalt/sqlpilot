@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE driver_behavior_tracking (\n    driver_id UUID PRIMARY KEY,\n    event_timestamp TIMESTAMP,\n    event_type VARCHAR,\n    speed FLOAT,\n    acceleration FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE driver_behavior ( \n   driver_id INT PRIMARY KEY, \n   speeding_events INT, \n   harsh_braking_events INT, \n   harsh_acceleration_events INT \n );\n"
+      },
+      {
+        "table_schema": "CREATE TABLE driver_compliance (\n   driver_id INT PRIMARY KEY, \n   hours_of_service INT, \n   logbook_violations INT, \n   drug_test_compliance BOOLEAN \n );\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n  driver_id INT PRIMARY KEY,\n  driver_name VARCHAR(50) NOT NULL,\n  license_number VARCHAR(20) UNIQUE,\n  company_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trips (\n  trip_id INT PRIMARY KEY,\n  driver_id INT,\n  trip_date DATE,\n  start_location VARCHAR(100) NOT NULL,\n  end_location VARCHAR(100) NOT NULL,\n  distance_km DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE violations (\n  violation_id INT PRIMARY KEY,\n  driver_id INT,\n  violation_date DATE,\n  violation_type VARCHAR(50) NOT NULL,\n  violation_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE driver(\n\tid INT PRIMARY KEY,\n\tname VARCHAR(50),\n\tlicense_number VARCHAR(20),\n\tdriving_experience_years INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle(\n\tvehicle_id INT PRIMARY KEY,\n\tmake VARCHAR(50),\n\tmodel VARCHAR(50),\n\tyear INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trip(\n\ttrip_id INT PRIMARY KEY,\n\tdriver_id INT,\n\tvehicle_id INT,\n\tstart_location VARCHAR(100),\n\tend_location VARCHAR(100),\n\ttrip_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE violation(\n\tviolation_id INT PRIMARY KEY,\n\ttrip_id INT,\n\tdescription TEXT,\n\tviolation_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE driver_info (\n  driver_id INT PRIMARY KEY,\n  driver_name VARCHAR(50) NOT NULL,\n  license_number VARCHAR(20) UNIQUE,\n  total_miles_driven FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tripreport (\n  trip_id INT PRIMARY KEY,\n  driver_id INT REFERENCES driver_info(driver_id),\n  trip_date DATE,\n  trip_distance FLOAT,\n  trip_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE speeding_events (\n  event_id INT PRIMARY KEY,\n  trip_id INT REFERENCES tripreport(trip_id),\n  event_date DATE,\n  speed_limit INT,\n  actual_speed INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE violation (\n  violation_id INT PRIMARY KEY,\n  event_id INT REFERENCES speeding_events(event_id),\n  violation_date DATE,\n  violation_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_logs (\n  log_id INT PRIMARY KEY,\n  driver_id INT REFERENCES driver_info(driver_id),\n  alert_type VARCHAR(50),\n  alert_time DATETIME,\n  alert_message TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    price DECIMAL(10,2) NOT NULL,\n    category VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    INDEX idx_name (name),\n    INDEX idx_category (category)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  price DECIMAL(10,2) NOT NULL,\n  category VARCHAR(50),\n  INDEX idx_product_search (product_name)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(50) NOT NULL,\n  INDEX idx_category_search (category_name)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    id INT PRIMARY KEY,\n    name TEXT,\n    price DECIMAL,\n    category TEXT,\n    INDEX idx_products_name (name)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    id INT PRIMARY KEY,\n    name TEXT,\n    description TEXT,\n    INDEX idx_categories_name (name)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products_categories (\n    product_id INT,\n    category_id INT,\n    PRIMARY KEY (product_id, category_id),\n    FOREIGN KEY (product_id) REFERENCES products(id),\n    FOREIGN KEY (category_id) REFERENCES categories(id),\n    INDEX idx_products_categories_product_id (product_id),\n    INDEX idx_products_categories_category_id (category_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    price DECIMAL NOT NULL,\n    category VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE product_details (\n    product_id INT,\n    color VARCHAR(50),\n    size VARCHAR(20),\n    weight DECIMAL,\n    PRIMARY KEY (product_id),\n    INDEX idx_color (color),\n    INDEX idx_size (size)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    id INT PRIMARY KEY,\n    product_id INT,\n    rating FLOAT NOT NULL,\n    comment TEXT,\n    created_at TIMESTAMP,\n    INDEX idx_product_id (product_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE product_images (\n    image_id INT PRIMARY KEY,\n    product_id INT,\n    image_url VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP,\n    INDEX idx_product_id (product_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    category VARCHAR(50) NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_images (\n    id SERIAL PRIMARY KEY,\n    product_id INT NOT NULL,\n    image_url VARCHAR(255) NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_reviews (\n    id SERIAL PRIMARY KEY,\n    product_id INT NOT NULL,\n    rating INT NOT NULL,\n    review TEXT,\n    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_tags (\n    id SERIAL PRIMARY KEY,\n    product_id INT NOT NULL,\n    tag_name VARCHAR(50) NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_search_index (\n    id SERIAL PRIMARY KEY,\n    product_id INT NOT NULL,\n    search_term VARCHAR(255) NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE\n);"
+      }
+    ]
+  }
+]

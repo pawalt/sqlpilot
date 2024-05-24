@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UrbanFarmingPlotData (\n  plot_id UUID PRIMARY KEY,\n  crop_name VARCHAR(255),\n  planting_date TIMESTAMP,\n  harvest_date TIMESTAMP,\n  yield DECIMAL,\n  location VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE urban_farming_plots (\n    plot_id UUID PRIMARY KEY,\n    plot_name VARCHAR(255) NOT NULL,\n    crop_type VARCHAR(100),\n    planting_date DATE,\n    yield_data DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_growth_timeline (\n    growth_id SERIAL PRIMARY KEY,\n    plot_id UUID,\n    growth_stage VARCHAR(50),\n    growth_date DATE,\n    growth_notes TEXT,\n    FOREIGN KEY (plot_id) REFERENCES urban_farming_plots(plot_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_growth_data (\n  plot_id UUID PRIMARY KEY,\n  crop_type VARCHAR(50) NOT NULL,\n  planting_date DATE NOT NULL,\n  harvesting_date DATE NOT NULL,\n  growth_stage VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE plot_location (\n  plot_id UUID PRIMARY KEY,\n  location_name VARCHAR(100) NOT NULL,\n  address VARCHAR(255) NOT NULL,\n  city VARCHAR(50) NOT NULL,\n  postal_code VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE yield_data (\n  yield_id UUID PRIMARY KEY,\n  plot_id UUID REFERENCES plot_location(plot_id),\n  yield_amount DECIMAL(10,2) NOT NULL,\n  yield_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(50),\n    crop_type VARCHAR(50),\n    plot_id INT,\n    planting_date DATE\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE plots (\n    plot_id INT PRIMARY KEY,\n    plot_name VARCHAR(50),\n    location VARCHAR(100),\n    area_m2 DECIMAL(10,2)\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_growth (\n    growth_id INT PRIMARY KEY,\n    crop_id INT,\n    growth_date DATE,\n    growth_stage VARCHAR(50),\n    growth_notes TEXT\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE yield_data (\n    yield_id INT PRIMARY KEY,\n    crop_id INT,\n    yield_date DATE,\n    yield_amount DECIMAL(10,2),\n    yield_notes TEXT\n)\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Plot (\n    plot_id INT PRIMARY KEY,\n    plot_name VARCHAR,\n    location_id INT,\n    crop_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Location (\n    location_id INT PRIMARY KEY,\n    city VARCHAR,\n    state VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Crop (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR,\n    crop_type VARCHAR,\n    crop_season VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GrowthData (\n    data_id INT PRIMARY KEY,\n    plot_id INT,\n    growth_date DATE,\n    growth_stage VARCHAR,\n    humidity FLOAT,\n    temperature FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE YieldData (\n    yield_id INT PRIMARY KEY,\n    data_id INT,\n    yield_amount FLOAT,\n    quality_rating VARCHAR\n);"
+      }
+    ]
+  }
+]

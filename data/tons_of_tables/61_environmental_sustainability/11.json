@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_conservation_campaign (\n  campaign_id INT PRIMARY KEY,\n  program_name VARCHAR(255),\n  outreach_date DATE,\n  num_participants INT,\n  water_saved DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE outreach_programs (\n\tprogram_id INT PRIMARY KEY,\n\tprogram_name VARCHAR(255),\n\tstart_date DATE,\n\tend_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE program_participants (\n\tparticipant_id INT PRIMARY KEY,\n\tprogram_id INT,\n\tparticipant_name VARCHAR(255),\n\tregistration_date DATE,\n\tcity VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE outreach_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(50) NOT NULL,\n    program_type VARCHAR(50) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_participants (\n    participant_id INT PRIMARY KEY,\n    program_id INT NOT NULL,\n    participant_name VARCHAR(50) NOT NULL,\n    contact_email VARCHAR(50),\n    registration_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (program_id) REFERENCES outreach_programs(program_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE program_feedback (\n    feedback_id INT PRIMARY KEY,\n    program_id INT NOT NULL,\n    participant_id INT NOT NULL,\n    feedback_text TEXT,\n    feedback_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (program_id) REFERENCES outreach_programs(program_id) ON DELETE CASCADE,\n    FOREIGN KEY (participant_id) REFERENCES program_participants(participant_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaign (\n    campaign_id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outreach_program (\n    program_id SERIAL PRIMARY KEY,\n    program_name VARCHAR(255) NOT NULL,\n    targeting_audience VARCHAR(255) NOT NULL,\n    program_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outreach_tracking (\n    tracking_id SERIAL PRIMARY KEY,\n    program_id INT NOT NULL,\n    outreach_date DATE NOT NULL,\n    outreach_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outreach_results (\n    result_id SERIAL PRIMARY KEY,\n    tracking_id INT NOT NULL,\n    outcome VARCHAR(255) NOT NULL,\n    effectiveness_rating INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE OutreachPrograms (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(255),\n  outreach_type VARCHAR(50),\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Participants (\n  participant_id INT PRIMARY KEY,\n  participant_name VARCHAR(255),\n  contact_number VARCHAR(20),\n  email VARCHAR(100),\n  address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProgramFeedback (\n  feedback_id INT PRIMARY KEY,\n  program_id INT,\n  participant_id INT,\n  rating INT,\n  feedback_text TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sessions (\n  session_id INT PRIMARY KEY,\n  program_id INT,\n  session_date DATE,\n  session_time TIME,\n  location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Metrics (\n  metric_id INT PRIMARY KEY,\n  program_id INT,\n  participants_reached INT,\n  water_saved_liters INT,\n  trees_planted INT\n);\n"
+      }
+    ]
+  }
+]

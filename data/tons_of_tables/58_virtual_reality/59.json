@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE robot_control_system_updates (\n    update_id SERIAL PRIMARY KEY,\n    update_name VARCHAR(100) NOT NULL,\n    update_description TEXT,\n    release_date DATE,\n    update_version VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_updates (\n    update_id SERIAL PRIMARY KEY,\n    update_name VARCHAR(100) NOT NULL,\n    update_date DATE NOT NULL,\n    description TEXT\n);\n\nCREATE TABLE patches (\n    patch_id SERIAL PRIMARY KEY,\n    patch_name VARCHAR(100) NOT NULL,\n    patch_version VARCHAR(50) NOT NULL,\n    patch_date DATE NOT NULL,\n    update_id INT REFERENCES software_updates(update_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_updates (\n    id SERIAL PRIMARY KEY,\n    update_version VARCHAR(50) NOT NULL,\n    update_description TEXT NOT NULL,\n    update_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id SERIAL PRIMARY KEY,\n    patch_version VARCHAR(50) NOT NULL,\n    patch_description TEXT NOT NULL,\n    patch_status VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE robotic_systems (\n    system_id SERIAL PRIMARY KEY,\n    system_name VARCHAR(50) NOT NULL,\n    system_type VARCHAR(50) NOT NULL,\n    system_status VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_updates (\n    update_id INTEGER PRIMARY KEY,\n    version VARCHAR(20),\n    description TEXT,\n    release_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id INTEGER PRIMARY KEY,\n    update_id INTEGER,\n    patch_name VARCHAR(50),\n    patch_description TEXT,\n    FOREIGN KEY (update_id) REFERENCES software_updates(update_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE robots (\n    robot_id INTEGER PRIMARY KEY,\n    robot_name VARCHAR(50),\n    manufacture_date DATE,\n    last_update_id INTEGER,\n    FOREIGN KEY (last_update_id) REFERENCES software_updates(update_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE robot_logs (\n    log_id INTEGER PRIMARY KEY,\n    robot_id INTEGER,\n    log_timestamp TIMESTAMP,\n    log_message TEXT,\n    FOREIGN KEY (robot_id) REFERENCES robots(robot_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_updates (\n    id INT PRIMARY KEY,\n    update_name VARCHAR(255),\n    update_description TEXT,\n    update_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    id INT PRIMARY KEY,\n    patch_name VARCHAR(255),\n    patch_description TEXT,\n    patch_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE robotic_systems (\n    id INT PRIMARY KEY,\n    system_name VARCHAR(255),\n    system_type VARCHAR(50),\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE update_logs (\n    id INT PRIMARY KEY,\n    update_id INT,\n    system_id INT,\n    update_status VARCHAR(50),\n    update_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patch_logs (\n    id INT PRIMARY KEY,\n    patch_id INT,\n    system_id INT,\n    patch_status VARCHAR(50),\n    patch_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE market_prices_of_agricultural_products (\n    product_id INT PRIMARY KEY,\n    product_name STRING,\n    price DECIMAL,\n    quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE market_prices (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    price DECIMAL(10, 2),\n    date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pricing_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    target_market VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agricultural_products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    product_category VARCHAR(50),\n    price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE market_prices (\n    price_id INT PRIMARY KEY,\n    product_id INT,\n    market_location VARCHAR(100),\n    market_date DATE,\n    price DECIMAL(10, 2),\n    FOREIGN KEY (product_id) REFERENCES agricultural_products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pricing_strategies (\n    strategy_id INT PRIMARY KEY,\n    product_id INT,\n    strategy_name VARCHAR(100),\n    min_price DECIMAL(10, 2),\n    max_price DECIMAL(10, 2),\n    FOREIGN KEY (product_id) REFERENCES agricultural_products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name STRING,\n    category STRING,\n    price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (\n    sale_id INT PRIMARY KEY,\n    product_id INT,\n    sale_date DATE,\n    quantity INT,\n    revenue DECIMAL,\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name STRING,\n    email STRING,\n    phone_number STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE prices (\n    price_id INT PRIMARY KEY,\n    product_id INT,\n    price DECIMAL,\n    effective_date DATE,\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AgriculturalProducts (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    category VARCHAR(100),\n    price DECIMAL(10, 2),\n    quantity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MarketAnalysis (\n    analysis_id INT PRIMARY KEY,\n    product_id INT,\n    market_location VARCHAR(255),\n    demand_level INT,\n    price_sensitivity DECIMAL(5, 2),\n    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES AgriculturalProducts(product_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CompetitorPrices (\n    competitor_id INT PRIMARY KEY,\n    product_id INT,\n    competitor_name VARCHAR(255),\n    price DECIMAL(10, 2),\n    popularity_level INT,\n    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES AgriculturalProducts(product_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PricingStrategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    target_profit DECIMAL(10, 2),\n    discount_rate DECIMAL(5, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PricingOptimization (\n    optimization_id INT PRIMARY KEY,\n    strategy_id INT,\n    analysis_id INT,\n    optimal_price DECIMAL(10, 2),\n    CONSTRAINT fk_strategy FOREIGN KEY (strategy_id) REFERENCES PricingStrategies(strategy_id),\n    CONSTRAINT fk_analysis FOREIGN KEY (analysis_id) REFERENCES MarketAnalysis(analysis_id)\n)"
+      }
+    ]
+  }
+]

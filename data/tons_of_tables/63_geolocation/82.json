@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE population_density (\n    region_id INT PRIMARY KEY,\n    region_name TEXT,\n    population_count INT,\n    density INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regions (\n    region_id UUID PRIMARY KEY,\n    region_name STRING\n);\n\nCREATE TABLE population_density (\n    density_id UUID PRIMARY KEY,\n    region_id UUID REFERENCES regions(region_id),\n    density_value INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regions (\n  region_id SERIAL PRIMARY KEY,\n  region_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE populations (\n  population_id SERIAL PRIMARY KEY,\n  region_id INT NOT NULL,\n  population_count INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE heat_maps (\n  heat_map_id SERIAL PRIMARY KEY,\n  region_id INT NOT NULL,\n  heat_map_data JSONB NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE population_density (\nid INT PRIMARY KEY,\nregion VARCHAR(50) NOT NULL,\npopulation_count INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE heat_map (\nid INT PRIMARY KEY,\nregion VARCHAR(50) NOT NULL,\nheatmap_data JSON NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE region_boundaries (\nregion_id INT PRIMARY KEY,\nregion_name VARCHAR(50) NOT NULL,\nboundary_data JSON NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE density_heatmap (\nid INT PRIMARY KEY,\nheatmap_id INT NOT NULL,\npopulation_density FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE region (region_id INT PRIMARY KEY,\nregion_name VARCHAR(255) NOT NULL,\npopulation_density INT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE coordinates (coordinate_id INT PRIMARY KEY,\nlat DECIMAL(9,6) NOT NULL,\nlong DECIMAL(9,6) NOT NULL,\nregion_id INT,\nFOREIGN KEY (region_id) REFERENCES region(region_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE population_stats (stat_id INT PRIMARY KEY,\nregion_id INT,\nyear INT,\npopulation_size INT,\nFOREIGN KEY (region_id) REFERENCES region(region_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE heatmap_data (data_id INT PRIMARY KEY,\ncoordinate_id INT,\npopulation_density INT,\nFOREIGN KEY (coordinate_id) REFERENCES coordinates(coordinate_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE map_legend (legend_id INT PRIMARY KEY,\npopulation_range VARCHAR(255) NOT NULL,\ncolor_code VARCHAR(20) NOT NULL);"
+      }
+    ]
+  }
+]

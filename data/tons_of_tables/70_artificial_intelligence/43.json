@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users(\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    is_admin BOOL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(255),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    acl_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    access_level INT,\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT REFERENCES users(user_id),\n    role_id INT REFERENCES roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  password VARCHAR(100),\n  date_created TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  role_id SERIAL PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  role_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id SERIAL PRIMARY KEY,\n  permission_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n  role_id INT REFERENCES user_roles(role_id),\n  permission_id INT REFERENCES permissions(permission_id),\n  PRIMARY KEY (role_id, permission_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    role VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT REFERENCES users(user_id),\n    role_id INT REFERENCES roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_id INT REFERENCES roles(role_id),\n    permission_id INT REFERENCES permissions(permission_id),\n    PRIMARY KEY (role_id, permission_id)\n);"
+      }
+    ]
+  }
+]

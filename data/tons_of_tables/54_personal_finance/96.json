@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_information (\n    tax_id INT PRIMARY KEY,\n    taxpayer_name VARCHAR(100),\n    tax_document BYTEA,\n    tax_amount DECIMAL(10, 2),\n    tax_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TaxInformation (\n    tax_id INT PRIMARY KEY,\n    taxpayer_name VARCHAR(255),\n    income DECIMAL,\n    tax_due DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaxDocuments (\n    document_id INT PRIMARY KEY,\n    tax_id INT,\n    document_type VARCHAR(50),\n    document_content BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_documents (\n    document_id SERIAL PRIMARY KEY,\n    document_type VARCHAR(50) NOT NULL,\n    document_content TEXT NOT NULL,\n    upload_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_clients (\n    client_id SERIAL PRIMARY KEY,\n    client_name VARCHAR(100) NOT NULL,\n    client_address VARCHAR(255) NOT NULL,\n    tax_id VARCHAR(20) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    client_id INT REFERENCES tax_clients(client_id),\n    transaction_date DATE NOT NULL,\n    transaction_amount DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TaxPayers (\n    taxpayer_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    address VARCHAR(100),\n    tax_id VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TaxDocuments (\n    document_id INT PRIMARY KEY,\n    document_type VARCHAR(50),\n    document_name VARCHAR(100),\n    taxpayer_id INT,\n    FOREIGN KEY (taxpayer_id) REFERENCES TaxPayers(taxpayer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TaxIncome (\n    income_id INT PRIMARY KEY,\n    taxpayer_id INT,\n    income_amount DECIMAL(10, 2),\n    tax_year INT,\n    FOREIGN KEY (taxpayer_id) REFERENCES TaxPayers(taxpayer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TaxReturns (\n    return_id INT PRIMARY KEY,\n    taxpayer_id INT,\n    tax_year INT,\n    tax_amount DECIMAL(10, 2),\n    FOREIGN KEY (taxpayer_id) REFERENCES TaxPayers(taxpayer_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_payers (\n  tax_payer_id INT PRIMARY KEY,\n  full_name VARCHAR(255) NOT NULL,\n  tax_id VARCHAR(20) UNIQUE,\n  address VARCHAR(255),\n  income DECIMAL(15, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_documents (\n  doc_id INT PRIMARY KEY,\n  tax_payer_id INT,\n  document_type VARCHAR(50),\n  document_text TEXT,\n  FOREIGN KEY (tax_payer_id) REFERENCES tax_payers(tax_payer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_compliance (\n  compliance_id INT PRIMARY KEY,\n  tax_payer_id INT,\n  compliance_status VARCHAR(50),\n  last_checked DATE,\n  FOREIGN KEY (tax_payer_id) REFERENCES tax_payers(tax_payer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_categories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_records (\n  record_id INT PRIMARY KEY,\n  tax_payer_id INT,\n  category_id INT,\n  record_date DATE,\n  amount DECIMAL(15, 2),\n  FOREIGN KEY (tax_payer_id) REFERENCES tax_payers(tax_payer_id),\n  FOREIGN KEY (category_id) REFERENCES tax_categories(category_id)\n);"
+      }
+    ]
+  }
+]

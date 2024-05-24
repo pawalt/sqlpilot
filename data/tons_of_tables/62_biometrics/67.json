@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employee_retina_scanning_data (\n    employee_id INT,\n    employee_name VARCHAR(255),\n    retina_scan_data BLOB,\n    access_level CHAR(1)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employee_retina_data (\n    employee_id INT PRIMARY KEY,\n    retina_scan_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_log (\n    log_id SERIAL PRIMARY KEY,\n    employee_id INT,\n    access_time TIMESTAMP,\n    access_result VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmployeeRetinaScanning (\n    employee_id INT PRIMARY KEY,\n    retina_data BYTEA,\n    scan_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControlLogs (\n    log_id SERIAL PRIMARY KEY,\n    employee_id INT,\n    access_time TIMESTAMP,\n    access_granted BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SecurityClearance (\n    employee_id INT PRIMARY KEY,\n    clearance_level VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Employee { employee_id UUID, first_name STRING, last_name STRING, retina_scan_data BLOB, PRIMARY KEY (employee_id) }"
+      },
+      {
+        "table_schema": "CREATE TABLE Department { department_id UUID, department_name STRING, PRIMARY KEY (department_id) }"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLog { log_id UUID, employee_id UUID, access_time TIMESTAMP, access_result STRING, PRIMARY KEY (log_id), FOREIGN KEY (employee_id) REFERENCES Employee(employee_id) }"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessRequest { request_id UUID, employee_id UUID, request_time TIMESTAMP, request_status STRING, PRIMARY KEY (request_id), FOREIGN KEY (employee_id) REFERENCES Employee(employee_id) }"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmployeeInformation (\n    employee_id SERIAL PRIMARY KEY,\n    full_name VARCHAR(100) NOT NULL,\n    department VARCHAR(50),\n    position VARCHAR(50),\n    retina_scan_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Department (\n    department_id SERIAL PRIMARY KEY,\n    department_name VARCHAR(50) NOT NULL,\n    department_head VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControl (\n    access_id SERIAL PRIMARY KEY,\n    employee_id INT REFERENCES EmployeeInformation(employee_id),\n    access_location VARCHAR(100) NOT NULL,\n    access_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RetinaScanningLogs (\n    log_id SERIAL PRIMARY KEY,\n    employee_id INT REFERENCES EmployeeInformation(employee_id),\n    scan_timestamp TIMESTAMP,\n    scan_result VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SecurityClearance (\n    clearance_id SERIAL PRIMARY KEY,\n    employee_id INT REFERENCES EmployeeInformation(employee_id),\n    clearance_level VARCHAR(20) NOT NULL,\n    clearance_expiry_date DATE\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM security_events;",
+      "SELECT event_id, event_type FROM security_events WHERE event_type = 'login';",
+      "SELECT event_timestamp, source_address, destination_address FROM security_events WHERE event_type = 'access_denied' ORDER BY event_timestamp DESC;",
+      "SELECT event_id, event_type, DATE(event_timestamp) AS event_date FROM security_events WHERE event_date = '2022-01-15';",
+      "SELECT DISTINCT destination_address FROM security_events WHERE source_address = '192.168.1.1';",
+      "SELECT * FROM security_events WHERE event_type = 'Login' ORDER BY event_timestamp DESC LIMIT 10;",
+      "SELECT event_id, event_type, event_timestamp FROM security_events WHERE source_address = '192.168.1.1';",
+      "SELECT event_id, event_type, event_timestamp, source_address FROM security_events WHERE destination_address = '10.0.0.1' ORDER BY event_timestamp ASC;",
+      "SELECT event_id, event_type, source_address, destination_address FROM security_events WHERE event_timestamp BETWEEN '2022-01-01' AND '2022-01-31';",
+      "SELECT event_id, event_timestamp, destination_address FROM security_events WHERE event_type IN ('Login', 'Logout') GROUP BY event_id HAVING COUNT(*) > 1 ORDER BY event_timestamp DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM security_events;",
+      "SELECT id, event_name, event_time FROM security_events WHERE event_type = 'login';",
+      "SELECT event_time, event_name FROM security_events ORDER BY event_time DESC LIMIT 10;",
+      "SELECT event_name, event_type FROM security_events WHERE event_time >= '2022-01-01';",
+      "SELECT event_name, event_type, event_details->'username' AS username FROM security_events WHERE event_type = 'login';",
+      "SELECT * FROM security_events WHERE event_type = 'Login' ORDER BY event_time DESC LIMIT 10;",
+      "SELECT event_name, event_time FROM security_events WHERE event_type = 'Malware Attack' AND extract(hour from event_time) = 12;",
+      "SELECT event_name, event_type, event_details FROM security_events WHERE event_type = 'Data Breach' AND event_time > '2021-01-01' ORDER BY event_time ASC;",
+      "SELECT * FROM threat_indicators WHERE indicator_type = 'IP Address' AND indicator_description LIKE '%suspected%' ORDER BY indicator_id ASC;",
+      "SELECT DISTINCT indicator_type, COUNT(*) FROM threat_indicators GROUP BY indicator_type HAVING COUNT(*) > 5 ORDER BY COUNT(*) DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM siem_events;",
+      "SELECT event_name, event_timestamp FROM siem_events WHERE threat_level > 5;",
+      "SELECT event_name, event_timestamp FROM siem_events ORDER BY event_timestamp DESC;",
+      "SELECT event_name, threat_level FROM siem_events WHERE event_id IN (1, 3, 5);",
+      "SELECT event_name, event_timestamp FROM siem_events WHERE threat_level < 3 ORDER BY threat_level ASC, event_timestamp DESC;",
+      "SELECT * FROM siem_events WHERE threat_level > 5 ORDER BY event_timestamp DESC;",
+      "SELECT event_name, event_timestamp FROM siem_events WHERE event_timestamp BETWEEN '2022-01-01' AND '2022-01-31' ORDER BY event_timestamp;",
+      "SELECT siem_users.username, siem_events.event_name, siem_alerts.alert_name FROM siem_users JOIN siem_events ON siem_users.user_id = siem_events.event_id JOIN siem_alerts ON siem_events.event_id = siem_alerts.event_id;",
+      "SELECT * FROM siem_alerts WHERE alert_type = 'Suspicious' AND alert_description LIKE '%malware%' ORDER BY alert_id DESC;",
+      "SELECT siem_events.event_id, siem_events.event_name, siem_users.username, siem_users.email, siem_users.role FROM siem_events JOIN siem_users ON siem_events.event_id = siem_users.user_id WHERE siem_events.threat_level >= 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM threats LIMIT 5;",
+      "SELECT threat_id, threat_name FROM threats WHERE threat_type='Malware';",
+      "SELECT threat_id, threat_name, threat_level FROM threats WHERE threat_level > 5;",
+      "SELECT * FROM events WHERE event_type='Network';",
+      "SELECT incident_id, incident_name, incident_status FROM incidents ORDER BY incident_id DESC;",
+      "SELECT * FROM threats WHERE threat_level > 5;",
+      "SELECT threat_name, threat_type FROM threats WHERE threat_level = 3 ORDER BY threat_name ASC;",
+      "SELECT MAX(threat_level) AS max_threat_level, MIN(threat_level) AS min_threat_level FROM threats;",
+      "SELECT * FROM incidents WHERE incident_status LIKE 'resolved%' AND incident_description IS NOT NULL;",
+      "SELECT sensor_name, sensor_type, COUNT(sensor_id) AS sensor_count FROM sensors GROUP BY sensor_type ORDER BY sensor_count DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM siem_events LIMIT 10;",
+      "SELECT event_id, event_type, event_timestamp FROM siem_events WHERE event_type = 'Login' ORDER BY event_timestamp DESC;",
+      "SELECT source_ip, destination_ip, description FROM siem_events WHERE event_timestamp > '2022-01-01 00:00:00';",
+      "SELECT * FROM siem_users WHERE department = 'IT' ORDER BY username ASC LIMIT 5;",
+      "SELECT user_id, username, email, role FROM siem_users WHERE role = 'Admin';",
+      "SELECT * FROM siem_users WHERE department = 'IT' ORDER BY username DESC;",
+      "SELECT siem_events.event_id, siem_events.event_type, threat_indicators.indicator_type FROM siem_events INNER JOIN threat_indicators ON siem_events.event_id = threat_indicators.indicator_id WHERE siem_events.event_timestamp > '2022-01-01 00:00:00' ORDER BY siem_events.event_timestamp ASC;",
+      "SELECT siem_users.username, siem_users.email, siem_correlations.correlation_type, siem_correlations.correlation_timestamp FROM siem_users LEFT JOIN siem_correlations ON siem_users.user_id = siem_correlations.source_id ORDER BY siem_correlations.correlation_timestamp DESC;",
+      "SELECT COUNT(*) AS total_events, threat_level FROM siem_events JOIN threat_indicators ON siem_events.event_id = threat_indicators.indicator_id GROUP BY threat_level ORDER BY total_events DESC;",
+      "SELECT siem_users.username, siem_users.role, siem_correlations.correlation_type, siem_correlations.correlation_timestamp, threat_activities.activity_type FROM siem_users JOIN siem_correlations ON siem_users.user_id = siem_correlations.source_id JOIN threat_activities ON siem_users.user_id = threat_activities.user_id WHERE siem_users.username LIKE 'A%' AND siem_correlations.correlation_timestamp BETWEEN '2022-01-01 00:00:00' AND '2022-02-01 00:00:00' ORDER BY siem_correlations.correlation_timestamp ASC;"
+    ]
+  }
+]

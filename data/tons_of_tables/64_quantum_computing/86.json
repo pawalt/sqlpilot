@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_communication_protocols (\n    protocol_id UUID PRIMARY KEY,\n    protocol_name VARCHAR(50) NOT NULL,\n    description TEXT,\n    quantum_bit_rate INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumProtocols (\n    protocol_id INT PRIMARY KEY,\n    protocol_name VARCHAR(255),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProtocolData (\n    data_id INT PRIMARY KEY,\n    protocol_id INT,\n    data_content JSONB\n    FOREIGN KEY (protocol_id) REFERENCES QuantumProtocols(protocol_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Quantum_Communication_Protocols (\n  protocol_id INT PRIMARY KEY,\n  protocol_name VARCHAR(50),\n  description TEXT,\n  creator VARCHAR(50),\n  creation_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Protocol_Steps (\n  step_id INT PRIMARY KEY,\n  protocol_id INT,\n  step_name VARCHAR(50),\n  description TEXT,\n  step_order INT,\n  FOREIGN KEY (protocol_id) REFERENCES Quantum_Communication_Protocols(protocol_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(50),\n  affiliation VARCHAR(100),\n  email VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_protocols (\n  protocol_id UUID PRIMARY KEY,\n  protocol_name VARCHAR(255) NOT NULL,\n  protocol_description TEXT,\n  protocol_author VARCHAR(100),\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE protocol_steps (\n  step_id SERIAL PRIMARY KEY,\n  protocol_id UUID REFERENCES quantum_protocols(protocol_id),\n  step_number INTEGER,\n  step_description TEXT,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE protocol_metrics (\n  metric_id SERIAL PRIMARY KEY,\n  step_id INTEGER REFERENCES protocol_steps(step_id),\n  metric_name VARCHAR(100) NOT NULL,\n  metric_value FLOAT,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE protocol_results (\n  result_id SERIAL PRIMARY KEY,\n  protocol_id UUID REFERENCES quantum_protocols(protocol_id),\n  result_description TEXT,\n  result_value FLOAT,\n  created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_protocols (\n    protocol_id INT PRIMARY KEY,\n    protocol_name VARCHAR(50),\n    description TEXT,\n    creation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    manufacturer VARCHAR(50),\n    protocol_id INT,\n    FOREIGN KEY (protocol_id) REFERENCES quantum_protocols(protocol_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_parameters (\n    parameter_id INT PRIMARY KEY,\n    parameter_name VARCHAR(50),\n    value FLOAT,\n    protocol_id INT,\n    FOREIGN KEY (protocol_id) REFERENCES quantum_protocols(protocol_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(50),\n    password VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access (\n    access_id INT PRIMARY KEY,\n    user_id INT,\n    protocol_id INT,\n    access_level INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (protocol_id) REFERENCES quantum_protocols(protocol_id)\n);"
+      }
+    ]
+  }
+]

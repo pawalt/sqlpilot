@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  behavioral_biometrics JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n   user_id INT PRIMARY KEY,\n   theme VARCHAR(255),\n   language VARCHAR(255),\n   font_size INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_data (\n   user_id INT,\n   timestamp TIMESTAMP,\n   action VARCHAR(255),\n   duration INT\n   FOREIGN KEY (user_id) REFERENCES user_preferences(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT PRIMARY KEY,\n    background_color VARCHAR,\n    font_size INT,\n    theme VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_data (\n    user_id INT,\n    behavior_type VARCHAR,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES user_preferences(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE behavioral_biometrics (\n    user_id INT,\n    biometric_type VARCHAR,\n    biometric_data VARCHAR,\n    FOREIGN KEY (user_id) REFERENCES user_preferences(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserPreferences (\n    user_id UUID PRIMARY KEY,\n    theme_color VARCHAR(255),\n    font_size INT,\n    language VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BehaviorData (\n    behavior_id UUID PRIMARY KEY,\n    user_id UUID,\n    timestamp TIMESTAMP,\n    behavior_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PersonalizedExperiences (\n    experience_id UUID PRIMARY KEY,\n    user_id UUID,\n    experience_name VARCHAR(255),\n    description TEXT,\n    rating INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BehavioralBiometrics (\n    biometric_id UUID PRIMARY KEY,\n    user_id UUID,\n    biometric_data BYTEA,\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profile_table (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences_table (\n    preference_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_profile_table(user_id),\n    theme VARCHAR(20) DEFAULT 'light',\n    language VARCHAR(20) DEFAULT 'english'\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behavior_table (\n    behavior_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_profile_table(user_id),\n    page_visited VARCHAR(100) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE biometrics_data_table (\n    biometric_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_profile_table(user_id),\n    heart_rate INT,\n    temperature FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE personalized_experience_table (\n    experience_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_profile_table(user_id),\n    experience_description TEXT,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_pipelines (\n  id INT PRIMARY KEY,\n  pipeline_name VARCHAR,\n  pipeline_description TEXT,\n  source_location VARCHAR,\n  destination_location VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE pipeline_data(\n    id SERIAL PRIMARY KEY,\n    data_key VARCHAR(50) NOT NULL,\n    data_value TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE processed_data(\n    id SERIAL PRIMARY KEY,\n    pipeline_id INT NOT NULL,\n    processed_value JSONB NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DataIngestion (\n    id INT PRIMARY KEY,\n    source VARCHAR(255),\n    timestamp TIMESTAMP,\n    data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DataProcessing (\n    id INT PRIMARY KEY,\n    data_id INT,\n    processing_type VARCHAR(50),\n    processing_timestamp TIMESTAMP,\n    processed_data JSONB,\n    FOREIGN KEY (data_id) REFERENCES DataIngestion(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DataStorage (\n    id INT PRIMARY KEY,\n    stored_data JSONB,\n    storage_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Ingestion (\n    id INT PRIMARY KEY,\n    data_source VARCHAR(255),\n    ingestion_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Processing (\n    id INT PRIMARY KEY,\n    data_id INT, \n    processing_status VARCHAR(50),\n    processing_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Storage (\n    id INT PRIMARY KEY,\n    processed_id INT, \n    storage_location VARCHAR(255),\n    storage_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Logs (\n    log_id INT PRIMARY KEY,\n    activity_description TEXT, \n    log_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_ingestion (\n    id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    data JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_processing (\n    id SERIAL PRIMARY KEY,\n    processing_date DATE NOT NULL,\n    processed_data JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_storage (\n    id SERIAL PRIMARY KEY,\n    stored_date DATE NOT NULL,\n    stored_data JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pipeline_jobs (\n    job_id SERIAL PRIMARY KEY,\n    job_name VARCHAR(50) NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE job_logs (\n    log_id SERIAL PRIMARY KEY,\n    job_id INT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT\n);"
+      }
+    ]
+  }
+]

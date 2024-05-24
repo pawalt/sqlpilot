@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AssetMaintenanceSchedule (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    maintenance_date DATE,\n    service_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    purchase_date DATE,\n    last_service_date DATE,\n    next_service_date DATE\n);\n\nCREATE TABLE maintenance_schedule (\n    schedule_id INT PRIMARY KEY,\n    asset_id INT,\n    service_type VARCHAR(50),\n    service_date DATE,\n    completed BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset (asset_id SERIAL PRIMARY KEY,\n              asset_name VARCHAR(255) NOT NULL,\n              last_service_date DATE,\n              next_service_date DATE,\n              description TEXT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (schedule_id SERIAL PRIMARY KEY,\n              asset_id INTEGER REFERENCES asset(asset_id),\n              service_date DATE,\n              service_type VARCHAR(50),\n              technician_id INTEGER,\n              completion_status BOOLEAN);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE technician (technician_id SERIAL PRIMARY KEY,\n              technician_name VARCHAR(100) NOT NULL,\n              specialization VARCHAR(50));\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    maintenance_schedule DATE,\n    last_service_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_tasks (\n    task_id INT PRIMARY KEY,\n    asset_id INT,\n    task_description TEXT,\n    task_due_date DATE,\n    completed BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n    audit_id INT PRIMARY KEY,\n    task_id INT,\n    audit_date DATE,\n    audit_notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE technicians (\n    technician_id INT PRIMARY KEY,\n    technician_name VARCHAR(255),\n    certification_level INT,\n    hire_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n  asset_id INT PRIMARY KEY,\n  asset_name TEXT,\n  purchase_date DATE,\n  service_due_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_tasks (\n  task_id INT PRIMARY KEY,\n  task_description TEXT,\n  task_frequency INTERVAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_maintenance (\n  maintenance_id INT PRIMARY KEY,\n  asset_id INT,\n  task_id INT,\n  last_serviced_date DATE,\n  next_service_date DATE,\n  FOREIGN KEY (asset_id) REFERENCES assets(asset_id),\n  FOREIGN KEY (task_id) REFERENCES maintenance_tasks(task_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_personnel (\n  personnel_id INT PRIMARY KEY,\n  personnel_name TEXT,\n  specialty TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assigned_tasks (\n  assignment_id INT PRIMARY KEY,\n  maintenance_id INT,\n  personnel_id INT,\n  assigned_date DATE,\n  completed_date DATE,\n  FOREIGN KEY (maintenance_id) REFERENCES asset_maintenance(maintenance_id),\n  FOREIGN KEY (personnel_id) REFERENCES maintenance_personnel(personnel_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM satellite_images ORDER BY captured_date DESC;",
+      "SELECT image_id, image_url FROM satellite_images WHERE mining_activity_detected = TRUE;",
+      "SELECT image_url, captured_date FROM satellite_images WHERE location_geodata IS NOT NULL;",
+      "SELECT * FROM satellite_images WHERE captured_date > '2022-01-01' AND mining_activity_detected = TRUE ORDER BY captured_date DESC;",
+      "SELECT image_id, captured_date FROM satellite_images ORDER BY captured_date ASC;",
+      "SELECT image_id, image_url FROM satellite_images WHERE captured_date > '2022-01-01' AND mining_activity_detected = TRUE;",
+      "SELECT * FROM satellite_images WHERE mining_activity_detected = FALSE ORDER BY captured_date DESC;",
+      "SELECT image_id, image_url, ST_AsText(location_geodata) AS location FROM satellite_images WHERE ST_Distance(location_geodata, 'POINT(10 20)') < 1000;",
+      "SELECT * FROM satellite_images WHERE captured_date BETWEEN '2022-01-01' AND '2022-06-30' AND mining_activity_detected = TRUE ORDER BY captured_date ASC;",
+      "SELECT image_id, image_url, captured_date, ST_AsText(location_geodata) AS location, mining_activity_detected FROM satellite_images WHERE location_geodata IS NOT NULL AND mining_activity_detected = FALSE ORDER BY captured_date DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM satellite_images;",
+      "SELECT id, location, timestamp FROM satellite_images WHERE id = 100;",
+      "SELECT image_url, location, timestamp FROM satellite_images ORDER BY timestamp DESC;",
+      "SELECT id, activity_type, detected_area FROM mining_activities WHERE detected_area > 100;",
+      "SELECT id, image_url, location, timestamp FROM satellite_images WHERE location = 'California';",
+      "SELECT * FROM satellite_images WHERE id = 1;",
+      "SELECT location, timestamp FROM satellite_images WHERE timestamp > '2022-01-01';",
+      "SELECT id, image_url, location FROM satellite_images WHERE location LIKE 'Forest%';",
+      "SELECT * FROM mining_activities WHERE activity_type = 'Excavation' ORDER BY detected_area DESC;",
+      "SELECT s.id, s.location, m.activity_type FROM satellite_images s JOIN mining_activities m ON s.id = m.satellite_image_id ORDER BY s.id ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM SatelliteImages ORDER BY capture_date DESC;",
+      "SELECT site_name, mining_activity FROM MiningSites WHERE mining_activity = TRUE;",
+      "SELECT image_id, capture_date, satellite_model FROM SatelliteImages WHERE satellite_model = 'Model A';",
+      "SELECT * FROM IllegalMiningReports WHERE reporter_name = 'John Doe';",
+      "SELECT site_name, site_location FROM MiningSites WHERE site_location = POINT(40.7128, -74.0060);",
+      "SELECT * FROM SatelliteImages ORDER BY capture_date DESC LIMIT 5;",
+      "SELECT image_id, satellite_model FROM SatelliteImages WHERE satellite_model = 'ModelX';",
+      "SELECT * FROM MiningSites WHERE mining_activity = TRUE AND last_activity_date > '2022-01-01';",
+      "SELECT site_name, site_location FROM MiningSites WHERE site_location = POINT(10,20);",
+      "SELECT s.satellite_model, s.capture_date, r.report_date FROM SatelliteImages s JOIN IllegalMiningReports r ON s.image_id = r.report_id ORDER BY r.report_date DESC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM SatelliteImages LIMIT 5;",
+      "SELECT image_id, image_date, image_metadata FROM SatelliteImages WHERE image_date > '2021-01-01';",
+      "SELECT area_name, area_geodata FROM DetectedAreas WHERE area_size > 1000 ORDER BY area_size DESC;",
+      "SELECT detection_id, image_id, activity_id, detection_date FROM DetectedIllegalMining ORDER BY detection_date ASC LIMIT 5;",
+      "SELECT activity_id, activity_type, activity_date, location_geodata FROM MiningActivities WHERE activity_date BETWEEN '2021-01-01' AND '2022-01-01';",
+      "SELECT * FROM SatelliteImages ORDER BY image_date DESC LIMIT 10;",
+      "SELECT image_id, image_date, location_geodata FROM SatelliteImages WHERE ST_DWithin(location_geodata, 'POINT(-70.2 42.5)'::geography, 10000) ORDER BY image_date DESC;",
+      "SELECT a.activity_id, a.activity_type, a.activity_date, m.activity_type, m.activity_date FROM MiningActivities a JOIN DetectedIllegalMining m ON a.activity_id = m.activity_id ORDER BY a.activity_date DESC, m.activity_date ASC LIMIT 5;",
+      "SELECT di.detection_id, si.image_date, ma.activity_date, di.detection_accuracy FROM DetectedIllegalMining di JOIN SatelliteImages si ON di.image_id = si.image_id JOIN MiningActivities ma ON di.activity_id = ma.activity_id ORDER BY di.detection_date DESC LIMIT 5;",
+      "SELECT da.area_id, da.area_name, da.area_size, count(*) as detection_count FROM DetectedIllegalMining di JOIN DetectedAreas da ON di.image_id = da.area_id GROUP BY da.area_id, da.area_name, da.area_size ORDER BY detection_count DESC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM satellite_images;",
+      "SELECT image_id, capture_date FROM satellite_images ORDER BY capture_date DESC;",
+      "SELECT image_id, location FROM satellite_images WHERE satellite_id = '1234';",
+      "SELECT activity_id, activity_type, activity_date FROM mining_activities WHERE activity_date >= '2022-01-01';",
+      "SELECT area_id, area_name FROM remote_areas WHERE ST_Distance(area_location, 'POINT(40.7128, -74.0060)') < 10000;",
+      "SELECT * FROM satellite_images ORDER BY capture_date DESC LIMIT 5;",
+      "SELECT detection_id, activity_id, detection_date, detection_type FROM detected_activities WHERE confidence > 0.8 ORDER BY detection_date ASC;",
+      "SELECT activity_id, activity_type, activity_date, location FROM mining_activities WHERE activity_date >= '2021-01-01' AND activity_date <= '2021-12-31';",
+      "SELECT * FROM remote_areas WHERE ST_DWithin(area_location, 'SRID=4326;POINT(-73.935242 40.730610)', 5000);",
+      "SELECT user_id, username FROM users WHERE email LIKE '%@example.com';"
+    ]
+  }
+]

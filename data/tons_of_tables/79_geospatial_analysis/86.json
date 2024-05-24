@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE invasive_species_movement_data (\n  species_id SERIAL PRIMARY KEY,\n  species_name VARCHAR(50),\n  latitude DECIMAL(8,6),\n  longitude DECIMAL(9,6),\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE movement_data (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(255),\n    location_id INT,\n    movement_type VARCHAR(50),\n    movement_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE location_data (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT,\n    country VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE species (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(255) NOT NULL,\n    species_category VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE movement_data (\n    movement_id INT PRIMARY KEY,\n    species_id INT NOT NULL,\n    location_id INT NOT NULL,\n    movement_date DATE NOT NULL,\n    movement_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (species_id) REFERENCES species(species_id),\n    FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    latitude DECIMAL(10, 6) NOT NULL,\n    longitude DECIMAL(10, 6) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE species (\n    species_id INT,\n    species_name VARCHAR(255),\n    species_type VARCHAR(100),\n    PRIMARY KEY (species_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tracking_data (\n    data_id INT,\n    species_id INT,\n    location VARCHAR(255),\n    date_time DATETIME,\n    PRIMARY KEY (data_id),\n    FOREIGN KEY (species_id) REFERENCES species(species_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE movements (\n    movement_id INT,\n    data_id INT,\n    movement_type VARCHAR(100),\n    distance FLOAT,\n    PRIMARY KEY (movement_id),\n    FOREIGN KEY (data_id) REFERENCES tracking_data(data_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE observation (\n    observation_id INT,\n    data_id INT,\n    observer_name VARCHAR(255),\n    observation_desc TEXT,\n    PRIMARY KEY (observation_id),\n    FOREIGN KEY (data_id) REFERENCES tracking_data(data_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE movement_data (id INT PRIMARY KEY,\n                         species_name VARCHAR(255),\n                         movement_type VARCHAR(50),\n                         location_id INT,\n                         date_time TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE species_info (species_id INT PRIMARY KEY,\n                         species_name VARCHAR(255),\n                         invasive_status BOOLEAN);"
+      },
+      {
+        "table_schema": "CREATE TABLE location_data (location_id INT PRIMARY KEY,\n                         location_name VARCHAR(255),\n                         latitude FLOAT,\n                         longitude FLOAT);"
+      },
+      {
+        "table_schema": "CREATE TABLE species_movement (movement_id INT PRIMARY KEY,\n                         species_id INT,\n                         location_id INT,\n                         movement_type VARCHAR(50),\n                         date_time TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE species_interaction (interaction_id INT PRIMARY KEY,\n                           species_id_1 INT,\n                           species_id_2 INT,\n                           interaction_type VARCHAR(50),\n                           interaction_description TEXT);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donations (\n  donor_name VARCHAR(50),\n  donor_email VARCHAR(100),\n  donated_item VARCHAR(50),\n  donation_date DATE,\n  recipient_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donors (\n  donor_id SERIAL PRIMARY KEY,\n  donor_name TEXT,\n  donor_email TEXT,\n  donation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donations (\n  donation_id SERIAL PRIMARY KEY,\n  donor_id INT REFERENCES donors(donor_id),\n  donation_item TEXT,\n  donation_quantity INT,\n  donation_date DATE,\n  distribution_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Donors (\n  donor_id INT PRIMARY KEY,\n  donor_name VARCHAR(50) NOT NULL,\n  donation_amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DonatedItems (\n  item_id INT PRIMARY KEY,\n  item_name VARCHAR(50) NOT NULL,\n  item_description TEXT,\n  donor_id INT,\n  FOREIGN KEY (donor_id) REFERENCES Donors(donor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Distribution (\n  distribution_id INT PRIMARY KEY,\n  item_id INT,\n  quantity INT NOT NULL,\n  recipient_name VARCHAR(50) NOT NULL,\n  recipient_address TEXT NOT NULL,\n  FOREIGN KEY (item_id) REFERENCES DonatedItems(item_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE donors (\n    donor_id INT PRIMARY KEY,\n    donor_name VARCHAR(50),\n    donor_email VARCHAR(100),\n    donation_amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE donated_items (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(50),\n    item_category VARCHAR(50),\n    item_quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE donations (\n    donation_id INT PRIMARY KEY,\n    donor_id INT,\n    item_id INT,\n    donation_date DATE,\n    FOREIGN KEY (donor_id) REFERENCES donors(donor_id),\n    FOREIGN KEY (item_id) REFERENCES donated_items(item_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution (\n    distribution_id INT PRIMARY KEY,\n    item_id INT,\n    recipient_name VARCHAR(50),\n    distribution_date DATE,\n    FOREIGN KEY (item_id) REFERENCES donated_items(item_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Donors (\n  donor_id INT PRIMARY KEY,\n  donor_name VARCHAR(255) NOT NULL,\n  donation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DonatedItems (\n  item_id INT PRIMARY KEY,\n  item_name VARCHAR(255) NOT NULL,\n  quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Donations (\n  donation_id INT PRIMARY KEY,\n  donor_id INT,\n  item_id INT,\n  donation_date DATE,\n  FOREIGN KEY (donor_id) REFERENCES Donors(donor_id),\n  FOREIGN KEY (item_id) REFERENCES DonatedItems(item_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Recipients (\n  recipient_id INT PRIMARY KEY,\n  recipient_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Distribution (\n  distribution_id INT PRIMARY KEY,\n  donation_id INT,\n  recipient_id INT,\n  distribution_date DATE,\n  quantity_received INT,\n  FOREIGN KEY (donation_id) REFERENCES Donations(donation_id),\n  FOREIGN KEY (recipient_id) REFERENCES Recipients(recipient_id)\n);"
+      }
+    ]
+  }
+]

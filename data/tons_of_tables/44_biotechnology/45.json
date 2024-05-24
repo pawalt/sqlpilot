@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE seed_distribution (\n  id UUID PRIMARY KEY,\n  seed_name VARCHAR,\n  farmer_id UUID,\n  distribution_date DATE,\n  crop_performance VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Distribution (\n    distributor_id INT PRIMARY KEY,\n    distributor_name VARCHAR(50),\n    distributor_location VARCHAR(100),\n    seed_type VARCHAR(50),\n    distribution_date DATE\n);\n\nCREATE TABLE CropPerformance (\n    farmer_id INT PRIMARY KEY,\n    farmer_name VARCHAR(50),\n    crop_type VARCHAR(50),\n    crop_yield FLOAT,\n    crop_health VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Farmers (\n farmer_id UUID PRIMARY KEY,\n farmer_name VARCHAR(255) NOT NULL,\n location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Seeds (\n seed_id UUID PRIMARY KEY,\n seed_name VARCHAR(255) NOT NULL,\n genetic_info VARCHAR(255) NOT NULL,\n quantity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CropPerformance (\n performance_id UUID PRIMARY KEY,\n seed_id UUID REFERENCES Seeds(seed_id),\n farmer_id UUID REFERENCES Farmers(farmer_id),\n yield INT,\n quality_rating DECIMAL(5,2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE farmers (\n farmer_id INT PRIMARY KEY,\n farmer_name VARCHAR(50),\n location VARCHAR(100),\n crop_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE seeds (\n seed_id INT PRIMARY KEY,\n seed_name VARCHAR(50),\n seed_type VARCHAR(50),\n supplier VARCHAR(50),\n expiration_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution (\n distribution_id INT PRIMARY KEY,\n seed_id INT,\n farmer_id INT,\n distribution_date DATE,\n quantity INT,\n FOREIGN KEY (seed_id) REFERENCES seeds(seed_id),\n FOREIGN KEY (farmer_id) REFERENCES farmers(farmer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_performance (\n performance_id INT PRIMARY KEY,\n farmer_id INT,\n year INT,\n crop_yield INT,\n disease_resistance VARCHAR(50),\n FOREIGN KEY (farmer_id) REFERENCES farmers(farmer_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE farmers (\n    farmer_id INT PRIMARY KEY,\n    farmer_name VARCHAR(50),\n    farmer_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE seeds (\n    seed_id INT PRIMARY KEY,\n    seed_name VARCHAR(50),\n    seed_description VARCHAR(200)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution (\n    distribution_id INT PRIMARY KEY,\n    farmer_id INT,\n    seed_id INT,\n    distribution_date DATE,\n    quantity INT,\n    FOREIGN KEY (farmer_id) REFERENCES farmers(farmer_id),\n    FOREIGN KEY (seed_id) REFERENCES seeds(seed_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_performance (\n    performance_id INT PRIMARY KEY,\n    distribution_id INT,\n    crop_yield FLOAT,\n    disease_occurrence BOOLEAN,\n    harvest_date DATE,\n    FOREIGN KEY (distribution_id) REFERENCES distribution(distribution_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_notes (\n    note_id INT PRIMARY KEY,\n    performance_id INT,\n    note_text TEXT,\n    note_date DATE,\n    FOREIGN KEY (performance_id) REFERENCES crop_performance(performance_id)\n);"
+      }
+    ]
+  }
+]

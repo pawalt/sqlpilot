@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM customers;",
+      "SELECT customer_id, name, email FROM customers WHERE age > 30;",
+      "SELECT name, age, preferences FROM customers WHERE interactions @> '[{\"type\": \"click\"}]';",
+      "SELECT * FROM customers ORDER BY age DESC;",
+      "SELECT customer_id, email, name, preferences FROM customers WHERE age <= 25;",
+      "SELECT * FROM customers WHERE age > 30 ORDER BY name DESC;",
+      "SELECT customer_id, name, email FROM customers WHERE preferences ->> 'type' = 'premium' ORDER BY age ASC;",
+      "SELECT customer_id, email, age FROM customers WHERE age BETWEEN 25 AND 35 AND interactions ->> 'last_interaction' > '2021-01-01';",
+      "SELECT name, age, preferences FROM customers WHERE interactions -> 'history' @> '[{\"date\":\"2021-07-01\"}]';",
+      "SELECT * FROM customers WHERE age > 40 AND preferences -> 'category' ?| array['sports', 'books'] AND interactions -> 'clicks' ?& array['product1', 'product2'];"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM customers;",
+      "SELECT name, email FROM customers WHERE customer_id = 1;",
+      "SELECT * FROM interactions ORDER BY timestamp DESC;",
+      "SELECT customer_id, interaction_type FROM interactions WHERE interaction_id = 3;",
+      "SELECT name, preferences FROM customers WHERE email LIKE '%@example.com%';",
+      "SELECT * FROM customers WHERE customer_id=1;",
+      "SELECT name, email FROM customers ORDER BY name DESC;",
+      "SELECT * FROM customers INNER JOIN interactions ON customers.customer_id = interactions.customer_id WHERE interactions.interaction_type='purchase';",
+      "SELECT customer_id, COUNT(interaction_id) AS num_interactions FROM interactions GROUP BY customer_id HAVING num_interactions > 5;",
+      "SELECT name, email, preferences->>'favorite_color' AS favorite_color FROM customers WHERE preferences->>'subscription'='premium' LIMIT 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM customers;",
+      "SELECT customer_id, customer_name, email FROM customers ORDER BY customer_name ASC;",
+      "SELECT customer_id, preference FROM customers WHERE preference = 'VIP';",
+      "SELECT customer_name, email FROM customers WHERE customer_id = 3;",
+      "SELECT interaction_date, interaction_type FROM interactions ORDER BY interaction_date DESC;",
+      "SELECT * FROM customers ORDER BY customer_name ASC, customer_id DESC;",
+      "SELECT customer_name, email FROM customers WHERE preference = 'VIP' ORDER BY customer_name;",
+      "SELECT c.customer_name, i.interaction_type, i.interaction_date FROM customers c JOIN interactions i ON c.customer_id = i.customer_id WHERE i.interaction_date >= '2022-01-01';",
+      "SELECT c.*, cam.campaign_name, cam.campaign_date FROM customers c INNER JOIN interactions i ON c.customer_id = i.customer_id INNER JOIN campaigns cam ON i.interaction_type = cam.campaign_type;",
+      "SELECT customer_name, COUNT(interaction_id) AS total_interactions FROM customers c LEFT JOIN interactions i ON c.customer_id = i.customer_id GROUP BY customer_name ORDER BY total_interactions DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM customers;",
+      "SELECT customer_id, first_name, last_name FROM customers ORDER BY last_name ASC;",
+      "SELECT customer_id, email FROM customers WHERE first_name = 'Alice';",
+      "SELECT customer_id, interaction_type, interaction_time FROM interactions WHERE interaction_time >= '2022-01-01';",
+      "SELECT campaign_id, campaign_name, start_date, segment FROM campaigns WHERE status = 'active';",
+      "SELECT * FROM customers;",
+      "SELECT c.first_name, c.last_name, p.category, p.value FROM customers c JOIN preferences p ON c.customer_id = p.customer_id;",
+      "SELECT c.first_name, c.last_name, i.interaction_type, i.interaction_time FROM customers c JOIN interactions i ON c.customer_id = i.customer_id WHERE i.interaction_type = 'email';",
+      "SELECT campaign_name, start_date, end_date, segment FROM campaigns WHERE status = 'active' ORDER BY end_date DESC;",
+      "SELECT c.first_name, c.last_name, p.category, p.value FROM customers c JOIN preferences p ON c.customer_id = p.customer_id WHERE c.first_name = 'John';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT first_name, last_name, email FROM customers WHERE id = 1;",
+      "SELECT email, preference FROM customers WHERE first_name = 'John';",
+      "SELECT * FROM interactions WHERE customer_id = 3 ORDER BY interaction_date DESC;",
+      "SELECT DISTINCT campaign_name, start_date, end_date FROM campaigns WHERE start_date > '2022-01-01' ORDER BY end_date ASC;",
+      "SELECT customer_id, COUNT(DISTINCT interaction_id) as total_interactions FROM campaign_interactions GROUP BY customer_id ORDER BY total_interactions DESC;",
+      "SELECT * FROM customers WHERE id = 1;",
+      "SELECT first_name, last_name, email FROM customers WHERE preference = 'VIP';",
+      "SELECT campaign_name, start_date, end_date FROM campaigns ORDER BY start_date DESC;",
+      "SELECT c.campaign_name, i.interaction_type, i.interaction_date FROM campaigns c JOIN campaign_interactions ci ON c.campaign_id = ci.campaign_id JOIN interactions i ON ci.interaction_id = i.interaction_id;",
+      "SELECT c.campaign_name, count(cc.customer_id) AS total_customers FROM campaigns c JOIN campaign_customers cc ON c.campaign_id = cc.campaign_id GROUP BY c.campaign_name ORDER BY total_customers DESC;"
+    ]
+  }
+]

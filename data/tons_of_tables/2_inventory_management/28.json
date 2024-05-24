@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AssetUtilization (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(255),\n  utilization_rate DECIMAL(10, 2),\n  last_utilization_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_utilization_data (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    utilization_ratio FLOAT,\n    utilization_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (\n    allocation_id INT PRIMARY KEY,\n    asset_id INT,\n    allocation_date DATE,\n    allocated_amount DECIMAL,\n    CONSTRAINT fk_asset FOREIGN KEY (asset_id) REFERENCES asset_utilization_data(asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_data (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    location VARCHAR(100),\n    utilization_percentage FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE utilization_log (\n    log_id INT PRIMARY KEY,\n    asset_id INT,\n    timestamp TIMESTAMP,\n    utilization_value FLOAT,\n    FOREIGN KEY (asset_id) REFERENCES asset_data(asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (\n    allocation_id INT PRIMARY KEY,\n    asset_id INT,\n    allocation_date DATE,\n    allocated_quantity INT,\n    allocated_to VARCHAR(100),\n    FOREIGN KEY (asset_id) REFERENCES asset_data(asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_data (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    asset_location VARCHAR(100),\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE utilization_data (\n    utilization_id INT PRIMARY KEY,\n    asset_id INT,\n    utilization_percent DECIMAL(5,2),\n    utilization_date DATE,\n    CONSTRAINT fk_asset_id FOREIGN KEY (asset_id) REFERENCES asset_data(asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE allocation_data (\n    allocation_id INT PRIMARY KEY,\n    asset_id INT,\n    allocation_date DATE,\n    allocated_quantity INT,\n    CONSTRAINT fk_asset_id FOREIGN KEY (asset_id) REFERENCES asset_data(asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE decision_making (\n    decision_id INT PRIMARY KEY,\n    asset_id INT,\n    decision_date DATE,\n    decision_description TEXT,\n    CONSTRAINT fk_asset_id FOREIGN KEY (asset_id) REFERENCES asset_data(asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Asset (\n asset_id INT PRIMARY KEY,\n asset_name VARCHAR(50),\n asset_type VARCHAR(50),\n location VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Utilization (\n utilization_id INT PRIMARY KEY,\n asset_id INT,\n start_time TIMESTAMP,\n end_time TIMESTAMP,\n utilization_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Resource (\n resource_id INT PRIMARY KEY,\n resource_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Allocation (\n allocation_id INT PRIMARY KEY,\n utilization_id INT,\n resource_id INT,\n quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Decision (\n decision_id INT PRIMARY KEY,\n decision_type VARCHAR(50),\n decision_description TEXT\n);"
+      }
+    ]
+  }
+]

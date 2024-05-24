@@ -1,0 +1,73 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_emissions (\n   id INT PRIMARY KEY,\n   company_name TEXT,\n   emission_type TEXT,\n   emission_amount DECIMAL,\n   offsetting_activity TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE offsetting_activities (\n   id INT PRIMARY KEY,\n   activity_name TEXT,\n   activity_type TEXT,\n   offsetting_cost DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emission_offsets (\n   id INT PRIMARY KEY,\n   emission_id INT,\n   activity_id INT,\n   offset_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_emissions (\n  id INT PRIMARY KEY,\n  location VARCHAR,\n  emission_value FLOAT,\n  date_recorded DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE offsetting_activities (\n  id INT PRIMARY KEY,\n  activity_type VARCHAR,\n  activity_description TEXT,\n  date_completed DATE,\n  emission_id INT,\n  FOREIGN KEY (emission_id) REFERENCES carbon_emissions(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_emissions (\n   company_id INT PRIMARY KEY,\n   emission_date DATE,\n   emitted_tons FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE carbon_offsetting (\n   offset_id INT PRIMARY KEY,\n   company_id INT,\n   offset_date DATE,\n   offset_tons FLOAT,\n   offset_price DECIMAL(10,2),\n   FOREIGN KEY (company_id) REFERENCES carbon_emissions(company_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE companies (\n   company_id INT PRIMARY KEY,\n   company_name VARCHAR(50),\n   company_size VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_emissions (\n  id SERIAL PRIMARY KEY,\n  emission_source VARCHAR(100) NOT NULL,\n  emission_amount DECIMAL NOT NULL,\n  emission_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE offsetting_activities (\n  id SERIAL PRIMARY KEY,\n  activity_name VARCHAR(100) NOT NULL,\n  activity_type VARCHAR(50) NOT NULL,\n  activity_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE emissions_offset (\n  id SERIAL PRIMARY KEY,\n  emission_id INT REFERENCES carbon_emissions(id) ON DELETE CASCADE,\n  activity_id INT REFERENCES offsetting_activities(id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE emission_reports (\n  id SERIAL PRIMARY KEY,\n  report_title VARCHAR(200) NOT NULL,\n  report_description TEXT,\n  report_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CarbonEmissions (\n  id INT PRIMARY KEY,\n  user_id INT,\n  emission_type VARCHAR(255),\n  emission_amount DECIMAL(10, 2),\n  emission_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OffsetActivities (\n  id INT PRIMARY KEY,\n  user_id INT,\n  activity_type VARCHAR(255),\n  offset_amount DECIMAL(10, 2),\n  offset_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  id INT PRIMARY KEY,\n  username VARCHAR(255),\n  email VARCHAR(255),\n  join_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CompanyInfo (\n  id INT PRIMARY KEY,\n  company_name VARCHAR(255),\n  industry VARCHAR(255),\n  location VARCHAR(255),\n  founding_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reporting (\n  id INT PRIMARY KEY,\n  user_id INT,\n  report_type VARCHAR(255),\n  report_date DATE,\n  status VARCHAR(255)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ewaste_recycling_companies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255) NOT NULL,\n    services TEXT,\n    certifications VARCHAR(100),\n    contact_person VARCHAR(100),\n    contact_email VARCHAR(100) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recycling_companies (\n    company_id UUID PRIMARY KEY,\n    company_name VARCHAR(255) NOT NULL,\n    services TEXT,\n    certifications TEXT,\n    contact_name VARCHAR(100),\n    contact_email VARCHAR(255),\n    contact_phone VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recycling_companies (\n company_id UUID PRIMARY KEY,\n company_name VARCHAR(255) NOT NULL,\n services TEXT,\n certifications TEXT,\n contact_person VARCHAR(100),\n contact_email VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_services (\n service_id UUID PRIMARY KEY,\n service_name VARCHAR(255) NOT NULL,\n description TEXT,\n company_id UUID REFERENCES recycling_companies(company_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE company_certifications (\n certification_id UUID PRIMARY KEY,\n certification_name VARCHAR(255) NOT NULL,\n issue_date DATE,\n expiry_date DATE,\n company_id UUID REFERENCES recycling_companies(company_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recycling_companies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(50) NOT NULL,\n    service_type VARCHAR(50) NOT NULL,\n    certification_status BOOLEAN NOT NULL,\n    contact_name VARCHAR(50) NOT NULL,\n    contact_email VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE certifications (\n    certification_id INT PRIMARY KEY,\n    certification_name VARCHAR(50) NOT NULL,\n    issued_date DATE NOT NULL,\n    expiration_date DATE NOT NULL,\n    company_id INT REFERENCES recycling_companies(company_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(50) NOT NULL,\n    service_description TEXT,\n    company_id INT REFERENCES recycling_companies(company_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contact_details (\n    contact_id INT PRIMARY KEY,\n    contact_name VARCHAR(50) NOT NULL,\n    contact_email VARCHAR(50) NOT NULL,\n    company_id INT REFERENCES recycling_companies(company_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recycling_companies (\n  company_id UUID PRIMARY KEY,\n  company_name VARCHAR(255) NOT NULL,\n  services TEXT[],\n  certifications TEXT[],\n  contact_person_name VARCHAR(100),\n  contact_phone VARCHAR(20),\n  contact_email VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_services (\n  service_id UUID PRIMARY KEY,\n  service_name VARCHAR(255) NOT NULL,\n  service_description TEXT,\n  company_id UUID REFERENCES recycling_companies(company_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE certifications (\n  certification_id UUID PRIMARY KEY,\n  certification_name VARCHAR(255) NOT NULL,\n  issuing_organization VARCHAR(255),\n  valid_until DATE,\n  company_id UUID REFERENCES recycling_companies(company_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE contact_details (\n  contact_id UUID PRIMARY KEY,\n  company_id UUID REFERENCES recycling_companies(company_id),\n  location VARCHAR(255) NOT NULL,\n  phone VARCHAR(20),\n  email VARCHAR(100),\n  website VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE disposal_locations (\n  location_id UUID PRIMARY KEY,\n  location_name VARCHAR(255) NOT NULL,\n  address TEXT,\n  contact_person_name VARCHAR(100),\n  contact_phone VARCHAR(20),\n  company_id UUID REFERENCES recycling_companies(company_id)\n)"
+      }
+    ]
+  }
+]

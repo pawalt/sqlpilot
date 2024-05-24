@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DriverBehaviorData (\n    driver_id INT PRIMARY KEY,\n    speeding_score FLOAT,\n    harsh_braking_score FLOAT,\n    cornering_score FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE driver_behavior_data (\n  driver_id UUID PRIMARY KEY,\n  speed FLOAT,\n  acceleration FLOAT,\n  location VARCHAR,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_factors (\n  risk_factor_id SERIAL PRIMARY KEY,\n  driver_id UUID,\n  factor_name VARCHAR,\n  factor_value FLOAT\n  CONSTRAINT fk_driver_id FOREIGN KEY (driver_id) REFERENCES driver_behavior_data(driver_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n driver_id INT PRIMARY KEY,\n driver_name VARCHAR(50) NOT NULL,\n license_number VARCHAR(20) UNIQUE,\n driver_age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trips (\n trip_id INT PRIMARY KEY,\n driver_id INT,\n start_location VARCHAR(100),\n end_location VARCHAR(100),\n distance DECIMAL(10,2),\n trip_date DATE,\n FOREIGN KEY (driver_id) REFERENCES drivers(driver_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE driving_logs (\n log_id INT PRIMARY KEY,\n driver_id INT,\n trip_id INT,\n log_time TIMESTAMP,\n speed INT,\n acceleration DECIMAL(5,2),\n FOREIGN KEY (driver_id) REFERENCES drivers(driver_id),\n FOREIGN KEY (trip_id) REFERENCES trips(trip_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n  driver_id INT PRIMARY KEY,\n  driver_name VARCHAR(50) NOT NULL,\n  license_number VARCHAR(20) UNIQUE,\n  age INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n  vehicle_id INT PRIMARY KEY,\n  plate_number VARCHAR(15) NOT NULL,\n  make VARCHAR(30),\n  model VARCHAR(30),\n  year INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trips (\n  trip_id INT PRIMARY KEY,\n  driver_id INT,\n  vehicle_id INT,\n  start_location VARCHAR(50) NOT NULL,\n  end_location VARCHAR(50) NOT NULL,\n  distance FLOAT,\n  duration_minutes INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents (\n  incident_id INT PRIMARY KEY,\n  trip_id INT,\n  incident_description TEXT,\n  date_occurred DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE driver_data (\n\tdriver_id UUID PRIMARY KEY,\n\tdriver_name VARCHAR(50) NOT NULL,\n\tlicense_plate VARCHAR(20) NOT NULL,\n\tspeed FLOAT NOT NULL,\n\tspeed_limit FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trip_data (\n\ttrip_id UUID PRIMARY KEY,\n\tdriver_id UUID NOT NULL,\n\tstart_location VARCHAR(100) NOT NULL,\n\tend_location VARCHAR(100) NOT NULL,\n\tstart_time TIMESTAMP NOT NULL,\n\tend_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_data (\n\tincident_id UUID PRIMARY KEY,\n\ttrip_id UUID NOT NULL,\n\tlocation VARCHAR(100) NOT NULL,\n\tincident_type VARCHAR(50) NOT NULL,\n\tseverity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_factors (\n\trisk_factor_id UUID PRIMARY KEY,\n\tfactor_name VARCHAR(50) NOT NULL,\n\tdescription TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE driver_scores (\n\tdriver_id UUID PRIMARY KEY,\n\tsafe_score INT NOT NULL,\n\trisk_score INT NOT NULL\n);"
+      }
+    ]
+  }
+]

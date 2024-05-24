@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telecom_security (id INT PRIMARY KEY,\nusername VARCHAR(50) NOT NULL,\npassword VARCHAR(100) NOT NULL,\nemail VARCHAR(100),\nphone_number VARCHAR(20) NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_authentication (\n   user_id INT PRIMARY KEY,\n   username VARCHAR(50) NOT NULL,\n   password_hash VARCHAR(100) NOT NULL,\n   last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n   access_id INT PRIMARY KEY,\n   user_id INT NOT NULL,\n   access_level VARCHAR(20) NOT NULL,\n   granted_at TIMESTAMP,\n   FOREIGN KEY (user_id) REFERENCES user_authentication(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT,\n    role_id INT,\n    PRIMARY KEY (user_id, role_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT,\n    timestamp TIMESTAMP NOT NULL,\n    success BOOLEAN NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id UUID NOT NULL,\n    access_time TIMESTAMP NOT NULL,\n    success BOOLEAN NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id SERIAL PRIMARY KEY,\n    user_id UUID NOT NULL,\n    role_name VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id SERIAL PRIMARY KEY,\n    user_role_id INT NOT NULL,\n    permission_name VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_role_id) REFERENCES user_roles(role_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE password_resets (\n    reset_id SERIAL PRIMARY KEY,\n    user_id UUID NOT NULL,\n    reset_code VARCHAR(10) NOT NULL,\n    reset_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  }
+]

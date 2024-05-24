@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DataEncryptionKeys (\n  key_id SERIAL PRIMARY KEY,\n  encryption_key BYTEA NOT NULL,\n  key_description TEXT,\n  created_at TIMESTAMP NOT NULL,\n  updated_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_encryption_keys (\n  key_id SERIAL PRIMARY KEY,\n  encryption_key VARCHAR(256) NOT NULL,\n  key_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE key_owners (\n  owner_id SERIAL PRIMARY KEY,\n  key_id INT REFERENCES data_encryption_keys,\n  owner_name VARCHAR(50) NOT NULL,\n  owner_email VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash TEXT NOT NULL,\n    encryption_key_id INT,\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(key_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_records (\n    record_id INT PRIMARY KEY,\n    data TEXT NOT NULL,\n    encrypted_data TEXT NOT NULL,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    encryption_algorithm VARCHAR(50),\n    key_length INT,\n    creation_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access (\n    user_id INT PRIMARY KEY,\n    key_id INT,\n    access_level INT,\n    last_access_date TIMESTAMP,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_management (\n    manager_id INT PRIMARY KEY,\n    key_id INT,\n    manager_name VARCHAR(50),\n    manager_email VARCHAR(50),\n    last_modified_date TIMESTAMP,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_history (\n    history_id INT PRIMARY KEY,\n    key_id INT,\n    action VARCHAR(50),\n    modifier_id INT,\n    modification_date TIMESTAMP,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id),\n    FOREIGN KEY (modifier_id) REFERENCES key_management(manager_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  key_id UUID PRIMARY KEY,\n  key_value TEXT NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username TEXT NOT NULL,\n  password TEXT NOT NULL,\n  email TEXT NOT NULL UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_encryption (\n  data_id UUID PRIMARY KEY,\n  encrypted_data BYTEA NOT NULL,\n  encryption_key_id UUID NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_management (\n  key_manager_id UUID PRIMARY KEY,\n  key_name TEXT NOT NULL,\n  key_description TEXT,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n  access_id UUID PRIMARY KEY,\n  user_id UUID NOT NULL,\n  key_id UUID NOT NULL,\n  privileges TEXT[] NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

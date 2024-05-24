@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE music_genres (\n  genre_id UUID PRIMARY KEY,\n  genre_name TEXT NOT NULL,\n  genre_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genres (\n    genre_id INT PRIMARY KEY,\n    genre_name VARCHAR(50) NOT NULL,\n    genre_description TEXT\n);\n\nCREATE TABLE genre_characteristics (\n    char_id SERIAL PRIMARY KEY,\n    genre_id INT REFERENCES genres(genre_id),\n    characteristic_name VARCHAR(50) NOT NULL,\n    characteristic_value TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genre (\n    genre_id INT PRIMARY KEY,\n    genre_name VARCHAR(50) NOT NULL,\n    genre_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subgenre (\n    subgenre_id INT PRIMARY KEY,\n    subgenre_name VARCHAR(50) NOT NULL,\n    genre_id INT,\n    FOREIGN KEY (genre_id) REFERENCES genre(genre_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE characteristics (\n    characteristic_id INT PRIMARY KEY,\n    characteristic_name VARCHAR(50) NOT NULL,\n    subgenre_id INT,\n    FOREIGN KEY (subgenre_id) REFERENCES subgenre(subgenre_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genre (\n  id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE artist (\n  id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  genre_id INT,\n  FOREIGN KEY (genre_id) REFERENCES genre(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE album (\n  id INT PRIMARY KEY,\n  title VARCHAR(100) NOT NULL,\n  release_date DATE,\n  artist_id INT,\n  FOREIGN KEY (artist_id) REFERENCES artist(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE song (\n  id INT PRIMARY KEY,\n  title VARCHAR(100) NOT NULL,\n  duration INT,\n  album_id INT,\n  artist_id INT,\n  FOREIGN KEY (album_id) REFERENCES album(id),\n  FOREIGN KEY (artist_id) REFERENCES artist(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Genre (\n    genre_id INT PRIMARY KEY,\n    genre_name VARCHAR(255) NOT NULL,\n    genre_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Artist (\n    artist_id INT PRIMARY KEY,\n    artist_name VARCHAR(255) NOT NULL,\n    artist_genre_id INT,\n    FOREIGN KEY (artist_genre_id) REFERENCES Genre(genre_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Album (\n    album_id INT PRIMARY KEY,\n    album_name VARCHAR(255) NOT NULL,\n    album_release_date DATE,\n    album_genre_id INT,\n    FOREIGN KEY (album_genre_id) REFERENCES Genre(genre_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Song (\n    song_id INT PRIMARY KEY,\n    song_name VARCHAR(255) NOT NULL,\n    song_duration INT,\n    song_album_id INT,\n    FOREIGN KEY (song_album_id) REFERENCES Album(album_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Playlist (\n    playlist_id INT PRIMARY KEY,\n    playlist_name VARCHAR(255) NOT NULL,\n    playlist_description TEXT,\n    playlist_genre_id INT,\n    FOREIGN KEY (playlist_genre_id) REFERENCES Genre(genre_id)\n);"
+      }
+    ]
+  }
+]

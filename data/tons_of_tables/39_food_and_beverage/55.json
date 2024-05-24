@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE farm_to_table_product (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    seed_planting_date DATE,\n    harvest_date DATE,\n    production_stage VARCHAR(50),\n    chef VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE seed (\n   seed_id SERIAL PRIMARY KEY,\n   seed_name VARCHAR(255) NOT NULL,\n   seed_type VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production (\n   prod_id SERIAL PRIMARY KEY,\n   seed_id INT REFERENCES seed(seed_id),\n   stage_name VARCHAR(100) NOT NULL,\n   stage_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  location_id INT,\n  production_stage VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE production (\n  production_id INT PRIMARY KEY,\n  product_id INT,\n  stage_description TEXT,\n  stage_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE location (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255),\n  location_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Seed (\n  seed_id INT PRIMARY KEY,\n  seed_name VARCHAR(50) NOT NULL,\n  seed_type VARCHAR(50) NOT NULL,\n  planting_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Seedling (\n  seedling_id INT PRIMARY KEY,\n  seed_id INT NOT NULL,\n  growth_stage VARCHAR(50) NOT NULL,\n  growth_date DATE,\n  FOREIGN KEY (seed_id) REFERENCES Seed(seed_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Plant (\n  plant_id INT PRIMARY KEY,\n  seedling_id INT NOT NULL,\n  harvest_date DATE,\n  FOREIGN KEY (seedling_id) REFERENCES Seedling(seedling_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Plate (\n  plate_id INT PRIMARY KEY,\n  plant_id INT NOT NULL,\n  served_date DATE,\n  FOREIGN KEY (plant_id) REFERENCES Plant(plant_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE seed (\n  seed_id UUID PRIMARY KEY,\n  seed_name VARCHAR(100) NOT NULL,\n  plant_type VARCHAR(50) NOT NULL,\n  planting_date DATE NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sapling (\n  sapling_id UUID PRIMARY KEY,\n  seed_id UUID REFERENCES seed(seed_id),\n  growth_stage INT NOT NULL,\n  height_cm INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE harvest (\n  harvest_id UUID PRIMARY KEY,\n  sapling_id UUID REFERENCES sapling(sapling_id),\n  harvest_date DATE NOT NULL,\n  weight_g INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution (\n  distribution_id UUID PRIMARY KEY,\n  harvest_id UUID REFERENCES harvest(harvest_id),\n  distributor_name VARCHAR(100) NOT NULL,\n  destination_address VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE plate (\n  plate_id UUID PRIMARY KEY,\n  distribution_id UUID REFERENCES distribution(distribution_id),\n  plate_name VARCHAR(100) NOT NULL,\n  serving_size INT NOT NULL\n)"
+      }
+    ]
+  }
+]

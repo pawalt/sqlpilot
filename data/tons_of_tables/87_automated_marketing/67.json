@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_drip_campaigns (\n    campaign_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    is_active BOOL DEFAULT TRUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    name VARCHAR(100),\n    country VARCHAR(50),\n    subscription_date DATE\n);\n\nCREATE TABLE user_actions (\n    action_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    action_type VARCHAR(50),\n    timestamp TIMESTAMP,\n    details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    name VARCHAR(100) NOT NULL,\n    preferences JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behavior (\n    event_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    event_type VARCHAR(50) NOT NULL,\n    event_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(100) NOT NULL,\n    campaign_content TEXT NOT NULL,\n    send_datetime TIMESTAMPTZ NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    activity_type VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    preference_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    send_emails BOOLEAN NOT NULL,\n    email_frequency VARCHAR(20) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_templates (\n    template_id INT PRIMARY KEY,\n    template_name VARCHAR(50) NOT NULL,\n    template_content TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    name VARCHAR(100) NOT NULL,\n    last_login TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(50) NOT NULL,\n    event_timestamp TIMESTAMP,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_templates (\n    template_id INT PRIMARY KEY,\n    template_name VARCHAR(50) NOT NULL,\n    template_content TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT PRIMARY KEY,\n    receive_emails BOOLEAN NOT NULL,\n    email_frequency VARCHAR(20),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_logs (\n    log_id INT PRIMARY KEY,\n    campaign_id INT NOT NULL,\n    user_id INT NOT NULL,\n    log_timestamp TIMESTAMP,\n    log_message TEXT,\n    FOREIGN KEY (campaign_id) REFERENCES email_templates(template_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  }
+]

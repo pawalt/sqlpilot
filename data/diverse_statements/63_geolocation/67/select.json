@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM SatelliteMetrics",
+      "SELECT satellite_id, health_status FROM SatelliteMetrics WHERE health_status = 'OK'",
+      "SELECT * FROM SatelliteMetrics ORDER BY date_recorded DESC LIMIT 5",
+      "SELECT JSON_VALUE(performance_metrics, '$.temperature') AS temperature FROM SatelliteMetrics",
+      "SELECT satellite_id, health_status, date_recorded FROM SatelliteMetrics WHERE health_status = 'ERROR'",
+      "SELECT * FROM SatelliteMetrics WHERE health_status = 'OK' ORDER BY date_recorded DESC, satellite_id ASC",
+      "SELECT satellite_id, performance_metrics -> 'temperature' AS temperature FROM SatelliteMetrics WHERE performance_metrics -> 'battery_level' > 80",
+      "SELECT MAX(date_recorded) AS last_recorded_date, COUNT(*) AS total_satellites FROM SatelliteMetrics",
+      "SELECT SUM(CAST(performance_metrics ->> 'data_transferred' AS INTEGER)) AS total_data_transferred FROM SatelliteMetrics WHERE health_status = 'OK'",
+      "SELECT * FROM SatelliteMetrics ORDER BY health_status DESC, satellite_id"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT satellite_id, satellite_name FROM satellites;",
+      "SELECT satellite_name, health_status FROM satellites WHERE health_status = TRUE;",
+      "SELECT * FROM telemetry_data ORDER BY timestamp DESC;",
+      "SELECT satellite_name, performance_metrics->>'current_status' AS current_status FROM satellites WHERE performance_metrics->>'current_status' = 'OK';",
+      "SELECT satellite_id, temperature, pressure, signal_strength FROM telemetry_data WHERE pressure > 100 ORDER BY pressure ASC;",
+      "SELECT * FROM telemetry_data",
+      "SELECT satellite_id, timestamp, temperature, pressure FROM telemetry_data WHERE temperature > 50",
+      "SELECT satellite_id, AVG(temperature) AS average_temperature FROM telemetry_data GROUP BY satellite_id",
+      "SELECT satellite_name, performance_metrics->'memory_usage' AS memory_usage FROM satellites",
+      "SELECT satellite_name, health_status, timestamp, temperature FROM telemetry_data INNER JOIN satellites ON telemetry_data.satellite_id = satellites.satellite_id"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM SatelliteMetrics;",
+      "SELECT satellite_id, health_status FROM SatelliteMetrics ORDER BY timestamp DESC;",
+      "SELECT satellite_id, battery_level FROM SatelliteMetrics WHERE health_status = 'OK';",
+      "SELECT satellite_id, latitude, longitude FROM SatelliteLocations ORDER BY location_id ASC;",
+      "SELECT * FROM SatelliteLogs WHERE log_timestamp > '2021-09-01';",
+      "SELECT * FROM SatelliteMetrics WHERE battery_level > 80 ORDER BY timestamp DESC;",
+      "SELECT satellite_id, health_status FROM SatelliteMetrics WHERE timestamp >= '2022-01-01' AND timestamp <= '2022-03-31';",
+      "SELECT log_id, log_timestamp, log_message FROM SatelliteLogs WHERE satellite_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT * FROM SatelliteLocations WHERE latitude < 0 AND longitude < 0 ORDER BY location_id ASC;",
+      "SELECT satellite_id, COUNT(*) AS total_logs FROM SatelliteLogs GROUP BY satellite_id HAVING COUNT(*) > 100;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM satellites;",
+      "SELECT satellite_name, health_status FROM satellites WHERE health_status = 'OK';",
+      "SELECT alert_type, alert_message FROM alerts ORDER BY timestamp DESC;",
+      "SELECT satellite_id, latitude, longitude FROM locations WHERE region = 'Europe' ORDER BY satellite_id;",
+      "SELECT satellite_id, performance_metrics FROM satellites WHERE satellite_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT * FROM satellites;",
+      "SELECT satellite_name, health_status FROM satellites WHERE health_status = 'Good';",
+      "SELECT satellite_name, performance_metrics FROM satellites ORDER BY satellite_name DESC;",
+      "SELECT satellite_name, health_status, performance_metrics FROM satellites WHERE health_status IS NOT NULL AND satellite_name LIKE 'Sat%';",
+      "SELECT telemetry_id, timestamp, signal_strength FROM telemetry_data WHERE signal_strength > 0.5 ORDER BY timestamp DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM satellite_data ORDER BY satellite_id DESC;",
+      "SELECT satellite_name, performance_metric FROM satellite_data WHERE health_status='Good';",
+      "SELECT satellite_id, location_lat, location_long FROM satellite_location WHERE satellite_id=3;",
+      "SELECT * FROM satellite_logs WHERE log_timestamp BETWEEN '2022-01-01' AND '2022-01-31' ORDER BY log_timestamp DESC;",
+      "SELECT satellite_id, error_code, error_description FROM satellite_errors WHERE error_code='E001';",
+      "SELECT satellite_name, health_status FROM satellite_data WHERE performance_metric > 0.8 ORDER BY satellite_name DESC;",
+      "SELECT * FROM satellite_logs WHERE log_timestamp < '2022-01-01' ORDER BY log_timestamp ASC LIMIT 10;",
+      "SELECT satellite_name, location_lat, location_long FROM satellite_data JOIN satellite_location ON satellite_data.satellite_id = satellite_location.satellite_id WHERE location_lat BETWEEN 35.0 AND 40.0 ORDER BY location_long DESC;",
+      "SELECT error_id, error_code, error_description FROM satellite_errors WHERE satellite_id = 3 AND error_code LIKE 'ERR%' ORDER BY error_id;",
+      "SELECT satellite_name, command_type, command_status FROM satellite_data JOIN satellite_commands ON satellite_data.satellite_id = satellite_commands.satellite_id WHERE command_status = 'PENDING';"
+    ]
+  }
+]

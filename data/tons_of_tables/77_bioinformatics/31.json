@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomicData (\n  id INT PRIMARY KEY,\n  rsid STRING,\n  chromosome STRING,\n  position INT,\n  allele1 STRING,\n  allele2 STRING,\n  genotype STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE variants (\n    variant_id UUID PRIMARY KEY,\n    chrom VARCHAR(10),\n    position INT,\n    ref VARCHAR(50),\n    alt VARCHAR(50)\n);\n\nCREATE TABLE genotypes (\n    genotype_id UUID PRIMARY KEY,\n    variant_id UUID REFERENCES variants(variant_id),\n    sample_id UUID,\n    genotype JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genomics_data (\n    sample_id INT PRIMARY KEY,\n    chromosome INT,\n    position INT,\n    genotype VARCHAR(2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE association_results (\n    analysis_id INT PRIMARY KEY,\n    p_value FLOAT,\n    effect_size FLOAT,\n    significant BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE clinical_data (\n    sample_id INT PRIMARY KEY,\n    age INT,\n    sex VARCHAR(10),\n    condition VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genotypes (id INT PRIMARY KEY,\n  sample_id INT,\n  snp_id INT,\n  allele1 VARCHAR(1),\n  allele2 VARCHAR(1),\n  genotype_quality FLOAT);"
+      },
+      {
+        "table_schema": "CREATE TABLE samples (id INT PRIMARY KEY,\n  sample_name VARCHAR(50),\n  patient_id INT,\n  date_collected TIMESTAMPTZ);"
+      },
+      {
+        "table_schema": "CREATE TABLE snps (id INT PRIMARY KEY,\n  rsid VARCHAR(15),\n  chromosome INT,\n  position INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE associations (id INT PRIMARY KEY,\n  snp_id INT,\n  phenotype_id INT,\n  p_value FLOAT,\n  correlation FLOAT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genomics_data_studies (study_id INT PRIMARY KEY,\n                           study_name VARCHAR(255) NOT NULL,\n                           study_description TEXT,\n                           study_type VARCHAR(50));"
+      },
+      {
+        "table_schema": "CREATE TABLE research_subjects (subject_id INT PRIMARY KEY,\n                          subject_name VARCHAR(255) NOT NULL,\n                          subject_age INT,\n                          subject_gender VARCHAR(10));"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_variants (variant_id INT PRIMARY KEY,\n                          variant_name VARCHAR(255) NOT NULL,\n                          variant_chromosome VARCHAR(5),\n                          variant_position INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE phenotype_data (phenotype_id INT PRIMARY KEY,\n                         phenotype_name VARCHAR(255) NOT NULL,\n                         phenotype_description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE study_results (result_id INT PRIMARY KEY,\n                         study_id INT,\n                         subject_id INT,\n                         variant_id INT,\n                         phenotype_id INT,\n                         result_value FLOAT,\n                         FOREIGN KEY (study_id) REFERENCES genomics_data_studies(study_id),\n                         FOREIGN KEY (subject_id) REFERENCES research_subjects(subject_id),\n                         FOREIGN KEY (variant_id) REFERENCES genetic_variants(variant_id),\n                         FOREIGN KEY (phenotype_id) REFERENCES phenotype_data(phenotype_id));"
+      }
+    ]
+  }
+]

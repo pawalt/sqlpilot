@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protected_zones (\n  id INT PRIMARY KEY,\n  zone_name VARCHAR(50) NOT NULL,\n  boundary_polygon GEOMETRY\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protected_zones (\n    zone_id INT PRIMARY KEY,\n    zone_name VARCHAR(50) NOT NULL,\n    zone_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_boundaries (\n    boundary_id INT PRIMARY KEY,\n    zone_id INT NOT NULL,\n    boundary_coordinates GEOMETRY\n    FOREIGN KEY (zone_id) REFERENCES protected_zones(zone_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protected_zones (\n    zone_id INT PRIMARY KEY,\n    zone_name VARCHAR(255) NOT NULL,\n    zone_description TEXT,\n    boundary_coordinates JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_boundaries (\n    boundary_id INT PRIMARY KEY,\n    zone_id INT REFERENCES protected_zones(zone_id),\n    boundary_point GEOMETRY NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_restrictions (\n    restriction_id INT PRIMARY KEY,\n    zone_id INT REFERENCES protected_zones(zone_id),\n    restriction_type VARCHAR(50) NOT NULL,\n    restriction_details TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protected_zones (\n  zone_id INT PRIMARY KEY,\n  zone_name VARCHAR(255),\n  boundary_polygon GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_boundaries (\n  boundary_id INT PRIMARY KEY,\n  zone_id INT,\n  boundary_name VARCHAR(255),\n  boundary_coords GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_activities (\n  activity_id INT PRIMARY KEY,\n  zone_id INT,\n  activity_name VARCHAR(255),\n  activity_type VARCHAR(50),\n  activity_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_visitors (\n  visitor_id INT PRIMARY KEY,\n  zone_id INT,\n  visitor_name VARCHAR(255),\n  visit_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protected_environment_zones (\n\tzone_id INT PRIMARY KEY,\n\tzone_name VARCHAR(50) NOT NULL,\n\tboundaries GEOGRAPHY NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_coordinates (\n\tcoord_id INT PRIMARY KEY,\n\tzone_id INT NOT NULL,\n\tlatitude DECIMAL(10, 6) NOT NULL,\n\tlongitude DECIMAL(10, 6) NOT NULL,\n\tFOREIGN KEY (zone_id) REFERENCES protected_environment_zones(zone_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_activities (\n\tactivity_id INT PRIMARY KEY,\n\tzone_id INT NOT NULL,\n\tactivity_name VARCHAR(50) NOT NULL,\n\tactivity_type VARCHAR(50) NOT NULL,\n\tFOREIGN KEY (zone_id) REFERENCES protected_environment_zones(zone_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_visitors (\n\tvisitor_id INT PRIMARY KEY,\n\tzone_id INT NOT NULL,\n\tvisitor_name VARCHAR(50) NOT NULL,\n\tvisit_date DATE NOT NULL,\n\tFOREIGN KEY (zone_id) REFERENCES protected_environment_zones(zone_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_restrictions (\n\trestriction_id INT PRIMARY KEY,\n\tzone_id INT NOT NULL,\n\trestriction_description TEXT NOT NULL,\n\tstart_date DATE NOT NULL,\n\tend_date DATE,\n\tFOREIGN KEY (zone_id) REFERENCES protected_environment_zones(zone_id)\n)"
+      }
+    ]
+  }
+]

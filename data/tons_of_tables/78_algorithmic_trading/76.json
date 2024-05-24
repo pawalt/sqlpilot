@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MarketDataFeeds (\n    feed_id UUID PRIMARY KEY,\n    feed_name VARCHAR(255) NOT NULL,\n    exchange_name VARCHAR(255) NOT NULL,\n    asset_name VARCHAR(255) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    timestamp TIMESTAMP DEFAULT NOW()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE market_data_feeds (\n  feed_id SERIAL PRIMARY KEY,\n  feed_name VARCHAR(50) NOT NULL,\n  feed_source VARCHAR(100) NOT NULL,\n  last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE arbitrage_decisions (\n  decision_id SERIAL PRIMARY KEY,\n  feed_id INT REFERENCES market_data_feeds(feed_id),\n  decision TEXT,\n  decision_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE market_price_data_feed (\n    id UUID PRIMARY KEY,\n    symbol TEXT NOT NULL,\n    price DECIMAL NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE market_volume_data_feed (\n    id UUID PRIMARY KEY,\n    symbol TEXT NOT NULL,\n    volume DECIMAL NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE arbitrage_opportunities (\n    id UUID PRIMARY KEY,\n    symbol TEXT NOT NULL,\n    buy_price DECIMAL NOT NULL,\n    sell_price DECIMAL NOT NULL,\n    profit DECIMAL NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MarketDataFeeds ( \n    id INT PRIMARY KEY, \n    symbol VARCHAR(50) NOT NULL, \n    price DECIMAL(10,2) NOT NULL, \n    timestamp TIMESTAMP NOT NULL \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ArbitrageLog ( \n    id INT PRIMARY KEY, \n    action VARCHAR(10) NOT NULL, \n    symbol VARCHAR(50) NOT NULL, \n    price DECIMAL(10,2) NOT NULL, \n    timestamp TIMESTAMP NOT NULL \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TradeHistory ( \n    id INT PRIMARY KEY, \n    symbol VARCHAR(50) NOT NULL, \n    quantity INT NOT NULL, \n    price DECIMAL(10,2) NOT NULL, \n    timestamp TIMESTAMP NOT NULL \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserSettings ( \n    id INT PRIMARY KEY, \n    user_id INT NOT NULL, \n    notification_enabled BOOLEAN NOT NULL, \n    notification_interval INT NOT NULL \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE market_data_feeds (\n    symbol VARCHAR(50) NOT NULL,\n    price DECIMAL NOT NULL,\n    volume DECIMAL NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    PRIMARY KEY (symbol, timestamp)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE arbitrage_opportunities (\n    id SERIAL PRIMARY KEY,\n    symbol VARCHAR(50) NOT NULL,\n    buy_price DECIMAL NOT NULL,\n    sell_price DECIMAL NOT NULL,\n    buy_timestamp TIMESTAMP NOT NULL,\n    sell_timestamp TIMESTAMP NOT NULL,\n    profit DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE market_data_updates (\n    update_id SERIAL PRIMARY KEY,\n    symbol VARCHAR(50) NOT NULL,\n    updated_price DECIMAL NOT NULL,\n    updated_volume DECIMAL NOT NULL,\n    updated_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE arbitrage_decisions (\n    decision_id SERIAL PRIMARY KEY,\n    opportunity_id INT NOT NULL,\n    decision_timestamp TIMESTAMP NOT NULL,\n    decision VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE market_users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    registration_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

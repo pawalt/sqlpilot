@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employee_activity (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(50),\n  login_time TIMESTAMP,\n  logout_time TIMESTAMP,\n  activity_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employee_activity (\n    employee_id INT PRIMARY KEY,\n    activity_type VARCHAR(50),\n    activity_timestamp TIMESTAMP,\n    activity_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_locations (\n    location_id INT PRIMARY KEY,\n    employee_id INT,\n    location_name VARCHAR(100),\n    location_coordinates VARCHAR(50),\n    last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RemoteEmployees (\n    employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(50),\n    department_name VARCHAR(50),\n    remote_login_time TIMESTAMP,\n    remote_logout_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ActivityLogs (\n    log_id INT PRIMARY KEY,\n    employee_id INT,\n    activity_type VARCHAR(50),\n    activity_time TIMESTAMP,\n    FOREIGN KEY (employee_id) REFERENCES RemoteEmployees(employee_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SecurityAlerts (\n    alert_id INT PRIMARY KEY,\n    log_id INT,\n    alert_type VARCHAR(50),\n    alert_time TIMESTAMP,\n    FOREIGN KEY (log_id) REFERENCES ActivityLogs(log_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE remote_employees (\n    employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(255),\n    department VARCHAR(255),\n    remote_access BOOLEAN,\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE activity_logs (\n    log_id INT PRIMARY KEY,\n    employee_id INT,\n    activity_description TEXT,\n    activity_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE security_events (\n    event_id INT PRIMARY KEY,\n    employee_id INT,\n    event_type VARCHAR(50),\n    event_description TEXT,\n    event_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n    device_id INT PRIMARY KEY,\n    employee_id INT,\n    device_type VARCHAR(50),\n    last_connection_time TIMESTAMP,\n    online_status BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id INT PRIMARY KEY,\n    full_name VARCHAR(255),\n    email VARCHAR(255),\n    department VARCHAR(100),\n    position VARCHAR(100),\n    hire_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_login (\n    login_id INT PRIMARY KEY,\n    employee_id INT REFERENCES employees(employee_id),\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_activity (\n    activity_id INT PRIMARY KEY,\n    employee_id INT REFERENCES employees(employee_id),\n    activity_description TEXT,\n    activity_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE department (\n    department_id INT PRIMARY KEY,\n    department_name VARCHAR(100),\n    manager_id INT REFERENCES employees(employee_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    activity_id INT REFERENCES employee_activity(activity_id),\n    log_details TEXT,\n    log_timestamp TIMESTAMP\n)"
+      }
+    ]
+  }
+]

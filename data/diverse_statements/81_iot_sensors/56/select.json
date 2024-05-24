@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM driver_behavior_tracking;",
+      "SELECT driver_id, speed FROM driver_behavior_tracking WHERE acceleration > 5;",
+      "SELECT event_type, acceleration FROM driver_behavior_tracking WHERE speed < 60;",
+      "SELECT * FROM driver_behavior_tracking WHERE event_timestamp >= '2022-01-01' ORDER BY acceleration DESC;",
+      "SELECT AVG(speed) AS average_speed FROM driver_behavior_tracking GROUP BY driver_id;",
+      "SELECT driver_id, event_timestamp, speed FROM driver_behavior_tracking ORDER BY event_timestamp DESC LIMIT 10;",
+      "SELECT driver_id, event_type, acceleration FROM driver_behavior_tracking WHERE speed > 50 ORDER BY acceleration DESC LIMIT 5;",
+      "SELECT * FROM driver_behavior_tracking WHERE event_type = 'harsh_acceleration' AND acceleration > 3.5;",
+      "SELECT driver_id, event_timestamp, acceleration FROM driver_behavior_tracking WHERE speed BETWEEN 20 AND 60 ORDER BY acceleration ASC;",
+      "SELECT event_type, COUNT(*) AS total_events FROM driver_behavior_tracking GROUP BY event_type HAVING COUNT(*) > 1 ORDER BY total_events DESC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM driver_behavior;",
+      "SELECT driver_id, speeding_events, harsh_braking_events, harsh_acceleration_events FROM driver_behavior;",
+      "SELECT driver_id, harsh_acceleration_events, harsh_braking_events, speeding_events FROM driver_behavior;",
+      "SELECT driver_id, SUM(speeding_events) AS total_speeding_events FROM driver_behavior GROUP BY driver_id;",
+      "SELECT driver_id, hours_of_service, logbook_violations, drug_test_compliance FROM driver_compliance;",
+      "SELECT driver_id, speeding_events FROM driver_behavior WHERE speeding_events > 10 ORDER BY speeding_events DESC;",
+      "SELECT driver_id, harsh_braking_events FROM driver_behavior WHERE harsh_braking_events > 5 ORDER BY driver_id ASC;",
+      "SELECT * FROM driver_behavior WHERE harsh_acceleration_events > 8 ORDER BY driver_id, harsh_acceleration_events DESC;",
+      "SELECT driver_id, hours_of_service, logbook_violations FROM driver_compliance WHERE logbook_violations > 2 ORDER BY driver_id ASC, logbook_violations DESC;",
+      "SELECT driver_id, hours_of_service, drug_test_compliance FROM driver_compliance WHERE drug_test_compliance = TRUE ORDER BY hours_of_service DESC, driver_id ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM drivers;",
+      "SELECT driver_name, company_name FROM drivers WHERE driver_id = 1;",
+      "SELECT trip_id, trip_date, start_location, end_location FROM trips WHERE distance_km > 100;",
+      "SELECT driver_name, violation_type FROM drivers JOIN violations ON drivers.driver_id = violations.driver_id;",
+      "SELECT driver_id, COUNT(violation_id) AS num_violations FROM violations GROUP BY driver_id;",
+      "SELECT DISTINCT driver_name, company_name FROM drivers;",
+      "SELECT driver_name, license_number FROM drivers WHERE company_name = 'Uber';",
+      "SELECT driver_name, violation_date, violation_type FROM drivers JOIN violations ON drivers.driver_id = violations.driver_id;",
+      "SELECT driver_name, trip_date, start_location, end_location FROM drivers JOIN trips ON drivers.driver_id = trips.driver_id WHERE trips.distance_km > 100;",
+      "SELECT driver_name, violation_type, violation_description FROM drivers JOIN violations ON drivers.driver_id = violations.driver_id WHERE violation_type = 'Speeding' ORDER BY violation_date DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM driver;",
+      "SELECT name, license_number FROM driver WHERE driving_experience_years < 5;",
+      "SELECT make, model, year FROM vehicle ORDER BY year DESC;",
+      "SELECT trip_id, start_location, end_location FROM trip WHERE trip_date >= '2022-01-01';",
+      "SELECT * FROM violation ORDER BY violation_date ASC;",
+      "SELECT * FROM driver;",
+      "SELECT name, license_number, driving_experience_years FROM driver ORDER BY driving_experience_years DESC;",
+      "SELECT trip.trip_id, trip.start_location, trip.end_location, trip.trip_date, driver.name FROM trip JOIN driver ON trip.driver_id = driver.id WHERE driver.name = 'John';",
+      "SELECT trip.trip_id, violation.description, violation.violation_date, driver.name FROM violation JOIN trip ON violation.trip_id = trip.trip_id JOIN driver ON trip.driver_id = driver.id ORDER BY violation.violation_date ASC;",
+      "SELECT vehicle.make, vehicle.model, driver.name, trip.start_location, trip.end_location FROM trip JOIN vehicle ON trip.vehicle_id = vehicle.vehicle_id JOIN driver ON trip.driver_id = driver.id WHERE vehicle.year >= 2018;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM driver_info;",
+      "SELECT driver_name, total_miles_driven FROM driver_info ORDER BY total_miles_driven DESC;",
+      "SELECT * FROM tripreport WHERE trip_distance > 100;",
+      "SELECT driver_name, trip_date, trip_distance FROM driver_info JOIN tripreport ON driver_info.driver_id = tripreport.driver_id;",
+      "SELECT trip_id, event_date, violation_type FROM tripreport JOIN speeding_events ON tripreport.trip_id = speeding_events.trip_id JOIN violation ON speeding_events.event_id = violation.event_id WHERE actual_speed > speed_limit;",
+      "SELECT * FROM driver_info;",
+      "SELECT driver_name, total_miles_driven FROM driver_info ORDER BY total_miles_driven DESC;",
+      "SELECT driver_name, license_number, total_miles_driven FROM driver_info WHERE total_miles_driven > 10000;",
+      "SELECT di.driver_name, tr.trip_date, tr.trip_distance, se.actual_speed FROM driver_info di JOIN tripreport tr ON di.driver_id = tr.driver_id JOIN speeding_events se ON tr.trip_id = se.trip_id WHERE se.actual_speed > se.speed_limit ORDER BY tr.trip_distance DESC;",
+      "SELECT di.driver_name, tr.trip_distance, vi.violation_type FROM driver_info di LEFT JOIN tripreport tr ON di.driver_id = tr.driver_id LEFT JOIN speeding_events se ON tr.trip_id = se.trip_id LEFT JOIN violation vi ON se.event_id = vi.event_id WHERE vi.violation_type = 'Speeding' ORDER BY tr.trip_distance ASC;"
+    ]
+  }
+]

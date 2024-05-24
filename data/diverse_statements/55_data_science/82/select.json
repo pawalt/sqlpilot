@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM annotated_text_data WHERE id = 1;",
+      "SELECT text_data, entity_type FROM annotated_text_data WHERE start_offset < 100;",
+      "SELECT id, text_data, entity_type FROM annotated_text_data WHERE entity_type = 'PERSON' ORDER BY id DESC;",
+      "SELECT * FROM annotated_text_data WHERE end_offset > start_offset;",
+      "SELECT text_data FROM annotated_text_data WHERE entity_type = 'ORGANIZATION' AND end_offset > 50;",
+      "SELECT id, text_data, entity_type, start_offset, end_offset FROM annotated_text_data WHERE entity_type = 'ORG' ORDER BY id DESC;",
+      "SELECT * FROM annotated_text_data WHERE entity_type IN ('PERSON', 'LOCATION') ORDER BY start_offset ASC, end_offset DESC;",
+      "SELECT id, text_data, entity_type, start_offset, end_offset FROM annotated_text_data WHERE text_data ILIKE '%security%' ORDER BY id ASC;",
+      "SELECT text_data, entity_type, start_offset, end_offset FROM annotated_text_data WHERE start_offset >= 100 AND end_offset <= 200 ORDER BY start_offset ASC;",
+      "SELECT id, text_data, entity_type FROM annotated_text_data WHERE entity_type = 'DATE' OR entity_type = 'TIME' ORDER BY text_data DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM ner_training_data;",
+      "SELECT text_data, annotation FROM ner_training_data WHERE id = 1;",
+      "SELECT annotation, text_data FROM ner_training_data WHERE annotation = 'PERSON';",
+      "SELECT * FROM ner_model WHERE model_name = 'NER Model';",
+      "SELECT model_name, model_version FROM ner_model WHERE model_version = '1.0';",
+      "SELECT id, text_data, annotation FROM ner_training_data WHERE id = 1;",
+      "SELECT text_data, annotation FROM ner_training_data WHERE annotation = 'PERSON' ORDER BY text_data ASC;",
+      "SELECT text_data, annotation FROM ner_training_data ORDER BY id DESC;",
+      "SELECT text_data, annotation FROM ner_training_data WHERE text_data LIKE '%apple%';",
+      "SELECT model_name, model_version FROM ner_model WHERE model_version = '1.0' ORDER BY model_name DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM named_entities;",
+      "SELECT id, text_data FROM named_entities ORDER BY id DESC;",
+      "SELECT id, text_data, entity_type FROM named_entities WHERE entity_type = 'PERSON';",
+      "SELECT id, text_data, entity_type FROM named_entities WHERE id BETWEEN 3 AND 5;",
+      "SELECT text_data, entity_type FROM named_entities WHERE text_data LIKE '%example%';",
+      "SELECT * FROM named_entities WHERE entity_type = 'Person';",
+      "SELECT text_data, entity_type FROM named_entities ORDER BY id DESC;",
+      "SELECT * FROM named_entities WHERE id IN (SELECT text_id FROM training_data WHERE named_entity_id = 3);",
+      "SELECT DISTINCT entity_type FROM named_entities WHERE text_data LIKE 'T%';",
+      "SELECT id, model_name, accuracy FROM models WHERE accuracy > 0.8 ORDER BY accuracy DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM named_entities;",
+      "SELECT id, text_data, entity_type FROM named_entities WHERE annotation_confidence > 0.8;",
+      "SELECT id, model_name, accuracy FROM models ORDER BY accuracy DESC;",
+      "SELECT training_text, timestamp FROM training_data WHERE named_entity_id = 2;",
+      "SELECT id, precision, recall, f1_score FROM model_evaluations WHERE model_id = 1;",
+      "SELECT id, text_data, entity_type FROM named_entities WHERE entity_type = 'PERSON';",
+      "SELECT named_entities.id, named_entities.text_data, training_data.training_text, models.model_name FROM named_entities INNER JOIN training_data ON named_entities.id = training_data.named_entity_id INNER JOIN models ON training_data.id = models.training_data_id;",
+      "SELECT * FROM named_entities ORDER BY id DESC;",
+      "SELECT model_name, accuracy FROM models WHERE accuracy > 0.9;",
+      "SELECT id, model_id, precision, recall, f1_score FROM model_evaluations WHERE f1_score > 0.8;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM annotations LIMIT 10;",
+      "SELECT text, entity_type FROM annotations WHERE entity_type='person';",
+      "SELECT id, title FROM documents ORDER BY title ASC;",
+      "SELECT model_name, model_type FROM models WHERE model_type='classification';",
+      "SELECT document_id, model_id, entity_type FROM training_data WHERE start_index>=100 AND end_index<=200;",
+      "SELECT * FROM annotations LIMIT 10;",
+      "SELECT id, text, entity_type FROM annotations WHERE entity_type='Person';",
+      "SELECT models.id, models.model_name, training_data.document_id, training_data.entity_type FROM models JOIN training_data ON models.id = training_data.model_id;",
+      "SELECT documents.title, COUNT(training_data.id) AS annotation_count FROM documents LEFT JOIN training_data ON documents.id = training_data.document_id GROUP BY documents.title;",
+      "SELECT entity_type, MAX(end_index - start_index) AS max_length FROM training_data GROUP BY entity_type ORDER BY max_length DESC;"
+    ]
+  }
+]

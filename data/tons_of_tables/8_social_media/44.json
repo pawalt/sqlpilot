@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_roles_permissions (\n  user_id UUID PRIMARY KEY,\n  role VARCHAR(255) NOT NULL,\n  permission VARCHAR(255) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id INT PRIMARY KEY,\n  permission_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE roles (\n   role_id UUID PRIMARY KEY,\n   role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n   user_id UUID PRIMARY KEY,\n   username VARCHAR(50) NOT NULL,\n   role_id UUID REFERENCES roles(role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n   permission_id UUID PRIMARY KEY,\n   permission_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (id SERIAL PRIMARY KEY,\nusername TEXT NOT NULL,\npassword TEXT NOT NULL,\nrole TEXT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (id SERIAL PRIMARY KEY,\nrole_name TEXT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (id SERIAL PRIMARY KEY,\npermission_name TEXT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (id SERIAL PRIMARY KEY,\nuser_id INTEGER NOT NULL,\nrole_id INTEGER NOT NULL,\nFOREIGN KEY (user_id) REFERENCES users(id),\nFOREIGN KEY (role_id) REFERENCES roles(id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    role_id INT,\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_id INT,\n    permission_id INT,\n    PRIMARY KEY (role_id, permission_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id),\n    FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT,\n    permission_id INT,\n    PRIMARY KEY (user_id, permission_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)\n);\n"
+      }
+    ]
+  }
+]

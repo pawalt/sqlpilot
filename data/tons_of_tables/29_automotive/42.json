@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE restoration_projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  budget DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE restoration_projects (\n    project_id UUID PRIMARY KEY,\n    project_name TEXT,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_participants (\n    participant_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES restoration_projects(project_id),\n    participant_name TEXT,\n    role TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE restoration_projects (\n  project_id SERIAL PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  budget DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_tasks (\n  task_id SERIAL PRIMARY KEY,\n  task_name VARCHAR(255) NOT NULL,\n  project_id INT NOT NULL,\n  task_start_date DATE NOT NULL,\n  task_end_date DATE NOT NULL,\n  task_budget DECIMAL(10, 2) NOT NULL,\n  FOREIGN KEY (project_id) REFERENCES restoration_projects (project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_members (\n  member_id SERIAL PRIMARY KEY,\n  member_name VARCHAR(255) NOT NULL,\n  project_id INT NOT NULL,\n  role VARCHAR(50) NOT NULL,\n  FOREIGN KEY (project_id) REFERENCES restoration_projects (project_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RestorationProjects (\n  project_id UUID PRIMARY KEY,\n  project_name TEXT NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  budget DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectMembers (\n  member_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES RestorationProjects(project_id),\n  member_name TEXT NOT NULL,\n  role TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialsUsed (\n  material_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES RestorationProjects(project_id),\n  material_name TEXT NOT NULL,\n  quantity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectTasks (\n  task_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES RestorationProjects(project_id),\n  task_description TEXT NOT NULL,\n  task_status TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Restoration_Projects (\n    project_id SERIAL PRIMARY KEY,\n    project_name TEXT NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    budget DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Project_Tasks (\n    task_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    task_name TEXT NOT NULL,\n    task_description TEXT,\n    task_status TEXT NOT NULL,\n    FOREIGN KEY (project_id) REFERENCES Restoration_Projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Project_Team (\n    team_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    team_name TEXT NOT NULL,\n    team_lead TEXT NOT NULL,\n    team_member_count INT NOT NULL,\n    FOREIGN KEY (project_id) REFERENCES Restoration_Projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Budget_Expenses (\n    expense_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    expense_type TEXT NOT NULL,\n    expense_amount DECIMAL NOT NULL,\n    expense_date DATE NOT NULL,\n    FOREIGN KEY (project_id) REFERENCES Restoration_Projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Task_Assignments (\n    assignment_id SERIAL PRIMARY KEY,\n    task_id INT NOT NULL,\n    team_id INT NOT NULL,\n    assignment_date DATE NOT NULL,\n    assignment_status TEXT NOT NULL,\n    FOREIGN KEY (task_id) REFERENCES Project_Tasks(task_id),\n    FOREIGN KEY (team_id) REFERENCES Project_Team(team_id)\n);"
+      }
+    ]
+  }
+]

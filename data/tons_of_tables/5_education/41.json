@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Individualized_Education_Plans (\n  student_id INT NOT NULL,\n  student_name VARCHAR(50) NOT NULL,\n  iep_goal TEXT NOT NULL,\n  iep_objectives TEXT,\n  iep_reviews TEXT,\n  PRIMARY KEY (student_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(50),\n    age INT,\n    grade_level VARCHAR(10),\n    iep_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE iep_tracking (\n    iep_id INT PRIMARY KEY,\n    student_id INT REFERENCES students(student_id),\n    iep_start_date DATE,\n    iep_end_date DATE,\n    iep_goal VARCHAR(100),\n    iep_progress VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Students (\n  student_id SERIAL PRIMARY KEY,\n  full_name VARCHAR(100) NOT NULL,\n  birthdate DATE NOT NULL,\n  grade_level INT,\n  iep_status VARCHAR(50) DEFAULT 'Pending'\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IEPGoals (\n  goal_id SERIAL PRIMARY KEY,\n  student_id INT REFERENCES Students(student_id),\n  goal_description TEXT NOT NULL,\n  target_completion_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IEPProgress (\n  progress_id SERIAL PRIMARY KEY,\n  goal_id INT REFERENCES IEPGoals(goal_id),\n  progress_description TEXT NOT NULL,\n  date_recorded TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Student (\n    student_id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    grade INT,\n    date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IEP (\n    iep_id SERIAL PRIMARY KEY,\n    student_id INT REFERENCES Student(student_id),\n    goal TEXT,\n    accommodation TEXT,\n    review_date DATE,\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Teacher (\n    teacher_id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE School (\n    school_id SERIAL PRIMARY KEY,\n    school_name VARCHAR(100) NOT NULL,\n    address VARCHAR(200) NOT NULL,\n    phone_number VARCHAR(15)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    age INT,\n    grade_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE iep_plans (\n    plan_id INT PRIMARY KEY,\n    student_id INT REFERENCES students(student_id),\n    date_issued DATE,\n    goals TEXT,\n    accommodations TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE iep_progress (\n    progress_id INT PRIMARY KEY,\n    plan_id INT REFERENCES iep_plans(plan_id),\n    progress_date DATE,\n    progress_report TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE teachers (\n    teacher_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    department VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE student_teacher_mapping (\n    student_id INT REFERENCES students(student_id),\n    teacher_id INT REFERENCES teachers(teacher_id),\n    PRIMARY KEY (student_id, teacher_id)\n);\n"
+      }
+    ]
+  }
+]

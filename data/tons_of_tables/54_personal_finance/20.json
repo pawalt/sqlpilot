@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_payment_history (\n    customer_id INT,\n    payment_amount DECIMAL,\n    payment_date DATE,\n    payment_method VARCHAR(50),\n    credit_utilization DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_payments (\n    customer_id INTEGER,\n    payment_date DATE,\n    amount DECIMAL,\n    payment_method VARCHAR(50)\n);\n\nCREATE TABLE credit_utilization (\n    customer_id INTEGER,\n    credit_limit DECIMAL,\n    balance DECIMAL,\n    utilization_rate DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerPaymentHistory (\n    customer_id INT PRIMARY KEY,\n    payment_amount DECIMAL,\n    payment_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CreditUtilization (\n    customer_id INT REFERENCES CustomerPaymentHistory(customer_id),\n    credit_limit DECIMAL,\n    credit_used DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentPatterns (\n    pattern_id SERIAL PRIMARY KEY,\n    customer_id INT REFERENCES CustomerPaymentHistory(customer_id),\n    payment_count INT,\n    last_payment_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id INT PRIMARY KEY,\n  customer_id INT,\n  payment_amount DECIMAL(10, 2) NOT NULL,\n  payment_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  payment_id INT,\n  transaction_type VARCHAR(10) NOT NULL,\n  transaction_date DATE,\n  FOREIGN KEY (payment_id) REFERENCES payments(payment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE credit_utilization (\n  customer_id INT PRIMARY KEY,\n  credit_limit DECIMAL(10, 2) NOT NULL,\n  current_balance DECIMAL(10, 2) NOT NULL,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customer (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  customer_email VARCHAR(100),\n  credit_limit DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Payment (\n  payment_id INT PRIMARY KEY,\n  customer_id INT,\n  payment_amount DECIMAL,\n  payment_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CreditUtilization (\n  utilization_id INT PRIMARY KEY,\n  customer_id INT,\n  credit_utilization DECIMAL,\n  utilization_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentPattern (\n  pattern_id INT PRIMARY KEY,\n  customer_id INT,\n  payment_score INT,\n  pattern_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentHistory (\n  history_id INT PRIMARY KEY,\n  customer_id INT,\n  payment_amount DECIMAL,\n  payment_date DATE,\n  payment_type VARCHAR(20),\n  payment_status VARCHAR(20),\n  FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)\n)"
+      }
+    ]
+  }
+]

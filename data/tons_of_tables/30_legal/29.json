@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE infrastructure_projects (\n    id INT PRIMARY KEY,\n    project_name TEXT,\n    location TEXT,\n    start_date DATE,\n    end_date DATE,\n    impact_assessment TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_impact_assessments (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR,\n    location VARCHAR,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_documents (\n    document_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES environmental_impact_assessments(project_id),\n    document_type VARCHAR,\n    document_date DATE,\n    document_file BYTEA\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_impact_assessment (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  project_location VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_stakeholders (\n  stakeholder_id INT PRIMARY KEY,\n  stakeholder_name VARCHAR(255),\n  stakeholder_type VARCHAR(50),\n  project_id INT,\n  FOREIGN KEY (project_id) REFERENCES environmental_impact_assessment(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE impact_categories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(100),\n  category_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_impact_assessment (\n\temp_project_id SERIAL PRIMARY KEY,\n\tproject_name TEXT,\n\tassessment_date DATE,\n\timpact_category TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_location (\n\tlocation_id SERIAL PRIMARY KEY,\n\tlocation_name TEXT,\n\tcountry TEXT,\n\tlongitude DECIMAL,\n\tlatitude DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_investors (\n\tinvestor_id SERIAL PRIMARY KEY,\n\tinvestor_name TEXT,\n\tinvestor_type TEXT,\n\tinvestment_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_timeline (\n\ttimeline_id SERIAL PRIMARY KEY,\n\tproject_id INT REFERENCES environmental_impact_assessment(emp_project_id),\n\tstart_date DATE,\n\tcompletion_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE infrastructure_projects (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  estimated_cost DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact (\n  impact_id UUID PRIMARY KEY,\n  project_id UUID,\n  impact_description TEXT,\n  impact_rating INT,\n  FOREIGN KEY (project_id) REFERENCES infrastructure_projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE stakeholders (\n  stakeholder_id UUID PRIMARY KEY,\n  stakeholder_name VARCHAR(255) NOT NULL,\n  organization VARCHAR(255),\n  type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assessments (\n  assessment_id UUID PRIMARY KEY,\n  project_id UUID,\n  stakeholder_id UUID,\n  assessment_date DATE,\n  assessment_details TEXT,\n  FOREIGN KEY (project_id) REFERENCES infrastructure_projects(project_id),\n  FOREIGN KEY (stakeholder_id) REFERENCES stakeholders(stakeholder_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_measures (\n  measure_id UUID PRIMARY KEY,\n  project_id UUID,\n  measure_description TEXT,\n  implementation_date DATE,\n  FOREIGN KEY (project_id) REFERENCES infrastructure_projects(project_id)\n);\n"
+      }
+    ]
+  }
+]

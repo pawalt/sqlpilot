@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_sequences (\n    sequence_id UUID PRIMARY KEY,\n    sequence_data BYTES,\n    organism_name STRING\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneSequences (\n    id INT PRIMARY KEY,\n    sequence VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SequenceAnnotations (\n    annotation_id INT PRIMARY KEY,\n    sequence_id INT,\n    annotation_text TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SequenceData (\n    sequence_id INT PRIMARY KEY,\n    sequence_name VARCHAR(255),\n    sequence_content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneInfo (\n    gene_id INT PRIMARY KEY,\n    gene_symbol VARCHAR(50),\n    gene_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SequenceAnalysis (\n    analysis_id INT PRIMARY KEY,\n    sequence_id INT REFERENCES SequenceData(sequence_id),\n    gene_id INT REFERENCES GeneInfo(gene_id),\n    analysis_result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sequences (\n  sequence_id INT PRIMARY KEY,\n  sequence_name VARCHAR(255),\n  sequence_data TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE genes (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255),\n  chromosome VARCHAR(10),\n  start_position INT,\n  end_position INT,\n  strand CHAR(1)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n  annotation_id INT PRIMARY KEY,\n  gene_id INT,\n  annotation_data TEXT,\n  FOREIGN KEY (gene_id) REFERENCES genes(gene_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE mutations (\n  mutation_id INT PRIMARY KEY,\n  gene_id INT,\n  mutation_type VARCHAR(50),\n  mutation_position INT,\n  mutation_description TEXT,\n  FOREIGN KEY (gene_id) REFERENCES genes(gene_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    chromosome INT,\n    location_start INT,\n    location_end INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Variants (\n    variant_id INT PRIMARY KEY,\n    gene_id INT,\n    variant_type VARCHAR(50),\n    nucleotide_change VARCHAR(10),\n    PRIMARY KEY (variant_id, gene_id),\n    FOREIGN KEY (gene_id) REFERENCES Genes(gene_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sequences (\n    sequence_id INT PRIMARY KEY,\n    gene_id INT,\n    sequence_data TEXT,\n    is_processed BOOLEAN,\n    FOREIGN KEY (gene_id) REFERENCES Genes(gene_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Annotations (\n    annotation_id INT PRIMARY KEY,\n    variant_id INT,\n    annotation_text TEXT,\n    annotation_author VARCHAR(100),\n    FOREIGN KEY (variant_id) REFERENCES Variants(variant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Samples (\n    sample_id INT PRIMARY KEY,\n    sample_name VARCHAR(255),\n    sequence_id INT,\n    FOREIGN KEY (sequence_id) REFERENCES Sequences(sequence_id)\n);"
+      }
+    ]
+  }
+]

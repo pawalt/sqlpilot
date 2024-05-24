@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_gallery_images (\n  image_id INT PRIMARY KEY,\n  thumbnail_url TEXT,\n  full_image_url TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE thumbnails (\n  id INT PRIMARY KEY,\n  image_name VARCHAR(50),\n  thumbnail_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE full_size_images (\n  id INT PRIMARY KEY,\n  thumbnail_id INT,\n  image_name VARCHAR(50),\n  image_data BYTEA,\n  FOREIGN KEY (thumbnail_id) REFERENCES thumbnails(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_thumbnails (\n    id INT PRIMARY KEY,\n    thumbnail_url VARCHAR(255) NOT NULL,\n    full_size_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE full_size_images (\n    id INT PRIMARY KEY,\n    image_url VARCHAR(255) NOT NULL,\n    image_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_gallery (\n    id INT PRIMARY KEY,\n    thumbnail_id INT NOT NULL,\n    full_size_id INT NOT NULL,\n    caption TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageThumbnails (\n    id INT PRIMARY KEY,\n    thumbnail_link VARCHAR(255) NOT NULL,\n    full_size_image_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FullSizeImages (\n    id INT PRIMARY KEY,\n    image_link VARCHAR(255) NOT NULL,\n    thumbnail_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL UNIQUE,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserLikes (\n    user_id INT,\n    image_id INT,\n    PRIMARY KEY (user_id, image_id),\n    FOREIGN KEY (user_id) REFERENCES Users(user_id),\n    FOREIGN KEY (image_id) REFERENCES FullSizeImages(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Thumbnails (\n    thumbnail_id UUID PRIMARY KEY,\n    image_id UUID NOT NULL,\n    thumbnail_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FullSizeImages (\n    image_id UUID PRIMARY KEY,\n    full_size_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n    image_id UUID PRIMARY KEY,\n    image_name TEXT NOT NULL,\n    image_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageTags (\n    tag_id UUID PRIMARY KEY,\n    tag_name TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageTagMapping (\n    mapping_id UUID PRIMARY KEY,\n    image_id UUID NOT NULL,\n    tag_id UUID NOT NULL\n);\n"
+      }
+    ]
+  }
+]

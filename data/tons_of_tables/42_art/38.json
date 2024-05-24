@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dancers (\n    dancer_id SERIAL PRIMARY KEY,\n    dancer_name VARCHAR (50) NOT NULL,\n    next_of_kin_name VARCHAR (50),\n    next_of_kin_contact VARCHAR (20),\n    medical_conditions TEXT,\n    allergies TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DancerContacts (\n    dancer_id INT PRIMARY KEY,\n    dancer_name VARCHAR(50),\n    next_of_kin_name VARCHAR(50),\n    next_of_kin_contact VARCHAR(20),\n    medical_conditions TEXT,\n    allergies TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DanceGroup (\n    group_id INT PRIMARY KEY,\n    group_name VARCHAR(50),\n    group_leader_name VARCHAR(50),\n    group_leader_contact VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DancerEmergencyContacts (\n    dancer_id INT NOT NULL,\n    next_of_kin_name TEXT,\n    next_of_kin_phone TEXT,\n    medical_conditions TEXT,\n    allergies TEXT,\n    PRIMARY KEY (dancer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NextOfKinContacts (\n    next_of_kin_id INT NOT NULL,\n    dancer_id INT NOT NULL,\n    name TEXT,\n    phone TEXT,\n    email TEXT,\n    PRIMARY KEY (next_of_kin_id),\n    FOREIGN KEY (dancer_id) REFERENCES DancerEmergencyContacts(dancer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalConditionsAllergies (\n    medical_condition_id INT NOT NULL,\n    dancer_id INT NOT NULL,\n    medical_condition TEXT,\n    allergy TEXT,\n    PRIMARY KEY (medical_condition_id),\n    FOREIGN KEY (dancer_id) REFERENCES DancerEmergencyContacts(dancer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Dancer ( \n    dancer_id UUID PRIMARY KEY, \n    full_name STRING, \n    phone_number STRING, \n    email STRING, \n    address STRING \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NextOfKin ( \n    next_of_kin_id UUID PRIMARY KEY, \n    dancer_id UUID, \n    full_name STRING, \n    relationship STRING, \n    phone_number STRING \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalCondition ( \n    condition_id UUID PRIMARY KEY, \n    dancer_id UUID, \n    condition_name STRING, \n    description STRING \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Allergy ( \n    allergy_id UUID PRIMARY KEY, \n    dancer_id UUID, \n    allergy_name STRING, \n    severity STRING \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DancerInfo (\n    DancerID INT PRIMARY KEY,\n    DancerName VARCHAR(50) NOT NULL,\n    DancerPhoneNumber VARCHAR(15) NOT NULL,\n    DancerEmail VARCHAR(50),\n    EmergencyContactName VARCHAR(50) NOT NULL,\n    EmergencyContactPhoneNumber VARCHAR(15) NOT NULL,\n    NextOfKinName VARCHAR(50),\n    NextOfKinPhoneNumber VARCHAR(15),\n    MedicalConditions TEXT,\n    Allergies TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NextOfKin (\n    NextOfKinID INT PRIMARY KEY,\n    NextOfKinName VARCHAR(50) NOT NULL,\n    RelationshipToDancer VARCHAR(50) NOT NULL,\n    NextOfKinPhoneNumber VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalConditions (\n    MedicalConditionID INT PRIMARY KEY,\n    DancerID INT REFERENCES DancerInfo(DancerID) ON DELETE CASCADE,\n    ConditionDescription TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Allergies (\n    AllergyID INT PRIMARY KEY,\n    DancerID INT REFERENCES DancerInfo(DancerID) ON DELETE CASCADE,\n    AllergyDescription TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmergencyContact (\n    ContactID INT PRIMARY KEY,\n    DancerID INT REFERENCES DancerInfo(DancerID) ON DELETE CASCADE,\n    ContactName VARCHAR(50) NOT NULL,\n    ContactPhoneNumber VARCHAR(15) NOT NULL\n);"
+      }
+    ]
+  }
+]

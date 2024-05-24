@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_brackets (\n    id INT PRIMARY KEY,\n    income_range INT,\n    tax_rate DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_brackets (\n  bracket_id INT PRIMARY KEY,\n  income_range_min DECIMAL,\n  income_range_max DECIMAL,\n  tax_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(50),\n  income DECIMAL,\n  tax_bracket_id INT,\n  FOREIGN KEY (tax_bracket_id) REFERENCES tax_brackets(bracket_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_brackets (\n  bracket_id INT PRIMARY KEY,\n  min_income INT NOT NULL,\n  max_income INT NOT NULL,\n  tax_rate DECIMAL(5,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(50) NOT NULL,\n  client_income INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_calculations (\n  calculation_id INT PRIMARY KEY,\n  client_id INT NOT NULL,\n  taxable_income INT NOT NULL,\n  tax_due DECIMAL(8,2) NOT NULL,\n  FOREIGN KEY (client_id) REFERENCES clients(client_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_brackets (\n    id SERIAL PRIMARY KEY,\n    min_income DECIMAL,\n    max_income DECIMAL,\n    tax_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id SERIAL PRIMARY KEY,\n    name TEXT,\n    email TEXT,\n    phone_number TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE client_tax_info (\n    info_id SERIAL PRIMARY KEY,\n    client_id INT,\n    taxable_income DECIMAL,\n    tax_owed DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_history (\n    history_id SERIAL PRIMARY KEY,\n    client_id INT,\n    tax_year INT,\n    total_tax_paid DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tax_bracket (\n    id INT PRIMARY KEY,\n    bracket_name VARCHAR(255),\n    lower_threshold DECIMAL,\n    upper_threshold DECIMAL,\n    tax_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE client (\n    id INT PRIMARY KEY,\n    client_name VARCHAR(255),\n    client_type VARCHAR(50),\n    tax_bracket_id INT REFERENCES tax_bracket(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE income (\n    id INT PRIMARY KEY,\n    client_id INT REFERENCES client(id),\n    income_amount DECIMAL,\n    income_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment (\n    id INT PRIMARY KEY,\n    client_id INT REFERENCES client(id),\n    payment_amount DECIMAL,\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tax_calculation (\n    id INT PRIMARY KEY,\n    client_id INT REFERENCES client(id),\n    taxable_income DECIMAL,\n    total_tax_paid DECIMAL\n);"
+      }
+    ]
+  }
+]

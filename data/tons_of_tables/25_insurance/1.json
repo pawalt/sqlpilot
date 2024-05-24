@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Claims (\nclaim_id INT PRIMARY KEY,\nclaim_type VARCHAR(255),\nclaim_amount DECIMAL(10, 2),\nclaim_date DATE,\napproval_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Claims (\n  claim_id INT PRIMARY KEY,\n  claim_type VARCHAR(255),\n  amount DECIMAL(10,2),\n  requested_by VARCHAR(255),\n  requested_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Approvals (\n  approval_id INT PRIMARY KEY,\n  claim_id INT REFERENCES Claims(claim_id),\n  approved_by VARCHAR(255),\n  approval_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ReimbursementRequests (\n   request_id INT PRIMARY KEY,\n   request_date DATE,\n   claimant_name VARCHAR(50),\n   total_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Approvals (\n   approval_id INT PRIMARY KEY,\n   request_id INT,\n   approved_by VARCHAR(50),\n   approval_date DATE,\n   approved_amount DECIMAL(10, 2),\n   FOREIGN KEY (request_id) REFERENCES ReimbursementRequests(request_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Denials (\n   denial_id INT PRIMARY KEY,\n   request_id INT,\n   denied_by VARCHAR(50),\n   denial_reason TEXT,\n   FOREIGN KEY (request_id) REFERENCES ReimbursementRequests(request_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Claims (\n    claim_id INT PRIMARY KEY,\n    claim_type VARCHAR(255),\n    claim_amount DECIMAL(10, 2),\n    claim_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reimbursement (\n    reimbursement_id INT PRIMARY KEY,\n    claim_id INT,\n    reimbursement_amount DECIMAL(10, 2),\n    reimbursement_date DATE,\n    approval_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Approvals (\n    approval_id INT PRIMARY KEY,\n    reimbursement_id INT,\n    approver_name VARCHAR(255),\n    approval_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Denials (\n    denial_id INT PRIMARY KEY,\n    claim_id INT,\n    denial_reason VARCHAR(255),\n    denial_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reimbursement_requests (\n    id INT PRIMARY KEY,\n    claimant_id INT,\n    amount DECIMAL,\n    description TEXT,\n    submitted_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE approval_records (\n    id INT PRIMARY KEY,\n    request_id INT,\n    approver_id INT,\n    approval_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE denial_records (\n    id INT PRIMARY KEY,\n    request_id INT,\n    reason TEXT,\n    denial_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE claimants (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    department VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE approvers (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    role VARCHAR(255)\n);\n"
+      }
+    ]
+  }
+]

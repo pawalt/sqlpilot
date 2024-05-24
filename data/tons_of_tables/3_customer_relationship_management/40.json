@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscriber_data ( \n email_address VARCHAR(255), \n name VARCHAR(100), \n preferences JSONB \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n  email VARCHAR(255),\n  name VARCHAR(100),\n  preferences VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n  campaign_id SERIAL PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n  id INT PRIMARY KEY,\n  email VARCHAR(255) NOT NULL,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  preferences JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n  campaign_id SERIAL PRIMARY KEY,\n  campaign_name VARCHAR(100) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  is_active BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_subscriptions (\n  subscription_id SERIAL PRIMARY KEY,\n  subscriber_id INT NOT NULL,\n  campaign_id INT NOT NULL,\n  subscription_date DATE,\n  FOREIGN KEY (subscriber_id) REFERENCES subscribers(id),\n  FOREIGN KEY (campaign_id) REFERENCES email_campaigns(campaign_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (id INT PRIMARY KEY, email VARCHAR(255) NOT NULL, name VARCHAR(100) NOT NULL, preferences TEXT NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (campaign_id INT PRIMARY KEY, campaign_name VARCHAR(255) NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_subscriptions (subscription_id INT PRIMARY KEY, campaign_id INT NOT NULL, subscriber_id INT NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (preference_id INT PRIMARY KEY, preference_name VARCHAR(50) NOT NULL);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n    subscriber_id INT PRIMARY KEY,\n    email_address VARCHAR(255) NOT NULL,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    preferences JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(100) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscribers_campaigns (\n    subscriber_id INT,\n    campaign_id INT,\n    FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id),\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_templates (\n    template_id INT PRIMARY KEY,\n    template_name VARCHAR(100) NOT NULL,\n    content TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sent_emails (\n    email_id INT PRIMARY KEY,\n    subscriber_id INT,\n    campaign_id INT,\n    template_id INT,\n    sent_at TIMESTAMP,\n    FOREIGN KEY (subscriber_id) REFERENCES subscribers(subscriber_id),\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id),\n    FOREIGN KEY (template_id) REFERENCES email_templates(template_id)\n);"
+      }
+    ]
+  }
+]

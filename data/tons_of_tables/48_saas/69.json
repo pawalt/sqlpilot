@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mobile_applications (\n  app_id UUID PRIMARY KEY,\n  app_name VARCHAR(255),\n  app_description TEXT,\n  app_last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    notification_enabled BOOL DEFAULT FALSE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    message TEXT NOT NULL,\n    created_at TIMESTAMP DEFAULT NOW()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Notifications (\n    notification_id INT PRIMARY KEY,\n    user_id INT,\n    message TEXT NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES Users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Updates (\n    update_id INT PRIMARY KEY,\n    user_id INT,\n    update_content TEXT NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES Users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_time_data_updates (\n    id INT PRIMARY KEY,\n    user_id INT,\n    data TEXT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    id INT PRIMARY KEY,\n    notification_type VARCHAR(50),\n    message TEXT,\n    is_read BOOLEAN,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(50),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE app_settings (\n    id INT PRIMARY KEY,\n    user_id INT,\n    setting_key VARCHAR(50),\n    setting_value TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users ( user_id INT PRIMARY KEY,\nusername VARCHAR(50) NOT NULL,\nemail VARCHAR(100) UNIQUE,\npassword VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions ( session_id UUID PRIMARY KEY,\nuser_id INT REFERENCES users(user_id),\nsession_token VARCHAR(255) NOT NULL,\nexpiration_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications ( notification_id UUID PRIMARY KEY,\nuser_id INT REFERENCES users(user_id),\nmessage TEXT,\ncreated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_tokens ( token_id UUID PRIMARY KEY,\nuser_id INT REFERENCES users(user_id),\ntoken_value VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE app_settings ( setting_id UUID PRIMARY KEY,\nuser_id INT REFERENCES users(user_id),\nsetting_name VARCHAR(50) NOT NULL,\nsetting_value TEXT\n);"
+      }
+    ]
+  }
+]

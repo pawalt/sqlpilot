@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_quality_studies (\n study_id INT PRIMARY KEY,\n study_name VARCHAR,\n institution_name VARCHAR,\n start_date DATE,\n end_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_institutions (\n institution_id INT PRIMARY KEY,\n institution_name VARCHAR(255) NOT NULL,\n location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_studies (\n study_id INT PRIMARY KEY,\n study_name VARCHAR(255) NOT NULL,\n institution_id INT,\n start_date DATE,\n end_date DATE,\n CONSTRAINT fk_institution\n FOREIGN KEY (institution_id)\n REFERENCES healthcare_institutions (institution_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Institutions (\n    institution_id INT PRIMARY KEY,\n    institution_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255) NOT NULL,\n    institution_id INT NOT NULL,\n    FOREIGN KEY (institution_id) REFERENCES Institutions(institution_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Studies (\n    study_id INT PRIMARY KEY,\n    study_name VARCHAR(255) NOT NULL,\n    researcher_id INT NOT NULL,\n    study_date DATE,\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_institutions (\n  institution_id INT PRIMARY KEY,\n  institution_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_studies (\n  study_id INT PRIMARY KEY,\n  study_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE study_participants (\n  participant_id INT PRIMARY KEY,\n  participant_name VARCHAR(255) NOT NULL,\n  age INT,\n  gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE study_results (\n  result_id INT PRIMARY KEY,\n  study_id INT NOT NULL,\n  participant_id INT NOT NULL,\n  result_data JSON,\n  FOREIGN KEY (study_id) REFERENCES research_studies(study_id),\n  FOREIGN KEY (participant_id) REFERENCES study_participants(participant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE institutions (\n  institution_id INT PRIMARY KEY,\n  institution_name VARCHAR(100) NOT NULL,\n  location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(100) NOT NULL,\n  institution_id INT,\n  research_area VARCHAR(100) NOT NULL,\n  FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_studies (\n  study_id INT PRIMARY KEY,\n  study_name VARCHAR(100) NOT NULL,\n  researcher_id INT,\n  start_date DATE,\n  end_date DATE,\n  FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(100) NOT NULL,\n  age INT,\n  gender VARCHAR(10),\n  research_study_id INT,\n  FOREIGN KEY (research_study_id) REFERENCES research_studies(study_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_records (\n  record_id INT PRIMARY KEY,\n  patient_id INT,\n  record_date DATE,\n  data_content TEXT,\n  FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);\n"
+      }
+    ]
+  }
+]

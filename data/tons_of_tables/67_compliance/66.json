@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE time_based_access_controls (\n  user_id INT,\n  access_level VARCHAR(50),\n  start_time TIME,\n  end_time TIME\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_rules (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL\n);\n\nCREATE TABLE business_hours (\n    id INT PRIMARY KEY,\n    day_of_week VARCHAR(10) NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employees (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR NOT NULL,\n    role VARCHAR NOT NULL,\n    last_access TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    employee_id INTEGER NOT NULL,\n    access_time TIMESTAMP NOT NULL,\n    event_type VARCHAR NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_restrictions (\n    restriction_id SERIAL PRIMARY KEY,\n    employee_id INTEGER NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    access_level INT,\n    work_schedule VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_schedule (\n    schedule_id INT PRIMARY KEY,\n    start_time TIME,\n    end_time TIME,\n    allowed_access BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    employee_id INT,\n    access_time TIMESTAMP,\n    success BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_restrictions (\n    restriction_id INT PRIMARY KEY,\n    employee_id INT,\n    restriction_type VARCHAR(50),\n    description VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT,\n    role_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_times (\n    role_id INT,\n    day_of_week VARCHAR(10),\n    start_time TIME,\n    end_time TIME,\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT,\n    role_id INT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n)"
+      }
+    ]
+  }
+]

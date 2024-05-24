@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM failed_transactions;",
+      "SELECT error_description, transaction_id, error_code FROM failed_transactions;",
+      "SELECT error_code, * FROM failed_transactions;",
+      "SELECT transaction_id, error_code, error_description FROM failed_transactions WHERE error_code = 404;",
+      "SELECT * FROM failed_transactions WHERE transaction_id = 1001;",
+      "SELECT * FROM failed_transactions WHERE error_code = 500 ORDER BY transaction_id DESC;",
+      "SELECT transaction_id, error_description FROM failed_transactions WHERE error_code = 404;",
+      "SELECT * FROM failed_transactions WHERE error_code = 500 AND error_description LIKE '%timeout%';",
+      "SELECT transaction_id, error_description FROM failed_transactions WHERE error_code = 500 ORDER BY error_description ASC;",
+      "SELECT COUNT(*) as total_failed_transactions FROM failed_transactions WHERE error_code <> 200;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM failed_transactions;",
+      "SELECT transaction_id, transaction_date FROM failed_transactions ORDER BY transaction_date DESC;",
+      "SELECT error_code, error_description FROM error_codes WHERE error_code = 100;",
+      "SELECT * FROM failed_transactions WHERE error_code IN (101, 102, 103);",
+      "SELECT error_code, COUNT(transaction_id) AS total_transactions FROM failed_transactions GROUP BY error_code ORDER BY total_transactions DESC;",
+      "SELECT * FROM failed_transactions ORDER BY transaction_date DESC LIMIT 10;",
+      "SELECT transaction_id, error_code FROM failed_transactions WHERE error_code = 500 AND transaction_date >= '2021-01-01';",
+      "SELECT transaction_id, transaction_date, error_description FROM failed_transactions JOIN error_codes ON failed_transactions.error_code = error_codes.error_code ORDER BY transaction_id LIMIT 5;",
+      "SELECT COUNT(*) FROM failed_transactions WHERE error_code IS NOT NULL;",
+      "SELECT transaction_id, error_description FROM failed_transactions LEFT JOIN error_codes ON failed_transactions.error_code = error_codes.error_code WHERE error_codes.error_description LIKE '%timeout%' ORDER BY transaction_id DESC LIMIT 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM failed_transactions;",
+      "SELECT error_code, error_description FROM error_codes WHERE error_code = 'ABC123';",
+      "SELECT transaction_id, log_id, log_time FROM transaction_logs WHERE log_time > '2022-01-01';",
+      "SELECT DISTINCT transaction_id FROM transaction_logs;",
+      "SELECT error_code, COUNT(*) AS count FROM failed_transactions GROUP BY error_code ORDER BY count DESC;",
+      "SELECT * FROM failed_transactions WHERE error_code = '500' ORDER BY transaction_id DESC;",
+      "SELECT transaction_id, error_description FROM failed_transactions JOIN error_codes ON failed_transactions.error_code = error_codes.error_code WHERE transaction_id = 1001;",
+      "SELECT COUNT(*) FROM failed_transactions;",
+      "SELECT transaction_id, count(*) AS error_count FROM failed_transactions GROUP BY transaction_id HAVING error_count > 2;",
+      "SELECT * FROM transaction_logs ORDER BY log_time DESC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM failed_transactions;",
+      "SELECT transaction_id, error_code, timestamp FROM error_logs ORDER BY timestamp DESC;",
+      "SELECT description FROM error_codes WHERE error_code = 404;",
+      "SELECT transaction_id, amount, currency, status FROM transaction_details WHERE amount > 1000;",
+      "SELECT MAX(error_code) AS max_error_code FROM error_logs;",
+      "SELECT * FROM failed_transactions WHERE error_code = 404 ORDER BY timestamp DESC;",
+      "SELECT transaction_id, amount, currency FROM transaction_details WHERE status = 'pending';",
+      "SELECT log_id, timestamp, message FROM error_logs WHERE error_code IN (500, 503) ORDER BY log_id ASC;",
+      "SELECT e.error_code, e.description, f.timestamp FROM error_codes e JOIN failed_transactions f ON e.error_code = f.error_code;",
+      "SELECT t.transaction_id, t.amount, e.description FROM transaction_details t LEFT JOIN error_codes e ON t.transaction_id = e.error_code ORDER BY t.amount DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM failed_transactions;",
+      "SELECT transaction_id, error_code, error_description FROM failed_transactions WHERE error_code = 500;",
+      "SELECT transaction_id, error_code, error_description FROM failed_transactions WHERE error_code = 404 ORDER BY transaction_id DESC;",
+      "SELECT transaction_id, error_code, error_description FROM failed_transactions WHERE error_code = 403 ORDER BY error_description ASC;",
+      "SELECT transaction_id, error_code, error_description FROM failed_transactions WHERE error_code IN (500, 503) ORDER BY transaction_id DESC;",
+      "SELECT * FROM failed_transactions WHERE error_code = 404 ORDER BY transaction_id DESC LIMIT 5",
+      "SELECT transaction_id, error_description FROM failed_transactions WHERE error_code IN (500, 502) ORDER BY error_description ASC",
+      "SELECT t.transaction_id, t.location, l.log_entry FROM transaction_details t JOIN transaction_logs l ON t.transaction_id = l.transaction_id WHERE t.user_id = 123 ORDER BY l.log_timestamp DESC",
+      "SELECT t.*, s.status FROM transaction_details t JOIN transaction_statuses s ON t.transaction_id = s.transaction_id WHERE s.status = 'pending' AND t.location = 'New York' ORDER BY s.status_timestamp DESC",
+      "SELECT t.transaction_id, e.error_message FROM transaction_details t JOIN error_codes e ON e.code_id = t.transaction_id WHERE e.error_name LIKE 'Server%' ORDER BY t.transaction_id ASC"
+    ]
+  }
+]

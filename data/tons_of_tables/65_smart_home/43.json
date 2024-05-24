@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_footage (\n    footage_id UUID PRIMARY KEY,\n    camera_id UUID,\n    timestamp TIMESTAMP,\n    footage_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE footage (\n    camera_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    video_url TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE camera (\n    camera_id UUID PRIMARY KEY,\n    location TEXT,\n    model TEXT,\n    resolution TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_cameras (\n    camera_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    resolution VARCHAR(50),\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE footage_archive (\n    footage_id INT PRIMARY KEY,\n    camera_id INT REFERENCES security_cameras(camera_id),\n    timestamp TIMESTAMP,\n    length INT,\n    resolution VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE playback_history (\n    playback_id INT PRIMARY KEY,\n    footage_id INT REFERENCES footage_archive(footage_id),\n    playback_timestamp TIMESTAMP,\n    playback_duration INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Camera (\n  camera_id INT PRIMARY KEY,\n  camera_location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Footage (\n  footage_id INT PRIMARY KEY,\n  camera_id INT,\n  time_recorded TIMESTAMP,\n  footage_data BYTEA,\n  FOREIGN KEY (camera_id) REFERENCES Camera(camera_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveillanceEvent (\n  event_id INT PRIMARY KEY,\n  camera_id INT,\n  event_type VARCHAR(50),\n  event_description TEXT,\n  event_time TIMESTAMP,\n  FOREIGN KEY (camera_id) REFERENCES Camera(camera_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PlaybackHistory (\n  playback_id INT PRIMARY KEY,\n  footage_id INT,\n  playback_time TIMESTAMP,\n  playback_user VARCHAR(50),\n  FOREIGN KEY (footage_id) REFERENCES Footage(footage_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cameras (\n  camera_id INT PRIMARY KEY,\n  location TEXT,\n  type TEXT,\n  resolution TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE footage (\n  footage_id INT PRIMARY KEY,\n  camera_id INT,\n  timestamp TIMESTAMP,\n  duration INT,\n  file_path TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE footage_metadata (\n  metadata_id INT PRIMARY KEY,\n  footage_id INT,\n  event_type TEXT,\n  object_detected TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  name TEXT,\n  email TEXT,\n  password TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n  event_id INT PRIMARY KEY,\n  camera_id INT,\n  timestamp TIMESTAMP,\n  event_type TEXT,\n  description TEXT\n);"
+      }
+    ]
+  }
+]

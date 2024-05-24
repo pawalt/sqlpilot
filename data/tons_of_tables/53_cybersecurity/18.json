@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encrypted_data (\n    id INT PRIMARY KEY,\n    sensitive_data VARCHAR(255),\n    encrypted_at_rest BOOLEAN,\n    encrypted_in_transit BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n  log_id INT PRIMARY KEY,\n  user_id INT,\n  timestamp TIMESTAMP NOT NULL,\n  activity VARCHAR(255) NOT NULL,\n  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES user_data(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE NOT NULL,\n    password VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    encrypted_data VARCHAR(1024) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    log_message TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_at_rest (\n id INT PRIMARY KEY,\n data VARCHAR(255),\n timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_in_transit (\n id INT PRIMARY KEY,\n data VARCHAR(255),\n timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_privacy (\n id INT PRIMARY KEY,\n username VARCHAR(50),\n email VARCHAR(100),\n password VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_breaches (\n id INT PRIMARY KEY,\n description TEXT,\n timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encrypted_users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE  encrypted_messages (\n    message_id INT PRIMARY KEY,\n    sender_id INT,\n    receiver_id INT,\n    message_text TEXT NOT NULL\n);\n\nCREATE TABLE encrypted_attachments (\n    attachment_id INT PRIMARY KEY,\n    message_id INT,\n    attachment_data BYTEA NOT NULL\n);\n\nCREATE TABLE encrypted_keys (\n    key_id INT PRIMARY KEY,\n    encryption_key VARCHAR(100) NOT NULL,\n    decryption_key VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE encrypted_logs (\n    log_id INT PRIMARY KEY,\n    log_date TIMESTAMP NOT NULL,\n    log_message TEXT\n);"
+      }
+    ]
+  }
+]

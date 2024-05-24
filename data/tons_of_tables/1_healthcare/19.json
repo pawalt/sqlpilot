@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n\tpatient_id INT PRIMARY KEY,\n\tpatient_name VARCHAR(50),\n\tage INT,\n\tdiagnosis VARCHAR(100),\n\ttreatment_plan VARCHAR(200)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR(100) NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    phone_number VARCHAR(15),\n    address TEXT\n);\n\nCREATE TABLE MedicalRecords (\n    record_id UUID PRIMARY KEY,\n    patient_id UUID REFERENCES Patients(patient_id),\n    date DATE,\n    diagnosis TEXT,\n    treatment TEXT,\n    doctor_name VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_data (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR,\n  date_of_birth DATE,\n  medical_history TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE telemedicine_appointments (\n  appointment_id INT PRIMARY KEY,\n  patient_id INT,\n  appointment_date TIMESTAMP,\n  doctor_id INT,\n  diagnosis TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE doctor_statistics (\n  doctor_id INT PRIMARY KEY,\n  total_appointments INT,\n  average_diagnosis_time INTERVAL,\n  patient_satisfaction_rating FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telemedicine_patients (\n  patient_id SERIAL PRIMARY KEY,\n  patient_name VARCHAR(50) NOT NULL,\n  age INT NOT NULL,\n  address TEXT,\n  phone_number VARCHAR(15) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE telemedicine_appointments (\n  appointment_id SERIAL PRIMARY KEY,\n  patient_id INT REFERENCES telemedicine_patients(patient_id),\n  appointment_date DATE NOT NULL,\n  appointment_time TIME NOT NULL,\n  doctor_name VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE telemedicine_doctors (\n  doctor_id SERIAL PRIMARY KEY,\n  doctor_name VARCHAR(50) NOT NULL,\n  specialization VARCHAR(50) NOT NULL,\n  practice_address TEXT,\n  phone_number VARCHAR(15) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE telemedicine_records (\n  record_id SERIAL PRIMARY KEY,\n  patient_id INT REFERENCES telemedicine_patients(patient_id),\n  doctor_id INT REFERENCES telemedicine_doctors(doctor_id),\n  diagnosis TEXT,\n  treatment TEXT,\n  record_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  patient_name STRING,\n  patient_age INT,\n  patient_gender STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n  appointment_id INT PRIMARY KEY,\n  patient_id INT REFERENCES patients(patient_id),\n  appointment_date DATE,\n  appointment_time TIME,\n  doctor_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE doctors (\n  doctor_id INT PRIMARY KEY,\n  doctor_name STRING,\n  doctor_specialty STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE prescriptions (\n  prescription_id INT PRIMARY KEY,\n  patient_id INT REFERENCES patients(patient_id),\n  doctor_id INT REFERENCES doctors(doctor_id),\n  medication_name STRING,\n  dosage INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_history (\n  patient_id INT REFERENCES patients(patient_id),\n  diagnosis STRING,\n  treatment_plan STRING\n);"
+      }
+    ]
+  }
+]

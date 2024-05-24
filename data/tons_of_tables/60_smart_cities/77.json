@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE restraining_orders (\n  id SERIAL PRIMARY KEY,\n  individual_name VARCHAR(255) NOT NULL,\n  restraining_order_number VARCHAR(100) UNIQUE NOT NULL,\n  date_issued DATE NOT NULL,\n  expiration_date DATE,\n  issued_by VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE individuals_with_restraining_orders (\n    id INT PRIMARY KEY,\n    name VARCHAR(100),\n    address VARCHAR(255),\n    restraining_order_start_date DATE,\n    restraining_order_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE restraining_order_officers (\n    officer_id INT PRIMARY KEY,\n    officer_name VARCHAR(100),\n    officer_badge_number VARCHAR(50),\n    officer_department VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Individuals (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  restraining_order_nbr VARCHAR(50),\n  date_issued DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Addresses (\n  id INT PRIMARY KEY,\n  individual_id INT,\n  address VARCHAR(255),\n  city VARCHAR(100),\n  state VARCHAR(2),\n  zip_code VARCHAR(10),\n  FOREIGN KEY (individual_id) REFERENCES Individuals(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RestrainingOrders (\n  id INT PRIMARY KEY,\n  individual_id INT,\n  restraining_order_nbr VARCHAR(50),\n  issued_by VARCHAR(100),\n  reason TEXT,\n  date_issued DATE,\n  FOREIGN KEY (individual_id) REFERENCES Individuals(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE individuals_with_restraining_orders (\n    id INT PRIMARY KEY,\n    full_name VARCHAR(255),\n    address VARCHAR(255),\n    phone_number VARCHAR(15),\n    date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE restraining_orders (\n    order_id INT PRIMARY KEY,\n    individual_id INT,\n    issue_date DATE,\n    expiration_date DATE,\n    reason TEXT,\n    FOREIGN KEY (individual_id) REFERENCES individuals_with_restraining_orders(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n    incident_id INT PRIMARY KEY,\n    incident_date DATE,\n    description TEXT,\n    individual_id INT,\n    FOREIGN KEY (individual_id) REFERENCES individuals_with_restraining_orders(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    log_date TIMESTAMP,\n    action_taken VARCHAR(255),\n    security_personnel VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE individuals (\n    id INT PRIMARY KEY,\n    name STRING,\n    address STRING,\n    age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE restraining_orders (\n    order_id INT PRIMARY KEY,\n    individual_id INT,\n    issued_date DATE,\n    court STRING,\n    reason STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE relationships (\n    id INT PRIMARY KEY,\n    individual1_id INT,\n    individual2_id INT,\n    relationship_type STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_clearance (\n    individual_id INT PRIMARY KEY,\n    clearance_level STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents (\n    incident_id INT PRIMARY KEY,\n    incident_date DATE,\n    description STRING,\n    individuals_involved STRING\n);"
+      }
+    ]
+  }
+]

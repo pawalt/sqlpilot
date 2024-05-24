@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FakeNewsMonitoring (\nid INT,\nnews_title VARCHAR(255),\nmedia_channel VARCHAR(100),\nreported_date DATE,\nsource_url TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE news_articles (\n    article_id INT PRIMARY KEY,\n    article_title TEXT,\n    article_content TEXT,\n    publication_date DATE,\n    media_source TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE misinformation_reports (\n    report_id INT PRIMARY KEY,\n    article_id INT,\n    report_date DATE,\n    report_description TEXT,\n    reporter_name TEXT,\n    FOREIGN KEY (article_id) REFERENCES news_articles(article_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_channel (\n  channel_id INT PRIMARY KEY,\n  channel_name VARCHAR(255),\n  country VARCHAR(100),\n  language VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE news_article (\n  article_id INT PRIMARY KEY,\n  article_title VARCHAR(255),\n  published_date DATE,\n  author VARCHAR(100),\n  channel_id INT,\n  FOREIGN KEY (channel_id) REFERENCES media_channel(channel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE misinformation_report (\n  report_id INT PRIMARY KEY,\n  reported_article_id INT,\n  report_datetime TIMESTAMP,\n  report_reason VARCHAR(255),\n  FOREIGN KEY (reported_article_id) REFERENCES news_article(article_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fake_news (\n    news_id INT PRIMARY KEY,\n    news_title VARCHAR(255) NOT NULL,\n    news_content TEXT NOT NULL,\n    publish_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE media_channels (\n    channel_id INT PRIMARY KEY,\n    channel_name VARCHAR(255) NOT NULL,\n    channel_type VARCHAR(50) NOT NULL,\n    channel_country VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE news_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL,\n    source_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE news_mentions (\n    mention_id INT PRIMARY KEY,\n    news_id INT,\n    source_id INT,\n    channel_id INT,\n    mention_date DATE,\n    FOREIGN KEY (news_id) REFERENCES fake_news(news_id),\n    FOREIGN KEY (source_id) REFERENCES news_sources(source_id),\n    FOREIGN KEY (channel_id) REFERENCES media_channels(channel_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE news_outlets (\n    outlet_id UUID PRIMARY KEY,\n    outlet_name STRING,\n    outlet_type STRING,\n    location STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE news_articles (\n    article_id UUID PRIMARY KEY,\n    article_title STRING,\n    article_body TEXT,\n    publish_date TIMESTAMP,\n    outlet_id UUID REFERENCES news_outlets(outlet_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_users (\n    user_id UUID PRIMARY KEY,\n    user_name STRING,\n    follower_count INT,\n    following_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_posts (\n    post_id UUID PRIMARY KEY,\n    post_content TEXT,\n    post_date TIMESTAMP,\n    user_id UUID REFERENCES social_media_users(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE misinformation_reports (\n    report_id UUID PRIMARY KEY,\n    report_description TEXT,\n    report_date TIMESTAMP,\n    article_id UUID REFERENCES news_articles(article_id)\n)"
+      }
+    ]
+  }
+]

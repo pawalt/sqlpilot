@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_diversity_metrics (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    diversity_ranking INT,\n    inclusion_score FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    diversity_score DECIMAL(5,2) DEFAULT 0.00\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_metrics (\n    metric_id INT PRIMARY KEY,\n    supplier_id INT,\n    year INT NOT NULL,\n    diversity_index DECIMAL(5,2),\n    inclusion_index DECIMAL(5,2),\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    diversity_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InclusionMetrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_value FLOAT,\n    supplier_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SupplierContacts (\n    contact_id INT PRIMARY KEY,\n    supplier_id INT,\n    contact_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15),\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(50) NOT NULL,\n  supplier_type VARCHAR(50),\n  diversity_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DiversityMetrics (\n  metric_id INT PRIMARY KEY,\n  metric_name VARCHAR(50) NOT NULL,\n  metric_description TEXT,\n  target_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SupplierMetrics (\n  supplier_id INT,\n  metric_id INT,\n  value FLOAT,\n  FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id),\n  FOREIGN KEY (metric_id) REFERENCES DiversityMetrics(metric_id),\n  PRIMARY KEY (supplier_id, metric_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SupplierContacts (\n  contact_id INT PRIMARY KEY,\n  supplier_id INT,\n  contact_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100),\n  phone_number VARCHAR(15),\n  FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    supplier_type VARCHAR(50),\n    supplier_location VARCHAR(100),\n    supplier_diversity_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SupplierMetrics (\n    metric_id INT PRIMARY KEY,\n    supplier_id INT,\n    metric_name VARCHAR(100) NOT NULL,\n    metric_value DECIMAL(10,2),\n    metric_date DATE,\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SupplierContacts (\n    contact_id INT PRIMARY KEY,\n    supplier_id INT,\n    contact_name VARCHAR(100) NOT NULL,\n    contact_email VARCHAR(255),\n    contact_phone VARCHAR(20),\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SupplierCategories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SupplierCategoryMapping (\n    supplier_id INT,\n    category_id INT,\n    PRIMARY KEY (supplier_id, category_id),\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id),\n    FOREIGN KEY (category_id) REFERENCES SupplierCategories(category_id)\n);"
+      }
+    ]
+  }
+]

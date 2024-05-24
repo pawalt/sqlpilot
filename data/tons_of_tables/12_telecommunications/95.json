@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_data (\n  id INT PRIMARY KEY,\n  latitude DECIMAL,\n  longitude DECIMAL,\n  address VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50),\n    latitude DECIMAL(9,6),\n    longitude DECIMAL(9,6)\n);\n\nCREATE TABLE network_coverage (\n    coverage_id INT PRIMARY KEY,\n    location_id INT,\n    provider_name VARCHAR(50),\n    coverage_strength INT,\n    FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_data (\n    id INT PRIMARY KEY,\n    latitude DECIMAL(9,6),\n    longitude DECIMAL(9,6),\n    location_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_coverage (\n    id INT PRIMARY KEY,\n    latitude DECIMAL(9,6),\n    longitude DECIMAL(9,6),\n    cell_id INT,\n    signal_strength INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE service_providers (\n    id INT PRIMARY KEY,\n    provider_name TEXT,\n    coverage_status BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE networks (\n    network_id INT PRIMARY KEY,\n    network_name VARCHAR(255),\n    technology VARCHAR(50),\n    bandwidth INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE coverage_areas (\n    coverage_id INT PRIMARY KEY,\n    network_id INT,\n    location_id INT,\n    coverage_range FLOAT,\n    CONSTRAINT fk_network\n        FOREIGN KEY (network_id)\n        REFERENCES networks(network_id),\n    CONSTRAINT fk_location\n        FOREIGN KEY (location_id)\n        REFERENCES locations(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE signal_strength (\n    signal_id INT PRIMARY KEY,\n    coverage_id INT,\n    signal_value INT,\n    CONSTRAINT fk_coverage\n        FOREIGN KEY (coverage_id)\n        REFERENCES coverage_areas(coverage_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id UUID PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_coverage (\n    coverage_id UUID PRIMARY KEY,\n    location_id UUID,\n    operator VARCHAR(50),\n    technology VARCHAR(50),\n    coverage_type VARCHAR(50),\n    coverage_area FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE signal_strength (\n    signal_id UUID PRIMARY KEY,\n    location_id UUID,\n    signal_strength FLOAT,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_operators (\n    operator_id UUID PRIMARY KEY,\n    operator_name VARCHAR(50),\n    country VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE technologies (\n    technology_id UUID PRIMARY KEY,\n    technology_name VARCHAR(50),\n    frequency FLOAT\n);\n"
+      }
+    ]
+  }
+]

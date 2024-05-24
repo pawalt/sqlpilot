@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_settings (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(255) NOT NULL,\n    firmware_version VARCHAR(50) NOT NULL,\n    location_info JSONB,\n    last_update TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DeviceConfigSettings (\n    device_id INT PRIMARY KEY,\n    param_name VARCHAR(50),\n    param_value VARCHAR(100),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceUpdates (\n    update_id SERIAL PRIMARY KEY,\n    device_id INT,\n    update_version VARCHAR(20),\n    update_description TEXT,\n    updated_at TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES DeviceConfigSettings(device_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE configuration_settings (\n    setting_id INT PRIMARY KEY,\n    device_id INT,\n    setting_name VARCHAR(50),\n    setting_value VARCHAR(100),\n    last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_parameters (\n    parameter_id INT PRIMARY KEY,\n    device_id INT,\n    parameter_name VARCHAR(50),\n    parameter_value VARCHAR(100),\n    parameter_type VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE firmware_updates (\n    update_id INT PRIMARY KEY,\n    device_id INT,\n    update_version VARCHAR(20),\n    update_description TEXT,\n    update_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DeviceSettings (\n device_id INT PRIMARY KEY,\n device_name VARCHAR(255),\n firmware_version VARCHAR(50),\n configuration_settings JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceLogs (\n log_id INT PRIMARY KEY,\n device_id INT,\n log_timestamp TIMESTAMP,\n log_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceCommands (\n command_id INT PRIMARY KEY,\n device_id INT,\n command_type VARCHAR(50),\n command_details JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceUpdates (\n update_id INT PRIMARY KEY,\n device_id INT,\n update_version VARCHAR(50),\n update_details JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Device ( id INT PRIMARY KEY, device_name STRING, device_type STRING, manufacturer STRING, firmware_version STRING );"
+      },
+      {
+        "table_schema": "CREATE TABLE Configuration ( id INT PRIMARY KEY, device_id INT, config_name STRING, config_value STRING, FOREIGN KEY (device_id) REFERENCES Device(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE Network ( id INT PRIMARY KEY, device_id INT, network_name STRING, ip_address STRING, subnet_mask STRING, gateway STRING, FOREIGN KEY (device_id) REFERENCES Device(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE Firmware ( id INT PRIMARY KEY, device_id INT, version STRING, description STRING, released_date DATE, FOREIGN KEY (device_id) REFERENCES Device(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE UpdateLog ( id INT PRIMARY KEY, device_id INT, update_description STRING, update_date DATE, update_status STRING, FOREIGN KEY (device_id) REFERENCES Device(id) );"
+      }
+    ]
+  }
+]

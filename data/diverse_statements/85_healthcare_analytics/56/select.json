@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM DrugResistanceTrends WHERE pathogen_id = '7ee060e1-f6b2-4e14-b6b5-bf7b557cc1e0'",
+      "SELECT pathogen_name, genetic_profile FROM DrugResistanceTrends WHERE last_observation_date > '2021-01-01'",
+      "SELECT pathogen_id, genetic_profile, last_observation_date, pathogen_name FROM DrugResistanceTrends ORDER BY last_observation_date DESC",
+      "SELECT * FROM DrugResistanceTrends WHERE pathogen_name LIKE '%influenza%'",
+      "SELECT DISTINCT pathogen_name FROM DrugResistanceTrends",
+      "SELECT * FROM DrugResistanceTrends WHERE pathogen_name = 'Mycobacterium tuberculosis';",
+      "SELECT pathogen_id, pathogen_name, genetic_profile FROM DrugResistanceTrends WHERE last_observation_date > '2021-01-01';",
+      "SELECT DISTINCT pathogen_name FROM DrugResistanceTrends WHERE genetic_profile -> 'mutation' = 'RIF_resistant';",
+      "SELECT pathogen_name, last_observation_date FROM DrugResistanceTrends ORDER BY last_observation_date DESC LIMIT 5;",
+      "SELECT AVG(LENGTH(genetic_profile -> 'mutation')) AS average_mutation_length FROM DrugResistanceTrends;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Pathogens",
+      "SELECT pathogen_id, pathogen_name FROM Pathogens ORDER BY pathogen_name DESC",
+      "SELECT pathogen_id, pathogen_name, SUBSTRING(genetic_profile, 1, 50) AS short_genetic_profile FROM Pathogens",
+      "SELECT * FROM ResistanceTrends WHERE resistance_level = 'High'",
+      "SELECT pathogen_name, trend_date FROM Pathogens JOIN ResistanceTrends ON Pathogens.pathogen_id = ResistanceTrends.pathogen_id",
+      "SELECT * FROM Pathogens WHERE pathogen_name = 'COVID-19';",
+      "SELECT pathogen_name, genetic_profile FROM Pathogens ORDER BY pathogen_id DESC;",
+      "SELECT pathogen_id, pathogen_name, resistance_level FROM Pathogens JOIN ResistanceTrends ON Pathogens.pathogen_id = ResistanceTrends.pathogen_id WHERE ResistanceTrends.resistance_level = 'High';",
+      "SELECT * FROM Pathogens WHERE pathogen_name LIKE 'Inf%';",
+      "SELECT pathogen_id, trend_date FROM ResistanceTrends WHERE resistance_level = 'Low' ORDER BY trend_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM pathogens ORDER BY species ASC;",
+      "SELECT pathogen_id, genetic_profile FROM pathogens WHERE species = 'COVID-19';",
+      "SELECT drug_name, resistance_level FROM drug_resistance WHERE pathogen_id = 2;",
+      "SELECT * FROM resistance_trends WHERE trend_date >= '2022-01-01';",
+      "SELECT p.species, d.drug_name, t.trend_date FROM pathogens p INNER JOIN drug_resistance d ON p.pathogen_id = d.pathogen_id INNER JOIN resistance_trends t ON d.resistance_id = t.resistance_id ORDER BY t.trend_date DESC;",
+      "SELECT * FROM pathogens WHERE species='COVID-19';",
+      "SELECT pathogen_id, species FROM pathogens ORDER BY species ASC;",
+      "SELECT * FROM drug_resistance INNER JOIN pathogens ON drug_resistance.pathogen_id = pathogens.pathogen_id WHERE drug_name ='Antibiotic';",
+      "SELECT * FROM pathogens WHERE genetic_profile->>'mutation' = 'Y';",
+      "SELECT * FROM resistance_trends ORDER BY trend_date DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM DrugResistance;",
+      "SELECT pathogen_id, drug_resistance_percentage FROM DrugResistance;",
+      "SELECT name, species FROM Pathogen;",
+      "SELECT id, gene_name, mutation FROM PathogenResistanceProfile;",
+      "SELECT patient_id, test_date FROM PatientPathogenMap;",
+      "SELECT * FROM DrugResistance WHERE pathogen_id = 1;",
+      "SELECT id, test_date, drug_resistance_percentage FROM DrugResistance WHERE drug_resistance_percentage > 0.5 ORDER BY test_date DESC;",
+      "SELECT p.name, p.species, pr.gene_name FROM Pathogen p JOIN PathogenResistanceProfile pr ON p.id = pr.profile_id WHERE pr.mutation = 'R';",
+      "SELECT p.name, COUNT(ppm.id) AS test_count FROM Pathogen p LEFT JOIN PatientPathogenMap ppm ON p.id = ppm.pathogen_id GROUP BY p.name HAVING test_count > 3;",
+      "SELECT DR.id, PR.profile_id, PR.gene_name, COUNT(PPM.id) AS test_count FROM DrugResistance DR JOIN PathogenResistanceProfile PR ON DR.pathogen_id = PR.profile_id LEFT JOIN PatientPathogenMap PPM ON DR.pathogen_id = PPM.pathogen_id GROUP BY DR.id, PR.profile_id HAVING test_count > 1 ORDER BY test_count DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM pathogen",
+      "SELECT name, type FROM drug",
+      "SELECT id, resistance_level FROM resistance_profile",
+      "SELECT sample_date, lab_id FROM sample",
+      "SELECT name, location FROM lab",
+      "SELECT * FROM pathogen WHERE name = 'COVID-19';",
+      "SELECT drug.name, drug.type, resistance_profile.resistance_level FROM drug JOIN resistance_profile ON drug.id = resistance_profile.drug_id;",
+      "SELECT sample.sample_date, lab.name FROM sample JOIN lab ON sample.lab_id = lab.id WHERE sample.pathogen_id = 1 ORDER BY sample.sample_date DESC;",
+      "SELECT pathogen.name, drug.name, resistance_profile.resistance_level FROM pathogen JOIN resistance_profile ON pathogen.id = resistance_profile.pathogen_id JOIN drug ON drug.id = resistance_profile.drug_id WHERE resistance_level = 'High';",
+      "SELECT lab.name AS lab_name, lab.location AS lab_location, COUNT(sample.id) AS sample_count FROM lab JOIN sample ON lab.id = sample.lab_id GROUP BY lab_name, lab_location ORDER BY sample_count DESC;"
+    ]
+  }
+]

@@ -1,0 +1,49 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FacialRecognitionData (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    age INT,\n    gender VARCHAR(10),\n    image_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE faces (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    image_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE face_logs (\n    log_id SERIAL PRIMARY KEY,\n    face_id INT,\n    timestamp TIMESTAMP,\n    event VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facial_recognition_data (\n    id INT PRIMARY KEY,\n    image_url TEXT,\n    face_embedding BYTEA,\n    timestamp TIMESTAMP\n);\n\nCREATE TABLE identified_faces (\n    id INT PRIMARY KEY,\n    face_id INT,\n    person_name TEXT,\n    confidence FLOAT\n);\n\nCREATE TABLE real_time_identification (\n    id INT PRIMARY KEY,\n    face_id INT,\n    timestamp TIMESTAMP,\n    result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE face_images (\n    image_id INT PRIMARY KEY,\n    image_data BYTEA,\n    image_description TEXT,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE face_features (\n    feature_id INT PRIMARY KEY,\n    image_id INT REFERENCES face_images(image_id),\n    feature_vector BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE face_recognition (\n    record_id INT PRIMARY KEY,\n    feature_id INT REFERENCES face_features(feature_id),\n    recognition_result TEXT,\n    confidence FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE face_history (\n    history_id INT PRIMARY KEY,\n    record_id INT REFERENCES face_recognition(record_id),\n    user_id INT,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facial_recognition_data (\n    id SERIAL PRIMARY KEY,\n    person_name VARCHAR(100),\n    image_data BYTEA,\n    face_encoding FLOAT[],\n    capture_timestamp TIMESTAMP\n);\n\nCREATE TABLE face_recognition_logs (\n    log_id SERIAL PRIMARY KEY,\n    person_id INT REFERENCES facial_recognition_data(id),\n    log_timestamp TIMESTAMP,\n    log_message TEXT\n);\n\nCREATE TABLE recognized_faces (\n    face_id SERIAL PRIMARY KEY,\n    person_id INT REFERENCES facial_recognition_data(id),\n    confidence_score FLOAT,\n    recognition_timestamp TIMESTAMP\n);\n\nCREATE TABLE known_faces (\n    face_id SERIAL PRIMARY KEY,\n    person_name VARCHAR(100) UNIQUE,\n    known_face_encoding FLOAT[],\n    added_timestamp TIMESTAMP\n);\n\nCREATE TABLE face_recognition_settings (\n    setting_id SERIAL PRIMARY KEY,\n    recognition_threshold FLOAT,\n    detection_model VARCHAR(50),\n    recognition_algorithm VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

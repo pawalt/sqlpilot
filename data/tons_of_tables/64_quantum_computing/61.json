@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_networking_permissions (\n  user_id INT PRIMARY KEY,\n  user_name VARCHAR(255),\n  permission_level INT,\n  channel_id INT,\n  channel_name VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users ( user_id UUID PRIMARY KEY,\n username VARCHAR(50) NOT NULL,\n password VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE communication_channels ( channel_id UUID PRIMARY KEY,\n channel_name VARCHAR(50) NOT NULL,\n channel_type VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_access_permissions (\n    user_id INT PRIMARY KEY,\n    quantum_channel_id INT,\n    permission_level VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_communication_channels (\n    channel_id INT PRIMARY KEY,\n    channel_name VARCHAR(100),\n    channel_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50),\n    role_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE channels (\n    channel_id SERIAL PRIMARY KEY,\n    channel_name VARCHAR(50) NOT NULL,\n    quantum_key VARCHAR(100) NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    channel_id INT NOT NULL,\n    permission_type VARCHAR(20) NOT NULL,\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),\n    CONSTRAINT fk_channel_id FOREIGN KEY (channel_id) REFERENCES channels(channel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(50),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id SERIAL PRIMARY KEY,\n    permission_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT REFERENCES users(user_id),\n    role_id INT REFERENCES roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_id INT REFERENCES roles(role_id),\n    permission_id INT REFERENCES permissions(permission_id),\n    PRIMARY KEY (role_id, permission_id)\n);"
+      }
+    ]
+  }
+]

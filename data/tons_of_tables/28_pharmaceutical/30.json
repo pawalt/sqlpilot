@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_feedback (\n  feedback_id INT PRIMARY KEY,\n  customer_id INT,\n  interaction_date DATE,\n  interaction_type VARCHAR(50),\n  feedback_text TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);\n\nCREATE TABLE feedback (\n    feedback_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    feedback_text TEXT,\n    rating INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    customer_email VARCHAR(100) UNIQUE,\n    customer_phone VARCHAR(15),\n    customer_address VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    interaction_date TIMESTAMP NOT NULL,\n    interaction_type VARCHAR(50) NOT NULL,\n    interaction_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n    feedback_id INT PRIMARY KEY,\n    interaction_id INT REFERENCES interactions(interaction_id),\n    feedback_rating INT CHECK (feedback_rating >= 1 AND feedback_rating <= 5),\n    feedback_comments TEXT,\n    feedback_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    customer_id INT,\n    interaction_date DATE,\n    interaction_type VARCHAR(50),\n    interaction_details TEXT,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n    feedback_id INT PRIMARY KEY,\n    interaction_id INT,\n    rating INT,\n    feedback_details TEXT,\n    FOREIGN KEY (interaction_id) REFERENCES interactions(interaction_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15),\n    address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    customer_id INT,\n    date DATE,\n    interaction_type VARCHAR(50),\n    interaction_description TEXT,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n    feedback_id INT PRIMARY KEY,\n    interaction_id INT,\n    feedback_rating INT,\n    feedback_comment TEXT,\n    FOREIGN KEY (interaction_id) REFERENCES interactions(interaction_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_feedback (\n    feedback_id INT,\n    campaign_id INT,\n    PRIMARY KEY (feedback_id, campaign_id),\n    FOREIGN KEY (feedback_id) REFERENCES feedback(feedback_id),\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM public_service_requests;",
+      "SELECT request_id, request_type FROM public_service_requests ORDER BY request_id DESC;",
+      "SELECT request_description FROM public_service_requests WHERE status = 'Completed';",
+      "SELECT * FROM public_service_requests WHERE citizen_id = 1234;",
+      "SELECT request_id, status FROM public_service_requests ORDER BY status ASC, request_id DESC;",
+      "SELECT * FROM public_service_requests WHERE status = 'Open';",
+      "SELECT request_id, request_type FROM public_service_requests WHERE citizen_id = 12345;",
+      "SELECT request_id, request_description FROM public_service_requests WHERE status = 'Pending' ORDER BY request_id DESC;",
+      "SELECT * FROM public_service_requests WHERE status = 'Closed' AND request_type = 'Maintenance';",
+      "SELECT citizen_id, COUNT(*) AS total_requests FROM public_service_requests GROUP BY citizen_id HAVING total_requests > 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM public_service_requests;",
+      "SELECT request_id, citizen_name FROM public_service_requests;",
+      "SELECT citizen_name, request_description FROM public_service_requests;",
+      "SELECT * FROM service_request_status;",
+      "SELECT status_name, description FROM service_request_status;",
+      "SELECT * FROM public_service_requests WHERE request_id = 1;",
+      "SELECT status, citizen_name, request_description FROM public_service_requests WHERE status = 'Pending' ORDER BY request_id DESC;",
+      "SELECT citizen_name, request_description, status FROM public_service_requests WHERE citizen_name LIKE 'John%' AND status = 'Open' LIMIT 3;",
+      "SELECT r.request_id, r.citizen_name, s.status_name FROM public_service_requests r JOIN service_request_status s ON r.status = s.status_name;",
+      "SELECT MAX(request_id) AS max_request_id, MIN(request_id) AS min_request_id FROM public_service_requests;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM public_service_requests;",
+      "SELECT request_id, request_type FROM public_service_requests;",
+      "SELECT request_description FROM public_service_requests WHERE request_status = 'Pending';",
+      "SELECT agent_name, agent_role FROM service_agents ORDER BY agent_name DESC;",
+      "SELECT status_id, status_name, status_description FROM service_status WHERE status_name = 'Complete';",
+      "SELECT * FROM public_service_requests WHERE request_status='Open';",
+      "SELECT request_id, request_type, request_status FROM public_service_requests WHERE request_status='Pending' ORDER BY request_id DESC;",
+      "SELECT agent_name, COUNT(*) AS total_requests FROM service_agents GROUP BY agent_name HAVING COUNT(*) > 5;",
+      "SELECT request_id, request_status, status_name FROM public_service_requests psr JOIN service_status ss ON psr.request_status = ss.status_name WHERE ss.status_name='Completed';",
+      "SELECT agent_name, agent_role, agent_contact FROM service_agents WHERE agent_role='Supervisor' ORDER BY agent_name ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM public_service_requests;",
+      "SELECT request_type, request_description, status FROM public_service_requests WHERE status='Pending';",
+      "SELECT provider_name, service_type, location FROM service_providers ORDER BY provider_name ASC;",
+      "SELECT name, address, phone_number FROM citizen_details WHERE email LIKE '%@gmail.com';",
+      "SELECT request_id, status_description, status_date FROM service_status ORDER BY status_date DESC;",
+      "SELECT * FROM public_service_requests WHERE status = 'Pending';",
+      "SELECT request_id, request_type, request_date FROM public_service_requests WHERE request_type = 'Electricity';",
+      "SELECT C.name, C.address, S.provider_name FROM citizen_details C, service_providers S WHERE C.citizen_id = S.provider_id;",
+      "SELECT R.request_description, S.status_description FROM public_service_requests R, service_status S WHERE R.request_id = S.request_id AND S.status_date > '2022-01-01';",
+      "SELECT P.provider_name, P.service_type, S.status_description FROM service_providers P, service_status S WHERE P.provider_id = S.provider_id AND S.status = 'Completed' ORDER BY S.status_date DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM public_service_requests;",
+      "SELECT request_id, requester_name, request_status FROM public_service_requests;",
+      "SELECT request_text, requester_name, request_status FROM public_service_requests WHERE request_status = 'Pending';",
+      "SELECT * FROM request_comments ORDER BY commenter_name DESC;",
+      "SELECT request_id, request_text, requester_name, assigned_to FROM public_service_requests INNER JOIN assigned_services ON public_service_requests.request_id = assigned_services.request_id;",
+      "SELECT * FROM public_service_requests WHERE request_status='Pending';",
+      "SELECT requester_name, request_text, request_status FROM public_service_requests ORDER BY requester_name ASC;",
+      "SELECT rs.status_name, rs.description, psr.request_text FROM public_service_requests psr JOIN service_status rs ON psr.request_status = rs.status_name;",
+      "SELECT psr.requester_name, rs.status_name, cs.commenter_name, cs.comment_text FROM public_service_requests psr JOIN service_status rs ON psr.request_status = rs.status_name JOIN request_comments cs ON psr.request_id = cs.request_id;",
+      "SELECT psr.request_id, psr.request_text, asg.assigned_to, asg.assigned_date, asg.completion_date FROM public_service_requests psr JOIN assigned_services asg ON psr.request_id = asg.request_id WHERE asg.completion_date IS NOT NULL;"
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_impacts (\n   id INT PRIMARY KEY,\n   energy_source VARCHAR(255),\n   carbon_footprint DECIMAL,\n   water_usage DECIMAL,\n   land_impact DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Environmental_Impacts(\n    id INT PRIMARY KEY,\n    energy_source VARCHAR(255),\n    emissions_level DECIMAL,\n    water_usage DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Energy_Production_Methods(\n    id INT PRIMARY KEY,\n    method_name VARCHAR(255),\n    efficiency DECIMAL,\n    carbon_capture BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bioenergy_impact (\n  id INT PRIMARY KEY,\n  production_method VARCHAR(50),\n  energy_output DECIMAL(10, 2),\n  carbon_emissions DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE production_methods (\n  id INT PRIMARY KEY,\n  method_name VARCHAR(50),\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_factors (\n  id INT PRIMARY KEY,\n  factor_name VARCHAR(50),\n  impact_rating INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergySources (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(50) NOT NULL,\n  source_description TEXT,\n  carbon_intensity DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionMethods (\n  method_id INT PRIMARY KEY,\n  method_name VARCHAR(50) NOT NULL,\n  method_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EnvironmentalImpact (\n  impact_id INT PRIMARY KEY,\n  impact_type VARCHAR(50) NOT NULL,\n  impact_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProduction (\n  production_id INT PRIMARY KEY,\n  source_id INT,\n  method_id INT,\n  impact_id INT,\n  production_date DATE,\n  production_quantity DECIMAL,\n  FOREIGN KEY (source_id) REFERENCES EnergySources(source_id),\n  FOREIGN KEY (method_id) REFERENCES ProductionMethods(method_id),\n  FOREIGN KEY (impact_id) REFERENCES EnvironmentalImpact(impact_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_impacts (\n  impact_id SERIAL PRIMARY KEY,\n  impact_name TEXT NOT NULL,\n  impact_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_sources (\n  source_id SERIAL PRIMARY KEY,\n  source_name TEXT NOT NULL,\n  source_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_production (\n  production_id SERIAL PRIMARY KEY,\n  production_name TEXT NOT NULL,\n  production_description TEXT,\n  source_id INT REFERENCES energy_sources(source_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n  consumption_id SERIAL PRIMARY KEY,\n  consumption_name TEXT NOT NULL,\n  consumption_description TEXT,\n  source_id INT REFERENCES energy_sources(source_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE impact_measurements (\n  measurement_id SERIAL PRIMARY KEY,\n  measurement_value FLOAT NOT NULL,\n  measurement_date DATE,\n  impact_id INT REFERENCES environmental_impacts(impact_id),\n  production_id INT REFERENCES energy_production(production_id),\n  consumption_id INT REFERENCES energy_consumption(consumption_id)\n);\n"
+      }
+    ]
+  }
+]

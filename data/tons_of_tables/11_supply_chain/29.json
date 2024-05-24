@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE purchase_orders (\n purchase_order_id INT PRIMARY KEY,\n vendor_name VARCHAR(255) NOT NULL,\n item_name VARCHAR(255),\n quantity INT,\n unit_price DECIMAL(10, 2),\n total_price DECIMAL(12, 2),\n approved BOOLEAN DEFAULT FALSE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE purchase_orders (\n    order_id INT PRIMARY KEY,\n    order_date DATE,\n    total_amount DECIMAL,\n    vendor_id INT,\n    status VARCHAR(10)\n);\n\nCREATE TABLE approval_workflows (\n    workflow_id INT PRIMARY KEY,\n    approver_id INT,\n    department_id INT,\n    total_approvals INT,\n    status VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PurchaseOrders (\n    id INT PRIMARY KEY,\n    item_name VARCHAR(255),\n    quantity INT,\n    unit_price DECIMAL(10, 2),\n    vendor_id INT,\n    approval_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ApprovalWorkflows (\n    workflow_id INT PRIMARY KEY,\n    workflow_name VARCHAR(255),\n    approval_limit DECIMAL(10, 2),\n    next_approver_id INT,\n    created_by_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RoutingTable (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(255),\n    start_point VARCHAR(255),\n    end_point VARCHAR(255),\n    duration INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE purchase_orders (\n    id SERIAL PRIMARY KEY,\n    order_number VARCHAR(50) NOT NULL,\n    order_date DATE NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(20) DEFAULT 'Pending'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE approval_workflow (\n    id SERIAL PRIMARY KEY,\n    step_number INT NOT NULL,\n    approver_id INT NOT NULL,\n    approver_role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE approvals (\n    id SERIAL PRIMARY KEY,\n    purchase_order_id INT NOT NULL,\n    step_number INT NOT NULL,\n    approved_by_id INT,\n    approved_date TIMESTAMP,\n    status VARCHAR(20) DEFAULT 'Pending'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchase_order_routing (\n    id SERIAL PRIMARY KEY,\n    purchase_order_id INT NOT NULL,\n    current_step INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE purchase_orders (\n  id SERIAL PRIMARY KEY,\n  order_number INTEGER UNIQUE,\n  supplier_id INTEGER REFERENCES suppliers(id),\n  amount DECIMAL,\n  status VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR,\n  contact_person VARCHAR,\n  email VARCHAR UNIQUE,\n  phone_number VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE approvals (\n  id SERIAL PRIMARY KEY,\n  purchase_order_id INTEGER REFERENCES purchase_orders(id),\n  approver_id INTEGER REFERENCES employees(id),\n  approval_status VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR,\n  department VARCHAR,\n  email VARCHAR UNIQUE,\n  phone_number VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR UNIQUE\n);\n"
+      }
+    ]
+  }
+]

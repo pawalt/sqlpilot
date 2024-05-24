@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE door_entry_logs (\n  entry_id INT PRIMARY KEY,\n  entry_timestamp TIMESTAMP,\n  door_id INT,\n  employee_id INT,\n  entry_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE door_entries (\n  entry_id INT PRIMARY KEY,\n  entry_time TIMESTAMP,\n  entry_type VARCHAR(50),\n  door_id INT,\n  employee_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_details (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(100),\n  department VARCHAR(50),\n  position VARCHAR(50),\n  security_clearance VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE door_events (\n  event_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP,\n  door_id INT,\n  event_type VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE doors (\n  door_id SERIAL PRIMARY KEY,\n  door_name VARCHAR,\n  location VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n  employee_id SERIAL PRIMARY KEY,\n  employee_name VARCHAR,\n  department VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE door_entries (\n  entry_id UUID PRIMARY KEY,\n  entry_time TIMESTAMP NOT NULL,\n  entry_type VARCHAR(50) NOT NULL,\n  user_id UUID NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  email VARCHAR(255) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n  level_id UUID PRIMARY KEY,\n  level_name VARCHAR(50) NOT NULL,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entry_logs (\n  log_id UUID PRIMARY KEY,\n  entry_id UUID NOT NULL,\n  entry_time TIMESTAMP NOT NULL,\n  user_id UUID NOT NULL,\n  access_level_id UUID NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE door_entries (\n    entry_id UUID PRIMARY KEY,\n    entry_time TIMESTAMP,\n    entry_type VARCHAR(255),\n    employee_id UUID,\n    door_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id UUID PRIMARY KEY,\n    employee_name VARCHAR(255),\n    department VARCHAR(255),\n    position VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE doors (\n    door_id UUID PRIMARY KEY,\n    door_name VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entry_logs (\n    log_id UUID PRIMARY KEY,\n    entry_id UUID REFERENCES door_entries(entry_id),\n    event_description TEXT,\n    logged_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_levels (\n    level_id UUID PRIMARY KEY,\n    employee_id UUID REFERENCES employees(employee_id),\n    door_id UUID REFERENCES doors(door_id),\n    access_level INT\n);"
+      }
+    ]
+  }
+]

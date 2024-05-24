@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE humidity_data (\n  sensor_id INT PRIMARY KEY,\n  greenhouse_id INT,\n  humidity DECIMAL,\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE humidity_data (sensor_id UUID,\n                  greenhouse_id UUID,\n                  humidity_percentage DECIMAL,\n                  timestamp TIMESTAMP,\n                  PRIMARY KEY (sensor_id, timestamp));"
+      },
+      {
+        "table_schema": "CREATE TABLE greenhouse (greenhouse_id UUID PRIMARY KEY,\n              location TEXT,\n              temperature DECIMAL,\n              humidity_threshold DECIMAL,\n              last_inspection TIMESTAMP);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE greenhouse_sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_name VARCHAR(50),\n    location VARCHAR(100),\n    humidity_level DECIMAL(5,2),\n    temperature DECIMAL(5,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_readings (\n    reading_id INT PRIMARY KEY,\n    sensor_id INT,\n    timestamp TIMESTAMP,\n    humidity DECIMAL(5,2),\n    temperature DECIMAL(5,2),\n    FOREIGN KEY (sensor_id) REFERENCES greenhouse_sensors(sensor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE plant_species (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(50),\n    optimal_humidity DECIMAL(5,2),\n    optimal_temperature DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE humidity_sensors (\n sensor_id INT PRIMARY KEY,\n sensor_location VARCHAR(50),\n sensor_type VARCHAR(50),\n humidity_value FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE greenhouses (\n greenhouse_id INT PRIMARY KEY,\n greenhouse_name VARCHAR(50),\n location VARCHAR(50),\n capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE plant_species (\n species_id INT PRIMARY KEY,\n species_name VARCHAR(50),\n optimal_humidity FLOAT,\n optimal_temperature FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_readings (\n reading_id INT PRIMARY KEY,\n sensor_id INT,\n reading_time TIMESTAMP,\n humidity_value FLOAT\n FOREIGN KEY (sensor_id) REFERENCES humidity_sensors(sensor_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE plant_growth (\n growth_id INT PRIMARY KEY,\n greenhouse_id INT,\n species_id INT,\n reading_id INT,\n growth_time TIMESTAMP\n FOREIGN KEY (greenhouse_id) REFERENCES greenhouses(greenhouse_id),\n FOREIGN KEY (species_id) REFERENCES plant_species(species_id),\n FOREIGN KEY (reading_id) REFERENCES sensor_readings(reading_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE greenhouse_sensors ( sensor_id UUID PRIMARY KEY, greenhouse_id UUID, humidity DECIMAL, temperature DECIMAL, timestamp TIMESTAMP )"
+      },
+      {
+        "table_schema": "CREATE TABLE greenhouses ( greenhouse_id UUID PRIMARY KEY, location TEXT, max_capacity INT )"
+      },
+      {
+        "table_schema": "CREATE TABLE plants ( plant_id UUID PRIMARY KEY, plant_name TEXT, optimal_humidity_range JSONB, optimal_temperature_range JSONB )"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_logs ( log_id UUID PRIMARY KEY, sensor_id UUID, humidity DECIMAL, temperature DECIMAL, timestamp TIMESTAMP )"
+      },
+      {
+        "table_schema": "CREATE TABLE users ( user_id UUID PRIMARY KEY, username TEXT, email TEXT )"
+      }
+    ]
+  }
+]

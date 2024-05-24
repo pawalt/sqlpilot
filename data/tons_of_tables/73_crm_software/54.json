@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n  campaign_id SERIAL PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  start_date TIMESTAMP NOT NULL,\n  end_date TIMESTAMP NOT NULL,\n  target_audience TEXT,\n  email_template TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_emails (\n  email_id INT PRIMARY KEY,\n  campaign_id INT,\n  email_address VARCHAR(255),\n  sent_date DATE,\n  status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    budget DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_lists (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_emails (\n    id SERIAL PRIMARY KEY,\n    campaign_id INT NOT NULL,\n    email_list_id INT NOT NULL,\n    subject VARCHAR(255) NOT NULL,\n    body TEXT NOT NULL,\n    sent_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emails (\n    email_id SERIAL PRIMARY KEY,\n    email_address VARCHAR(255) NOT NULL,\n    recipient_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_emails (\n    campaign_id INT NOT NULL,\n    email_id INT NOT NULL,\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id),\n    FOREIGN KEY (email_id) REFERENCES emails(email_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    log_id SERIAL PRIMARY KEY,\n    email_id INT NOT NULL,\n    log_message TEXT NOT NULL,\n    log_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n  campaign_id SERIAL PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  budget DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (\n  customer_id SERIAL PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(255) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Segments (\n  segment_id SERIAL PRIMARY KEY,\n  segment_name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignAudience (\n  campaign_id INT REFERENCES Campaigns(campaign_id),\n  segment_id INT REFERENCES Segments(segment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailQueue (\n  email_id SERIAL PRIMARY KEY,\n  campaign_id INT REFERENCES Campaigns(campaign_id),\n  customer_id INT REFERENCES Customers(customer_id),\n  email_subject VARCHAR(255),\n  email_content TEXT,\n  sent_date TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

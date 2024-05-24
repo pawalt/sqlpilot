@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_collection_routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(255) NOT NULL,\n  driver_name VARCHAR(255) NOT NULL,\n  truck_id INT NOT NULL,\n  collection_points INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionRoutes (\n  route_id SERIAL PRIMARY KEY,\n  route_name VARCHAR(50) NOT NULL,\n  driver_name VARCHAR(50) NOT NULL,\n  truck_id INT NOT NULL\n);\n\nCREATE TABLE CollectionPoints (\n  collection_point_id SERIAL PRIMARY KEY,\n  point_name VARCHAR(50) NOT NULL,\n  latitude DECIMAL(9,6) NOT NULL,\n  longitude DECIMAL(9,6) NOT NULL,\n  point_type VARCHAR(50) NOT NULL,\n  route_id INT NOT NULL,\n  FOREIGN KEY (route_id) REFERENCES WasteCollectionRoutes(route_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionRoutes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(50) NOT NULL,\n  start_location VARCHAR(100) NOT NULL,\n  end_location VARCHAR(100) NOT NULL,\n  distance FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteCollectionSchedule (\n  schedule_id INT PRIMARY KEY,\n  route_id INT NOT NULL,\n  collection_time DATETIME NOT NULL,\n  is_completed BOOLEAN DEFAULT FALSE,\n  FOREIGN KEY (route_id) REFERENCES WasteCollectionRoutes(route_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FuelConsumption (\n  record_id INT PRIMARY KEY,\n  route_id INT NOT NULL,\n  fuel_used FLOAT NOT NULL,\n  cost FLOAT NOT NULL,\n  FOREIGN KEY (route_id) REFERENCES WasteCollectionRoutes(route_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionRoutes (\n  route_id UUID PRIMARY KEY,\n  driver_id UUID,\n  truck_id UUID,\n  collection_date TIMESTAMP,\n  start_location TEXT,\n  end_location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Drivers (\n  driver_id UUID PRIMARY KEY,\n  driver_name TEXT,\n  driver_phone TEXT,\n  driver_email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Trucks (\n  truck_id UUID PRIMARY KEY,\n  truck_model TEXT,\n  truck_capacity INT,\n  fuel_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionLogs (\n  log_id UUID PRIMARY KEY,\n  collection_date TIMESTAMP,\n  route_id UUID,\n  total_weight INT,\n  fuel_consumed INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionRoutes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(50),\n  driver_id INT,\n  truck_id INT,\n  start_location VARCHAR(100),\n  end_location VARCHAR(100),\n  distance_km DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Drivers (\n  driver_id INT PRIMARY KEY,\n  driver_name VARCHAR(50),\n  driver_license VARCHAR(20),\n  phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Trucks (\n  truck_id INT PRIMARY KEY,\n  truck_make VARCHAR(50),\n  truck_model VARCHAR(50),\n  truck_capacity_kg DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteBins (\n  bin_id INT PRIMARY KEY,\n  location VARCHAR(100),\n  bin_capacity_kg DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Collections (\n  collection_id INT PRIMARY KEY,\n  route_id INT,\n  bin_id INT,\n  collection_date DATE,\n  collected_weight_kg DECIMAL\n);\n"
+      }
+    ]
+  }
+]

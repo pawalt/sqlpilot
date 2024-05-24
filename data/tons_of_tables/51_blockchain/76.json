@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_participants (\n  participant_id UUID PRIMARY KEY,\n  username TEXT NOT NULL,\n  reputation INT DEFAULT 0\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(50),\n    reputation_score INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reputation_events (\n    event_id INT PRIMARY KEY,\n    participant_id INT,\n    event_date DATE,\n    event_description VARCHAR(255),\n    FOREIGN KEY (participant_id) REFERENCES blockchain_participants(participant_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    reputation_score DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    participant_id INT NOT NULL,\n    transaction_amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (participant_id) REFERENCES blockchain_participants(participant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reputation_history (\n    history_id INT PRIMARY KEY,\n    participant_id INT NOT NULL,\n    change_type ENUM('increase', 'decrease') NOT NULL,\n    change_value DECIMAL(10, 2) NOT NULL,\n    change_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (participant_id) REFERENCES blockchain_participants(participant_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    reputation_score INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    participant_id INT NOT NULL,\n    transaction_amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (participant_id) REFERENCES blockchain_participants(participant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blocks (\n    block_id INT PRIMARY KEY,\n    block_hash VARCHAR(255) NOT NULL,\n    block_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE block_chain (\n    chain_id INT PRIMARY KEY,\n    block_id INT NOT NULL,\n    transaction_id INT NOT NULL,\n    FOREIGN KEY (block_id) REFERENCES blocks(block_id),\n    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    reputation_score INT DEFAULT 0\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id INT PRIMARY KEY,\n    transaction_hash VARCHAR(255) NOT NULL,\n    participant_id INT,\n    transaction_amount DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (participant_id) REFERENCES Participants(participant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Rewards (\n    reward_id INT PRIMARY KEY,\n    reward_type VARCHAR(50) NOT NULL,\n    reward_amount DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ParticipantRewards (\n    participant_id INT,\n    reward_id INT,\n    PRIMARY KEY (participant_id, reward_id),\n    FOREIGN KEY (participant_id) REFERENCES Participants(participant_id),\n    FOREIGN KEY (reward_id) REFERENCES Rewards(reward_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TransactionsHistory (\n    transaction_id INT,\n    transaction_time TIMESTAMP NOT NULL,\n    transaction_description TEXT,\n    PRIMARY KEY (transaction_id),\n    FOREIGN KEY (transaction_id) REFERENCES Transactions(transaction_id)\n);\n"
+      }
+    ]
+  }
+]

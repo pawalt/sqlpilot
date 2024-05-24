@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VolunteerAttendance (\n  event_id INT PRIMARY KEY,\n  volunteer_id INT,\n  attendance_date DATE,\n  hours_spent FLOAT,\n  is_present BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Attendees (\n    attendee_id INT PRIMARY KEY,\n    event_id INT,\n    attendee_name VARCHAR(255),\n    attendance_status VARCHAR(50),\n    CONSTRAINT fk_event\n        FOREIGN KEY (event_id)\n        REFERENCES Events(event_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE,\n    event_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Volunteers (\n    volunteer_id INT PRIMARY KEY,\n    volunteer_name VARCHAR(255) NOT NULL,\n    volunteer_email VARCHAR(100) UNIQUE,\n    volunteer_phone VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Attendance (\n    attendance_id INT PRIMARY KEY,\n    event_id INT REFERENCES Events(event_id),\n    volunteer_id INT REFERENCES Volunteers(volunteer_id),\n    attendance_date DATE,\n    status VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE volunteer_events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    attendance_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE volunteers (\n    volunteer_id INT PRIMARY KEY,\n    volunteer_name VARCHAR(255),\n    contact_number VARCHAR(15),\n    email_address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_attendance (\n    event_id INT,\n    volunteer_id INT,\n    attendance_status VARCHAR(10),\n    PRIMARY KEY (event_id, volunteer_id),\n    FOREIGN KEY (event_id) REFERENCES volunteer_events(event_id),\n    FOREIGN KEY (volunteer_id) REFERENCES volunteers(volunteer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_feedback (\n    event_id INT,\n    volunteer_id INT,\n    feedback_text TEXT,\n    PRIMARY KEY (event_id, volunteer_id),\n    FOREIGN KEY (event_id) REFERENCES volunteer_events(event_id),\n    FOREIGN KEY (volunteer_id) REFERENCES volunteers(volunteer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Volunteers (\n  volunteer_id INT PRIMARY KEY,\n  volunteer_name VARCHAR(100),\n  volunteer_email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Events (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR(100),\n  event_date DATE,\n  event_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Attendance (\n  attendance_id INT PRIMARY KEY,\n  volunteer_id INT,\n  event_id INT,\n  attendance_date DATE,\n  FOREIGN KEY (volunteer_id) REFERENCES Volunteers(volunteer_id),\n  FOREIGN KEY (event_id) REFERENCES Events(event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Activities (\n  activity_id INT PRIMARY KEY,\n  activity_name VARCHAR(100),\n  activity_type VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VolunteerActivities (\n  volunteer_id INT,\n  activity_id INT,\n  PRIMARY KEY (volunteer_id, activity_id),\n  FOREIGN KEY (volunteer_id) REFERENCES Volunteers(volunteer_id),\n  FOREIGN KEY (activity_id) REFERENCES Activities(activity_id)\n);"
+      }
+    ]
+  }
+]

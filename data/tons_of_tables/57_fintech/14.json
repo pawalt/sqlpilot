@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE underwriting_criteria (\n    id SERIAL PRIMARY KEY,\n    applicant_name VARCHAR(50) NOT NULL,\n    age INT NOT NULL,\n    income DECIMAL NOT NULL,\n    credit_score INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UnderwritingCriteria (\n    id INT PRIMARY KEY,\n    criteria_name VARCHAR(255),\n    criteria_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyApproval (\n    policy_id INT PRIMARY KEY,\n    underwriting_criteria_id INT,\n    approval_status VARCHAR(50),\n    FOREIGN KEY (underwriting_criteria_id) REFERENCES UnderwritingCriteria(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE underwriting_criteria (\n  criteria_id INT PRIMARY KEY,\n  criteria_name TEXT NOT NULL,\n  criteria_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_approval (\n  approval_id INT PRIMARY KEY,\n  policy_id INT NOT NULL,\n  approval_date DATE,\n  decision TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy (\n  policy_id INT PRIMARY KEY,\n  policy_holder TEXT NOT NULL,\n  policy_type TEXT,\n  policy_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Underwriters (\n  ID INT PRIMARY KEY,\n  Name VARCHAR(50) NOT NULL,\n  Department VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyTypes (\n  TypeID INT PRIMARY KEY,\n  TypeName VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Criteria (\n  CriteriaID INT PRIMARY KEY,\n  CriteriaName VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n  PolicyID INT PRIMARY KEY,\n  PolicyType INT NOT NULL,\n  CriteriaID INT NOT NULL,\n  Approved BOOLEAN DEFAULT FALSE,\n  FOREIGN KEY (PolicyType) REFERENCES PolicyTypes(TypeID),\n  FOREIGN KEY (CriteriaID) REFERENCES Criteria(CriteriaID)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Underwriters (\n    underwriter_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(15) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n    policy_id INT PRIMARY KEY,\n    policy_number VARCHAR(20) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    underwriter_id INT NOT NULL,\n    FOREIGN KEY (underwriter_id) REFERENCES Underwriters(underwriter_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Criteria (\n    criteria_id INT PRIMARY KEY,\n    age_requirement INT NOT NULL,\n    income_requirement DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Applicants (\n    applicant_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    age INT NOT NULL,\n    income DECIMAL(10,2) NOT NULL,\n    policy_id INT NOT NULL,\n    FOREIGN KEY (policy_id) REFERENCES Policies(policy_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Applications (\n    application_id INT PRIMARY KEY,\n    applicant_id INT NOT NULL,\n    criteria_id INT NOT NULL,\n    application_date DATE NOT NULL,\n    FOREIGN KEY (applicant_id) REFERENCES Applicants(applicant_id),\n    FOREIGN KEY (criteria_id) REFERENCES Criteria(criteria_id)\n);\n"
+      }
+    ]
+  }
+]

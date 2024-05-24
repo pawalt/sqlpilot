@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biodegradable_waste_carbon_footprint (\n    method_id INT PRIMARY KEY,\n    method_name VARCHAR(50),\n    waste_type VARCHAR(50),\n    carbon_emission FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biodegradable_waste_disposal_methods (\n  method_id UUID PRIMARY KEY,\n  method_name VARCHAR(100) NOT NULL,\n  carbon_footprint FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_locations (\n  location_id UUID PRIMARY KEY,\n  location_name VARCHAR(100) NOT NULL,\n  capacity INTEGER NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Waste_Disposal_Methods (\n  method_id SERIAL PRIMARY KEY,\n  method_name VARCHAR(50) UNIQUE NOT NULL,\n  description TEXT,\n  carbon_emission DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Waste_Records (\n  record_id SERIAL PRIMARY KEY,\n  method_id INT REFERENCES Waste_Disposal_Methods(method_id),\n  date_recorded DATE,\n  waste_type VARCHAR(20),\n  weight_kg DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Carbon_Footprint_Report (\n  report_id SERIAL PRIMARY KEY,\n  record_id INT REFERENCES Waste_Records(record_id),\n  carbon_emission DECIMAL,\n  report_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteTypes ( \n  waste_id INT PRIMARY KEY, \n  waste_name TEXT NOT NULL, \n  waste_description TEXT, \n  carbon_intensity FLOAT NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteDisposalMethods ( \n  method_id INT PRIMARY KEY, \n  method_name TEXT NOT NULL, \n  method_description TEXT, \n  effectiveness_rating INT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteDisposalOptions ( \n  option_id INT PRIMARY KEY, \n  option_name TEXT NOT NULL, \n  option_description TEXT, \n  method_id INT REFERENCES WasteDisposalMethods(method_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CarbonFootprintData ( \n  data_id INT PRIMARY KEY, \n  waste_id INT REFERENCES WasteTypes(waste_id), \n  option_id INT REFERENCES WasteDisposalOptions(option_id), \n  carbon_emission FLOAT NOT NULL, \n  date_recorded DATE \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biodegradable_waste_disposal_methods (\n  method_id INT PRIMARY KEY,\n  method_name VARCHAR(50) NOT NULL,\n  carbon_emission DECIMAL(10,2) NOT NULL,\n  efficiency_rating INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  biodegradable BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_sites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE method_material_mapping (\n  map_id INT PRIMARY KEY,\n  method_id INT NOT NULL,\n  material_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE carbon_footprint_history (\n  log_id INT PRIMARY KEY,\n  method_id INT NOT NULL,\n  emission_value DECIMAL(10,2) NOT NULL,\n  log_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

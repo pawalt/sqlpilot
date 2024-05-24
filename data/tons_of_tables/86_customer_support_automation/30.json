@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voice_recordings (\n  recording_id UUID PRIMARY KEY,\n  call_id UUID NOT NULL,\n  recording_data BYTEA NOT NULL,\n  recording_date TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voice_recordings (\n    recording_id INT PRIMARY KEY,\n    call_id INT NOT NULL,\n    recording_url VARCHAR(255) NOT NULL,\n    duration_seconds INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE call_details (\n    call_id INT PRIMARY KEY,\n    caller_name VARCHAR(50) NOT NULL,\n    date_time TIMESTAMP NOT NULL,\n    agent_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE support_calls (\n    id INT PRIMARY KEY,\n    caller_id INT,\n    agent_id INT,\n    timestamp TIMESTAMP,\n    duration INT,\n    recording BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE callers (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    phone_number VARCHAR(20),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agents (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    department VARCHAR(50),\n    hire_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE support_calls (\n    call_id UUID PRIMARY KEY,\n    call_date TIMESTAMP,\n    caller_id INT,\n    agent_id INT,\n    duration INTERVAL,\n    audio_file BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    customer_phone VARCHAR(20),\n    customer_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id INT PRIMARY KEY,\n    agent_name VARCHAR(255),\n    agent_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE call_feedback (\n    feedback_id INT PRIMARY KEY,\n    call_id UUID,\n    feedback_text TEXT,\n    feedback_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE support_calls ( call_id INT PRIMARY KEY, customer_id INT, call_datetime TIMESTAMP, call_duration INT, call_recording BYTEA )"
+      },
+      {
+        "table_schema": "CREATE TABLE customers ( customer_id INT PRIMARY KEY, customer_name TEXT, customer_email TEXT )"
+      },
+      {
+        "table_schema": "CREATE TABLE agents ( agent_id INT PRIMARY KEY, agent_name TEXT )"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_calls ( agent_call_id INT PRIMARY KEY, agent_id INT, call_id INT, call_datetime TIMESTAMP, call_duration INT, call_recording BYTEA, FOREIGN KEY (agent_id) REFERENCES agents(agent_id), FOREIGN KEY (call_id) REFERENCES support_calls(call_id) )"
+      },
+      {
+        "table_schema": "CREATE TABLE call_feedback ( feedback_id INT PRIMARY KEY, call_id INT, feedback_comment TEXT, rating INT, FOREIGN KEY (call_id) REFERENCES support_calls(call_id) )"
+      }
+    ]
+  }
+]

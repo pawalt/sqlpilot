@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meeting_records ( \n    recording_id UUID PRIMARY KEY, \n    recording_url VARCHAR(255), \n    transcript_text TEXT, \n    meeting_date DATE, \n    duration INT \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meeting_recordings (\n    recording_id INT PRIMARY KEY,\n    meeting_date DATE,\n    recording_url TEXT,\n    duration_minutes INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_transcripts (\n    transcript_id INT PRIMARY KEY,\n    recording_id INT REFERENCES meeting_recordings(recording_id),\n    transcript_text TEXT,\n    processed BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recordings (\n    meeting_id INT PRIMARY KEY,\n    recording_url VARCHAR(255),\n    recording_date TIMESTAMP,\n    duration_minutes INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transcripts (\n    transcript_id INT PRIMARY KEY,\n    meeting_id INT,\n    transcript_text TEXT,\n    transcript_created TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meetings (\n    meeting_id INT PRIMARY KEY,\n    meeting_title VARCHAR(100),\n    meeting_date TIMESTAMP,\n    organizer_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meetings (\n  meeting_id INT PRIMARY KEY,\n  meeting_topic VARCHAR(255),\n  recording_url VARCHAR(255),\n  transcript TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n  attendee_id INT PRIMARY KEY,\n  meeting_id INT,\n  attendee_name VARCHAR(255),\n  email VARCHAR(255),\n  JOINING_DATE DATE,\n  FOREIGN KEY (meeting_id) REFERENCES meetings(meeting_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE speakers (\n  speaker_id INT PRIMARY KEY,\n  meeting_id INT,\n  speaker_name VARCHAR(255),\n  PRIMARY KEY (speaker_id, meeting_id),\n  FOREIGN KEY (meeting_id) REFERENCES meetings(meeting_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (\n  keyword_id INT PRIMARY KEY,\n  keyword_name VARCHAR(255),\n  meeting_id INT,\n  FOREIGN KEY (meeting_id) REFERENCES meetings(meeting_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MeetingRecordings (\n  recording_id UUID PRIMARY KEY,\n  meeting_id UUID,\n  recording_url TEXT,\n  recording_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingTranscripts (\n  transcript_id UUID PRIMARY KEY,\n  meeting_id UUID,\n  transcript_text TEXT,\n  transcript_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingAttendees (\n  attendee_id UUID PRIMARY KEY,\n  meeting_id UUID,\n  attendee_name TEXT,\n  attendee_email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingTopics (\n  topic_id UUID PRIMARY KEY,\n  meeting_id UUID,\n  topic_title TEXT,\n  topic_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingFeedback (\n  feedback_id UUID PRIMARY KEY,\n  meeting_id UUID,\n  feedback_text TEXT,\n  feedback_rating INT\n);"
+      }
+    ]
+  }
+]

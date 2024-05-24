@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE acls (\n    id INT PRIMARY KEY,\n    resource VARCHAR(255) NOT NULL,\n    role VARCHAR(50) NOT NULL,\n    permission VARCHAR(50) NOT NULL,\n    user_id INT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_resources_acl (\n    resource_id UUID PRIMARY KEY,\n    resource_name TEXT NOT NULL,\n    resource_type TEXT NOT NULL,\n    user_id UUID NOT NULL,\n    access_level TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_permissions (\n    permission_id UUID PRIMARY KEY,\n    resource_id UUID NOT NULL,\n    user_id UUID NOT NULL,\n    permission_type TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE acl_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE acl_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE acl_resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(100) NOT NULL,\n    resource_type VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_resources (\n    resource_id UUID PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    resource_type VARCHAR(50) NOT NULL,\n    resource_permission VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    role_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id UUID PRIMARY KEY,\n    permission_type VARCHAR(50) NOT NULL,\n    permission_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_id UUID,\n    permission_id UUID,\n    FOREIGN KEY (role_id) REFERENCES user_roles(role_id),\n    FOREIGN KEY (permission_id) REFERENCES user_permissions(permission_id),\n    PRIMARY KEY (role_id, permission_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_resources_acl (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    access_level VARCHAR(50) NOT NULL,\n    user_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL,\n    description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_permission_id INT PRIMARY KEY,\n    role_id INT NOT NULL,\n    permission_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_role_mapping (\n    mapping_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    role_id INT NOT NULL\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE client_portfolios (\n  client_id INT PRIMARY KEY,\n  name STRING,\n  email STRING,\n  phone_number STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ClientPortfolio (\n    id INT PRIMARY KEY,\n    client_name VARCHAR(255),\n    account_number VARCHAR(20),\n    balance DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AssetAllocation (\n    id INT PRIMARY KEY,\n    client_id INT,\n    asset_type VARCHAR(50),\n    allocation DECIMAL(5, 2),\n    FOREIGN KEY (client_id) REFERENCES ClientPortfolio(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ClientPortfolios (\n    client_id INT NOT NULL,\n    client_name VARCHAR(50),\n    portfolio_id INT NOT NULL,\n    allocation_percentage DECIMAL(5,2),\n    PRIMARY KEY (client_id, portfolio_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AssetAllocations (\n    allocation_id INT NOT NULL,\n    client_id INT NOT NULL,\n    asset_type VARCHAR(50),\n    asset_quantity INT,\n    PRIMARY KEY (allocation_id),\n    FOREIGN KEY (client_id) REFERENCES ClientPortfolios(client_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE InvestmentPerformanceMetrics (\n    performance_id INT NOT NULL,\n    client_id INT NOT NULL,\n    portfolio_id INT NOT NULL,\n    return_rate DECIMAL(5,2),\n    volatility DECIMAL(5,2),\n    PRIMARY KEY (performance_id),\n    FOREIGN KEY (client_id, portfolio_id) REFERENCES ClientPortfolios(client_id, portfolio_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Client_Portfolios (\n    client_id UUID PRIMARY KEY,\n    client_name VARCHAR(255) NOT NULL,\n    client_age INT,\n    client_email VARCHAR(255),\n    client_address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Asset_Allocations (\n    allocation_id UUID PRIMARY KEY,\n    client_id UUID REFERENCES Client_Portfolios(client_id),\n    asset_type VARCHAR(100) NOT NULL,\n    asset_percentage FLOAT,\n    allocation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Investment_Performance (\n    performance_id UUID PRIMARY KEY,\n    client_id UUID REFERENCES Client_Portfolios(client_id),\n    asset_allocation_id UUID REFERENCES Asset_Allocations(allocation_id),\n    investment_return FLOAT,\n    investment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Reports (\n    report_id UUID PRIMARY KEY,\n    client_id UUID REFERENCES Client_Portfolios(client_id),\n    report_date DATE,\n    report_content TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Client_Portfolios (\n\tclient_id INT PRIMARY KEY,\n\tclient_name VARCHAR(255),\n\tportfolio_name VARCHAR(255),\n\ttotal_assets DECIMAL(10, 2),\n\tcreation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Asset_Allocations (\n\tallocation_id INT PRIMARY KEY,\n\tclient_id INT,\n\tasset_type VARCHAR(50),\n\tallocation_percentage DECIMAL(5, 2),\n\tFOREIGN KEY (client_id) REFERENCES Client_Portfolios(client_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Investment_Performance (\n\tperformance_id INT PRIMARY KEY,\n\tclient_id INT,\n\tinvestment_date DATE,\n\tinvestment_return DECIMAL(5, 2),\n\tFOREIGN KEY (client_id) REFERENCES Client_Portfolios(client_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reporting (\n\treport_id INT PRIMARY KEY,\n\tclient_id INT,\n\treport_date DATE,\n\treport_text TEXT,\n\tFOREIGN KEY (client_id) REFERENCES Client_Portfolios(client_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Analysis (\n\tanalysis_id INT PRIMARY KEY,\n\tclient_id INT,\n\tanalysis_date DATE,\n\tanalysis_result VARCHAR(255),\n\tFOREIGN KEY (client_id) REFERENCES Client_Portfolios(client_id)\n);"
+      }
+    ]
+  }
+]

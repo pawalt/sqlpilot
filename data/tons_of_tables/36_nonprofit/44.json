@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advocacy_group (\n  id INT PRIMARY KEY,\n  issue_title VARCHAR(255),\n  issue_description TEXT,\n  legislative_outcome VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advocacy_group (\n   group_id INT PRIMARY KEY,\n   group_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_data (\n   policy_id INT PRIMARY KEY,\n   policy_title TEXT,\n   legislative_outcome TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_issues (\n    issue_id SERIAL PRIMARY KEY,\n    issue_name TEXT NOT NULL,\n    issue_description TEXT,\n    issue_status BOOL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE legislative_outcomes (\n    outcome_id SERIAL PRIMARY KEY,\n    issue_id INT REFERENCES policy_issues(issue_id),\n    outcome_details TEXT,\n    outcome_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE advocacy_group (\n    group_id SERIAL PRIMARY KEY,\n    group_name TEXT NOT NULL,\n    group_description TEXT,\n    group_size INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PolicyIssues (\n    issue_id INT PRIMARY KEY,\n    issue_title TEXT,\n    issue_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LegislativeOutcomes (\n    outcome_id INT PRIMARY KEY,\n    outcome_title TEXT,\n    outcome_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AdvocacyGroups (\n    group_id INT PRIMARY KEY,\n    group_name TEXT,\n    group_location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GroupActivities (\n    activity_id INT PRIMARY KEY,\n    group_id INT,\n    activity_date DATE,\n    activity_description TEXT,\n    FOREIGN KEY (group_id) REFERENCES AdvocacyGroups(group_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advocacy_group (\n   group_id INT PRIMARY KEY,\n   group_name VARCHAR(255),\n   group_location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_issues (\n   issue_id INT PRIMARY KEY,\n   issue_description TEXT,\n   issue_category VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE legislative_outcomes (\n   outcome_id INT PRIMARY KEY,\n   outcome_description TEXT,\n   outcome_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE group_policy_relationship (\n   relationship_id INT PRIMARY KEY,\n   group_id INT,\n   issue_id INT,\n   FOREIGN KEY (group_id) REFERENCES advocacy_group(group_id),\n   FOREIGN KEY (issue_id) REFERENCES policy_issues(issue_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outcome_relationship (\n   relationship_id INT PRIMARY KEY,\n   outcome_id INT,\n   issue_id INT,\n   FOREIGN KEY (outcome_id) REFERENCES legislative_outcomes(outcome_id),\n   FOREIGN KEY (issue_id) REFERENCES policy_issues(issue_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE appointments (\n    appointment_id INT PRIMARY KEY,\n    client_id INT,\n    session_date DATE,\n    session_time TIME,\n    reminder_sent BOOL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n    appointment_id INT PRIMARY KEY,\n    client_id INT REFERENCES clients(client_id),\n    appointment_date DATE,\n    appointment_time TIME,\n    status ENUM('scheduled', 'cancelled', 'completed')\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients ( \n    client_id UUID PRIMARY KEY, \n    full_name VARCHAR(100) NOT NULL, \n    email VARCHAR(100) UNIQUE, \n    phone_number VARCHAR(20), \n    date_of_birth DATE, \n    created_at TIMESTAMP DEFAULT NOW() \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments ( \n    appointment_id SERIAL PRIMARY KEY, \n    client_id UUID REFERENCES clients(client_id), \n    appointment_date TIMESTAMP NOT NULL, \n    appointment_type VARCHAR(50), \n    status VARCHAR(20) DEFAULT 'Scheduled', \n    created_at TIMESTAMP DEFAULT NOW(), \n    updated_at TIMESTAMP \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions ( \n    session_id SERIAL PRIMARY KEY, \n    appointment_id INT REFERENCES appointments(appointment_id), \n    session_date TIMESTAMP NOT NULL, \n    session_notes TEXT, \n    feedback TEXT, \n    created_at TIMESTAMP DEFAULT NOW() \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n  id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n  id INT PRIMARY KEY,\n  client_id INT REFERENCES clients(id),\n  appointment_date DATE,\n  start_time TIME,\n  end_time TIME,\n  status VARCHAR(20) DEFAULT 'Scheduled'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n  id INT PRIMARY KEY,\n  appointment_id INT REFERENCES appointments(id),\n  session_date DATE,\n  session_time TIME,\n  session_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reminders (\n  id INT PRIMARY KEY,\n  appointment_id INT REFERENCES appointments(id),\n  reminder_date DATE,\n  reminder_time TIME,\n  message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(255),\n    client_email VARCHAR(255),\n    client_phone VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n    appointment_id INT PRIMARY KEY,\n    client_id INT,\n    appointment_date DATE,\n    appointment_time TIME,\n    appointment_notes TEXT,\n    FOREIGN KEY (client_id) REFERENCES clients(client_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id INT PRIMARY KEY,\n    appointment_id INT,\n    session_date DATE,\n    session_time TIME,\n    session_notes TEXT,\n    FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reminders (\n    reminder_id INT PRIMARY KEY,\n    reminder_type VARCHAR(50),\n    reminder_date DATE,\n    reminder_time TIME,\n    reminder_notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE client_reminders (\n    link_id INT PRIMARY KEY,\n    client_id INT,\n    reminder_id INT,\n    FOREIGN KEY (client_id) REFERENCES clients(client_id),\n    FOREIGN KEY (reminder_id) REFERENCES reminders(reminder_id)\n);\n"
+      }
+    ]
+  }
+]

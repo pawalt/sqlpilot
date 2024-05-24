@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE board_meeting_minutes (\n  meeting_id INT PRIMARY KEY,\n  meeting_date DATE NOT NULL,\n  meeting_time TIME NOT NULL,\n  attendees TEXT[] NOT NULL,\n  agenda TEXT NOT NULL,\n  minutes TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE board_meetings (\n    meeting_id INT PRIMARY KEY,\n    meeting_date DATE,\n    meeting_location VARCHAR(255),\n    agenda_items TEXT,\n    meeting_notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    meeting_id INT,\n    attendee_name VARCHAR(255),\n    attendee_role VARCHAR(255),\n    is_present BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE board_meeting_minutes (\n    meeting_id INT PRIMARY KEY,\n    meeting_date DATE,\n    agenda_topic TEXT,\n    meeting_notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    meeting_id INT,\n    attendee_name TEXT,\n    role TEXT,\n    FOREIGN KEY (meeting_id) REFERENCES board_meeting_minutes(meeting_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    document_id INT PRIMARY KEY,\n    meeting_id INT,\n    document_name TEXT,\n    document_type TEXT,\n    document_path TEXT,\n    FOREIGN KEY (meeting_id) REFERENCES board_meeting_minutes(meeting_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE board_meetings (\n  meeting_id UUID PRIMARY KEY,\n  meeting_date DATE NOT NULL,\n  meeting_location VARCHAR(255) NOT NULL,\n  meeting_duration INTERVAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n  attendee_id UUID PRIMARY KEY,\n  meeting_id UUID NOT NULL REFERENCES board_meetings(meeting_id),\n  attendee_name VARCHAR(255) NOT NULL,\n  attendee_email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agenda_items (\n  agenda_item_id UUID PRIMARY KEY,\n  meeting_id UUID NOT NULL REFERENCES board_meetings(meeting_id),\n  agenda_title VARCHAR(255) NOT NULL,\n  agenda_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE minutes (\n  minute_id UUID PRIMARY KEY,\n  meeting_id UUID NOT NULL REFERENCES board_meetings(meeting_id),\n  meeting_minutes TEXT NOT NULL,\n  approved BOOLEAN DEFAULT false\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BoardMembers (\n    member_id INT PRIMARY KEY,\n    full_name VARCHAR(255) NOT NULL,\n    position VARCHAR(100),\n    email VARCHAR(255) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingAgendas (\n    agenda_id INT PRIMARY KEY,\n    meeting_date TIMESTAMP NOT NULL,\n    agenda_details TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingMinutes (\n    minute_id INT PRIMARY KEY,\n    meeting_id INT,\n    member_id INT,\n    minute_text TEXT,\n    FOREIGN KEY (meeting_id) REFERENCES MeetingAgendas(agenda_id),\n    FOREIGN KEY (member_id) REFERENCES BoardMembers(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingAttendees (\n    attendee_id INT PRIMARY KEY,\n    meeting_id INT,\n    member_id INT,\n    attendance_status VARCHAR(10),\n    FOREIGN KEY (meeting_id) REFERENCES MeetingAgendas(agenda_id),\n    FOREIGN KEY (member_id) REFERENCES BoardMembers(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MeetingAttachments (\n    attachment_id INT PRIMARY KEY,\n    meeting_id INT,\n    attachment_name VARCHAR(255),\n    attachment_link VARCHAR(255),\n    FOREIGN KEY (meeting_id) REFERENCES MeetingAgendas(agenda_id)\n);\n"
+      }
+    ]
+  }
+]

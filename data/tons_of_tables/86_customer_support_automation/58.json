@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_feedback ( \n    feedback_id UUID PRIMARY KEY, \n    customer_id UUID NOT NULL, \n    feedback_text TEXT NOT NULL, \n    rating INT CHECK (rating >= 1 AND rating <= 5), \n    created_at TIMESTAMP DEFAULT now() \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(15) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n  feedback_id INT PRIMARY KEY,\n  customer_id INT,\n  feedback_text TEXT,\n  rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerFeedback (\n    feedback_id SERIAL PRIMARY KEY,\n    feedback_text TEXT NOT NULL,\n    customer_id INT REFERENCES Customers(customer_id),\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name TEXT NOT NULL,\n    email TEXT UNIQUE,\n    phone_number TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FeedbackRating (\n    feedback_id INT REFERENCES CustomerFeedback(feedback_id),\n    rating INT CHECK (rating >= 1 AND rating <= 5)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_feedback (\n    feedback_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    feedback_text TEXT NOT NULL,\n    rating INT CHECK (rating >= 1 AND rating <= 5)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_category (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_history (\n    history_id INT PRIMARY KEY,\n    feedback_id INT NOT NULL,\n    date_submitted DATE NOT NULL,\n    CONSTRAINT fk_feedback_id FOREIGN KEY (feedback_id) REFERENCES customer_feedback(feedback_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerFeedback (id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  feedback_text TEXT NOT NULL,\n  timestamp TIMESTAMP NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (customer_id INT PRIMARY KEY,\n  customer_name VARCHAR NOT NULL,\n  email_address VARCHAR UNIQUE NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE FeedbackRatingScale (rating_id INT PRIMARY KEY,\n  rating_description VARCHAR NOT NULL,\n  rating_value INT NOT NULL CHECK (rating_value >= 0 AND rating_value <= 10))"
+      },
+      {
+        "table_schema": "CREATE TABLE FeedbackAnalytics (analytics_id INT PRIMARY KEY,\n  feedback_id INT NOT NULL,\n  feedback_rating INT NOT NULL CHECK (feedback_rating >= 0 AND feedback_rating <= 10))"
+      },
+      {
+        "table_schema": "CREATE TABLE FeedbackResponses (response_id INT PRIMARY KEY,\n  feedback_id INT NOT NULL,\n  response_text TEXT NOT NULL)"
+      }
+    ]
+  }
+]

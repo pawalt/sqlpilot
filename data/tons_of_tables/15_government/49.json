@@ -1,0 +1,76 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_transportation_data (\n    id INT PRIMARY KEY,\n    user_id INT,\n    route_id INT,\n    date DATE,\n    start_time TIME,\n    end_time TIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_transportation_routes (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(50) NOT NULL,\n    start_location VARCHAR(100) NOT NULL,\n    end_location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE public_transportation_users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    route_id INT,\n    FOREIGN KEY (route_id) REFERENCES public_transportation_routes(route_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(50),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Routes (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(50),\n    start_location VARCHAR(50),\n    end_location VARCHAR(50),\n    distance_km FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Trips (\n    trip_id INT PRIMARY KEY,\n    user_id INT,\n    route_id INT,\n    trip_date DATE,\n    trip_duration_minutes INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_transportation_routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(255) NOT NULL,\n  start_location VARCHAR(255) NOT NULL,\n  end_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_usage (\n  usage_id INT PRIMARY KEY,\n  route_id INT,\n  user_id INT,\n  date DATE,\n  primary key (usage_id),\n  foreign key (route_id) references public_transportation_routes(route_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  first_name VARCHAR(255) NOT NULL,\n  last_name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_information (\n  ticket_id INT PRIMARY KEY,\n  user_id INT,\n  route_id INT,\n  fare DECIMAL,\n  purchase_date DATE,\n  foreign key (user_id) references users(user_id),\n  foreign key (route_id) references public_transportation_routes(route_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (route_id INT PRIMARY KEY,\n  route_name VARCHAR(50) NOT NULL,\n  starting_point VARCHAR(50) NOT NULL,\n  ending_point VARCHAR(50) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE stops (stop_id INT PRIMARY KEY,\n  stop_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (vehicle_id INT PRIMARY KEY,\n  vehicle_type VARCHAR(50) NOT NULL,\n  capacity INT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE passengers (passenger_id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  age INT NOT NULL,\n  gender VARCHAR(10) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE trips (trip_id INT PRIMARY KEY,\n  route_id INT,\n  vehicle_id INT,\n  stop_id INT,\n  passenger_id INT,\n  date TIMESTAMP NOT NULL,\n  distance FLOAT NOT NULL,\n  cost DECIMAL(8,2) NOT NULL,\n  FOREIGN KEY (route_id) REFERENCES routes(route_id),\n  FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id),\n  FOREIGN KEY (stop_id) REFERENCES stops(stop_id),\n  FOREIGN KEY (passenger_id) REFERENCES passengers(passenger_id);"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (schedule_id INT PRIMARY KEY,\n  route_id INT,\n  vehicle_id INT,\n  day_of_week VARCHAR(10) NOT NULL,\n  departure_time TIME NOT NULL,\n  arrival_time TIME NOT NULL,\n  FOREIGN KEY (route_id) REFERENCES routes(route_id),\n  FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id);"
+      },
+      {
+        "table_schema": "CREATE TABLE fare (fare_id INT PRIMARY KEY,\n  route_id INT,\n  distance_range VARCHAR(50) NOT NULL,\n  fare_amount DECIMAL(8,2) NOT NULL,\n  FOREIGN KEY (route_id) REFERENCES routes(route_id);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (payment_id INT PRIMARY KEY,\n  passenger_id INT,\n  trip_id INT,\n  payment_amount DECIMAL(8,2) NOT NULL,\n  payment_date DATE NOT NULL,\n  FOREIGN KEY (passenger_id) REFERENCES passengers(passenger_id),\n  FOREIGN KEY (trip_id) REFERENCES trips(trip_id);"
+      }
+    ]
+  }
+]

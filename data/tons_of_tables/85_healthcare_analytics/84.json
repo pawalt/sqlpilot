@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurers (\n    insurer_id INT PRIMARY KEY,\n    insurer_name VARCHAR(255),\n    policy_type VARCHAR(50),\n    claim_amount DECIMAL(10, 2),\n    claim_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_claim_data (\n  member_id INT,\n  claim_date DATE,\n  claim_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessment (\n  member_id INT,\n  age INT,\n  pre_existing_conditions BOOLEAN,\n  risk_score DECIMAL(5, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurer { \n  insurer_id INT PRIMARY KEY, \n  insurer_name VARCHAR(255) NOT NULL, \n  location VARCHAR(255), \n  policy_type VARCHAR(50) \n}; \n\nCREATE TABLE claim_history { \n  claim_id INT PRIMARY KEY, \n  insurer_id INT, \n  claim_amount DECIMAL(10, 2), \n  claim_date DATE, \n  FOREIGN KEY (insurer_id) REFERENCES insurer(insurer_id) \n}; \n\nCREATE TABLE risk_assessment { \n  assessment_id INT PRIMARY KEY, \n  claim_id INT, \n  risk_score DECIMAL(5, 2), \n  assessment_date DATE, \n  FOREIGN KEY (claim_id) REFERENCES claim_history(claim_id) \n}"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Member (\n    member_id UUID PRIMARY KEY,\n    member_name VARCHAR(50),\n    date_of_birth DATE,\n    gender VARCHAR(10),\n    address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Claim (\n    claim_id UUID PRIMARY KEY,\n    member_id UUID,\n    claim_amount DECIMAL(10,2),\n    claim_date DATE,\n    diagnosis VARCHAR(100),\n    FOREIGN KEY (member_id) REFERENCES Member(member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Provider (\n    provider_id UUID PRIMARY KEY,\n    provider_name VARCHAR(50),\n    provider_type VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RiskAssessment (\n    assessment_id UUID PRIMARY KEY,\n    claim_id UUID,\n    risk_score DECIMAL(5,2),\n    prediction_dt DATE,\n    FOREIGN KEY (claim_id) REFERENCES Claim(claim_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurers ( \n   insurer_id INT PRIMARY KEY, \n   insurer_name VARCHAR(255) NOT NULL, \n   business_type VARCHAR(100), \n   address VARCHAR(255) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policyholders ( \n   policyholder_id INT PRIMARY KEY, \n   policyholder_name VARCHAR(255) NOT NULL, \n   age INT, \n   gender VARCHAR(10), \n   address VARCHAR(255) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claims ( \n   claim_id INT PRIMARY KEY, \n   policyholder_id INT, \n   claim_date DATE, \n   claim_amount DECIMAL(10,2) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assessments ( \n   assessment_id INT PRIMARY KEY, \n   claim_id INT, \n   risk_score DECIMAL(5,2) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE predictions ( \n   prediction_id INT PRIMARY KEY, \n   assessment_id INT, \n   predicted_cost DECIMAL(10,2) \n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crm_leads (\n    lead_id SERIAL PRIMARY KEY,\n    lead_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20),\n    company_name VARCHAR(100),\n    lead_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE leads (\n    lead_id INT PRIMARY KEY,\n    lead_name VARCHAR(50),\n    lead_email VARCHAR(50),\n    lead_status VARCHAR(20)\n);\n\nCREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    lead_id INT,\n    interaction_timestamp TIMESTAMP,\n    interaction_type VARCHAR(20),\n    interaction_description TEXT,\n    FOREIGN KEY (lead_id) REFERENCES leads(lead_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE leads (\n    lead_id UUID PRIMARY KEY,\n    lead_name VARCHAR(255) NOT NULL,\n    lead_email VARCHAR(255) UNIQUE,\n    lead_phone VARCHAR(20),\n    lead_status VARCHAR(20) DEFAULT 'New'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contacts (\n    contact_id UUID PRIMARY KEY,\n    contact_name VARCHAR(255) NOT NULL,\n    contact_email VARCHAR(255) UNIQUE,\n    contact_phone VARCHAR(20),\n    lead_id UUID REFERENCES leads(lead_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id UUID PRIMARY KEY,\n    interaction_type VARCHAR(50) NOT NULL,\n    interaction_date TIMESTAMP NOT NULL,\n    contact_id UUID REFERENCES contacts(contact_id),\n    lead_id UUID REFERENCES leads(lead_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE leads (\n  lead_id INT PRIMARY KEY,\n  lead_name VARCHAR(50),\n  lead_email VARCHAR(100),\n  lead_phone_number VARCHAR(15),\n  lead_status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE contacts (\n  contact_id INT PRIMARY KEY,\n  contact_name VARCHAR(50),\n  contact_email VARCHAR(100),\n  contact_phone_number VARCHAR(15),\n  company_name VARCHAR(50),\n  lead_id INT,\n  FOREIGN KEY (lead_id) REFERENCES leads(lead_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  interaction_id INT PRIMARY KEY,\n  interaction_type VARCHAR(20),\n  interaction_date DATE,\n  lead_id INT,\n  contact_id INT,\n  interaction_description TEXT,\n  FOREIGN KEY (lead_id) REFERENCES leads(lead_id),\n  FOREIGN KEY (contact_id) REFERENCES contacts(contact_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n  task_id INT PRIMARY KEY,\n  task_description TEXT,\n  task_due_date DATE,\n  task_status VARCHAR(20),\n  contact_id INT,\n  FOREIGN KEY (contact_id) REFERENCES contacts(contact_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE leads (\n  lead_id UUID PRIMARY KEY,\n  lead_name VARCHAR(255) NOT NULL,\n  lead_email VARCHAR(255) NOT NULL,\n  lead_phone VARCHAR(15),\n  lead_status VARCHAR(50) DEFAULT 'new'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contacts (\n  contact_id UUID PRIMARY KEY,\n  contact_name VARCHAR(255) NOT NULL,\n  contact_email VARCHAR(255) NOT NULL,\n  contact_phone VARCHAR(15),\n  company_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n  account_id UUID PRIMARY KEY,\n  account_name VARCHAR(255) NOT NULL,\n  industry VARCHAR(100),\n  account_phone VARCHAR(15),\n  account_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE opportunities (\n  opportunity_id UUID PRIMARY KEY,\n  opportunity_name VARCHAR(255) NOT NULL,\n  amount DECIMAL,\n  closing_date DATE,\n  stage VARCHAR(50) DEFAULT 'prospect'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n  task_id UUID PRIMARY KEY,\n  task_name VARCHAR(255) NOT NULL,\n  task_description TEXT,\n  due_date DATE,\n  status VARCHAR(50) DEFAULT 'pending'\n);"
+      }
+    ]
+  }
+]

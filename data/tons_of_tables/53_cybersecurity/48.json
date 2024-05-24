@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_blacklist (\n    entity_id INT PRIMARY KEY,\n    entity_name VARCHAR(255) NOT NULL,\n    detection_method VARCHAR(255) NOT NULL,\n    detection_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_entities (\n    id INT PRIMARY KEY,\n    entity_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    detection_method VARCHAR(50)\n);\n\nCREATE TABLE malware_blacklist (\n    id INT PRIMARY KEY,\n    entity_id INT,\n    detection_date DATE,\n    detection_location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_entities (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE detection_logs (\n    log_id INT PRIMARY KEY,\n    detection_time TIMESTAMP,\n    malware_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_blacklist (\n    malware_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    type VARCHAR(50),\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareEntities (\n    id SERIAL PRIMARY KEY,\n    name TEXT NOT NULL,\n    type TEXT NOT NULL,\n    description TEXT,\n    detection_method TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MalwareSignatures (\n    id SERIAL PRIMARY KEY,\n    signature TEXT NOT NULL UNIQUE,\n    date_added TIMESTAMP NOT NULL,\n    malware_id INT,\n    FOREIGN KEY (malware_id) REFERENCES MalwareEntities(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MalwareReports (\n    id SERIAL PRIMARY KEY,\n    report TEXT NOT NULL,\n    date_reported TIMESTAMP NOT NULL,\n    malware_id INT,\n    FOREIGN KEY (malware_id) REFERENCES MalwareEntities(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MalwareBlacklist (\n    id SERIAL PRIMARY KEY,\n    malware_id INT,\n    date_added TIMESTAMP NOT NULL,\n    FOREIGN KEY (malware_id) REFERENCES MalwareEntities(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_entities (\n    id INT PRIMARY KEY,\n    entity_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    threat_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE detection_logs (\n    log_id INT PRIMARY KEY,\n    entity_id INT,\n    detection_time TIMESTAMP,\n    detection_result VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blacklisted_ips (\n    ip_address VARCHAR(50) PRIMARY KEY,\n    reason TEXT,\n    blacklisted_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE detection_rules (\n    rule_id INT PRIMARY KEY,\n    rule_name VARCHAR(255) NOT NULL,\n    rule_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE detection_statistics (\n    stat_id INT PRIMARY KEY,\n    date DATE,\n    total_detected_entities INT\n);"
+      }
+    ]
+  }
+]

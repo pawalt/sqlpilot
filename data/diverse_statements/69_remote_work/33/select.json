@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM flexible_work_arrangements;",
+      "SELECT employee_id, request_date, status FROM flexible_work_arrangements WHERE status = 'pending';",
+      "SELECT start_date, end_date, reason FROM flexible_work_arrangements WHERE employee_id = 12345;",
+      "SELECT request_id, employee_id, start_date FROM flexible_work_arrangements WHERE request_date = '2022-01-15';",
+      "SELECT * FROM flexible_work_arrangements WHERE status = 'approved' ORDER BY request_date DESC;",
+      "SELECT * FROM flexible_work_arrangements WHERE employee_id = 100 ORDER BY request_date DESC;",
+      "SELECT employee_id, request_date, reason FROM flexible_work_arrangements WHERE status = 'approved';",
+      "SELECT employee_id, start_date, end_date FROM flexible_work_arrangements WHERE request_date >= '2021-01-01' AND status = 'pending';",
+      "SELECT reason, status FROM flexible_work_arrangements WHERE request_date BETWEEN '2021-05-01' AND '2021-06-30' ORDER BY status ASC, request_date DESC;",
+      "SELECT DISTINCT employee_id FROM flexible_work_arrangements WHERE status = 'approved';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM flexible_work_requests;",
+      "SELECT employee_id, request_date, reason FROM flexible_work_requests WHERE status = 'pending';",
+      "SELECT * FROM flexible_work_requests WHERE employee_id = 123 ORDER BY request_date DESC;",
+      "SELECT employee_id, start_date, end_date FROM flexible_work_requests WHERE status = 'approved' AND reason = 'personal reasons';",
+      "SELECT approval_date, approved_by, comments FROM approval_history ORDER BY approval_date ASC, approved_by DESC;",
+      "SELECT * FROM flexible_work_requests WHERE status='approved';",
+      "SELECT id, employee_id, request_date FROM flexible_work_requests WHERE start_date > '2022-01-01';",
+      "SELECT id, reason, status FROM flexible_work_requests WHERE reason LIKE '%sick%';",
+      "SELECT * FROM approval_history ORDER BY approval_date DESC LIMIT 5;",
+      "SELECT request_id, approval_date, comments FROM approval_history WHERE approved_by='John Doe';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM flexible_work_arrangements WHERE status='Pending';",
+      "SELECT id, request_date, reason FROM flexible_work_arrangements WHERE employee_id=101 ORDER BY request_date DESC;",
+      "SELECT id, name, department FROM employees WHERE department='HR';",
+      "SELECT * FROM approval_history WHERE decision='Approved' AND reviewer_id=201 ORDER BY review_date ASC;",
+      "SELECT id, start_date, end_date FROM flexible_work_arrangements WHERE reason LIKE '%vacation%';",
+      "SELECT * FROM flexible_work_arrangements WHERE id > 100 ORDER BY request_date DESC;",
+      "SELECT id, employee_id, reason, status FROM flexible_work_arrangements WHERE status = 'Pending' AND reason LIKE '%sick%';",
+      "SELECT e.name, e.department, a.decision FROM employees e JOIN approval_history a ON e.id = a.reviewer_id WHERE a.decision = 'Approved';",
+      "SELECT e.name, e.position, fwa.start_date, fwa.end_date FROM employees e INNER JOIN flexible_work_arrangements fwa ON e.id = fwa.employee_id WHERE fwa.request_date BETWEEN '2022-01-01' AND '2022-03-31';",
+      "SELECT ah.reviewer_id, COUNT(*) AS total_reviews FROM approval_history ah GROUP BY ah.reviewer_id HAVING total_reviews > 2 ORDER BY total_reviews DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM flexible_work_requests;",
+      "SELECT request_id, employee_id, start_date, end_date, status FROM flexible_work_requests ORDER BY request_id DESC;",
+      "SELECT employee_id, count(*) AS total_requests FROM flexible_work_requests GROUP BY employee_id;",
+      "SELECT * FROM flexible_work_requests WHERE reason LIKE '%sick%';",
+      "SELECT request_id, status, approval_date FROM flexible_work_requests JOIN approval_process ON flexible_work_requests.request_id = approval_process.request_id ORDER BY approval_date ASC;",
+      "SELECT * FROM flexible_work_requests WHERE status='approved';",
+      "SELECT request_id, employee_id, status FROM flexible_work_requests WHERE start_date >= '2022-01-01';",
+      "SELECT request_id, employee_id, start_date, end_date FROM flexible_work_requests WHERE end_date < '2022-12-31';",
+      "SELECT process_id, request_id, step_id, action_id, approval_date FROM approval_process ORDER BY approval_date DESC;",
+      "SELECT * FROM approval_steps WHERE step_name LIKE '%HR%';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM flexible_work_arrangements;",
+      "SELECT employee_id, reason FROM flexible_work_arrangements WHERE status = 'Pending';",
+      "SELECT name, department FROM employees ORDER BY name ASC;",
+      "SELECT manager_id, name, department FROM managers WHERE department = 'Human Resources';",
+      "SELECT approval_date, manager_id FROM approvals ORDER BY approval_date DESC;",
+      "SELECT * FROM flexible_work_arrangements WHERE status='Approved';",
+      "SELECT e.name, e.department, fwa.request_date FROM employees e INNER JOIN flexible_work_arrangements fwa ON e.employee_id = fwa.employee_id WHERE fwa.status='Pending';",
+      "SELECT m.name AS manager_name, fwa.reason AS request_reason, a.approval_date FROM managers m INNER JOIN approvals a ON m.manager_id = a.manager_id INNER JOIN flexible_work_arrangements fwa ON a.request_id = fwa.id WHERE fwa.status='Approved';",
+      "SELECT fwa.id, fwa.start_date, fwa.end_date, e.name AS employee_name, m.name AS manager_name, c.comment FROM flexible_work_arrangements fwa INNER JOIN employees e ON fwa.employee_id = e.employee_id INNER JOIN managers m ON e.department = m.department INNER JOIN comments c ON fwa.id = c.request_id WHERE fwa.status='Pending';",
+      "SELECT e.name, e.position, COUNT(c.comment_id) AS total_comments FROM employees e LEFT JOIN comments c ON e.employee_id = c.manager_id GROUP BY e.name HAVING total_comments > 0;"
+    ]
+  }
+]

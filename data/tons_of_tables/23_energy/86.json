@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_response_programs (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  energy_threshold DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_response_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    start_datetime TIMESTAMP,\n    end_datetime TIMESTAMP,\n    target_energy_reduction DECIMAL\n);\n\nCREATE TABLE participant_data (\n    participant_id INT PRIMARY KEY,\n    program_id INT REFERENCES demand_response_programs(program_id),\n    energy_usage DECIMAL,\n    response_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DemandResponseProgram (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerDemands (\n    customer_id INT PRIMARY KEY,\n    program_id INT,\n    demand_kWh DECIMAL,\n    FOREIGN KEY (program_id) REFERENCES DemandResponseProgram(program_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PeakHourSchedule (\n    event_id INT PRIMARY KEY,\n    schedule_name VARCHAR(255),\n    peak_start_time TIMESTAMP,\n    peak_end_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_response_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(50) NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(50) NOT NULL,\n    program_id INT NOT NULL,\n    CONSTRAINT fk_program_id FOREIGN KEY (program_id) REFERENCES demand_response_programs(program_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_usage (\n    usage_id INT PRIMARY KEY,\n    participant_id INT NOT NULL,\n    usage_amount FLOAT NOT NULL,\n    usage_timestamp TIMESTAMP NOT NULL,\n    CONSTRAINT fk_participant_id FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE peak_hours (\n    hour_id INT PRIMARY KEY,\n    start_hour TIME NOT NULL,\n    end_hour TIME NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR,\n    address VARCHAR,\n    phone_number VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Devices (\n    device_id INT PRIMARY KEY,\n    device_type VARCHAR,\n    device_name VARCHAR,\n    device_location VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n    device_id INT,\n    energy_usage FLOAT,\n    timestamp TIMESTAMP,\n    PRIMARY KEY (device_id, timestamp)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DemandResponsePrograms (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProgramParticipants (\n    customer_id INT,\n    program_id INT,\n    join_date DATE,\n    PRIMARY KEY (customer_id, program_id)\n);"
+      }
+    ]
+  }
+]

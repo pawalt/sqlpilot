@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_panel_efficiency (\n    panel_id UUID PRIMARY KEY,\n    location TEXT,\n    installation_date DATE,\n    efficiency_percentage DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_panels ( \n    panel_id INT PRIMARY KEY, \n    panel_type VARCHAR(50), \n    installation_date DATE, \n    efficiency FLOAT \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE efficiency_logs ( \n    log_id INT PRIMARY KEY, \n    panel_id INT, \n    recorded_date TIMESTAMP, \n    efficiency_measurement FLOAT, \n    FOREIGN KEY (panel_id) REFERENCES solar_panels(panel_id) \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanelEfficiency (\n    panel_id UUID PRIMARY KEY,\n    installation_date DATE,\n    efficiency DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_panels (\n    panel_id UUID PRIMARY KEY,\n    efficiency DECIMAL,\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_readings (\n    reading_id UUID PRIMARY KEY,\n    panel_id UUID REFERENCES solar_panels(panel_id),\n    reading_date DATE,\n    energy_generated DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_issues (\n    issue_id UUID PRIMARY KEY,\n    panel_id UUID REFERENCES solar_panels(panel_id),\n    issue_description TEXT,\n    issue_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    log_id UUID PRIMARY KEY,\n    panel_id UUID REFERENCES solar_panels(panel_id),\n    maintenance_date DATE,\n    maintenance_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanelEfficiency (\n    panel_id INT PRIMARY KEY,\n    efficiency FLOAT,\n    installation_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PanelLocation (\n    panel_id INT,\n    location VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT,\n    CONSTRAINT fk_panel_id FOREIGN KEY (panel_id) REFERENCES SolarPanelEfficiency(panel_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLog (\n    log_id INT PRIMARY KEY,\n    panel_id INT,\n    maintenance_date DATE,\n    description TEXT,\n    CONSTRAINT fk_panel_id FOREIGN KEY (panel_id) REFERENCES SolarPanelEfficiency(panel_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WeatherData (\n    observation_date DATE,\n    temperature FLOAT,\n    humidity FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PanelRatings (\n    panel_id INT,\n    rating INT,\n    review TEXT,\n    CONSTRAINT fk_panel_id FOREIGN KEY (panel_id) REFERENCES SolarPanelEfficiency(panel_id)\n)"
+      }
+    ]
+  }
+]

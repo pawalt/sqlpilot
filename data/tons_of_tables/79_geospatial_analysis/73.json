@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE spectral_signatures (\n    signature_id INT PRIMARY KEY,\n    land_cover_type VARCHAR(50) NOT NULL,\n    wavelength_range VARCHAR(100) NOT NULL,\n    spectral_values TEXT NOT NULL,\n    collection_date DATE NOT NULL,\n    last_updated TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE spectral_signatures (\n    id INT PRIMARY KEY,\n    land_cover_type VARCHAR(50) NOT NULL,\n    spectral_band_1 FLOAT NOT NULL,\n    spectral_band_2 FLOAT NOT NULL,\n    spectral_band_3 FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE remote_sensing_analysis (\n    analysis_id INT PRIMARY KEY,\n    image_url TEXT NOT NULL,\n    analysis_date DATE NOT NULL,\n    land_cover_type VARCHAR(50) NOT NULL,\n    classification_result VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE spectral_signatures (\n    signature_id SERIAL PRIMARY KEY,\n    land_cover_type VARCHAR(50) NOT NULL,\n    spectral_values JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE land_cover_types (\n    type_id SERIAL PRIMARY KEY,\n    land_cover_name VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE remote_sensing_data (\n    data_id SERIAL PRIMARY KEY,\n    capture_date DATE NOT NULL,\n    signature_id INT REFERENCES spectral_signatures(signature_id),\n    type_id INT REFERENCES land_cover_types(type_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE spectral_signatures_land_cover_types (\n    id INT PRIMARY KEY,\n    land_cover_type VARCHAR(50),\n    spectral_wave_length_range VARCHAR(50),\n    spectral_intensity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE land_cover_categories (\n    id INT PRIMARY KEY,\n    land_cover_category VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE land_cover_attributes (\n    id INT PRIMARY KEY,\n    land_cover_type_id INT,\n    attribute_name VARCHAR(50),\n    attribute_value TEXT,\n    FOREIGN KEY (land_cover_type_id) REFERENCES spectral_signatures_land_cover_types(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources (\n    id INT PRIMARY KEY,\n    data_source_name VARCHAR(50),\n    provider VARCHAR(50),\n    coverage_area TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE spectral_signatures (\n signature_id INT PRIMARY KEY,\n land_cover_type VARCHAR(50) NOT NULL,\n spectral_band_1 FLOAT NOT NULL,\n spectral_band_2 FLOAT NOT NULL,\n spectral_band_3 FLOAT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE land_cover_types (\n cover_type_id INT PRIMARY KEY,\n cover_type_name VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE spectral_analysis_results (\n result_id INT PRIMARY KEY,\n signature_id INT FOREIGN KEY REFERENCES spectral_signatures(signature_id),\n analysis_date DATE,\n analysis_result TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_comments (\n comment_id INT PRIMARY KEY,\n result_id INT FOREIGN KEY REFERENCES spectral_analysis_results(result_id),\n comment_text TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n user_id INT PRIMARY KEY,\n username VARCHAR(50) NOT NULL,\n email VARCHAR(100) UNIQUE NOT NULL,\n password VARCHAR(100) NOT NULL\n)"
+      }
+    ]
+  }
+]

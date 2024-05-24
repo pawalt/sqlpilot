@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_evaluation_criteria (\n    criterion_id INT PRIMARY KEY,\n    criterion_name VARCHAR(255),\n    description TEXT,\n    weight FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_evaluation_criteria (\n  criterion_id UUID PRIMARY KEY,\n  criterion_name VARCHAR(255) NOT NULL,\n  description TEXT,\n  weightage DECIMAL(5,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scoring_rubrics (\n  rubric_id UUID PRIMARY KEY,\n  rubric_name VARCHAR(255) NOT NULL,\n  criterion_id UUID,\n  score_range JSONB\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE evaluation_criteria (\n criterion_id INT PRIMARY KEY,\n criterion_name VARCHAR(50) NOT NULL,\n description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE scoring_rubrics (\n rubric_id INT PRIMARY KEY,\n criterion_id INT,\n rubric_name VARCHAR(50) NOT NULL,\n score_range VARCHAR(20) NOT NULL,\n description TEXT,\n FOREIGN KEY (criterion_id) REFERENCES evaluation_criteria(criterion_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE evaluation_scores (\n evaluation_id INT PRIMARY KEY,\n rubric_id INT,\n score INT NOT NULL,\n comments TEXT,\n FOREIGN KEY (rubric_id) REFERENCES scoring_rubrics(rubric_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_evaluation_criteria (\n  id INT PRIMARY KEY,\n  category VARCHAR(255),\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scoring_rubrics (\n  id INT PRIMARY KEY,\n  criteria_id INT,\n  score INT,\n  feedback TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE evaluation_scores (\n  id INT PRIMARY KEY,\n  user_id INT,\n  criteria_id INT,\n  score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE decision_making_process (\n  id INT PRIMARY KEY,\n  evaluation_id INT,\n  decision VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_criteria (\n    criteria_id INT PRIMARY KEY,\n    criteria_name VARCHAR(255),\n    description TEXT\n);\n\nCREATE TABLE rubrics (\n    rubric_id INT PRIMARY KEY,\n    rubric_name VARCHAR(255),\n    criteria_id INT,\n    FOREIGN KEY (criteria_id) REFERENCES grant_criteria(criteria_id)\n);\n\nCREATE TABLE evaluation_scores (\n    score_id INT PRIMARY KEY,\n    rubric_id INT,\n    evaluator_id INT,\n    score INT,\n    FOREIGN KEY (rubric_id) REFERENCES rubrics(rubric_id)\n);\n\nCREATE TABLE evaluators (\n    evaluator_id INT PRIMARY KEY,\n    evaluator_name VARCHAR(255),\n    department VARCHAR(255)\n);\n\nCREATE TABLE grant_applications (\n    application_id INT PRIMARY KEY,\n    applicant_name VARCHAR(255),\n    grant_amount DECIMAL(10, 2),\n    application_date DATE\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    experiment_id SERIAL PRIMARY KEY,\n    learning_rate FLOAT,\n    batch_size INT,\n    optimizer VARCHAR(50),\n    epochs INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    id SERIAL PRIMARY KEY,\n    learning_rate DECIMAL,\n    batch_size INTEGER,\n    optimizer VARCHAR,\n    loss_function VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE neural_networks (\n    id SERIAL PRIMARY KEY,\n    network_name VARCHAR,\n    layers INTEGER,\n    nodes_per_layer INTEGER,\n    activation_function VARCHAR,\n    hyperparameter_id INTEGER,\n    FOREIGN KEY (hyperparameter_id) REFERENCES hyperparameters(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    id UUID PRIMARY KEY,\n    learning_rate FLOAT,\n    batch_size INT,\n    hidden_layers INT,\n    activation_function VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id UUID PRIMARY KEY,\n    dataset_name VARCHAR,\n    dataset_size INT,\n    features JSON,\n    labels JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_history (\n    id UUID PRIMARY KEY,\n    model_name VARCHAR,\n    training_loss FLOAT,\n    validation_loss FLOAT,\n    accuracy FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    id INT PRIMARY KEY,\n    learning_rate FLOAT,\n    batch_size INT,\n    epochs INT,\n    optimizer VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE hyperparameter_history (\n    id INT PRIMARY KEY,\n    hyperparameter_id INT,\n    loss FLOAT,\n    accuracy FLOAT,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE neural_networks (\n    id INT PRIMARY KEY,\n    network_name VARCHAR(50),\n    architecture TEXT,\n    hyperparameter_id INT,\n    FOREIGN KEY (hyperparameter_id) REFERENCES hyperparameters(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE training_logs (\n    id INT PRIMARY KEY,\n    neural_network_id INT,\n    log_message TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (neural_network_id) REFERENCES neural_networks(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    id UUID PRIMARY KEY,\n    learning_rate FLOAT,\n    batch_size INT,\n    num_layers INT,\n    dropout_rate FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE datasets (\n    id UUID PRIMARY KEY,\n    dataset_name VARCHAR,\n    num_samples INT,\n    input_shape JSON,\n    target_shape JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE model_architecture (\n    id UUID PRIMARY KEY,\n    model_name VARCHAR,\n    architecture JSON,\n    optimizer VARCHAR,\n    loss_function VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE training_history (\n    id UUID PRIMARY KEY,\n    model_id UUID,\n    epochs_trained INT,\n    training_loss FLOAT,\n    validation_loss FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    id UUID PRIMARY KEY,\n    experiment_name VARCHAR,\n    hyperparameters_id UUID,\n    dataset_id UUID,\n    model_id UUID,\n    training_history_id UUID\n)"
+      }
+    ]
+  }
+]

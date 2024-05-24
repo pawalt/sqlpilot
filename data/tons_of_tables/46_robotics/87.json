@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MedicalTeam (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(50) NOT NULL,\n    surgeon_name VARCHAR(50) NOT NULL,\n    assistant_name VARCHAR(50) NOT NULL,\n    nurse_name VARCHAR(50) NOT NULL,\n    robot_model VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE surgeons (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  specialty VARCHAR(255),\n  experience_years INT,\n  status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE surgeries (\n  id INT PRIMARY KEY,\n  surgery_name VARCHAR(255),\n  date DATE,\n  surgeon_id INT,\n  assistant1_id INT,\n  assistant2_id INT,\n  FOREIGN KEY (surgeon_id) REFERENCES surgeons(id),\n  FOREIGN KEY (assistant1_id) REFERENCES surgeons(id),\n  FOREIGN KEY (assistant2_id) REFERENCES surgeons(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE teams (\n    team_id UUID PRIMARY KEY,\n    team_name TEXT,\n    specialization TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE surgeons (\n    surgeon_id UUID PRIMARY KEY,\n    surgeon_name TEXT,\n    team_id UUID,\n    FOREIGN KEY (team_id) REFERENCES teams(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE procedures (\n    procedure_id UUID PRIMARY KEY,\n    procedure_name TEXT,\n    team_id UUID,\n    surgeon_id UUID,\n    FOREIGN KEY (team_id) REFERENCES teams(team_id),\n    FOREIGN KEY (surgeon_id) REFERENCES surgeons(surgeon_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE surgeons (\n   id INT PRIMARY KEY,\n   name VARCHAR,\n   specialty VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE surgeries (\n   surgery_id INT PRIMARY KEY,\n   surgery_name VARCHAR,\n   date DATE,\n   surgeon_id INT,\n   FOREIGN KEY (surgeon_id) REFERENCES surgeons(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n   patient_id INT PRIMARY KEY,\n   name VARCHAR,\n   age INT,\n   surgery_id INT,\n   FOREIGN KEY (surgery_id) REFERENCES surgeries(surgery_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE robotics (\n   robot_id INT PRIMARY KEY,\n   robot_name VARCHAR,\n   manufacturer VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_doctors (\n    id SERIAL PRIMARY KEY,\n    doctor_name VARCHAR(100),\n    specialization VARCHAR(100),\n    hospital_name VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_nurses (\n    id SERIAL PRIMARY KEY,\n    nurse_name VARCHAR(100),\n    experience_years INT,\n    assigned_team_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_technicians (\n    id SERIAL PRIMARY KEY,\n    technician_name VARCHAR(100),\n    expertise_area VARCHAR(100),\n    available BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE surgical_procedures (\n    id SERIAL PRIMARY KEY,\n    procedure_name VARCHAR(100),\n    complexity_level VARCHAR(50),\n    lead_surgeon_id INT,\n    date_time DATETIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE surgical_team_assignments (\n    id SERIAL PRIMARY KEY,\n    team_id INT,\n    procedure_id INT,\n    assignment_date DATETIME,\n    completion_status BOOLEAN\n);"
+      }
+    ]
+  }
+]

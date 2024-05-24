@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE palm_vein_templates (\n    user_id INT PRIMARY KEY,\n    palm_template BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE palm_vein_templates (\n    id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    palm_template BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_time TIMESTAMP NOT NULL,\n    access_granted BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE palm_vein_templates (\n    id INT PRIMARY KEY,\n    template_name VARCHAR(50),\n    template_data BLOB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    palm_template_id INT,\n    FOREIGN KEY (palm_template_id) REFERENCES palm_vein_templates(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    access_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE palm_vein_templates (\n  id INT PRIMARY KEY,\n  template_data BYTEA\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES palm_vein_templates(id),\n  access_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n  user_id INT REFERENCES palm_vein_templates(id),\n  access_level VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE security_users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  password_hash BYTEA\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PalmVeinTemplates (\n    id SERIAL PRIMARY KEY,\n    palm_vein_template BYTEA NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Employees (\n    employee_id SERIAL PRIMARY KEY,\n    employee_name VARCHAR(50) NOT NULL,\n    palm_vein_id INTEGER REFERENCES PalmVeinTemplates(id) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLogs (\n    log_id SERIAL PRIMARY KEY,\n    employee_id INTEGER REFERENCES Employees(employee_id) NOT NULL,\n    access_time TIMESTAMPTZ NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControlSystem (\n    system_id SERIAL PRIMARY KEY,\n    system_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EmployeeAccessRights (\n    access_id SERIAL PRIMARY KEY,\n    employee_id INTEGER REFERENCES Employees(employee_id) NOT NULL,\n    system_id INTEGER REFERENCES AccessControlSystem(system_id) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

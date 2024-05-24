@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_experiment_progress (\n  experiment_id INT PRIMARY KEY,\n  experiment_name TEXT NOT NULL,\n  experiment_date DATE,\n  communication_type TEXT,\n  success BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment_data (\n    experiment_id SERIAL PRIMARY KEY,\n    experiment_name VARCHAR(100) NOT NULL,\n    experiment_date DATE,\n    communication_method VARCHAR(50),\n    success BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    result_id SERIAL PRIMARY KEY,\n    experiment_id INTEGER NOT NULL,\n    result_data VARCHAR(255),\n    result_code INTEGER,\n    result_description TEXT,\n    FOREIGN KEY (experiment_id) REFERENCES experiment_data(experiment_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment_progress (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    progress_status VARCHAR(50),\n    completion_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_data (\n    communication_id INT PRIMARY KEY,\n    experiment_id INT,\n    sender VARCHAR(100),\n    receiver VARCHAR(100),\n    message TEXT,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participant_details (\n    participant_id INT PRIMARY KEY,\n    experiment_id INT,\n    participant_name VARCHAR(100),\n    age INT,\n    gender VARCHAR(10)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id UUID PRIMARY KEY,\n    experiment_date DATE,\n    experiment_name STRING,\n    experiment_status STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name STRING,\n    participant_email STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements (\n    measurement_id UUID PRIMARY KEY,\n    experiment_id UUID,\n    measurement_type STRING,\n    measurement_result STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labs (\n    lab_id UUID PRIMARY KEY,\n    lab_name STRING,\n    lab_location STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n  experiment_id SERIAL PRIMARY KEY,\n  experiment_name VARCHAR(100) NOT NULL,\n  experiment_description TEXT,\n  experiment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n  participant_id SERIAL PRIMARY KEY,\n  participant_name VARCHAR(100) NOT NULL,\n  participant_age INTEGER,\n  participant_gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements (\n  measurement_id SERIAL PRIMARY KEY,\n  experiment_id INTEGER REFERENCES experiments(experiment_id),\n  participant_id INTEGER REFERENCES participants(participant_id),\n  measurement_data JSON,\n  measurement_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n  result_id SERIAL PRIMARY KEY,\n  measurement_id INTEGER REFERENCES measurements(measurement_id),\n  result_value FLOAT,\n  result_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE errors (\n  error_id SERIAL PRIMARY KEY,\n  error_message TEXT\n);"
+      }
+    ]
+  }
+]

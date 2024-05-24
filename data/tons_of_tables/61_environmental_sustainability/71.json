@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_quality_testing_results (\n    site_id INT PRIMARY KEY,\n    test_date DATE,\n    water_ph FLOAT,\n    bacteria_level FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_quality_testing_sites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE test_results (\n  result_id INT PRIMARY KEY,\n  site_id INT,\n  test_date DATE NOT NULL,\n  test_type VARCHAR(30) NOT NULL,\n  result DECIMAL(10, 2) NOT NULL,\n  FOREIGN KEY (site_id) REFERENCES water_quality_testing_sites(site_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_quality_sites (\n   site_id INT PRIMARY KEY,\n   site_name VARCHAR(50) NOT NULL,\n   site_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_quality_tests (\n   test_id INT PRIMARY KEY,\n   test_date DATE NOT NULL,\n   test_result VARCHAR(20) NOT NULL,\n   site_id INT,\n   FOREIGN KEY (site_id) REFERENCES water_quality_sites(site_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_quality_parameters (\n   parameter_id INT PRIMARY KEY,\n   parameter_name VARCHAR(50) NOT NULL,\n   parameter_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterTestingResults (\n  testing_id INT PRIMARY KEY,\n  testing_date DATE,\n  testing_site VARCHAR(255),\n  contaminant_type VARCHAR(50),\n  contaminant_level FLOAT\n)},{"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterQualityTestingSites (\n    site_id INT NOT NULL,\n    site_name VARCHAR(255) NOT NULL,\n    site_location VARCHAR(255) NOT NULL,\n    PRIMARY KEY (site_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TestResults (\n    result_id INT NOT NULL,\n    site_id INT NOT NULL,\n    testing_date DATE NOT NULL,\n    tested_parameter VARCHAR(255) NOT NULL,\n    test_result FLOAT NOT NULL,\n    PRIMARY KEY (result_id),\n    CONSTRAINT fk_site_id FOREIGN KEY (site_id) REFERENCES WaterQualityTestingSites(site_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ParameterLimits (\n    parameter_id INT NOT NULL,\n    parameter_name VARCHAR(255) NOT NULL,\n    limit_value FLOAT NOT NULL,\n    PRIMARY KEY (parameter_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TestLimits (\n    result_id INT NOT NULL,\n    parameter_id INT NOT NULL,\n    result_value FLOAT NOT NULL,\n    result_status VARCHAR(255) NOT NULL,\n    PRIMARY KEY (result_id, parameter_id),\n    CONSTRAINT fk_result_id FOREIGN KEY (result_id) REFERENCES TestResults(result_id),\n    CONSTRAINT fk_parameter_id FOREIGN KEY (parameter_id) REFERENCES ParameterLimits(parameter_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Testers (\n    tester_id INT NOT NULL,\n    tester_name VARCHAR(255) NOT NULL,\n    tester_email VARCHAR(255) NOT NULL,\n    PRIMARY KEY (tester_id)\n)"
+      }
+    ]
+  }
+]

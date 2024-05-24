@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    strategy_id INT,\n    investment_amount DECIMAL(10, 2),\n    risk_tolerance ENUM('low', 'medium', 'high')\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserPreferences (\n    user_id INT PRIMARY KEY,\n    risk_tolerance VARCHAR(50),\n    investment_horizon INT,\n    preferred_assets TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE InvestmentStrategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(50),\n    strategy_description TEXT,\n    target_return DECIMAL,\n    min_investment_amount DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserPreferences (\n\tuser_id INT,\n\tpreference_id INT,\n\tpreference_name VARCHAR(255),\n\tpreference_value VARCHAR(255),\n\tPRIMARY KEY (user_id, preference_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InvestmentStrategies (\n\tstrategy_id INT,\n\tstrategy_name VARCHAR(255),\n\tdescription TEXT,\n\ttarget_roi DECIMAL(10,2),\n\tPRIMARY KEY (strategy_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserStrategies (\n\tuser_id INT,\n\tstrategy_id INT,\n\tallocation DECIMAL(5,2),\n\tenabled BOOLEAN,\n\tFOREIGN KEY (user_id) REFERENCES UserPreferences(user_id),\n\tFOREIGN KEY (strategy_id) REFERENCES InvestmentStrategies(strategy_id),\n\tPRIMARY KEY (user_id, strategy_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(50) NOT NULL,\n  investment_limit DECIMAL(10, 2) DEFAULT 0.00\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE automated_strategies (\n  strategy_id SERIAL PRIMARY KEY,\n  strategy_name VARCHAR(50) NOT NULL,\n  description TEXT,\n  strategy_type VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE platform_settings (\n  setting_id SERIAL PRIMARY KEY,\n  platform_name VARCHAR(50) NOT NULL,\n  platform_url VARCHAR(100) NOT NULL,\n  api_key VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_strategies (\n  user_id SERIAL,\n  strategy_id SERIAL,\n  FOREIGN KEY (user_id) REFERENCES user_preferences(user_id),\n  FOREIGN KEY (strategy_id) REFERENCES automated_strategies(strategy_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT PRIMARY KEY,\n    preferred_currency VARCHAR(50),\n    notification_settings VARCHAR(100),\n    risk_tolerance INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(50),\n    description TEXT,\n    creator_id INT,\n    FOREIGN KEY (creator_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    creation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE platform_preferences (\n    platform_id INT PRIMARY KEY,\n    platform_name VARCHAR(50),\n    preferred_strategy INT,\n    FOREIGN KEY (preferred_strategy) REFERENCES investment_strategies(strategy_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT,\n    platform_id INT,\n    amount DECIMAL(10, 2),\n    transaction_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (platform_id) REFERENCES platforms(platform_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE attendance_records (\n  student_id INT,\n  session_id INT,\n  attendance_status VARCHAR,\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_classroom_sessions (\n    session_id UUID PRIMARY KEY,\n    session_date DATE,\n    session_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendance_records (\n    record_id SERIAL PRIMARY KEY,\n    session_id UUID REFERENCES virtual_classroom_sessions(session_id),\n    student_id UUID,\n    attendance_status VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE classroom_sessions (\n  session_id INT PRIMARY KEY,\n  session_date DATE,\n  session_topic VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE students (\n  student_id INT PRIMARY KEY,\n  student_name VARCHAR(255),\n  student_email VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE attendance_records (\n  record_id INT PRIMARY KEY,\n  session_id INT,\n  student_id INT,\n  attendance_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Student (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Classroom (\n    classroom_id INT PRIMARY KEY,\n    classroom_name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Session (\n    session_id INT PRIMARY KEY,\n    session_date DATE NOT NULL,\n    classroom_id INT REFERENCES Classroom(classroom_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Attendance (\n    attendance_id INT PRIMARY KEY,\n    session_id INT REFERENCES Session(session_id),\n    student_id INT REFERENCES Student(student_id),\n    attendance_status VARCHAR(10) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE virtual_classrooms (\n    classroom_id INT PRIMARY KEY,\n    classroom_name VARCHAR(50) NOT NULL,\n    session_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendance_records (\n    record_id INT PRIMARY KEY,\n    student_id INT NOT NULL,\n    classroom_id INT NOT NULL,\n    attendance_status VARCHAR(10) NOT NULL,\n    session_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE classroom_sessions (\n    session_id INT PRIMARY KEY,\n    classroom_id INT NOT NULL,\n    session_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE session_participants (\n    participant_id INT PRIMARY KEY,\n    session_id INT NOT NULL,\n    student_id INT NOT NULL\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_versions (\n    id INT PRIMARY KEY,\n    version_number INT,\n    model_name VARCHAR(255),\n    creation_date DATE,\n    creator_name VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_versions (\n    version_id SERIAL PRIMARY KEY,\n    model_name TEXT NOT NULL,\n    version_number INT NOT NULL,\n    upload_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id SERIAL PRIMARY KEY,\n    version_id INT REFERENCES model_versions(version_id),\n    experiment_name TEXT NOT NULL,\n    experiment_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_versions (\n  id INT PRIMARY KEY,\n  version_number INT,\n  model_name VARCHAR(255),\n  trained_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n  id INT PRIMARY KEY,\n  experiment_id VARCHAR(50),\n  model_id INT,\n  experiment_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE comparison_results (\n  id INT PRIMARY KEY,\n  experiment_id INT,\n  metric_name VARCHAR(50),\n  metric_value FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ModelVersions (\n    id SERIAL PRIMARY KEY,\n    model_name VARCHAR(255) NOT NULL,\n    version_number INT NOT NULL,\n    release_date DATE,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (\n    id SERIAL PRIMARY KEY,\n    experiment_name VARCHAR(255) NOT NULL,\n    experiment_date DATE,\n    model_version_id INT NOT NULL,\n    results JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ComparisonResults (\n    id SERIAL PRIMARY KEY,\n    experiment_id INT NOT NULL,\n    baseline_version_id INT NOT NULL,\n    comparison_date DATE,\n    comparison_metrics JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL UNIQUE,\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ModelVersions (\n  model_id UUID PRIMARY KEY,\n  version INT,\n  model_name TEXT,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (\n  experiment_id UUID PRIMARY KEY,\n  model_id UUID,\n  version INT,\n  experimental_setup TEXT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentResults (\n  result_id UUID PRIMARY KEY,\n  experiment_id UUID,\n  result_data JSON,\n  evaluation_metrics JSON,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelMetrics (\n  model_id UUID,\n  version INT,\n  evaluation_metrics JSON,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentLogs (\n  log_id UUID PRIMARY KEY,\n  experiment_id UUID,\n  log_message TEXT,\n  log_level INT,\n  created_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]

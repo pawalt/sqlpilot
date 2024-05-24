@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts_history (\n    contract_id INT PRIMARY KEY,\n    contract_name VARCHAR(255) NOT NULL,\n    contract_address VARCHAR(255) NOT NULL,\n    interaction_date DATE NOT NULL,\n    interaction_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name TEXT NOT NULL,\n    creation_date DATE NOT NULL,\n    creator_address TEXT NOT NULL\n);\n\nCREATE TABLE contract_interactions (\n    interaction_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    interaction_date TIMESTAMP NOT NULL,\n    action TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id INT PRIMARY KEY,\n    contract_name VARCHAR(255),\n    deployment_date DATE,\n    developer_name VARCHAR(255)\n);\n\nCREATE TABLE contract_interactions (\n    interaction_id INT PRIMARY KEY,\n    contract_id INT,\n    interaction_type VARCHAR(50),\n    interaction_date TIMESTAMP,\n    interaction_data TEXT,\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);\n\nCREATE TABLE blockchain_transactions (\n    transaction_id INT PRIMARY KEY,\n    interaction_id INT,\n    block_number INT,\n    transaction_hash VARCHAR(255),\n    transaction_date TIMESTAMP,\n    FOREIGN KEY (interaction_id) REFERENCES contract_interactions(interaction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id SERIAL PRIMARY KEY,\n    contract_name VARCHAR(255) NOT NULL,\n    deployment_date DATE NOT NULL,\n    developer_name VARCHAR(255) NOT NULL,\n    blockchain_address VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_interactions (\n    interaction_id SERIAL PRIMARY KEY,\n    contract_id INT NOT NULL,\n    interaction_date DATE NOT NULL,\n    interaction_type VARCHAR(50) NOT NULL,\n    interaction_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    interaction_id INT NOT NULL,\n    sender_address VARCHAR(255) NOT NULL,\n    receiver_address VARCHAR(255) NOT NULL,\n    transaction_amount DECIMAL(18,2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_metadata (\n    metadata_id SERIAL PRIMARY KEY,\n    contract_id INT NOT NULL,\n    metadata_key VARCHAR(50) NOT NULL,\n    metadata_value TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id SERIAL PRIMARY KEY,\n    contract_name TEXT NOT NULL,\n    deployment_date DATE,\n    creator_address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_interactions (\n    interaction_id SERIAL PRIMARY KEY,\n    contract_id INT,\n    interaction_type TEXT,\n    interaction_date TIMESTAMP,\n    transaction_hash TEXT,\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_variables (\n    variable_id SERIAL PRIMARY KEY,\n    contract_id INT,\n    variable_name TEXT,\n    variable_value TEXT,\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_events (\n    event_id SERIAL PRIMARY KEY,\n    contract_id INT,\n    event_name TEXT,\n    event_date TIMESTAMP,\n    event_description TEXT,\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_owners (\n    owner_id SERIAL PRIMARY KEY,\n    contract_id INT,\n    owner_name TEXT,\n    owner_address TEXT,\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);"
+      }
+    ]
+  }
+]

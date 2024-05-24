@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE remote_sensing_metadata (\n    image_id UUID PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_date DATE,\n    sensor_type VARCHAR(50),\n    dataset_id UUID,\n    resolution DECIMAL(5,2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE remote_sensing_images (\n    id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    capture_date DATE,\n    resolution VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE remote_sensing_datasets (\n    dataset_id INT PRIMARY KEY,\n    dataset_name VARCHAR(100),\n    description TEXT,\n    created_on TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    id INT PRIMARY KEY,\n    image_name VARCHAR(255) NOT NULL,\n    image_type VARCHAR(50) NOT NULL,\n    capture_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE datasets (\n    id INT PRIMARY KEY,\n    dataset_name VARCHAR(255) NOT NULL,\n    dataset_description TEXT,\n    dataset_size INT,\n    created_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_datasets (\n    image_id INT,\n    dataset_id INT,\n    FOREIGN KEY (image_id) REFERENCES images(id),\n    FOREIGN KEY (dataset_id) REFERENCES datasets(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE remote_sensing_images (\n    id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_path TEXT,\n    image_size INT,\n    capture_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE remote_sensing_datasets (\n    dataset_id INT PRIMARY KEY,\n    dataset_name VARCHAR(255),\n    dataset_description TEXT,\n    dataset_size INT,\n    created_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_tags (\n    tag_id INT PRIMARY KEY,\n    image_id INT,\n    tag_name VARCHAR(50),\n    FOREIGN KEY (image_id) REFERENCES remote_sensing_images(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_tags (\n    tag_id INT PRIMARY KEY,\n    dataset_id INT,\n    tag_name VARCHAR(50),\n    FOREIGN KEY (dataset_id) REFERENCES remote_sensing_datasets(dataset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  resolution INT,\n  image_url VARCHAR(255),\n  capture_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE datasets (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  description TEXT,\n  created_date DATE,\n  last_updated_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_tags (\n  id INT PRIMARY KEY,\n  image_id INT,\n  tag_name VARCHAR(50),\n  FOREIGN KEY (image_id) REFERENCES images(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_images (\n  dataset_id INT,\n  image_id INT,\n  PRIMARY KEY (dataset_id, image_id),\n  FOREIGN KEY (dataset_id) REFERENCES datasets(id),\n  FOREIGN KEY (image_id) REFERENCES images(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n  id INT PRIMARY KEY,\n  image_id INT,\n  metadata_key VARCHAR(50),\n  metadata_value TEXT,\n  FOREIGN KEY (image_id) REFERENCES images(id)\n);"
+      }
+    ]
+  }
+]

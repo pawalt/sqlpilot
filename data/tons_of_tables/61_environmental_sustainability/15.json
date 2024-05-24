@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterSavingInitiatives (\n    initiative_id INT PRIMARY KEY,\n    building_name TEXT,\n    initiative_description TEXT,\n    start_date DATE,\n    completion_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE initiatives (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  description TEXT,\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n  id INT PRIMARY KEY,\n  initiative_id INT,\n  result_description TEXT,\n  result_date DATE,\n  result_value FLOAT,\n  FOREIGN KEY (initiative_id) REFERENCES initiatives(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_saving_initiatives (\n    initiative_id UUID PRIMARY KEY,\n    initiative_name VARCHAR(100) NOT NULL,\n    building_id UUID NOT NULL,\n    initiative_type VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    cost DECIMAL(10, 2),\n    status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE buildings (\n    building_id UUID PRIMARY KEY,\n    building_name VARCHAR(100) NOT NULL,\n    address VARCHAR(200),\n    city VARCHAR(50),\n    state VARCHAR(50),\n    zip_code VARCHAR(10),\n    country VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE initiative_results (\n    result_id UUID PRIMARY KEY,\n    initiative_id UUID NOT NULL,\n    water_saved DECIMAL(10, 2),\n    energy_saved DECIMAL(10, 2),\n    cost_saved DECIMAL(10, 2),\n    result_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE initiatives (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    type VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE buildings (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    address VARCHAR(255),\n    city VARCHAR(50),\n    state VARCHAR(50),\n    zip_code VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    id INT PRIMARY KEY,\n    initiative_id INT,\n    building_id INT,\n    water_saved DECIMAL(10, 2),\n    energy_saved DECIMAL(10, 2),\n    cost_saved DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE facilities (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    type VARCHAR(50),\n    location VARCHAR(255),\n    manager VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Buildings (\n    building_id INT NOT NULL,\n    building_name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    city VARCHAR(100) NOT NULL,\n    state VARCHAR(2) NOT NULL,\n    PRIMARY KEY (building_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterSavingInitiatives (\n    initiative_id INT NOT NULL,\n    initiative_name VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    building_id INT NOT NULL,\n    PRIMARY KEY (initiative_id),\n    FOREIGN KEY (building_id) REFERENCES Buildings(building_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InitiativeResults (\n    result_id INT NOT NULL,\n    initiative_id INT NOT NULL,\n    result_value DECIMAL(10, 2) NOT NULL,\n    result_date DATE NOT NULL,\n    PRIMARY KEY (result_id),\n    FOREIGN KEY (initiative_id) REFERENCES WaterSavingInitiatives(initiative_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n    building_id INT NOT NULL,\n    month_year DATE NOT NULL,\n    energy_usage DECIMAL(10, 2) NOT NULL,\n    PRIMARY KEY (building_id, month_year),\n    FOREIGN KEY (building_id) REFERENCES Buildings(building_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterUsage (\n    building_id INT NOT NULL,\n    month_year DATE NOT NULL,\n    water_usage DECIMAL(10, 2) NOT NULL,\n    PRIMARY KEY (building_id, month_year),\n    FOREIGN KEY (building_id) REFERENCES Buildings(building_id)\n);"
+      }
+    ]
+  }
+]

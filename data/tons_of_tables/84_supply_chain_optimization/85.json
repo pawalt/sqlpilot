@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_management_data (\n  waste_id INT PRIMARY KEY,\n  waste_type VARCHAR(50),\n  weight DECIMAL,\n  date_collected DATE,\n  collection_point VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollection (\n    waste_id INT PRIMARY KEY,\n    waste_type VARCHAR(255),\n    collection_date DATE,\n    collection_weight DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteDisposal (\n    disposal_id INT PRIMARY KEY,\n    waste_id INT,\n    disposal_date DATE,\n    disposal_method VARCHAR(255),\n    disposal_cost DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_collection (\n  collection_id UUID PRIMARY KEY,\n  collection_date DATE NOT NULL,\n  collection_weight FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_recycling (\n  recycling_id UUID PRIMARY KEY,\n  recycling_date DATE NOT NULL,\n  recycled_material VARCHAR(50) NOT NULL,\n  quantity_recycled INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal (\n  disposal_id UUID PRIMARY KEY,\n  disposal_date DATE NOT NULL,\n  disposal_location VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteFacilities (\n    facility_id UUID PRIMARY KEY,\n    facility_name TEXT NOT NULL,\n    location TEXT,\n    capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteTypes (\n    type_id UUID PRIMARY KEY,\n    waste_type TEXT NOT NULL,\n    recyclable BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionRecords (\n    record_id UUID PRIMARY KEY,\n    facility_id UUID NOT NULL,\n    waste_type_id UUID NOT NULL,\n    collection_date DATE,\n    weight FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclingCenters (\n    center_id UUID PRIMARY KEY,\n    center_name TEXT NOT NULL,\n    location TEXT,\n    capacity INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_recycling_centers (\n  id INT PRIMARY KEY,\n  center_name VARCHAR(50),\n  location VARCHAR(100),\n  capacity DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection_routes (\n  route_id INT PRIMARY KEY,\n  center_id INT,\n  route_description TEXT,\n  route_distance DECIMAL,\n  FOREIGN KEY (center_id) REFERENCES waste_recycling_centers(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection_logs (\n  log_id INT PRIMARY KEY,\n  collection_date DATE,\n  route_id INT,\n  collected_weight DECIMAL,\n  FOREIGN KEY (route_id) REFERENCES waste_collection_routes(route_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_sites (\n  site_id INT PRIMARY KEY,\n  site_type VARCHAR(50),\n  location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_logs (\n  disposal_log_id INT PRIMARY KEY,\n  disposal_date DATE,\n  site_id INT,\n  disposed_weight DECIMAL,\n  FOREIGN KEY (site_id) REFERENCES waste_disposal_sites(site_id)\n)"
+      }
+    ]
+  }
+]

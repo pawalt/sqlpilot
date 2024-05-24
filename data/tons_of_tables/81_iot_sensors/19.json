@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_Data (\n    device_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    temperature FLOAT,\n    humidity FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoTDevices (\n  device_id UUID PRIMARY KEY,\n  device_type VARCHAR(255),\n  location VARCHAR(255),\n  status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceData (\n  data_id SERIAL PRIMARY KEY,\n  device_id UUID,\n  timestamp TIMESTAMP,\n  data_value FLOAT,\n  FOREIGN KEY (device_id) REFERENCES IoTDevices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    location VARCHAR(100),\n    status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sensor_data (\n    sensor_id INT PRIMARY KEY,\n    device_id INT,\n    sensor_type VARCHAR(50),\n    value FLOAT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES IoT_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (\n    alert_id INT PRIMARY KEY,\n    sensor_id INT,\n    alert_type VARCHAR(50),\n    alert_message TEXT,\n    alert_time TIMESTAMP,\n    FOREIGN KEY (sensor_id) REFERENCES Sensor_data(sensor_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    location VARCHAR(100),\n    last_update TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    sensor_id INT PRIMARY KEY,\n    device_id INT,\n    sensor_type VARCHAR(50),\n    sensor_value FLOAT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    device_id INT,\n    alert_message TEXT,\n    alert_time TIMESTAMP,\n    severity INT,\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE commands (\n    command_id INT PRIMARY KEY,\n    device_id INT,\n    command_type VARCHAR(50),\n    command_value VARCHAR(255),\n    sent_time TIMESTAMP,\n    response_time TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DEVICE (id INT, device_name STRING, location STRING, device_type STRING, status STRING);"
+      },
+      {
+        "table_schema": "CREATE TABLE SENSOR (id INT, sensor_name STRING, device_id INT, data_type STRING, unit_of_measurement STRING, PRIMARY KEY (id), FOREIGN KEY (device_id) REFERENCES DEVICE(id) ON DELETE CASCADE);"
+      },
+      {
+        "table_schema": "CREATE TABLE DATA_STREAM (id INT, sensor_id INT, timestamp TIMESTAMP, value FLOAT, PRIMARY KEY (id), FOREIGN KEY (sensor_id) REFERENCES SENSOR(id) ON DELETE CASCADE);"
+      },
+      {
+        "table_schema": "CREATE TABLE ALERT (id INT, sensor_id INT, alert_type STRING, value_threshold FLOAT, timestamp TIMESTAMP, PRIMARY KEY (id), FOREIGN KEY (sensor_id) REFERENCES SENSOR(id) ON DELETE CASCADE);"
+      },
+      {
+        "table_schema": "CREATE TABLE DECISION (id INT, alert_id INT, decision_time TIMESTAMP, action_taken STRING, PRIMARY KEY (id), FOREIGN KEY (alert_id) REFERENCES ALERT(id) ON DELETE CASCADE);"
+      }
+    ]
+  }
+]

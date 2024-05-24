@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_personnel_locations (\n    id INT PRIMARY KEY,\n    personnel_id INT,\n    coordinate_latitude NUMERIC,\n    coordinate_longitude NUMERIC,\n    recorded_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_personnel (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    location_point GEOMETRY,\n    timestamp TIMESTAMP\n);\nCREATE TABLE surveillance_system (\n    camera_id INT PRIMARY KEY,\n    location_point GEOMETRY,\n    coverage_area GEOMETRY,\n    status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_personnel_locations (\n    id INT PRIMARY KEY,\n    personnel_name VARCHAR(50) NOT NULL,\n    latitude DECIMAL(9,6) NOT NULL,\n    longitude DECIMAL(9,6) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_cameras (\n    id INT PRIMARY KEY,\n    camera_name VARCHAR(50) NOT NULL,\n    location_id INT REFERENCES security_personnel_locations(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patrols (\n    id INT PRIMARY KEY,\n    patrol_name VARCHAR(50) NOT NULL,\n    personnel_id INT REFERENCES security_personnel_locations(id),\n    camera_id INT REFERENCES security_cameras(id),\n    patrol_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_personnel (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    phone_number VARCHAR(20),\n    gps_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE check_ins (\n    id INT PRIMARY KEY,\n    personnel_id INT,\n    check_in_time TIMESTAMP,\n    FOREIGN KEY (personnel_id) REFERENCES security_personnel(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patrol_routes (\n    id INT PRIMARY KEY,\n    route_name VARCHAR(50),\n    start_location VARCHAR(100),\n    end_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents (\n    id INT PRIMARY KEY,\n    description TEXT,\n    location VARCHAR(100),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityPersonnel (\n    personnel_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    designation VARCHAR(50),\n    department VARCHAR(50),\n    location_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Location (\n    location_id INT PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveillanceSystem (\n    system_id INT PRIMARY KEY,\n    system_name VARCHAR(50),\n    deployment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CoverageArea (\n    area_id INT PRIMARY KEY,\n    area_name VARCHAR(50),\n    location_id INT,\n    coverage_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PatrolActivity (\n    activity_id INT PRIMARY KEY,\n    personnel_id INT,\n    activity_date DATE,\n    area_id INT\n);\n"
+      }
+    ]
+  }
+]

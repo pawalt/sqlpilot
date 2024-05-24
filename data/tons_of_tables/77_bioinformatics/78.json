@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HighThroughputScreeningResults (\n    screening_id SERIAL PRIMARY KEY,\n    compound_name VARCHAR(255) NOT NULL,\n    compound_structure TEXT,\n    screening_date DATE,\n    screening_result BOOLEAN,\n    assay_type VARCHAR(100),\n    target_protein VARCHAR(100),\n    assay_measurement FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HighThroughputScreeningResults (\n    screening_id INT PRIMARY KEY,\n    compound_id INT,\n    assay_name VARCHAR(255),\n    assay_result FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DrugDiscoveryResults (\n    discovery_id INT PRIMARY KEY,\n    screening_id INT,\n    compound_name VARCHAR(255),\n    target_protein VARCHAR(255),\n    discovery_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE high_throughput_results (\n    experiment_id INT PRIMARY KEY,\n    compound_id INT,\n    assay_id INT,\n    result FLOAT,\n    PRIMARY KEY (experiment_id, compound_id, assay_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compounds (\n    compound_id INT PRIMARY KEY,\n    compound_name VARCHAR(255),\n    formula VARCHAR(50),\n    molecular_weight FLOAT,\n    structure BLOB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE assays (\n    assay_id INT PRIMARY KEY,\n    assay_name VARCHAR(255),\n    target_protein VARCHAR(255),\n    assay_type VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE High_Throughput_Screening (\n\tid SERIAL PRIMARY KEY,\n\tcompound_name VARCHAR(255) NOT NULL,\n\tcompound_structure TEXT NOT NULL,\n\ttarget_protein VARCHAR(100) NOT NULL,\n\tscreening_result DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Screening_Results (\n\tid SERIAL PRIMARY KEY,\n\tscreening_id INTEGER REFERENCES High_Throughput_Screening(id),\n\tdate_conducted DATE NOT NULL,\n\tresult_value DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Compound_Information (\n\tid SERIAL PRIMARY KEY,\n\tcompound_name VARCHAR(255) NOT NULL,\n\tmolecular_weight DECIMAL(10,2) NOT NULL,\n\tsmiles_structure TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Protein_Information (\n\tid SERIAL PRIMARY KEY,\n\tprotein_name VARCHAR(100) NOT NULL,\n\tprotein_function TEXT,\n\tgene_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE screening_results (\n    screening_id INT PRIMARY KEY,\n    compound_name VARCHAR(255),\n    assay_type VARCHAR(255),\n    result DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compounds (\n    compound_id SERIAL PRIMARY KEY,\n    compound_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assays (\n    assay_id SERIAL PRIMARY KEY,\n    assay_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE screening_assays (\n    screening_id INT,\n    assay_id INT,\n    FOREIGN KEY (screening_id) REFERENCES screening_results(screening_id),\n    FOREIGN KEY (assay_id) REFERENCES assays(assay_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compound_screening (\n    compound_id INT,\n    screening_id INT,\n    FOREIGN KEY (compound_id) REFERENCES compounds(compound_id),\n    FOREIGN KEY (screening_id) REFERENCES screening_results(screening_id)\n);"
+      }
+    ]
+  }
+]

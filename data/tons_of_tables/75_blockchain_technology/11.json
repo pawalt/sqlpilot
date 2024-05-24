@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n    id SERIAL PRIMARY KEY,\n    asset_name VARCHAR(100) NOT NULL,\n    owner_address VARCHAR(100) NOT NULL,\n    blockchain_platform VARCHAR(50) NOT NULL,\n    token_id VARCHAR(100),\n    trade_history JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_ownership (\n    asset_id SERIAL PRIMARY KEY,\n    owner_address VARCHAR(255),\n    blockchain_platform VARCHAR(50),\n    creation_timestamp TIMESTAMP\n);\n\nCREATE TABLE asset_trading_history (\n    trade_id SERIAL PRIMARY KEY,\n    asset_id INT REFERENCES asset_ownership(asset_id),\n    trader_address VARCHAR(255),\n    trade_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n  id INT PRIMARY KEY,\n  asset_name VARCHAR(255),\n  blockchain_platform VARCHAR(255),\n  owner_address VARCHAR(255),\n  trading_history TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE owners (\n  id INT PRIMARY KEY,\n  owner_name VARCHAR(255),\n  email VARCHAR(255),\n  blockchain_platform VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  id INT PRIMARY KEY,\n  asset_id INT, \n  owner_id INT,\n  transaction_date TIMESTAMP,\n  transaction_type VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n\tdigital_asset_id INT PRIMARY KEY,\n\tdigital_asset_name VARCHAR(255),\n\towner_address VARCHAR(255),\n\tblockchain_platform VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_ownership (\n\townership_id INT PRIMARY KEY,\n\tdigital_asset_id INT,\n\towner_address VARCHAR(255),\n\townership_start_date DATE,\n\townership_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_transactions (\n\ttransaction_id INT PRIMARY KEY,\n\tdigital_asset_id INT,\n\ttransaction_type VARCHAR(50),\n\ttransaction_date TIMESTAMP,\n\ttransaction_value DECIMAL(18, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_platforms (\n\tplatform_id INT PRIMARY KEY,\n\tplatform_name VARCHAR(50),\n\tplatform_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(100),\n    asset_platform VARCHAR(50),\n    asset_owner VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_trading_history (\n    trade_id INT PRIMARY KEY,\n    asset_id INT REFERENCES digital_assets(asset_id),\n    trade_date DATE,\n    trade_type VARCHAR(20),\n    trade_amount DECIMAL(18, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_platforms (\n    platform_id INT PRIMARY KEY,\n    platform_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_ownership (\n    ownership_id INT PRIMARY KEY,\n    asset_id INT REFERENCES digital_assets(asset_id),\n    owner_name VARCHAR(50),\n    ownership_date TIMESTAMP,\n    ownership_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n    transaction_id INT PRIMARY KEY,\n    transaction_hash VARCHAR(255) UNIQUE,\n    transaction_date TIMESTAMP,\n    transaction_platform_id INT REFERENCES blockchain_platforms(platform_id)\n);"
+      }
+    ]
+  }
+]

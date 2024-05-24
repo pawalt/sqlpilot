@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employee_code_of_conduct_acknowledgments (\n  employee_id INT PRIMARY KEY,\n  acknowledgment_date DATE,\n  acknowledgment_statement TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employee_code_of_conduct (\n    employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(50),\n    conduct_acknowledgment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_monitoring (\n    monitoring_id INT PRIMARY KEY,\n    employee_id INT,\n    monitoring_date DATE,\n    monitoring_notes VARCHAR(100),\n    FOREIGN KEY (employee_id) REFERENCES employee_code_of_conduct(employee_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmployeeAcknowledgments (\n    acknowledgment_id INT PRIMARY KEY,\n    employee_id INT,\n    acknowledgment_date DATE,\n    compliance_status VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EmployeeDetails (\n    employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(50),\n    department VARCHAR(50),\n    hire_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceOfficers (\n    officer_id INT PRIMARY KEY,\n    officer_name VARCHAR(50),\n    department VARCHAR(50),\n    email VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employee (employee_id INT PRIMARY KEY,\n                          full_name VARCHAR(100),\n                          department VARCHAR(50),\n                          email VARCHAR(100),\n                          hire_date DATE,\n                          CONSTRAINT fk_department FOREIGN KEY (department) REFERENCES department(department_code))"
+      },
+      {
+        "table_schema": "CREATE TABLE department (department_code VARCHAR(10) PRIMARY KEY,\n                          department_name VARCHAR(50))"
+      },
+      {
+        "table_schema": "CREATE TABLE code_of_conduct (code_id VARCHAR(10) PRIMARY KEY,\n                          code_description TEXT,\n                          code_category VARCHAR(50))"
+      },
+      {
+        "table_schema": "CREATE TABLE acknowledgment (ack_id INT PRIMARY KEY,\n                          employee_id INT,\n                          code_id VARCHAR(10),\n                          date_acknowledged DATE,\n                          CONSTRAINT fk_employee FOREIGN KEY (employee_id) REFERENCES employee(employee_id),\n                          CONSTRAINT fk_code_of_conduct FOREIGN KEY (code_id) REFERENCES code_of_conduct(code_id))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employees (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(50),\n  department VARCHAR(50),\n  hire_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE code_of_conduct (\n  acknowledgment_id INT PRIMARY KEY,\n  employee_id INT,\n  acknowledgement_date DATE,\n  FOREIGN KEY (employee_id) REFERENCES employees(employee_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE violations (\n  violation_id INT PRIMARY KEY,\n  employee_id INT,\n  violation_description VARCHAR(255),\n  violation_date DATE,\n  FOREIGN KEY (employee_id) REFERENCES employees(employee_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_monitoring (\n  monitoring_id INT PRIMARY KEY,\n  employee_id INT,\n  observation_date DATE,\n  compliance_status BOOLEAN,\n  FOREIGN KEY (employee_id) REFERENCES employees(employee_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_reports (\n  report_id INT PRIMARY KEY,\n  monitoring_id INT,\n  compliance_summary TEXT,\n  report_date DATE,\n  FOREIGN KEY (monitoring_id) REFERENCES compliance_monitoring(monitoring_id)\n)"
+      }
+    ]
+  }
+]

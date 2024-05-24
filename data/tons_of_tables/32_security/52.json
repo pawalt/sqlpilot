@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE lighting_control_schedule (\n    id BIGSERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    room_name VARCHAR(50) NOT NULL,\n    light_intensity INT,\n    time_start TIME NOT NULL,\n    time_end TIME NOT NULL,\n    days_of_week VARCHAR(20)[]\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE schedule (\n    id INT PRIMARY KEY,\n    user_id INT,\n    light_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT PRIMARY KEY,\n    preferred_light_id INT,\n    preferred_start_time TIMESTAMP,\n    preferred_end_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE schedule (\n    schedule_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    light_intensity FLOAT NOT NULL\n);\n\nCREATE TABLE user_preferences (\n    user_id UUID PRIMARY KEY,\n    preferred_light_intensity FLOAT NOT NULL,\n    preferred_start_time TIME NOT NULL,\n    preferred_end_time TIME NOT NULL\n);\n\nCREATE TABLE light_groups (\n    group_id UUID PRIMARY KEY,\n    group_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    timezone VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    repeat_days VARCHAR(50),\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lights (\n    light_id INT PRIMARY KEY,\n    light_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    status BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    user_id INT PRIMARY KEY,\n    light_id INT NOT NULL,\n    brightness INT NOT NULL,\n    color_temperature INT NOT NULL,\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),\n    CONSTRAINT fk_light_id FOREIGN KEY (light_id) REFERENCES lights(light_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id INT PRIMARY KEY,\n    lighting_control_id INT,\n    user_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lighting_controls (\n    lighting_control_id INT PRIMARY KEY,\n    control_name TEXT,\n    intensity INT,\n    status TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    name TEXT,\n    email TEXT,\n    phone_number TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    preference_id INT PRIMARY KEY,\n    user_id INT,\n    control_id INT,\n    intensity_preference INT,\n    status_preference TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    schedule_id INT,\n    event_name TEXT,\n    timestamp TIMESTAMP,\n    status TEXT\n);"
+      }
+    ]
+  }
+]

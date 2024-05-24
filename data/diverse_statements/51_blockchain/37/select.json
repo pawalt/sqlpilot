@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM goods_tracking WHERE id = 1;",
+      "SELECT product_name, location FROM goods_tracking WHERE location = 'Warehouse';",
+      "SELECT id, product_name, timestamp FROM goods_tracking WHERE timestamp BETWEEN '2022-01-01' AND '2022-01-31';",
+      "SELECT * FROM goods_tracking WHERE RFID_tag IS NOT NULL ORDER BY timestamp DESC;",
+      "SELECT id, product_name FROM goods_tracking WHERE location = 'Store' AND product_name LIKE '%clothing%';",
+      "SELECT * FROM goods_tracking WHERE location = 'Warehouse A' ORDER BY timestamp DESC;",
+      "SELECT product_name, location FROM goods_tracking WHERE RFID_tag = '123456789';",
+      "SELECT location, COUNT(product_name) AS count FROM goods_tracking GROUP BY location HAVING count > 5 ORDER BY count DESC;",
+      "SELECT * FROM goods_tracking WHERE timestamp BETWEEN '2022-01-01' AND '2022-01-31' ORDER BY location ASC, timestamp DESC;",
+      "SELECT MAX(timestamp) AS latest_timestamp FROM goods_tracking WHERE product_name LIKE '%shoes%';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM goods_tracking;",
+      "SELECT product_name, location FROM goods_tracking ORDER BY product_name ASC;",
+      "SELECT id, product_name, location, movement_status FROM goods_tracking WHERE location = 'Warehouse';",
+      "SELECT * FROM rfid_tags WHERE tag_status = 'A' ORDER BY tag_id DESC;",
+      "SELECT tag_id, tag_location FROM rfid_tags WHERE goods_id = 12345;",
+      "SELECT * FROM goods_tracking WHERE location = 'Warehouse A' ORDER BY product_name DESC;",
+      "SELECT product_name, movement_status FROM goods_tracking WHERE id IN (1, 3, 5) AND location = 'Factory B';",
+      "SELECT id, product_name, location FROM goods_tracking WHERE movement_status = 'I' AND location LIKE '%Storage%' ORDER BY id;",
+      "SELECT g.id, g.product_name, r.tag_status FROM goods_tracking g INNER JOIN rfid_tags r ON g.id = r.goods_id WHERE r.tag_status = 'E' AND r.tag_location = 'Shelf 2';",
+      "SELECT DISTINCT location FROM goods_tracking WHERE movement_status = 'O' ORDER BY location ASC LIMIT 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM goods;",
+      "SELECT name, rfid_tag FROM goods WHERE id = 1;",
+      "SELECT location_name, address FROM locations WHERE id = 2;",
+      "SELECT * FROM movements WHERE movement_date >= '2023-01-01';",
+      "SELECT goods.name, movements.movement_id, locations.location_name FROM goods JOIN movements ON goods.id = movements.goods_id JOIN locations ON movements.from_location_id = locations.id;",
+      "SELECT id, name, rfid_tag FROM goods WHERE rfid_tag = 'RFID123';",
+      "SELECT movement_id, goods_id, from_location_id, to_location_id, movement_date FROM movements WHERE movement_id = 'MOV123';",
+      "SELECT id, location_name, address FROM locations WHERE id = 1;",
+      "SELECT id, name, rfid_tag FROM goods ORDER BY name DESC;",
+      "SELECT movement_id, goods_id, from_location_id, to_location_id, movement_date FROM movements ORDER BY movement_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM shipments;",
+      "SELECT shipment_id, shipment_date, current_status FROM shipments WHERE current_status='In Transit';",
+      "SELECT product_name, weight, category FROM products ORDER BY category DESC;",
+      "SELECT tag_code, tag_location FROM tracking_tags WHERE shipment_id=1001;",
+      "SELECT movement_date, from_location, to_location FROM tracking_history WHERE tag_id=5001 ORDER BY movement_date ASC;",
+      "SELECT * FROM shipments WHERE current_status = 'In Transit';",
+      "SELECT product_name, weight FROM products WHERE category = 'Electronics' ORDER BY weight DESC;",
+      "SELECT shipments.*, products.product_name FROM shipments INNER JOIN tracking_tags ON shipments.shipment_id = tracking_tags.shipment_id INNER JOIN products ON tracking_tags.product_id = products.product_id WHERE shipments.origin_location = 'New York';",
+      "SELECT th.movement_date, th.from_location, th.to_location, tt.tag_code FROM tracking_tags tt INNER JOIN tracking_history th ON tt.tag_id = th.tag_id WHERE tt.tag_location = 'Warehouse A' AND th.movement_date BETWEEN '2022-01-01' AND '2022-06-01' ORDER BY th.movement_date DESC;",
+      "SELECT shipments.shipment_id, shipments.destination_location, th.movement_date AS last_movement FROM shipments INNER JOIN tracking_tags tt ON shipments.shipment_id = tt.shipment_id INNER JOIN tracking_history th ON tt.tag_id = th.tag_id GROUP BY shipments.shipment_id HAVING MAX(th.movement_date);"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Transport_Orders ORDER BY delivery_date DESC LIMIT 5;",
+      "SELECT product_name, source_location, destination_location FROM Transport_Orders WHERE delivery_date = '2022-12-31';",
+      "SELECT tag_number, product_name, current_location FROM RFID_Tags WHERE last_scan_time > '2022-01-01' ORDER BY last_scan_time DESC LIMIT 3;",
+      "SELECT event_id, event_type, event_timestamp FROM Shipping_Events WHERE event_type = 'DELIVERY' ORDER BY event_timestamp LIMIT 5;",
+      "SELECT * FROM Warehouse_Inventory WHERE quantity > 0 ORDER BY location, product_name DESC LIMIT 5;",
+      "SELECT * FROM Transport_Orders;",
+      "SELECT order_id, product_name, source_location FROM Transport_Orders WHERE delivery_date > '2022-01-01';",
+      "SELECT tag_id, tag_number, current_location FROM RFID_Tags ORDER BY last_scan_time DESC;",
+      "SELECT event_id, event_type, event_description FROM Shipping_Events WHERE event_timestamp BETWEEN '2022-01-01' AND '2022-01-31';",
+      "SELECT vehicle_id, vehicle_type, route_description FROM Transport_Vehicles WHERE last_update_timestamp < CURRENT_TIMESTAMP;"
+    ]
+  }
+]

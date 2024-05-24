@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LeadGenerationCampaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    campaign_start_date DATE,\n    campaign_end_date DATE,\n    lead_generation_strategy VARCHAR(255),\n    conversion_rate FLOAT,\n    successful_leads INT,\n    total_leads INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    campaign_id UUID PRIMARY KEY,\n    strategy_name VARCHAR(100),\n    impressions INT,\n    clicks INT,\n    conversions INT,\n    spent DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE A_B_testing (\n    test_id UUID PRIMARY KEY,\n    test_name VARCHAR(100),\n    test_description TEXT,\n    start_date DATE,\n    end_date DATE,\n    campaign_id UUID REFERENCES campaign_performance(campaign_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    campaign_id INT PRIMARY KEY,\n    lead_generation_strategy VARCHAR(50),\n    conversion_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id INT PRIMARY KEY,\n    campaign_id INT,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ab_test_results (\n    test_id INT PRIMARY KEY,\n    campaign_id INT,\n    test_strategy VARCHAR(50),\n    test_results JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    strategy_used VARCHAR(255),\n    conversion_rate DECIMAL(5,2),\n    revenue_generated DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lead_generation (\n    id INT PRIMARY KEY,\n    lead_source VARCHAR(255),\n    lead_quality VARCHAR(255),\n    lead_conversion_rate DECIMAL(5,2),\n    campaign_id INT,\n    FOREIGN KEY (campaign_id) REFERENCES campaign_performance(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE test_group (\n    id INT PRIMARY KEY,\n    group_name VARCHAR(255),\n    group_size INT,\n    campaign_id INT,\n    FOREIGN KEY (campaign_id) REFERENCES campaign_performance(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE test_results (\n    id INT PRIMARY KEY,\n    test_group_id INT,\n    conversion_rate DECIMAL(5,2),\n    revenue_generated DECIMAL(10,2),\n    FOREIGN KEY (test_group_id) REFERENCES test_group(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    successful_leads INT,\n    unsuccessful_leads INT\n);\n\nCREATE TABLE landing_pages (\n    id SERIAL PRIMARY KEY,\n    page_id VARCHAR(50) NOT NULL,\n    page_name VARCHAR(255) NOT NULL,\n    conversion_rate FLOAT,\n    bounce_rate FLOAT\n);\n\nCREATE TABLE ads (\n    id SERIAL PRIMARY KEY,\n    ad_id VARCHAR(50) NOT NULL,\n    ad_name VARCHAR(255) NOT NULL,\n    ad_type VARCHAR(50),\n    impressions INT,\n    clicks INT\n);\n\nCREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    user_id VARCHAR(50) NOT NULL,\n    user_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    registration_date DATE\n);\n\nCREATE TABLE test_results (\n    id SERIAL PRIMARY KEY,\n    test_id VARCHAR(50) NOT NULL,\n    test_name VARCHAR(255) NOT NULL,\n    variant VARCHAR(50) NOT NULL,\n    conversion_rate FLOAT,\n    confidence_level FLOAT\n);"
+      }
+    ]
+  }
+]

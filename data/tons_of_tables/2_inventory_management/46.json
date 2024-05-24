@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_risk_assessment (\n   id INT PRIMARY KEY,\n   vendor_name VARCHAR(255),\n   financial_stability VARCHAR(50),\n   reputation VARCHAR(50),\n   service_quality VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_risk_assessments (\n    vendor_id UUID PRIMARY KEY,\n    financial_stability_rating FLOAT,\n    reputation_rating FLOAT,\n    service_quality_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vendor_details (\n    vendor_id UUID PRIMARY KEY,\n    vendor_name STRING,\n    registration_date DATE,\n    contact_email STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_risk_assessments (\n    vendor_id SERIAL PRIMARY KEY,\n    vendor_name VARCHAR(255) NOT NULL,\n    financial_stability_rating INT NOT NULL,\n    reputation_rating INT NOT NULL,\n    service_quality_rating INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_stability_scores (\n    id SERIAL PRIMARY KEY,\n    vendor_id INT NOT NULL,\n    score_date DATE NOT NULL,\n    score_value DECIMAL(10,2) NOT NULL,\n    CONSTRAINT fk_vendor_id FOREIGN KEY (vendor_id) REFERENCES vendor_risk_assessments(vendor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_quality_feedback (\n    feedback_id SERIAL PRIMARY KEY,\n    vendor_id INT NOT NULL,\n    feedback_text TEXT,\n    feedback_date DATE,\n    CONSTRAINT fk_vendor_id FOREIGN KEY (vendor_id) REFERENCES vendor_risk_assessments(vendor_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendors (\n    id INT PRIMARY KEY,\n    vendor_name VARCHAR(255),\n    financial_stability FLOAT,\n    reputation VARCHAR(255),\n    service_quality FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_scores (\n    vendor_id INT REFERENCES vendors(id),\n    fiscal_year INT,\n    score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assessments (\n    assessment_id INT PRIMARY KEY,\n    vendor_id INT REFERENCES vendors(id),\n    assessment_date DATE,\n    assessed_by VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_factors (\n    factor_id INT PRIMARY KEY,\n    factor_name VARCHAR(255),\n    impact_score INT,\n    likelihood_score INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_risk_assessment (\n    id INT PRIMARY KEY,\n    vendor_name VARCHAR(255),\n    financial_stability_score INT,\n    reputation_score INT,\n    service_quality_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_stability_report (\n    id INT PRIMARY KEY,\n    vendor_id INT,\n    stability_rating VARCHAR(50),\n    annual_revenue DECIMAL,\n    debt_ratio DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reputation_review (\n    id INT PRIMARY KEY,\n    vendor_id INT,\n    review_date DATE,\n    reviewer_name VARCHAR(255),\n    review_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_quality_evaluation (\n    id INT PRIMARY KEY,\n    vendor_id INT,\n    evaluation_date DATE,\n    evaluator_name VARCHAR(255),\n    evaluation_result TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessment_summary (\n    id INT PRIMARY KEY,\n    vendor_id INT,\n    overall_score INT,\n    risk_category VARCHAR(50),\n    assessment_date DATE\n);"
+      }
+    ]
+  }
+]

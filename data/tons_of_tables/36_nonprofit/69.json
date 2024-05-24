@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE partnership (\n  partnership_id SERIAL PRIMARY KEY,\n  philanthropic_entity_id INT,\n  government_agency_id INT,\n  partnership_start_date DATE,\n  partnership_end_date DATE,\n  partnership_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PhilanthropicEntities (\n    entity_id INT PRIMARY KEY,\n    entity_name VARCHAR(255) NOT NULL,\n    entity_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GovernmentAgencies (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(255) NOT NULL,\n    agency_type VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE philanthropic_entities (\n  entity_id INT PRIMARY KEY,\n  entity_name VARCHAR(255),\n  contact_person VARCHAR(255),\n  partnership_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE government_agencies (\n  agency_id INT PRIMARY KEY,\n  agency_name VARCHAR(255),\n  agency_type VARCHAR(50),\n  contact_person VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE partnerships (\n  partnership_id INT PRIMARY KEY,\n  entity_id INT,\n  agency_id INT,\n  start_date DATE,\n  end_date DATE,\n  partnership_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Partnerships (\n    partnership_id INT PRIMARY KEY,\n    philanthropic_entity_id INT,\n    government_agency_id INT,\n    partnership_type VARCHAR(50),\n    partnership_start_date DATE,\n    partnership_end_date DATE,\n    CONSTRAINT fk_philanthropic_entity FOREIGN KEY (philanthropic_entity_id) REFERENCES PhilanthropicEntities(entity_id),\n    CONSTRAINT fk_government_agency FOREIGN KEY (government_agency_id) REFERENCES GovernmentAgencies(agency_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PhilanthropicEntities (\n    entity_id INT PRIMARY KEY,\n    entity_name VARCHAR(100),\n    entity_type VARCHAR(50),\n    entity_location VARCHAR(100),\n    entity_website VARCHAR(200)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GovernmentAgencies (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(100),\n    agency_type VARCHAR(50),\n    agency_location VARCHAR(100),\n    agency_contact_person VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PartnershipDetails (\n    detail_id INT PRIMARY KEY,\n    partnership_id INT,\n    detail_description TEXT,\n    detail_amount DECIMAL(12, 2),\n    detail_date DATE,\n    CONSTRAINT fk_partnership FOREIGN KEY (partnership_id) REFERENCES Partnerships(partnership_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE philanthropic_entities (\n    entity_id INT PRIMARY KEY,\n    entity_name VARCHAR(255) NOT NULL,\n    entity_type VARCHAR(50) NOT NULL,\n    registration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE government_agencies (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(255) NOT NULL,\n    agency_type VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE partnerships (\n    partnership_id INT PRIMARY KEY,\n    entity_id INT NOT NULL,\n    agency_id INT NOT NULL,\n    partnership_date DATE,\n    partnership_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (entity_id) REFERENCES philanthropic_entities(entity_id),\n    FOREIGN KEY (agency_id) REFERENCES government_agencies(agency_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE partnership_funding (\n    funding_id INT PRIMARY KEY,\n    partnership_id INT NOT NULL,\n    funding_amount DECIMAL(10, 2) NOT NULL,\n    funding_date DATE,\n    funding_purpose TEXT,\n    FOREIGN KEY (partnership_id) REFERENCES partnerships(partnership_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE partnership_reports (\n    report_id INT PRIMARY KEY,\n    partnership_id INT NOT NULL,\n    report_date DATE,\n    report_details TEXT,\n    FOREIGN KEY (partnership_id) REFERENCES partnerships(partnership_id)\n);"
+      }
+    ]
+  }
+]

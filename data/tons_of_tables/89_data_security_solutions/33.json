@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction_records (\n    id UUID PRIMARY KEY,\n    account_id UUID NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    description TEXT,\n    encrypted_data BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encrypted_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    encrypted_data TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id SERIAL PRIMARY KEY,\n    transaction_id INT REFERENCES encrypted_transactions(transaction_id),\n    audit_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    account_id INT,\n    amount DECIMAL,\n    transaction_date DATE,\n    encrypted_data TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR(50),\n    account_type VARCHAR(20),\n    balance DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id INT PRIMARY KEY,\n    transaction_id INT,\n    user_id INT,\n    action VARCHAR(50),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE financial_institution (\n  id INT PRIMARY KEY,\n  customer_id INT,\n  transaction_amount DECIMAL,\n  transaction_date TIMESTAMP,\n  transaction_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_audit (\n  audit_id INT PRIMARY KEY,\n  transaction_id INT,\n  auditor_id INT,\n  audit_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n  customer_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE auditor (\n  auditor_id INT PRIMARY KEY,\n  auditor_name VARCHAR(50),\n  department VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encrypted_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    account_id INT NOT NULL,\n    transaction_amount DECIMAL NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    encrypted_details BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id SERIAL PRIMARY KEY,\n    account_holder_name VARCHAR(100) NOT NULL,\n    account_balance DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id SERIAL PRIMARY KEY,\n    employee_name VARCHAR(100) NOT NULL,\n    department VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id SERIAL PRIMARY KEY,\n    log_timestamp TIMESTAMP NOT NULL,\n    action_performed VARCHAR(100) NOT NULL,\n    user_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  }
+]

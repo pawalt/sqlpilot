@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fundraising_campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE,\n  total_goal DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    target_amount DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donations (\n    donation_id INT PRIMARY KEY,\n    campaign_id INT NOT NULL,\n    donor_name VARCHAR(255) NOT NULL,\n    donation_amount DECIMAL NOT NULL,\n    donation_date DATE NOT NULL,\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n  campaign_id UUID PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  campaign_description TEXT,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Donors (\n  donor_id UUID PRIMARY KEY,\n  donor_name VARCHAR(255) NOT NULL,\n  donor_email VARCHAR(255) UNIQUE,\n  donation_amount DECIMAL(10,2),\n  donation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Donations (\n  donation_id UUID PRIMARY KEY,\n  campaign_id UUID,\n  donor_id UUID,\n  donation_amount DECIMAL(10,2) NOT NULL,\n  donation_date DATE,\n  FOREIGN KEY (campaign_id) REFERENCES Campaigns(campaign_id),\n  FOREIGN KEY (donor_id) REFERENCES Donors(donor_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Donors (\n    donor_id INT PRIMARY KEY,\n    donor_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Donations (\n    donation_id INT PRIMARY KEY,\n    donor_id INT,\n    campaign_id INT,\n    donation_amount DECIMAL,\n    donation_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignStats (\n    campaign_id INT PRIMARY KEY,\n    total_donations DECIMAL,\n    total_donors INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n  campaign_id SERIAL PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  total_goal INTEGER NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Donors (\n  donor_id SERIAL PRIMARY KEY,\n  donor_name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE NOT NULL,\n  phone_number VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Donations (\n  donation_id SERIAL PRIMARY KEY,\n  campaign_id INTEGER REFERENCES Campaigns(campaign_id),\n  donor_id INTEGER REFERENCES Donors(donor_id),\n  donation_amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n  transaction_id SERIAL PRIMARY KEY,\n  donation_id INTEGER REFERENCES Donations(donation_id),\n  transaction_date TIMESTAMP NOT NULL,\n  transaction_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignStatus (\n  status_id SERIAL PRIMARY KEY,\n  campaign_id INTEGER REFERENCES Campaigns(campaign_id),\n  total_donations INTEGER NOT NULL,\n  status VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  }
+]

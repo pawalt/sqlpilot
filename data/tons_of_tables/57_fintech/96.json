@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id SERIAL PRIMARY KEY,\n    key_name VARCHAR(100) NOT NULL,\n    key_value VARCHAR(255) NOT NULL,\n    key_description TEXT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(255) NOT NULL,\n    key_value TEXT NOT NULL\n);\n\nCREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    amount DECIMAL(10, 2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    encrypted_data TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id INT PRIMARY KEY,\n    encryption_key VARCHAR(255) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    amount DECIMAL,\n    encrypted_data TEXT,\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password_hash VARCHAR(255),\n    secure_question VARCHAR(100),\n    secure_answer VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(50) UNIQUE,\n    key_value TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n    log_id INT PRIMARY KEY,\n    transaction_id INT, \n    log_message TEXT,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    amount DECIMAL,\n    sender_account INT,\n    receiver_account INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(100),\n    password_hash TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    amount DECIMAL,\n    timestamp TIMESTAMP,\n    key_id UUID REFERENCES encryption_keys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_transactions (\n    user_id UUID REFERENCES users(user_id),\n    transaction_id UUID REFERENCES transactions(transaction_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id UUID PRIMARY KEY,\n    log_message TEXT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

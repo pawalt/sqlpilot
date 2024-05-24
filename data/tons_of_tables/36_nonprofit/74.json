@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  funding_amount DECIMAL(10, 2) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    funding_amount DECIMAL(10, 2),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_reports (\n    report_id INT PRIMARY KEY,\n    project_id INT,\n    report_date DATE,\n    report_description TEXT,\n    impact_rating INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE funded_projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  funding_amount DECIMAL,\n  start_date DATE,\n  end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_reports (\n  report_id INT PRIMARY KEY,\n  project_id INT,\n  report_date DATE,\n  report_content TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_impact (\n  impact_id INT PRIMARY KEY,\n  project_id INT,\n  impact_description TEXT,\n  impact_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    funding_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_members (\n    member_id INT PRIMARY KEY,\n    project_id INT,\n    member_name VARCHAR(255),\n    role VARCHAR(50),\n    JOIN TABLE projects(project_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_activities (\n    activity_id INT PRIMARY KEY,\n    project_id INT,\n    activity_description TEXT,\n    activity_date DATE,\n    JOIN TABLE projects(project_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_impact_reports (\n    report_id INT PRIMARY KEY,\n    project_id INT,\n    report_date DATE,\n    impact_description TEXT,\n    JOIN TABLE projects(project_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE funded_projects (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(255),\n  funding_source VARCHAR(255),\n  funding_amount DECIMAL(10, 2),\n  start_date DATE,\n  end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_expenses (\n  expense_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES funded_projects(project_id),\n  expense_description TEXT,\n  expense_amount DECIMAL(10, 2),\n  expense_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_activities (\n  activity_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES funded_projects(project_id),\n  activity_name VARCHAR(255),\n  activity_date DATE,\n  activity_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_participants (\n  participant_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES funded_projects(project_id),\n  participant_name VARCHAR(255),\n  participant_role VARCHAR(50),\n  participant_contact VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE project_reports (\n  report_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES funded_projects(project_id),\n  report_date DATE,\n  report_description TEXT\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE therapy_billing (\n  therapy_billing_id UUID PRIMARY KEY,\n  client_id UUID NOT NULL,\n  therapist_id UUID NOT NULL,\n  service_date DATE NOT NULL,\n  service_cost DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE therapy_clients (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(100) NOT NULL,\n  client_email VARCHAR(255) UNIQUE\n);\n\nCREATE TABLE therapy_invoices (\n  invoice_id INT PRIMARY KEY,\n  client_id INT,\n  invoice_date DATE,\n  amount DECIMAL(10, 2),\n  FOREIGN KEY (client_id) REFERENCES therapy_clients(client_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE therapy_clients (\n    client_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE therapy_services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(50),\n    service_description TEXT,\n    service_rate DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE therapy_invoices (\n    invoice_id INT PRIMARY KEY,\n    client_id INT,\n    service_id INT,\n    invoice_date DATE,\n    total_amount DECIMAL(10, 2),\n    FOREIGN KEY (client_id) REFERENCES therapy_clients(client_id),\n    FOREIGN KEY (service_id) REFERENCES therapy_services(service_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(255),\n  therapist_id INT,\n  therapy_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE therapists (\n  therapist_id INT PRIMARY KEY,\n  therapist_name VARCHAR(255),\n  specialization VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE invoices (\n  invoice_id INT PRIMARY KEY,\n  client_id INT,\n  therapist_id INT,\n  invoice_date DATE,\n  total_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id INT PRIMARY KEY,\n  invoice_id INT,\n  payment_date DATE,\n  amount_paid DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Clients (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(50) NOT NULL,\n  address VARCHAR(100),\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Therapists (\n  therapist_id INT PRIMARY KEY,\n  therapist_name VARCHAR(50) NOT NULL,\n  specialization VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Services (\n  service_id INT PRIMARY KEY,\n  service_name VARCHAR(50) NOT NULL,\n  description TEXT,\n  cost DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointments (\n  appointment_id INT PRIMARY KEY,\n  client_id INT,\n  therapist_id INT,\n  service_id INT,\n  appointment_date DATE,\n  start_time TIME,\n  end_time TIME,\n  CONSTRAINT fk_clients FOREIGN KEY (client_id) REFERENCES Clients(client_id),\n  CONSTRAINT fk_therapists FOREIGN KEY (therapist_id) REFERENCES Therapists(therapist_id),\n  CONSTRAINT fk_services FOREIGN KEY (service_id) REFERENCES Services(service_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Invoices (\n  invoice_id INT PRIMARY KEY,\n  client_id INT,\n  therapist_id INT,\n  service_id INT,\n  appointment_id INT,\n  invoice_date DATE,\n  total_amount DECIMAL(10, 2) NOT NULL,\n  CONSTRAINT fk_clients FOREIGN KEY (client_id) REFERENCES Clients(client_id),\n  CONSTRAINT fk_therapists FOREIGN KEY (therapist_id) REFERENCES Therapists(therapist_id),\n  CONSTRAINT fk_services FOREIGN KEY (service_id) REFERENCES Services(service_id),\n  CONSTRAINT fk_appointments FOREIGN KEY (appointment_id) REFERENCES Appointments(appointment_id)\n);"
+      }
+    ]
+  }
+]

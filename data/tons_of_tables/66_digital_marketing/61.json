@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE conversion_rates (\n    campaign_id INT,\n    ad_id INT,\n    conversion_count INT,\n    conversion_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE conversion_rates (\n  campaign_id INT PRIMARY KEY,\n  date DATE NOT NULL,\n  clicks INT,\n  conversions INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n  performance_id INT PRIMARY KEY,\n  campaign_id INT REFERENCES conversion_rates(campaign_id),\n  impression_count INT,\n  cost DECIMAL(10, 2),\n  revenue DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ppc_campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conversion_rates (\n  conversion_id INT PRIMARY KEY,\n  campaign_id INT,\n  conversion_rate DECIMAL(5,2),\n  conversion_date DATE,\n  FOREIGN KEY (campaign_id) REFERENCES ppc_campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_clicks (\n  click_id INT PRIMARY KEY,\n  campaign_id INT,\n  click_date DATE,\n  is_converted BOOLEAN,\n  FOREIGN KEY (campaign_id) REFERENCES ppc_campaigns(campaign_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ConversionRates (id INT PRIMARY KEY,\n  campaign_id INT NOT NULL,\n  conversion_date DATE NOT NULL,\n  conversion_value DECIMAL NOT NULL,\n  UNIQUE(campaign_id, conversion_date));"
+      },
+      {
+        "table_schema": "CREATE TABLE Campaigns (id INT PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  advertising_platform VARCHAR(50) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Clicks (id INT PRIMARY KEY,\n  campaign_id INT NOT NULL,\n  click_date DATE NOT NULL,\n  device_type VARCHAR(50) NOT NULL,\n  IP_address VARCHAR(15) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Impressions (id INT PRIMARY KEY,\n  campaign_id INT NOT NULL,\n  impression_date DATE NOT NULL,\n  ad_position INT NOT NULL,\n  ad_size VARCHAR(20) NOT NULL);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ppc_campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  budget DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_groups (\n  ad_group_id INT PRIMARY KEY,\n  campaign_id INT,\n  ad_group_name VARCHAR(255),\n  bid DECIMAL(8, 2),\n  CONSTRAINT fk_campaign_id FOREIGN KEY (campaign_id) REFERENCES ppc_campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ads (\n  ad_id INT PRIMARY KEY,\n  ad_group_id INT,\n  ad_name VARCHAR(255),\n  ad_copy TEXT,\n  ad_url VARCHAR(255),\n  CONSTRAINT fk_ad_group_id FOREIGN KEY (ad_group_id) REFERENCES ad_groups(ad_group_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clicks (\n  click_id INT PRIMARY KEY,\n  ad_id INT,\n  click_timestamp DATETIME,\n  CONSTRAINT fk_ad_id FOREIGN KEY (ad_id) REFERENCES ads(ad_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions (\n  conversion_id INT PRIMARY KEY,\n  click_id INT,\n  conversion_timestamp DATETIME,\n  revenue DECIMAL(10, 2),\n  CONSTRAINT fk_click_id FOREIGN KEY (click_id) REFERENCES clicks(click_id)\n);"
+      }
+    ]
+  }
+]

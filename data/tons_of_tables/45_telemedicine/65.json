@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cancer_patients (\n  patient_id UUID PRIMARY KEY,\n  patient_name VARCHAR(255),\n  diagnosis VARCHAR(255),\n  age INT,\n  gender VARCHAR(10),\n  genetic_variation UUID,\n  treatment_plan TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR(100),\n    age INT,\n    gender VARCHAR(10),\n    diagnosis TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genomic_data (\n    data_id SERIAL PRIMARY KEY,\n    patient_id UUID,\n    dna_sequence TEXT,\n    report_date DATE,\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_genomic_data (\n  patient_id INT,\n  genomic_data VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE precision_medicine_data (\n  medicine_id INT,\n  medicine_name VARCHAR,\n  target_gene VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE treatment_history (\n  treatment_id INT,\n  patient_id INT,\n  treatment_date DATE,\n  medicine_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id UUID PRIMARY KEY,\n  patient_name VARCHAR(100) NOT NULL,\n  gender VARCHAR(10),\n  date_of_birth DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Samples (\n  sample_id UUID PRIMARY KEY,\n  patient_id UUID REFERENCES Patients(patient_id),\n  sample_type VARCHAR(50),\n  collection_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE GenomicData (\n  data_id UUID PRIMARY KEY,\n  sample_id UUID REFERENCES Samples(sample_id),\n  sequencing_method VARCHAR(50),\n  mutation_analysis JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Treatments (\n  treatment_id UUID PRIMARY KEY,\n  patient_id UUID REFERENCES Patients(patient_id),\n  treatment_name VARCHAR(100),\n  treatment_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT,\n  patient_name VARCHAR(100),\n  gender VARCHAR(10),\n  age INT,\n  diagnosis VARCHAR(100),\n  PRIMARY KEY (patient_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_results (\n  result_id INT,\n  patient_id INT,\n  gene_name VARCHAR(50),\n  mutation_type VARCHAR(50),\n  mutation_impact VARCHAR(50),\n  PRIMARY KEY (result_id),\n  FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE treatments (\n  treatment_id INT,\n  patient_id INT,\n  treatment_type VARCHAR(50),\n  treatment_start_date DATE,\n  treatment_end_date DATE,\n  PRIMARY KEY (treatment_id),\n  FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_interactions (\n  interaction_id INT,\n  treatment_id INT,\n  interaction_description TEXT,\n  PRIMARY KEY (interaction_id),\n  FOREIGN KEY (treatment_id) REFERENCES treatments(treatment_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE doctors (\n  doctor_id INT,\n  doctor_name VARCHAR(100),\n  specialization VARCHAR(50),\n  hospital_name VARCHAR(100),\n  PRIMARY KEY (doctor_id)\n)"
+      }
+    ]
+  }
+]

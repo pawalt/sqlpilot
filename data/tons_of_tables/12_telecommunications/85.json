@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telecom_security (\n    communication_channel_id INT PRIMARY KEY,\n    communication_type VARCHAR(50),\n    data_transfer_size DECIMAL(10,2),\n    transfer_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS communication_channels (\n    channel_id INT PRIMARY KEY,\n    channel_name VARCHAR(50) NOT NULL,\n    channel_type VARCHAR(50) NOT NULL,\n    channel_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS data_transfers (\n    transfer_id INT PRIMARY KEY,\n    transfer_date TIMESTAMP NOT NULL,\n    transfer_size INT,\n    sender_id INT,\n    receiver_id INT,\n    FOREIGN KEY (sender_id) REFERENCES communication_channels(channel_id),\n    FOREIGN KEY (receiver_id) REFERENCES communication_channels(channel_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE communication_channels (\n    channel_id INT PRIMARY KEY,\n    channel_name VARCHAR(100),\n    channel_type VARCHAR(50),\n    encryption_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_transfers (\n    transfer_id INT PRIMARY KEY,\n    transfer_date TIMESTAMP,\n    transfer_type VARCHAR(50),\n    transfer_size INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE metadata (\n    metadata_id INT PRIMARY KEY,\n    data_id INT,\n    timestamp TIMESTAMP,\n    status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE communications_metadata (\n    metadata_id UUID PRIMARY KEY,\n    communication_channel VARCHAR(50),\n    communication_type VARCHAR(50),\n    data_transfer_size INT,\n    metadata_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_channels (\n    channel_id UUID PRIMARY KEY,\n    channel_name VARCHAR(50),\n    channel_type VARCHAR(50),\n    channel_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_transfers (\n    transfer_id UUID PRIMARY KEY,\n    transfer_type VARCHAR(50),\n    transfer_start TIMESTAMP,\n    transfer_end TIMESTAMP,\n    transfer_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_operations (\n    operation_id UUID PRIMARY KEY,\n    operation_type VARCHAR(50),\n    operation_date TIMESTAMP,\n    operation_result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE communications (\n    communication_id INT PRIMARY KEY,\n    channel_id INT,\n    communication_type VARCHAR(50),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_metadata (\n    metadata_id INT PRIMARY KEY,\n    communication_id INT,\n    metadata_type VARCHAR(50),\n    metadata_value TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_transfers (\n    transfer_id INT PRIMARY KEY,\n    communication_id INT,\n    transfer_type VARCHAR(50),\n    transfer_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transfer_logs (\n    log_id INT PRIMARY KEY,\n    transfer_id INT,\n    log_type VARCHAR(50),\n    log_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE channel_metadata (\n    channel_id INT PRIMARY KEY,\n    channel_name VARCHAR(50),\n    channel_type VARCHAR(50),\n    channel_location VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

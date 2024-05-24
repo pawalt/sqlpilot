@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recruitment_tool_integration (\n id INT PRIMARY KEY,\n candidate_name VARCHAR(255),\n candidate_email VARCHAR(255),\n background_check_status VARCHAR(50),\n onboarding_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recruitment_tools (\n    tool_id UUID PRIMARY KEY,\n    tool_name STRING,\n    tool_type STRING,\n    integration_method STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE candidate_information (\n    candidate_id UUID PRIMARY KEY,\n    candidate_name STRING,\n    candidate_email STRING,\n    candidate_phone STRING,\n    background_check_status STRING,\n    onboarding_status STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sourcing_candidates (\n  candidate_id UUID PRIMARY KEY,\n  candidate_name VARCHAR(255),\n  candidate_email VARCHAR(255),\n  creation_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE background_checks (\n  check_id UUID PRIMARY KEY,\n  candidate_id UUID REFERENCES sourcing_candidates(candidate_id),\n  check_type VARCHAR(50),\n  check_status VARCHAR(50),\n  check_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE onboarding_processes (\n  process_id UUID PRIMARY KEY,\n  candidate_id UUID REFERENCES sourcing_candidates(candidate_id),\n  process_status VARCHAR(50),\n  process_start_date TIMESTAMP,\n  process_end_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recruitment_tool (\n  id INT PRIMARY KEY,\n  tool_name VARCHAR(255) NOT NULL,\n  integration_key VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE candidate (\n  id INT PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE background_check (\n  id INT PRIMARY KEY,\n  candidate_id INT REFERENCES candidate(id),\n  background_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE onboarding_process (\n  id INT PRIMARY KEY,\n  candidate_id INT REFERENCES candidate(id),\n  start_date DATE,\n  completed BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE candidates (\n    candidate_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(20),\n    status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE background_checks (\n    check_id INT PRIMARY KEY,\n    candidate_id INT,\n    check_type VARCHAR(50),\n    result VARCHAR(50),\n    date_completed DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE onboarding_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(100),\n    description TEXT,\n    due_date DATE,\n    is_completed BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    doc_id INT PRIMARY KEY,\n    candidate_id INT,\n    doc_type VARCHAR(50),\n    file_path VARCHAR(255),\n    uploaded_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interviews (\n    interview_id INT PRIMARY KEY,\n    candidate_id INT,\n    interviewer_name VARCHAR(100),\n    scheduled_datetime TIMESTAMP,\n    feedback TEXT\n);\n"
+      }
+    ]
+  }
+]

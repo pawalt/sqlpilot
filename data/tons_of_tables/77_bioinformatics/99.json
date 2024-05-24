@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HomologyModelingResults (\n  model_id INT PRIMARY KEY,\n  protein_name VARCHAR(255),\n  sequence TEXT,\n  modeling_tool VARCHAR(100),\n  score FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE homology_models (\n    model_id INT PRIMARY KEY,\n    protein_id INT,\n    model_file BYTEA,\n    model_score FLOAT,\n    model_date TIMESTAMP,\n    model_author VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE protein_sequences (\n    protein_id INT PRIMARY KEY,\n    sequence TEXT,\n    sequence_length INT,\n    organism_name VARCHAR,\n    gene_name VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE homology_modeling_results (\nid INT PRIMARY KEY,\nprotein_id INT,\nmodel_sequence TEXT,\nconfidence_score FLOAT\n);\n\nCREATE TABLE protein_information (\nprotein_id INT PRIMARY KEY,\nprotein_name TEXT,\nsequence TEXT\n);\n\nCREATE TABLE prediction_parameters (\nprediction_id INT PRIMARY KEY,\nmodeling_tool TEXT,\nalignment_tool TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HomologyModelingResults (\n    id UUID PRIMARY KEY,\n    protein_id UUID,\n    model_name VARCHAR(100),\n    model_structure JSONB,\n    similarity_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinSequences (\n    id UUID PRIMARY KEY,\n    protein_id UUID,\n    sequence_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentalData (\n    id UUID PRIMARY KEY,\n    protein_id UUID,\n    experimental_method VARCHAR(100),\n    experimental_results JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StructuralAlignments (\n    id UUID PRIMARY KEY,\n    protein_id UUID,\n    alignment_results JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSequences (\n    protein_id SERIAL PRIMARY KEY,\n    sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Models (\n    model_id SERIAL PRIMARY KEY,\n    protein_id INT REFERENCES ProteinSequences(protein_id),\n    model_name VARCHAR(255) NOT NULL,\n    model_score FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alignments (\n    alignment_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES Models(model_id),\n    alignment_result TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Templates (\n    template_id SERIAL PRIMARY KEY,\n    template_name VARCHAR(255) NOT NULL,\n    template_sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Evaluation (\n    evaluation_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES Models(model_id),\n    evaluation_score FLOAT NOT NULL\n);"
+      }
+    ]
+  }
+]

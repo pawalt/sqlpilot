@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_information (\n    id INT PRIMARY KEY,\n    research_data TEXT,\n    encryption_key VARCHAR(50),\n    access_control VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_data (\n    id UUID PRIMARY KEY,\n    title VARCHAR(100),\n    content TEXT,\n    created_at TIMESTAMP,\n    owner UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50),\n    permissions JSONB,\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(50),\n    research_area VARCHAR(100),\n    encryption_key VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100),\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE,\n    project_manager INT,\n    CONSTRAINT fk_project_manager FOREIGN KEY (project_manager) REFERENCES Researchers(researcher_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataRecords (\n    record_id INT PRIMARY KEY,\n    project_id INT,\n    researcher_id INT,\n    record_name VARCHAR(100),\n    record_data BYTEA,\n    CONSTRAINT fk_project_id FOREIGN KEY (project_id) REFERENCES Projects(project_id),\n    CONSTRAINT fk_researcher_id FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    project_owner VARCHAR(100),\n    encryption_key VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(100),\n    researcher_email VARCHAR(255),\n    research_role VARCHAR(50),\n    access_level VARCHAR(20),\n    encrypted_password VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP,\n    researcher_id INT,\n    project_id INT,\n    access_granted BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    key_value VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_research_data (\n  id SERIAL PRIMARY KEY,\n  researcher_name TEXT NOT NULL,\n  research_topic TEXT NOT NULL,\n  data_encryption_key TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_permissions (\n  id SERIAL PRIMARY KEY,\n  researcher_id INT NOT NULL,\n  access_level ENUM('read', 'write', 'admin') NOT NULL,\n  access_key TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_logs (\n  id SERIAL PRIMARY KEY,\n  researcher_id INT NOT NULL,\n  action_timestamp TIMESTAMP NOT NULL,\n  action_description TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_access_audit (\n  id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  action_timestamp TIMESTAMP NOT NULL,\n  action_description TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_access_control (\n  id SERIAL PRIMARY KEY,\n  role_name TEXT UNIQUE NOT NULL,\n  role_description TEXT NOT NULL\n);\n"
+      }
+    ]
+  }
+]

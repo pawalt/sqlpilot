@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaign_performance (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    emails_sent INT,\n    emails_opened INT,\n    click_throughs INT,\n    conversions INT,\n    revenue DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    total_sent INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_metrics (\n    metric_id INT PRIMARY KEY,\n    campaign_id INT,\n    open_rate DECIMAL,\n    click_through_rate DECIMAL,\n    conversion_rate DECIMAL,\n    revenue_generated DECIMAL\n    FOREIGN KEY (campaign_id) REFERENCES email_campaigns(campaign_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n campaign_id INT PRIMARY KEY,\n campaign_name VARCHAR(50),\n start_date DATE,\n end_date DATE,\n budget DECIMAL(10,2),\n status VARCHAR(20)\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE email_recipients (\n recipient_id INT PRIMARY KEY,\n email VARCHAR(50),\n first_name VARCHAR(50),\n last_name VARCHAR(50),\n subscribed_date DATE\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_results (\n result_id INT PRIMARY KEY,\n campaign_id INT,\n recipient_id INT,\n delivered_emails INT,\n opened_emails INT,\n clicked_emails INT,\n conversion_rate DECIMAL(5,2)\n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailCampaigns (\n    campaign_id INT,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    successful_emails INT,\n    total_emails INT,\n    roi DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailOpens (\n    open_id INT,\n    email_id INT,\n    open_date TIMESTAMP,\n    open_location VARCHAR(100),\n    user_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailClicks (\n    click_id INT,\n    email_id INT,\n    click_date TIMESTAMP,\n    click_link VARCHAR(255),\n    user_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailConversions (\n    conversion_id INT,\n    email_id INT,\n    conversion_date TIMESTAMP,\n    conversion_value DECIMAL(10,2),\n    user_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    total_sent INT,\n    total_opened INT,\n    total_clicked INT\n);\n\nCREATE TABLE email_recipients (\n    id INT PRIMARY KEY,\n    email_address VARCHAR(255),\n    recipient_name VARCHAR(255),\n    campaign_id INT,\n    FOREIGN KEY (campaign_id) REFERENCES email_campaigns(id)\n);\n\nCREATE TABLE email_clicks (\n    id INT PRIMARY KEY,\n    click_date DATE,\n    recipient_id INT,\n    campaign_id INT,\n    FOREIGN KEY (recipient_id) REFERENCES email_recipients(id),\n    FOREIGN KEY (campaign_id) REFERENCES email_campaigns(id)\n);\n\nCREATE TABLE email_conversions (\n    id INT PRIMARY KEY,\n    conversion_date DATE,\n    recipient_id INT,\n    campaign_id INT,\n    revenue DECIMAL(10, 2),\n    FOREIGN KEY (recipient_id) REFERENCES email_recipients(id),\n    FOREIGN KEY (campaign_id) REFERENCES email_campaigns(id)\n);\n\nCREATE TABLE report_cache (\n    report_id INT PRIMARY KEY,\n    report_data JSON\n);"
+      }
+    ]
+  }
+]

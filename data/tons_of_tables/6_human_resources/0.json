@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CandidateProfiles (\n  candidate_id UUID PRIMARY KEY,\n  full_name VARCHAR(100) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(15),\n  address VARCHAR(255),\n  experience_years INT,\n  skills VARCHAR[],\n  education VARCHAR[],\n  resume_path VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE candidate_profiles (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  phone VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE candidate_resumes (\n  id SERIAL PRIMARY KEY,\n  candidate_id INT REFERENCES candidate_profiles(id),\n  resume TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CandidateProfiles (\n    id SERIAL PRIMARY KEY,\n    full_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20),\n    location VARCHAR(50),\n    skills TEXT[],\n    experience_years INT,\n    education VARCHAR(100),\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Resumes (\n    id SERIAL PRIMARY KEY,\n    candidate_id INT REFERENCES CandidateProfiles (id),\n    resume_text TEXT,\n    uploaded_date DATE,\n    file_path VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE HiringManagers (\n    id SERIAL PRIMARY KEY,\n    full_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20),\n    department VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE candidate_profiles (candidate_id INT PRIMARY KEY, first_name TEXT, last_name TEXT, email TEXT, phone_number TEXT, address TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE candidate_resumes (resume_id INT PRIMARY KEY, candidate_id INT, resume_text TEXT, skills TEXT[], experience TEXT[], education TEXT[])"
+      },
+      {
+        "table_schema": "CREATE TABLE hiring_managers (manager_id INT PRIMARY KEY, first_name TEXT, last_name TEXT, email TEXT, phone_number TEXT, department TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE candidate_interviews (interview_id INT PRIMARY KEY, candidate_id INT, manager_id INT, interview_date TIMESTAMP, feedback TEXT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE candidates (\n    candidate_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) NOT NULL,\n    phone_number VARCHAR(15),\n    resume TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE skills (\n    skill_id INT PRIMARY KEY,\n    skill_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE candidate_skills (\n    candidate_id INT,\n    skill_id INT,\n    PRIMARY KEY (candidate_id, skill_id),\n    FOREIGN KEY (candidate_id) REFERENCES candidates(candidate_id),\n    FOREIGN KEY (skill_id) REFERENCES skills(skill_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiences (\n    experience_id INT PRIMARY KEY,\n    candidate_id INT,\n    company_name VARCHAR(100) NOT NULL,\n    position VARCHAR(50) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    FOREIGN KEY (candidate_id) REFERENCES candidates(candidate_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE educations (\n    education_id INT PRIMARY KEY,\n    candidate_id INT,\n    institution_name VARCHAR(100) NOT NULL,\n    degree VARCHAR(50) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    FOREIGN KEY (candidate_id) REFERENCES candidates(candidate_id)\n);"
+      }
+    ]
+  }
+]

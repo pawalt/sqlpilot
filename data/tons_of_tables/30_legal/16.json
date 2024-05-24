@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE women_rights_conventions (\n    id INT PRIMARY KEY,\n    convention_name VARCHAR(255),\n    country VARCHAR(255),\n    signing_date DATE,\n    implementation_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Conventions (\n    convention_id INT PRIMARY KEY,\n    convention_name VARCHAR(255),\n    ratification_date DATE,\n    country VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TreatyStatus (\n    id SERIAL PRIMARY KEY,\n    treaty_id INT,\n    signatory_country VARCHAR(50),\n    ratification_status VARCHAR(50),\n    ratification_date DATE,\n    FOREIGN KEY (treaty_id) REFERENCES Conventions(convention_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE International_Conventions (\n    convention_id SERIAL PRIMARY KEY,\n    title TEXT NOT NULL,\n    country TEXT NOT NULL,\n    date_signed DATE,\n    date_ratified DATE,\n    language TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Treaty_Status (\n    treaty_id SERIAL PRIMARY KEY,\n    convention_id INT REFERENCES International_Conventions(convention_id),\n    ratification_status BOOLEAN,\n    notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Treaty_Detail (\n    detail_id SERIAL PRIMARY KEY,\n    treaty_id INT REFERENCES Treaty_Status(treaty_id),\n    article_number INT NOT NULL,\n    article_text TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE conventions (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    description TEXT,\n    country VARCHAR(50),\n    ratification_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE treaties (\n    id SERIAL PRIMARY KEY,\n    title VARCHAR(100) NOT NULL,\n    signatory_country VARCHAR(50),\n    signing_date DATE,\n    ratification_date DATE,\n    CONSTRAINT fk_convention_id FOREIGN KEY (convention_id) REFERENCES conventions(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE articles (\n    id SERIAL PRIMARY KEY,\n    article_number INT NOT NULL,\n    content TEXT NOT NULL,\n    treaty_id INT,\n    CONSTRAINT fk_treaty_id FOREIGN KEY (treaty_id) REFERENCES treaties(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE violations (\n    id SERIAL PRIMARY KEY,\n    violation_description TEXT NOT NULL,\n    violation_date DATE,\n    article_id INT,\n    CONSTRAINT fk_article_id FOREIGN KEY (article_id) REFERENCES articles(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE `countries` (\n  `id` INT PRIMARY KEY,\n  `name` VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE `conventions` (\n  `id` INT PRIMARY KEY,\n  `name` VARCHAR(100) NOT NULL,\n  `year` INT NOT NULL,\n  `country_id` INT,\n  FOREIGN KEY (`country_id`) REFERENCES `countries`(`id`)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE `articles` (\n  `id` INT PRIMARY KEY,\n  `title` VARCHAR(150) NOT NULL,\n  `content` TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE `ratifications` (\n  `id` INT PRIMARY KEY,\n  `convention_id` INT,\n  `country_id` INT,\n  `date_ratified` DATE,\n  FOREIGN KEY (`convention_id`) REFERENCES `conventions`(`id`),\n  FOREIGN KEY (`country_id`) REFERENCES `countries`(`id`)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE `signatories` (\n  `id` INT PRIMARY KEY,\n  `convention_id` INT,\n  `country_id` INT,\n  `signed_date` DATE,\n  FOREIGN KEY (`convention_id`) REFERENCES `conventions`(`id`),\n  FOREIGN KEY (`country_id`) REFERENCES `countries`(`id`)\n);\n"
+      }
+    ]
+  }
+]

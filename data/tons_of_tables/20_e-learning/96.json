@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_lab_environment (\n  lab_id INT PRIMARY KEY,\n  lab_name VARCHAR(255) NOT NULL,\n  lab_description TEXT,\n  lab_status BOOLEAN DEFAULT FALSE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_lab_students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(50),\n    enrolled_year INT,\n    lab_section VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE virtual_lab_experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(50),\n    experiment_description TEXT,\n    student_id INT,\n    FOREIGN KEY (student_id) REFERENCES virtual_lab_students(student_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE lab_environment (\n  lab_id INT PRIMARY KEY,\n  lab_name VARCHAR(255) NOT NULL,\n  lab_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lab_task (\n  task_id INT PRIMARY KEY,\n  task_name VARCHAR(255) NOT NULL,\n  task_description TEXT,\n  lab_id INT,\n  FOREIGN KEY (lab_id) REFERENCES lab_environment(lab_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lab_progress (\n  progress_id INT PRIMARY KEY,\n  task_id INT,\n  student_id INT,\n  progress_status VARCHAR(50) NOT NULL,\n  FOREIGN KEY (task_id) REFERENCES lab_task(task_id),\n  FOREIGN KEY (student_id) REFERENCES students(student_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(50) NOT NULL,\n    student_email VARCHAR(100) NOT NULL,\n    student_course VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(50) NOT NULL,\n    course_credit INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE enrollments (\n    enrollment_id INT PRIMARY KEY,\n    student_id INT NOT NULL,\n    course_id INT NOT NULL,\n    enrollment_date DATE,\n    enrollment_grade VARCHAR(2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assignments (\n    assignment_id INT PRIMARY KEY,\n    course_id INT NOT NULL,\n    assignment_name VARCHAR(50) NOT NULL,\n    assignment_due_date DATE,\n    assignment_points INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    password VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(255) NOT NULL,\n    instructor VARCHAR(255) NOT NULL,\n    course_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE enrollments (\n    enrollment_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    course_id INT NOT NULL,\n    enrollment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assignments (\n    assignment_id INT PRIMARY KEY,\n    course_id INT NOT NULL,\n    assignment_name VARCHAR(255) NOT NULL,\n    deadline DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE submissions (\n    submission_id INT PRIMARY KEY,\n    assignment_id INT NOT NULL,\n    user_id INT NOT NULL,\n    submission_date DATE,\n    grade INT\n);"
+      }
+    ]
+  }
+]

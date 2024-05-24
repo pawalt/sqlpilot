@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ab_testing_emails (\n  id INT PRIMARY KEY,\n  subject_line VARCHAR,\n  email_content TEXT,\n  call_to_action VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE A_B_Testing_Subject_Lines (\n    id SERIAL PRIMARY KEY,\n    subject_line TEXT,\n    email_content TEXT,\n    call_to_action TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Email_Campaign_Performance (\n    id SERIAL PRIMARY KEY,\n    campaign_id INT,\n    opens_count INT,\n    clicks_count INT,\n    conversions_count INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subject_lines (\n    subject_id INT PRIMARY KEY,\n    subject_text VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_content (\n    email_id INT PRIMARY KEY,\n    content_text TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE calls_to_action (\n    cta_id INT PRIMARY KEY,\n    cta_text VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subject_lines (\n    subject_line_id UUID PRIMARY KEY,\n    subject_line_text STRING\n);\n\nCREATE TABLE email_content (\n    email_content_id UUID PRIMARY KEY,\n    email_title STRING,\n    email_body TEXT\n);\n\nCREATE TABLE calls_to_action (\n    cta_id UUID PRIMARY KEY,\n    cta_text STRING,\n    cta_link STRING\n);\n\nCREATE TABLE campaign_performance (\n    email_id UUID PRIMARY KEY,\n    subject_line_id UUID,\n    email_content_id UUID,\n    cta_id UUID,\n    open_rate FLOAT,\n    click_through_rate FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subject_lines (\n    id INT PRIMARY KEY,\n    subject_line VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_content (\n    id INT PRIMARY KEY,\n    content TEXT NOT NULL,\n    subject_line_id INT,\n    FOREIGN KEY(subject_line_id) REFERENCES subject_lines(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE calls_to_action (\n    id INT PRIMARY KEY,\n    action VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    id INT PRIMARY KEY,\n    email_id INT,\n    subject_line_id INT,\n    action_id INT,\n    campaign_date DATE,\n    FOREIGN KEY(email_id) REFERENCES email_content(id),\n    FOREIGN KEY(subject_line_id) REFERENCES subject_lines(id),\n    FOREIGN KEY(action_id) REFERENCES calls_to_action(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    id INT PRIMARY KEY,\n    email_campaign_id INT,\n    open_rate FLOAT,\n    click_rate FLOAT,\n    conversion_rate FLOAT,\n    revenue DECIMAL(10, 2),\n    FOREIGN KEY(email_campaign_id) REFERENCES email_campaigns(id)\n);"
+      }
+    ]
+  }
+]

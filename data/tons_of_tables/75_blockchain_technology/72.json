@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_points (\n  customer_id INT,\n  tokens INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_points (\n    customer_id INT,\n    points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokens (\n    token_id INT,\n    customer_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    loyalty_points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokens (\n    token_id INT PRIMARY KEY,\n    token_value VARCHAR(20) NOT NULL,\n    customer_id INT,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT,\n    token_id INT,\n    transaction_date DATE,\n    transaction_amount DECIMAL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n    FOREIGN KEY (token_id) REFERENCES tokens(token_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_program (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(50) NOT NULL,\n    expiration_date DATE NOT NULL,\n    token_value INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_tokens (\n    token_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    program_id INT REFERENCES loyalty_program(program_id),\n    token_amount INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    token_id UUID REFERENCES customer_tokens(token_id),\n    transaction_date TIMESTAMP NOT NULL,\n    transaction_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_table (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(50),\n    loyalty_points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_table (\n    token_id INT PRIMARY KEY,\n    token_value VARCHAR(50),\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_table (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT,\n    token_id INT,\n    transaction_date DATE,\n    transaction_amount INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reward_table (\n    reward_id INT PRIMARY KEY,\n    reward_name VARCHAR(50),\n    reward_cost INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE redemption_table (\n    redemption_id INT PRIMARY KEY,\n    customer_id INT,\n    reward_id INT,\n    redemption_date DATE\n);"
+      }
+    ]
+  }
+]

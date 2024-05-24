@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TradeExecutionData (\n  trade_id INT PRIMARY KEY,\n  trade_date DATE,\n  strategy_id INT,\n  symbol VARCHAR(50),\n  quantity INT,\n  price DECIMAL(10,2),\n  execution_time TIME\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trade_execution_data (\n    trade_id INT PRIMARY KEY,\n    symbol VARCHAR(50),\n    timestamp DATETIME,\n    quantity INT,\n    price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(50),\n    performance_score DECIMAL(10, 2),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trade_executions (\n    execution_id UUID PRIMARY KEY,\n    trade_date DATE,\n    symbol VARCHAR(50),\n    execution_price DECIMAL(12, 4),\n    executed_quantity INT,\n    machine_learning_model VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n    strategy_id UUID PRIMARY KEY,\n    strategy_name VARCHAR(100),\n    strategy_description TEXT,\n    strategy_performance DECIMAL(12, 4),\n    strategy_parameters JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE strategy_executions (\n    execution_id UUID,\n    strategy_id UUID,\n    execution_time TIMESTAMP,\n    execution_result VARCHAR(50),\n    FOREIGN KEY (execution_id) REFERENCES trade_executions(execution_id),\n    FOREIGN KEY (strategy_id) REFERENCES trading_strategies(strategy_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trades (\n    trade_id SERIAL PRIMARY KEY,\n    symbol VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    price DECIMAL NOT NULL,\n    execution_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_strategies (\n    strategy_id SERIAL PRIMARY KEY,\n    strategy_name VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE strategy_trades (\n    strategy_id INT NOT NULL,\n    trade_id INT NOT NULL,\n    FOREIGN KEY (strategy_id) REFERENCES trade_strategies(strategy_id),\n    FOREIGN KEY (trade_id) REFERENCES trades(trade_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_performance (\n    trade_id INT NOT NULL,\n    profit_loss DECIMAL,\n    success BOOLEAN,\n    execution_time_ms INT,\n    FOREIGN KEY (trade_id) REFERENCES trades(trade_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trade_execution_data (\n    trade_id UUID PRIMARY KEY,\n    symbol VARCHAR(50) NOT NULL,\n    trade_timestamp TIMESTAMP NOT NULL,\n    trade_price DECIMAL(10, 2) NOT NULL,\n    executed_quantity INT NOT NULL,\n    strategy_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE strategy_performance (\n    strategy_id UUID PRIMARY KEY,\n    strategy_name VARCHAR(50) NOT NULL,\n    total_trades INT NOT NULL,\n    total_profit DECIMAL(20, 2) NOT NULL,\n    average_return DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_analysis (\n    analysis_id UUID PRIMARY KEY,\n    trade_id UUID NOT NULL,\n    analysis_timestamp TIMESTAMP NOT NULL,\n    trading_strategy VARCHAR(50) NOT NULL,\n    success_rate DECIMAL(5, 2) NOT NULL,\n    analysis_result VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_strategy (\n    strategy_id UUID PRIMARY KEY,\n    strategy_name VARCHAR(50) NOT NULL,\n    strategy_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_metrics (\n    metric_id UUID PRIMARY KEY,\n    trade_id UUID NOT NULL,\n    trade_profit DECIMAL(20, 2) NOT NULL,\n    trade_loss DECIMAL(20, 2) NOT NULL,\n    win_rate DECIMAL(5, 2) NOT NULL\n);"
+      }
+    ]
+  }
+]

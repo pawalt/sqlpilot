@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatIntelligenceFeeds (\n  feed_id UUID PRIMARY KEY,\n  feed_name VARCHAR(100),\n  threat_type VARCHAR(50),\n  indicator VARCHAR(255),\n  confidence_level INT,\n  published_date DATE,\n  source VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_intel_feeds (\n  feed_id INT PRIMARY KEY,\n  feed_name VARCHAR(255),\n  threat_type VARCHAR(100),\n  threat_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE threat_detection (\n  detection_id INT PRIMARY KEY,\n  detection_time TIMESTAMP,\n  threat_level VARCHAR(50),\n  threat_source VARCHAR(100),\n  feed_id INT,\n  FOREIGN KEY (feed_id) REFERENCES threat_intel_feeds(feed_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_intelligence_feeds (\n    feed_id INT PRIMARY KEY,\n    feed_name VARCHAR(255) NOT NULL,\n    feed_source VARCHAR(255) NOT NULL,\n    threat_level ENUM('Low', 'Medium', 'High')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE threat_events (\n    event_id INT PRIMARY KEY,\n    event_timestamp TIMESTAMP NOT NULL,\n    event_description TEXT NOT NULL,\n    feed_id INT,\n    FOREIGN KEY (feed_id) REFERENCES threat_intelligence_feeds(feed_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_actions (\n    action_id INT PRIMARY KEY,\n    action_name VARCHAR(255) NOT NULL,\n    action_type ENUM('Block', 'Quarantine', 'Alert')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE threat_mitigations (\n    mitigation_id INT PRIMARY KEY,\n    event_id INT,\n    action_id INT,\n    FOREIGN KEY (event_id) REFERENCES threat_events(event_id),\n    FOREIGN KEY (action_id) REFERENCES mitigation_actions(action_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_feeds (\n    id INT PRIMARY KEY,\n    feed_name VARCHAR(50),\n    feed_url TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE indicators (\n    id INT PRIMARY KEY,\n    indicator_name VARCHAR(50),\n    indicator_type VARCHAR(20),\n    threat_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    id INT PRIMARY KEY,\n    event_timestamp TIMESTAMP,\n    source_ip VARCHAR(15),\n    destination_ip VARCHAR(15),\n    event_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_actions (\n    id INT PRIMARY KEY,\n    action_name VARCHAR(50),\n    action_type VARCHAR(20),\n    action_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_intelligence_feeds (\n    id SERIAL PRIMARY KEY,\n    feed_name VARCHAR(50) NOT NULL,\n    threat_category VARCHAR(50) NOT NULL,\n    threat_level INT NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE indicators (\n    id SERIAL PRIMARY KEY,\n    indicator_value VARCHAR(100) NOT NULL,\n    indicator_type VARCHAR(50) NOT NULL,\n    source_feed_id INT REFERENCES threat_intelligence_feeds(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE detections (\n    id SERIAL PRIMARY KEY,\n    indicator_id INT REFERENCES indicators(id),\n    detection_timestamp TIMESTAMP NOT NULL,\n    threat_score INT NOT NULL,\n    is_mitigated BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_actions (\n    id SERIAL PRIMARY KEY,\n    detection_id INT REFERENCES detections(id),\n    action_type VARCHAR(50) NOT NULL,\n    action_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_logs (\n    id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    action_id INT REFERENCES mitigation_actions(id),\n    log_details TEXT\n);"
+      }
+    ]
+  }
+]

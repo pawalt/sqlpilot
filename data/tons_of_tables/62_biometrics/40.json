@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iris_scan_images (\n    id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_data BYTEA,\n    scan_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iris_scan_images (\n    id SERIAL PRIMARY KEY,\n    image_data BYTEA\n);\n\nCREATE TABLE identification (\n    id SERIAL PRIMARY KEY,\n    person_id INT,\n    image_id INT,\n    scan_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iris_scans (\n    id INT PRIMARY KEY,\n    image_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    iris_scan_id INT REFERENCES iris_scans(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iris_scans (\n  id SERIAL PRIMARY KEY,\n  image_path VARCHAR(255) NOT NULL,\n  scan_date TIMESTAMP NOT NULL,\n  user_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  full_name VARCHAR(100) NOT NULL,\n  email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n  role_id SERIAL PRIMARY KEY,\n  role_name VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  user_id INT NOT NULL,\n  role_id INT NOT NULL,\n  PRIMARY KEY (user_id, role_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iris_images (\n  iris_id INT PRIMARY KEY,\n  image BLOB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  password VARCHAR(50),\n  iris_id INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n  department_id INT PRIMARY KEY,\n  department_name VARCHAR(50) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id INT PRIMARY KEY,\n  user_id INT,\n  access_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id INT PRIMARY KEY,\n  user_id INT,\n  department_id INT\n)"
+      }
+    ]
+  }
+]

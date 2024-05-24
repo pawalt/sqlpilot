@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE performance_metrics_nn_models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    accuracy FLOAT,\n    loss FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    layers INT,\n    activation_function VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_performance_metrics (\n    metric_id INT PRIMARY KEY,\n    model_id INT,\n    training_loss FLOAT,\n    validation_loss FLOAT,\n    accuracy FLOAT,\n    FOREIGN KEY (model_id) REFERENCES neural_network_models(model_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_models (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(255),\n    training_loss FLOAT,\n    validation_loss FLOAT,\n    training_accuracy FLOAT,\n    validation_accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_runs (\n    run_id UUID PRIMARY KEY,\n    model_id UUID REFERENCES neural_network_models(model_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    total_epochs INT,\n    total_iterations INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id UUID PRIMARY KEY,\n    run_id UUID REFERENCES training_runs(run_id),\n    epoch_number INT,\n    loss FLOAT,\n    accuracy FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_models (\n    model_id SERIAL PRIMARY KEY,\n    model_name VARCHAR(255),\n    training_time_minutes INT,\n    accuracy DECIMAL(5,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parameters (\n    parameter_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES neural_network_models(model_id),\n    learning_rate DECIMAL(4,2),\n    batch_size INT,\n    activation_function VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_performance (\n    performance_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES neural_network_models(model_id),\n    loss DECIMAL(6,4),\n    precision DECIMAL(5,2),\n    recall DECIMAL(5,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_training_data (\n    data_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES neural_network_models(model_id),\n    dataset_name VARCHAR(100),\n    data_size INT,\n    features TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50),\n    training_loss FLOAT,\n    validation_loss FLOAT,\n    accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE batch_size_metrics (\n    batch_size_id INT PRIMARY KEY,\n    model_id INT,\n    batch_size INT,\n    training_time INTERVAL,\n    FOREIGN KEY (model_id) REFERENCES performance_metrics(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE layer_metrics (\n    layer_id INT PRIMARY KEY,\n    model_id INT,\n    layer_name VARCHAR(50),\n    layer_type VARCHAR(50),\n    num_parameters INT,\n    FOREIGN KEY (model_id) REFERENCES performance_metrics(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE execution_metrics (\n    execution_id INT PRIMARY KEY,\n    model_id INT,\n    execution_time INTERVAL,\n    CPU_utilization FLOAT,\n    GPU_utilization FLOAT,\n    FOREIGN KEY (model_id) REFERENCES performance_metrics(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    hyperparameter_id INT PRIMARY KEY,\n    model_id INT,\n    learning_rate FLOAT,\n    dropout_rate FLOAT,\n    optimizer VARCHAR(50),\n    batch_normalization BOOLEAN,\n    FOREIGN KEY (model_id) REFERENCES performance_metrics(model_id)\n);"
+      }
+    ]
+  }
+]

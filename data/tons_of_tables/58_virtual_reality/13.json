@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ai_performance (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255) NOT NULL,\n    performance_metric VARCHAR(255) NOT NULL,\n    accuracy FLOAT NOT NULL,\n    training_time FLOAT NOT NULL,\n    evaluation_time FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AI_Algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(50) NOT NULL,\n    description TEXT,\n    performance_score FLOAT\n);\nCREATE TABLE Algorithm_Performance (\n    performance_id INT PRIMARY KEY,\n    algorithm_id INT REFERENCES AI_Algorithms(algorithm_id),\n    execution_time INT,\n    accuracy FLOAT,\n    memory_usage INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AI_Algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    accuracy DECIMAL,\n    performance_metric VARCHAR(50),\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Model_Results (\n    result_id INT PRIMARY KEY,\n    algorithm_id INT,\n    dataset_id INT,\n    result_value DECIMAL,\n    result_date DATE,\n    FOREIGN KEY (algorithm_id) REFERENCES AI_Algorithms (algorithm_id),\n    FOREIGN KEY (dataset_id) REFERENCES Datasets (dataset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Datasets (\n    dataset_id INT PRIMARY KEY,\n    dataset_name VARCHAR(255),\n    dataset_size INT,\n    upload_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ai_algorithms (\n  algorithm_id INT PRIMARY KEY,\n  algorithm_name VARCHAR,\n  accuracy FLOAT,\n  execution_time_sec FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_tests (\n  test_id INT PRIMARY KEY,\n  algorithm_id INT,\n  test_date DATE,\n  test_result VARCHAR,\n  FOREIGN KEY (algorithm_id) REFERENCES ai_algorithms (algorithm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parameters (\n  parameter_id INT PRIMARY KEY,\n  algorithm_id INT,\n  hyperparameter VARCHAR,\n  value FLOAT,\n  FOREIGN KEY (algorithm_id) REFERENCES ai_algorithms (algorithm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE execution_logs (\n  log_id INT PRIMARY KEY,\n  algorithm_id INT,\n  execution_date TIMESTAMP,\n  status VARCHAR,\n  FOREIGN KEY (algorithm_id) REFERENCES ai_algorithms (algorithm_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ai_algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    algorithm_description TEXT,\n    created_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_results (\n    result_id INT PRIMARY KEY,\n    algorithm_id INT,\n    result_value FLOAT,\n    result_date TIMESTAMP,\n    FOREIGN KEY (algorithm_id) REFERENCES ai_algorithms(algorithm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_training (\n    training_id INT PRIMARY KEY,\n    algorithm_id INT,\n    training_date TIMESTAMP,\n    training_duration INT,\n    FOREIGN KEY (algorithm_id) REFERENCES ai_algorithms(algorithm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    hyperparam_id INT PRIMARY KEY,\n    algorithm_id INT,\n    hyperparam_name VARCHAR(255),\n    hyperparam_value FLOAT,\n    FOREIGN KEY (algorithm_id) REFERENCES ai_algorithms(algorithm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_accuracy (\n    accuracy_id INT PRIMARY KEY,\n    algorithm_id INT,\n    accuracy_value FLOAT,\n    evaluation_date TIMESTAMP,\n    FOREIGN KEY (algorithm_id) REFERENCES ai_algorithms(algorithm_id)\n);"
+      }
+    ]
+  }
+]

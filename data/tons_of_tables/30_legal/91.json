@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE conflict_resolution_cases (\n case_id INT PRIMARY KEY,\n participant_name VARCHAR(255),\n issue_description TEXT,\n resolution_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Participants (\n    participant_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    role VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ConflictIssues (\n    issue_id INT PRIMARY KEY,\n    participant_id INT,\n    description TEXT,\n    resolution_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE participants (\n  participant_id INT PRIMARY KEY,\n  participant_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE issues (\n  issue_id INT PRIMARY KEY,\n  issue_description TEXT NOT NULL,\n  participant_id INT,\n  FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n  resolution_id INT PRIMARY KEY,\n  resolution_details TEXT NOT NULL,\n  issue_id INT,\n  FOREIGN KEY (issue_id) REFERENCES issues(issue_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE participants (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE issues (\n  id INT PRIMARY KEY,\n  description TEXT,\n  participant_id INT REFERENCES participants(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n  id INT PRIMARY KEY,\n  resolution_date DATE,\n  issue_id INT REFERENCES issues(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cases (\n  id INT PRIMARY KEY,\n  case_name VARCHAR(255) NOT NULL,\n  resolution_id INT REFERENCES resolutions(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE issues (\n    issue_id INT PRIMARY KEY,\n    issue_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n    resolution_id INT PRIMARY KEY,\n    resolution_name VARCHAR(50) NOT NULL,\n    details TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE case_progress (\n    case_id INT PRIMARY KEY,\n    participant_id INT,\n    issue_id INT,\n    resolution_id INT,\n    progress_status VARCHAR(20) NOT NULL,\n    FOREIGN KEY (participant_id) REFERENCES participants(participant_id),\n    FOREIGN KEY (issue_id) REFERENCES issues(issue_id),\n    FOREIGN KEY (resolution_id) REFERENCES resolutions(resolution_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE case_history (\n    history_id INT PRIMARY KEY,\n    case_id INT,\n    event_date DATE NOT NULL,\n    event_description TEXT,\n    FOREIGN KEY (case_id) REFERENCES case_progress(case_id)\n);\n"
+      }
+    ]
+  }
+]

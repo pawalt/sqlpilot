@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    start_date DATE,\n    completion_date DATE,\n    status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_tasks (\n  task_id INT PRIMARY KEY,\n  task_name VARCHAR(100) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  completion_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n  result_id INT PRIMARY KEY,\n  task_id INT,\n  result_description TEXT,\n  success_rate FLOAT,\n  FOREIGN KEY (task_id) REFERENCES experimental_tasks(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ExperimentalTasks (\n  task_id SERIAL PRIMARY KEY,\n  task_name VARCHAR(100) NOT NULL,\n  assigned_to VARCHAR(50),\n  progress_status VARCHAR(20) DEFAULT 'Not Started',\n  due_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentResults (\n  result_id SERIAL PRIMARY KEY,\n  task_id INTEGER REFERENCES ExperimentalTasks(task_id),\n  result_data TEXT,\n  completion_status VARCHAR(20) DEFAULT 'Incomplete',\n  completion_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskComments (\n  comment_id SERIAL PRIMARY KEY,\n  task_id INTEGER REFERENCES ExperimentalTasks(task_id),\n  comment TEXT,\n  commenter_name VARCHAR(50),\n  comment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_tasks (\n  task_id SERIAL PRIMARY KEY,\n  task_name TEXT NOT NULL,\n  description TEXT,\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(20) DEFAULT 'Pending'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_assignees (\n  assignee_id SERIAL PRIMARY KEY,\n  task_id INT REFERENCES experimental_tasks(task_id),\n  assignee_name TEXT NOT NULL,\n  assignee_email TEXT NOT NULL,\n  assignee_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_progress (\n  progress_id SERIAL PRIMARY KEY,\n  task_id INT REFERENCES experimental_tasks(task_id),\n  progress TEXT,\n  date_completed DATE,\n  notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_dependencies (\n  dependency_id SERIAL PRIMARY KEY,\n  task_id INT REFERENCES experimental_tasks(task_id),\n  dependent_task_id INT REFERENCES experimental_tasks(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Experimenters (\n    experimenter_id INT PRIMARY KEY,\n    experimenter_name VARCHAR(255),\n    experimenter_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(50),\n    experimenter_id INT,\n    FOREIGN KEY (experimenter_id) REFERENCES Experimenters(experimenter_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Tasks_Experiments (\n    task_id INT,\n    experiment_id INT,\n    task_duration INT,\n    PRIMARY KEY (task_id, experiment_id),\n    FOREIGN KEY (task_id) REFERENCES Tasks(task_id),\n    FOREIGN KEY (experiment_id) REFERENCES Experiments(experiment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Task_Logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP,\n    task_id INT,\n    log_message TEXT,\n    FOREIGN KEY (task_id) REFERENCES Tasks(task_id)\n);"
+      }
+    ]
+  }
+]

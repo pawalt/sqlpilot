@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_contacts (\n    id INT PRIMARY KEY,\n    contact_name VARCHAR(50),\n    organization VARCHAR(100),\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_contacts (\n\tcontact_id INT PRIMARY KEY,\n\tcontact_name VARCHAR(50),\n\tcontact_email VARCHAR(100),\n\torganization VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE press_coverage (\n\tcoverage_id INT PRIMARY KEY,\n\tcoverage_date DATE,\n\tcoverage_title VARCHAR(150),\n\tcoverage_content TEXT,\n\tcontact_id INT,\n\tFOREIGN KEY (contact_id) REFERENCES media_contacts(contact_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_contacts (\n    id UUID PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone_number VARCHAR(15),\n    organization VARCHAR(255),\n    role VARCHAR(100),\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE press_coverage (\n    id UUID PRIMARY KEY,\n    headline VARCHAR(255) NOT NULL,\n    published_date TIMESTAMP NOT NULL,\n    media_contact_id UUID REFERENCES media_contacts(id),\n    coverage_text TEXT,\n    reporter_name VARCHAR(255),\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE advocacy_campaigns (\n    id UUID PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    description TEXT,\n    outreach_goal INT,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MediaContacts (\n    contact_id INT PRIMARY KEY,\n    contact_name VARCHAR(50) NOT NULL,\n    contact_email VARCHAR(50) NOT NULL,\n    organization_name VARCHAR(100),\n    contact_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PressCoverage (\n    coverage_id INT PRIMARY KEY,\n    coverage_title VARCHAR(100) NOT NULL,\n    coverage_date DATE,\n    coverage_source VARCHAR(100) NOT NULL,\n    coverage_url VARCHAR(200)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(100) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    campaign_goal TEXT,\n    campaign_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignMedia (\n    campaign_media_id INT PRIMARY KEY,\n    campaign_id INT,\n    contact_id INT,\n    coverage_id INT,\n    FOREIGN KEY (campaign_id) REFERENCES Campaigns(campaign_id),\n    FOREIGN KEY (contact_id) REFERENCES MediaContacts(contact_id),\n    FOREIGN KEY (coverage_id) REFERENCES PressCoverage(coverage_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MediaContacts (\n  contact_id UUID PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100),\n  phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PressCoverage (\n  press_id UUID PRIMARY KEY,\n  date DATE,\n  coverage_type VARCHAR(50),\n  description TEXT,\n  source VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n  campaign_id UUID PRIMARY KEY,\n  campaign_name VARCHAR(100) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  target_audience VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MediaOutlets (\n  outlet_id UUID PRIMARY KEY,\n  outlet_name VARCHAR(100) NOT NULL,\n  location VARCHAR(100),\n  website VARCHAR(200)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignCoverage (\n  campaign_id UUID,\n  press_id UUID,\n  PRIMARY KEY (campaign_id, press_id),\n  FOREIGN KEY (campaign_id) REFERENCES Campaigns(campaign_id),\n  FOREIGN KEY (press_id) REFERENCES PressCoverage(press_id)\n);\n"
+      }
+    ]
+  }
+]

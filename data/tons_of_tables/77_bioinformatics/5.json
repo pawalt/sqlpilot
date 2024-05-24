@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transcriptomic_data (\n  sample_id INT PRIMARY KEY,\n  gene_id INT,\n  expression_level FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255),\n  chromosome VARCHAR(10),\n  gene_symbol VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE expression_values (\n  expression_id INT PRIMARY KEY,\n  gene_id INT,\n  expression_value FLOAT,\n  sample_id INT,\n  FOREIGN KEY (gene_id) REFERENCES genes(gene_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_expression (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255),\n  expression_level FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_metadata (\n  sample_id INT PRIMARY KEY,\n  organism_name VARCHAR(255),\n  tissue_type VARCHAR(255),\n  age INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n  experiment_id INT PRIMARY KEY,\n  sample_id INT,\n  gene_id INT,\n  experiment_type VARCHAR(255),\n  result FLOAT,\n  FOREIGN KEY (sample_id) REFERENCES sample_metadata(sample_id),\n  FOREIGN KEY (gene_id) REFERENCES gene_expression(gene_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(50),\n  gene_sequence TEXT,\n  chromosome_number INT,\n  start_position INT,\n  end_position INT,\n  gene_function TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE samples (sample_id INT PRIMARY KEY,\n  sample_name VARCHAR(50),\n  sample_type VARCHAR(50),\n  sample_description TEXT,\n  organism_name VARCHAR(50),\n  gene_id INT REFERENCES genes(gene_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR(50),\n  experiment_date DATE,\n  researcher_name VARCHAR(50),\n  sample_id INT REFERENCES samples(sample_id),\n  analysis_result TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE results (result_id INT PRIMARY KEY,\n  experiment_id INT REFERENCES experiments(experiment_id),\n  result_type VARCHAR(50),\n  result_value FLOAT,\n  result_description TEXT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Sample (id INT PRIMARY KEY, sample_name VARCHAR(255), tissue_type VARCHAR(255), experiment_date DATE)"
+      }
+    ]
+  }
+]

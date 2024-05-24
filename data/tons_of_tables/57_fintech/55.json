@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_authentication (\n  user_id INT PRIMARY KEY,\n  username VARCHAR NOT NULL,\n  password VARCHAR NOT NULL,\n  first_name VARCHAR,\n  last_name VARCHAR,\n  email VARCHAR UNIQUE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users ( \n user_id UUID PRIMARY KEY, \n username VARCHAR(50) UNIQUE NOT NULL, \n password_hash TEXT NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_accounts ( \n account_id UUID PRIMARY KEY, \n user_id UUID REFERENCES users(user_id) NOT NULL, \n balance DECIMAL(10,2) DEFAULT 0.00 \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_accounts (\n    account_id INT PRIMARY KEY,\n    user_id INT,\n    balance DECIMAL(10, 2) DEFAULT 0.00\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_history (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    login_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password_hash VARCHAR(100),\n    email VARCHAR(100) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT REFERENCES users(user_id),\n    role_name VARCHAR(50),\n    PRIMARY KEY (user_id, role_name)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_accounts (\n    account_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    balance DECIMAL(10, 2),\n    account_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    attempt_time TIMESTAMP,\n    successful BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(100) NOT NULL,\n  email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n  account_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  account_type VARCHAR(50) NOT NULL,\n  balance DECIMAL(15, 2) DEFAULT 0.00\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n  attempt_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  attempt_time TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n  session_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  login_time TIMESTAMP NOT NULL,\n  logout_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  access_time TIMESTAMP NOT NULL,\n  ip_address VARCHAR(20) NOT NULL,\n  device_info VARCHAR(100)\n);\n"
+      }
+    ]
+  }
+]

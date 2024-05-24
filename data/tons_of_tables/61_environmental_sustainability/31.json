@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenhouseGasEmissions (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(255),\n  emission_type VARCHAR(50),\n  emission_amount DECIMAL(10, 2),\n  measurement_unit VARCHAR(20) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE greenhouse_gas_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255),\n    location VARCHAR(255),\n    emissions FLOAT\n);\n\nCREATE TABLE emissions_records (\n    record_id INT PRIMARY KEY,\n    source_id INT,\n    record_date DATE,\n    emissions_amount FLOAT,\n    CONSTRAINT fk_source FOREIGN KEY (source_id) REFERENCES greenhouse_gas_sources(source_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE greenhouse_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255) UNIQUE,\n    emission_type VARCHAR(50),\n    emission_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE emission_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(100) UNIQUE,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE emission_records (\n    record_id INT PRIMARY KEY,\n    source_id INT,\n    category_id INT,\n    emission_date DATE,\n    FOREIGN KEY (source_id) REFERENCES greenhouse_sources(source_id),\n    FOREIGN KEY (category_id) REFERENCES emission_categories(category_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenhouseGasEmissions (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(255) NOT NULL,\n  emission_type VARCHAR(50) NOT NULL,\n  emission_quantity DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmissionSources (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(255) NOT NULL,\n  source_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmissionCategories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmissionReports (\n  report_id INT PRIMARY KEY,\n  source_id INT NOT NULL,\n  category_id INT NOT NULL,\n  report_date DATE NOT NULL,\n  emission_quantity DECIMAL(10,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Greenhouse_Gas_Emission_Sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(100) NOT NULL,\n    emission_type VARCHAR(50) NOT NULL,\n    emission_level DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Emission_Reports (\n    report_id INT PRIMARY KEY,\n    source_id INT NOT NULL,\n    report_date DATE NOT NULL,\n    total_emission DECIMAL(10,2) NOT NULL,\n    FOREIGN KEY (source_id) REFERENCES Greenhouse_Gas_Emission_Sources(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Emission_Categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Source_Categories (\n    source_id INT NOT NULL,\n    category_id INT NOT NULL,\n    PRIMARY KEY (source_id, category_id),\n    FOREIGN KEY (source_id) REFERENCES Greenhouse_Gas_Emission_Sources(source_id),\n    FOREIGN KEY (category_id) REFERENCES Emission_Categories(category_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Emission_History (\n    history_id INT PRIMARY KEY,\n    report_id INT NOT NULL,\n    emission_date DATE NOT NULL,\n    emission_amount DECIMAL(10,2) NOT NULL,\n    FOREIGN KEY (report_id) REFERENCES Emission_Reports(report_id)\n);\n"
+      }
+    ]
+  }
+]

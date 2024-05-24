@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT id, robot_id, sector_id, coordinates, navigation_timestamp FROM RobotNavigationData;",
+      "SELECT * FROM RobotNavigationData WHERE sector_id = 2;",
+      "SELECT robot_id, sector_id, navigation_timestamp FROM RobotNavigationData WHERE robot_id = 1 ORDER BY navigation_timestamp DESC;",
+      "SELECT * FROM RobotNavigationData WHERE sector_id = 3 AND robot_id = 2;",
+      "SELECT sector_id, COUNT(*) as num_records FROM RobotNavigationData GROUP BY sector_id;",
+      "SELECT * FROM RobotNavigationData WHERE robot_id = 1 ORDER BY navigation_timestamp DESC;",
+      "SELECT id, sector_id, navigation_timestamp FROM RobotNavigationData WHERE sector_id IN (2, 4, 6) ORDER BY sector_id ASC, navigation_timestamp DESC;",
+      "SELECT sector_id, COUNT(*) AS data_count FROM RobotNavigationData GROUP BY sector_id HAVING COUNT(*) > 10 ORDER BY data_count DESC;",
+      "SELECT robot_id, MAX(navigation_timestamp) AS latest_timestamp FROM RobotNavigationData WHERE sector_id = 3 GROUP BY robot_id;",
+      "SELECT id, coordinates->'latitude' AS latitude, coordinates->'longitude' AS longitude FROM RobotNavigationData WHERE coordinates->>'device' = 'gps' ORDER BY id DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM RobotStates WHERE status = 'charging';",
+      "SELECT robot_id, location FROM RobotStates WHERE battery_level > 0.5;",
+      "SELECT * FROM RobotLogs ORDER BY timestamp DESC LIMIT 5;",
+      "SELECT robot_id, MAX(battery_level) AS max_battery_level FROM RobotStates GROUP BY robot_id;",
+      "SELECT robot_id, COUNT(log_id) AS num_logs FROM RobotLogs GROUP BY robot_id HAVING COUNT(log_id) > 10;",
+      "SELECT * FROM RobotStates WHERE battery_level > 50 ORDER BY location DESC;",
+      "SELECT robot_id, location, battery_level, status FROM RobotStates WHERE status = 'active' ORDER BY battery_level ASC;",
+      "SELECT robot_id, event_description, timestamp FROM RobotLogs ORDER BY timestamp DESC LIMIT 10;",
+      "SELECT * FROM RobotStates WHERE status = 'idle' ORDER BY robot_id, location;",
+      "SELECT robot_id, AVG(battery_level) AS avg_battery_level FROM RobotStates GROUP BY robot_id HAVING AVG(battery_level) < 70 ORDER BY avg_battery_level DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Robot;",
+      "SELECT robot_name, battery_level FROM Robot WHERE battery_level > 50;",
+      "SELECT waypoint_name, location_x, location_y FROM Waypoint WHERE location_x < 0;",
+      "SELECT robot_id, robot_name, distance FROM Robot INNER JOIN Navigation ON Robot.robot_id = Navigation.robot_id;",
+      "SELECT waypoint_name, robot_name, distance FROM Waypoint INNER JOIN Navigation ON Waypoint.waypoint_id = Navigation.waypoint_id;",
+      "SELECT * FROM Robot JOIN Navigation ON Robot.robot_id = Navigation.robot_id WHERE Navigation.distance > 10 ORDER BY Robot.robot_name ASC",
+      "SELECT Robot.robot_name, Waypoint.waypoint_name FROM Robot, Waypoint WHERE Robot.robot_id = 1 AND Waypoint.location_x > 50",
+      "SELECT COUNT(*) AS total_robots FROM Robot",
+      "SELECT * FROM Waypoint WHERE location_y < 0 OR location_x > 100 ORDER BY waypoint_id DESC",
+      "SELECT Robot.robot_name, Navigation.distance FROM Robot INNER JOIN Navigation ON Robot.robot_id = Navigation.robot_id WHERE Navigation.distance BETWEEN 5 AND 15"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Robot;",
+      "SELECT id, name, model FROM Robot ORDER BY id DESC;",
+      "SELECT name, model, battery_capacity FROM Robot WHERE battery_capacity > 500;",
+      "SELECT id, type, range, accuracy FROM Sensor WHERE range BETWEEN 50 AND 100;",
+      "SELECT timestamp, message FROM Log ORDER BY timestamp ASC;",
+      "SELECT * FROM Robot WHERE id = 1;",
+      "SELECT name, model FROM Robot WHERE battery_capacity > 500;",
+      "SELECT Sensor.type, Sensor.range, Robot.name FROM Sensor INNER JOIN Robot ON Sensor.robot_id = Robot.id;",
+      "SELECT Navigation.target_location, Navigation.distance, Robot.model FROM Navigation INNER JOIN Robot ON Navigation.robot_id = Robot.id WHERE Navigation.distance < 1000;",
+      "SELECT Log.timestamp, Log.message, Robot.name FROM Log INNER JOIN Robot ON Log.robot_id = Robot.id ORDER BY Log.timestamp DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Robot;",
+      "SELECT name, model FROM Robot WHERE manufacture_date > '2022-01-01';",
+      "SELECT location, timestamp FROM NavigationData ORDER BY timestamp DESC;",
+      "SELECT robot_id, sensor_type, value FROM SensorData WHERE sensor_type = 'temperature';",
+      "SELECT command_type, issued_by, timestamp FROM CommandLog WHERE robot_id = 2;",
+      "SELECT * FROM Robot;",
+      "SELECT name, model FROM Robot ORDER BY name DESC;",
+      "SELECT location, timestamp FROM NavigationData WHERE robot_id = 1;",
+      "SELECT MAX(value) AS max_value, MIN(value) AS min_value FROM SensorData WHERE sensor_type = 'temperature';",
+      "SELECT command_type, issued_by FROM CommandLog WHERE timestamp BETWEEN '2022-01-01' AND '2022-02-01';"
+    ]
+  }
+]

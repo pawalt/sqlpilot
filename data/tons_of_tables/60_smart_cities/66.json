@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE green_energy_generation (\n    building_id INT PRIMARY KEY,\n    building_name TEXT,\n    energy_source TEXT,\n    generation_capacity FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_installations (\n    building_id UUID PRIMARY KEY,\n    building_name VARCHAR(255),\n    installation_date DATE,\n    renewable_energy_source VARCHAR(50)\n);\n\nCREATE TABLE energy_generation (\n    generation_id UUID PRIMARY KEY,\n    building_id UUID REFERENCES building_installations(building_id),\n    generation_date TIMESTAMP,\n    energy_generated DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenBuildingInstallation (\n  building_id INT PRIMARY KEY,\n  building_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RenewableEnergySource (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(50) NOT NULL,\n  capacity DECIMAL NOT NULL,\n  installation_date DATE NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyGeneration (\n  generation_id INT PRIMARY KEY,\n  source_id INT,\n  generation_date DATE NOT NULL,\n  amount DECIMAL NOT NULL,\n  FOREIGN KEY (source_id) REFERENCES RenewableEnergySource(source_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Sensors (\n  sensor_id INT PRIMARY KEY,\n  sensor_type VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  installation_date DATE NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE green_buildings (\n    building_id INT PRIMARY KEY,\n    building_name VARCHAR(255),\n    location VARCHAR(255),\n    online_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255),\n    capacity DECIMAL(10, 2),\n    location VARCHAR(255),\n    start_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_generation (\n    generation_id INT PRIMARY KEY,\n    source_id INT,\n    generation_date DATE,\n    generation_amount DECIMAL(12, 2),\n    CONSTRAINT fk_source_id FOREIGN KEY (source_id) REFERENCES energy_sources (source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    consumption_id INT PRIMARY KEY,\n    building_id INT,\n    consumption_date DATE,\n    consumption_amount DECIMAL(12, 2),\n    CONSTRAINT fk_building_id FOREIGN KEY (building_id) REFERENCES green_buildings (building_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GreenBuilding (\n\tbuilding_id INT PRIMARY KEY,\n\tbuilding_name TEXT NOT NULL,\n\taddress TEXT,\n\tcity TEXT,\n\tstate TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergySource (\n\tsource_id INT PRIMARY KEY,\n\tsource_type TEXT NOT NULL,\n\tcapacity DECIMAL,\n\tlocation TEXT,\n\tinstall_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyGeneration (\n\tgeneration_id INT PRIMARY KEY,\n\tsource_id INT REFERENCES EnergySource(source_id),\n\tgeneration_date DATE,\n\tgeneration_amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BuildingEnergyUsage (\n\tusage_id INT PRIMARY KEY,\n\tbuilding_id INT REFERENCES GreenBuilding(building_id),\n\tusage_date DATE,\n\tusage_amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n\tconsumption_id INT PRIMARY KEY,\n\tbuilding_id INT REFERENCES GreenBuilding(building_id),\n\tconsumption_date DATE,\n\tconsumption_amount DECIMAL\n);\n"
+      }
+    ]
+  }
+]

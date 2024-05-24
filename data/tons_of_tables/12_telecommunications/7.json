@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(50) NOT NULL,\n    policy_description TEXT,\n    access_control VARCHAR(20) CHECK (access_control IN ('ALLOW', 'DENY'))\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_infrastructure (\n  id INT PRIMARY KEY,\n  site_name VARCHAR(255),\n  security_level VARCHAR(50),\n  access_control BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id SERIAL PRIMARY KEY,\n  user_id INT,\n  date_time TIMESTAMP,\n  action_taken VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id UUID PRIMARY KEY,\n    policy_name VARCHAR(100),\n    policy_description TEXT,\n    policy_type ENUM('access', 'security'),\n    policy_action VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n    control_id UUID PRIMARY KEY,\n    control_name VARCHAR(100),\n    control_description TEXT,\n    control_type ENUM('role-based', 'attribute-based'),\n    control_action VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_infrastructure (\n    infrastructure_id UUID PRIMARY KEY,\n    infrastructure_name VARCHAR(100),\n    infrastructure_type ENUM('core_network', 'radio_access_network'),\n    infrastructure_location VARCHAR(100),\n    infrastructure_security_level VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_enforcement (\n    id SERIAL PRIMARY KEY,\n    policy_name VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n    id SERIAL PRIMARY KEY,\n    control_name VARCHAR(50) NOT NULL,\n    control_type VARCHAR(50),\n    access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_infrastructure (\n    id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    location VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE 5g_users (\n    id SERIAL PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    user_role VARCHAR(50),\n    access_control_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    id UUID PRIMARY KEY,\n    device_name VARCHAR(100),\n    device_type VARCHAR(50),\n    vendor VARCHAR(50),\n    firmware_version VARCHAR(20),\n    serial_number VARCHAR(30)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    password VARCHAR(100),\n    role VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    access_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    device_id UUID REFERENCES network_devices(id),\n    access_level VARCHAR(20),\n    granted_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    action VARCHAR(50),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_vulnerabilities (\n    vulnerability_id UUID PRIMARY KEY,\n    device_id UUID REFERENCES network_devices(id),\n    vulnerability_type VARCHAR(50),\n    severity VARCHAR(20),\n    description TEXT\n);"
+      }
+    ]
+  }
+]

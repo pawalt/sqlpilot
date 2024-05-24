@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE movement_data (\n  user_id INT,\n  timestamp TIMESTAMP,\n  x_coordinate FLOAT,\n  y_coordinate FLOAT,\n  z_coordinate FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE movements (\n  user_id INT,\n  timestamp TIMESTAMP,\n  position_x FLOAT,\n  position_y FLOAT,\n  position_z FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behavior (\n  behavior_id INT,\n  user_id INT,\n  behavior_type STRING,\n  duration INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    user_email VARCHAR(100) UNIQUE NOT NULL,\n    registration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE movements (\n    movement_id SERIAL PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    movement_type VARCHAR(50) NOT NULL,\n    movement_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_scores (\n    user_id UUID REFERENCES users(user_id),\n    score FLOAT NOT NULL,\n    completion_date DATE,\n    PRIMARY KEY (user_id, completion_date)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_tracking (\n    user_id UUID,\n    session_id UUID,\n    timestamp TIMESTAMP,\n    position_x FLOAT,\n    position_y FLOAT,\n    position_z FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE session_info (\n    session_id UUID PRIMARY KEY,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    session_duration INTERVAL,\n    completed BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_info (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR,\n    age INT,\n    gender VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE simulation_data (\n    simulation_id UUID PRIMARY KEY,\n    session_id UUID,\n    platform_version VARCHAR,\n    simulation_date DATE,\n    completed BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  registration_date DATE,\n  last_login_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n  session_id INT PRIMARY KEY,\n  user_id INT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  duration INT,\n  FOREIGN KEY (user_id) REFERENCES user_accounts(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_movements (\n  movement_id INT PRIMARY KEY,\n  user_id INT,\n  session_id INT,\n  movement_type VARCHAR(50),\n  movement_direction VARCHAR(50),\n  movement_duration INT,\n  FOREIGN KEY (user_id) REFERENCES user_accounts(user_id),\n  FOREIGN KEY (session_id) REFERENCES user_sessions(session_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_interaction (\n  interaction_id INT PRIMARY KEY,\n  user_id INT,\n  session_id INT,\n  interaction_type VARCHAR(50),\n  timestamp TIMESTAMP,\n  FOREIGN KEY (user_id) REFERENCES user_accounts(user_id),\n  FOREIGN KEY (session_id) REFERENCES user_sessions(session_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_analysis (\n  analysis_id INT PRIMARY KEY,\n  user_id INT,\n  session_id INT,\n  analysis_type VARCHAR(50),\n  result TEXT,\n  FOREIGN KEY (user_id) REFERENCES user_accounts(user_id),\n  FOREIGN KEY (session_id) REFERENCES user_sessions(session_id)\n);\n"
+      }
+    ]
+  }
+]

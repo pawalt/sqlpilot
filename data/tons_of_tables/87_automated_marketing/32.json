@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bidding_strategies_and_budgets (\n  id INT PRIMARY KEY,\n  campaign_id INT,\n  strategy_name VARCHAR(50),\n  bidding_strategy VARCHAR(50),\n  budget DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n  campaign_id UUID PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  budget_money DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bidding_strategies (\n  strategy_id UUID PRIMARY KEY,\n  strategy_name VARCHAR(255) NOT NULL,\n  bid_amount DECIMAL(10, 2) NOT NULL,\n  target_audience VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bidding_strategies (\n  strategy_id INT PRIMARY KEY,\n  strategy_name VARCHAR(255),\n  bid_amount DECIMAL(10,2),\n  target_audience VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE budgets (\n  budget_id INT PRIMARY KEY,\n  campaign_id INT,\n  budget_amount DECIMAL(10,2),\n  start_date DATE,\n  end_date DATE,\n  FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_groups (\n    ad_group_id INT PRIMARY KEY,\n    ad_group_name VARCHAR(255),\n    campaign_id INT,\n    bid_strategy VARCHAR(50),\n    budget DECIMAL,\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ads (\n    ad_id INT PRIMARY KEY,\n    ad_group_id INT,\n    ad_name VARCHAR(255),\n    ad_format VARCHAR(50),\n    bid_amount DECIMAL,\n    FOREIGN KEY (ad_group_id) REFERENCES ad_groups(ad_group_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE metrics (\n    metric_id INT PRIMARY KEY,\n    ad_id INT,\n    date DATE,\n    impressions INT,\n    clicks INT,\n    spend DECIMAL,\n    FOREIGN KEY (ad_id) REFERENCES ads(ad_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ad_campaigns (\n    id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    budget DECIMAL(10, 2),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_groups (\n    id INT PRIMARY KEY,\n    group_name VARCHAR(255),\n    campaign_id INT,\n    max_bid DECIMAL(5, 2),\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ads (\n    id INT PRIMARY KEY,\n    ad_name VARCHAR(255),\n    group_id INT,\n    bid DECIMAL(5, 2),\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (\n    id INT PRIMARY KEY,\n    keyword_text VARCHAR(255),\n    ad_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    id INT PRIMARY KEY,\n    ad_id INT,\n    clicks INT,\n    impressions INT,\n    conversions INT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE eco_materials_inventory (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    material_category VARCHAR(100),\n    material_description TEXT,\n    material_quantity INT,\n    material_price DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    material_type VARCHAR(50) NOT NULL,\n    material_qty INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE components (\n    component_id INT PRIMARY KEY,\n    component_name VARCHAR(255) NOT NULL,\n    component_material_id INT,\n    component_qty INT NOT NULL,\n    FOREIGN KEY (component_material_id) REFERENCES materials(material_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE eco_friendly_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  material_type VARCHAR(50) NOT NULL,\n  quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE components (\n  component_id INT PRIMARY KEY,\n  component_name VARCHAR(50) NOT NULL,\n  component_type VARCHAR(50) NOT NULL,\n  material_id INT,\n  FOREIGN KEY (material_id) REFERENCES eco_friendly_materials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n  inventory_id INT PRIMARY KEY,\n  component_id INT,\n  quantity INT,\n  FOREIGN KEY (component_id) REFERENCES components(component_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id INT PRIMARY KEY,\n    material_name TEXT NOT NULL,\n    material_type TEXT,\n    material_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name TEXT NOT NULL,\n    supplier_location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id INT PRIMARY KEY,\n    material_id INT,\n    quantity INT NOT NULL,\n    FOREIGN KEY (material_id) REFERENCES materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    material_id INT,\n    supplier_id INT,\n    quantity INT,\n    transaction_date TIMESTAMP,\n    FOREIGN KEY (material_id) REFERENCES materials(material_id),\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE eco_friendly_materials(\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    quantity INT NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers(\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    phone_number VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory(\n    inventory_id INT PRIMARY KEY,\n    material_id INT,\n    quantity INT NOT NULL,\n    FOREIGN KEY (material_id) REFERENCES eco_friendly_materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders(\n    order_id INT PRIMARY KEY,\n    material_id INT,\n    quantity INT NOT NULL,\n    order_date DATE NOT NULL,\n    FOREIGN KEY (material_id) REFERENCES eco_friendly_materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments(\n    shipment_id INT PRIMARY KEY,\n    order_id INT,\n    shipment_date DATE NOT NULL,\n    status VARCHAR(50),\n    FOREIGN KEY (order_id) REFERENCES orders(order_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE photos (\n    photo_id INT PRIMARY KEY,\n    photo_url VARCHAR(255),\n    user_id INT,\n    album_id INT,\n    upload_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n\nCREATE TABLE photos (\n    photo_id UUID PRIMARY KEY,\n    photo_url VARCHAR(255) NOT NULL,\n    user_id UUID REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE albums (\n    album_id SERIAL PRIMARY KEY,\n    user_id INT,\n    album_name VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL DEFAULT NOW(),\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE photos (\n    photo_id SERIAL PRIMARY KEY,\n    album_id INT,\n    photo_name VARCHAR(100) NOT NULL,\n    photo_url TEXT NOT NULL,\n    uploaded_at TIMESTAMP NOT NULL DEFAULT NOW(),\n    FOREIGN KEY (album_id) REFERENCES albums(album_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE albums (\n  album_id INT PRIMARY KEY,\n  album_name VARCHAR(255) NOT NULL,\n  user_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE photos (\n  photo_id INT PRIMARY KEY,\n  photo_name VARCHAR(255) NOT NULL,\n  album_id INT,\n  photo_url TEXT,\n  FOREIGN KEY (album_id) REFERENCES albums(album_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE photo_tags (\n  tag_id INT PRIMARY KEY,\n  photo_id INT,\n  tag_name VARCHAR(50) NOT NULL,\n  FOREIGN KEY (photo_id) REFERENCES photos(photo_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Photos (\n    photo_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    photo_url VARCHAR(255) NOT NULL,\n    upload_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Albums (\n    album_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    album_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlbumPhotos (\n    album_id UUID,\n    photo_id UUID,\n    PRIMARY KEY (album_id, photo_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SharedAlbums (\n    album_id UUID,\n    shared_with_email VARCHAR(100) NOT NULL,\n    PRIMARY KEY (album_id, shared_with_email)\n);"
+      }
+    ]
+  }
+]

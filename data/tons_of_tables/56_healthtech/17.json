@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medication_adherence_tracking (\n    patient_id INT,\n    medication_name VARCHAR(50),\n    dosage_amount INT,\n    dosage_frequency VARCHAR(50),\n    last_taken TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id UUID PRIMARY KEY,\n  patient_name VARCHAR(50) NOT NULL,\n  patient_age INT,\n  patient_gender VARCHAR(10),\n  phone_number VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Medications (\n  medication_id UUID PRIMARY KEY,\n  medication_name VARCHAR(50) NOT NULL,\n  dosage FLOAT,\n  frequency VARCHAR(20) NOT NULL,\n  patient_id UUID REFERENCES Patients(patient_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reminders (\n id INT PRIMARY KEY,\n patient_id INT,\n medication_name VARCHAR,\n dosage INT,\n reminder_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n id INT PRIMARY KEY,\n name VARCHAR,\n age INT,\n contact_number VARCHAR,\n email VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE adherence_tracking (\n id INT PRIMARY KEY,\n patient_id INT,\n medication_name VARCHAR,\n dosage_given INT,\n dosage_missed INT,\n last_adherence TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id UUID PRIMARY KEY,\n  patient_name VARCHAR(50),\n  patient_dob DATE,\n  phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Medications (\n  med_id SERIAL PRIMARY KEY,\n  med_name VARCHAR(50),\n  dosage VARCHAR(20),\n  med_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicationSchedule (\n  schedule_id SERIAL PRIMARY KEY,\n  med_id INTEGER REFERENCES Medications(med_id),\n  dosage_time TIME,\n  dosage_quantity INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Reminders (\n  reminder_id SERIAL PRIMARY KEY,\n  schedule_id INTEGER REFERENCES MedicationSchedule(schedule_id),\n  reminder_time TIMESTAMP,\n  reminder_message TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  phone_number VARCHAR(15),\n  email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Medications (\n  medication_id INT PRIMARY KEY,\n  medication_name VARCHAR(255),\n  dosage VARCHAR(50),\n  frequency VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicationSchedule (\n  schedule_id INT PRIMARY KEY,\n  medication_id INT,\n  patient_id INT,\n  schedule_date DATE,\n  time_of_day TIME,\n  FOREIGN KEY (medication_id) REFERENCES Medications(medication_id),\n  FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reminders (\n  reminder_id INT PRIMARY KEY,\n  schedule_id INT,\n  reminder_date DATE,\n  reminder_time TIME,\n  is_sent BOOLEAN,\n  FOREIGN KEY (schedule_id) REFERENCES MedicationSchedule(schedule_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ReminderLogs (\n  log_id INT PRIMARY KEY,\n  reminder_id INT,\n  patient_id INT,\n  log_date DATE,\n  log_time TIME,\n  log_message TEXT,\n  FOREIGN KEY (reminder_id) REFERENCES Reminders(reminder_id),\n  FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_plans (\n  plan_id INT PRIMARY KEY,\n  date DATE,\n  distance FLOAT,\n  pace FLOAT,\n  duration TIME\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_plans (\n  plan_id UUID PRIMARY KEY,\n  plan_name VARCHAR(100),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE daily_workouts (\n  workout_id UUID PRIMARY KEY,\n  plan_id UUID,\n  workout_date DATE,\n  distance DECIMAL,\n  pace DECIMAL,\n  duration INTERVAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_plans (\n  id INT PRIMARY KEY,\n  date DATE,\n  distance FLOAT,\n  pace VARCHAR(50),\n  duration TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE workouts (\n  id INT PRIMARY KEY,\n  plan_id INT,\n  day DATE,\n  distance FLOAT,\n  pace VARCHAR(50),\n  duration TIME,\n  FOREIGN KEY (plan_id) REFERENCES training_plans(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  email VARCHAR(100),\n  age INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_plans (\n  plan_id UUID PRIMARY KEY,\n  plan_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE daily_distance (\n  distance_id UUID PRIMARY KEY,\n  day DATE,\n  distance DECIMAL(10, 2),\n  plan_id UUID,\n  FOREIGN KEY (plan_id) REFERENCES training_plans(plan_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE daily_pace (\n  pace_id UUID PRIMARY KEY,\n  day DATE,\n  pace DECIMAL(5, 2),\n  distance_id UUID,\n  FOREIGN KEY (distance_id) REFERENCES daily_distance(distance_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE workout_duration (\n  duration_id UUID PRIMARY KEY,\n  day DATE,\n  duration INTERVAL,\n  pace_id UUID,\n  FOREIGN KEY (pace_id) REFERENCES daily_pace(pace_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Training_Plans (\n\tplan_id INT PRIMARY KEY,\n\tplan_name VARCHAR(255) NOT NULL,\n\tstart_date DATE,\n\tend_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Training_Days (\n\tday_id INT PRIMARY KEY,\n\tplan_id INT REFERENCES Training_Plans(plan_id),\n\tday_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Distance_Training (\n\tdistance_id INT PRIMARY KEY,\n\tday_id INT REFERENCES Training_Days(day_id),\n\tdistance_in_km FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Pace_Training (\n\tpace_id INT PRIMARY KEY,\n\tday_id INT REFERENCES Training_Days(day_id),\n\tpace_per_km TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Workout_Duration (\n\tduration_id INT PRIMARY KEY,\n\tday_id INT REFERENCES Training_Days(day_id),\n\tduration_minutes INT\n);\n"
+      }
+    ]
+  }
+]

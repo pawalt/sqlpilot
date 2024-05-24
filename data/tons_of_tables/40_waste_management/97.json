@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_decay_rates (\n  waste_type VARCHAR(50),\n  decay_rate DECIMAL(5,2),\n  landfill_location VARCHAR(100),\n  measurement_unit VARCHAR(10)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biodegradable_waste_decay_rates (\n  waste_type VARCHAR(50) NOT NULL,\n  decay_rate DECIMAL(5, 2) NOT NULL,\n  landfill_id INT NOT NULL,\n  measurement_date DATE NOT NULL,\n  PRIMARY KEY (waste_type, landfill_id, measurement_date)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE landfill_locations (\n  landfill_id INT PRIMARY KEY,\n  landfill_name VARCHAR(50) NOT NULL,\n  address VARCHAR(100) NOT NULL,\n  city VARCHAR(50) NOT NULL,\n  state VARCHAR(50) NOT NULL,\n  country VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiodegradableWasteDecayRates (\n  waste_id INT PRIMARY KEY,\n  waste_type VARCHAR(50),\n  decay_rate FLOAT,\n  landfill_location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE LandfillLocations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(100),\n  latitude FLOAT,\n  longitude FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteDisposalStrategies (\n  strategy_id INT PRIMARY KEY,\n  strategy_name VARCHAR(100),\n  recommended_actions TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE decay_rates ( id INT PRIMARY KEY, waste_type VARCHAR(50), decay_rate DECIMAL(5,2) );"
+      },
+      {
+        "table_schema": "CREATE TABLE landfill_location ( id INT PRIMARY KEY, location_name VARCHAR(100), longitude DECIMAL(10,6), latitude DECIMAL(10,6) );"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_tracking ( id INT PRIMARY KEY, waste_id INT, landfill_id INT, start_date TIMESTAMP, end_date TIMESTAMP, CONSTRAINT fk_waste FOREIGN KEY (waste_id) REFERENCES decay_rates(id), CONSTRAINT fk_landfill FOREIGN KEY (landfill_id) REFERENCES landfill_location(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection ( id INT PRIMARY KEY, waste_type VARCHAR(50), amount_kg DECIMAL(10,2), collection_date DATE, landfill_id INT, CONSTRAINT fk_landfill FOREIGN KEY (landfill_id) REFERENCES landfill_location(id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteType (id INT PRIMARY KEY, waste_name VARCHAR(255), decay_rate DECIMAL(10, 2))\n"
+      },
+      {
+        "table_schema": "CREATE TABLE LandfillSite (id INT PRIMARY KEY, site_name VARCHAR(255), location VARCHAR(255), capacity INT)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteMeasurement (id INT PRIMARY KEY, waste_id INT, landfill_id INT, measurement_date DATE, waste_weight DECIMAL(10, 2))\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EvaluationReport (id INT PRIMARY KEY, report_date DATE, landfill_id INT, efficiency_rating INT)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researcher (id INT PRIMARY KEY, name VARCHAR(255), specialization VARCHAR(255))\n"
+      }
+    ]
+  }
+]

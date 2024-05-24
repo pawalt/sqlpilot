@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageFeatures(\n    id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    feature_vector FLOAT[],\n    date_created TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageFeatures (\n    image_id INT PRIMARY KEY,\n    feature_vector BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_path VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_features (\n    id INT PRIMARY KEY,\n    image_path TEXT,\n    feature_vector ARRAY FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_tags (\n    id INT PRIMARY KEY,\n    image_id INT,\n    tag TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    id INT PRIMARY KEY,\n    image_id INT,\n    capture_date DATE,\n    location TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageFeatures (\n    image_id INT PRIMARY KEY,\n    feature_vector BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageTags (\n    image_id INT,\n    tag VARCHAR(50),\n    FOREIGN KEY (image_id) REFERENCES ImageFeatures(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n    image_id INT PRIMARY KEY,\n    metadata JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageAnalysisResults (\n    analysis_id SERIAL PRIMARY KEY,\n    image_id INT,\n    analysis_result JSONB,\n    FOREIGN KEY (image_id) REFERENCES ImageFeatures(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Images (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_path VARCHAR(255),\n    image_features BYTEA\n);\n\nCREATE TABLE Objects (\n    object_id INT PRIMARY KEY,\n    object_name VARCHAR(255),\n    object_category VARCHAR(255),\n    object_features BYTEA\n);\n\nCREATE TABLE ImageObjects (\n    image_id INT,\n    object_id INT,\n    PRIMARY KEY (image_id, object_id),\n    FOREIGN KEY (image_id) REFERENCES Images(image_id),\n    FOREIGN KEY (object_id) REFERENCES Objects(object_id)\n);\n\nCREATE TABLE ImageTags (\n    image_id INT,\n    tag_name VARCHAR(255),\n    PRIMARY KEY (image_id, tag_name),\n    FOREIGN KEY (image_id) REFERENCES Images(image_id)\n);\n\nCREATE TABLE ImageMetadata (\n    image_id INT,\n    captured_at TIMESTAMP,\n    author VARCHAR(255),\n    location VARCHAR(255),\n    PRIMARY KEY (image_id),\n    FOREIGN KEY (image_id) REFERENCES Images(image_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geolocation_info (\n  location_id INT PRIMARY KEY,\n  latitude DECIMAL(9,6),\n  longitude DECIMAL(9,6),\n  challenge_name VARCHAR(255),\n  challenge_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geolocation_data (\n    location_id SERIAL PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    challenge_id INT\n);\n\nCREATE TABLE challenge_data (\n    challenge_id SERIAL PRIMARY KEY,\n    challenge_name VARCHAR(255),\n    location_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Challenges (\n    challenge_id SERIAL PRIMARY KEY,\n    challenge_name VARCHAR(50) NOT NULL,\n    location_lat DECIMAL(9,6) NOT NULL,\n    location_long DECIMAL(9,6) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Participants (\n    participant_id SERIAL PRIMARY KEY,\n    participant_name VARCHAR(50) NOT NULL,\n    challenge_id INT REFERENCES Challenges(challenge_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Clues (\n    clue_id SERIAL PRIMARY KEY,\n    clue_text TEXT NOT NULL,\n    challenge_id INT REFERENCES Challenges(challenge_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE challenge_locations (\n    location_id UUID PRIMARY KEY,\n    location_name VARCHAR(50),\n    latitude FLOAT,\n    longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE challenges (\n    challenge_id UUID PRIMARY KEY,\n    challenge_name VARCHAR(50),\n    location_id UUID REFERENCES challenge_locations(location_id),\n    difficulty VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id UUID PRIMARY KEY,\n    player_name VARCHAR(50),\n    email VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_progress (\n    player_id UUID REFERENCES players(player_id),\n    challenge_id UUID REFERENCES challenges(challenge_id),\n    completion_status BOOLEAN,\n    points INTEGER\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE challenges (\n    challenge_id INT PRIMARY KEY,\n    challenge_name VARCHAR(255),\n    challenge_description TEXT,\n    challenge_location_point GEOGRAPHY,\n    time_limit TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    join_date DATE,\n    last_login TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude DECIMAL(9,6),\n    longitude DECIMAL(9,6),\n    address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE challenges_users (\n    challenge_id INT,\n    user_id INT,\n    completed BOOLEAN,\n    points INT,\n    FOREIGN KEY (challenge_id) REFERENCES challenges(challenge_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE hints (\n    hint_id INT PRIMARY KEY,\n    challenge_id INT,\n    hint_description TEXT,\n    hint_location_point GEOGRAPHY,\n    hint_order INT,\n    FOREIGN KEY (challenge_id) REFERENCES challenges(challenge_id)\n);\n"
+      }
+    ]
+  }
+]

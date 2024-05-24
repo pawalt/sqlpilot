@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE savings (\n    goal_id INT PRIMARY KEY,\n    goal_name VARCHAR(255),\n    current_amount DECIMAL,\n    target_amount DECIMAL,\n    date_created TIMESTAMP,\n    last_updated TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE savings_goals (\n    id SERIAL PRIMARY KEY,\n    goal_name VARCHAR(255) NOT NULL,\n    target_amount DECIMAL NOT NULL,\n    current_amount DECIMAL NOT NULL,\n    progress_percentage DECIMAL,\n    completed BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    id SERIAL PRIMARY KEY,\n    savings_goal_id INT REFERENCES savings_goals(id),\n    transaction_date DATE NOT NULL,\n    amount DECIMAL NOT NULL,\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE savings ( \n    id SERIAL PRIMARY KEY, \n    goal_name VARCHAR(255) NOT NULL, \n    target_amount DECIMAL NOT NULL, \n    current_amount DECIMAL NOT NULL, \n    progress DECIMAL NOT NULL, \n    created_at TIMESTAMP NOT NULL DEFAULT now() \n);\n\nCREATE TABLE savings_updates ( \n    update_id SERIAL PRIMARY KEY, \n    savings_id INT REFERENCES savings(id), \n    updated_amount DECIMAL NOT NULL, \n    update_date TIMESTAMP NOT NULL DEFAULT now() \n);\n\nCREATE TABLE users ( \n    user_id SERIAL PRIMARY KEY, \n    username VARCHAR(100) NOT NULL UNIQUE, \n    email VARCHAR(255) NOT NULL, \n    created_at TIMESTAMP NOT NULL DEFAULT now() \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE savings (\n    user_id INT,\n    goal_name VARCHAR(255),\n    goal_amount DECIMAL,\n    current_amount DECIMAL,\n    goal_progress DECIMAL,\n    PRIMARY KEY (user_id, goal_name)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE savings_history (\n    user_id INT,\n    goal_name VARCHAR(255),\n    action_type ENUM('deposit', 'withdraw'),\n    amount DECIMAL,\n    date DATE,\n    FOREIGN KEY (user_id, goal_name) REFERENCES savings(user_id, goal_name)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_settings (\n    user_id INT,\n    email_notifications BOOLEAN,\n    weekly_report BOOLEAN,\n    PRIMARY KEY (user_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Savings (\n\tid INT PRIMARY KEY,\n\tgoal_name VARCHAR(255),\n\tgoal_amount DECIMAL(10, 2),\n\tcurrent_amount DECIMAL(10, 2),\n\tstart_date DATE,\n\tend_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n\tid INT PRIMARY KEY,\n\tsavings_id INT,\n\ttransaction_date DATE,\n\ttransaction_amount DECIMAL(10, 2),\n\ttransaction_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n\tid INT PRIMARY KEY,\n\tusername VARCHAR(50),\n\tpassword VARCHAR(50),\n\temail VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Categories (\n\tid INT PRIMARY KEY,\n\tcategory_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Savings_Categories (\n\tid INT PRIMARY KEY,\n\tsavings_id INT,\n\tcategory_id INT\n);"
+      }
+    ]
+  }
+]

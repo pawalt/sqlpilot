@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BuildingMaterials (\n    material_id INT PRIMARY KEY,\n    material_name TEXT,\n    material_type TEXT,\n    price DECIMAL,\n    quantity INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_materials (material_id INT PRIMARY KEY, material_name STRING, material_density FLOAT);\n\nCREATE TABLE structural_analysis (analysis_id INT PRIMARY KEY, analysis_name STRING, material_id INT REFERENCES building_materials(material_id), load_condition STRING);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255) NOT NULL,\n  material_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_properties (\n  property_id INT PRIMARY KEY,\n  material_id INT NOT NULL,\n  property_name VARCHAR(100) NOT NULL,\n  property_value VARCHAR(255) NOT NULL,\n  FOREIGN KEY (material_id) REFERENCES building_materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE structural_analysis (\n  analysis_id INT PRIMARY KEY,\n  material_id INT NOT NULL,\n  analysis_date DATE NOT NULL,\n  analysis_result VARCHAR(100) NOT NULL,\n  FOREIGN KEY (material_id) REFERENCES building_materials(material_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BuildingMaterials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255),\n  material_type VARCHAR(50),\n  material_density DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialProperties (\n  prop_id INT PRIMARY KEY,\n  material_id INT,\n  property_name VARCHAR(100),\n  property_value DECIMAL(10, 2),\n  FOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE StructuralElements (\n  element_id INT PRIMARY KEY,\n  element_type VARCHAR(50),\n  material_id INT,\n  element_length DECIMAL(10, 2),\n  FOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AnalysisResults (\n  result_id INT PRIMARY KEY,\n  element_id INT,\n  analysis_type VARCHAR(50),\n  result_value DECIMAL(10, 2),\n  FOREIGN KEY (element_id) REFERENCES StructuralElements(element_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BuildingMaterials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    material_type VARCHAR(100),\n    material_density FLOAT,\n    material_strength FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialProperties (\n    property_id INT PRIMARY KEY,\n    material_id INT,\n    property_name VARCHAR(255),\n    property_value FLOAT,\n    FOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StructuralAnalysis (\n    analysis_id INT PRIMARY KEY,\n    material_id INT,\n    load_type VARCHAR(100),\n    analysis_result VARCHAR(255),\n    FOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectDetails (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectMaterials (\n    project_id INT,\n    material_id INT,\n    quantity INT,\n    PRIMARY KEY (project_id, material_id),\n    FOREIGN KEY (project_id) REFERENCES ProjectDetails(project_id),\n    FOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);"
+      }
+    ]
+  }
+]

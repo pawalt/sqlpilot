@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE air_quality_measurements (\n    measurement_id UUID PRIMARY KEY,\n    station_id UUID,\n    measurement_value FLOAT,\n    measurement_time TIMESTAMP,\n    CONSTRAINT fk_station_id FOREIGN KEY (station_id) REFERENCES monitoring_stations(station_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE monitoring_stations (\n    station_id INT PRIMARY KEY,\n    station_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE air_quality_measurements (\n    measurement_id INT PRIMARY KEY,\n    station_id INT,\n    measurement_datetime TIMESTAMP,\n    pm_2_5_level FLOAT,\n    pm_10_level FLOAT,\n    ozone_level FLOAT,\n    nitrogen_dioxide_level FLOAT,\n    sulfur_dioxide_level FLOAT,\n    carbon_monoxide_level FLOAT,\n    FOREIGN KEY (station_id) REFERENCES monitoring_stations(station_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MonitoringStations (\n  station_id INT PRIMARY KEY,\n  station_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE AirQualityMeasurements (\n  measurement_id INT PRIMARY KEY,\n  station_id INT REFERENCES MonitoringStations(station_id),\n  measurement_date DATE NOT NULL,\n  particulate_matter FLOAT NOT NULL,\n  pollutant_level VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorData (\n  sensor_id INT PRIMARY KEY,\n  station_id INT REFERENCES MonitoringStations(station_id),\n  measurement_id INT REFERENCES AirQualityMeasurements(measurement_id),\n  sensor_type VARCHAR(50) NOT NULL,\n  measurement_value FLOAT NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE monitoring_stations (\n    station_id INT PRIMARY KEY,\n    station_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE air_quality_measurements (\n    measurement_id INT PRIMARY KEY,\n    station_id INT NOT NULL,\n    datetime TIMESTAMP NOT NULL,\n    pm25_level INT,\n    pm10_level INT,\n    FOREIGN KEY (station_id) REFERENCES monitoring_stations(station_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    station_id INT NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    country VARCHAR(255) NOT NULL,\n    FOREIGN KEY (station_id) REFERENCES monitoring_stations(station_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id INT PRIMARY KEY,\n    station_id INT NOT NULL,\n    sensor_type VARCHAR(255) NOT NULL,\n    sensor_model VARCHAR(255) NOT NULL,\n    FOREIGN KEY (station_id) REFERENCES monitoring_stations(station_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE monitoring_stations (\n    station_id INT PRIMARY KEY,\n    station_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE air_quality_measurements (\n    measurement_id INT PRIMARY KEY,\n    station_id INT,\n    measurement_date DATE,\n    pm25_level FLOAT,\n    pm10_level FLOAT,\n    temperature FLOAT,\n    humidity FLOAT,\n    FOREIGN KEY (station_id) REFERENCES monitoring_stations(station_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pollutants (\n    pollutant_id INT PRIMARY KEY,\n    pollutant_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE measurement_units (\n    unit_id INT PRIMARY KEY,\n    unit_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE measurement_logs (\n    log_id INT PRIMARY KEY,\n    measurement_id INT,\n    unit_id INT,\n    measured_value FLOAT,\n    FOREIGN KEY (measurement_id) REFERENCES air_quality_measurements(measurement_id),\n    FOREIGN KEY (unit_id) REFERENCES measurement_units(unit_id)\n);"
+      }
+    ]
+  }
+]

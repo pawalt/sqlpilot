@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE merchant_information (\n    merchant_id INT PRIMARY KEY,\n    merchant_name VARCHAR(255),\n    email VARCHAR(255) UNIQUE,\n    password VARCHAR(255),\n    role VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE merchant_auth (\n    merchant_id SERIAL PRIMARY KEY,\n    username TEXT NOT NULL,\n    password TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE merchant_perms (\n    merchant_id SERIAL PRIMARY KEY,\n    role TEXT NOT NULL,\n    permission TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE merchants ( \n    merchant_id INT PRIMARY KEY, \n    merchant_name VARCHAR(255) NOT NULL, \n    merchant_email VARCHAR(255) UNIQUE NOT NULL, \n    merchant_password VARCHAR(255) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE merchant_roles ( \n    role_id INT PRIMARY KEY, \n    role_name VARCHAR(50) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE merchant_permissions ( \n    permission_id INT PRIMARY KEY, \n    permission_name VARCHAR(50) NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE merchants (\n    merchant_id INT PRIMARY KEY,\n    merchant_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE merchant_addresses (\n    address_id INT PRIMARY KEY,\n    merchant_id INT,\n    address_line1 VARCHAR(100) NOT NULL,\n    address_line2 VARCHAR(100),\n    city VARCHAR(50) NOT NULL,\n    state VARCHAR(50) NOT NULL,\n    zip_code VARCHAR(10) NOT NULL,\n    FOREIGN KEY (merchant_id) REFERENCES merchants(merchant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE merchant_orders (\n    order_id INT PRIMARY KEY,\n    merchant_id INT,\n    order_date TIMESTAMP NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(20) NOT NULL,\n    FOREIGN KEY (merchant_id) REFERENCES merchants(merchant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE merchant_products (\n    product_id INT PRIMARY KEY,\n    merchant_id INT,\n    product_name VARCHAR(50) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    stock_quantity INT NOT NULL,\n    FOREIGN KEY (merchant_id) REFERENCES merchants(merchant_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Merchants(\n    merchant_id INT PRIMARY KEY,\n    merchant_name VARCHAR(255),\n    email VARCHAR(255),\n    password VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Products(\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    price DECIMAL(10,2),\n    merchant_id INT,\n    FOREIGN KEY (merchant_id) REFERENCES Merchants(merchant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders(\n    order_id INT PRIMARY KEY,\n    order_date DATE,\n    total_amount DECIMAL(10,2),\n    merchant_id INT,\n    FOREIGN KEY (merchant_id) REFERENCES Merchants(merchant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers(\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OrderDetails(\n    order_id INT,\n    product_id INT,\n    quantity INT,\n    PRIMARY KEY (order_id, product_id),\n    FOREIGN KEY (order_id) REFERENCES Orders(order_id),\n    FOREIGN KEY (product_id) REFERENCES Products(product_id)\n);"
+      }
+    ]
+  }
+]

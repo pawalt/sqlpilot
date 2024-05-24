@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_vr_training_simulations (\n  id INT PRIMARY KEY,\n  scenario_name VARCHAR(255),\n  scenario_description TEXT,\n  duration_minutes INT,\n  difficulty_level ENUM('Beginner', 'Intermediate', 'Advanced')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Scenario (\n  scenario_id INT PRIMARY KEY,\n  scenario_name VARCHAR(50) NOT NULL,\n  scenario_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Simulation (\n  simulation_id INT PRIMARY KEY,\n  scenario_id INT REFERENCES Scenario(scenario_id),\n  simulation_duration INT,\n  simulation_results JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_scenarios (\n  scenario_id INT PRIMARY KEY,\n  scenario_name VARCHAR(255),\n  scenario_description TEXT,\n  scenario_difficulty INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scenario_steps (\n  step_id INT PRIMARY KEY,\n  scenario_id INT,\n  step_description TEXT,\n  step_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scenario_assets (\n  asset_id INT PRIMARY KEY,\n  step_id INT,\n  asset_name VARCHAR(255),\n  asset_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_scenarios (\n    scenario_id SERIAL PRIMARY KEY,\n    scenario_name TEXT,\n    scenario_description TEXT,\n    scenario_duration INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scenario_steps (\n    step_id SERIAL PRIMARY KEY,\n    scenario_id INT REFERENCES training_scenarios(scenario_id),\n    step_description TEXT,\n    step_duration INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_progress (\n    user_id SERIAL PRIMARY KEY,\n    scenario_id INT REFERENCES training_scenarios(scenario_id),\n    step_id INT REFERENCES scenario_steps(step_id),\n    progress_status TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_performance (\n    user_id SERIAL PRIMARY KEY,\n    completion_status BOOLEAN,\n    completion_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE simulation (\n    simulation_id INT PRIMARY KEY,\n    simulation_name VARCHAR(255),\n    description TEXT,\n    duration_minutes INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scenario (\n    scenario_id INT PRIMARY KEY,\n    scenario_name VARCHAR(255),\n    scenario_description TEXT,\n    difficulty_level ENUM('Beginner', 'Intermediate', 'Advanced')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_account (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(100),\n    password_hash VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_progress (\n    user_id INT,\n    scenario_id INT,\n    progress_percentage DECIMAL(5,2),\n    completion_status ENUM('Not Started', 'In Progress', 'Completed'),\n    PRIMARY KEY (user_id, scenario_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE simulation_scenario_mapping (\n    simulation_id INT,\n    scenario_id INT,\n    PRIMARY KEY (simulation_id, scenario_id)\n);"
+      }
+    ]
+  }
+]

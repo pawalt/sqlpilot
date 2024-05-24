@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT PRIMARY KEY,\n    can_view BOOLEAN,\n    can_download BOOLEAN,\n    can_delete BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_data (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(100) NOT NULL,\n    image_url VARCHAR(200) NOT NULL,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    role VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    image_data BYTEA NOT NULL,\n    upload_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    image_id INT NOT NULL,\n    permission_type VARCHAR(10) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (image_id) REFERENCES images(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserPermissions (\n    user_id INT PRIMARY KEY,\n    can_view BOOLEAN,\n    can_edit BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageData (\n    image_id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserRoles (\n    user_id INT PRIMARY KEY,\n    role_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RolePermissions (\n    role_name VARCHAR(50),\n    can_view BOOLEAN,\n    can_edit BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_data (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(100) NOT NULL,\n    image_data BYTEA NOT NULL,\n    user_id INT REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT REFERENCES users(user_id),\n    permission_id INT REFERENCES permissions(permission_id),\n    PRIMARY KEY (user_id, permission_id)\n);"
+      }
+    ]
+  }
+]

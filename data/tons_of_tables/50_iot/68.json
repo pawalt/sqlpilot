@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_response_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    target_energy_reduction FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE program (\n  program_id UUID PRIMARY KEY,\n  program_name VARCHAR(255),\n  start_date TIMESTAMP,\n  end_date TIMESTAMP,\n  energy_reduction_target FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participant (\n  participant_id UUID PRIMARY KEY,\n  participant_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(15),\n  program_id UUID\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_response_programs (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  energy_savings_percentage FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n  participant_id INT PRIMARY KEY,\n  participant_name VARCHAR(255),\n  program_id INT,\n  is_active BOOLEAN,\n  FOREIGN KEY (program_id) REFERENCES demand_response_programs(program_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_usage_data (\n  reading_id INT PRIMARY KEY,\n  participant_id INT,\n  reading_date DATE,\n  energy_usage FLOAT,\n  FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_response_programs (\n  program_id INT PRIMARY KEY,\n  program_name STRING,\n  start_date DATE,\n  end_date DATE,\n  energy_savings DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n  participant_id INT PRIMARY KEY,\n  participant_name STRING,\n  address STRING,\n  phone_number STRING,\n  program_id INT REFERENCES demand_response_programs(program_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_usage (\n  meter_id INT PRIMARY KEY,\n  reading_date DATE,\n  usage DECIMAL,\n  participant_id INT REFERENCES participants(participant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE peak_demand_periods (\n  period_id INT PRIMARY KEY,\n  start_time TIME,\n  end_time TIME,\n  demand_level DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name TEXT,\n    address TEXT,\n    email TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    customer_id INT,\n    device_type TEXT,\n    mac_address TEXT,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    device_id INT,\n    event_type TEXT,\n    event_timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE programs (\n    program_id INT PRIMARY KEY,\n    program_name TEXT,\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE responses (\n    response_id INT PRIMARY KEY,\n    program_id INT,\n    event_id INT,\n    response_value FLOAT,\n    FOREIGN KEY (program_id) REFERENCES programs(program_id),\n    FOREIGN KEY (event_id) REFERENCES events(event_id)\n)"
+      }
+    ]
+  }
+]

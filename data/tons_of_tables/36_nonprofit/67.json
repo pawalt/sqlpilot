@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PerformanceMetrics (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  total_donations DECIMAL(10, 2),\n  total_volunteers INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE philanthropic_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    program_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id INT PRIMARY KEY,\n    program_id INT,\n    metric_name VARCHAR(255),\n    metric_value FLOAT,\n    metric_date DATE,\n    FOREIGN KEY (program_id) REFERENCES philanthropic_programs(program_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE program_metrics (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    total_donations DECIMAL(10, 2),\n    total_volunteers INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE donor_data (\n    donor_id INT PRIMARY KEY,\n    donor_name VARCHAR(255) NOT NULL,\n    donation_amount DECIMAL(10, 2),\n    donation_date DATE,\n    program_id INT,\n    FOREIGN KEY (program_id) REFERENCES program_metrics(program_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE volunteer_data (\n    volunteer_id INT PRIMARY KEY,\n    volunteer_name VARCHAR(255) NOT NULL,\n    volunteer_email VARCHAR(255),\n    hours_volunteered DECIMAL(5, 2),\n    program_id INT,\n    FOREIGN KEY (program_id) REFERENCES program_metrics(program_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProgramMetrics (\n program_id INT PRIMARY KEY,\n program_name VARCHAR(255) NOT NULL,\n program_category VARCHAR(50),\n start_date DATE,\n end_date DATE,\n total_donations DECIMAL(10,2),\n total_beneficiaries INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Donor (\n donor_id INT PRIMARY KEY,\n donor_name VARCHAR(255) NOT NULL,\n donor_email VARCHAR(255) UNIQUE,\n donor_phone VARCHAR(20),\n total_donations DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Beneficiary (\n beneficiary_id INT PRIMARY KEY,\n beneficiary_name VARCHAR(255) NOT NULL,\n age INT,\n gender VARCHAR(10),\n location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProgramParticipation (\n program_id INT,\n beneficiary_id INT,\n donation_amount DECIMAL(10,2),\n PRIMARY KEY (program_id, beneficiary_id),\n FOREIGN KEY (program_id) REFERENCES ProgramMetrics(program_id),\n FOREIGN KEY (beneficiary_id) REFERENCES Beneficiary(beneficiary_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE program_metrics (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  total_funding DECIMAL(10, 2),\n  success_rate DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_metrics (\n  grant_id INT PRIMARY KEY,\n  program_id INT,\n  grant_amount DECIMAL(10, 2),\n  grant_date DATE,\n  recipient_name VARCHAR(255),\n  CONSTRAINT fk_program_id FOREIGN KEY (program_id) REFERENCES program_metrics(program_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE impact_metrics (\n  impact_id INT PRIMARY KEY,\n  program_id INT,\n  impact_description TEXT,\n  impact_score INT,\n  CONSTRAINT fk_program_id FOREIGN KEY (program_id) REFERENCES program_metrics(program_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE volunteer_metrics (\n  volunteer_id INT PRIMARY KEY,\n  program_id INT,\n  volunteer_name VARCHAR(255),\n  hours_spent INT,\n  CONSTRAINT fk_program_id FOREIGN KEY (program_id) REFERENCES program_metrics(program_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donation_metrics (\n  donation_id INT PRIMARY KEY,\n  program_id INT,\n  donor_name VARCHAR(255),\n  donation_amount DECIMAL(10, 2),\n  donation_date DATE,\n  CONSTRAINT fk_program_id FOREIGN KEY (program_id) REFERENCES program_metrics(program_id)\n);"
+      }
+    ]
+  }
+]

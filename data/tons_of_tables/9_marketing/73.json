@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_registrations (\n    attendee_id INT PRIMARY KEY,\n    attendee_name VARCHAR(50),\n    attendee_email VARCHAR(100),\n    registration_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_attendees (\n  id SERIAL PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  phone_number VARCHAR(20),\n  registered_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_sessions (\n  session_id SERIAL PRIMARY KEY,\n  session_name VARCHAR(100) NOT NULL,\n  session_date DATE NOT NULL,\n  start_time TIME NOT NULL,\n  end_time TIME NOT NULL,\n  location VARCHAR(150) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_attendees (\n    attendee_id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    registration_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id SERIAL PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    event_date DATE,\n    location VARCHAR(100),\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE registrations (\n    registration_id SERIAL PRIMARY KEY,\n    event_id INT REFERENCES events(event_id),\n    attendee_id INT REFERENCES event_attendees(attendee_id),\n    registration_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE attendees (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    phone VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    id SERIAL PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    start_date DATE NOT NULL, \n    end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE registrations (\n    id SERIAL PRIMARY KEY,\n    event_id INT NOT NULL,\n    attendee_id INT NOT NULL,\n    registration_date DATE NOT NULL,\n    FOREIGN KEY (event_id) REFERENCES events(id),\n    FOREIGN KEY (attendee_id) REFERENCES attendees(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tickets (\n    id SERIAL PRIMARY KEY,\n    registration_id INT NOT NULL,\n    ticket_type VARCHAR(20) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    quantity INT NOT NULL,\n    FOREIGN KEY (registration_id) REFERENCES registrations(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id SERIAL PRIMARY KEY,\n    full_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20),\n    registration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id SERIAL PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    event_date DATE NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    capacity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE registrations (\n    registration_id SERIAL PRIMARY KEY,\n    attendee_id INT REFERENCES attendees(attendee_id),\n    event_id INT REFERENCES events(event_id),\n    registration_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_organizers (\n    organizer_id SERIAL PRIMARY KEY,\n    organizer_name VARCHAR(100) NOT NULL,\n    organizer_email VARCHAR(100) NOT NULL,\n    organizer_phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_organizer_assignments (\n    assignment_id SERIAL PRIMARY KEY,\n    organizer_id INT REFERENCES event_organizers(organizer_id),\n    event_id INT REFERENCES events(event_id),\n    assignment_date DATE NOT NULL\n);\n"
+      }
+    ]
+  }
+]

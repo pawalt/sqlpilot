@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_data (\n    experiment_id INT PRIMARY KEY,\n    experiment_date DATE,\n    bioreactor_id INT,\n    temperature FLOAT,\n    pH FLOAT,\n    agitation_speed INT,\n    oxygen_level FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bioprocessing_data (\n  experiment_id UUID PRIMARY KEY,\n  experiment_date DATE,\n  experiment_type VARCHAR(50),\n  measured_parameter VARCHAR(50),\n  parameter_value FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quality_control_results (\n  result_id UUID PRIMARY KEY,\n  experiment_id UUID REFERENCES bioprocessing_data(experiment_id),\n  analysis_date DATE,\n  analysis_method VARCHAR(50),\n  pass_fail BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bioreactor_data (\n  bioreactor_id INT,\n  experiment_date DATE,\n  temperature FLOAT,\n  pressure FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cell_growth_data (\n  cell_id INT,\n  bioreactor_id INT,\n  growth_rate FLOAT,\n  nutrient_consumption FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_yield_data (\n  product_id INT,\n  cell_id INT,\n  yield FLOAT,\n  purity FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_data (\n    experiment_id UUID PRIMARY KEY,\n    sample_id UUID,\n    experiment_date DATE,\n    experiment_type VARCHAR(50),\n    measured_parameter VARCHAR(50)\n);\n\nCREATE TABLE sample_details (\n    sample_id UUID PRIMARY KEY,\n    sample_type VARCHAR(50),\n    sample_date DATE,\n    sample_location VARCHAR(100),\n    sample_condition VARCHAR(50)\n);\n\nCREATE TABLE quality_control (\n    qc_id UUID PRIMARY KEY,\n    experiment_id UUID,\n    qc_date DATE,\n    qc_result BOOLEAN,\n    qc_notes TEXT\n);\n\nCREATE TABLE experiment_notes (\n    note_id UUID PRIMARY KEY,\n    experiment_id UUID,\n    note_date DATE,\n    note_text TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bioreactor_measurements (\n  measurement_id INT PRIMARY KEY,\n  measurement_time TIMESTAMP,\n  temperature FLOAT,\n  pressure FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE batch_data (\n  batch_id INT PRIMARY KEY,\n  production_date DATE,\n  batch_size INT,\n  product_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE product_quality (\n  quality_id INT PRIMARY KEY,\n  batch_id INT REFERENCES batch_data(batch_id),\n  measurement_id INT REFERENCES bioreactor_measurements(measurement_id),\n  quality_score FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_account (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(50),\n  created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n  result_id INT PRIMARY KEY,\n  quality_id INT REFERENCES product_quality(quality_id),\n  user_id INT REFERENCES user_account(user_id),\n  result_description TEXT\n);\n"
+      }
+    ]
+  }
+]

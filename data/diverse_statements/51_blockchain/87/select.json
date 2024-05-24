@@ -1,0 +1,77 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM governance_audit_trail",
+      "SELECT decision_maker, decision_made, decision_date FROM governance_audit_trail ORDER BY decision_date DESC",
+      "SELECT id, action_type, decision_maker FROM governance_audit_trail WHERE action_type = 'approve'",
+      "SELECT * FROM governance_audit_trail WHERE decision_maker LIKE 'John%'",
+      "SELECT id, action_type, decision_date FROM governance_audit_trail ORDER BY id DESC",
+      "SELECT * FROM governance_audit_trail WHERE decision_maker = 'Alice' ORDER BY decision_date DESC LIMIT 10",
+      "SELECT id, action_type FROM governance_audit_trail WHERE action_type = 'approval'",
+      "SELECT decision_maker, action_type FROM governance_audit_trail WHERE decision_date >= '2022-01-01' AND decision_date <= '2022-12-31' ORDER BY decision_date ASC",
+      "SELECT * FROM governance_audit_trail WHERE action_type = 'denial' AND decision_maker IN ('Bob', 'Charlie')",
+      "SELECT DISTINCT decision_maker, COUNT(*) AS total_decisions FROM governance_audit_trail GROUP BY decision_maker HAVING COUNT(*) > 1 ORDER BY total_decisions DESC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT decision_id, decision_description, decision_date, decision_owner, decision_status FROM governance_decisions;",
+      "SELECT * FROM governance_decisions WHERE decision_owner = 'John Doe';",
+      "SELECT decision_id, decision_description FROM governance_decisions WHERE decision_date > '2022-01-01';",
+      "SELECT * FROM governance_decisions ORDER BY decision_date DESC;",
+      "SELECT decision_owner, COUNT(*) AS decision_count FROM governance_decisions GROUP BY decision_owner;",
+      "SELECT * FROM governance_decisions ORDER BY decision_date DESC, decision_owner ASC",
+      "SELECT decision_description, decision_owner FROM governance_decisions WHERE decision_status='Approved'",
+      "SELECT * FROM governance_actions JOIN governance_decisions ON governance_actions.decision_id = governance_decisions.decision_id WHERE action_date >= '2022-01-01' AND decision_status='Pending' ORDER BY action_date ASC",
+      "SELECT MAX(action_date) AS latest_action_date FROM governance_actions",
+      "SELECT decision_owner, COUNT(*) AS decision_count FROM governance_decisions GROUP BY decision_owner HAVING COUNT(*) > 1 ORDER BY decision_count DESC, decision_owner ASC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM decision_audit_trail;",
+      "SELECT decision_text, decision_maker FROM decision_audit_trail;",
+      "SELECT action_description, action_taker, action_date FROM action_audit_trail;",
+      "SELECT decision_text, decision_maker, decision_date FROM decision_audit_trail WHERE decision_date >= '2022-01-01';",
+      "SELECT action_description, action_taker FROM action_audit_trail WHERE action_taker = 'John Doe';",
+      "-- Select all columns from decision_audit_trail table sorted by decision_date in descending order",
+      "SELECT * FROM decision_audit_trail ORDER BY decision_date DESC;",
+      "-- Select distinct decision_makers from decision_audit_trail table where decision_text contains the word 'approve'",
+      "SELECT DISTINCT decision_maker FROM decision_audit_trail WHERE decision_text LIKE '%approve%';",
+      "-- Select action_description, action_taker, and action_date from action_audit_trail where action_taker is not null and action_date is in the current year",
+      "SELECT action_description, action_taker, action_date FROM action_audit_trail WHERE action_taker IS NOT NULL AND EXTRACT(YEAR FROM action_date) = EXTRACT(YEAR FROM CURRENT_DATE);",
+      "-- Select decision_id, action_id, and decision_text from decision_action_link table joined with decision_audit_trail and action_audit_trail tables",
+      "SELECT DAL.decision_id, DAL.action_id, DAT.decision_text FROM decision_action_link AS DAL JOIN decision_audit_trail AS DAT ON DAL.decision_id = DAT.id JOIN action_audit_trail AS AAT ON DAL.action_id = AAT.id;",
+      "-- Select decision_text from decision_audit_trail table where decision_maker is 'John Doe' and decision_date is after '2022-01-01'",
+      "SELECT decision_text FROM decision_audit_trail WHERE decision_maker = 'John Doe' AND decision_date > '2022-01-01';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM decision_audit_trail;",
+      "SELECT decision_name, decision_date FROM decision_audit_trail WHERE decision_id = 1;",
+      "SELECT action_name, action_date, action_executor FROM action_audit_trail WHERE action_date > '2022-01-01';",
+      "SELECT participant_name, participant_role FROM decision_participants WHERE decision_id = 2 ORDER BY participant_name ASC;",
+      "SELECT * FROM decision_outcomes WHERE outcome_evaluation IS NOT NULL AND outcome_evaluation <> '' ORDER BY outcome_id DESC;",
+      "SELECT decision_name, decision_date, decision_maker FROM decision_audit_trail ORDER BY decision_date DESC;",
+      "SELECT * FROM action_audit_trail WHERE action_executor = 'John Doe';",
+      "SELECT decision_name, decision_description FROM decision_audit_trail WHERE decision_id = 1001;",
+      "SELECT * FROM decision_participants WHERE decision_id = 1002 AND participant_role = 'Manager';",
+      "SELECT decision_name, outcome_name, outcome_evaluation FROM decision_audit_trail INNER JOIN decision_outcomes ON decision_audit_trail.decision_id = decision_outcomes.decision_id ORDER BY outcome_evaluation DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM governance_decisions;",
+      "SELECT decision_id, decision_type, decision_date FROM governance_decisions ORDER BY decision_date DESC;",
+      "SELECT * FROM governance_actions WHERE action_type='Meeting';",
+      "SELECT action_type, action_date FROM governance_actions WHERE action_date > '2022-01-01';",
+      "SELECT dm.maker_name, dm.maker_role, da.action_type FROM decision_makers dm INNER JOIN decision_actions da ON dm.maker_id = da.maker_id;",
+      "SELECT * FROM governance_decisions",
+      "SELECT decision_id, decision_type FROM governance_decisions WHERE decision_date > '2022-01-01'",
+      "SELECT d.decision_description, a.action_description FROM governance_decisions d JOIN governance_actions a ON d.decision_id = a.action_id",
+      "SELECT maker_name, maker_role FROM decision_makers WHERE maker_role = 'CEO'",
+      "SELECT COUNT(*) AS total_decisions FROM governance_decisions"
+    ]
+  }
+]

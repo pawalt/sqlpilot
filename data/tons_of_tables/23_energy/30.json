@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_panel_efficiency_ratings (\n    panel_id UUID PRIMARY KEY,\n    panel_name TEXT NOT NULL,\n    efficiency_rating FLOAT NOT NULL,\n    manufacturer TEXT NOT NULL,\n    installation_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanels (\n    id INT PRIMARY KEY,\n    panel_name VARCHAR(255),\n    efficiency_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude DECIMAL(10,6),\n    longitude DECIMAL(10,6)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_panels (\n\tpanel_id INT PRIMARY KEY,\n\tefficiency_rating FLOAT,\n\tmanufacturer VARCHAR(50),\n\tproduction_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_installations (\n\tinstallation_id INT PRIMARY KEY,\n\tpanel_id INT,\n\tinstallation_date DATE,\n\tlocation VARCHAR(100),\n\tFOREIGN KEY (panel_id) REFERENCES solar_panels(panel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_maintenance (\n\tmaintenance_id INT PRIMARY KEY,\n\tinstallation_id INT,\n\tmaintenance_date DATE,\n\tmaintenance_type VARCHAR(50),\n\tFOREIGN KEY (installation_id) REFERENCES panel_installations(installation_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanels (\n    panel_id INT PRIMARY KEY,\n    manufacturer VARCHAR(50),\n    efficiency_rating DECIMAL(5,2),\n    production_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PanelInstallations (\n    installation_id INT PRIMARY KEY,\n    panel_id INT,\n    installation_date DATE,\n    location VARCHAR(100),\n    FOREIGN KEY(panel_id) REFERENCES SolarPanels(panel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n    log_id INT PRIMARY KEY,\n    installation_id INT,\n    maintenance_date DATE,\n    description TEXT,\n    FOREIGN KEY(installation_id) REFERENCES PanelInstallations(installation_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WarrantyDetails (\n    warranty_id INT PRIMARY KEY,\n    panel_id INT,\n    warranty_start DATE,\n    warranty_end DATE,\n    warranty_provider VARCHAR(100),\n    FOREIGN KEY(panel_id) REFERENCES SolarPanels(panel_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_panels (\n    id INT PRIMARY KEY,\n    panel_name TEXT,\n    efficiency_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_manufacturers (\n    id INT PRIMARY KEY,\n    manufacturer_name TEXT,\n    country TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_locations (\n    id INT PRIMARY KEY,\n    location_name TEXT,\n    address TEXT,\n    city TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_installations (\n    id INT PRIMARY KEY,\n    installation_date DATE,\n    panel_id INT REFERENCES solar_panels(id),\n    location_id INT REFERENCES panel_locations(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_ratings (\n    id INT PRIMARY KEY,\n    rating_date DATE,\n    efficiency_rating FLOAT,\n    panel_id INT REFERENCES solar_panels(id)\n);"
+      }
+    ]
+  }
+]

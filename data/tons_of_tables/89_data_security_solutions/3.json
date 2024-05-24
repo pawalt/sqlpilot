@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE firewall_configurations (\n    id UUID PRIMARY KEY,\n    firewall_name STRING,\n    firewall_type STRING,\n    firewall_version STRING,\n    created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE firewall_configurations (\n    id INT PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE firewall_rules (\n    rule_id INT PRIMARY KEY,\n    rule_name VARCHAR(50) NOT NULL,\n    allow_access BOOL,\n    port_number INT,\n    source_ip VARCHAR(15)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE firewall_configurations (\n    id INT PRIMARY KEY,\n    firewall_name VARCHAR(255),\n    firewall_type VARCHAR(255),\n    firewall_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE firewall_rules (\n    id INT PRIMARY KEY,\n    rule_name VARCHAR(255),\n    source_ip VARCHAR(255),\n    destination_ip VARCHAR(255),\n    protocol VARCHAR(50),\n    action VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE firewall_logs (\n    id INT PRIMARY KEY,\n    log_time TIMESTAMP,\n    log_message TEXT,\n    firewall_rule_id INT,\n    FOREIGN KEY (firewall_rule_id) REFERENCES firewall_rules(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE firewall_configurations (\n  id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  description TEXT,\n  created_at TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE firewall_rules (\n  rule_id INT PRIMARY KEY,\n  configuration_id INT NOT NULL,\n  rule_name VARCHAR(50) NOT NULL,\n  rule_description TEXT,\n  rule_action VARCHAR(20) NOT NULL,\n  FOREIGN KEY (configuration_id) REFERENCES firewall_configurations(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE rule_users (\n  user_id INT PRIMARY KEY,\n  rule_id INT NOT NULL,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  created_at TIMESTAMP,\n  FOREIGN KEY (rule_id) REFERENCES firewall_rules(rule_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE rule_logs (\n  log_id INT PRIMARY KEY,\n  rule_id INT NOT NULL,\n  user_id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  log_description TEXT,\n  FOREIGN KEY (rule_id) REFERENCES firewall_rules(rule_id),\n  FOREIGN KEY (user_id) REFERENCES rule_users(user_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE firewall_configs (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE firewall_rules (\n    rule_id SERIAL PRIMARY KEY,\n    rule_name VARCHAR(50) NOT NULL,\n    protocol VARCHAR(10) NOT NULL,\n    source_ip VARCHAR(15) NOT NULL,\n    destination_ip VARCHAR(15) NOT NULL,\n    port INTEGER NOT NULL,\n    action VARCHAR(10) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rule_actions (\n    action_id SERIAL PRIMARY KEY,\n    action_name VARCHAR(20) NOT NULL,\n    action_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rule_categories (\n    category_id SERIAL PRIMARY KEY,\n    category_name VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rule_logs (\n    log_id SERIAL PRIMARY KEY,\n    rule_id INTEGER NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    log_info TEXT\n);\n"
+      }
+    ]
+  }
+]

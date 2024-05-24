@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM recurring_payments WHERE user_id = 1;",
+      "SELECT payment_amount, payment_date FROM recurring_payments WHERE recurring_period = 'monthly';",
+      "SELECT payment_amount FROM recurring_payments ORDER BY payment_amount DESC;",
+      "SELECT * FROM recurring_payments WHERE payment_date BETWEEN '2022-01-01' AND '2022-06-30';",
+      "SELECT user_id, payment_date FROM recurring_payments WHERE card_number LIKE '****1234%';",
+      "SELECT * FROM recurring_payments WHERE user_id = 123 ORDER BY payment_date DESC, payment_amount ASC",
+      "SELECT payment_id, user_id, payment_amount FROM recurring_payments WHERE payment_amount > 1000 AND recurring_period = 'monthly' ORDER BY payment_date DESC",
+      "SELECT payment_id, user_id, payment_amount, payment_date FROM recurring_payments WHERE payment_amount BETWEEN 500 AND 1000 AND card_expiry_date > '2022-01-01' ORDER BY user_id ASC, payment_amount DESC",
+      "SELECT user_id, SUM(payment_amount) AS total_amount FROM recurring_payments GROUP BY user_id HAVING total_amount > 5000 ORDER BY total_amount DESC",
+      "SELECT * FROM recurring_payments WHERE card_number LIKE '%1234%' OR card_number LIKE '%5678%' ORDER BY payment_date ASC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM recurring_bills;",
+      "SELECT bill_name, amount FROM recurring_bills WHERE amount > 100;",
+      "SELECT * FROM subscriptions WHERE start_date < '2022-01-01' AND end_date > '2022-02-01';",
+      "SELECT bill_name, amount, due_date FROM recurring_bills WHERE amount < 50 ORDER BY due_date ASC;",
+      "SELECT subscription_name, cost, end_date FROM subscriptions WHERE cost BETWEEN 10 AND 50 ORDER BY end_date DESC;",
+      "SELECT bill_id, bill_name, amount, due_date FROM recurring_bills WHERE amount > 100 ORDER BY due_date DESC;",
+      "SELECT * FROM subscriptions WHERE cost BETWEEN 50 AND 100 ORDER BY start_date;",
+      "SELECT subscription_name, cost, DATEDIFF(end_date, start_date) AS subscription_duration FROM subscriptions WHERE end_date > '2023-01-01';",
+      "SELECT AVG(amount) AS avg_amount FROM recurring_bills;",
+      "SELECT bill_id, bill_name, due_date FROM recurring_bills WHERE due_date < '2022-12-31' ORDER BY bill_id ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM recurring_bills;",
+      "SELECT bill_name, amount FROM recurring_bills ORDER BY amount DESC;",
+      "SELECT subscription_name, start_date, end_date FROM subscriptions WHERE start_date >= '2022-01-01';",
+      "SELECT payment_id, payment_date, amount_paid FROM payments WHERE amount_paid > 100;",
+      "SELECT bill_name, amount, payment_due_date FROM recurring_bills WHERE payment_due_date < '2022-12-31';",
+      "SELECT * FROM recurring_bills WHERE amount > 1000 ORDER BY payment_due_date DESC;",
+      "SELECT bill_name, amount FROM recurring_bills WHERE payment_due_date >= '2022-08-01' AND payment_due_date <= '2022-12-31';",
+      "SELECT subscription_name, amount, start_date FROM subscriptions WHERE end_date IS NULL;",
+      "SELECT bill_name, payment_date, amount_paid FROM recurring_bills JOIN payments ON recurring_bills.bill_id = payments.bill_id ORDER BY payment_date ASC;",
+      "SELECT bill_name, subscription_name, payment_date, amount_paid FROM recurring_bills JOIN payments ON recurring_bills.bill_id = payments.bill_id JOIN subscriptions ON payments.subscription_id = subscriptions.subscription_id WHERE amount_paid = (SELECT MAX(amount_paid) FROM payments);"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Customers;",
+      "SELECT customer_name, customer_email FROM Customers WHERE customer_id = 1;",
+      "SELECT bill_name, bill_amount FROM Bills ORDER BY bill_amount DESC;",
+      "SELECT * FROM Subscriptions WHERE subscription_cost > 50;",
+      "SELECT customer_name, payment_amount, payment_date FROM Customers JOIN Payments ON Customers.customer_id = Payments.bill_id ORDER BY payment_amount;",
+      "SELECT * FROM Customers;",
+      "SELECT bill_name, bill_amount FROM Bills WHERE bill_amount > 1000 ORDER BY bill_amount DESC;",
+      "SELECT customer_name, customer_email FROM Customers WHERE customer_name LIKE 'J%' ORDER BY customer_name ASC;",
+      "SELECT bill_name, payment_amount FROM Bills INNER JOIN Payments ON Bills.bill_id = Payments.bill_id WHERE payment_amount < bill_amount ORDER BY payment_amount DESC;",
+      "SELECT subscription_name, subscription_cost FROM Subscriptions WHERE customer_id IN (SELECT customer_id FROM Customers WHERE customer_email LIKE '%gmail.com');"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM bills;",
+      "SELECT bill_name, amount FROM bills WHERE due_date > '2022-01-01';",
+      "SELECT customer_name, email FROM customers WHERE phone IS NULL;",
+      "SELECT subscription_name, price, start_date, end_date FROM subscriptions WHERE price > 50.00;",
+      "SELECT customer_name, email, phone FROM customers ORDER BY customer_name DESC, email ASC;",
+      "SELECT * FROM customers;",
+      "SELECT customer_id, customer_name, email FROM customers WHERE email LIKE '%gmail.com';",
+      "SELECT subscription_name, price FROM subscriptions WHERE start_date >= '2022-01-01';",
+      "SELECT c.customer_name, s.subscription_name, p.amount FROM customers c JOIN subscriptions_customers sc ON c.customer_id = sc.customer_id JOIN subscriptions s ON sc.subscription_id = s.subscription_id JOIN payments p ON c.customer_id = p.customer_id WHERE p.payment_date BETWEEN '2022-01-01' AND '2022-06-30';",
+      "SELECT b.bill_id, b.bill_name, b.amount, bc.customer_name FROM bills b JOIN customers bc ON bc.customer_id IN (SELECT customer_id FROM payments) ORDER BY b.due_date ASC;"
+    ]
+  }
+]

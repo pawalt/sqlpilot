@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM blockchain_transactions;",
+      "SELECT sender_address, recipient_address, amount FROM blockchain_transactions WHERE amount > 1000;",
+      "SELECT block_id, block_timestamp FROM blockchain_blocks ORDER BY block_timestamp DESC;",
+      "SELECT address, public_key, balance FROM blockchain_addresses WHERE balance < 0;",
+      "SELECT transaction_id, sender_address, recipient_address, amount FROM blockchain_transactions WHERE sender_address = 'alice@example.com';",
+      "SELECT * FROM blockchain_transactions WHERE amount > 1000 ORDER BY timestamp DESC;",
+      "SELECT block_id, block_hash, block_timestamp FROM blockchain_blocks WHERE block_timestamp BETWEEN '2022-01-01' AND '2022-12-31' ORDER BY block_timestamp ASC;",
+      "SELECT sender_address, recipient_address, amount FROM blockchain_transactions WHERE sender_address LIKE '0x%' AND recipient_address LIKE '0x%' ORDER BY amount DESC;",
+      "SELECT bt.transaction_id, bb.block_timestamp, ba.address FROM blockchain_transactions bt JOIN blockchain_blocks bb ON bt.block_id = bb.block_id JOIN blockchain_addresses ba ON bt.sender_address = ba.address WHERE ba.balance > 1000 ORDER BY bb.block_timestamp ASC;",
+      "SELECT bt.amount, bb.block_timestamp, ba.balance FROM blockchain_transactions bt, blockchain_blocks bb, blockchain_addresses ba WHERE bt.block_id = bb.previous_block_id AND bt.recipient_address = ba.address ORDER BY bb.block_timestamp DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM blockchain_transactions;",
+      "SELECT transaction_id, amount FROM blockchain_transactions WHERE block_number = 100;",
+      "SELECT block_number, from_address, to_address FROM blockchain_transactions WHERE amount > 100;",
+      "SELECT * FROM block_headers ORDER BY timestamp DESC;",
+      "SELECT block_number, block_hash FROM block_headers WHERE miner_address = '0x123abc';",
+      "SELECT * FROM blockchain_transactions WHERE amount > 1000 ORDER BY block_number DESC;",
+      "SELECT transaction_id, from_address, to_address FROM blockchain_transactions WHERE block_number > 1000 AND amount < 500 ORDER BY amount ASC;",
+      "SELECT block_number, miner_address, timestamp FROM block_headers WHERE timestamp >= '2021-01-01' AND block_number BETWEEN 5000 AND 6000 ORDER BY timestamp DESC;",
+      "SELECT * FROM blockchain_transactions WHERE from_address = '0x123abc' OR to_address = '0x456def' ORDER BY block_number, amount DESC;",
+      "SELECT block_number, block_hash FROM block_headers WHERE miner_address = '0x789ghi' AND block_number % 2 = 0 ORDER BY block_number ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT block_id, transaction_id, sender_address, receiver_address, amount, transaction_time FROM block_transactions;",
+      "SELECT * FROM block_addresses ORDER BY address_id DESC;",
+      "SELECT sender_address, receiver_address, amount FROM block_transactions WHERE amount > 1000;",
+      "SELECT block_id, transaction_id, sender_address FROM block_transactions WHERE transaction_time > '2022-01-01';",
+      "SELECT block_id, previous_block_id, timestamp FROM block_metadata ORDER BY timestamp ASC;",
+      "SELECT * FROM block_transactions WHERE amount > 1000 ORDER BY transaction_time DESC LIMIT 10;",
+      "SELECT sender_address, receiver_address, amount FROM block_transactions WHERE sender_address = 'Alice' AND receiver_address = 'Bob' ORDER BY transaction_time ASC;",
+      "SELECT DISTINCT sender_address FROM block_transactions WHERE amount < 500 ORDER BY sender_address;",
+      "SELECT block_id, AVG(amount) AS average_amount FROM block_transactions GROUP BY block_id HAVING AVG(amount) > 5000 ORDER BY average_amount DESC;",
+      "SELECT block_id, COUNT(transaction_id) AS num_transactions FROM block_transactions GROUP BY block_id HAVING COUNT(transaction_id) > 5 ORDER BY num_transactions DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM transactions",
+      "SELECT transaction_id, amount FROM transactions WHERE block_number = 100",
+      "SELECT sender_address, receiver_address, amount FROM transactions WHERE timestamp > '2022-01-01'",
+      "SELECT MAX(amount) AS max_amount FROM transactions",
+      "SELECT miner_address, mining_power FROM miners ORDER BY mining_power DESC",
+      "SELECT * FROM transactions WHERE amount > 1000 ORDER BY timestamp DESC LIMIT 10;",
+      "SELECT sender_address, receiver_address, amount FROM transactions WHERE sender_address = '0x123abc' AND receiver_address = '0x456def' ORDER BY amount DESC LIMIT 5;",
+      "SELECT t.transaction_id, t.block_number, t.sender_address, t.receiver_address, t.amount, b.miner_address FROM transactions t JOIN blocks b ON t.block_number = b.block_number WHERE t.amount > 5000 ORDER BY t.timestamp ASC LIMIT 3;",
+      "SELECT a.address_id, a.address, a.balance, m.mining_power FROM addresses a JOIN miners m ON a.address = m.miner_address WHERE m.mining_power > 50 ORDER BY a.balance DESC LIMIT 5;",
+      "SELECT * FROM transactions WHERE timestamp BETWEEN '2022-01-01' AND '2022-01-31' ORDER BY block_number ASC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM blockchain_transactions ORDER BY timestamp DESC;",
+      "SELECT transaction_id, from_address, to_address, amount FROM blockchain_transactions WHERE amount > 1000;",
+      "SELECT block_id, block_hash, miner_address FROM block_headers WHERE block_id < 1000 ORDER BY block_id ASC;",
+      "SELECT output_id, receiver_address, amount FROM transaction_outputs WHERE amount < 50 ORDER BY timestamp DESC;",
+      "SELECT * FROM block_transactions WHERE block_id = 10 AND transaction_id = 50;",
+      "SELECT * FROM blockchain_transactions WHERE amount > 1000 ORDER BY timestamp DESC LIMIT 10;",
+      "SELECT transaction_id, from_address, to_address, amount FROM blockchain_transactions WHERE to_address = '0xabc123' ORDER BY amount DESC;",
+      "SELECT bt.transaction_id, bt.from_address, bt.to_address, bt.amount, bh.miner_address FROM blockchain_transactions bt JOIN block_headers bh ON bt.transaction_id = bh.block_id WHERE bh.timestamp >= '2022-01-01 00:00:00';",
+      "SELECT bt.transaction_id, ti.sender_address, to.receiver_address, bt.amount FROM blockchain_transactions bt JOIN transaction_inputs ti ON bt.transaction_id = ti.transaction_id JOIN transaction_outputs to ON ti.transaction_id = to.transaction_id;",
+      "SELECT bh.block_id, bt.transaction_id, count(*) as transaction_count FROM block_headers bh JOIN block_transactions bt ON bh.block_id = bt.block_id GROUP BY bh.block_id, bt.transaction_id HAVING transaction_count > 1 ORDER BY transaction_count DESC;"
+    ]
+  }
+]

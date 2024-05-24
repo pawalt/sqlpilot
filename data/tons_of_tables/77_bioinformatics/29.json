@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE proteomics_data (\n  experiment_id INT NOT NULL,\n  protein_id INT NOT NULL,\n  peptide_sequence VARCHAR(255) NOT NULL,\n  source_database VARCHAR(50),\n  spectral_count INT,\n  peptide_evidence TEXT,\n  PRIMARY KEY (experiment_id, protein_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Proteins (\n    protein_id UUID PRIMARY KEY,\n    protein_name STRING,\n    protein_sequence STRING,\n    source_id UUID,\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (\n    experiment_id UUID PRIMARY KEY,\n    experiment_name STRING,\n    experiment_date TIMESTAMP,\n    researcher_name STRING,\n    source_id UUID,\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE proteomics_data_source (\n  source_id UUID PRIMARY KEY,\n  source_name VARCHAR(100) NOT NULL,\n  source_description TEXT,\n  created_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE protein_data (\n  protein_id UUID PRIMARY KEY,\n  protein_name VARCHAR(100) NOT NULL,\n  protein_sequence TEXT,\n  protein_mass DOUBLE PRECISION,\n  source_id UUID REFERENCES proteomics_data_source(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experimental_data (\n  experiment_id UUID PRIMARY KEY,\n  protein_id UUID REFERENCES protein_data(protein_id),\n  experiment_type VARCHAR(50),\n  experiment_date TIMESTAMP,\n  result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Proteins (\n\tid INT PRIMARY KEY,\n\tprotein_name VARCHAR(255),\n\tmolecular_weight DECIMAL,\n\tsequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Peptides (\n\tid INT PRIMARY KEY,\n\tpeptide_sequence TEXT,\n\tprotein_id INT,\n\tFOREIGN KEY (protein_id) REFERENCES Proteins(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Spectra (\n\tid INT PRIMARY KEY,\n\tspectrum_data TEXT,\n\tpeptide_id INT,\n\tFOREIGN KEY (peptide_id) REFERENCES Peptides(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (\n\tid INT PRIMARY KEY,\n\texperiment_name VARCHAR(255),\n\tdescription TEXT,\n\tdate_performed DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Proteins (protein_id INT PRIMARY KEY,\n\tprotein_name VARCHAR(255) NOT NULL,\n\tsource_id INT,\n\tsequence TEXT,\n\tmolecular_weight DECIMAL(10,2))"
+      },
+      {
+        "table_schema": "CREATE TABLE Peptides (peptide_id INT PRIMARY KEY,\n\tpeptide_sequence TEXT NOT NULL,\n\tprotein_id INT,\n\tstart_position INT,\n\tend_position INT,\n\tFOREIGN KEY (protein_id) REFERENCES Proteins(protein_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (experiment_id INT PRIMARY KEY,\n\texperiment_name VARCHAR(255) NOT NULL,\n\tdescription TEXT,\n\tdate_conducted DATE,\n\tresearcher_id INT)"
+      },
+      {
+        "table_schema": "CREATE TABLE PeptideIdentification (id INT PRIMARY KEY,\n\tpeptide_id INT,\n\texperiment_id INT,\n\tconfidence_level DECIMAL(5,2),\n\tFOREIGN KEY (peptide_id) REFERENCES Peptides(peptide_id),\n\tFOREIGN KEY (experiment_id) REFERENCES Experiments(experiment_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (researcher_id INT PRIMARY KEY,\n\tfull_name VARCHAR(255) NOT NULL,\n\temail VARCHAR(255) UNIQUE,\n\taffiliation VARCHAR(255))"
+      }
+    ]
+  }
+]

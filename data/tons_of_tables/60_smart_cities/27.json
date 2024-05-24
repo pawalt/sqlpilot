@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FaceRecognitionData (\n    id INT PRIMARY KEY,\n    camera_id INT,\n    image_url VARCHAR(255),\n    timestamp TIMESTAMP,\n    recognition_result JSON\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iot_cameras (\n  camera_id INT PRIMARY KEY,\n  camera_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE facial_data (\n  data_id INT PRIMARY KEY,\n  camera_id INT NOT NULL,\n  face_encoding BYTEA,\n  detection_timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facial_recognition_data (\n    id SERIAL PRIMARY KEY,\n    camera_id INT NOT NULL,\n    image_data BYTEA NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE camera_details (\n    camera_id SERIAL PRIMARY KEY,\n    location VARCHAR(50) NOT NULL,\n    owner_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id SERIAL PRIMARY KEY,\n    camera_id INT NOT NULL,\n    permission_level INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Camera (\n  camera_id UUID PRIMARY KEY,\n  location VARCHAR(255),\n  resolution VARCHAR(10),\n  brand VARCHAR(50),\n);\n\nCREATE TABLE Person (\n  person_id UUID PRIMARY KEY,\n  name VARCHAR(100),\n  age INT,\n  gender VARCHAR(10),\n);\n\nCREATE TABLE Recognition (\n  recognition_id UUID PRIMARY KEY,\n  camera_id UUID REFERENCES Camera(camera_id),\n  person_id UUID REFERENCES Person(person_id),\n  timestamp TIMESTAMP,\n);\n\nCREATE TABLE Log (\n  log_id UUID PRIMARY KEY,\n  action VARCHAR(50),\n  timestamp TIMESTAMP,\n  details VARCHAR(255),\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CameraData ( camera_id UUID PRIMARY KEY, timestamp TIMESTAMP NOT NULL, image_data BYTEA NOT NULL, location TEXT NOT NULL )"
+      },
+      {
+        "table_schema": "CREATE TABLE UserData ( user_id UUID PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, email TEXT UNIQUE NOT NULL )"
+      },
+      {
+        "table_schema": "CREATE TABLE RecognitionData ( recognition_id UUID PRIMARY KEY, user_id UUID NOT NULL REFERENCES UserData(user_id), timestamp TIMESTAMP NOT NULL, confidence FLOAT NOT NULL )"
+      },
+      {
+        "table_schema": "CREATE TABLE AlertData ( alert_id UUID PRIMARY KEY, camera_id UUID NOT NULL REFERENCES CameraData(camera_id), timestamp TIMESTAMP NOT NULL, alert_type TEXT NOT NULL )"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessData ( access_id UUID PRIMARY KEY, user_id UUID NOT NULL REFERENCES UserData(user_id), camera_id UUID NOT NULL REFERENCES CameraData(camera_id), access_timestamp TIMESTAMP NOT NULL )"
+      }
+    ]
+  }
+]

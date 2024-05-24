@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE art_collection (\n  collector_id INT,\n  artwork_id INT,\n  artwork_name VARCHAR,\n  artist VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE artworks (\n    id INT NOT NULL,\n    title VARCHAR(255),\n    artist VARCHAR(255),\n    year INT,\n    description TEXT,\n    PRIMARY KEY (id)\n);\nCREATE TABLE collectors (\n    id INT NOT NULL,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    location VARCHAR(255),\n    PRIMARY KEY (id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ArtCollectors (\n    collector_id INT PRIMARY KEY,\n    collector_name VARCHAR(255),\n    collection_size INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ArtPieces (\n    piece_id INT PRIMARY KEY,\n    piece_name VARCHAR(255),\n    artist_name VARCHAR(255),\n    year_created INT,\n    medium VARCHAR(255),\n    collector_id INT,\n    FOREIGN KEY (collector_id) REFERENCES ArtCollectors(collector_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PurchaseHistory (\n    purchase_id INT PRIMARY KEY,\n    purchase_date DATE,\n    purchase_price DECIMAL(10, 2),\n    piece_id INT,\n    FOREIGN KEY (piece_id) REFERENCES ArtPieces(piece_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE collectors (collector_id INT PRIMARY KEY,\n    collector_name VARCHAR(255) NOT NULL,\n    collection_name VARCHAR(255) NOT NULL,\n    collection_type VARCHAR(50) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE artworks (artwork_id INT PRIMARY KEY,\n    artwork_name VARCHAR(255) NOT NULL,\n    artist_name VARCHAR(255) NOT NULL,\n    year_created INT,\n    medium VARCHAR(50),\n    price DECIMAL(10,2));"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE collection_tags (tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50) NOT NULL,\n    artwork_id INT,\n    FOREIGN KEY (artwork_id) REFERENCES artworks(artwork_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE collectors (\n    collector_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE artworks (\n    artwork_id INT PRIMARY KEY,\n    title VARCHAR(100),\n    artist VARCHAR(100),\n    year_created INT,\n    medium VARCHAR(50),\n    style VARCHAR(50),\n    collector_id INT,\n    CONSTRAINT fk_collector FOREIGN KEY (collector_id) REFERENCES collectors (collector_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE artwork_categories (\n    artwork_id INT,\n    category_id INT,\n    CONSTRAINT pk_art_cat PRIMARY KEY (artwork_id, category_id),\n    CONSTRAINT fk_artwork FOREIGN KEY (artwork_id) REFERENCES artworks (artwork_id),\n    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (category_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appraisals (\n    appraisal_id INT PRIMARY KEY,\n    artwork_id INT,\n    appraised_value DECIMAL,\n    appraiser VARCHAR(50),\n    date_appraised DATE,\n    CONSTRAINT fk_artwork_id FOREIGN KEY (artwork_id) REFERENCES artworks (artwork_id)\n);"
+      }
+    ]
+  }
+]

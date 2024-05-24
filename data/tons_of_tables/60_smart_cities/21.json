@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iot_products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  product_category VARCHAR(100),\n  inventory_level INT,\n  last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  serial_number VARCHAR(50),\n  quantity INT,\n  last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255),\n  location_address VARCHAR(255),\n  capacity INT,\n  products_in_stock INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_inventory (\n   id UUID PRIMARY KEY,\n   product_name VARCHAR(255) NOT NULL,\n   product_code VARCHAR(50) UNIQUE,\n   quantity INTEGER,\n   location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_history (\n   id SERIAL PRIMARY KEY,\n   product_id UUID REFERENCES product_inventory(id),\n   action_type VARCHAR(50) NOT NULL,\n   action_date TIMESTAMP NOT NULL,\n   description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_alerts (\n   id SERIAL PRIMARY KEY,\n   product_id UUID REFERENCES product_inventory(id),\n   alert_type VARCHAR(50) NOT NULL,\n   alert_date TIMESTAMP NOT NULL,\n   alert_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    category VARCHAR(50) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    quantity INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id INT PRIMARY KEY,\n    warehouse_name VARCHAR(255) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    capacity INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id INT PRIMARY KEY,\n    product_id INT REFERENCES products(product_id),\n    warehouse_id INT REFERENCES warehouses(warehouse_id),\n    quantity INT NOT NULL,\n    last_updated TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    product_id INT REFERENCES products(product_id),\n    warehouse_id INT REFERENCES warehouses(warehouse_id),\n    quantity INT NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_inventory (\n    id UUID PRIMARY KEY,\n    product_name VARCHAR(100),\n    quantity INTEGER,\n    location VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE product_categories (\n    category_id UUID PRIMARY KEY,\n    category_name VARCHAR(50),\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouse_locations (\n    location_id UUID PRIMARY KEY,\n    address VARCHAR(200),\n    city VARCHAR(50),\n    state VARCHAR(50),\n    country VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE product_history (\n    history_id UUID PRIMARY KEY,\n    product_id UUID,\n    action_type VARCHAR(50),\n    action_date TIMESTAMP,\n    notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_status (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(100),\n    status VARCHAR(50),\n    last_checked TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

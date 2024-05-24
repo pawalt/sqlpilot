@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_behavior_data (\n user_id UUID PRIMARY KEY,\n timestamp TIMESTAMP,\n activity VARCHAR,\n light_intensity DECIMAL,\n temperature DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserBehaviorData (\n    user_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    behavior_event VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LightingScenes (\n    scene_id INT PRIMARY KEY,\n    scene_name VARCHAR,\n    scene_description TEXT,\n    recommended_lights VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserBehaviorData (\n    user_id INT PRIMARY KEY,\n    behavior_type VARCHAR(255),\n    behavior_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE LightingScenes (\n    scene_id INT PRIMARY KEY,\n    scene_name VARCHAR(255),\n    scene_description TEXT,\n    scene_intensity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserPreferences (\n    user_id INT,\n    preferred_scene_id INT,\n    preference_timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES UserBehaviorData(user_id),\n    FOREIGN KEY (preferred_scene_id) REFERENCES LightingScenes(scene_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_behavior_data ( user_id UUID PRIMARY KEY, action_timestamp TIMESTAMP, action_description TEXT )\nCREATE TABLE lighting_scenes ( scene_id UUID PRIMARY KEY, scene_name TEXT, brightness FLOAT, color_temperature FLOAT )\nCREATE TABLE user_lighting_preferences ( user_id UUID PRIMARY KEY, preferred_scene_id UUID )\nCREATE TABLE user_statistics ( user_id UUID PRIMARY KEY, total_actions INT, productivity_score FLOAT )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    age INT,\n    gender VARCHAR(10),\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behavior (\n    behavior_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    behavior_type VARCHAR(50) NOT NULL,\n    behavior_description TEXT,\n    behavior_date DATE,\n    behavior_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lighting_scenes (\n    scene_id INT PRIMARY KEY,\n    scene_name VARCHAR(50) NOT NULL,\n    brightness INT,\n    color_temperature INT,\n    fade_in_time INT,\n    fade_out_time INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    preference_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    preferred_scene_id INT REFERENCES lighting_scenes(scene_id),\n    preferred_brightness INT,\n    preferred_color_temperature INT,\n    auto_adjust_brightness BOOLEAN,\n    auto_adjust_color_temperature BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    activity_name VARCHAR(100) NOT NULL,\n    activity_type VARCHAR(50),\n    activity_duration INT\n);"
+      }
+    ]
+  }
+]

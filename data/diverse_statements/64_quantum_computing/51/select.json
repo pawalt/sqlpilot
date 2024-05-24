@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM error_timestamps;",
+      "SELECT error_occurrence FROM error_timestamps WHERE correction_timestamp IS NOT NULL;",
+      "SELECT * FROM error_timestamps ORDER BY correction_timestamp ASC;",
+      "SELECT error_occurrence, correction_timestamp FROM error_timestamps WHERE error_occurrence >= '2022-01-01';",
+      "SELECT * FROM error_timestamps WHERE error_occurrence < '2022-01-01' ORDER BY correction_timestamp DESC;",
+      "SELECT error_occurrence, correction_timestamp FROM error_timestamps WHERE error_occurrence > '2022-01-01' ORDER BY error_occurrence DESC;",
+      "SELECT * FROM error_timestamps WHERE error_occurrence BETWEEN '2022-01-01' AND '2022-12-31' AND correction_timestamp IS NOT NULL ORDER BY correction_timestamp ASC;",
+      "SELECT COUNT(*) AS total_errors FROM error_timestamps;",
+      "SELECT DISTINCT DATE(error_occurrence) AS error_date FROM error_timestamps WHERE YEAR(error_occurrence) = 2022;",
+      "SELECT AVG(DATEDIFF(correction_timestamp, error_occurrence)) AS avg_correction_time FROM error_timestamps;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM error_timestamps;",
+      "SELECT id, error_timestamp FROM error_timestamps ORDER BY error_timestamp DESC;",
+      "SELECT * FROM error_analysis WHERE analysis_result='resolved';",
+      "SELECT id, analysis_result FROM error_analysis WHERE optimization_plan IS NOT NULL;",
+      "SELECT id, error_id, analysis_result FROM error_analysis WHERE error_id = 123;",
+      "SELECT * FROM error_timestamps WHERE id = 1;",
+      "SELECT * FROM error_timestamps WHERE correction_timestamp IS NULL;",
+      "SELECT * FROM error_analysis WHERE analysis_result LIKE 'Error%';",
+      "SELECT id, error_timestamp, correction_timestamp FROM error_timestamps WHERE error_timestamp > '2021-01-01';",
+      "SELECT error_analysis.id, error_analysis.analysis_result, error_timestamps.error_timestamp FROM error_analysis JOIN error_timestamps ON error_analysis.error_id = error_timestamps.id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM errors;",
+      "SELECT error_description, error_timestamp FROM errors ORDER BY error_timestamp DESC;",
+      "SELECT error_description FROM errors WHERE error_id = 3;",
+      "SELECT * FROM corrections WHERE correction_timestamp > '2021-01-01' ORDER BY correction_id ASC;",
+      "SELECT error_description, correction_description FROM errors JOIN error_corrections ON errors.error_id = error_corrections.error_id JOIN corrections ON corrections.correction_id = error_corrections.correction_id;",
+      "SELECT errors.error_id, errors.error_timestamp, errors.error_description, corrections.correction_timestamp, corrections.correction_description FROM errors JOIN error_corrections ON errors.error_id = error_corrections.error_id JOIN corrections ON corrections.correction_id = error_corrections.correction_id;",
+      "SELECT * FROM errors WHERE error_id = 1;",
+      "SELECT error_description FROM errors WHERE error_timestamp > '2022-01-01' ORDER BY error_timestamp DESC;",
+      "SELECT error_id, correction_id FROM error_corrections WHERE error_id = 2 OR correction_id = 1 ORDER BY error_id ASC, correction_id DESC;",
+      "SELECT COUNT(*) AS total_errors FROM errors;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM error_occurrences;",
+      "SELECT id, timestamp_occurrence FROM error_occurrences WHERE id = 1;",
+      "SELECT error_description FROM error_occurrences WHERE timestamp_occurrence > '2022-01-01';",
+      "SELECT e.id, e.error_description, a.analysis_notes FROM error_occurrences e JOIN error_analysis a ON e.id = a.error_id;",
+      "SELECT o.error_id, o.optimization_notes, e.error_description FROM error_optimization o JOIN error_occurrences e ON o.error_id = e.id;",
+      "SELECT * FROM error_occurrences WHERE error_description LIKE '%error%' ORDER BY timestamp_occurrence DESC",
+      "SELECT error_description, timestamp_occurrence FROM error_occurrences JOIN error_corrections ON error_occurrences.id = error_corrections.error_id WHERE correction_description LIKE '%fixed%' ORDER BY timestamp_correction ASC",
+      "SELECT error_description, correction_description, analysis_notes FROM error_occurrences JOIN error_corrections ON error_occurrences.id = error_corrections.error_id JOIN error_analysis ON error_corrections.error_id = error_analysis.error_id",
+      "SELECT error_description, timestamp_occurrence, analysis_notes FROM error_occurrences JOIN error_analysis ON error_occurrences.id = error_analysis.error_id WHERE analysis_notes LIKE '%high priority%' ORDER BY timestamp_occurrence ASC",
+      "SELECT error_description, correction_description, optimization_notes FROM error_occurrences JOIN error_corrections ON error_occurrences.id = error_corrections.error_id JOIN error_optimization ON error_corrections.error_id = error_optimization.error_id"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM ErrorLogs;",
+      "SELECT id, log_description, log_timestamp FROM ErrorLogs ORDER BY log_timestamp DESC;",
+      "SELECT id, error_description FROM ErrorOccurrences WHERE id = 1;",
+      "SELECT * FROM ErrorAnalysis WHERE analysis_result LIKE '%error%';",
+      "SELECT error_id, COUNT(*) FROM ErrorOptimization GROUP BY error_id;",
+      "SELECT * FROM ErrorOccurrences;",
+      "SELECT error_timestamp, error_description FROM ErrorOccurrences ORDER BY error_timestamp DESC;",
+      "SELECT error_timestamp, error_description FROM ErrorOccurrences WHERE error_description LIKE '%error%' ORDER BY error_timestamp ASC;",
+      "SELECT eo.id, eo.error_timestamp, ea.analysis_result FROM ErrorOccurrences eo JOIN ErrorAnalysis ea ON eo.id = ea.error_id;",
+      "SELECT el.log_timestamp, eo.error_description, ec.correction_description FROM ErrorOccurrences eo JOIN ErrorLogs el ON eo.id = el.id JOIN ErrorCorrections ec ON eo.id = ec.id;"
+    ]
+  }
+]

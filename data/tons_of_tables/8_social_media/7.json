@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_settings (\n    user_id UUID PRIMARY KEY,\n    dark_mode BOOLEAN,\n    language VARCHAR,\n    timezone VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_settings (\n  user_id INT PRIMARY KEY,\n  theme VARCHAR(50),\n  language VARCHAR(50),\n  timezone VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n  preference_id INT PRIMARY KEY,\n  user_id INT,\n  notification BOOLEAN,\n  dark_mode BOOLEAN,\n  FOREIGN KEY (user_id) REFERENCES user_settings(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE settings (\n    setting_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    theme VARCHAR(50) NOT NULL,\n    language VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    preference_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    notification_enabled BOOLEAN,\n    dark_mode_enabled BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserSettings (\n  user_id UUID PRIMARY KEY,\n  dark_mode BOOLEAN DEFAULT FALSE,\n  timezone VARCHAR,\n  language VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserPreferences (\n  preference_id UUID PRIMARY KEY,\n  user_id UUID,\n  theme VARCHAR,\n  notifications BOOLEAN DEFAULT TRUE,\n  sound_volume INT DEFAULT 50\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ThemeOptions (\n  theme_id UUID PRIMARY KEY,\n  theme_name VARCHAR UNIQUE,\n  primary_color VARCHAR,\n  secondary_color VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NotificationSettings (\n  notification_id UUID PRIMARY KEY,\n  user_id UUID,\n  email_notifications BOOLEAN DEFAULT TRUE,\n  push_notifications BOOLEAN DEFAULT TRUE,\n  sms_notifications BOOLEAN DEFAULT FALSE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users_settings (\n    id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    theme VARCHAR(20) DEFAULT 'light'\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users_settings(id),\n    language VARCHAR(30) DEFAULT 'english',\n    timezone VARCHAR(50) DEFAULT 'UTC'\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users_settings(id),\n    email_notifications BOOLEAN DEFAULT true,\n    push_notifications BOOLEAN DEFAULT true\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE account_settings (\n    id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users_settings(id),\n    privacy_level VARCHAR(15) DEFAULT 'public',\n    two_factor_auth BOOLEAN DEFAULT false\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE custom_settings (\n    id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users_settings(id),\n    setting_key VARCHAR(50) NOT NULL,\n    setting_value TEXT\n);\n"
+      }
+    ]
+  }
+]

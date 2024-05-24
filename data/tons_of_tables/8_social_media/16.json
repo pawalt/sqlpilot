@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shared_files (\n    file_id SERIAL PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_size INT NOT NULL,\n    upload_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE file_metadata (\n  file_id INT PRIMARY KEY,\n  file_name VARCHAR(255) NOT NULL,\n  file_size INT NOT NULL,\n  upload_date TIMESTAMP NOT NULL\n);\n\nCREATE TABLE file_shares (\n  share_id INT PRIMARY KEY,\n  file_id INT,\n  shared_by_user_id INT,\n  shared_with_user_id INT,\n  share_date TIMESTAMP NOT NULL,\n  FOREIGN KEY (file_id) REFERENCES file_metadata(file_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE file_metadata (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_size INT NOT NULL,\n    upload_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_metadata (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(100) NOT NULL,\n    email VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE file_share (\n    share_id INT PRIMARY KEY,\n    file_id INT NOT NULL,\n    user_id INT NOT NULL,\n    shared_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (file_id) REFERENCES file_metadata(file_id),\n    FOREIGN KEY (user_id) REFERENCES user_metadata(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE files (\n  file_id INT PRIMARY KEY,\n  file_name TEXT NOT NULL,\n  file_size INT NOT NULL,\n  upload_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_owners (\n  owner_id INT,\n  file_id INT,\n  FOREIGN KEY (owner_id) REFERENCES users(user_id),\n  FOREIGN KEY (file_id) REFERENCES files(file_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_comments (\n  comment_id INT PRIMARY KEY,\n  file_id INT,\n  commenter_id INT,\n  comment_text TEXT,\n  comment_date TIMESTAMP,\n  FOREIGN KEY (file_id) REFERENCES files(file_id),\n  FOREIGN KEY (commenter_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_size INT NOT NULL,\n    upload_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_files (\n    user_file_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    file_id INT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (file_id) REFERENCES files(file_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE folders (\n    folder_id INT PRIMARY KEY,\n    folder_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE folder_files (\n    folder_file_id INT PRIMARY KEY,\n    folder_id INT NOT NULL,\n    file_id INT NOT NULL,\n    FOREIGN KEY (folder_id) REFERENCES folders(folder_id),\n    FOREIGN KEY (file_id) REFERENCES files(file_id)\n);"
+      }
+    ]
+  }
+]

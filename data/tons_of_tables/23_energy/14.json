@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_audit_reports (\n  company_id INT NOT NULL,\n  report_id INT PRIMARY KEY,\n  report_date DATE,\n  energy_consumption DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_audit_reports (\n  report_id SERIAL PRIMARY KEY,\n  company_name VARCHAR(255) NOT NULL,\n  report_date DATE NOT NULL,\n  energy_consumed DECIMAL(10,2) NOT NULL\n);\n\nCREATE TABLE audit_notes (\n  note_id SERIAL PRIMARY KEY,\n  report_id INT REFERENCES energy_audit_reports(report_id),\n  note_text TEXT NOT NULL,\n  note_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_audit_reports (\n    report_id UUID PRIMARY KEY,\n    company_name VARCHAR(255),\n    auditor_name VARCHAR(255),\n    audit_date DATE,\n    energy_consumption DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_audit_details (\n    detail_id UUID PRIMARY KEY,\n    report_id UUID REFERENCES energy_audit_reports (report_id),\n    audit_section VARCHAR(255),\n    audit_description TEXT,\n    findings TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_audit_progress (\n    progress_id UUID PRIMARY KEY,\n    report_id UUID REFERENCES energy_audit_reports (report_id),\n    progress_date DATE,\n    reduction_percentage DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_audit_reports (\n  report_id INT PRIMARY KEY,\n  company_name VARCHAR(255) NOT NULL,\n  audit_date DATE NOT NULL,\n  energy_consumption FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_data (\n  data_id INT PRIMARY KEY,\n  report_id INT NOT NULL,\n  energy_type VARCHAR(50) NOT NULL,\n  energy_usage FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE company_information (\n  company_id INT PRIMARY KEY,\n  company_name VARCHAR(255) NOT NULL,\n  address VARCHAR(255) NOT NULL,\n  contact_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE progress_tracker (\n  tracker_id INT PRIMARY KEY,\n  data_id INT NOT NULL,\n  progress_date DATE NOT NULL,\n  progress_status VARCHAR(50) DEFAULT 'Pending'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_audit_reports (\n    audit_id INT PRIMARY KEY,\n    company_name VARCHAR(255),\n    audit_date DATE,\n    energy_consumption_kwh DECIMAL(10, 2),\n    energy_reduction_goal DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_details (\n    detail_id INT PRIMARY KEY,\n    audit_id INT REFERENCES energy_audit_reports(audit_id),\n    auditor_name VARCHAR(255),\n    audit_type VARCHAR(50),\n    audit_result TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE companies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255),\n    company_size VARCHAR(50),\n    industry_type VARCHAR(50),\n    location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption_data (\n    data_id INT PRIMARY KEY,\n    company_id INT REFERENCES companies(company_id),\n    energy_usage_kwh DECIMAL(10, 2),\n    reporting_month DATE,\n    reporting_year INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_savings (\n    savings_id INT PRIMARY KEY,\n    company_id INT REFERENCES companies(company_id),\n    savings_amount DECIMAL(10, 2),\n    implementation_date DATE,\n    target_completion_date DATE\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_certifications_audits (\n    certification_id INT PRIMARY KEY,\n    certification_name VARCHAR(255) NOT NULL,\n    certification_date DATE,\n    auditor_name VARCHAR(255),\n    compliance_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_certifications (\n  certification_id UUID PRIMARY KEY,\n  certification_name VARCHAR(255) NOT NULL,\n  certification_date DATE NOT NULL,\n  owner_id UUID NOT NULL,\n  CONSTRAINT fk_owner FOREIGN KEY (owner_id) REFERENCES users (user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n  audit_id UUID PRIMARY KEY,\n  audit_date DATE NOT NULL,\n  auditor_name VARCHAR(255) NOT NULL,\n  audit_result VARCHAR(50),\n  certification_id UUID NOT NULL,\n  CONSTRAINT fk_certification FOREIGN KEY (certification_id) REFERENCES compliance_certifications (certification_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_certifications (\n    certification_id UUID PRIMARY KEY,\n    certification_name TEXT,\n    certification_type TEXT,\n    issuing_organization TEXT,\n    issue_date DATE,\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_reports (\n    report_id UUID PRIMARY KEY,\n    report_name TEXT,\n    report_type TEXT,\n    audit_date DATE,\n    auditor_name TEXT,\n    audit_findings TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessment (\n    assessment_id UUID PRIMARY KEY,\n    assessment_name TEXT,\n    assessment_date DATE,\n    assessed_by TEXT,\n    risk_level INT,\n    recommendations TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_certifications(\n  certification_id SERIAL PRIMARY KEY,\n  certification_name VARCHAR(100) NOT NULL,\n  certification_agency VARCHAR(50) NOT NULL,\n  certification_date DATE,\n  expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_reports(\n  report_id SERIAL PRIMARY KEY,\n  audit_type VARCHAR(50) NOT NULL,\n  audit_date DATE,\n  auditor_name VARCHAR(100) NOT NULL,\n  findings TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents(\n  document_id SERIAL PRIMARY KEY,\n  document_name VARCHAR(100) NOT NULL,\n  document_type VARCHAR(50) NOT NULL,\n  upload_date DATE,\n  document_content BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessment(\n  assessment_id SERIAL PRIMARY KEY,\n  assessment_date DATE,\n  assessment_type VARCHAR(50) NOT NULL,\n  risk_level VARCHAR(20),\n  recommendation TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_certifications (\n    id INT PRIMARY KEY,\n    certification_name VARCHAR(255),\n    certification_date DATE,\n    organization_name VARCHAR(255),\n    compliance_type VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n    id INT PRIMARY KEY,\n    audit_date DATE,\n    auditor_name VARCHAR(255),\n    audit_type VARCHAR(100),\n    result VARCHAR(50),\n    certification_id INT,\n    FOREIGN KEY (certification_id) REFERENCES compliance_certifications(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    id INT PRIMARY KEY,\n    document_name VARCHAR(255),\n    document_type VARCHAR(100),\n    upload_date DATE,\n    certification_id INT,\n    FOREIGN KEY (certification_id) REFERENCES compliance_certifications(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessment (\n    id INT PRIMARY KEY,\n    assessment_date DATE,\n    risk_level VARCHAR(50),\n    implications TEXT,\n    certification_id INT,\n    FOREIGN KEY (certification_id) REFERENCES compliance_certifications(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(255),\n    role VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

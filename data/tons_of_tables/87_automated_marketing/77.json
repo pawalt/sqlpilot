@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_based_marketing (\n    id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_email VARCHAR(100),\n    customer_phone VARCHAR(15),\n    customer_location POINT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_data (\n    id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    location_id INT,\n    latitude DECIMAL(10, 8),\n    longitude DECIMAL(11, 8)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_data (\n    id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    location_id INT,\n    target_audience VARCHAR(255),\n    budget DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE NOT NULL,\n    location_id INT REFERENCES locations(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id SERIAL PRIMARY KEY,\n    location_name VARCHAR(50) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    state VARCHAR(50) NOT NULL,\n    zipcode VARCHAR(10) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_interactions (\n    interaction_id SERIAL PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    interaction_type VARCHAR(20) NOT NULL,\n    interaction_timestamp TIMESTAMP NOT NULL,\n    interaction_location_id INT REFERENCES locations(location_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  location_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(50),\n  city VARCHAR(50),\n  state VARCHAR(2),\n  country VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_purchase (\n  transaction_id INT PRIMARY KEY,\n  customer_id INT,\n  amount DECIMAL(10, 2),\n  transaction_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(50),\n  location_id INT,\n  start_date DATE,\n  end_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  address VARCHAR(100),\n  city VARCHAR(50),\n  state VARCHAR(2),\n  zip_code VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(50),\n  address VARCHAR(100),\n  city VARCHAR(50),\n  state VARCHAR(2),\n  zip_code VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(50),\n  start_date DATE,\n  end_date DATE,\n  budget DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_interactions (\n  interaction_id INT PRIMARY KEY,\n  customer_id INT,\n  location_id INT,\n  campaign_id INT,\n  interaction_type VARCHAR(20),\n  interaction_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_responses (\n  response_id INT PRIMARY KEY,\n  interaction_id INT,\n  response_type VARCHAR(20),\n  response_date TIMESTAMP\n)"
+      }
+    ]
+  }
+]

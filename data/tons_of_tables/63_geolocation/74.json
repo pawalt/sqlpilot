@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofencing_notifications (\n    id UUID PRIMARY KEY,\n    user_id UUID,\n    location_id UUID,\n    notification_type VARCHAR,\n    notification_message TEXT,\n    created_at TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(id),\n    FOREIGN KEY (location_id) REFERENCES locations(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofences (\n    geofence_id SERIAL PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    radius FLOAT NOT NULL\n);\nCREATE TABLE geofence_notifications (\n    notification_id SERIAL PRIMARY KEY,\n    geofence_id INT NOT NULL,\n    user_id INT NOT NULL,\n    notification_type VARCHAR(50) NOT NULL,\n    notification_message TEXT NOT NULL,\n    notification_timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (geofence_id) REFERENCES geofences (geofence_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_locations (\n    id SERIAL PRIMARY KEY,\n    location_name TEXT NOT NULL,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username TEXT NOT NULL,\n    email TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    location_id INT REFERENCES geofence_locations(id),\n    notification_type TEXT NOT NULL,\n    notification_text TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofencing_locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    notification_preference BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_locations (\n    user_location_id INT PRIMARY KEY,\n    user_id INT,\n    location_id INT,\n    entered_at TIMESTAMP,\n    exited_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id INT PRIMARY KEY,\n    user_id INT,\n    location_id INT,\n    notification_type VARCHAR(50),\n    notification_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255) NOT NULL,\n  latitude DECIMAL(10, 8) NOT NULL,\n  longitude DECIMAL(11, 8) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(100) NOT NULL,\n  email VARCHAR(255) UNIQUE NOT NULL,\n  phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_geofence_notifications (\n  notification_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  location_id INT NOT NULL,\n  notification_type ENUM('Enter', 'Exit') NOT NULL,\n  notification_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (location_id) REFERENCES geofence_locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notification_logs (\n  log_id INT PRIMARY KEY,\n  notification_id INT NOT NULL,\n  log_message TEXT NOT NULL,\n  log_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (notification_id) REFERENCES user_geofence_notifications(notification_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE geofence_rules (\n  rule_id INT PRIMARY KEY,\n  rule_name VARCHAR(100) NOT NULL,\n  location_id INT NOT NULL,\n  min_radius DECIMAL(10, 2) NOT NULL,\n  active BOOLEAN DEFAULT TRUE,\n  FOREIGN KEY (location_id) REFERENCES geofence_locations(location_id)\n);"
+      }
+    ]
+  }
+]

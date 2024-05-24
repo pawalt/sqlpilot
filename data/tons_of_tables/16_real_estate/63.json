@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AirQualityData (\n    sensor_id INT PRIMARY KEY,\n    sensor_location VARCHAR(255),\n    pollution_level FLOAT,\n    temperature FLOAT,\n    humidity FLOAT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (\n  sensor_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  sensor_type VARCHAR(50),\n  sensor_status VARCHAR(50)\n);\n\nCREATE TABLE air_quality_data (\n  data_id INT PRIMARY KEY,\n  sensor_id INT,\n  sampled_at TIMESTAMP,\n  pollution_level FLOAT,\n  temperature FLOAT,\n  humidity FLOAT,\n  FOREIGN KEY (sensor_id) REFERENCES sensors(sensor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id INT PRIMARY KEY,\n    sensor_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    sensor_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE air_quality_data (\n    data_id INT PRIMARY KEY,\n    sensor_id INT,\n    timestamp TIMESTAMP NOT NULL,\n    pm_2_5_level FLOAT NOT NULL,\n    pm_10_level FLOAT NOT NULL,\n    temperature FLOAT NOT NULL,\n    humidity FLOAT NOT NULL,\n    FOREIGN KEY (sensor_id) REFERENCES sensors(sensor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE public_health_data (\n    health_id INT PRIMARY KEY,\n    data_id INT,\n    timestamp TIMESTAMP NOT NULL,\n    health_condition VARCHAR(100) NOT NULL,\n    public_health_advisory VARCHAR(200) NOT NULL,\n    FOREIGN KEY (data_id) REFERENCES air_quality_data(data_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (\n    sensor_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    reading_date TIMESTAMP,\n    pollution_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cities (\n    city_id INT PRIMARY KEY,\n    city_name VARCHAR(255),\n    population INT,\n    latitude FLOAT,\n    longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE readings (\n    reading_id INT PRIMARY KEY,\n    sensor_id INT,\n    value FLOAT,\n    FOREIGN KEY (sensor_id) REFERENCES sensors(sensor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE health_impact (\n    impact_id INT PRIMARY KEY,\n    city_id INT,\n    reading_id INT,\n    health_condition VARCHAR(255),\n    FOREIGN KEY (city_id) REFERENCES cities(city_id),\n    FOREIGN KEY (reading_id) REFERENCES readings(reading_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors (\n  sensor_id INT PRIMARY KEY,\n  location VARCHAR,\n  measurement_type VARCHAR,\n  measurement_value FLOAT,\n  measurement_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cities (\n  city_id INT PRIMARY KEY,\n  city_name VARCHAR,\n  population INT,\n  region VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE pollution_data (\n  pollution_id INT PRIMARY KEY,\n  sensor_id INT,\n  pollution_level FLOAT,\n  measurement_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE health_data (\n  health_id INT PRIMARY KEY,\n  city_id INT,\n  health_condition VARCHAR,\n  affected_population INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE air_quality_report (\n  report_id INT PRIMARY KEY,\n  city_id INT,\n  pollution_level FLOAT,\n  health_condition VARCHAR,\n  report_time TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

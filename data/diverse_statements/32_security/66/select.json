@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM security_inventory;",
+      "SELECT tool_name, expiration_date FROM security_inventory WHERE renewal_reminder_sent = true;",
+      "SELECT tool_name, expiration_date FROM security_inventory WHERE expiration_date < '2022-12-31';",
+      "SELECT tool_name, license_key FROM security_inventory WHERE license_key IS NOT NULL ORDER BY expiration_date DESC;",
+      "SELECT tool_name, expiration_date FROM security_inventory WHERE expiration_date > '2022-01-01' AND renewal_reminder_sent = false ORDER BY expiration_date ASC;",
+      "SELECT * FROM security_inventory WHERE expiration_date > '2022-01-01';",
+      "SELECT tool_name, expiration_date FROM security_inventory WHERE renewal_reminder_sent = TRUE ORDER BY expiration_date ASC;",
+      "SELECT tool_name, license_key FROM security_inventory WHERE license_key IS NOT NULL AND renewal_reminder_sent = FALSE;",
+      "SELECT tool_name, expiration_date FROM security_inventory WHERE tool_id IN (1, 3, 5);",
+      "SELECT tool_id, tool_name, expiration_date, renewal_reminder_sent FROM security_inventory ORDER BY expiration_date DESC, tool_name ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM security_tools;",
+      "SELECT tool_name, license_expiration_date FROM security_tools;",
+      "SELECT tool_name, license_expiration_date, renewal_reminder_date FROM security_tools WHERE license_expiration_date IS NOT NULL;",
+      "SELECT license_key, expiration_date FROM security_licenses;",
+      "SELECT tool_name, expiration_date FROM security_tools INNER JOIN security_licenses ON security_tools.tool_id = security_licenses.tool_id;",
+      "SELECT * FROM security_tools;",
+      "SELECT tool_name, license_expiration_date FROM security_tools WHERE tool_id = 1;",
+      "SELECT tool_name, license_key FROM security_tools JOIN security_licenses ON security_tools.tool_id = security_licenses.tool_id;",
+      "SELECT tool_name, license_expiration_date, expiration_date FROM security_tools JOIN security_licenses ON security_tools.tool_id = security_licenses.tool_id WHERE tool_name = 'Tool1';",
+      "SELECT tool_name, license_expiration_date, renewal_reminder_date FROM security_tools WHERE renewal_reminder_date IS NOT NULL;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM security_tools;",
+      "SELECT tool_name, expiration_date FROM security_tools WHERE expiration_date > '2022-12-31';",
+      "SELECT owner_name, email FROM tool_owners;",
+      "SELECT * FROM tool_assignments WHERE assigned_date < '2023-01-01';",
+      "SELECT tool_name, expiration_date FROM security_tools ORDER BY expiration_date DESC, tool_name ASC;",
+      "SELECT tool_name, expiration_date FROM security_tools WHERE expiration_date > '2022-01-01';",
+      "SELECT owner_name, email FROM tool_owners ORDER BY owner_name DESC;",
+      "SELECT tool_name, tool_id FROM security_tools WHERE license_key IS NOT NULL AND renewal_reminder < '2023-01-01';",
+      "SELECT t.tool_name, o.owner_name, ta.assigned_date FROM security_tools t JOIN tool_owners o ON t.tool_id = o.owner_id JOIN tool_assignments ta ON t.tool_id = ta.tool_id ORDER BY ta.assigned_date DESC;",
+      "SELECT tool_name, expiration_date, renewal_reminder FROM security_tools WHERE tool_name LIKE 'A%' ORDER BY expiration_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM security_tools;",
+      "SELECT tool_name, expiration_date FROM security_tools WHERE expiration_date > '2022-01-01';",
+      "SELECT tool_name, license_key, expiration_date FROM security_tools WHERE renewal_reminder IS NULL;",
+      "SELECT t.tool_name, c.category_name FROM security_tools t JOIN tool_categories tc ON t.id = tc.tool_id JOIN categories c ON tc.category_id = c.category_id;",
+      "SELECT notification_date, message FROM notifications ORDER BY notification_date DESC;",
+      "SELECT tool_name, expiration_date FROM security_tools WHERE expiration_date > '2022-01-01';",
+      "SELECT tool_name, license_key, expiration_date FROM security_tools WHERE license_key LIKE '%ABC%' ORDER BY expiration_date DESC;",
+      "SELECT tool_name, category_name FROM security_tools JOIN tool_categories ON security_tools.id = tool_categories.tool_id JOIN categories ON tool_categories.category_id = categories.category_id WHERE categories.category_name = 'Network Security';",
+      "SELECT tool_name, expiration_date, renewal_reminder FROM security_tools WHERE renewal_reminder IS NOT NULL ORDER BY expiration_date, renewal_reminder;",
+      "SELECT tool_name, COUNT(notification_id) AS notification_count FROM security_tools LEFT JOIN notifications ON security_tools.id = notifications.tool_id GROUP BY tool_name HAVING notification_count > 5 ORDER BY notification_count DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT tool_name, expiration_date FROM security_tools;",
+      "SELECT tool_id, tool_name, expiration_date FROM security_tools WHERE expiration_date > '2022-12-31';",
+      "SELECT vendor_name, email, phone_number FROM vendors;",
+      "SELECT tool_name, tool_id FROM security_tools ORDER BY tool_name ASC;",
+      "SELECT tool_name, expiration_date, reminder_date FROM security_tools ORDER BY expiration_date DESC;",
+      "SELECT * FROM security_tools WHERE tool_id = 1;",
+      "SELECT tool_name, expiration_date FROM security_tools WHERE expiration_date < '2022-01-01';",
+      "SELECT vendor_name, email FROM vendors WHERE phone_number IS NOT NULL;",
+      "SELECT t.tool_name, v.vendor_name, r.renewal_date FROM security_tools t JOIN tool_vendors tv ON t.tool_id = tv.tool_id JOIN vendors v ON tv.vendor_id = v.vendor_id JOIN renewal_history r ON t.tool_id = r.tool_id WHERE r.amount_paid > 1000;",
+      "SELECT lt.license_name, lt.description, st.tool_name FROM license_types lt LEFT JOIN security_tools st ON lt.license_name = st.license_key WHERE st.expiration_date < '2022-01-01';"
+    ]
+  }
+]

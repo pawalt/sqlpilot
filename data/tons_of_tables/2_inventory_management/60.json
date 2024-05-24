@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE goods_movement (\n  movement_id UUID PRIMARY KEY,\n  location_id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  status VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE goods_tracking (\n    tracking_id INT PRIMARY KEY,\n    goods_name STRING,\n    location_name STRING,\n    movement_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE location_data (\n    location_id INT PRIMARY KEY,\n    location_name STRING,\n    latitude DECIMAL,\n    longitude DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Goods (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    quantity INT,\n    location_id INT\n);\n\nCREATE TABLE Locations (\n    location_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    latitude DECIMAL(9,6),\n    longitude DECIMAL(9,6)\n);\n\nCREATE TABLE MovementTracking (\n    tracking_id INT PRIMARY KEY,\n    goods_id INT,\n    location_id INT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LocationData (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50) NOT NULL,\n    latitude FLOAT NOT NULL,\n    longitude FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Goods (\n    goods_id INT PRIMARY KEY,\n    goods_name VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    location_id INT NOT NULL,\n    FOREIGN KEY (location_id) REFERENCES LocationData(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Warehouse (\n    warehouse_id INT PRIMARY KEY,\n    warehouse_name VARCHAR(50) NOT NULL,\n    location_id INT NOT NULL,\n    FOREIGN KEY (location_id) REFERENCES LocationData(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MovementHistory (\n    movement_id INT PRIMARY KEY,\n    goods_id INT NOT NULL,\n    from_location_id INT NOT NULL,\n    to_location_id INT NOT NULL,\n    movement_date DATE NOT NULL,\n    FOREIGN KEY (goods_id) REFERENCES Goods(goods_id),\n    FOREIGN KEY (from_location_id) REFERENCES LocationData(location_id),\n    FOREIGN KEY (to_location_id) REFERENCES LocationData(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Goods (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    quantity INT,\n    location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Locations (\n    location_id INT PRIMARY KEY,\n    country VARCHAR(255),\n    city VARCHAR(255),\n    region VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Movements (\n    movement_id INT PRIMARY KEY,\n    goods_id INT,\n    location_id INT,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Warehouses (\n    warehouse_id INT PRIMARY KEY,\n    location_id INT,\n    capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id INT PRIMARY KEY,\n    goods_id INT,\n    quantity INT,\n    movement_id INT\n);\n"
+      }
+    ]
+  }
+]

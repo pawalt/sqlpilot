@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE singing_performances (\n  performance_id INT PRIMARY KEY,\n  performer_name VARCHAR(255),\n  performance_date DATE,\n  song_title VARCHAR(255),\n  evaluation_score INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE singing_performances (\n  performance_id SERIAL PRIMARY KEY,\n  performer_name VARCHAR(50),\n  performance_date DATE,\n  performance_duration INTERVAL,\n  performance_rating INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_feedback (\n  feedback_id SERIAL PRIMARY KEY,\n  performance_id INTEGER REFERENCES singing_performances(performance_id),\n  feedback_text TEXT,\n  feedback_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE performances (\n    performance_id INT PRIMARY KEY,\n    singer_name VARCHAR(50),\n    performance_date DATE,\n    performance_rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE judges (\n    judge_id INT PRIMARY KEY,\n    judge_name VARCHAR(50),\n    specialization VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n    feedback_id INT PRIMARY KEY,\n    performance_id INT,\n    judge_id INT,\n    feedback_text TEXT,\n    FOREIGN KEY (performance_id) REFERENCES performances(performance_id),\n    FOREIGN KEY (judge_id) REFERENCES judges(judge_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Singers (\n    singer_id INT PRIMARY KEY,\n    singer_name VARCHAR(255),\n    performance_date DATE,\n    performance_duration TIME\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Songs (\n    song_id INT PRIMARY KEY,\n    song_title VARCHAR(255),\n    genre VARCHAR(50),\n    singer_id INT,\n    FOREIGN KEY (singer_id) REFERENCES Singers(singer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Performances (\n    performance_id INT PRIMARY KEY,\n    performance_date DATE,\n    song_id INT,\n    performance_rating INT,\n    FOREIGN KEY (song_id) REFERENCES Songs(song_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Evaluations (\n    evaluation_id INT PRIMARY KEY,\n    evaluation_date DATE,\n    performance_id INT,\n    feedback TEXT,\n    FOREIGN KEY (performance_id) REFERENCES Performances(performance_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Singers (\n    singer_id INT PRIMARY KEY,\n    singer_name VARCHAR(255),\n    gender VARCHAR(10),\n    age INT,\n    nationality VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Performances (\n    performance_id INT PRIMARY KEY,\n    song_title VARCHAR(255),\n    performance_date DATE,\n    singer_id INT,\n    FOREIGN KEY (singer_id) REFERENCES Singers(singer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Judges (\n    judge_id INT PRIMARY KEY,\n    judge_name VARCHAR(255),\n    expertise VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Scores (\n    score_id INT PRIMARY KEY,\n    performance_id INT,\n    judge_id INT,\n    score DECIMAL(5,2),\n    FOREIGN KEY (performance_id) REFERENCES Performances(performance_id),\n    FOREIGN KEY (judge_id) REFERENCES Judges(judge_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Comments (\n    comment_id INT PRIMARY KEY,\n    performance_id INT,\n    judge_id INT,\n    comment TEXT,\n    FOREIGN KEY (performance_id) REFERENCES Performances(performance_id),\n    FOREIGN KEY (judge_id) REFERENCES Judges(judge_id)\n)"
+      }
+    ]
+  }
+]

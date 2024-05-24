@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE multi_factor_authentication (\n    user_id INT,\n    username VARCHAR(50),\n    password VARCHAR(100),\n    email VARCHAR(100),\n    phone_number VARCHAR(15),\n    is_verified BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20) NOT NULL,\n    multi_factor_authentication BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    login_time TIMESTAMP NOT NULL,\n    logout_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    login_time TIMESTAMP NOT NULL,\n    logout_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mfa_methods (\n    method_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    method_type VARCHAR(50) NOT NULL,\n    is_verified BOOLEAN NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username TEXT NOT NULL,\n    password TEXT NOT NULL,\n    mfa_enabled BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID,\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mfa_methods (\n    method_id UUID PRIMARY KEY,\n    user_id UUID,\n    method_type TEXT,\n    method_data TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mfa_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID,\n    method_id UUID,\n    action TEXT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE authenticators (\n    authenticator_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    authenticator_type VARCHAR(50) NOT NULL,\n    enabled BOOLEAN NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    device_id INT NOT NULL,\n    authenticator_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_tokens (\n    token_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_token VARCHAR(100) NOT NULL,\n    expires_at TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

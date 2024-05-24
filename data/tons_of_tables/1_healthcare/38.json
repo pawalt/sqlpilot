@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HealthcareCompliance (\n  employee_id INT,\n  employee_name VARCHAR,\n  compliance_status VARCHAR,\n  last_updated TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ComplianceData (\n    patient_id UUID PRIMARY KEY,\n    compliance_score INT,\n    compliance_status STRING,\n    compliance_date DATE\n);\n\nCREATE TABLE PolicyGuidelines (\n    guideline_id UUID PRIMARY KEY,\n    guideline_title STRING,\n    guideline_description STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ComplianceMonitor (\n    id UUID PRIMARY KEY,\n    organization_id UUID,\n    standard_name VARCHAR(100),\n    compliance_status BOOLEAN,\n    last_checked TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE HealthcarePolicyGuidelines (\n    id UUID PRIMARY KEY,\n    policy_name VARCHAR(100),\n    description TEXT,\n    effective_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceLog (\n    id UUID PRIMARY KEY,\n    monitor_id UUID,\n    policy_id UUID,\n    status BOOLEAN,\n    check_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hospital (\n  hospital_id INT PRIMARY KEY,\n  hospital_name VARCHAR(255),\n  location VARCHAR(255),\n  compliance_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE HealthcareProvider (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR(255),\n  specialty VARCHAR(255),\n  hospital_id INT,\n  FOREIGN KEY (hospital_id) REFERENCES Hospital(hospital_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Regulations (\n  regulation_id INT PRIMARY KEY,\n  regulation_name VARCHAR(255),\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceRecord (\n  record_id INT PRIMARY KEY,\n  provider_id INT,\n  regulation_id INT,\n  compliance_date DATE,\n  compliance_status BOOLEAN,\n  FOREIGN KEY (provider_id) REFERENCES HealthcareProvider(provider_id),\n  FOREIGN KEY (regulation_id) REFERENCES Regulations(regulation_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ComplianceReports (\n  report_id INT PRIMARY KEY,\n  report_date DATE,\n  compliance_rating FLOAT,\n  policy_reference VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Violations (\n  violation_id INT PRIMARY KEY,\n  report_id INT,\n  violation_description TEXT,\n  violation_date DATE,\n  FOREIGN KEY (report_id) REFERENCES ComplianceReports(report_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspections (\n  inspection_id INT PRIMARY KEY,\n  inspection_date DATE,\n  department_name VARCHAR(255),\n  inspector_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n  policy_id INT PRIMARY KEY,\n  policy_name VARCHAR(255),\n  policy_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Departments (\n  department_id INT PRIMARY KEY,\n  department_name VARCHAR(255),\n  responsible_person VARCHAR(255)\n);"
+      }
+    ]
+  }
+]

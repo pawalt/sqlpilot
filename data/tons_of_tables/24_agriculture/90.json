@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetically_modified_crops (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(50) NOT NULL,\n    genetic_type VARCHAR(50) NOT NULL,\n    modified_trait VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n  crop_id INT PRIMARY KEY,\n  crop_name VARCHAR(50),\n  scientific_name VARCHAR(100),\n  growth_period INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE characteristics (\n  char_id INT PRIMARY KEY,\n  crop_id INT REFERENCES crops(crop_id),\n  trait VARCHAR(50),\n  value VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n    id SERIAL PRIMARY KEY,\n    crop_name VARCHAR(100) NOT NULL,\n    genetic_info JSONB,\n    growth_stage ENUM('germination', 'vegetative', 'reproductive', 'fruiting'),\n    date_planted DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traits (\n    id SERIAL PRIMARY KEY,\n    trait_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    dominant BOOLEAN,\n    crop_id INTEGER REFERENCES crops(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE harvest (\n    id SERIAL PRIMARY KEY,\n    crop_id INTEGER REFERENCES crops(id),\n    harvest_date DATE,\n    yield DECIMAL,\n    quality_rating INTEGER CHECK(quality_rating >= 0 AND quality_rating <= 10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    species VARCHAR(255) NOT NULL,\n    description TEXT\n);\n\nCREATE TABLE crop_characteristics (\n    id SERIAL PRIMARY KEY,\n    crop_id INT REFERENCES crops(id),\n    growth_time INT,\n    yield_per_acre INT,\n    storage_temperature INT\n);\n\nCREATE TABLE genetic_modifications (\n    id SERIAL PRIMARY KEY,\n    modification_name VARCHAR(255) NOT NULL,\n    crop_id INT REFERENCES crops(id),\n    modification_type VARCHAR(50) NOT NULL,\n    modification_description TEXT\n);\n\nCREATE TABLE research_studies (\n    id SERIAL PRIMARY KEY,\n    study_title VARCHAR(255) NOT NULL,\n    researcher_name VARCHAR(255) NOT NULL,\n    study_description TEXT,\n    crop_id INT REFERENCES crops(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  species VARCHAR(255),\n  genetic_traits TEXT,\n  growth_period VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_characteristics (\n  id INT PRIMARY KEY,\n  crop_id INT,\n  color VARCHAR(50),\n  size VARCHAR(50),\n  shape VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_locations (\n  id INT PRIMARY KEY,\n  crop_id INT,\n  latitude FLOAT,\n  longitude FLOAT,\n  altitude INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_research (\n  id INT PRIMARY KEY,\n  crop_id INT,\n  researcher_name VARCHAR(100),\n  research_topic VARCHAR(255),\n  research_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_production (\n  id INT PRIMARY KEY,\n  crop_id INT,\n  quantity INT,\n  harvest_date DATE,\n  storage_conditions TEXT\n);"
+      }
+    ]
+  }
+]

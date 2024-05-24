@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supply_chain_info (\n  supplier_id INT,\n  supplier_name VARCHAR(100),\n  product_id INT,\n  product_name VARCHAR(100),\n  quantity INT,\n  delivery_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supply_chain_nodes (\n    node_id INT PRIMARY KEY,\n    node_name VARCHAR(255),\n    node_type VARCHAR(50),\n    location_id INT,\n    risk_score FLOAT\n);\n\nCREATE TABLE supply_chain_relationships (\n    relationship_id INT PRIMARY KEY,\n    parent_node_id INT,\n    child_node_id INT,\n    relationship_type VARCHAR(50),\n    severity_score FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SupplyChainLocations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    supplier_contact VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    supplier_id INT NOT NULL,\n    location_id INT NOT NULL,\n    quantity INT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    location VARCHAR(255),\n    contact_person VARCHAR(255),\n    email VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    description TEXT,\n    unit_price DECIMAL(10, 2),\n    supplier_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    product_id INT,\n    order_date DATE,\n    quantity INT,\n    total_price DECIMAL(10, 2),\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n    shipment_id INT PRIMARY KEY,\n    order_id INT,\n    shipment_date DATE,\n    status VARCHAR(50),\n    estimated_delivery_date DATE,\n    FOREIGN KEY (order_id) REFERENCES orders(order_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers ( \n id INT PRIMARY KEY, \n name VARCHAR(255), \n location VARCHAR(255) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products ( \n id INT PRIMARY KEY, \n name VARCHAR(255), \n category VARCHAR(255), \n supplier_id INT, \n FOREIGN KEY (supplier_id) REFERENCES suppliers(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders ( \n id INT PRIMARY KEY, \n product_id INT, \n quantity INT, \n order_date DATE, \n FOREIGN KEY (product_id) REFERENCES products(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments ( \n id INT PRIMARY KEY, \n order_id INT, \n shipment_date DATE, \n delivery_status VARCHAR(255), \n FOREIGN KEY (order_id) REFERENCES orders(id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE disruptions ( \n id INT PRIMARY KEY, \n shipment_id INT, \n reason TEXT, \n delay_days INT, \n FOREIGN KEY (shipment_id) REFERENCES shipments(id) \n);"
+      }
+    ]
+  }
+]

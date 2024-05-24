@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n    incident_id SERIAL PRIMARY KEY,\n    incident_date DATE,\n    incident_type VARCHAR(100),\n    description TEXT,\n    affected_entities JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityIncidents (\n    incident_id INT PRIMARY KEY,\n    incident_date DATE,\n    incident_type VARCHAR(50),\n    description TEXT,\n    impact VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BreachDetails (\n    breach_id INT PRIMARY KEY,\n    breach_date DATE,\n    breach_type VARCHAR(50),\n    organization VARCHAR(100),\n    data_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n    incident_id SERIAL PRIMARY KEY,\n    incident_date TIMESTAMP,\n    incident_type VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_details (\n    breach_id SERIAL PRIMARY KEY,\n    incident_id INT REFERENCES security_incidents(incident_id),\n    breach_date TIMESTAMP,\n    breach_type VARCHAR(50),\n    affected_records INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_reports (\n    report_id SERIAL PRIMARY KEY,\n    breach_id INT REFERENCES breach_details(breach_id),\n    report_date TIMESTAMP,\n    reporter_name VARCHAR(50),\n    report_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n    incident_id INT PRIMARY KEY,\n    incident_date DATE,\n    incident_type VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_details (\n    breach_id INT PRIMARY KEY,\n    incident_id INT REFERENCES security_incidents(incident_id),\n    breached_system VARCHAR(100),\n    breach_date DATE,\n    breach_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE affected_entities (\n    entity_id INT PRIMARY KEY,\n    incident_id INT REFERENCES security_incidents(incident_id),\n    entity_name VARCHAR(100),\n    entity_type VARCHAR(50),\n    impact_level VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investigation_logs (\n    log_id INT PRIMARY KEY,\n    incident_id INT REFERENCES security_incidents(incident_id),\n    investigator_name VARCHAR(100),\n    log_date DATE,\n    log_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incidents (\n    incident_id SERIAL PRIMARY KEY,\n    incident_type TEXT,\n    incident_date DATE,\n    location TEXT,\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_types (\n    breach_id SERIAL PRIMARY KEY,\n    breach_name TEXT,\n    breach_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE affected_entities (\n    entity_id SERIAL PRIMARY KEY,\n    entity_name TEXT,\n    entity_type TEXT,\n    entity_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE security_measures (\n    measure_id SERIAL PRIMARY KEY,\n    measure_name TEXT,\n    measure_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_details (\n    detail_id SERIAL PRIMARY KEY,\n    incident_id INTEGER REFERENCES incidents(incident_id),\n    measure_id INTEGER REFERENCES security_measures(measure_id),\n    entity_id INTEGER REFERENCES affected_entities(entity_id),\n    notes TEXT\n)"
+      }
+    ]
+  }
+]

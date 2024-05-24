@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumKeysUsagePermissions (\n    key_id INT PRIMARY KEY,\n    key_name TEXT NOT NULL,\n    usage_description TEXT,\n    creation_date DATE,\n    last_usage_date DATE,\n    permissions VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE KeyUsage (\n    id INT PRIMARY KEY,\n    key_id INT,\n    user_id INT,\n    usage_date TIMESTAMP,\n    usage_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE KeyPermissions (\n    id INT PRIMARY KEY,\n    key_id INT,\n    user_id INT,\n    permission_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  permission_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_keys (\n  key_id INT PRIMARY KEY,\n  key_value VARCHAR(255) NOT NULL,\n  expiration_date DATE,\n  user_id INT,\n  FOREIGN KEY (user_id) REFERENCES quantum_users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE key_usage (\n  usage_id INT PRIMARY KEY,\n  key_id INT,\n  usage_date TIMESTAMP,\n  event_type VARCHAR(50),\n  event_description TEXT,\n  FOREIGN KEY (key_id) REFERENCES quantum_keys(key_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_keys (\n    key_id INT PRIMARY KEY,\n    key_value VARCHAR(255),\n    creation_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE key_usage (\n    usage_id INT PRIMARY KEY,\n    key_id INT,\n    user_id INT,\n    usage_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE key_permissions (\n    permission_id INT PRIMARY KEY,\n    key_id INT,\n    user_id INT,\n    permission_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE key_access_logs (\n    log_id INT PRIMARY KEY,\n    key_id INT,\n    user_id INT,\n    access_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_cryptography_keys (\n    key_id UUID PRIMARY KEY,\n    key_value TEXT NOT NULL,\n    owner_id UUID NOT NULL,\n    usage_count INT DEFAULT 0\n);\n\nCREATE TABLE key_usage_logs (\n    log_id UUID PRIMARY KEY,\n    key_id UUID REFERENCES quantum_cryptography_keys(key_id),\n    timestamp TIMESTAMP NOT NULL,\n    action_type VARCHAR(20) NOT NULL,\n    user_id UUID NOT NULL\n);\n\nCREATE TABLE key_permissions (\n    permission_id UUID PRIMARY KEY,\n    key_id UUID REFERENCES quantum_cryptography_keys(key_id),\n    user_id UUID NOT NULL,\n    permission_type VARCHAR(20) NOT NULL\n);\n\nCREATE TABLE key_owners (\n    owner_id UUID PRIMARY KEY,\n    owner_name TEXT NOT NULL,\n    contact_info TEXT\n);\n\nCREATE TABLE key_audit_logs (\n    audit_id UUID PRIMARY KEY,\n    key_id UUID REFERENCES quantum_cryptography_keys(key_id),\n    timestamp TIMESTAMP NOT NULL,\n    event_type VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  }
+]

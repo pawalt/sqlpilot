@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM sms_messages LIMIT 5;",
+      "SELECT message_id, sender_phone_number, receiver_phone_number FROM sms_messages ORDER BY sent_datetime DESC;",
+      "SELECT * FROM sms_messages WHERE sender_phone_number = '+1234567890';",
+      "SELECT message_id, sender_phone_number, receiver_phone_number, sent_datetime FROM sms_messages WHERE receiver_phone_number = '+9876543210';",
+      "SELECT message_id, message_body, sent_datetime FROM sms_messages ORDER BY sent_datetime ASC LIMIT 3;",
+      "SELECT * FROM sms_messages WHERE sender_phone_number = '+1234567890' ORDER BY sent_datetime DESC LIMIT 10;",
+      "SELECT message_id, message_body, sent_datetime FROM sms_messages WHERE receiver_phone_number = '+1987654321';",
+      "SELECT sender_phone_number, receiver_phone_number, Count(*) AS message_count FROM sms_messages GROUP BY sender_phone_number, receiver_phone_number;",
+      "SELECT * FROM sms_messages WHERE sender_phone_number = '+1234567890' AND receiver_phone_number = '+1987654321' ORDER BY sent_datetime DESC;",
+      "SELECT AVG(EXTRACT(EPOCH FROM sent_datetime)) AS avg_seconds FROM sms_messages;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM sms_messages;",
+      "SELECT message_text, sender_number, timestamp FROM sms_messages WHERE sender_number = '+1234567890';",
+      "SELECT receiver_number, message_text, timestamp FROM sms_messages ORDER BY timestamp DESC;",
+      "SELECT id, message_text, sender_number, receiver_number, timestamp FROM sms_messages WHERE id = 5;",
+      "SELECT sms_logs.log_id, sms_logs.status, sms_logs.log_timestamp, sms_messages.message_text FROM sms_logs JOIN sms_messages ON sms_logs.message_id = sms_messages.id;",
+      "SELECT * FROM sms_messages WHERE sender_number = '+1234567890' AND receiver_number = '+9876543210' ORDER BY timestamp DESC LIMIT 10;",
+      "SELECT id, message_text, timestamp FROM sms_messages WHERE timestamp >= '2022-01-01' ORDER BY timestamp ASC LIMIT 5;",
+      "SELECT sms_messages.id, sms_messages.message_text, sms_logs.status FROM sms_messages JOIN sms_logs ON sms_messages.id = sms_logs.message_id WHERE sms_logs.status = 'delivered' ORDER BY sms_messages.id DESC LIMIT 20;",
+      "SELECT sender_number, COUNT(*) AS num_messages FROM sms_messages GROUP BY sender_number HAVING num_messages > 100 ORDER BY num_messages DESC;",
+      "SELECT DISTINCT sender_number, COUNT(*) OVER(PARTITION BY sender_number) AS num_messages FROM sms_messages WHERE timestamp BETWEEN '2022-01-01' AND '2022-03-31';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM sms_messages;",
+      "SELECT message_id, sender, receiver, message_text FROM sms_messages ORDER BY sent_timestamp DESC;",
+      "SELECT sender, receiver, sent_timestamp FROM sms_messages WHERE receiver = 'Alice';",
+      "SELECT message_id, status, status_timestamp FROM message_status WHERE status LIKE '%delivered%';",
+      "SELECT log_id, message_id, log_text, log_timestamp FROM message_logs ORDER BY log_timestamp ASC;",
+      "SELECT * FROM sms_messages;",
+      "SELECT sender, receiver FROM sms_messages WHERE sender='Alice';",
+      "SELECT message_text, sent_timestamp FROM sms_messages WHERE receiver='Bob' ORDER BY sent_timestamp DESC;",
+      "SELECT * FROM message_status WHERE status='Delivered' AND status_timestamp > '2022-01-01';",
+      "SELECT sms.sender, sms.receiver, status.status, logs.log_text FROM sms_messages sms LEFT JOIN message_status status ON sms.message_id = status.message_id LEFT JOIN message_logs logs ON sms.message_id = logs.message_id ORDER BY sms.sent_timestamp ASC, logs.log_timestamp ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM sms_messages;",
+      "SELECT message_id, sender_phone_number, receiver_phone_number FROM sms_messages WHERE timestamp > '2022-01-01';",
+      "SELECT contact_name, phone_number FROM phone_contacts ORDER BY contact_name ASC;",
+      "SELECT message_text FROM sms_messages WHERE message_id = 10;",
+      "SELECT message_id, status FROM sms_status WHERE status = 'Sent' ORDER BY message_id DESC;",
+      "SELECT * FROM sms_messages WHERE sender_phone_number = '+1234567890' ORDER BY timestamp DESC;",
+      "SELECT message_text, status FROM sms_messages m JOIN sms_status s ON m.message_id = s.message_id WHERE s.status = 'delivered' AND m.timestamp > '2022-01-01';",
+      "SELECT contact_name, phone_number FROM phone_contacts WHERE contact_name LIKE '%John%' OR contact_name LIKE '%Doe%';",
+      "SELECT log_text, log_type FROM sms_logs WHERE timestamp BETWEEN '2022-01-01' AND '2022-06-30' ORDER BY log_id ASC LIMIT 10;",
+      "SELECT sender_phone_number, COUNT(message_id) AS message_count FROM sms_messages GROUP BY sender_phone_number HAVING COUNT(message_id) > 5 ORDER BY message_count DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users;",
+      "SELECT id, username, phone_number FROM users WHERE id = 3;",
+      "SELECT sender_id, receiver_id, message FROM sms_messages ORDER BY send_time DESC;",
+      "SELECT contact_name, contact_number FROM contacts WHERE user_id = 7;",
+      "SELECT provider_name, country FROM network_providers WHERE country = 'USA';",
+      "SELECT * FROM sms_messages WHERE sender_id = 1;",
+      "SELECT message, send_time FROM sms_messages WHERE receiver_id = 2 ORDER BY send_time DESC;",
+      "SELECT sender_id, receiver_id, message, send_time FROM sms_messages WHERE send_time > '2022-01-01' AND receiver_id = 3;",
+      "SELECT u.username, c.contact_name, c.contact_number FROM users u JOIN contacts c ON u.id = c.user_id WHERE u.username LIKE 'A%';",
+      "SELECT rp.provider_name, rm.received_time FROM network_providers rp JOIN received_messages rm ON rp.id = rm.receiver_id WHERE rp.country = 'USA';"
+    ]
+  }
+]

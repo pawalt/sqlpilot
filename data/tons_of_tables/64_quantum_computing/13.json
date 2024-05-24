@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_metadata (\n    experiment_id UUID PRIMARY KEY,\n    algorithm_name VARCHAR(50) NOT NULL,\n    researcher_name VARCHAR(50) NOT NULL,\n    experiment_date TIMESTAMP NOT NULL,\n    experiment_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name TEXT,\n    algorithm_description TEXT,\n    created_by_user TEXT,\n    created_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_metadata (\n    experiment_id INT PRIMARY KEY,\n    experiment_name TEXT,\n    algorithm_id INT,\n    experiment_description TEXT,\n    experiment_start_time TIMESTAMP,\n    PRIMARY KEY (experiment_id, algorithm_id),\n    FOREIGN KEY (algorithm_id) REFERENCES quantum_algorithms (algorithm_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment (\n  experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR(255),\n  researcher_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_algorithm (\n  algorithm_id INT PRIMARY KEY,\n  algorithm_name VARCHAR(255),\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_experiment (\n  experiment_id INT,\n  algorithm_id INT,\n  execution_date DATE,\n  result DECIMAL,\n  FOREIGN KEY (experiment_id) REFERENCES experiment(experiment_id),\n  FOREIGN KEY (algorithm_id) REFERENCES quantum_algorithm(algorithm_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithms (\n    algorithm_id UUID PRIMARY KEY,\n    algorithm_name TEXT NOT NULL,\n    algorithm_description TEXT,\n    created_timestamp TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_types (\n    type_id SERIAL PRIMARY KEY,\n    experiment_type TEXT NOT NULL,\n    experiment_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id UUID PRIMARY KEY,\n    experiment_name TEXT NOT NULL,\n    experiment_type_id INTEGER REFERENCES experiment_types(type_id),\n    experiment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_experiments (\n    algorithm_id UUID REFERENCES quantum_algorithms(algorithm_id),\n    experiment_id UUID REFERENCES experiments(experiment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithms (\n\talgorithm_id INT PRIMARY KEY,\n\talgorithm_name VARCHAR(50) NOT NULL,\n\trelease_date DATE,\n\tdescription TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_experiments (\n\texperiment_id INT PRIMARY KEY,\n\talgorithm_id INT,\n\texperiment_date DATE,\n\tresult VARCHAR(100),\n\tFOREIGN KEY (algorithm_id) REFERENCES quantum_algorithms(algorithm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n\tresearcher_id INT PRIMARY KEY,\n\tresearcher_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_files (\n\tfile_id INT PRIMARY KEY,\n\texperiment_id INT,\n\tfile_name VARCHAR(100),\n\tfile_type VARCHAR(20),\n\tfile_size INT,\n\tFOREIGN KEY (experiment_id) REFERENCES algorithm_experiments(experiment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_metadata (\n\talgorithm_id INT PRIMARY KEY,\n\tpurpose TEXT,\n\tcomplexity VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

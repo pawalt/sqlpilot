@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE secure_payment_gateway (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    amount DECIMAL(10,2),\n    transaction_date TIMESTAMP,\n    encrypted_transaction_data TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_email VARCHAR(100) UNIQUE,\n    payment_method VARCHAR(20),\n    payment_info VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    transaction_amount DECIMAL,\n    transaction_date DATE,\n    transaction_status VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    payment_date DATE,\n    amount DECIMAL(10,2),\n    customer_id INT,\n    payment_method VARCHAR(50),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_email VARCHAR(50),\n    customer_address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT,\n    transaction_date DATETIME,\n    transaction_status VARCHAR(20),\n    encrypted_data TEXT,\n    FOREIGN KEY (payment_id) REFERENCES payments(payment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  customer_id INT REFERENCES customers(customer_id),\n  amount DECIMAL(10, 2) NOT NULL,\n  transaction_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n  method_id INT PRIMARY KEY,\n  method_name VARCHAR(50) NOT NULL,\n  is_secure BOOLEAN NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n  log_id INT PRIMARY KEY,\n  transaction_id INT REFERENCES transactions(transaction_id),\n  log_description TEXT,\n  log_timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    customer_email VARCHAR(255),\n    customer_phone VARCHAR(15),\n    customer_address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    order_datetime TIMESTAMP,\n    order_amount DECIMAL(10, 2),\n    payment_method VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    order_id INT REFERENCES orders(order_id),\n    transaction_datetime TIMESTAMP,\n    transaction_amount DECIMAL(10, 2),\n    encryption_key VARCHAR(50),\n    transaction_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    product_price DECIMAL(10, 2),\n    product_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    transaction_id INT REFERENCES transactions(transaction_id),\n    payment_datetime TIMESTAMP,\n    payment_amount DECIMAL(10, 2),\n    payment_status VARCHAR(20)\n);"
+      }
+    ]
+  }
+]

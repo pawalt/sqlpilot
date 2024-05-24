@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_processes(\n    treatment_code INT,\n    insurance_information STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TreatmentCodes (  treatment_code INT PRIMARY KEY,  description STRING )"
+      },
+      {
+        "table_schema": "CREATE TABLE InsuranceInformation (  insurance_id INT PRIMARY KEY,  insurance_name STRING,  policy_number STRING,  policy_holder_name STRING,  policy_expiry_date DATE )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_info (\n  id SERIAL PRIMARY KEY,\n  treatment_code VARCHAR(10) NOT NULL,\n  insurance_provider VARCHAR(50) NOT NULL,\n  amount_charged DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_info (\n  id SERIAL PRIMARY KEY,\n  patient_name VARCHAR(100) NOT NULL,\n  patient_dob DATE NOT NULL,\n  insurance_id VARCHAR(20) NOT NULL,\n  policy_number VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_processing (\n  id SERIAL PRIMARY KEY,\n  claim_number VARCHAR(20) NOT NULL,\n  claim_status VARCHAR(20) NOT NULL,\n  claim_amount DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE treatment_codes (\n    code_id INT PRIMARY KEY,\n    treatment_code VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE insurance_info (\n    insurance_id INT PRIMARY KEY,\n    insurance_name VARCHAR(100) NOT NULL,\n    policy_number VARCHAR(50) UNIQUE,\n    provider_name VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_info (\n    patient_id INT PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    date_of_birth DATE,\n    gender ENUM('Male', 'Female', 'Other'),\n    insurance_id INT REFERENCES insurance_info(insurance_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_info (\n    bill_id INT PRIMARY KEY,\n    patient_id INT REFERENCES patient_info(patient_id),\n    code_id INT REFERENCES treatment_codes(code_id),\n    bill_amount DECIMAL(10, 2),\n    bill_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TreatmentCodes (\n    treatment_code VARCHAR(10) PRIMARY KEY,\n    treatment_description VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE InsuranceProviders (\n    insurance_id SERIAL PRIMARY KEY,\n    provider_name VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id SERIAL PRIMARY KEY,\n    patient_name VARCHAR(100) NOT NULL,\n    insurance_id INT,\n    FOREIGN KEY (insurance_id) REFERENCES InsuranceProviders(insurance_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BillingRecords (\n    record_id SERIAL PRIMARY KEY,\n    patient_id INT,\n    treatment_code VARCHAR(10),\n    billed_amount DECIMAL(10, 2) NOT NULL,\n    billing_date DATE NOT NULL,\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),\n    FOREIGN KEY (treatment_code) REFERENCES TreatmentCodes(treatment_code)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ClaimsProcessing (\n    claim_id SERIAL PRIMARY KEY,\n    record_id INT,\n    processing_status VARCHAR(50) NOT NULL,\n    claim_amount DECIMAL(10, 2) NOT NULL,\n    processed_date DATE NOT NULL,\n    FOREIGN KEY (record_id) REFERENCES BillingRecords(record_id)\n)"
+      }
+    ]
+  }
+]

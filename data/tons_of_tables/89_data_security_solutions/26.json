@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_intelligence_feeds (\n    id INT PRIMARY KEY,\n    feed_source VARCHAR,\n    indicator_type VARCHAR,\n    indicator_value VARCHAR,\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_intelligence_feeds (\n    id INT PRIMARY KEY,\n    feed_name VARCHAR(255),\n    feed_description TEXT,\n    feed_url TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_analytics (\n    event_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR(15),\n    threat_level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatIntelligenceFeeds (\n    feed_id INT PRIMARY KEY,\n    feed_name VARCHAR(255) NOT NULL,\n    feed_description TEXT,\n    feed_source VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Indicators (\n    indicator_id INT PRIMARY KEY,\n    indicator_type VARCHAR(50) NOT NULL,\n    indicator_value TEXT NOT NULL,\n    feed_id INT,\n    FOREIGN KEY (feed_id) REFERENCES ThreatIntelligenceFeeds(feed_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SecurityAnalytics (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    event_description TEXT,\n    indicator_id INT,\n    FOREIGN KEY (indicator_id) REFERENCES Indicators(indicator_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_feeds (\n    feed_id INT PRIMARY KEY,\n    feed_name VARCHAR(255) NOT NULL,\n    feed_url VARCHAR(255) NOT NULL,\n    last_updated TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE indicators (\n    indicator_id INT PRIMARY KEY,\n    indicator_value VARCHAR(255) NOT NULL,\n    indicator_type VARCHAR(50) NOT NULL,\n    feed_id INT NOT NULL,\n    FOREIGN KEY (feed_id) REFERENCES threat_feeds(feed_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware (\n    malware_id INT PRIMARY KEY,\n    malware_name VARCHAR(100) NOT NULL,\n    detection_date DATE NOT NULL,\n    indicator_id INT NOT NULL,\n    FOREIGN KEY (indicator_id) REFERENCES indicators(indicator_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents (\n    incident_id INT PRIMARY KEY,\n    incident_name VARCHAR(100) NOT NULL,\n    incident_date DATE NOT NULL,\n    malware_id INT NOT NULL,\n    FOREIGN KEY (malware_id) REFERENCES malware(malware_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_intel_feed (\n    id INT PRIMARY KEY,\n    feed_name VARCHAR(255),\n    feed_url VARCHAR(255),\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE threat_indicators (\n    indicator_id INT PRIMARY KEY,\n    indicator_type VARCHAR(50),\n    indicator_value VARCHAR(255),\n    related_feed_id INT,\n    FOREIGN KEY (related_feed_id) REFERENCES threat_intel_feed(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_events (\n    event_id INT PRIMARY KEY,\n    event_type VARCHAR(50),\n    event_timestamp TIMESTAMP,\n    related_indicator_id INT,\n    FOREIGN KEY (related_indicator_id) REFERENCES threat_indicators(indicator_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP,\n    alert_message TEXT,\n    related_event_id INT,\n    FOREIGN KEY (related_event_id) REFERENCES security_events(event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(255)\n);"
+      }
+    ]
+  }
+]

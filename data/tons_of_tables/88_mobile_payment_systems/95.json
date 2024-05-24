@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permission_levels ( \n    participant_id INT PRIMARY KEY, \n    permission_level VARCHAR(50) NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE participant_permissions (\n  participant_id INT PRIMARY KEY,\n  permission_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permission_levels (\n  level_id INT PRIMARY KEY,\n  level_name VARCHAR(50) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_participants (\n  participant_id INT PRIMARY KEY,\n  participant_name VARCHAR(255),\n  permission_level INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE permission_roles (\n  role_id INT PRIMARY KEY,\n  role_name VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE participant_roles (\n  participant_id INT,\n  role_id INT,\n  PRIMARY KEY (participant_id, role_id),\n  FOREIGN KEY (participant_id) REFERENCES blockchain_participants(participant_id),\n  FOREIGN KEY (role_id) REFERENCES permission_roles(role_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permission_levels (\n    participant_id UUID PRIMARY KEY,\n    permission_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name VARCHAR(50),\n    organization VARCHAR(50),\n    role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE organizations (\n    organization_id UUID PRIMARY KEY,\n    organization_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_network_participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name VARCHAR(100) NOT NULL,\n    permission_level INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permission_levels (\n    level_id SERIAL PRIMARY KEY,\n    level_name VARCHAR(50) NOT NULL UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participant_permissions (\n    permission_id SERIAL PRIMARY KEY,\n    participant_id UUID REFERENCES blockchain_network_participants(participant_id),\n    level_id INT REFERENCES permission_levels(level_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE activities (\n    activity_id SERIAL PRIMARY KEY,\n    activity_name VARCHAR(100) NOT NULL,\n    permission_level_required INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE activity_logs (\n    log_id SERIAL PRIMARY KEY,\n    activity_id INT REFERENCES activities(activity_id),\n    participant_id UUID REFERENCES blockchain_network_participants(participant_id),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

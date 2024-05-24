@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advertising_expenditures (\n    company_name VARCHAR(255),\n    media_type VARCHAR(50),\n    expenditure_amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advertising_expenditures (\n    id INT PRIMARY KEY,\n    media_company VARCHAR(255),\n    expenditure_amount DECIMAL(10, 2),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_scrutiny (\n    id INT PRIMARY KEY,\n    regulator VARCHAR(255),\n    description TEXT,\n    approval_status BOOLEAN,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advertising_expenditures (\n    company_name VARCHAR(255),\n    media_platform VARCHAR(255),\n    expenditure_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE advertising_companies (\n    company_id INT,\n    company_name VARCHAR(255),\n    industry VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_agencies (\n    agency_id INT,\n    agency_name VARCHAR(255),\n    jurisdiction VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Media_Companies (\n    id SERIAL PRIMARY KEY,\n    company_name VARCHAR(255) NOT NULL,\n    industry VARCHAR(100),\n    headquarters_location VARCHAR(255),\n    revenue DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Advertising_Expenditures (\n    id SERIAL PRIMARY KEY,\n    company_id INT NOT NULL,\n    expenditure_date DATE,\n    expenditure_amount DECIMAL,\n    media_platform VARCHAR(100),\n    FOREIGN KEY (company_id) REFERENCES Media_Companies (id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Regulatory_Scrutiny (\n    id SERIAL PRIMARY KEY,\n    company_id INT NOT NULL,\n    scrutiny_date DATE,\n    scrutiny_status VARCHAR(50),\n    comments TEXT,\n    FOREIGN KEY (company_id) REFERENCES Media_Companies (id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Media_Platforms (\n    id SERIAL PRIMARY KEY,\n    platform_name VARCHAR(100) NOT NULL,\n    platform_type VARCHAR(50),\n    country_of_operation VARCHAR(50),\n    founding_year INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_company (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255) NOT NULL,\n    company_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE advertising_campaign (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    company_id INT,\n    FOREIGN KEY (company_id) REFERENCES media_company(company_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE advertising_expenditure (\n    expenditure_id INT PRIMARY KEY,\n    expenditure_amount DECIMAL(10, 2) NOT NULL,\n    campaign_id INT,\n    expenditure_date DATE NOT NULL,\n    FOREIGN KEY (campaign_id) REFERENCES advertising_campaign(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_agency (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_agency (\n    campaign_id INT,\n    agency_id INT,\n    PRIMARY KEY (campaign_id, agency_id),\n    FOREIGN KEY (campaign_id) REFERENCES advertising_campaign(campaign_id),\n    FOREIGN KEY (agency_id) REFERENCES ad_agency(agency_id)\n);"
+      }
+    ]
+  }
+]

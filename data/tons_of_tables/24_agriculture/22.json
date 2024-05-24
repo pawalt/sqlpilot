@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE nutrient_levels (\n    field_id INT PRIMARY KEY,\n    field_name VARCHAR(255),\n    nitrogen_level DECIMAL,\n    phosphorus_level DECIMAL,\n    potassium_level DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE soil_analysis (\n  soil_id INT PRIMARY KEY,\n  field_id INT,\n  nutrient_level DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_rotation (\n  crop_id INT PRIMARY KEY,\n  crop_name VARCHAR(255),\n  rotation_period INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fields (\n    field_id SERIAL PRIMARY KEY,\n    field_name VARCHAR(255) NOT NULL,\n    soil_nitrogen FLOAT,\n    soil_ph FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crops (\n    crop_id SERIAL PRIMARY KEY,\n    crop_name VARCHAR(255) NOT NULL,\n    optimal_nitrogen FLOAT,\n    optimal_ph FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_rotations (\n    rotation_id SERIAL PRIMARY KEY,\n    field_id INT REFERENCES fields(field_id),\n    crop_id INT REFERENCES crops(crop_id),\n    rotation_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field_data (\n    field_id INT PRIMARY KEY,\n    soil_type VARCHAR(50),\n    nutrient_level DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_rotation (\n    rotation_id INT PRIMARY KEY,\n    field_id INT,\n    crop_type VARCHAR(50),\n    rotation_date DATE,\n    FOREIGN KEY (field_id) REFERENCES field_data(field_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE farm_location (\n    farm_id INT PRIMARY KEY,\n    farm_name VARCHAR(50),\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_harvest (\n    harvest_id INT PRIMARY KEY,\n    rotation_id INT,\n    harvest_date DATE,\n    yield_kg DECIMAL(10,2),\n    FOREIGN KEY (rotation_id) REFERENCES crop_rotation(rotation_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SoilFields (\n    field_id INT PRIMARY KEY,\n    field_name VARCHAR(50),\n    nutrient_level INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CropRotations (\n    rotation_id INT PRIMARY KEY,\n    rotation_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CropTypes (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(50),\n    nutrient_requirements INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldCropMapping (\n    field_id INT,\n    crop_id INT,\n    rotation_id INT,\n    FOREIGN KEY (field_id) REFERENCES SoilFields(field_id),\n    FOREIGN KEY (crop_id) REFERENCES CropTypes(crop_id),\n    FOREIGN KEY (rotation_id) REFERENCES CropRotations(rotation_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CropHarvest (\n    harvest_id INT PRIMARY KEY,\n    crop_id INT,\n    harvest_date DATE,\n    yield_kg DOUBLE\n    FOREIGN KEY (crop_id) REFERENCES CropTypes(crop_id)\n)"
+      }
+    ]
+  }
+]

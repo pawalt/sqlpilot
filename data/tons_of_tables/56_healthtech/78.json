@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genomics_data (\n    gene_name VARCHAR(255),\n    pathway_name VARCHAR(255),\n    gene_expression FLOAT,\n    pathway_activity BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomicsData (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255),\n  pathway_id INT,\n  pathway_name VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DrugTargets (\n  target_id INT PRIMARY KEY,\n  target_name VARCHAR(255),\n  gene_id INT,\n  pathway_id INT,\n  FOREIGN KEY (gene_id) REFERENCES GenomicsData(gene_id),\n  FOREIGN KEY (pathway_id) REFERENCES GenomicsData(pathway_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genomics_data (\n    sample_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    gene_expression FLOAT,\n    pathway_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_targets (\n    target_id INT PRIMARY KEY,\n    target_name VARCHAR(255),\n    pathway_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_pathways (\n    pathway_id INT PRIMARY KEY,\n    pathway_name VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneticPathways (\n  pathway_id INT PRIMARY KEY,\n  pathway_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genes (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255) NOT NULL,\n  pathway_id INT,\n  FOREIGN KEY (pathway_id) REFERENCES GeneticPathways(pathway_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DrugTargets (\n  target_id INT PRIMARY KEY,\n  target_name VARCHAR(255) NOT NULL,\n  gene_id INT,\n  FOREIGN KEY (gene_id) REFERENCES Genes(gene_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Drugs (\n  drug_id INT PRIMARY KEY,\n  drug_name VARCHAR(255) NOT NULL,\n  target_id INT,\n  FOREIGN KEY (target_id) REFERENCES DrugTargets(target_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_expression (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    expression_level FLOAT\n);\n\nCREATE TABLE pathway (\n    pathway_id INT PRIMARY KEY,\n    pathway_name VARCHAR(255),\n    description TEXT\n);\n\nCREATE TABLE drug (\n    drug_id INT PRIMARY KEY,\n    drug_name VARCHAR(255),\n    target_gene_id INT\n);\n\nCREATE TABLE genetic_variant (\n    variant_id INT PRIMARY KEY,\n    gene_id INT,\n    variant_type VARCHAR(50),\n    effect VARCHAR(50)\n);\n\nCREATE TABLE drug_target (\n    target_id INT PRIMARY KEY,\n    drug_id INT,\n    gene_id INT\n);"
+      }
+    ]
+  }
+]

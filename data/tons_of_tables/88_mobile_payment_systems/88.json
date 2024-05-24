@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    qr_code_data TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id SERIAL PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  payment_amount DECIMAL(10,2) NOT NULL,\n  payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL(10, 2) NOT NULL,\n    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT REFERENCES payments(payment_id),\n    qr_code VARCHAR(100) UNIQUE NOT NULL,\n    status VARCHAR(20) DEFAULT 'Pending'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qr_codes (\n    qr_code_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    qr_code_data TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n    log_id INT PRIMARY KEY,\n    transaction_id INT NOT NULL,\n    log_message TEXT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL(10,2) NOT NULL,\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT REFERENCES payments(payment_id),\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qr_codes (\n    qr_code_id INT PRIMARY KEY,\n    payment_id INT REFERENCES payments(payment_id),\n    qr_code_data TEXT UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    login_time TIMESTAMP NOT NULL,\n    logout_time TIMESTAMP\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE logistics_providers (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR(50),\n  provider_location VARCHAR(100),\n  contact_person VARCHAR(50),\n  contact_email VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE third_party_logistics_providers (\n    provider_id SERIAL PRIMARY KEY,\n    provider_name TEXT NOT NULL,\n    provider_contact_person TEXT,\n    provider_email TEXT,\n    provider_phone_number TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment_orders (\n    order_id SERIAL PRIMARY KEY,\n    order_details TEXT,\n    order_date DATE,\n    provider_id INTEGER REFERENCES third_party_logistics_providers(provider_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE logistics_providers (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR(50),\n  provider_address VARCHAR(100),\n  provider_contact VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_orders (\n  order_id INT PRIMARY KEY,\n  order_date DATE,\n  customer_id INT,\n  order_total DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE order_shipments (\n  shipment_id INT PRIMARY KEY,\n  order_id INT,\n  provider_id INT,\n  shipment_status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE logistics_providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(50) NOT NULL,\n    contact_person VARCHAR(50),\n    phone_number VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n    shipment_id INT PRIMARY KEY,\n    provider_id INT NOT NULL,\n    recipient_name VARCHAR(50) NOT NULL,\n    status VARCHAR(20) DEFAULT 'Pending',\n    FOREIGN KEY (provider_id) REFERENCES logistics_providers(provider_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment_details (\n    shipment_detail_id INT PRIMARY KEY,\n    shipment_id INT NOT NULL,\n    item_description TEXT,\n    quantity INT,\n    weight FLOAT,\n    FOREIGN KEY (shipment_id) REFERENCES shipments(shipment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_updates (\n    update_id INT PRIMARY KEY,\n    shipment_id INT NOT NULL,\n    update_message TEXT,\n    update_timestamp TIMESTAMP,\n    FOREIGN KEY (shipment_id) REFERENCES shipments(shipment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE third_party_logistics_providers (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR(50) NOT NULL,\n  contact_person VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logistics_orders (\n  order_id INT PRIMARY KEY,\n  provider_id INT,\n  order_date DATE,\n  delivery_date DATE,\n  status VARCHAR(20) NOT NULL,\n  FOREIGN KEY (provider_id) REFERENCES third_party_logistics_providers(provider_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE order_details (\n  order_id INT,\n  product_id INT,\n  quantity INT NOT NULL,\n  PRIMARY KEY (order_id, product_id),\n  FOREIGN KEY (order_id) REFERENCES logistics_orders(order_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(50) NOT NULL,\n  price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouses (\n  warehouse_id INT PRIMARY KEY,\n  location VARCHAR(100) NOT NULL,\n  capacity INT NOT NULL\n);"
+      }
+    ]
+  }
+]

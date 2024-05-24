@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_workflows (\n  id INT PRIMARY KEY,\n  project_name TEXT,\n  workflow_status TEXT,\n  approval_status TEXT,\n  trigger_name TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE approvals (\n    approval_id INT PRIMARY KEY,\n    project_id INT,\n    approver_name VARCHAR(100),\n    approval_status VARCHAR(50),\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (project_id INT PRIMARY KEY, project_name VARCHAR(255) NOT NULL, project_description TEXT, project_status VARCHAR(50) DEFAULT 'Pending', created_at TIMESTAMP DEFAULT NOW());\n\nCREATE TABLE workflows (workflow_id INT PRIMARY KEY, workflow_name VARCHAR(255) NOT NULL, workflow_description TEXT, project_id INT, created_at TIMESTAMP DEFAULT NOW(), FOREIGN KEY (project_id) REFERENCES projects(project_id));\n\nCREATE TABLE approvals (approval_id INT PRIMARY KEY, workflow_id INT, approved_by VARCHAR(255) NOT NULL, approval_status VARCHAR(50) DEFAULT 'Pending', created_at TIMESTAMP DEFAULT NOW(), FOREIGN KEY (workflow_id) REFERENCES workflows(workflow_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    project_id INT,\n    CONSTRAINT fk_project_id FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE approvals (\n    approval_id INT PRIMARY KEY,\n    task_id INT,\n    approved_by VARCHAR(255),\n    approval_date DATE,\n    CONSTRAINT fk_task_id FOREIGN KEY (task_id) REFERENCES tasks(task_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE workflows (\n    workflow_id INT PRIMARY KEY,\n    workflow_name VARCHAR(255),\n    tasks_assigned INT,\n    approval_required BOOLEAN,\n    CONSTRAINT chk_tasks_assigned CHECK (tasks_assigned > 0),\n    CONSTRAINT chk_approval_required CHECK (approval_required IN (TRUE, FALSE))\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    start_date TIMESTAMP,\n    end_date TIMESTAMP,\n    project_manager VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    start_date TIMESTAMP,\n    end_date TIMESTAMP,\n    task_status VARCHAR(50),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE task_approvals (\n    approval_id INT PRIMARY KEY,\n    task_id INT,\n    approval_status VARCHAR(50),\n    approval_date TIMESTAMP,\n    approver VARCHAR(255),\n    FOREIGN KEY (task_id) REFERENCES tasks(task_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE triggers (\n    trigger_id INT PRIMARY KEY,\n    trigger_name VARCHAR(255),\n    task_id INT,\n    trigger_condition TEXT,\n    trigger_action TEXT,\n    FOREIGN KEY (task_id) REFERENCES tasks(task_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stored_procedures (\n    procedure_id INT PRIMARY KEY,\n    procedure_name VARCHAR(255),\n    procedure_description TEXT\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audit_results (\n    audit_id UUID PRIMARY KEY,\n    ar_content_id UUID NOT NULL,\n    audit_date DATE NOT NULL,\n    auditor_id UUID NOT NULL,\n    bias_detected BOOLEAN NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audits_of_ar_content (\n    audit_id INT PRIMARY KEY,\n    ar_content_id INT,\n    audit_date DATE,\n    auditor_name VARCHAR(50),\n    detected_biases VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audits (\n id INT PRIMARY KEY,\n audit_date DATE,\n auditor_name VARCHAR(50),\n ar_content_id INT,\n audit_result TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE auditors (\n id INT PRIMARY KEY,\n name VARCHAR(50),\n expertise_area VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_content (\n id INT PRIMARY KEY,\n content_name VARCHAR(100),\n creator_name VARCHAR(50),\n creation_date DATE,\n ar_platform VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ethical_audit_ar_content (\n    audit_id INT PRIMARY KEY,\n    content_id INT,\n    auditor_name VARCHAR(50),\n    audit_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bias_identification (\n    bias_id INT PRIMARY KEY,\n    audit_id INT,\n    bias_description TEXT,\n    identified_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bias_correction (\n    correction_id INT PRIMARY KEY,\n    bias_id INT,\n    correction_description TEXT,\n    corrected_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE auditor_feedback (\n    feedback_id INT PRIMARY KEY,\n    audit_id INT,\n    feedback_text TEXT,\n    feedback_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audits_table (\n    audit_id UUID PRIMARY KEY,\n    audit_name VARCHAR,\n    audit_date DATE,\n    auditor_name VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content_table (\n    content_id UUID PRIMARY KEY,\n    content_name VARCHAR,\n    content_type VARCHAR,\n    content_owner VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bias_table (\n    bias_id UUID PRIMARY KEY,\n    bias_type VARCHAR,\n    bias_description TEXT,\n    content_id UUID REFERENCES content_table(content_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE violations_table (\n    violation_id UUID PRIMARY KEY,\n    violation_description TEXT,\n    resolution_status VARCHAR,\n    audit_id UUID REFERENCES audits_table(audit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers_table (\n    researcher_id UUID PRIMARY KEY,\n    researcher_name VARCHAR,\n    researcher_specialization VARCHAR\n);"
+      }
+    ]
+  }
+]

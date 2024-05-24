@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_materials (\n    material_id SERIAL PRIMARY KEY,\n    material_name VARCHAR(100) NOT NULL,\n    material_type VARCHAR(50) NOT NULL,\n    material_price DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    material_category VARCHAR(255),\n    material_description TEXT\n);\n\nCREATE TABLE technical_data (\n    data_id INT PRIMARY KEY,\n    material_id INT,\n    technical_specifications TEXT\n    FOREIGN KEY (material_id) REFERENCES building_materials(material_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    material_type VARCHAR(50),\n    material_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE material_specifications (\n    spec_id INT PRIMARY KEY,\n    material_id INT REFERENCES building_materials(material_id),\n    spec_name VARCHAR(100) NOT NULL,\n    spec_value VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE technical_data (\n    data_id INT PRIMARY KEY,\n    material_id INT REFERENCES building_materials(material_id),\n    tech_property VARCHAR(100) NOT NULL,\n    tech_value VARCHAR(255) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    material_type VARCHAR(50),\n    material_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    supplier_location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE specifications (\n    spec_id INT PRIMARY KEY,\n    material_id INT,\n    supplier_id INT,\n    spec_details TEXT,\n    FOREIGN KEY (material_id) REFERENCES materials(material_id),\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE technical_data (\n    data_id INT PRIMARY KEY,\n    material_id INT,\n    data_name VARCHAR(100),\n    data_type VARCHAR(50),\n    data_value TEXT,\n    FOREIGN KEY (material_id) REFERENCES materials(material_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BuildingMaterials (\n    material_id SERIAL PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    material_type VARCHAR(50) NOT NULL,\n    material_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialSpecifications (\n    spec_id SERIAL PRIMARY KEY,\n    material_id INT NOT NULL,\n    spec_name VARCHAR(255) NOT NULL,\n    spec_value VARCHAR(100) NOT NULL,\n    FOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TechnicalData (\n    data_id SERIAL PRIMARY KEY,\n    material_id INT NOT NULL,\n    data_type VARCHAR(50) NOT NULL,\n    data_value TEXT NOT NULL,\n    FOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id SERIAL PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    supplier_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaterialInventory (\n    inventory_id SERIAL PRIMARY KEY,\n    material_id INT NOT NULL,\n    supplier_id INT NOT NULL,\n    quantity INT NOT NULL,\n    FOREIGN KEY (material_id) REFERENCES BuildingMaterials(material_id),\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);"
+      }
+    ]
+  }
+]

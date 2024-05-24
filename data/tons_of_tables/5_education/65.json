@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    university_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE joint_research_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    university_id INT,\n    start_date DATE,\n    end_date DATE,\n    CONSTRAINT fk_university_id FOREIGN KEY (university_id) REFERENCES universities(university_id)\n);\n\nCREATE TABLE universities (\n    university_id INT PRIMARY KEY,\n    university_name VARCHAR(255) NOT NULL,\n    country VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ResearchProjects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    university_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectMembers (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(255),\n    member_type VARCHAR(50),\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES ResearchProjects(project_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectProgress (\n    progress_id INT PRIMARY KEY,\n    project_id INT,\n    progress_status VARCHAR(50),\n    progress_date DATE,\n    updated_by VARCHAR(100),\n    FOREIGN KEY (project_id) REFERENCES ResearchProjects(project_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    university_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255),\n    university_id INT,\n    project_id INT,\n    FOREIGN KEY (university_id) REFERENCES universities(university_id),\n    FOREIGN KEY (project_id) REFERENCES research_projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE universities (\n    university_id INT PRIMARY KEY,\n    university_name VARCHAR(255),\n    location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE publications (\n    publication_id INT PRIMARY KEY,\n    publication_title VARCHAR(255),\n    project_id INT,\n    researcher_id INT,\n    FOREIGN KEY (project_id) REFERENCES research_projects(project_id),\n    FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE University (\n    university_id SERIAL PRIMARY KEY,\n    university_name VARCHAR(100) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchProject (\n    project_id SERIAL PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL,\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectMember (\n    member_id SERIAL PRIMARY KEY,\n    member_name VARCHAR(100) NOT NULL,\n    university_id INT NOT NULL,\n    project_id INT NOT NULL,\n    role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Collaboration (\n    collaboration_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    university_id1 INT NOT NULL,\n    university_id2 INT NOT NULL,\n    collaboration_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProgressUpdate (\n    update_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    update_date DATE,\n    update_details TEXT\n);"
+      }
+    ]
+  }
+]

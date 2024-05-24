@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_demographics (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50),\n  date_of_birth DATE,\n  gender VARCHAR(10),\n  address TEXT,\n  phone_number VARCHAR(15)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_demographics (\n  patient_id UUID PRIMARY KEY,\n  patient_name VARCHAR(100),\n  date_of_birth DATE,\n  gender VARCHAR(10),\n  address VARCHAR(255),\n  contact_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_images (\n  image_id UUID PRIMARY KEY,\n  image_name VARCHAR(100),\n  image_type VARCHAR(50),\n  patient_id UUID REFERENCES patient_demographics(patient_id),\n  date_uploaded TIMESTAMP,\n  image_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_demographics (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50) NOT NULL,\n  patient_dob DATE,\n  address VARCHAR(100),\n  contact_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE imaging_studies (\n  study_id INT PRIMARY KEY,\n  patient_id INT,\n  study_type VARCHAR(50) NOT NULL,\n  study_date DATE,\n  imaging_results TEXT,\n  FOREIGN KEY (patient_id) REFERENCES patient_demographics(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE imaging_technicians (\n  technician_id INT PRIMARY KEY,\n  technician_name VARCHAR(50) NOT NULL,\n  technician_contact VARCHAR(20),\n  technician_specialization VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR(50),\n    date_of_birth DATE,\n    gender VARCHAR(10),\n    race VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Medical_Records (\n    record_id UUID PRIMARY KEY,\n    patient_id UUID REFERENCES Patients(patient_id),\n    record_type VARCHAR(50),\n    record_date DATE,\n    physician_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Imaging_Reports (\n    report_id UUID PRIMARY KEY,\n    record_id UUID REFERENCES Medical_Records(record_id),\n    imaging_type VARCHAR(50),\n    report_date DATE,\n    findings VARCHAR(500)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Imaging_Images (\n    image_id UUID PRIMARY KEY,\n    report_id UUID REFERENCES Imaging_Reports(report_id),\n    image_type VARCHAR(50),\n    image_url VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients(\n  patient_id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  age INT,\n  gender ENUM('Male', 'Female', 'Other'),\n  address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalRecords(\n  record_id INT PRIMARY KEY,\n  patient_id INT,\n  record_date DATE,\n  description TEXT,\n  physician_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImagingStudies(\n  study_id INT PRIMARY KEY,\n  patient_id INT,\n  study_type VARCHAR(50),\n  study_date DATE,\n  results TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Physicians(\n  physician_id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  specialization VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointments(\n  appointment_id INT PRIMARY KEY,\n  patient_id INT,\n  appointment_date DATE,\n  physician_id INT,\n  status ENUM('Scheduled', 'Cancelled', 'Completed')\n);"
+      }
+    ]
+  }
+]

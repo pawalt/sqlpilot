@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field_mapping (\n    field_id UUID PRIMARY KEY,\n    field_name VARCHAR(255) NOT NULL,\n    latitude DOUBLE PRECISION NOT NULL,\n    longitude DOUBLE PRECISION NOT NULL,\n    crop_type VARCHAR(100) NOT NULL,\n    crop_health_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fields (\n  field_id UUID PRIMARY KEY,\n  field_name VARCHAR(255),\n  field_location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_health (\n  record_id UUID PRIMARY KEY,\n  field_id UUID,\n  health_status VARCHAR(50),\n  health_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FieldMapping (\n    field_id INT PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    field_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CropHealth (\n    health_id INT PRIMARY KEY,\n    field_id INT,\n    crop_type TEXT,\n    health_status TEXT,\n    FOREIGN KEY (field_id) REFERENCES FieldMapping(field_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorData (\n    sensor_id INT PRIMARY KEY,\n    field_id INT,\n    timestamp TIMESTAMP,\n    temperature DECIMAL,\n    humidity DECIMAL,\n    FOREIGN KEY (field_id) REFERENCES FieldMapping(field_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FieldMapping (\n    field_id INT PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    field_area DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CropHealth (\n    crop_id INT PRIMARY KEY,\n    field_id INT,\n    health_status VARCHAR(50),\n    reported_date DATE,\n    FOREIGN KEY (field_id) REFERENCES FieldMapping(field_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldImages (\n    image_id INT PRIMARY KEY,\n    field_id INT,\n    image_path VARCHAR(255),\n    image_type VARCHAR(50),\n    FOREIGN KEY (field_id) REFERENCES FieldMapping(field_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WeatherData (\n    data_id INT PRIMARY KEY,\n    field_id INT,\n    temperature DECIMAL,\n    humidity DECIMAL,\n    wind_speed DECIMAL,\n    recorded_date TIMESTAMP,\n    FOREIGN KEY (field_id) REFERENCES FieldMapping(field_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Field (field_id INT PRIMARY KEY, field_name VARCHAR(255) NOT NULL, field_size FLOAT NOT NULL, location_lat FLOAT NOT NULL, location_long FLOAT NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Crop (crop_id INT PRIMARY KEY, crop_name VARCHAR(255) NOT NULL, crop_type VARCHAR(100) NOT NULL, planting_date DATE NOT NULL, field_id INT NOT NULL, FOREIGN KEY (field_id) REFERENCES Field(field_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE Health_Reading (reading_id INT PRIMARY KEY, reading_date DATE NOT NULL, health_score INT NOT NULL, crop_id INT NOT NULL, FOREIGN KEY (crop_id) REFERENCES Crop(crop_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE Worker (worker_id INT PRIMARY KEY, worker_name VARCHAR(255) NOT NULL, hire_date DATE NOT NULL, specialization VARCHAR(100) NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Equipment (equipment_id INT PRIMARY KEY, equipment_name VARCHAR(255) NOT NULL, equipment_type VARCHAR(100) NOT NULL, field_id INT NOT NULL, FOREIGN KEY (field_id) REFERENCES Field(field_id))"
+      }
+    ]
+  }
+]

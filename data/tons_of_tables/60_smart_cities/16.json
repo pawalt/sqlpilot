@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crime_statistics (\n  id INT PRIMARY KEY,\n  neighborhood_name VARCHAR(50),\n  crime_type VARCHAR(50),\n  crime_date DATE,\n  crime_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crime_data (crime_id INT PRIMARY KEY,\n    crime_description TEXT,\n    neighborhood VARCHAR,\n    crime_date DATE,\n    crime_time TIME)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE neighborhood_stats (neighborhood_id INT PRIMARY KEY,\n    neighborhood_name VARCHAR,\n    average_crime_rate FLOAT,\n    total_crimes_reported INT,\n    most_common_crime VARCHAR)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CrimeReports (\n    report_id SERIAL PRIMARY KEY,\n    report_date DATE NOT NULL,\n    crime_type VARCHAR(50) NOT NULL,\n    neighborhood VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Neighborhoods (\n    neighborhood_id SERIAL PRIMARY KEY,\n    neighborhood_name VARCHAR(50) NOT NULL,\n    city VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CrimeStatistics (\n    statistic_id SERIAL PRIMARY KEY,\n    report_id INT REFERENCES CrimeReports(report_id),\n    neighborhood_id INT REFERENCES Neighborhoods(neighborhood_id),\n    crime_count INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Neighborhoods (\n    id INT PRIMARY KEY,\n    neighborhood_name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Crimes (\n    crime_id INT PRIMARY KEY,\n    crime_type VARCHAR(255) NOT NULL,\n    date_reported DATE,\n    neighborhood_id INT,\n    FOREIGN KEY (neighborhood_id) REFERENCES Neighborhoods(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Suspects (\n    suspect_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    age INT,\n    neighborhood_id INT,\n    FOREIGN KEY (neighborhood_id) REFERENCES Neighborhoods(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Witnesses (\n    witness_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    statement TEXT,\n    crime_id INT,\n    FOREIGN KEY (crime_id) REFERENCES Crimes(crime_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Neighborhoods (\n neighborhood_id INT PRIMARY KEY,\n neighborhood_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Crimes (\n crime_id INT PRIMARY KEY,\n crime_type VARCHAR(50),\n crime_date DATE,\n neighborhood_id INT,\n FOREIGN KEY (neighborhood_id) REFERENCES Neighborhoods(neighborhood_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Criminals (\n criminal_id INT PRIMARY KEY,\n criminal_name VARCHAR(50),\n criminal_age INT,\n crime_id INT,\n FOREIGN KEY (crime_id) REFERENCES Crimes(crime_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Victims (\n victim_id INT PRIMARY KEY,\n victim_name VARCHAR(50),\n victim_age INT,\n crime_id INT,\n FOREIGN KEY (crime_id) REFERENCES Crimes(crime_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Witnesses (\n witness_id INT PRIMARY KEY,\n witness_name VARCHAR(50),\n witness_contact VARCHAR(20),\n crime_id INT,\n FOREIGN KEY (crime_id) REFERENCES Crimes(crime_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id SERIAL PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL DEFAULT now()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_permissions (\n    id INT PRIMARY KEY,\n    key_id INT NOT NULL,\n    user_id INT NOT NULL,\n    permission_level VARCHAR(10) NOT NULL,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  id SERIAL PRIMARY KEY,\n  key_name TEXT NOT NULL,\n  key_value TEXT NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_permissions (\n  id SERIAL PRIMARY KEY,\n  key_id INT NOT NULL,\n  user_id INT NOT NULL,\n  permission_level TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_usage_logs (\n  id SERIAL PRIMARY KEY,\n  key_id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  action TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_value VARCHAR(255) NOT NULL,\n    key_owner VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE key_usage_logs (\n    log_id INT PRIMARY KEY,\n    key_id INT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE key_management (\n    management_id INT PRIMARY KEY,\n    key_id INT NOT NULL,\n    key_type VARCHAR(50) NOT NULL,\n    key_algorithm VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE key_permissions (\n    permission_id INT PRIMARY KEY,\n    key_id INT NOT NULL,\n    user_id INT NOT NULL,\n    permission_type VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA NOT NULL,\n    key_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_encryptors (\n    encryptor_id UUID PRIMARY KEY,\n    encryptor_name VARCHAR(50) NOT NULL,\n    encryptor_public_key BYTEA NOT NULL,\n    encryptor_private_key BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_storage (\n    storage_id UUID PRIMARY KEY,\n    encrypted_data BYTEA NOT NULL,\n    data_owner UUID REFERENCES users(user_id),\n    data_encryptor UUID REFERENCES data_encryptors(encryptor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    log_timestamp TIMESTAMP NOT NULL,\n    action VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

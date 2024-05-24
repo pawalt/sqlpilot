@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_rotation_experiments (\n  experiment_id UUID PRIMARY KEY,\n  rotation_sequence VARCHAR(255),\n  soil_type VARCHAR(100),\n  start_date DATE,\n  end_date DATE,\n  crop_yield DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_rotation_experiments (\n    experiment_id INT PRIMARY KEY,\n    rotation_sequence VARCHAR(50),\n    soil_health_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rotation_sequence_details (\n    sequence_id INT PRIMARY KEY,\n    crop_name VARCHAR(50),\n    planting_date DATE,\n    harvest_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment_data (\n  experiment_id INT PRIMARY KEY,\n  crop_name VARCHAR,\n  rotation_sequence VARCHAR,\n  soil_health_rating INT\n);\n\nCREATE TABLE crop_rotation (\n  rotation_id INT PRIMARY KEY,\n  crop_name VARCHAR,\n  crop_family VARCHAR,\n  crop_rotation_sequence VARCHAR\n);\n\nCREATE TABLE soil_health_ratings (\n  rating_id INT PRIMARY KEY,\n  rating_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CropRotationExperiment (\n    experiment_id INT PRIMARY KEY,\n    rotation_sequence VARCHAR(50),\n    soil_health_score DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Crop (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(50),\n    crop_family VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentResults (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    crop_id INT,\n    yield DECIMAL,\n    FOREIGN KEY (experiment_id) REFERENCES CropRotationExperiment(experiment_id),\n    FOREIGN KEY (crop_id) REFERENCES Crop(crop_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SoilSamples (\n    sample_id INT PRIMARY KEY,\n    experiment_id INT,\n    sample_timestamp TIMESTAMP,\n    soil_ph DECIMAL,\n    FOREIGN KEY (experiment_id) REFERENCES CropRotationExperiment(experiment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Experiment (\n  experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR(255),\n  rotation_sequence VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Plot (\n  plot_id INT PRIMARY KEY,\n  experiment_id INT,\n  plot_number INT,\n  plot_size DECIMAL(5,2),\n  plot_location VARCHAR(255),\n  FOREIGN KEY(experiment_id) REFERENCES Experiment(experiment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Crop (\n  crop_id INT PRIMARY KEY,\n  crop_name VARCHAR(255),\n  crop_type VARCHAR(255),\n  planting_date DATE,\n  harvest_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SoilSample (\n  sample_id INT PRIMARY KEY,\n  plot_id INT,\n  sample_date DATE,\n  ph_level DECIMAL(4,2),\n  organic_matter DECIMAL(4,2),\n  FOREIGN KEY(plot_id) REFERENCES Plot(plot_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Observation (\n  observation_id INT PRIMARY KEY,\n  sample_id INT,\n  crop_id INT,\n  growth_rate DECIMAL(5,2),\n  yield DECIMAL(8,2),\n  FOREIGN KEY(sample_id) REFERENCES SoilSample(sample_id),\n  FOREIGN KEY(crop_id) REFERENCES Crop(crop_id)\n);\n"
+      }
+    ]
+  }
+]

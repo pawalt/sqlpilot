@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_data (\n    customer_id UUID primary key,\n    full_name VARCHAR(255) not null,\n    date_of_birth DATE,\n    email_address VARCHAR(255),\n    phone_number VARCHAR(20),\n    address VARCHAR(255),\n    insurance_plan VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id UUID PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(100),\n  date_of_birth DATE,\n  address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE insurance_policies (\n  policy_id UUID PRIMARY KEY,\n  customer_id UUID REFERENCES customers(customer_id),\n  policy_type VARCHAR(50),\n  coverage_amount DECIMAL(10,2),\n  premium DECIMAL(10,2),\n  start_date DATE,\n  end_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    age INT,\n    email VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id INT PRIMARY KEY,\n    customer_id INT,\n    policy_type VARCHAR(50),\n    coverage_amount DECIMAL(10, 2),\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id INT PRIMARY KEY,\n    policy_id INT,\n    claim_type VARCHAR(50),\n    claim_amount DECIMAL(10, 2),\n    claim_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(20),\n    date_of_birth DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id INT PRIMARY KEY,\n    customer_id INT,\n    policy_type VARCHAR(50) NOT NULL,\n    coverage_amount DECIMAL(10, 2) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id INT PRIMARY KEY,\n    policy_id INT,\n    claim_amount DECIMAL(10, 2) NOT NULL,\n    claim_date DATE,\n    FOREIGN KEY (policy_id) REFERENCES policies(policy_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE offers (\n    offer_id INT PRIMARY KEY,\n    policy_id INT,\n    offer_details TEXT,\n    expiration_date DATE,\n    FOREIGN KEY (policy_id) REFERENCES policies(policy_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    full_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(15),\n    date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id UUID PRIMARY KEY,\n    policy_type VARCHAR(50) NOT NULL,\n    policy_start_date DATE,\n    policy_end_date DATE,\n    customer_id UUID REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE applications (\n    application_id UUID PRIMARY KEY,\n    application_date DATE,\n    status VARCHAR(50) NOT NULL,\n    policy_id UUID REFERENCES policies(policy_id),\n    customer_id UUID REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id UUID PRIMARY KEY,\n    claim_date DATE,\n    claim_amount DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(50) NOT NULL,\n    policy_id UUID REFERENCES policies(policy_id),\n    customer_id UUID REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id UUID PRIMARY KEY,\n    payment_date DATE,\n    amount DECIMAL(10, 2) NOT NULL,\n    payment_method VARCHAR(50),\n    customer_id UUID REFERENCES customers(customer_id)\n);"
+      }
+    ]
+  }
+]

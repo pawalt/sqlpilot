@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255),\n    resource_type VARCHAR(50),\n    resource_link VARCHAR(255),\n    creation_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE videos (\n    id INT PRIMARY KEY,\n    title VARCHAR(255),\n    url VARCHAR(255),\n    duration INT,\n    created_at TIMESTAMP\n);\n\nCREATE TABLE study_guides (\n    id INT PRIMARY KEY,\n    topic VARCHAR(255),\n    content TEXT,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE video_tutorials (\n    id INT PRIMARY KEY,\n    title VARCHAR(255),\n    description TEXT,\n    duration INT,\n    created_at TIMESTAMPTZ\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE study_guides (\n    id INT PRIMARY KEY,\n    title VARCHAR(255),\n    content TEXT,\n    author VARCHAR(100),\n    created_at TIMESTAMPTZ\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE student_access (\n    student_id INT,\n    resource_id INT,\n    access_date TIMESTAMPTZ,\n    FOREIGN KEY(student_id) REFERENCES students(id),\n    FOREIGN KEY(resource_id) REFERENCES video_tutorials(id) ON DELETE CASCADE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tutorials (\n    tutorial_id UUID PRIMARY KEY,\n    title STRING,\n    description STRING,\n    video_url STRING,\n    created_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE study_guides (\n    guide_id UUID PRIMARY KEY,\n    title STRING,\n    author STRING,\n    file_path STRING,\n    created_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE student_resources (\n    resource_id UUID PRIMARY KEY,\n    resource_type STRING,\n    title STRING,\n    description STRING,\n    file_path STRING,\n    created_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE student_progress (\n    progress_id UUID PRIMARY KEY,\n    student_id UUID,\n    tutorial_id UUID,\n    guide_id UUID,\n    progress_percent DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE resources (\n    resource_id INT PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    category VARCHAR(50),\n    media_type VARCHAR(50),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(255) UNIQUE,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    user_id INT,\n    resource_id INT,\n    start_date DATE,\n    end_date DATE,\n    active BOOLEAN,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (resource_id) REFERENCES resources(resource_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id INT PRIMARY KEY,\n    resource_id INT,\n    user_id INT,\n    rating INT,\n    review_text TEXT,\n    created_at TIMESTAMP,\n    FOREIGN KEY (resource_id) REFERENCES resources(resource_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50) UNIQUE NOT NULL,\n    description TEXT\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_yield_data (\n    season_id INT,\n    crop_name TEXT,\n    yield_amount DECIMAL,\n    yield_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE seasons ( \n    season_id INT PRIMARY KEY, \n    season_name VARCHAR(50) \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_yield_data ( \n    data_id INT PRIMARY KEY, \n    season_id INT, \n    crop_name VARCHAR(50), \n    yield_amount DECIMAL(10,2), \n    FOREIGN KEY (season_id) REFERENCES seasons(season_id) \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n  crop_id INT PRIMARY KEY,\n  crop_name VARCHAR(50) NOT NULL,\n  yield_amt DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE seasons (\n  season_id INT PRIMARY KEY,\n  season_name VARCHAR(50) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE yield_data (\n  data_id INT PRIMARY KEY,\n  crop_id INT REFERENCES crops (crop_id),\n  season_id INT REFERENCES seasons (season_id),\n  yield_amt DECIMAL(10,2) NOT NULL,\n  date_recorded DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE seasons (\n  season_id INT PRIMARY KEY,\n  season_name VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crops (\n  crop_id INT PRIMARY KEY,\n  crop_name VARCHAR(255) NOT NULL,\n  crop_type VARCHAR(50),\n  harvest_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE yields (\n  yield_id INT PRIMARY KEY,\n  season_id INT NOT NULL,\n  crop_id INT NOT NULL,\n  yield_amount DECIMAL(10,2) NOT NULL,\n  FOREIGN KEY (season_id) REFERENCES seasons(season_id),\n  FOREIGN KEY (crop_id) REFERENCES crops(crop_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE farmers (\n  farmer_id INT PRIMARY KEY,\n  farmer_name VARCHAR(255) NOT NULL,\n  location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE seasons (\n    season_id INT PRIMARY KEY,\n    season_name VARCHAR(50) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crops (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(50) NOT NULL,\n    crop_type VARCHAR(50) NOT NULL,\n    planting_season_id INT NOT NULL,\n    FOREIGN KEY (planting_season_id) REFERENCES seasons(season_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE yields (\n    yield_id INT PRIMARY KEY,\n    crop_id INT NOT NULL,\n    yield_quantity DOUBLE NOT NULL,\n    yield_date DATE NOT NULL,\n    FOREIGN KEY (crop_id) REFERENCES crops(crop_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fields (\n    field_id INT PRIMARY KEY,\n    field_name VARCHAR(50) NOT NULL,\n    field_area DOUBLE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_fields (\n    crop_id INT NOT NULL,\n    field_id INT NOT NULL,\n    planting_date DATE NOT NULL,\n    PRIMARY KEY (crop_id, field_id),\n    FOREIGN KEY (crop_id) REFERENCES crops(crop_id),\n    FOREIGN KEY (field_id) REFERENCES fields(field_id)\n);"
+      }
+    ]
+  }
+]

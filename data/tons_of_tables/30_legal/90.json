@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_records (\n  record_id INT PRIMARY KEY,\n  session_date DATE,\n  mediator_name VARCHAR(50),\n  participant1_name VARCHAR(50),\n  participant2_name VARCHAR(50),\n  session_duration INT,\n  outcome_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_sessions (\n  session_id SERIAL PRIMARY KEY,\n  date DATE,\n  mediator VARCHAR(50),\n  participants JSON,\n  location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mediation_outcomes (\n  outcome_id SERIAL PRIMARY KEY,\n  session_id INT REFERENCES mediation_sessions(session_id),\n  outcome TEXT,\n  result BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_sessions (\n  session_id INT PRIMARY KEY,\n  date DATE,\n  mediator_name VARCHAR(50),\n  participants TEXT,\n  outcome TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mediation_outcomes (\n  outcome_id INT PRIMARY KEY,\n  session_id INT,\n  outcome_text TEXT,\n  resolution VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mediators (\n  mediator_id INT PRIMARY KEY,\n  mediator_name VARCHAR(50),\n  specialty VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_sessions (\n    session_id UUID PRIMARY KEY,\n    mediator_id UUID,\n    client_id UUID,\n    session_date DATE,\n    session_duration INTERVAL,\n    outcome TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mediators (\n    mediator_id UUID PRIMARY KEY,\n    mediator_name VARCHAR(50),\n    mediator_license VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id UUID PRIMARY KEY,\n    client_name VARCHAR(50),\n    client_contact VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outcomes (\n    outcome_id SERIAL PRIMARY KEY,\n    session_id UUID,\n    outcome_description TEXT,\n    outcome_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_sessions (\n    session_id INT PRIMARY KEY,\n    mediator_name VARCHAR(50),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    session_id INT,\n    participant_name VARCHAR(50),\n    role VARCHAR(50),\n    CONSTRAINT fk_session_id FOREIGN KEY (session_id) REFERENCES mediation_sessions(session_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE outcomes (\n    outcome_id INT PRIMARY KEY,\n    session_id INT,\n    participant_id INT,\n    outcome_description TEXT,\n    CONSTRAINT fk_session_id FOREIGN KEY (session_id) REFERENCES mediation_sessions(session_id),\n    CONSTRAINT fk_participant_id FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n    feedback_id INT PRIMARY KEY,\n    participant_id INT,\n    feedback_text TEXT,\n    CONSTRAINT fk_participant_id FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    document_id INT PRIMARY KEY,\n    session_id INT,\n    document_name VARCHAR(100),\n    document_type VARCHAR(50),\n    CONSTRAINT fk_session_id FOREIGN KEY (session_id) REFERENCES mediation_sessions(session_id)\n);\n"
+      }
+    ]
+  }
+]

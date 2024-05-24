@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_samples (\n    sample_id INT PRIMARY KEY,\n    sample_name VARCHAR(255),\n    file_size INT,\n    file_type VARCHAR(50),\n    detection_score FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareSamples (\n    malware_id INT PRIMARY KEY,\n    malware_name VARCHAR(255),\n    file_size INT,\n    file_type VARCHAR(50),\n    upload_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MalwareCharacteristics (\n    characteristic_id INT PRIMARY KEY,\n    malware_id INT,\n    characteristic_name VARCHAR(50),\n    characteristic_value VARCHAR(255),\n    FOREIGN KEY (malware_id) REFERENCES MalwareSamples(malware_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareSamples (\n  sample_id SERIAL PRIMARY KEY,\n  file_name VARCHAR(255) NOT NULL,\n  file_type VARCHAR(50),\n  file_size INT,\n  detection_score FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ThreatAnalysis (\n  analysis_id SERIAL PRIMARY KEY,\n  analysis_date DATE,\n  analysis_result VARCHAR(100) NOT NULL,\n  sample_id INT REFERENCES MalwareSamples(sample_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MalwareCharacteristics (\n  characteristic_id SERIAL PRIMARY KEY,\n  malware_type VARCHAR(50) NOT NULL,\n  behavior_description TEXT,\n  os_platform VARCHAR(50),\n  sample_id INT REFERENCES MalwareSamples(sample_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_samples (\n    sample_id INT PRIMARY KEY,\n    sample_name VARCHAR(255),\n    file_path VARCHAR(255),\n    file_size INT,\n    upload_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_characteristics (\n    characteristic_id INT PRIMARY KEY,\n    characteristic_name VARCHAR(255),\n    description TEXT,\n    severity VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_characteristics (\n    sample_id INT,\n    characteristic_id INT,\n    FOREIGN KEY (sample_id) REFERENCES malware_samples(sample_id),\n    FOREIGN KEY (characteristic_id) REFERENCES malware_characteristics(characteristic_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE threat_analysis (\n    analysis_id INT PRIMARY KEY,\n    sample_id INT,\n    analysis_date TIMESTAMP,\n    analysis_result TEXT,\n    FOREIGN KEY (sample_id) REFERENCES malware_samples(sample_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareSamples (\n    sample_id SERIAL PRIMARY KEY,\n    sample_name VARCHAR(255) NOT NULL,\n    sample_type VARCHAR(50) NOT NULL,\n    file_size INT NOT NULL,\n    upload_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MalwareCharacteristics (\n    characteristic_id SERIAL PRIMARY KEY,\n    sample_id INT NOT NULL,\n    characteristic_name VARCHAR(100) NOT NULL,\n    characteristic_value VARCHAR(255) NOT NULL,\n    FOREIGN KEY (sample_id) REFERENCES MalwareSamples(sample_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ThreatAnalysis (\n    analysis_id SERIAL PRIMARY KEY,\n    sample_id INT NOT NULL,\n    threat_level VARCHAR(50) NOT NULL,\n    analysis_detail TEXT NOT NULL,\n    analysis_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (sample_id) REFERENCES MalwareSamples(sample_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MalwareCategories (\n    category_id SERIAL PRIMARY KEY,\n    category_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SampleCategories (\n    sample_id INT NOT NULL,\n    category_id INT NOT NULL,\n    PRIMARY KEY (sample_id, category_id),\n    FOREIGN KEY (sample_id) REFERENCES MalwareSamples(sample_id),\n    FOREIGN KEY (category_id) REFERENCES MalwareCategories(category_id)\n);"
+      }
+    ]
+  }
+]

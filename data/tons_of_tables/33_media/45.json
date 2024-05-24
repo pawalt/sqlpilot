@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clickbait_articles (\n  article_id INT PRIMARY KEY,\n  article_title VARCHAR(255) NOT NULL,\n  clickbait_flag BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Article (\n    article_id SERIAL PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    clickbait_flag BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Review (\n    review_id SERIAL PRIMARY KEY,\n    article_id INT REFERENCES Article(article_id),\n    reviewer_name VARCHAR(100) NOT NULL,\n    review_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    title VARCHAR,\n    is_clickbait BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clickbait_keywords (\n    keyword_id INT PRIMARY KEY,\n    keyword VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flagged_articles (\n    flag_id INT PRIMARY KEY,\n    article_id INT,\n    is_reviewed BOOLEAN,\n    FOREIGN KEY (article_id) REFERENCES articles(article_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ClickbaitArticles (\n  article_id INT PRIMARY KEY,\n  article_title VARCHAR(255),\n  is_clickbait BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ReviewTasks (\n  task_id INT PRIMARY KEY,\n  article_id INT,\n  reviewer_id INT,\n  task_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reviewers (\n  reviewer_id INT PRIMARY KEY,\n  reviewer_name VARCHAR(100),\n  reviewer_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ClickbaitFlags (\n  flag_id INT PRIMARY KEY,\n  article_id INT,\n  flag_reason TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    title VARCHAR(255),\n    content TEXT,\n    is_clickbait BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id INT PRIMARY KEY,\n    reviewer_id INT REFERENCES users(user_id),\n    article_id INT REFERENCES articles(article_id),\n    review_comment TEXT,\n    is_clickbait_detected BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flagged_articles (\n    flag_id INT PRIMARY KEY,\n    article_id INT REFERENCES articles(article_id),\n    flagged_by INT REFERENCES users(user_id),\n    flag_reason TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clickbait_keywords (\n    keyword_id INT PRIMARY KEY,\n    keyword VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE article_keywords (\n    article_id INT REFERENCES articles(article_id),\n    keyword_id INT REFERENCES clickbait_keywords(keyword_id),\n    PRIMARY KEY (article_id, keyword_id)\n);"
+      }
+    ]
+  }
+]

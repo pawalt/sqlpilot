@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clothing_production (\n  design_id INT PRIMARY KEY,\n  design_name VARCHAR(255),\n  designer_name VARCHAR(255),\n  fabric_type VARCHAR(100),\n  manufacturing_process VARCHAR(100),\n  production_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE design (\n    design_id SERIAL PRIMARY KEY,\n    design_name TEXT NOT NULL,\n    designer_name TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing (\n    manufacturing_id SERIAL PRIMARY KEY,\n    design_id INT NOT NULL,\n    manufacturing_date DATE NOT NULL,\n    manufacturer TEXT NOT NULL,\n    FOREIGN KEY (design_id) REFERENCES design(design_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clothing_design (\n    design_id SERIAL PRIMARY KEY,\n    design_name TEXT NOT NULL,\n    designer_name TEXT NOT NULL,\n    design_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fabric_inventory (\n    fabric_id SERIAL PRIMARY KEY,\n    fabric_type TEXT NOT NULL,\n    fabric_color TEXT,\n    fabric_quantity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_process (\n    process_id SERIAL PRIMARY KEY,\n    manufacturing_date DATE,\n    manufacturing_stage TEXT NOT NULL,\n    fabric_id INT REFERENCES fabric_inventory(fabric_id),\n    design_id INT REFERENCES clothing_design(design_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Design (\n    design_id INT PRIMARY KEY,\n    design_name VARCHAR(255),\n    designer_name VARCHAR(255),\n    design_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Material (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255),\n    material_type VARCHAR(50),\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Production (\n    production_id INT PRIMARY KEY,\n    design_id INT REFERENCES Design(design_id),\n    material_id INT REFERENCES Material(material_id),\n    production_date DATE,\n    production_quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Manufacturing (\n    manufacturing_id INT PRIMARY KEY,\n    production_id INT REFERENCES Production(production_id),\n    manufacturing_date DATE,\n    manufacturing_location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Design (\n    design_id INT PRIMARY KEY,\n    design_name VARCHAR(255) NOT NULL,\n    designer_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Material (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    material_type VARCHAR(255) NOT NULL,\n    material_price DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Pattern (\n    pattern_id INT PRIMARY KEY,\n    pattern_name VARCHAR(255) NOT NULL,\n    pattern_type VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sample (\n    sample_id INT PRIMARY KEY,\n    sample_name VARCHAR(255) NOT NULL,\n    design_id INT NOT NULL,\n    material_id INT NOT NULL,\n    pattern_id INT NOT NULL,\n    FOREIGN KEY (design_id) REFERENCES Design(design_id),\n    FOREIGN KEY (material_id) REFERENCES Material(material_id),\n    FOREIGN KEY (pattern_id) REFERENCES Pattern(pattern_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Production (\n    production_id INT PRIMARY KEY,\n    sample_id INT NOT NULL,\n    production_date DATE NOT NULL,\n    production_quantity INT NOT NULL,\n    FOREIGN KEY (sample_id) REFERENCES Sample(sample_id)\n);\n"
+      }
+    ]
+  }
+]

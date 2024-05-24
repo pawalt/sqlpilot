@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n  inverter_id INT,\n  maintenance_date DATE,\n  maintenance_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InverterMaintenanceSchedule (\n    inverter_id INT PRIMARY KEY,\n    last_maintenance_date DATE,\n    maintenance_frequency INT,\n    next_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n    log_id SERIAL PRIMARY KEY,\n    inverter_id INT,\n    maintenance_date DATE,\n    maintenance_type VARCHAR(255),\n    technician_name VARCHAR(255),\n    CONSTRAINT fk_inverter_id FOREIGN KEY (inverter_id) REFERENCES InverterMaintenanceSchedule(inverter_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inverters (\n    id INT PRIMARY KEY,\n    serial_number VARCHAR(50),\n    manufacturer VARCHAR(50),\n    installation_date DATE,\n    maintenance_schedule VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    log_id INT PRIMARY KEY,\n    inverter_id INT,\n    maintenance_date DATE,\n    maintenance_description TEXT,\n    FOREIGN KEY (inverter_id) REFERENCES inverters(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE technicians (\n    technician_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    phone_number VARCHAR(15),\n    email VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inverter (\n  id INT PRIMARY KEY,\n  serial_number VARCHAR(255),\n  model VARCHAR(255),\n  installation_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n  schedule_id INT PRIMARY KEY,\n  inverter_id INT,\n  scheduled_date DATE,\n  description TEXT,\n  FOREIGN KEY (inverter_id) REFERENCES inverter(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE technician (\n  technician_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  contact_number VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_log (\n  log_id INT PRIMARY KEY,\n  inverter_id INT,\n  technician_id INT,\n  maintenance_date DATE,\n  notes TEXT,\n  FOREIGN KEY (inverter_id) REFERENCES inverter(id),\n  FOREIGN KEY (technician_id) REFERENCES technician(technician_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tbl_inverters (\n    inverter_id INT PRIMARY KEY,\n    inverter_name VARCHAR(255),\n    location VARCHAR(255),\n    next_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tbl_maintenance_logs (\n    log_id INT PRIMARY KEY,\n    inverter_id INT,\n    maintenance_date DATE,\n    maintenance_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tbl_repair_history (\n    repair_id INT PRIMARY KEY,\n    inverter_id INT,\n    repair_date DATE,\n    repair_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tbl_maintenance_schedule (\n    schedule_id INT PRIMARY KEY,\n    inverter_id INT,\n    scheduled_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tbl_engineers (\n    engineer_id INT PRIMARY KEY,\n    engineer_name VARCHAR(255),\n    qualification VARCHAR(255)\n);"
+      }
+    ]
+  }
+]

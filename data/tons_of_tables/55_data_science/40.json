@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dashboard_data ( \n  id UUID PRIMARY KEY, \n  name STRING, \n  value INT \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE interactive_dashboards (\n    id INT PRIMARY KEY,\n    dashboard_name VARCHAR(255),\n    dashboard_description TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE visualization_tools (\n    tool_id INT PRIMARY KEY,\n    tool_name VARCHAR(255),\n    tool_category VARCHAR(50),\n    tool_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Interactive_Dashboards (\n    dashboard_id SERIAL PRIMARY KEY,\n    dashboard_name TEXT NOT NULL,\n    data_source_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Data_Sources (\n    data_source_id SERIAL PRIMARY KEY,\n    source_name TEXT NOT NULL,\n    data_type TEXT,\n    connection_info TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Dashboard_Elements (\n    element_id SERIAL PRIMARY KEY,\n    dashboard_id INT NOT NULL,\n    element_name TEXT NOT NULL,\n    element_type TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Dataset (\n    id INT PRIMARY KEY,\n    title VARCHAR(255),\n    description TEXT,\n    data JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE User (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Dashboard (\n    dashboard_id INT PRIMARY KEY,\n    name VARCHAR(100),\n    owner_id INT,\n    FOREIGN KEY (owner_id) REFERENCES User(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Visualization (\n    vis_id INT PRIMARY KEY,\n    chart_type VARCHAR(50), \n    data_source_id INT,\n    FOREIGN KEY (data_source_id) REFERENCES Dataset(id),\n    dashboard_id INT,\n    FOREIGN KEY (dashboard_id) REFERENCES Dashboard(dashboard_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dashboard_datasets (\n  id UUID PRIMARY KEY,\n  dataset_name STRING,\n  dataset_description STRING,\n  created_at TIMESTAMP,\n  last_updated_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE visualization_tools (\n  tool_id UUID PRIMARY KEY,\n  tool_name STRING,\n  tool_description STRING,\n  supported_features ARRAY<STRING>,\n  release_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n  activity_id UUID PRIMARY KEY,\n  user_id UUID,\n  activity_type STRING,\n  activity_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_users (\n  user_id UUID PRIMARY KEY,\n  first_name STRING,\n  last_name STRING,\n  email STRING,\n  registered_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources (\n  source_id UUID PRIMARY KEY,\n  source_name STRING,\n  source_type STRING,\n  connection_string STRING,\n  added_at TIMESTAMP\n)"
+      }
+    ]
+  }
+]

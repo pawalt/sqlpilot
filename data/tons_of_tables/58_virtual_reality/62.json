@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name STRING,\n    contract_code TEXT,\n    contract_parameters JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts_parameters (\n    contract_id INT PRIMARY KEY,\n    contract_name VARCHAR(255) NOT NULL,\n    contract_parameters JSON\n);\n\nCREATE TABLE contract_executions (\n    execution_id INT PRIMARY KEY,\n    contract_id INT NOT NULL,\n    executed_by VARCHAR(255) NOT NULL,\n    execution_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts_parameters (\n    contract_id UUID PRIMARY KEY,\n    contract_name VARCHAR(255),\n    parameter_name VARCHAR(255),\n    parameter_value VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_owners (\n    owner_id UUID PRIMARY KEY,\n    owner_name VARCHAR(255),\n    contract_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_logs (\n    log_id UUID PRIMARY KEY,\n    contract_id UUID,\n    log_message TEXT,\n    log_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contract_parameters (\n    contract_id INT PRIMARY KEY,\n    parameter_name VARCHAR(255),\n    parameter_value VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_owners (\n    owner_id INT PRIMARY KEY,\n    contract_id INT,\n    owner_name VARCHAR(255),\n    owner_address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_rules (\n    rule_id INT PRIMARY KEY,\n    contract_id INT,\n    rule_name VARCHAR(255),\n    rule_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_history (\n    event_id INT PRIMARY KEY,\n    contract_id INT,\n    event_timestamp TIMESTAMP,\n    event_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name VARCHAR(255) NOT NULL,\n    contract_code TEXT NOT NULL,\n    contract_parameters JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_parameters (\n    parameter_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    parameter_name VARCHAR(255) NOT NULL,\n    parameter_value TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_execution (\n    execution_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    execution_timestamp TIMESTAMP NOT NULL,\n    executed_by VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_logs (\n    log_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    log_timestamp TIMESTAMP NOT NULL,\n    log_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_events (\n    event_id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES smart_contracts(contract_id),\n    event_timestamp TIMESTAMP NOT NULL,\n    event_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

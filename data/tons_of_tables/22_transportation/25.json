@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fuel_consumption (\n    aircraft_id INT,\n    date DATE,\n    fuel_type VARCHAR(50),\n    fuel_quantity FLOAT,\n    distance_traveled FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Aircraft (\n    aircraft_id INT PRIMARY KEY,\n    model VARCHAR(50),\n    registration VARCHAR(20)\n);\n\nCREATE TABLE FuelConsumption (\n    fuel_id INT PRIMARY KEY,\n    aircraft_id INT,\n    fuel_type VARCHAR(50),\n    gallons_consumed DECIMAL,\n    date_consumed DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Aircrafts (\n  aircraft_id INT PRIMARY KEY,\n  aircraft_model VARCHAR(255),\n  fuel_capacity DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Flights (\n  flight_id INT PRIMARY KEY,\n  aircraft_id INT,\n  flight_date DATE,\n  fuel_consumed DECIMAL,\n  FOREIGN KEY (aircraft_id) REFERENCES Aircrafts(aircraft_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Airlines (\n  airline_id INT PRIMARY KEY,\n  airline_name VARCHAR(255),\n  country VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE aviation_companies (\n    company_id INT PRIMARY KEY,\n    company_name TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE aircraft (\n    aircraft_id INT PRIMARY KEY,\n    registration_number TEXT NOT NULL,\n    company_id INT REFERENCES aviation_companies(company_id),\n    fuel_capacity DECIMAL NOT NULL,\n    fuel_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE flights (\n    flight_id INT PRIMARY KEY,\n    aircraft_id INT REFERENCES aircraft(aircraft_id),\n    flight_date DATE NOT NULL,\n    departure_airport TEXT NOT NULL,\n    arrival_airport TEXT NOT NULL,\n    fuel_consumed DECIMAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fuel_logs (\n    log_id INT PRIMARY KEY,\n    flight_id INT REFERENCES flights(flight_id),\n    fuel_quantity DECIMAL NOT NULL,\n    refuel_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Aircraft (\n  aircraft_id SERIAL PRIMARY KEY,\n  aircraft_type VARCHAR(50) NOT NULL,\n  registration_number VARCHAR(10) UNIQUE NOT NULL,\n  manufacturer VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Flights (\n  flight_id SERIAL PRIMARY KEY,\n  aircraft_id INT NOT NULL,\n  flight_date DATE NOT NULL,\n  departure_airport VARCHAR(50) NOT NULL,\n  arrival_airport VARCHAR(50) NOT NULL,\n  fuel_consumed DECIMAL(10, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FuelTransactions (\n  transaction_id SERIAL PRIMARY KEY,\n  flight_id INT NOT NULL,\n  transaction_date TIMESTAMP NOT NULL,\n  fuel_type VARCHAR(20) NOT NULL,\n  quantity DECIMAL(10, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FuelProviders (\n  provider_id SERIAL PRIMARY KEY,\n  provider_name VARCHAR(50) NOT NULL,\n  contact_person VARCHAR(50) NOT NULL,\n  phone_number VARCHAR(15) NOT NULL,\n  email VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FuelPriceHistory (\n  record_id SERIAL PRIMARY KEY,\n  fuel_type VARCHAR(20) NOT NULL,\n  price DECIMAL(10, 2) NOT NULL,\n  effective_date DATE NOT NULL\n)"
+      }
+    ]
+  }
+]

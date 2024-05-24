@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE viewer_behavior_tracking (\n    viewer_id UUID PRIMARY KEY,\n    timestamp TIMESTAMPTZ,\n    content_id UUID,\n    action_type TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE viewer_behavior (\n    viewer_id UUID PRIMARY KEY,\n    content_id UUID,\n    action_type VARCHAR,\n    action_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE content_recommendations (\n    content_id UUID PRIMARY KEY,\n    recommended_content_id UUID,\n    recommendation_score FLOAT,\n    recommendation_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE viewer_behavior (\n    viewer_id INT PRIMARY KEY,\n    content_id INT,\n    behavior_type VARCHAR(50),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE content (\n    content_id INT PRIMARY KEY,\n    title VARCHAR(100),\n    category VARCHAR(50),\n    rating DECIMAL(3,1)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recommendations (\n    viewer_id INT,\n    recommended_content_id INT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (viewer_id) REFERENCES viewer_behavior(viewer_id),\n    FOREIGN KEY (recommended_content_id) REFERENCES content(content_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE viewer_demographics (\n  viewer_id INT PRIMARY KEY,\n  age INT,\n  gender VARCHAR(50),\n  location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE content_ratings (\n  content_id INT PRIMARY KEY,\n  rating FLOAT,\n  genre VARCHAR(50),\n  release_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE viewer_preferences (\n  viewer_id INT,\n  content_id INT,\n  rating FLOAT,\n  FOREIGN KEY (viewer_id) REFERENCES viewer_demographics(viewer_id),\n  FOREIGN KEY (content_id) REFERENCES content_ratings(content_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE viewer_activity (\n  viewer_id INT,\n  content_id INT,\n  date_viewed TIMESTAMP,\n  duration_minutes INT,\n  FOREIGN KEY (viewer_id) REFERENCES viewer_demographics(viewer_id),\n  FOREIGN KEY (content_id) REFERENCES content_ratings(content_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE viewers (\n viewer_id INT PRIMARY KEY,\n name VARCHAR(50) NOT NULL,\n age INT,\n gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE videos (\n video_id INT PRIMARY KEY,\n title VARCHAR(100) NOT NULL,\n length INT,\n category VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n interaction_id INT PRIMARY KEY,\n viewer_id INT,\n video_id INT,\n interaction_type VARCHAR(20),\n timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recommendations (\n recommendation_id INT PRIMARY KEY,\n viewer_id INT,\n video_id INT,\n recommendation_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n feedback_id INT PRIMARY KEY,\n viewer_id INT,\n video_id INT,\n feedback_type VARCHAR(20),\n comment TEXT\n);"
+      }
+    ]
+  }
+]

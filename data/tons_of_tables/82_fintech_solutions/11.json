@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserAccounts (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication (\n  auth_id SERIAL PRIMARY KEY,\n  user_id INTEGER REFERENCES users(user_id),\n  auth_token VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100) UNIQUE,\n    password VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(255) UNIQUE NOT NULL,\n    email VARCHAR(255) UNIQUE NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    profile_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,\n    full_name VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    bio TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,\n    token VARCHAR(255) UNIQUE NOT NULL,\n    created_at TIMESTAMP DEFAULT NOW()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,\n    role VARCHAR(50) NOT NULL,\n    grant_time TIMESTAMP DEFAULT NOW()\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  password VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE UserProfiles (\n  profile_id INT PRIMARY KEY,\n  user_id INT REFERENCES Users(user_id),\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  birthday DATE,\n  gender VARCHAR(10),\n  bio TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE UserRoles (\n  role_id INT PRIMARY KEY,\n  role_name VARCHAR(50) UNIQUE NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE UserSessions (\n  session_id UUID PRIMARY KEY,\n  user_id INT REFERENCES Users(user_id),\n  logged_in_at TIMESTAMP,\n  last_active_at TIMESTAMP,\n  session_data JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE UserSettings (\n  user_id INT PRIMARY KEY REFERENCES Users(user_id),\n  theme_color VARCHAR(20) DEFAULT 'light',\n  timezone VARCHAR(50) DEFAULT 'UTC',\n  language VARCHAR(20) DEFAULT 'en'\n)"
+      }
+    ]
+  }
+]

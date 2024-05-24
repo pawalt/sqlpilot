@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quest_missions (\n    quest_id INT NOT NULL,\n    mission_id INT NOT NULL,\n    objective VARCHAR(255) NOT NULL,\n    completion_status BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quests (quest_id INT PRIMARY KEY, quest_name VARCHAR(255), quest_description TEXT, completion_status BOOLEAN)"
+      },
+      {
+        "table_schema": "CREATE TABLE missions (mission_id INT PRIMARY KEY, mission_name VARCHAR(255), mission_description TEXT, completion_status BOOLEAN)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quests (\n    quest_id INT PRIMARY KEY,\n    quest_name VARCHAR(255) NOT NULL,\n    quest_description TEXT,\n    completion_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE missions (\n    mission_id INT PRIMARY KEY,\n    mission_name VARCHAR(255) NOT NULL,\n    mission_description TEXT,\n    completion_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE objectives (\n    objective_id INT PRIMARY KEY,\n    objective_name VARCHAR(255) NOT NULL,\n    objective_description TEXT,\n    completion_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quests (\n   quest_id INT PRIMARY KEY,\n   quest_name VARCHAR(255) NOT NULL,\n   completion_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE missions (\n   mission_id INT PRIMARY KEY,\n   mission_name VARCHAR(255) NOT NULL,\n   quest_id INT,\n   completion_status BOOLEAN,\n   FOREIGN KEY (quest_id) REFERENCES quests(quest_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE objectives (\n   objective_id INT PRIMARY KEY,\n   objective_description TEXT NOT NULL,\n   mission_id INT,\n   completion_status BOOLEAN,\n   FOREIGN KEY (mission_id) REFERENCES missions(mission_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n   player_id INT PRIMARY KEY,\n   player_name VARCHAR(255) NOT NULL,\n   level INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quests (\n    quest_id INT PRIMARY KEY,\n    quest_name VARCHAR(255),\n    quest_description TEXT,\n    completion_status ENUM('not started', 'in progress', 'completed')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE missions (\n    mission_id INT PRIMARY KEY,\n    mission_name VARCHAR(255),\n    mission_description TEXT,\n    quest_id INT,\n    completion_status ENUM('not started', 'in progress', 'completed'),\n    FOREIGN KEY (quest_id) REFERENCES quests(quest_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE objectives (\n    objective_id INT PRIMARY KEY,\n    objective_description TEXT,\n    mission_id INT,\n    completion_status ENUM('not started', 'in progress', 'completed'),\n    FOREIGN KEY (mission_id) REFERENCES missions(mission_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(255),\n    player_level INT,\n    player_experience INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_progress (\n    player_id INT,\n    quest_id INT,\n    mission_id INT,\n    objective_id INT,\n    progress_status ENUM('not started', 'in progress', 'completed'),\n    FOREIGN KEY (player_id) REFERENCES players(player_id),\n    FOREIGN KEY (quest_id) REFERENCES quests(quest_id),\n    FOREIGN KEY (mission_id) REFERENCES missions(mission_id),\n    FOREIGN KEY (objective_id) REFERENCES objectives(objective_id)\n);\n"
+      }
+    ]
+  }
+]

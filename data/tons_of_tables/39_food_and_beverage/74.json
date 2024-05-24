@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wine_club_members (\n    member_id INT NOT NULL,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    membership_level VARCHAR(20) NOT NULL,\n    favorite_wine VARCHAR(50),\n    wine_preference VARCHAR(100),\n    PRIMARY KEY (member_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n    member_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    pref_id INT PRIMARY KEY,\n    member_id INT,\n    wine_type VARCHAR(50),\n    region VARCHAR(50),\n    vintage_year INT,\n    FOREIGN KEY(member_id) REFERENCES members(member_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wine_club_members (\n    member_id SERIAL PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    member_email VARCHAR(100) UNIQUE NOT NULL,\n    membership_start_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE wine_preferences (\n    preference_id SERIAL PRIMARY KEY,\n    member_id INT REFERENCES wine_club_members(member_id),\n    wine_type VARCHAR(50),\n    preferred_region VARCHAR(50),\n    preferred_grape_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tasting_events (\n    event_id SERIAL PRIMARY KEY,\n    event_date DATE,\n    event_location VARCHAR(100),\n    event_theme VARCHAR(50),\n    event_host VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n  member_id SERIAL PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(20),\n  address VARCHAR(200)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n  preference_id SERIAL PRIMARY KEY,\n  member_id INT REFERENCES members(member_id),\n  wine_type VARCHAR(50),\n  region VARCHAR(50),\n  vintage INT,\n  price_range VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE club_events (\n  event_id SERIAL PRIMARY KEY,\n  event_name VARCHAR(100),\n  event_date DATE,\n  location VARCHAR(200),\n  host_member_id INT REFERENCES members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE member_events (\n  member_id INT REFERENCES members(member_id),\n  event_id INT REFERENCES club_events(event_id),\n  RSVP_status VARCHAR(20),\n  PRIMARY KEY(member_id, event_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n    member_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(50),\n    phone_number VARCHAR(15)\n);\n\nCREATE TABLE preferences (\n    preference_id INT PRIMARY KEY,\n    member_id INT,\n    wine_type VARCHAR(50),\n    region VARCHAR(50),\n    vintage_year INT,\n    FOREIGN KEY (member_id) REFERENCES members(member_id)\n);\n\nCREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(50),\n    event_date DATE,\n    event_location VARCHAR(50)\n);\n\nCREATE TABLE member_events (\n    member_event_id INT PRIMARY KEY,\n    member_id INT,\n    event_id INT,\n    registration_date DATE,\n    FOREIGN KEY (member_id) REFERENCES members(member_id),\n    FOREIGN KEY (event_id) REFERENCES events(event_id)\n);\n\nCREATE TABLE purchases (\n    purchase_id INT PRIMARY KEY,\n    member_id INT,\n    purchase_date DATE,\n    total_amount DECIMAL(10, 2),\n    FOREIGN KEY (member_id) REFERENCES members(member_id)\n);"
+      }
+    ]
+  }
+]

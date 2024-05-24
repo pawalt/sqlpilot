@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_recycling_rate (\n  packaging_type VARCHAR(50),\n  recycling_rate DECIMAL(5,2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  recycling_rate FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_bins (\n  bin_id INT PRIMARY KEY,\n  bin_location VARCHAR(100),\n  material_id INT,\n  FOREIGN KEY (material_id) REFERENCES packaging_materials(material_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PackagingTypes (\n    type_id INT PRIMARY KEY,\n    type_name VARCHAR(50),\n    category VARCHAR(50),\n    recycling_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionSites (\n    site_id INT PRIMARY KEY,\n    site_name VARCHAR(50),\n    location VARCHAR(100),\n    contact_person VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclingRecords (\n    record_id INT PRIMARY KEY,\n    pickup_date DATE,\n    site_id INT,\n    type_id INT,\n    weight DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PackagingTypes (\n  id INT PRIMARY KEY,\n  type VARCHAR(50),\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclingCompanies (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  location VARCHAR(100),\n  contact_person VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclingRates (\n  packaging_type_id INT,\n  company_id INT,\n  rate DECIMAL(5,2),\n  date DATE,\n  FOREIGN KEY (packaging_type_id) REFERENCES PackagingTypes(id),\n  FOREIGN KEY (company_id) REFERENCES RecyclingCompanies(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclingStats (\n  id INT PRIMARY KEY,\n  company_id INT,\n  packaging_type_id INT,\n  total_recycled_amount DECIMAL(10,2),\n  total_bins_used INT,\n  date DATE,\n  FOREIGN KEY (company_id) REFERENCES RecyclingCompanies(id),\n  FOREIGN KEY (packaging_type_id) REFERENCES PackagingTypes(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50),\n  recycling_category VARCHAR(50),\n  recycling_rate DECIMAL(5,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_centers (\n  center_id INT PRIMARY KEY,\n  center_name VARCHAR(50),\n  location VARCHAR(100),\n  contact_email VARCHAR(50),\n  capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_database (\n  entry_id INT PRIMARY KEY,\n  material_id INT,\n  center_id INT,\n  weight DECIMAL(8,2),\n  date_added DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_stats (\n  stat_id INT PRIMARY KEY,\n  material_id INT,\n  center_id INT,\n  weight_collected DECIMAL(8,2),\n  collection_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collection_schedule (\n  schedule_id INT PRIMARY KEY,\n  center_id INT,\n  collection_day VARCHAR(20),\n  collection_time TIME\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_data (\n  id SERIAL PRIMARY KEY,\n  data JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n  backup_id UUID PRIMARY KEY,\n  backup_timestamp TIMESTAMP,\n  backup_location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE disaster_recovery (\n  recovery_id UUID PRIMARY KEY,\n  recovery_timestamp TIMESTAMP,\n  recovery_location STRING,\n  recovery_status STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n    id INT PRIMARY KEY,\n    backup_name VARCHAR(100),\n    backup_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE disaster_recovery (\n    server_id INT PRIMARY KEY,\n    recovery_method VARCHAR(50),\n    recovery_time TIMESTAMP,\n    recovery_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE automated_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(50),\n    task_type VARCHAR(50),\n    task_schedule TIMESTAMPTZ\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n  backup_id UUID PRIMARY KEY,\n  backup_name VARCHAR(255),\n  backup_date TIMESTAMP,\n  backup_location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE disaster_recovery (\n  recovery_id UUID PRIMARY KEY,\n  recovery_status VARCHAR(50),\n  recovery_date TIMESTAMP,\n  recovery_location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE databases (\n  db_id UUID PRIMARY KEY,\n  db_name VARCHAR(255),\n  db_size INT,\n  db_owner VARCHAR(100),\n  db_backup_id UUID REFERENCES backups(backup_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE platforms (\n  platform_id UUID PRIMARY KEY,\n  platform_name VARCHAR(100),\n  platform_type VARCHAR(50),\n  platform_owner VARCHAR(100),\n  platform_backup_id UUID REFERENCES backups(backup_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_jobs (\n    job_id INT PRIMARY KEY,\n    job_name VARCHAR(255),\n    scheduled_time TIMESTAMP,\n    backup_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_history (\n    history_id INT PRIMARY KEY,\n    job_id INT,\n    backup_time TIMESTAMP,\n    backup_status VARCHAR(20),\n    FOREIGN KEY(job_id) REFERENCES backup_jobs(job_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE disaster_events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(100),\n    event_date DATE,\n    event_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recovery_plans (\n    plan_id INT PRIMARY KEY,\n    plan_name VARCHAR(100),\n    plan_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recovery_logs (\n    log_id INT PRIMARY KEY,\n    plan_id INT,\n    log_time TIMESTAMP,\n    log_message TEXT,\n    FOREIGN KEY(plan_id) REFERENCES recovery_plans(plan_id)\n);"
+      }
+    ]
+  }
+]

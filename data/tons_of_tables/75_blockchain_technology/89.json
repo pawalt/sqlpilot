@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_supply_chain_data (\n    id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMPTZ,\n    energy_source TEXT,\n    supplier TEXT,\n    receiver TEXT,\n    quantity NUMERIC,\n    blockchain_hash TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    timestamp TIMESTAMP PRIMARY KEY,\n    device_id INT,\n    energy_consumed DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_records (\n    block_id SERIAL PRIMARY KEY,\n    block_hash VARCHAR(256),\n    prev_block_hash VARCHAR(256),\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_producers (\n  id UUID PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  energy_type VARCHAR(50) NOT NULL,\n  production_capacity DECIMAL NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumers (\n  id UUID PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  demand INT NOT NULL,\n  energy_type VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_transactions (\n  id UUID PRIMARY KEY,\n  producer_id UUID REFERENCES energy_producers(id),\n  consumer_id UUID REFERENCES energy_consumers(id),\n  energy_amount DECIMAL NOT NULL,\n  transaction_date TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_producers (\n    producer_id UUID PRIMARY KEY,\n    producer_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    production_capacity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumers (\n    consumer_id UUID PRIMARY KEY,\n    consumer_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    energy_consumed DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_transactions (\n    transaction_id UUID PRIMARY KEY,\n    producer_id UUID REFERENCES energy_producers(producer_id),\n    consumer_id UUID REFERENCES energy_consumers(consumer_id),\n    energy_units DECIMAL(10,2) NOT NULL,\n    transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_metadata (\n    block_id UUID PRIMARY KEY,\n    previous_block_id UUID,\n    merkle_root VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyConsumers (\n    consumer_id INT PRIMARY KEY,\n    consumer_name VARCHAR(50) NOT NULL,\n    energy_consumed DECIMAL NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProducers (\n    producer_id INT PRIMARY KEY,\n    producer_name VARCHAR(50) NOT NULL,\n    energy_produced DECIMAL NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyTransactions (\n    transaction_id INT PRIMARY KEY,\n    consumer_id INT NOT NULL,\n    producer_id INT NOT NULL,\n    energy_transferred DECIMAL NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyBlockchain (\n    block_id INT PRIMARY KEY,\n    previous_block_id INT,\n    energy_transaction_id INT NOT NULL,\n    hash VARCHAR(256) NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergySupplyCompanies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(50) NOT NULL,\n    energy_revenue DECIMAL NOT NULL,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

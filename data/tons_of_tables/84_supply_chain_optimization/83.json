@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    process_id BIGINT,\n    timestamp TIMESTAMP,\n    energy_value DECIMAL,\n    location_id BIGINT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    process_id INT PRIMARY KEY,\n    process_name VARCHAR(255),\n    energy_usage DECIMAL(10,2),\n    time_stamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_improvement (\n    improvement_id INT PRIMARY KEY,\n    process_id INT,\n    improvement_description TEXT,\n    improvement_date DATE,\n    FOREIGN KEY (process_id) REFERENCES energy_consumption(process_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    process_id SERIAL PRIMARY KEY,\n    process_name VARCHAR(100) NOT NULL,\n    energy_type VARCHAR(50) NOT NULL,\n    energy_usage DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE process_location (\n    process_id SERIAL PRIMARY KEY,\n    location_name VARCHAR(100) NOT NULL,\n    country_code CHAR(2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_savings (\n    saving_id SERIAL PRIMARY KEY,\n    process_id INT REFERENCES energy_consumption(process_id),\n    saving_amount DECIMAL NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consumption_data (\n    process_id SERIAL PRIMARY KEY,\n    process_name VARCHAR(50) NOT NULL,\n    energy_consumed DECIMAL(10,2) NOT NULL,\n    timestamp TIMESTAMPTZ NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n    process_id SERIAL PRIMARY KEY,\n    process_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    manager VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption_analysis (\n    analysis_id SERIAL PRIMARY KEY,\n    process_id INT NOT NULL REFERENCES manufacturing_processes(process_id),\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    total_energy_consumed DECIMAL(10,2) NOT NULL,\n    analysis_result TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supply_chain_operations (\n    operation_id SERIAL PRIMARY KEY,\n    operation_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    operation_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n    id INT PRIMARY KEY,\n    process_name TEXT,\n    energy_consumption DECIMAL\n);\n\nCREATE TABLE supply_chain_operations (\n    id INT PRIMARY KEY,\n    operation_name TEXT,\n    operation_type TEXT\n);\n\nCREATE TABLE energy_consumption_data (\n    id INT PRIMARY KEY,\n    process_id INT,\n    operation_id INT,\n    consumption_value DECIMAL,\n    recorded_date DATE\n);\n\nCREATE TABLE energy_consumption_summary (\n    id INT PRIMARY KEY,\n    process_id INT,\n    total_consumption DECIMAL,\n    month_year DATE\n);\n\nCREATE TABLE energy_improvement_areas (\n    id INT PRIMARY KEY,\n    process_id INT,\n    improvement_area TEXT\n);"
+      }
+    ]
+  }
+]

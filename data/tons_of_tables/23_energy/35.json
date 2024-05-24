@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_power_technologies (\n    cell_technology_id INT PRIMARY KEY,\n    cell_technology_name TEXT,\n    efficiency FLOAT,\n    manufacturer TEXT,\n    production_capacity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_technologies (\n    technology_id SERIAL PRIMARY KEY,\n    technology_name VARCHAR(50) NOT NULL,\n    efficiency DECIMAL(5,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE solar_panel_performance (\n    panel_id SERIAL PRIMARY KEY,\n    technology_id INT NOT NULL,\n    panel_area DECIMAL(8,2) NOT NULL,\n    power_output DECIMAL(10,2) NOT NULL,\n    FOREIGN KEY (technology_id) REFERENCES solar_technologies(technology_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_cells (\n    cell_id UUID PRIMARY KEY,\n    technology VARCHAR(50),\n    efficiency FLOAT,\n    manufacturer VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE solar_panels (\n    panel_id UUID PRIMARY KEY,\n    cell_id UUID REFERENCES solar_cells(cell_id),\n    panel_area FLOAT,\n    rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_data (\n    data_id UUID PRIMARY KEY,\n    panel_id UUID REFERENCES solar_panels(panel_id),\n    date TIMESTAMP,\n    production FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_panels (\n    panel_id SERIAL PRIMARY KEY,\n    panel_name VARCHAR(50) NOT NULL,\n    technology_type VARCHAR(50) NOT NULL,\n    efficiency FLOAT NOT NULL,\n    width FLOAT NOT NULL,\n    height FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE installations (\n    installation_id SERIAL PRIMARY KEY,\n    location VARCHAR(100) NOT NULL,\n    capacity FLOAT NOT NULL,\n    panel_id INT NOT NULL,\n    FOREIGN KEY (panel_id) REFERENCES solar_panels(panel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_data (\n    data_id SERIAL PRIMARY KEY,\n    date DATE NOT NULL,\n    energy_output FLOAT NOT NULL,\n    efficiency FLOAT NOT NULL,\n    panel_id INT NOT NULL,\n    FOREIGN KEY (panel_id) REFERENCES solar_panels(panel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    log_id SERIAL PRIMARY KEY,\n    date DATE NOT NULL,\n    description TEXT NOT NULL,\n    installation_id INT NOT NULL,\n    FOREIGN KEY (installation_id) REFERENCES installations(installation_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarCells (\n  cell_id INT PRIMARY KEY,\n  cell_technology VARCHAR(50) NOT NULL,\n  efficiency FLOAT NOT NULL,\n  date_installed DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProduction (\n  production_id INT PRIMARY KEY,\n  cell_id INT,\n  energy_produced FLOAT NOT NULL,\n  date_produced DATE,\n  FOREIGN KEY (cell_id) REFERENCES SolarCells(cell_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n  log_id INT PRIMARY KEY,\n  cell_id INT,\n  maintenance_date DATE,\n  maintenance_description TEXT,\n  FOREIGN KEY (cell_id) REFERENCES SolarCells(cell_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceMetrics (\n  metric_id INT PRIMARY KEY,\n  cell_id INT,\n  performance_rating VARCHAR(50),\n  performance_date DATE,\n  FOREIGN KEY (cell_id) REFERENCES SolarCells(cell_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InverterDetails (\n  inverter_id INT PRIMARY KEY,\n  cell_id INT,\n  inverter_model VARCHAR(50) NOT NULL,\n  inverter_capacity FLOAT,\n  FOREIGN KEY (cell_id) REFERENCES SolarCells(cell_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VaccinationCoverage (\n    country_name VARCHAR(255),\n    total_population BIGINT,\n    vaccinated_population BIGINT,\n    coverage_rate FLOAT,\n    last_update_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Vaccination_Coverage (\n    country_id INT NOT NULL,\n    country_name VARCHAR(50) NOT NULL,\n    coverage_rate DECIMAL(5,2) NOT NULL,\n    last_update DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Immunization_Gaps (\n    gap_id INT NOT NULL,\n    gap_description VARCHAR(100) NOT NULL,\n    country_id INT NOT NULL,\n    gap_status BOOLEAN NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VaccinationCoverage (\n    id INT PRIMARY KEY,\n    country_name VARCHAR(255) NOT NULL,\n    coverage_rate DECIMAL(5,2) NOT NULL\n);\n\nCREATE TABLE ImmunizationPrograms (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);\n\nCREATE TABLE CoverageGaps (\n    gap_id INT PRIMARY KEY,\n    gap_description TEXT,\n    country_name VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VaccinationCenters (\n   center_id SERIAL PRIMARY KEY,\n   center_name VARCHAR(100) NOT NULL,\n   location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VaccineRecords (\n   record_id SERIAL PRIMARY KEY,\n   center_id INT,\n   patient_id INT,\n   vaccine_name VARCHAR(50) NOT NULL,\n   vaccination_date DATE,\n   FOREIGN KEY (center_id) REFERENCES VaccinationCenters(center_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n   patient_id SERIAL PRIMARY KEY,\n   patient_name VARCHAR(100) NOT NULL,\n   age INT,\n   gender VARCHAR(20),\n   address VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VaccineInventory (\n   vaccine_id SERIAL PRIMARY KEY,\n   vaccine_name VARCHAR(50) NOT NULL,\n   manufacturer VARCHAR(100) NOT NULL,\n   quantity INT,\n   expiration_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vaccination_centers (\n    center_id INT PRIMARY KEY,\n    center_name VARCHAR(100),\n    location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vaccines (\n    vaccine_id INT PRIMARY KEY,\n    vaccine_name VARCHAR(100),\n    manufacturer VARCHAR(100),\n    dose_required INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(100),\n    age INT,\n    gender VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vaccination_records (\n    record_id INT PRIMARY KEY,\n    patient_id INT,\n    vaccine_id INT,\n    vaccination_date TIMESTAMP,\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id),\n    FOREIGN KEY (vaccine_id) REFERENCES vaccines(vaccine_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vaccination_coverage (\n    coverage_id INT PRIMARY KEY,\n    center_id INT,\n    vaccine_id INT,\n    coverage_percent DECIMAL,\n    analysis_date DATE,\n    FOREIGN KEY (center_id) REFERENCES vaccination_centers(center_id),\n    FOREIGN KEY (vaccine_id) REFERENCES vaccines(vaccine_id)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bone_structure_force_distribution (\n  bone_id INT PRIMARY KEY,\n  bone_name VARCHAR(255),\n  force_distribution FLOAT,\n  injury_prevention_measurements TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ForceDistribution (\n    id INT PRIMARY KEY,\n    bone_structure VARCHAR,\n    force_applied INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE InjuryPrevention (\n    id INT PRIMARY KEY,\n    study_id INT REFERENCES ForceDistribution(id),\n    injury_type VARCHAR,\n    prevention_method VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BoneStructure ( id UUID PRIMARY KEY, name VARCHAR(255), type VARCHAR(100), study_date DATE, force_distribution JSONB );"
+      },
+      {
+        "table_schema": "CREATE TABLE InjuryPrevention ( id UUID PRIMARY KEY, injury_type VARCHAR(100), prevention_method VARCHAR(255), injury_date DATE );"
+      },
+      {
+        "table_schema": "CREATE TABLE ForceMeasurement ( id UUID PRIMARY KEY, bone_id UUID REFERENCES BoneStructure(id), force_value FLOAT, measurement_date DATE );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE force_sensors (\n  sensor_id INT PRIMARY KEY,\n  sensor_name STRING,\n  sensor_type STRING,\n  insertion_location STRING,\n  accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bone_structures (\n  bone_id INT PRIMARY KEY,\n  bone_name STRING,\n  bone_type STRING,\n  bone_density FLOAT,\n  mass FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE force_measurements (\n  measurement_id INT PRIMARY KEY,\n  sensor_id INT,\n  bone_id INT,\n  force_reading FLOAT,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE injury_records (\n  record_id INT PRIMARY KEY,\n  bone_id INT,\n  injury_type STRING,\n  severity INT,\n  description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ForceSensors (\n  sensor_id SERIAL PRIMARY KEY,\n  sensor_type VARCHAR(50) NOT NULL,\n  sensor_location VARCHAR(100) NOT NULL,\n  sensor_accuracy FLOAT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BoneStructures (\n  structure_id SERIAL PRIMARY KEY,\n  structure_name VARCHAR(100) NOT NULL,\n  structure_type VARCHAR(50) NOT NULL,\n  structure_size VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ForceMeasurements (\n  measurement_id SERIAL PRIMARY KEY,\n  sensor_id INT REFERENCES ForceSensors(sensor_id),\n  structure_id INT REFERENCES BoneStructures(structure_id),\n  force_value FLOAT NOT NULL,\n  measurement_date TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchParticipants (\n  participant_id SERIAL PRIMARY KEY,\n  participant_name VARCHAR(100) NOT NULL,\n  participant_age INT NOT NULL,\n  participant_gender VARCHAR(10) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE StudyResults (\n  result_id SERIAL PRIMARY KEY,\n  participant_id INT REFERENCES ResearchParticipants(participant_id),\n  structure_id INT REFERENCES BoneStructures(structure_id),\n  force_value FLOAT NOT NULL,\n  result_date TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM email_schedule WHERE user_id = 1;",
+      "SELECT email_address FROM email_schedule WHERE scheduled_time > '2022-01-01';",
+      "SELECT user_id, email_address, scheduled_time FROM email_schedule ORDER BY scheduled_time DESC;",
+      "SELECT COUNT(*) AS total_emails FROM email_schedule WHERE time_zone = 'PST';",
+      "SELECT * FROM email_schedule WHERE scheduled_time < NOW();",
+      "SELECT * FROM email_schedule WHERE user_id = 1 ORDER BY scheduled_time DESC;",
+      "SELECT email_address, scheduled_time FROM email_schedule WHERE time_zone = 'EST' ORDER BY scheduled_time ASC;",
+      "SELECT COUNT(*) AS total_emails, time_zone FROM email_schedule WHERE scheduled_time >= '2022-01-01' GROUP BY time_zone;",
+      "SELECT user_id, email_address FROM email_schedule WHERE scheduled_time BETWEEN '2022-01-01' AND '2022-12-31' AND time_zone = 'PST';",
+      "SELECT DISTINCT time_zone FROM email_schedule ORDER BY time_zone DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users;",
+      "SELECT user_id, user_email FROM users WHERE timezone_id = 1;",
+      "SELECT user_email FROM users WHERE user_id = 100;",
+      "SELECT user_id, user_email FROM users ORDER BY user_id DESC;",
+      "SELECT user_email FROM users WHERE timezone_id = 2 ORDER BY user_email ASC;",
+      "SELECT * FROM users WHERE timezone_id = 1 ORDER BY user_email DESC LIMIT 5;",
+      "SELECT user_id, user_email FROM users INNER JOIN email_schedules ON users.user_id = email_schedules.user_id WHERE send_time >= '2022-01-01' AND send_time <= '2022-12-31';",
+      "SELECT user_email FROM users WHERE user_email LIKE '%@gmail.com' AND timezone_id IN (3, 4) ORDER BY user_id ASC;",
+      "SELECT user_id, user_email, send_time FROM users JOIN email_schedules USING (user_id) ORDER BY send_time DESC, user_id;",
+      "SELECT * FROM users WHERE timezone_id = 2 UNION SELECT * FROM users WHERE timezone_id = 3 ORDER BY user_id ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM user_time_zones;",
+      "SELECT user_id, time_zone FROM user_time_zones WHERE user_id = 1;",
+      "SELECT schedule_id, user_id, send_time FROM email_schedule ORDER BY send_time ASC;",
+      "SELECT email_id, sent_time FROM sent_emails WHERE status = 'delivered';",
+      "SELECT COUNT(*) AS total_emails FROM sent_emails;",
+      "SELECT * FROM user_time_zones WHERE user_id = 1;",
+      "SELECT user_id, time_zone FROM user_time_zones WHERE time_zone = 'US/Eastern';",
+      "SELECT * FROM email_schedule ORDER BY schedule_id DESC;",
+      "SELECT user_id, COUNT(schedule_id) AS total_schedules FROM email_schedule GROUP BY user_id;",
+      "SELECT email.*, email.send_time, status FROM sent_emails email WHERE status = 'delivered';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users;",
+      "SELECT email, timezone FROM users WHERE user_id = 1;",
+      "SELECT subject, body FROM email_templates WHERE template_id = 3;",
+      "SELECT user_id, template_id, send_time FROM email_schedules ORDER BY send_time DESC;",
+      "SELECT email_id, sent_time, status FROM sent_emails WHERE status = 'delivered';",
+      "SELECT * FROM users ORDER BY user_id DESC LIMIT 5;",
+      "SELECT email, timezone FROM users WHERE timezone = 'UTC';",
+      "SELECT email_templates.template_id, email_templates.subject, email_schedules.send_time FROM email_templates INNER JOIN email_schedules ON email_templates.template_id = email_schedules.template_id WHERE email_schedules.send_time > '2022-01-01';",
+      "SELECT users.user_id, email_templates.subject, sent_emails.status FROM users JOIN email_schedules ON users.user_id = email_schedules.user_id JOIN email_templates ON email_schedules.template_id = email_templates.template_id JOIN sent_emails ON email_schedules.schedule_id = sent_emails.schedule_id;",
+      "SELECT * FROM users LEFT JOIN email_schedules ON users.user_id = email_schedules.user_id WHERE email_schedules.send_time IS NULL;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT user_id, email FROM users;",
+      "SELECT * FROM users WHERE time_zone = 'UTC';",
+      "SELECT template_id, subject FROM email_templates ORDER BY template_id DESC;",
+      "SELECT user_id, template_id, send_time FROM user_email_schedules WHERE user_id = 1001;",
+      "SELECT * FROM email_logs WHERE status = 'Sent' ORDER BY send_time DESC;",
+      "SELECT * FROM users WHERE email LIKE '%@example.com';",
+      "SELECT template_id, subject FROM email_templates WHERE template_id > 5 ORDER BY subject DESC;",
+      "SELECT u.user_id, u.email, t.template_id, t.subject FROM users u INNER JOIN email_templates t ON u.user_id = t.template_id;",
+      "SELECT u.user_id, u.email, t.template_id, t.subject FROM users u INNER JOIN email_templates t ON u.user_id = t.template_id WHERE u.time_zone = 'GMT';",
+      "SELECT u.user_id, u.email, e.send_time AS scheduled_time, l.send_time AS sent_time, l.status FROM users u LEFT JOIN user_email_schedules e ON u.user_id = e.user_id LEFT JOIN email_logs l ON u.user_id = l.user_id AND e.template_id = l.template_id ORDER BY e.send_time ASC;"
+    ]
+  }
+]

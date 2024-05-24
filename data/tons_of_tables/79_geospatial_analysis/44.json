@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EndangeredSpeciesPopulation (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50),\n  population_size INT,\n  endangered_status VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE species (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(50) NOT NULL,\n    population_size INT NOT NULL,\n    conservation_status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50) NOT NULL,\n    latitude DECIMAL(10, 6) NOT NULL,\n    longitude DECIMAL(10, 6) NOT NULL,\n    species_id INT REFERENCES species(species_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ConservationOrganizations (\n  organization_id INT PRIMARY KEY,\n  organization_name VARCHAR(255) NOT NULL,\n  address VARCHAR(255),\n  contact_person VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EndangeredSpecies (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(255) NOT NULL,\n  scientific_name VARCHAR(255) NOT NULL,\n  conservation_status VARCHAR(50),\n  habitat_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PopulationTracking (\n  tracking_id INT PRIMARY KEY,\n  species_id INT REFERENCES EndangeredSpecies(species_id),\n  organization_id INT REFERENCES ConservationOrganizations(organization_id),\n  population_size INT,\n  tracking_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE endangered_species (\n id INT PRIMARY KEY,\n species_name STRING,\n population_count INT,\n location STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conservation_teams (\n team_id INT PRIMARY KEY,\n team_name STRING,\n team_lead STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE habitats (\n habitat_id INT PRIMARY KEY,\n habitat_type STRING,\n habitat_area FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE observations (\n observation_id INT PRIMARY KEY,\n species_id INT,\n team_id INT,\n observation_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE endangered_species (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(255),\n  population_size INT,\n  location VARCHAR(255),\n  conservation_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE population_data (\n  data_id INT PRIMARY KEY,\n  species_id INT,\n  population INT,\n  survey_date DATE,\n  CONSTRAINT fk_population_species FOREIGN KEY (species_id)\n    REFERENCES endangered_species(species_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conservation_areas (\n  area_id INT PRIMARY KEY,\n  area_name VARCHAR(255),\n  location VARCHAR(255),\n  habitat_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE species_habitat (\n  habitat_id INT PRIMARY KEY,\n  species_id INT,\n  area_id INT,\n  CONSTRAINT fk_species_habitat_species FOREIGN KEY (species_id)\n    REFERENCES endangered_species(species_id),\n  CONSTRAINT fk_species_habitat_area FOREIGN KEY (area_id)\n    REFERENCES conservation_areas(area_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conservation_projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  area_id INT,\n  CONSTRAINT fk_project_area FOREIGN KEY (area_id)\n    REFERENCES conservation_areas(area_id)\n)"
+      }
+    ]
+  }
+]

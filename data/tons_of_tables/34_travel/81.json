@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Visitors (\n  visitor_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  email VARCHAR(100),\n  age INT,\n  gender VARCHAR(10),\n  location VARCHAR(100),\n  interests VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE visitor_information (visitor_id INT, visitor_name VARCHAR(255), age INT, gender VARCHAR(10), email VARCHAR(255), phone_number VARCHAR(15), location_id INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE visitor_preferences (visitor_id INT, preferred_activities VARCHAR(255), fitness_level VARCHAR(20), dietary_restrictions VARCHAR(255), allergies VARCHAR(255), lodging_preferences VARCHAR(255), guide_requested BOOLEAN);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Visitors (\n  visitor_id SERIAL PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  phone_number VARCHAR(20),\n  country VARCHAR(50),\n  created_at TIMESTAMP NOT NULL DEFAULT NOW()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Visits (\n  visit_id SERIAL PRIMARY KEY,\n  visitor_id INT REFERENCES Visitors(visitor_id),\n  visit_date DATE,\n  duration_hours INT,\n  total_cost DECIMAL(10, 2),\n  feedback TEXT,\n  rating INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Preferences (\n  visitor_id INT REFERENCES Visitors(visitor_id),\n  nature_lover BOOLEAN,\n  adventure_seeker BOOLEAN,\n  budget_preference VARCHAR(20),\n  additional_activities JSON\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VisitorInformation (\n    visitor_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    age INT,\n    gender VARCHAR(20),\n    country VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE VisitorPreferences (\n    visitor_id INT,\n    preference_id INT,\n    preference_name VARCHAR(100),\n    preference_value VARCHAR(100),\n    PRIMARY KEY (visitor_id, preference_id),\n    FOREIGN KEY (visitor_id) REFERENCES VisitorInformation(visitor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EcotourismExperiences (\n    experience_id INT PRIMARY KEY,\n    experience_name VARCHAR(100),\n    location VARCHAR(50),\n    price DECIMAL(10, 2),\n    rating FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerSatisfaction (\n    satisfaction_id INT PRIMARY KEY,\n    visitor_id INT,\n    experience_id INT,\n    satisfaction_rating INT,\n    feedback TEXT,\n    FOREIGN KEY (visitor_id) REFERENCES VisitorInformation(visitor_id),\n    FOREIGN KEY (experience_id) REFERENCES EcotourismExperiences(experience_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Visitors (\n\tvisitor_id SERIAL PRIMARY KEY,\n\tvisitor_name VARCHAR(50) NOT NULL,\n\tvisitor_email VARCHAR(100) UNIQUE,\n\tvisitor_age INT,\n\tvisitor_country VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Preferences (\n\tpreference_id SERIAL PRIMARY KEY,\n\tvisitor_id INT REFERENCES Visitors(visitor_id),\n\tpreference_type VARCHAR(50) NOT NULL,\n\tpreference_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Activities (\n\tactivity_id SERIAL PRIMARY KEY,\n\tactivity_name VARCHAR(50) NOT NULL,\n\tactivity_description TEXT,\n\tactivity_location VARCHAR(50),\n\tactivity_duration INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Bookings (\n\tbooking_id SERIAL PRIMARY KEY,\n\tvisitor_id INT REFERENCES Visitors(visitor_id),\n\tactivity_id INT REFERENCES Activities(activity_id),\n\tbooking_date DATE,\n\tbooking_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Feedback (\n\tfeedback_id SERIAL PRIMARY KEY,\n\tvisitor_id INT REFERENCES Visitors(visitor_id),\n\tactivity_id INT REFERENCES Activities(activity_id),\n\trating INT CHECK (rating >= 1 AND rating <= 5),\n\tcomments TEXT\n);\n"
+      }
+    ]
+  }
+]

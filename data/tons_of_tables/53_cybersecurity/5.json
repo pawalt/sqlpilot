@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Vulnerabilities (\n\tvulnerability_id INT PRIMARY KEY,\n\tvulnerability_name VARCHAR(255),\n\tpatch_id INT,\n\tpatch_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n  id UUID PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  description TEXT,\n  severity VARCHAR(20),\n  affected_systems JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n  id UUID PRIMARY KEY,\n  vulnerability_id UUID REFERENCES vulnerabilities(id),\n  patch_version VARCHAR(50) NOT NULL,\n  patch_date DATE,\n  patched_systems JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  description TEXT,\n  severity VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n  id INT PRIMARY KEY,\n  vulnerability_id INT,\n  patch_version VARCHAR(20),\n  patch_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE systems (\n  id INT PRIMARY KEY,\n  system_name VARCHAR(100),\n  is_up_to_date BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id INT PRIMARY KEY,\n    description TEXT,\n    severity VARCHAR(20),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id INT PRIMARY KEY,\n    patch_name VARCHAR(50),\n    patch_description TEXT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE systems (\n    system_id INT PRIMARY KEY,\n    system_name VARCHAR(50),\n    system_type VARCHAR(50),\n    last_checked TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE system_patches (\n    system_patch_id INT PRIMARY KEY,\n    system_id INT,\n    patch_id INT,\n    applied_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (id INT PRIMARY KEY,\nname VARCHAR(50) NOT NULL,\nseverity VARCHAR(10),\ndescription TEXT,\npatch_id INT REFERENCES patches(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (id INT PRIMARY KEY,\nversion VARCHAR(20) NOT NULL,\ndate_published DATE,\ndate_applied DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE systems (id INT PRIMARY KEY,\nname VARCHAR(50) NOT NULL,\nversion VARCHAR(20),\nlast_checked DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE system_vulnerabilities (system_id INT REFERENCES systems(id),\nvulnerability_id INT REFERENCES vulnerabilities(id),\nPRIMARY KEY(system_id, vulnerability_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE patch_vulnerabilities (patch_id INT REFERENCES patches(id),\nvulnerability_id INT REFERENCES vulnerabilities(id),\nPRIMARY KEY(patch_id, vulnerability_id));"
+      }
+    ]
+  }
+]

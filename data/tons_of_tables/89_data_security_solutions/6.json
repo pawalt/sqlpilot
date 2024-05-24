@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_devices (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    ip_address INET NOT NULL,\n    firmware_version VARCHAR(20) NOT NULL,\n    last_checkin TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_ip_address VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_configurations (\n    config_id INT PRIMARY KEY,\n    device_id INT,\n    config_name VARCHAR(255),\n    config_value TEXT,\n    FOREIGN KEY (device_id) REFERENCES authorized_devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_ip_address VARCHAR(15),\n    device_config JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_configurations (\n    config_id INT PRIMARY KEY,\n    device_id INT,\n    configuration_name VARCHAR(255),\n    configuration_details JSONB,\n    FOREIGN KEY (device_id) REFERENCES authorized_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT PRIMARY KEY,\n    device_id INT,\n    permission_level INT,\n    FOREIGN KEY (device_id) REFERENCES authorized_devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_devices (\n device_id INT PRIMARY KEY,\n device_name VARCHAR(50) NOT NULL,\n device_type VARCHAR(50) NOT NULL,\n ip_address VARCHAR(15) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_configurations (\n config_id INT PRIMARY KEY,\n device_id INT REFERENCES authorized_devices(device_id),\n config_name VARCHAR(50) NOT NULL,\n config_value TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n user_id INT PRIMARY KEY,\n username VARCHAR(50) NOT NULL UNIQUE,\n password VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n role_id INT PRIMARY KEY,\n user_id INT REFERENCES users(user_id),\n role_name VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    configuration TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_types (\n    type_id INT PRIMARY KEY,\n    type_name VARCHAR(50),\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_configurations (\n    config_id INT PRIMARY KEY,\n    device_id INT,\n    config_name VARCHAR(50),\n    config_value VARCHAR(50),\n    FOREIGN KEY (device_id) REFERENCES authorized_devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    event_type VARCHAR(50),\n    event_description TEXT,\n    event_timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES authorized_devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_configurations (\n    network_id INT PRIMARY KEY,\n    network_name VARCHAR(50),\n    network_type VARCHAR(50),\n    network_address VARCHAR(50)\n);\n"
+      }
+    ]
+  }
+]

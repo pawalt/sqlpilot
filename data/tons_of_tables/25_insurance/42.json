@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims_info (\n  claim_id SERIAL PRIMARY KEY,\n  claim_date DATE NOT NULL,\n  claim_amount DECIMAL NOT NULL,\n  claim_status VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims (\n  claim_id SERIAL PRIMARY KEY,\n  claim_date DATE NOT NULL,\n  claim_amount DECIMAL NOT NULL,\n  claim_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_history (\n  history_id SERIAL PRIMARY KEY,\n  claim_id INTEGER REFERENCES claims(claim_id),\n  status_change_date TIMESTAMP NOT NULL,\n  previous_status VARCHAR(50),\n  new_status VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Claims (\n  claim_id INT PRIMARY KEY,\n  claim_date DATE,\n  claim_amount DECIMAL(10, 2),\n  status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Claimants (\n  claimant_id INT PRIMARY KEY,\n  claimant_name VARCHAR(100),\n  contact_number VARCHAR(20),\n  email_address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ClaimDetails (\n  claim_id INT,\n  claimant_id INT,\n  claim_status VARCHAR(50),\n  claim_resolution_date DATE,\n  PRIMARY KEY (claim_id, claimant_id),\n  FOREIGN KEY (claim_id) REFERENCES Claims(claim_id),\n  FOREIGN KEY (claimant_id) REFERENCES Claimants(claimant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Claims (\n claim_id INT PRIMARY KEY,\n claim_date DATE,\n claim_amount DECIMAL,\n status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Claimants (\n claimant_id INT PRIMARY KEY,\n full_name VARCHAR(50),\n email VARCHAR(50),\n phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ClaimImages (\n image_id INT PRIMARY KEY,\n claim_id INT,\n image_url VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ClaimNotes (\n note_id INT PRIMARY KEY,\n claim_id INT,\n note_text TEXT,\n created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims_info (\n\tclaim_id INT PRIMARY KEY,\n\tclaim_date DATE,\n\tclaim_amount DECIMAL,\n\tstatus VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claimants (\n\tclaimant_id INT PRIMARY KEY,\n\tclaimant_name VARCHAR,\n\tclaimant_address VARCHAR,\n\tclaim_id INT,\n\tFOREIGN KEY (claim_id) REFERENCES claims_info(claim_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n\temp_id INT PRIMARY KEY,\n\temp_name VARCHAR,\n\temp_role VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n\tpayment_id INT PRIMARY KEY,\n\tpayment_date DATE,\n\tpayment_amount DECIMAL,\n\tclaim_id INT,\n\tFOREIGN KEY (claim_id) REFERENCES claims_info(claim_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n\tresolution_id INT PRIMARY KEY,\n\tresolution_date DATE,\n\tresolution_details TEXT,\n\tclaim_id INT,\n\tFOREIGN KEY (claim_id) REFERENCES claims_info(claim_id)\n);"
+      }
+    ]
+  }
+]

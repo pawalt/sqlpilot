@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gaming_accessories_pricing (\n    id INT PRIMARY KEY,\n    accessory_name VARCHAR(255),\n    price DECIMAL,\n    discount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gaming_accessories (\n  accessory_id INT PRIMARY KEY,\n  accessory_name VARCHAR(50),\n  price DECIMAL(10, 2),\n  discount DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accessory_categories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(50),\n  accessory_id INT,\n  FOREIGN KEY (accessory_id) REFERENCES gaming_accessories(accessory_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gaming_accessories (\n  accessory_id SERIAL PRIMARY KEY,\n  accessory_name VARCHAR(255) NOT NULL,\n  accessory_type VARCHAR(50) NOT NULL,\n  price DECIMAL(8, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE discount_codes (\n  discount_id SERIAL PRIMARY KEY,\n  code VARCHAR(10) UNIQUE NOT NULL,\n  discount_amount DECIMAL(4, 2) NOT NULL,\n  active BOOLEAN DEFAULT TRUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accessory_inventory (\n  inventory_id SERIAL PRIMARY KEY,\n  accessory_id INT REFERENCES gaming_accessories(accessory_id),\n  quantity INT NOT NULL,\n  location VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE accessories (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100),\n    category VARCHAR(50),\n    price DECIMAL(10, 2),\n    discount DECIMAL(4, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE discounts (\n    id SERIAL PRIMARY KEY,\n    product_id INT,\n    discount_rate DECIMAL(4, 2),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100),\n    category_id INT,\n    price DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE accessories (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    price NUMERIC(10,2) NOT NULL,\n    discount_percent DECIMAL(4,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accessory_categories (\n    accessory_id INTEGER NOT NULL,\n    category_id INTEGER NOT NULL,\n    PRIMARY KEY (accessory_id, category_id),\n    FOREIGN KEY (accessory_id) REFERENCES accessories(id),\n    FOREIGN KEY (category_id) REFERENCES categories(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    id SERIAL PRIMARY KEY,\n    customer_id INTEGER NOT NULL,\n    order_date DATE NOT NULL,\n    total_amount NUMERIC(10,2) NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(id)\n);"
+      }
+    ]
+  }
+]

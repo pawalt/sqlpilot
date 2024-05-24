@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_images (\n    image_id INT PRIMARY KEY,\n    image_data BYTEA,\n    label VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id UUID PRIMARY KEY,\n    image_data BYTEA,\n    label TEXT\n);\n\nCREATE TABLE labels (\n    label_id UUID PRIMARY KEY,\n    label_name VARCHAR(50),\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id SERIAL PRIMARY KEY,\n    image_url TEXT NOT NULL,\n    label TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n    annotation_id SERIAL PRIMARY KEY,\n    image_id INT NOT NULL,\n    annotation_text TEXT NOT NULL,\n    FOREIGN KEY (image_id) REFERENCES images(image_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id SERIAL PRIMARY KEY,\n    model_name TEXT NOT NULL,\n    model_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id UUID PRIMARY KEY,\n    image_data BYTEA,\n    label VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id UUID PRIMARY KEY,\n    label_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    image_id UUID REFERENCES images(image_id),\n    label_id UUID REFERENCES labels(label_id),\n    PRIMARY KEY (image_id, label_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    image_id UUID REFERENCES images(image_id),\n    metadata_key VARCHAR(50),\n    metadata_value TEXT,\n    PRIMARY KEY (image_id, metadata_key)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Images (\n    image_id INT PRIMARY KEY,\n    image_url VARCHAR(255) NOT NULL,\n    label VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageLabels (\n    label_id INT PRIMARY KEY,\n    label_name VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageAnnotations (\n    annotation_id INT PRIMARY KEY,\n    image_id INT NOT NULL,\n    label_id INT NOT NULL,\n    annotation_text TEXT NOT NULL,\n    FOREIGN KEY (image_id) REFERENCES Images(image_id),\n    FOREIGN KEY (label_id) REFERENCES ImageLabels(label_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelTrainingData (\n    data_id INT PRIMARY KEY,\n    model_id INT NOT NULL,\n    image_id INT NOT NULL,\n    label_id INT NOT NULL,\n    training_data TEXT NOT NULL,\n    FOREIGN KEY (model_id) REFERENCES Models(model_id),\n    FOREIGN KEY (image_id) REFERENCES Images(image_id),\n    FOREIGN KEY (label_id) REFERENCES ImageLabels(label_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50) UNIQUE NOT NULL\n);"
+      }
+    ]
+  }
+]

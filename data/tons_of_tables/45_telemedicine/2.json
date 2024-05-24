@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telehealth_video_logs (\n    call_id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    participant_name VARCHAR(50) NOT NULL,\n    participant_role VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telehealth_video_call_logs (\n    call_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    participant_name VARCHAR,\n    participant_email VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE telehealth_participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name VARCHAR,\n    participant_email VARCHAR,\n    role VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE video_call_logs (\n  call_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  caller_name VARCHAR(255) NOT NULL,\n  callee_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n  participant_id UUID PRIMARY KEY,\n  participant_name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) NOT NULL,\n  phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n  log_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  action_performed VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE video_call_logs (\n  call_id UUID PRIMARY KEY,\n  start_timestamp TIMESTAMP NOT NULL,\n  end_timestamp TIMESTAMP NOT NULL,\n  participant_1 VARCHAR NOT NULL,\n  participant_2 VARCHAR NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR NOT NULL,\n  email VARCHAR NOT NULL UNIQUE,\n  password_hash VARCHAR NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n  log_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  event_type VARCHAR NOT NULL,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE healthcare_providers (\n  provider_id UUID PRIMARY KEY,\n  provider_name VARCHAR NOT NULL,\n  location VARCHAR NOT NULL,\n  contact_info JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE video_calls (\n   call_id INT PRIMARY KEY,\n   participant1_id INT,\n   participant2_id INT,\n   start_timestamp TIMESTAMP NOT NULL,\n   end_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n   participant_id INT PRIMARY KEY,\n   participant_name VARCHAR(100) NOT NULL,\n   participant_email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE call_details (\n   call_id INT,\n   participant_id INT,\n   action_timestamp TIMESTAMP NOT NULL,\n   action_description TEXT,\n   FOREIGN KEY (call_id) REFERENCES video_calls(call_id),\n   FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n   audit_id INT PRIMARY KEY,\n   call_id INT,\n   participant_id INT,\n   action_description TEXT,\n   audit_timestamp TIMESTAMP NOT NULL,\n   FOREIGN KEY (call_id) REFERENCES video_calls(call_id),\n   FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n   access_id INT PRIMARY KEY,\n   participant_id INT,\n   access_timestamp TIMESTAMP NOT NULL,\n   access_type VARCHAR(50) NOT NULL,\n   FOREIGN KEY (participant_id) REFERENCES participants(participant_id)\n);"
+      }
+    ]
+  }
+]

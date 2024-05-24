@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_engineering (\n    id INT PRIMARY KEY,\n    feature_name VARCHAR(255),\n    data_type VARCHAR(50),\n    transformation VARCHAR(50),\n    importance DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_engineering (\n    feature_id SERIAL PRIMARY KEY,\n    feature_name VARCHAR(50) NOT NULL,\n    feature_type VARCHAR(50) NOT NULL,\n    is_categorical BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_training (\n    model_id SERIAL PRIMARY KEY,\n    model_name VARCHAR(50) NOT NULL,\n    model_type VARCHAR(50) NOT NULL,\n    training_accuracy DECIMAL(5,2),\n    validation_accuracy DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FeatureEngineering (\n    feature_id INT PRIMARY KEY,\n    feature_name VARCHAR(255),\n    data_type VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelTraining (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    algorithm VARCHAR(50),\n    evaluation_metric VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PredictionResults (\n    prediction_id INT PRIMARY KEY,\n    model_id INT,\n    input_data TEXT,\n    predicted_output TEXT,\n    confidence_level FLOAT,\n    prediction_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_engineering (\n  feature_id INT PRIMARY KEY,\n  feature_name TEXT,\n  feature_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE predictive_modeling (\n  model_id INT PRIMARY KEY,\n  model_name TEXT,\n  model_type TEXT,\n  model_accuracy FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ai_applications (\n  app_id INT PRIMARY KEY,\n  app_name TEXT,\n  app_description TEXT,\n  app_version TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE feature_model_relationship (\n  relationship_id INT PRIMARY KEY,\n  feature_id INT,\n  model_id INT,\n  FOREIGN KEY (feature_id) REFERENCES feature_engineering(feature_id),\n  FOREIGN KEY (model_id) REFERENCES predictive_modeling(model_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_engineering (\n    feature_id INT PRIMARY KEY,\n    feature_name VARCHAR(255),\n    feature_type VARCHAR(50),\n    is_categorical BOOL,\n    is_numerical BOOL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_training (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_type VARCHAR(50),\n    training_dataset_id INT,\n    FOREIGN KEY (training_dataset_id) REFERENCES feature_engineering(feature_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE evaluation_metrics (\n    evaluation_id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_value DOUBLE,\n    model_id INT,\n    FOREIGN KEY (model_id) REFERENCES model_training(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE prediction_results (\n    prediction_id INT PRIMARY KEY,\n    prediction_value DOUBLE,\n    model_id INT,\n    evaluation_id INT,\n    FOREIGN KEY (model_id) REFERENCES model_training(model_id),\n    FOREIGN KEY (evaluation_id) REFERENCES evaluation_metrics(evaluation_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset (\n    dataset_id INT PRIMARY KEY,\n    dataset_name VARCHAR(255),\n    dataset_size INT,\n    features_used TEXT\n);"
+      }
+    ]
+  }
+]

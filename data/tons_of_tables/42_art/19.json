@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Paintings (\n\tid INT PRIMARY KEY,\n\tpainting_name VARCHAR(255),\n\tpainting_artist VARCHAR(255),\n\tpainting_year INT,\n\trestoration_history TEXT,\n\tcondition_report TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE painting (\n    id UUID PRIMARY KEY,\n    painting_name VARCHAR(255),\n    artist_name VARCHAR(255),\n    creation_year INT,\n    condition_report TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE restoration (\n    id UUID PRIMARY KEY,\n    painting_id UUID REFERENCES painting(id),\n    restoration_date DATE,\n    treatment_description TEXT,\n    restorer_name VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE paintings (\n    id INT PRIMARY KEY,\n    name VARCHAR,\n    artist VARCHAR,\n    year_created INT,\n    restoration_history TEXT,\n    condition_report TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE restoration_logs (\n    log_id INT PRIMARY KEY,\n    painting_id INT REFERENCES paintings(id),\n    restoration_date DATE,\n    restoration_details TEXT,\n    restorer VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE conservators (\n    conservator_id INT PRIMARY KEY,\n    name VARCHAR,\n    specialty VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Paintings (\n    painting_id SERIAL PRIMARY KEY,\n    painting_name VARCHAR(255) NOT NULL,\n    artist_name VARCHAR(255) NOT NULL,\n    creation_year INT,\n    condition_report TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Restoration (\n    restoration_id SERIAL PRIMARY KEY,\n    painting_id INT REFERENCES Paintings(painting_id),\n    restoration_date DATE,\n    restoration_description TEXT,\n    restoration_cost DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TreatmentHistory (\n    treatment_id SERIAL PRIMARY KEY,\n    restoration_id INT REFERENCES Restoration(restoration_id),\n    treatment_date DATE,\n    treatment_description TEXT,\n    treatment_cost DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Gallery (\n    gallery_id SERIAL PRIMARY KEY,\n    gallery_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    contact_email VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Paintings (\n    painting_id INT PRIMARY KEY,\n    painting_name VARCHAR(255),\n    artist_name VARCHAR(255),\n    creation_year INT,\n    condition_report TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TreatmentHistory (\n    treatment_id INT PRIMARY KEY,\n    painting_id INT,\n    treatment_date DATE,\n    treatment_description TEXT,\n    treatment_cost DECIMAL(10,2),\n    FOREIGN KEY (painting_id) REFERENCES Paintings(painting_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ConservationReports (\n    report_id INT PRIMARY KEY,\n    painting_id INT,\n    report_date DATE,\n    report_description TEXT,\n    conservator_name VARCHAR(255),\n    FOREIGN KEY (painting_id) REFERENCES Paintings(painting_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Owners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(255),\n    ownership_start DATE,\n    ownership_end DATE,\n    painting_id INT,\n    FOREIGN KEY (painting_id) REFERENCES Paintings(painting_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MuseumLocations (\n    location_id INT PRIMARY KEY,\n    museum_name VARCHAR(255),\n    location_address VARCHAR(255),\n    location_city VARCHAR(255)\n);"
+      }
+    ]
+  }
+]

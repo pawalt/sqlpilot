@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_data (\n  experiment_id INT PRIMARY KEY,\n  protocol_name VARCHAR(255),\n  researcher_name VARCHAR(255),\n  experiment_date DATE,\n  research_findings TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_protocols (\n  id UUID PRIMARY KEY,\n  protocol_name STRING,\n  researcher_name STRING,\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_findings (\n  id UUID PRIMARY KEY,\n  protocol_id UUID REFERENCES experimental_protocols(id),\n  finding_description STRING,\n  result FLOAT,\n  timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_protocols (\n protocol_id INT PRIMARY KEY,\n protocol_name VARCHAR(255),\n protocol_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_findings (\n finding_id INT PRIMARY KEY,\n protocol_id INT,\n finding_date DATE,\n finding_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biotechnology_projects (\n project_id INT PRIMARY KEY,\n project_name VARCHAR(255),\n project_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n  experiment_id UUID PRIMARY KEY,\n  protocol_id UUID,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE protocols (\n  protocol_id UUID PRIMARY KEY,\n  protocol_name VARCHAR(255),\n  protocol_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE findings (\n  finding_id UUID PRIMARY KEY,\n  experiment_id UUID,\n  finding_description TEXT,\n  result VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(255),\n  project_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protocol (\n    protocol_id INT PRIMARY KEY,\n    protocol_name VARCHAR(255),\n    description TEXT,\n    create_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researcher (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255),\n    email VARCHAR(255),\n    institution VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experimental_design (\n    design_id INT PRIMARY KEY,\n    design_name VARCHAR(255),\n    details TEXT,\n    protocol_id INT,\n    FOREIGN KEY (protocol_id) REFERENCES protocol(protocol_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    start_date TIMESTAMP,\n    end_date TIMESTAMP,\n    researcher_id INT,\n    design_id INT,\n    FOREIGN KEY (researcher_id) REFERENCES researcher(researcher_id),\n    FOREIGN KEY (design_id) REFERENCES experimental_design(design_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id INT PRIMARY KEY,\n    result_name VARCHAR(255),\n    observations TEXT,\n    experiment_id INT,\n    data BLOB,\n    FOREIGN KEY (experiment_id) REFERENCES experiment(experiment_id)\n);\n"
+      }
+    ]
+  }
+]

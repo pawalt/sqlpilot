@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_sequences (\n    sequence_id UUID PRIMARY KEY,\n    email_content TEXT,\n    send_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emails (\n    id SERIAL PRIMARY KEY,\n    email_address VARCHAR(255) NOT NULL,\n    email_subject TEXT NOT NULL,\n    scheduled_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    log_id SERIAL PRIMARY KEY,\n    email_id INT REFERENCES emails(id),\n    sent_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailSequences (\n    sequence_id UUID PRIMARY KEY,\n    sequence_name VARCHAR(255) NOT NULL,\n    scheduled_time TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Recipients (\n    recipient_id UUID PRIMARY KEY,\n    email_address VARCHAR(255) NOT NULL,\n    timezone VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SentEmails (\n    email_id UUID PRIMARY KEY,\n    sequence_id UUID NOT NULL,\n    recipient_id UUID NOT NULL,\n    sent_time TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_sequences (\n    sequence_id SERIAL PRIMARY KEY,\n    email_address VARCHAR(255) NOT NULL,\n    schedule_timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE scheduled_emails (\n    email_id SERIAL PRIMARY KEY,\n    sequence_id INT NOT NULL,\n    email_content TEXT NOT NULL,\n    send_timestamp TIMESTAMP NOT NULL,\n    sent BOOLEAN DEFAULT FALSE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    log_id SERIAL PRIMARY KEY,\n    email_id INT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_recipients (\n    recipient_id SERIAL PRIMARY KEY,\n    email_id INT NOT NULL,\n    recipient_email VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailSequences (\n    sequence_id UUID PRIMARY KEY,\n    recipient_email VARCHAR(255),\n    email_content TEXT,\n    send_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ScheduledEmails (\n    email_id UUID PRIMARY KEY,\n    sequence_id UUID,\n    recipient_email VARCHAR(255),\n    sent_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailLogs (\n    log_id UUID PRIMARY KEY,\n    email_id UUID,\n    log_timestamp TIMESTAMP,\n    log_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailTemplates (\n    template_id UUID PRIMARY KEY,\n    template_name VARCHAR(255),\n    template_content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RecurringEmails (\n    recurring_id UUID PRIMARY KEY,\n    sequence_id UUID,\n    recipient_email VARCHAR(255),\n    start_timestamp TIMESTAMP,\n    end_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

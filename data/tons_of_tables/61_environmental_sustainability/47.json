@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "Food Retailers Supply Chain"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Retailers (\n    retailer_id UUID PRIMARY KEY,\n    retailer_name STRING,\n    location STRING,\n    supply_chain_traceability BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id UUID PRIMARY KEY,\n    product_name STRING,\n    certification STRING,\n    organic BOOLEAN,\n    source_product_id UUID\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supply_chain_traceability (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  certification VARCHAR(50),\n  manufacturer VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_certifications (\n  certification_id INT PRIMARY KEY,\n  certification_name VARCHAR(100),\n  certification_body VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sustainable_sourcing_practices (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(100),\n  certification_status BOOLEAN,\n  organic_certification VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FoodRetailers (\n    retailer_id INT PRIMARY KEY,\n    retailer_name VARCHAR(255) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    certification_id INT,\n    CONSTRAINT fk_certification FOREIGN KEY (certification_id) REFERENCES Certifications(certification_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Certifications (\n    certification_id INT PRIMARY KEY,\n    certification_type VARCHAR(50) NOT NULL,\n    certification_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    product_type VARCHAR(50) NOT NULL,\n    organic BOOLEAN,\n    retailer_id INT,\n    CONSTRAINT fk_retailer FOREIGN KEY (retailer_id) REFERENCES FoodRetailers(retailer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(100) NOT NULL,\n    supplier_location VARCHAR(100) NOT NULL,\n    organic_certification_id INT,\n    CONSTRAINT fk_organic_cert FOREIGN KEY (organic_certification_id) REFERENCES Certifications(certification_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Retailers (\n    retailer_id INT PRIMARY KEY,\n    retailer_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    certification VARCHAR(50) DEFAULT 'N/A',\n    organic BOOL DEFAULT false,\n    retailer_id INT,\n    FOREIGN KEY (retailer_id) REFERENCES Retailers (retailer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Product_Suppliers (\n    product_id INT,\n    supplier_id INT,\n    price DECIMAL(10, 2) NOT NULL,\n    supply_chain VARCHAR(255) NOT NULL,\n    PRIMARY KEY (product_id, supplier_id),\n    FOREIGN KEY (product_id) REFERENCES Products (product_id),\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sustainable_Practices (\n    practice_id INT PRIMARY KEY,\n    practice_name VARCHAR(255) NOT NULL,\n    description TEXT\n);\n"
+      }
+    ]
+  }
+]

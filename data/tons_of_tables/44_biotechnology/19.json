@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_publications_metadata (\n    publication_id SERIAL PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    authors TEXT[] NOT NULL,\n    publication_date DATE NOT NULL,\n    journal_name VARCHAR(100) NOT NULL,\n    doi VARCHAR(50) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_publications (\n  publication_id INT PRIMARY KEY,\n  publication_title TEXT,\n  publication_author TEXT,\n  publication_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE publication_metadata (\n  metadata_id INT PRIMARY KEY,\n  publication_id INT,\n  metadata_key TEXT,\n  metadata_value TEXT,\n  FOREIGN KEY (publication_id) REFERENCES research_publications(publication_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ResearchPublications (\n    publication_id INT PRIMARY KEY,\n    title VARCHAR(255),\n    authors TEXT,\n    publication_date DATE,\n    journal VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PublicationKeywords (\n    keyword_id INT PRIMARY KEY,\n    keyword VARCHAR(100),\n    publication_id INT,\n    FOREIGN KEY (publication_id) REFERENCES ResearchPublications(publication_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PublicationRelated (\n    related_id INT PRIMARY KEY,\n    publication_id INT,\n    related_publication_id INT,\n    FOREIGN KEY (publication_id) REFERENCES ResearchPublications(publication_id),\n    FOREIGN KEY (related_publication_id) REFERENCES ResearchPublications(publication_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_publications (\n  publication_id INT PRIMARY KEY,\n  title VARCHAR(255),\n  authors VARCHAR(255),\n  publication_date DATE,\n  abstract TEXT,\n  journal VARCHAR(255),\n  doi VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE publication_authors (\n  author_id INT PRIMARY KEY,\n  author_name VARCHAR(100),\n  affiliation VARCHAR(255),\n  email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE publication_keywords (\n  keyword_id INT PRIMARY KEY,\n  keyword VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE publication_metadata (\n  publication_id INT PRIMARY KEY,\n  keyword_id INT,\n  author_id INT,\n  FOREIGN KEY (publication_id) REFERENCES research_publications(publication_id),\n  FOREIGN KEY (keyword_id) REFERENCES publication_keywords(keyword_id),\n  FOREIGN KEY (author_id) REFERENCES publication_authors(author_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_publications (\n  publication_id SERIAL PRIMARY KEY,\n  title VARCHAR(255) NOT NULL,\n  authors TEXT[],\n  publication_date DATE,\n  abstract TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE publication_authors (\n  author_id SERIAL PRIMARY KEY,\n  author_name VARCHAR(100) NOT NULL,\n  publication_id INT REFERENCES research_publications(publication_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE publication_keywords (\n  keyword_id SERIAL PRIMARY KEY,\n  keyword_text VARCHAR(50) NOT NULL,\n  publication_id INT REFERENCES research_publications(publication_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE publication_citations (\n  citation_id SERIAL PRIMARY KEY,\n  citing_publication_id INT REFERENCES research_publications(publication_id),\n  cited_publication_id INT REFERENCES research_publications(publication_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE publication_tags (\n  tag_id SERIAL PRIMARY KEY,\n  tag_name VARCHAR(50) NOT NULL,\n  publication_id INT REFERENCES research_publications(publication_id)\n)"
+      }
+    ]
+  }
+]

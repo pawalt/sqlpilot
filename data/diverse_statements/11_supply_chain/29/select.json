@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM purchase_orders;",
+      "SELECT vendor_name, item_name, total_price FROM purchase_orders WHERE quantity > 10;",
+      "SELECT * FROM purchase_orders WHERE total_price BETWEEN 1000 AND 5000;",
+      "SELECT purchase_order_id, vendor_name FROM purchase_orders ORDER BY purchase_order_id DESC;",
+      "SELECT item_name, unit_price FROM purchase_orders WHERE approved = TRUE;",
+      "SELECT * FROM purchase_orders WHERE approved = TRUE;",
+      "SELECT vendor_name, item_name, total_price FROM purchase_orders WHERE total_price > 1000;",
+      "SELECT purchase_order_id, vendor_name, total_price FROM purchase_orders ORDER BY total_price DESC;",
+      "SELECT vendor_name, SUM(total_price) AS total_spent FROM purchase_orders GROUP BY vendor_name;",
+      "SELECT vendor_name, item_name, quantity, unit_price, total_price FROM purchase_orders WHERE quantity >= 10 AND unit_price < 50;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM purchase_orders WHERE total_amount > 1000",
+      "SELECT order_id, order_date, total_amount FROM purchase_orders ORDER BY order_date DESC",
+      "SELECT vendor_id, COUNT(*) AS order_count FROM purchase_orders GROUP BY vendor_id",
+      "SELECT * FROM approval_workflows WHERE total_approvals < 5",
+      "SELECT workflow_id, approver_id, department_id, status FROM approval_workflows",
+      "SELECT * FROM purchase_orders WHERE order_date > '2020-01-01' AND total_amount > 1000 ORDER BY order_date DESC;",
+      "SELECT order_id, total_amount, status FROM purchase_orders WHERE vendor_id = 3 ORDER BY total_amount ASC;",
+      "SELECT approval_workflows.workflow_id, approval_workflows.total_approvals, approval_workflows.status, purchase_orders.order_date FROM approval_workflows JOIN purchase_orders ON approval_workflows.workflow_id = purchase_orders.order_id WHERE approval_workflows.department_id = 5 ORDER BY purchase_orders.order_date ASC;",
+      "SELECT AVG(total_amount) AS avg_amount, COUNT(order_id) AS total_orders FROM purchase_orders GROUP BY status HAVING total_orders > 10;",
+      "SELECT MAX(total_approvals) AS max_approvals, MIN(total_approvals) AS min_approvals FROM approval_workflows WHERE status = 'pending';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM PurchaseOrders WHERE approval_status = TRUE;",
+      "SELECT item_name, quantity, unit_price FROM PurchaseOrders WHERE vendor_id = 101 ORDER BY unit_price DESC;",
+      "SELECT id, item_name, quantity FROM PurchaseOrders WHERE quantity > 50 AND unit_price < 100;",
+      "SELECT vendor_id, AVG(unit_price) AS average_price FROM PurchaseOrders GROUP BY vendor_id;",
+      "SELECT * FROM ApprovalWorkflows WHERE created_by_id = 201 AND approval_limit > 5000 ORDER BY approval_limit DESC;",
+      "SELECT * FROM PurchaseOrders WHERE vendor_id = 1000;",
+      "SELECT item_name, quantity, unit_price FROM PurchaseOrders WHERE approval_status = TRUE;",
+      "SELECT id, item_name, quantity, unit_price FROM PurchaseOrders WHERE quantity > 10 ORDER BY unit_price DESC;",
+      "SELECT p.item_name, p.quantity, w.workflow_name, w.approval_limit FROM PurchaseOrders p, ApprovalWorkflows w WHERE p.vendor_id = w.created_by_id;",
+      "SELECT r.start_point, r.end_point, r.duration, a.workflow_name FROM RoutingTable r JOIN ApprovalWorkflows a ON r.route_name = a.workflow_name;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM purchase_orders;",
+      "SELECT order_number, total_amount FROM purchase_orders WHERE status = 'Approved';",
+      "SELECT id, order_date, total_amount FROM purchase_orders ORDER BY order_date DESC;",
+      "SELECT * FROM approval_workflow WHERE step_number = 2;",
+      "SELECT approver_id, approver_role FROM approval_workflow ORDER BY id ASC;",
+      "SELECT id, order_number, order_date, total_amount, status FROM purchase_orders;",
+      "SELECT order_number, total_amount, status, order_date, id FROM purchase_orders WHERE status = 'Approved';",
+      "SELECT * FROM approvals WHERE status = 'Pending' ORDER BY approved_date DESC;",
+      "SELECT purchase_order_id, approver_role, step_number FROM approvals JOIN approval_workflow ON approvals.step_number = approval_workflow.step_number;",
+      "SELECT * FROM purchase_orders WHERE total_amount >= 1000 ORDER BY order_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM purchase_orders;",
+      "SELECT id, order_number, amount FROM purchase_orders ORDER BY amount DESC;",
+      "SELECT * FROM suppliers WHERE name = 'Supplier ABC';",
+      "SELECT id, name, email FROM employees WHERE department = 'Logistics';",
+      "SELECT id, order_number, status FROM purchase_orders WHERE amount > 1000;",
+      "SELECT * FROM purchase_orders WHERE status = 'pending';",
+      "SELECT id, order_number, amount FROM purchase_orders WHERE amount > 1000 ORDER BY order_number DESC;",
+      "SELECT p.id, p.order_number, s.name as supplier_name, e.name as approver_name FROM purchase_orders p JOIN suppliers s ON p.supplier_id = s.id JOIN approvals a ON p.id = a.purchase_order_id JOIN employees e ON a.approver_id = e.id WHERE a.approval_status = 'approved';",
+      "SELECT po.id, po.order_number, s.name as supplier_name, po.amount, a.approval_status FROM purchase_orders po JOIN suppliers s ON po.supplier_id = s.id LEFT JOIN approvals a ON po.id = a.purchase_order_id WHERE a.approval_status IS NULL;",
+      "SELECT e.id, e.name, e.department, COUNT(a.id) as total_approvals FROM employees e LEFT JOIN approvals a ON e.id = a.approver_id GROUP BY e.id, e.name, e.department ORDER BY total_approvals DESC;"
+    ]
+  }
+]

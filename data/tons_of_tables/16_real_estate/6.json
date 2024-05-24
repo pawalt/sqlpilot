@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE buildings (\n    building_id INT PRIMARY KEY,\n    building_name TEXT NOT NULL,\n    owner_id INT NOT NULL,\n    utility_type TEXT,\n    utility_usage DECIMAL,\n    utility_cost DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Owners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(255) NOT NULL,\n    contact_email VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UtilityUsage (\n    usage_id INT PRIMARY KEY,\n    owner_id INT NOT NULL,\n    utility_type VARCHAR(50) NOT NULL,\n    usage_value DECIMAL(10,2) NOT NULL,\n    usage_date DATE NOT NULL,\n    FOREIGN KEY (owner_id) REFERENCES Owners(owner_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_owners (\n    owner_id INT PRIMARY KEY,\n    owner_name TEXT,\n    building_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE buildings (\n    building_id INT PRIMARY KEY,\n    building_name TEXT,\n    address TEXT,\n    total_sq_ft INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_usage (\n    usage_id INT PRIMARY KEY,\n    building_id INT,\n    utility_type TEXT,\n    usage_date DATE,\n    usage_amount DECIMAL(10,2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE building_owners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(50) NOT NULL,\n    building_address VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_meters (\n    meter_id INT PRIMARY KEY,\n    building_id INT NOT NULL,\n    meter_type VARCHAR(50) NOT NULL,\n    install_date DATE NOT NULL,\n    FOREIGN KEY (building_id) REFERENCES building_owners(owner_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_readings (\n    reading_id INT PRIMARY KEY,\n    meter_id INT NOT NULL,\n    reading_date TIMESTAMP NOT NULL,\n    usage_kwh FLOAT NOT NULL,\n    cost_usd DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (meter_id) REFERENCES utility_meters(meter_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE utility_costs (\n    cost_id INT PRIMARY KEY,\n    utility_type VARCHAR(50) NOT NULL,\n    cost_per_unit DECIMAL(10, 2) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PropertyOwners (\n   owner_id INT PRIMARY KEY,\n   owner_name VARCHAR(255) NOT NULL,\n   phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Buildings (\n   building_id INT PRIMARY KEY,\n   building_name VARCHAR(255) NOT NULL,\n   address VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Utilities (\n   utility_id INT PRIMARY KEY,\n   utility_name VARCHAR(255) NOT NULL,\n   unit_of_measurement VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UsageData (\n   data_id INT PRIMARY KEY,\n   building_id INT,\n   utility_id INT,\n   usage_value INT,\n   cost DECIMAL(10, 2),\n   FOREIGN KEY (building_id) REFERENCES Buildings(building_id),\n   FOREIGN KEY (utility_id) REFERENCES Utilities(utility_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BillingRecords (\n   record_id INT PRIMARY KEY,\n   owner_id INT,\n   data_id INT,\n   billing_date DATE,\n   total_cost DECIMAL(10, 2),\n   FOREIGN KEY (owner_id) REFERENCES PropertyOwners(owner_id),\n   FOREIGN KEY (data_id) REFERENCES UsageData(data_id)\n);\n"
+      }
+    ]
+  }
+]

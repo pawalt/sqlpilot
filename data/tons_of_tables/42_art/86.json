@@ -1,0 +1,52 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_orders (\n  order_id INT PRIMARY KEY,\n  customer_id INT,\n  product_id INT,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n  FOREIGN KEY (product_id) REFERENCES products(product_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50)\n);\n\nCREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50)\n);\n\nALTER TABLE orders ADD COLUMN product_id INT;\nALTER TABLE orders ADD FOREIGN KEY (product_id) REFERENCES products(product_id);\nALTER TABLE orders ADD COLUMN customer_id INT;\nALTER TABLE orders ADD FOREIGN KEY (customer_id) REFERENCES customers(customer_id);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT,\n    product_id INT,\n    order_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(50),\n    customer_email VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    order_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(50),\n    product_price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE order_details (\n    order_id UUID REFERENCES orders(order_id),\n    product_id UUID REFERENCES products(product_id),\n    quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE products (\n    product_id SERIAL PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE orders (\n    order_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    order_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n\nCREATE TABLE order_items (\n    item_id SERIAL PRIMARY KEY,\n    order_id INT NOT NULL,\n    product_id INT NOT NULL,\n    quantity INT,\n    FOREIGN KEY (order_id) REFERENCES orders(order_id),\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);\n\nCREATE TABLE payment (\n    payment_id SERIAL PRIMARY KEY,\n    order_id INT NOT NULL,\n    payment_date DATE,\n    amount DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (order_id) REFERENCES orders(order_id)\n);"
+      }
+    ]
+  }
+]

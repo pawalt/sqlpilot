@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grants (\n  grant_id SERIAL PRIMARY KEY, \n  grant_title TEXT NOT NULL, \n  grant_description TEXT, \n  organization TEXT NOT NULL, \n  grant_amount DECIMAL, \n  grant_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_proposals (\n  proposal_id INT PRIMARY KEY,\n  organization_name VARCHAR(255),\n  proposal_description TEXT,\n  submission_date DATE,\n  approval_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_history (\n  funding_id INT PRIMARY KEY,\n  proposal_id INT,\n  funding_amount DECIMAL(10, 2),\n  funding_date DATE,\n  CONSTRAINT fk_proposal FOREIGN KEY (proposal_id) REFERENCES grant_proposals(proposal_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_proposals (\n    proposal_id INT PRIMARY KEY,\n    proposal_name TEXT,\n    proposal_description TEXT,\n    submission_date TIMESTAMP,\n    organization_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_history (\n    grant_id INT PRIMARY KEY,\n    proposal_id INT,\n    amount DECIMAL(10, 2),\n    funding_date TIMESTAMP,\n    donor_name TEXT,\n    FOREIGN KEY (proposal_id) REFERENCES grant_proposals(proposal_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_reviewers (\n    reviewer_id INT PRIMARY KEY,\n    reviewer_name TEXT,\n    organization_name TEXT,\n    expertise_area TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_proposals (\n\tproposal_id INT PRIMARY KEY,\n\tproposal_name VARCHAR(255) NOT NULL,\n\tproposal_description TEXT,\n\tsubmission_date TIMESTAMP,\n\tstatus VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_sources (\n\tsource_id INT PRIMARY KEY,\n\tsource_name VARCHAR(255) NOT NULL,\n\tsource_type VARCHAR(50),\n\tsource_contact VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_history (\n\thistory_id INT PRIMARY KEY,\n\tproposal_id INT,\n\tsource_id INT,\n\tamount DECIMAL(10, 2),\n\tgrant_date DATE,\n\tFOREIGN KEY (proposal_id) REFERENCES grant_proposals(proposal_id),\n\tFOREIGN KEY (source_id) REFERENCES funding_sources(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE proposal_reviews (\n\treview_id INT PRIMARY KEY,\n\tproposal_id INT,\n\treviewer_name VARCHAR(100),\n\treview_date DATE,\n\tscore INT,\n\tfeedback TEXT,\n\tFOREIGN KEY (proposal_id) REFERENCES grant_proposals(proposal_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_proposals (\n    proposal_id UUID PRIMARY KEY,\n    organization_name VARCHAR(255),\n    grant_amount DECIMAL,\n    proposal_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_history (\n    grant_id UUID PRIMARY KEY,\n    proposal_id UUID,\n    funding_date DATE,\n    funding_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE organizations (\n    organization_id UUID PRIMARY KEY,\n    organization_name VARCHAR(255),\n    industry VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contacts (\n    contact_id UUID PRIMARY KEY,\n    organization_id UUID,\n    contact_name VARCHAR(255),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_categories (\n    category_id UUID PRIMARY KEY,\n    category_name VARCHAR(100),\n    description TEXT\n);"
+      }
+    ]
+  }
+]

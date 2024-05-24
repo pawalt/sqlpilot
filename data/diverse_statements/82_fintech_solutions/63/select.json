@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM regulatory_documents;",
+      "SELECT document_name, document_type FROM regulatory_documents;",
+      "SELECT * FROM regulatory_documents WHERE id = 1;",
+      "SELECT id, document_name, issue_date FROM regulatory_documents WHERE document_type = 'Policy';",
+      "SELECT document_type, expiry_date FROM regulatory_documents WHERE issue_date >= '2022-01-01';",
+      "SELECT * FROM regulatory_documents WHERE document_type = 'Policy' ORDER BY issue_date DESC;",
+      "SELECT document_name, issue_date, expiry_date FROM regulatory_documents WHERE expiry_date > CURRENT_DATE;",
+      "SELECT document_name, document_type FROM regulatory_documents WHERE issue_date BETWEEN '2021-01-01' AND '2021-12-31' ORDER BY document_name ASC;",
+      "SELECT document_name, issue_date, expiry_date FROM regulatory_documents WHERE document_type = 'Procedure' AND issue_date < '2022-01-01';",
+      "SELECT COUNT(*) AS total_documents, document_type FROM regulatory_documents GROUP BY document_type HAVING COUNT(*) > 1 ORDER BY total_documents DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM licenses WHERE company_name = 'ABC Inc.'",
+      "SELECT license_id, company_name, license_type FROM licenses",
+      "SELECT * FROM certifications WHERE certification_type = 'ISO 9001'",
+      "SELECT company_name, issue_date, expiration_date FROM licenses ORDER BY issue_date DESC",
+      "SELECT certification_id, company_name, issued_by FROM certifications ORDER BY expiration_date ASC",
+      "SELECT * FROM licenses WHERE expiration_date >= '2022-12-31' ORDER BY issue_date DESC LIMIT 10;",
+      "SELECT company_name, license_type FROM licenses WHERE license_type = 'Software' AND issue_date >= '2022-01-01' ORDER BY company_name ASC;",
+      "SELECT company_name, issue_date FROM certifications WHERE certification_type = 'Security' ORDER BY issue_date ASC LIMIT 5;",
+      "SELECT * FROM certifications WHERE expiration_date < '2022-12-31' AND certification_type IN ('Network', 'Cloud') ORDER BY issue_date ASC;",
+      "SELECT company_name, issue_date, expiration_date FROM licenses WHERE company_name LIKE '%Corp%' OR company_name LIKE '%LLC%' ORDER BY expiration_date DESC, issue_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM licenses;",
+      "SELECT company_id, license_type, issue_date FROM licenses WHERE issue_date > '2021-01-01';",
+      "SELECT company_name FROM companies ORDER BY company_name ASC;",
+      "SELECT certification_type, issued_by, expiry_date FROM certifications WHERE expiry_date IS NULL;",
+      "SELECT company_id, company_name, registration_date FROM companies WHERE registration_date < '2022-01-01';",
+      "SELECT * FROM companies WHERE registration_date > '2020-01-01' ORDER BY company_name DESC;",
+      "SELECT company_id, company_name FROM companies JOIN licenses ON companies.company_id = licenses.company_id WHERE license_type = 'Software' AND expiry_date IS NULL;",
+      "SELECT company_id, company_name, license_type, issue_date FROM companies JOIN licenses ON companies.company_id = licenses.company_id JOIN certifications ON companies.company_id = certifications.company_id WHERE certifications.issued_by = 'ABC Corporation' ORDER BY companies.company_name, licenses.issue_date;",
+      "SELECT certifications.certification_type, companies.company_name, certifications.issue_date, licenses.license_type, licenses.issue_date FROM certifications JOIN companies ON certifications.company_id = companies.company_id JOIN licenses ON companies.company_id = licenses.company_id WHERE licenses.expiry_date > '2022-12-31';",
+      "SELECT companies.company_id, companies.company_name, COUNT(certifications.certification_id) AS certifications_count FROM companies LEFT JOIN certifications ON companies.company_id = certifications.company_id GROUP BY companies.company_id, companies.company_name HAVING certifications_count > 3 ORDER BY certifications_count DESC, companies.company_name;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM licenses;",
+      "SELECT license_id, license_name FROM licenses WHERE expiration_date > '2023-01-01';",
+      "SELECT owner_name, owner_email FROM license_owners ORDER BY owner_name ASC;",
+      "SELECT certification_name, issuer FROM certifications WHERE issue_date BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT certification_id, owner_name FROM certification_owners WHERE owner_email IS NULL;",
+      "SELECT license_name, expiration_date FROM licenses WHERE expiration_date > '2022-01-01';",
+      "SELECT certification_name, issuer FROM certifications ORDER BY issuer ASC;",
+      "SELECT owner_name, owner_email FROM license_owners WHERE owner_email IS NOT NULL;",
+      "SELECT certification_name, issue_date FROM certifications WHERE issue_date BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT owner_name, license_name FROM license_owners INNER JOIN licenses ON license_owners.license_id = licenses.license_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM licenses;",
+      "SELECT license_name, issue_date, expiration_date FROM licenses WHERE company_id = 1;",
+      "SELECT DISTINCT company_id, COUNT(*) AS license_count FROM licenses GROUP BY company_id;",
+      "SELECT * FROM regulatory_documents WHERE issuing_agency = 'FDA' ORDER BY issue_date DESC;",
+      "SELECT companies.company_name, employees.employee_name, certifications.certification_name FROM companies INNER JOIN employees ON companies.company_id = employees.company_id INNER JOIN certifications ON employees.employee_id = certifications.employee_id;",
+      "SELECT * FROM licenses WHERE expiration_date > '2022-12-31';",
+      "SELECT license_name, issue_date FROM licenses WHERE company_id = 1 ORDER BY license_name ASC;",
+      "SELECT certifications.*, employees.employee_name FROM certifications INNER JOIN employees ON certifications.employee_id = employees.employee_id;",
+      "SELECT license_name, issue_date, expiration_date FROM licenses WHERE issue_date BETWEEN '2022-01-01' AND '2022-06-30' ORDER BY expiration_date DESC;",
+      "SELECT company_name, COUNT(*) AS total_licenses FROM companies LEFT JOIN licenses ON companies.company_id = licenses.company_id GROUP BY company_name ORDER BY total_licenses DESC;"
+    ]
+  }
+]

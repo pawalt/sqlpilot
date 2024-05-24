@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certificates (\n  id UUID PRIMARY KEY,\n  domain VARCHAR(255) NOT NULL,\n  issuer VARCHAR(255) NOT NULL,\n  expiration_date TIMESTAMP NOT NULL,\n  public_key TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certificates (\n    id SERIAL PRIMARY KEY,\n    certificate_name TEXT NOT NULL,\n    certificate_data BYTEA NOT NULL,\n    expiration_date DATE NOT NULL\n);\n\nCREATE TABLE devices (\n    device_id SERIAL PRIMARY KEY,\n    device_name TEXT NOT NULL,\n    device_type TEXT NOT NULL,\n    certificate_id INT NOT NULL,\n    FOREIGN KEY (certificate_id) REFERENCES certificates(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certificates (\n    id UUID PRIMARY KEY,\n    certificate_data BYTEA,\n    expiry_date TIMESTAMP,\n    owner_name VARCHAR(255),\n    owner_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50),\n    owner_id INT REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certificates (\n    id SERIAL PRIMARY KEY,\n    certificate_name VARCHAR(255) NOT NULL,\n    issuer VARCHAR(255) NOT NULL,\n    expiration_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(100) UNIQUE NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    password_hash TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(100) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    user_id INT REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id SERIAL PRIMARY KEY,\n    date_time TIMESTAMP NOT NULL,\n    action VARCHAR(50) NOT NULL,\n    user_id INT REFERENCES users(user_id),\n    device_id INT REFERENCES devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_certificates (\n    id INT PRIMARY KEY,\n    certificate_data TEXT,\n    expiration_date TIMESTAMP,\n    issuer_name VARCHAR(255),\n    subject_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    password VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    device_id INT,\n    access_time TIMESTAMP,\n    success_status BOOLEAN,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE revocation_lists (\n    list_id INT PRIMARY KEY,\n    certificate_id INT,\n    revocation_date TIMESTAMP,\n    reason VARCHAR(255),\n    FOREIGN KEY (certificate_id) REFERENCES digital_certificates(id)\n);"
+      }
+    ]
+  }
+]

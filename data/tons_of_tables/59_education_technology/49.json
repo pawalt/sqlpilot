@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE app_usage_statistics (\n    id INT PRIMARY KEY,\n    app_id INT,\n    user_id INT,\n    session_duration INT,\n    action_type VARCHAR(50),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE app_usage (\n    app_id INT PRIMARY KEY,\n    user_id INT,\n    session_id INT,\n    datetime TIMESTAMP,\n    duration INT\n);\n\nCREATE TABLE app_analytics (\n    analytics_id INT PRIMARY KEY,\n    app_id INT,\n    event_type VARCHAR(50),\n    event_time TIMESTAMP,\n    user_action VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_app_sessions (\n\tapp_id UUID,\n\tsession_id UUID,\n\tuser_id UUID,\n\tsession_start_time TIMESTAMPTZ,\n\tsession_end_time TIMESTAMPTZ,\n\tsession_duration INTERVAL,\n\tPRIMARY KEY (app_id, session_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_app_events (\n\tevent_id UUID,\n\tapp_id UUID,\n\tsession_id UUID,\n\tevent_type VARCHAR(50),\n\tevent_timestamp TIMESTAMPTZ,\n\tevent_data JSONB,\n\tPRIMARY KEY (event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_app_performance (\n\tapp_id UUID,\n\tcpu_usage FLOAT,\n\tmemory_usage FLOAT,\n\tbattery_level FLOAT,\n\tnetwork_usage FLOAT,\n\ttimestamp TIMESTAMPTZ,\n\tPRIMARY KEY (app_id, timestamp)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE app_users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    user_email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE app_sessions (\n    session_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES app_users(user_id) NOT NULL,\n    session_start TIMESTAMP NOT NULL,\n    session_end TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE app_events (\n    event_id SERIAL PRIMARY KEY,\n    event_name VARCHAR(50) NOT NULL,\n    event_timestamp TIMESTAMP NOT NULL,\n    session_id INT REFERENCES app_sessions(session_id) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE app_performance (\n    performance_id SERIAL PRIMARY KEY,\n    session_id INT REFERENCES app_sessions(session_id) NOT NULL,\n    cpu_usage FLOAT NOT NULL,\n    memory_usage FLOAT NOT NULL,\n    network_usage FLOAT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE app_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    app_name VARCHAR(50) NOT NULL,\n    sessions INT DEFAULT 0\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE app_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP,\n    duration INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE app_events (\n    event_id INT PRIMARY KEY,\n    session_id INT NOT NULL,\n    event_name VARCHAR(50) NOT NULL,\n    event_time TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE app_errors (\n    error_id INT PRIMARY KEY,\n    session_id INT NOT NULL,\n    error_code INT NOT NULL,\n    error_message TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE app_performance (\n    performance_id INT PRIMARY KEY,\n    session_id INT NOT NULL,\n    cpu_usage FLOAT,\n    memory_usage FLOAT,\n    disk_usage FLOAT,\n    network_usage FLOAT\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payments (payment_id UUID PRIMARY KEY,\n                   payment_method VARCHAR(50),\n                   amount DECIMAL,\n                   currency VARCHAR(3),\n                   status VARCHAR(20),\n                   transaction_date TIMESTAMP,\n                   gateway_response JSONB)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n  gateway_id INT PRIMARY KEY,\n  gateway_name VARCHAR(50) NOT NULL,\n  integration_key VARCHAR(100) NOT NULL,\n  is_active BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  transaction_date TIMESTAMP NOT NULL,\n  status VARCHAR(20) NOT NULL,\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n  id INT PRIMARY KEY,\n  gateway_name VARCHAR(50) NOT NULL,\n  gateway_url TEXT NOT NULL,\n  api_key VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  gateway_id INT REFERENCES payment_gateways(id),\n  user_id INT NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  transaction_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fund_transfers (\n  transfer_id INT PRIMARY KEY,\n  sender_id INT NOT NULL,\n  recipient_id INT NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  transfer_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id UUID PRIMARY KEY,\n    user_id UUID,\n    amount DECIMAL(10, 2),\n    payment_date TIMESTAMP,\n    payment_status ENUM('pending', 'success', 'failed')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    sender_id UUID,\n    receiver_id UUID,\n    amount DECIMAL(10, 2),\n    transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n    gateway_id UUID PRIMARY KEY,\n    gateway_name VARCHAR(50),\n    gateway_url VARCHAR(255),\n    gateway_mode ENUM('sandbox', 'live')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n    id INT PRIMARY KEY,\n    gateway_name VARCHAR(255),\n    api_key VARCHAR(255),\n    is_active BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15),\n    address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT,\n    amount DECIMAL(10, 2),\n    transaction_date TIMESTAMP,\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n    method_id INT PRIMARY KEY,\n    customer_id INT,\n    method_name VARCHAR(255),\n    card_number VARCHAR(16),\n    expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fund_transfers (\n    transfer_id INT PRIMARY KEY,\n    from_account VARCHAR(20),\n    to_account VARCHAR(20),\n    amount DECIMAL(10, 2),\n    transfer_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

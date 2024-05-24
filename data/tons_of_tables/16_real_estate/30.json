@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerPreferences (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  purchase_history JSON,\n  preferred_location VARCHAR(50),\n  preferred_style VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_preferences (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20),\n    luxury_home_preference VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchase_history (\n    purchase_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customer_preferences(customer_id),\n    purchase_date DATE,\n    purchase_amount DECIMAL(10, 2),\n    purchased_property_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    address VARCHAR(255),\n    phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE purchase_history (\n    purchase_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    purchase_date TIMESTAMP,\n    amount DECIMAL(10, 2),\n    product_name VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    customer_id UUID REFERENCES customers(customer_id),\n    preference_name VARCHAR(50) NOT NULL,\n    preference_value VARCHAR(255),\n    PRIMARY KEY (customer_id, preference_name)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(100),\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n    purchase_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    purchase_date TIMESTAMP,\n    amount DECIMAL(10,2),\n    product_name VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    preference_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    preference_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(100),\n    target_preference_id INT REFERENCES preferences(preference_id),\n    target_purchase_amount DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    id UUID PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20),\n    age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n    purchase_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(id),\n    purchase_date DATE,\n    purchase_amount DECIMAL(10, 2),\n    product_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    preference_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(id),\n    preference_name VARCHAR(255),\n    preference_value VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_strategies (\n    strategy_id UUID PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    target_age_min INT,\n    target_age_max INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_strategies (\n    customer_id UUID REFERENCES customers(id),\n    strategy_id UUID REFERENCES marketing_strategies(strategy_id),\n    UNIQUE(customer_id, strategy_id)\n);"
+      }
+    ]
+  }
+]

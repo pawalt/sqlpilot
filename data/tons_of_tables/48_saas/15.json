@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_networks (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    cidr_block VARCHAR(20) NOT NULL,\n    provider VARCHAR(50),\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_networks (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    cidr VARCHAR(20) NOT NULL\n);\n\nCREATE TABLE subnets (\n    id SERIAL PRIMARY KEY,\n    network_id INT REFERENCES virtual_networks(id),\n    name VARCHAR(50) NOT NULL,\n    cidr VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_networks (\n    network_id INT PRIMARY KEY,\n    network_name VARCHAR(255),\n    subnet_count INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subnets (\n    subnet_id INT PRIMARY KEY,\n    subnet_name VARCHAR(255),\n    network_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_metadata (\n    metadata_id INT PRIMARY KEY,\n    network_id INT,\n    subnet_id INT,\n    description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_networks (\n    id UUID PRIMARY KEY,\n    name STRING NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subnets (\n    id UUID PRIMARY KEY,\n    subnet_cidr STRING NOT NULL,\n    network_id UUID REFERENCES virtual_networks (id),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    id UUID PRIMARY KEY,\n    device_name STRING NOT NULL,\n    device_type STRING,\n    subnet_id UUID REFERENCES subnets (id),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n    id UUID PRIMARY KEY,\n    log_message TEXT,\n    device_id UUID REFERENCES network_devices (id),\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS virtual_networks (\n    id UUID PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS subnets (\n    id UUID PRIMARY KEY,\n    subnet_cidr CIDR NOT NULL,\n    network_id UUID REFERENCES virtual_networks(id),\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS instances (\n    id UUID PRIMARY KEY,\n    instance_type VARCHAR(20) NOT NULL,\n    subnet_id UUID REFERENCES subnets(id),\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS security_groups (\n    id UUID PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS rules (\n    id UUID PRIMARY KEY,\n    rule_type VARCHAR(20) NOT NULL,\n    security_group_id UUID REFERENCES security_groups(id),\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]

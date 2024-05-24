@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_victims (\n  victim_id INT PRIMARY KEY,\n  victim_name VARCHAR(255),\n  email_address VARCHAR(255) UNIQUE,\n  amount_lost DECIMAL(10, 2),\n  date_of_incident DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_victims (\n    victim_id SERIAL PRIMARY KEY,\n    victim_name VARCHAR(50) NOT NULL,\n    victim_email VARCHAR(100) UNIQUE NOT NULL,\n    amount_lost DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_attempts (\n    attempt_id SERIAL PRIMARY KEY,\n    victim_id INT NOT NULL,\n    attempt_date TIMESTAMP NOT NULL,\n    outcome VARCHAR(20) NOT NULL,\n    FOREIGN KEY (victim_id) REFERENCES phishing_victims(victim_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE victim_information (\n    victim_id INT PRIMARY KEY,\n    victim_name VARCHAR(255),\n    email_address VARCHAR(255),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_attempts (\n    attempt_id INT PRIMARY KEY,\n    victim_id INT REFERENCES victim_information(victim_id),\n    timestamp TIMESTAMP,\n    success BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_transaction (\n    transaction_id INT PRIMARY KEY,\n    victim_id INT REFERENCES victim_information(victim_id),\n    amount DECIMAL,\n    transaction_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE victims (\n    victim_id INT PRIMARY KEY,\n    victim_name VARCHAR(255),\n    victim_email VARCHAR(255) UNIQUE,\n    victim_phone VARCHAR(20),\n    victim_location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE scams (\n    scam_id INT PRIMARY KEY,\n    scam_type VARCHAR(50),\n    scam_amount DECIMAL(10, 2),\n    scam_date DATE,\n    scam_location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    victim_id INT REFERENCES victims(victim_id),\n    scam_id INT REFERENCES scams(scam_id),\n    transaction_amount DECIMAL(10, 2),\n    transaction_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    transaction_id INT REFERENCES transactions(transaction_id),\n    payment_amount DECIMAL(10, 2),\n    payment_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE victims (\n    victim_id INT PRIMARY KEY,\n    victim_name VARCHAR(50),\n    email_address VARCHAR(100),\n    phone_number VARCHAR(20),\n    address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_emails (\n    email_id INT PRIMARY KEY,\n    email_subject VARCHAR(255),\n    sender_email VARCHAR(100),\n    received_date DATE,\n    victim_id INT,\n    FOREIGN KEY (victim_id) REFERENCES victims(victim_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_transactions (\n    transaction_id INT PRIMARY KEY,\n    transaction_date DATE,\n    amount FLOAT,\n    transaction_type VARCHAR(50),\n    victim_id INT,\n    FOREIGN KEY (victim_id) REFERENCES victims(victim_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scam_reports (\n    report_id INT PRIMARY KEY,\n    report_date DATE,\n    scam_description TEXT,\n    victim_id INT,\n    FOREIGN KEY (victim_id) REFERENCES victims(victim_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scam_activities (\n    activity_id INT PRIMARY KEY,\n    activity_date DATE,\n    activity_description TEXT,\n    victim_id INT,\n    FOREIGN KEY (victim_id) REFERENCES victims(victim_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_currency_transfers (\n\ttransfer_id INT PRIMARY KEY,\n\tfrom_wallet_id INT,\n\tto_wallet_id INT,\n\tamount DECIMAL,\n\ttransfer_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  balance DECIMAL(10, 2) DEFAULT 0\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  sender_id INT,\n  receiver_id INT,\n  amount DECIMAL(10, 2) NOT NULL,\n  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallets (\n    wallet_id INT PRIMARY KEY,\n    user_id INT,\n    currency VARCHAR(10),\n    balance DECIMAL(15, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    sender_wallet_id INT,\n    receiver_wallet_id INT,\n    amount DECIMAL(15, 2),\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Wallets (   wallet_id INT PRIMARY KEY,   user_id INT NOT NULL,   currency_type VARCHAR(50) NOT NULL,   balance DECIMAL(15, 2) NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (   transaction_id INT PRIMARY KEY,   from_wallet INT NOT NULL,   to_wallet INT NOT NULL,   amount DECIMAL(15, 2) NOT NULL,   transaction_date TIMESTAMP NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (   user_id INT PRIMARY KEY,   username VARCHAR(50) UNIQUE NOT NULL,   email VARCHAR(100) NOT NULL,   created_at TIMESTAMP NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE CurrencyTypes (   currency_type VARCHAR(50) PRIMARY KEY,   description TEXT );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    wallet_balance INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n    wallet_id UUID PRIMARY KEY,\n    user_id UUID,\n    wallet_name VARCHAR(50) NOT NULL,\n    balance INT DEFAULT 0,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    sender_wallet_id UUID,\n    receiver_wallet_id UUID,\n    amount INT NOT NULL,\n    timestamp TIMESTAMP DEFAULT NOW(),\n    FOREIGN KEY (sender_wallet_id) REFERENCES wallets(wallet_id),\n    FOREIGN KEY (receiver_wallet_id) REFERENCES wallets(wallet_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE currency_types (\n    currency_id UUID PRIMARY KEY,\n    currency_name VARCHAR(50) NOT NULL UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_currency (\n    wallet_id UUID,\n    currency_id UUID,\n    FOREIGN KEY (wallet_id) REFERENCES wallets(wallet_id),\n    FOREIGN KEY (currency_id) REFERENCES currency_types(currency_id),\n    PRIMARY KEY (wallet_id, currency_id)\n);\n"
+      }
+    ]
+  }
+]

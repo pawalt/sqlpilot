@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteManagementEquipment (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(255) NOT NULL,\n  category VARCHAR(50),\n  purchase_date DATE,\n  purchase_price DECIMAL(10, 2),\n  maintenance_schedule VARCHAR(100),\n  last_maintenance_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE equipment (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  type VARCHAR(50) NOT NULL,\n  quantity INT NOT NULL,\n  purchase_date DATE,\n  maintenance_date DATE\n);\n\nCREATE TABLE maintenance_schedule (\n  id SERIAL PRIMARY KEY,\n  equipment_id INT NOT NULL,\n  maintenance_type VARCHAR(50) NOT NULL,\n  schedule_date DATE,\n  details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE equipment (\n\tequipment_id INT PRIMARY KEY,\n\tequipment_name VARCHAR(255) NOT NULL,\n\tequipment_type VARCHAR(50) NOT NULL,\n\tequipment_quantity INT,\n\tlast_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n\tschedule_id INT PRIMARY KEY,\n\tequipment_id INT,\n\tscheduled_date DATE,\n\tmaintenance_type VARCHAR(50) NOT NULL,\n\tmaintenance_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_log (\n\tlog_id INT PRIMARY KEY,\n\tequipment_id INT,\n\tmaintenance_type VARCHAR(50) NOT NULL,\n\tmaintenance_date DATE,\n\tmaintenance_worker VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteManagementEquipment (\n  equipment_id SERIAL PRIMARY KEY,\n  equipment_name VARCHAR(50) NOT NULL,\n  manufacturer VARCHAR(50) NOT NULL,\n  purchase_date DATE,\n  maintenance_required BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceSchedules (\n  schedule_id SERIAL PRIMARY KEY,\n  equipment_id INT REFERENCES WasteManagementEquipment(equipment_id),\n  maintenance_date DATE,\n  maintenance_type VARCHAR(50),\n  technician_name VARCHAR(50),\n  repair_cost DECIMAL(10,2),\n  CONSTRAINT fk_equipment_id FOREIGN KEY (equipment_id) REFERENCES WasteManagementEquipment(equipment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EquipmentLocations (\n  location_id SERIAL PRIMARY KEY,\n  equipment_id INT REFERENCES WasteManagementEquipment(equipment_id),\n  location_name VARCHAR(50) NOT NULL,\n  location_address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EquipmentMaintenanceLog (\n  log_id SERIAL PRIMARY KEY,\n  equipment_id INT REFERENCES WasteManagementEquipment(equipment_id),\n  maintenance_date DATE,\n  maintenance_description TEXT,\n  maintenance_cost DECIMAL(10,2),\n  CONSTRAINT fk_equipment_id FOREIGN KEY (equipment_id) REFERENCES WasteManagementEquipment(equipment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteManagementEquipment ( \n  id INT PRIMARY KEY, \n  equipment_name VARCHAR(255), \n  category VARCHAR(100), \n  purchase_date DATE, \n  purchase_price DECIMAL(10, 2) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceSchedule ( \n  id INT PRIMARY KEY, \n  equipment_id INT REFERENCES WasteManagementEquipment(id), \n  maintenance_date DATE, \n  maintenance_type VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceEmployees ( \n  id INT PRIMARY KEY, \n  employee_name VARCHAR(255), \n  employee_role VARCHAR(100), \n  hire_date DATE \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EquipmentLocations ( \n  id INT PRIMARY KEY, \n  equipment_id INT REFERENCES WasteManagementEquipment(id), \n  location_name VARCHAR(255) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs ( \n  id INT PRIMARY KEY, \n  maintenance_schedule_id INT REFERENCES MaintenanceSchedule(id), \n  employee_id INT REFERENCES MaintenanceEmployees(id), \n  maintenance_date DATE, \n  maintenance_notes TEXT \n);"
+      }
+    ]
+  }
+]

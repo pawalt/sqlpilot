@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProductionCosts (\n    ProductID INT PRIMARY KEY,\n    ProductName VARCHAR(255) NOT NULL,\n    RawMaterialPrice DECIMAL(10,2) NOT NULL,\n    LaborHours INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_costs (\n\tid INT PRIMARY KEY,\n\traw_material_price DECIMAL,\n\tlabor_hours INT,\n\ttotal_cost DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE material_prices (\n\tmaterial_id INT PRIMARY KEY,\n\tmaterial_name VARCHAR,\n\tprice DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RawMaterials (\n    material_id INT PRIMARY KEY,\n    material_name TEXT,\n    material_price DECIMAL\n);\n\nCREATE TABLE LaborHours (\n    labor_id INT PRIMARY KEY,\n    labor_position TEXT,\n    labor_rate DECIMAL\n);\n\nCREATE TABLE ProductionCosts (\n    production_id INT PRIMARY KEY,\n    material_id INT,\n    labor_id INT,\n    production_cost DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RawMaterials (\n    material_id UUID PRIMARY KEY,\n    material_name STRING,\n    material_price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LaborHours (\n    labor_id UUID PRIMARY KEY,\n    labor_name STRING,\n    labor_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionCosts (\n    production_id UUID PRIMARY KEY,\n    material_id UUID REFERENCES RawMaterials(material_id),\n    labor_id UUID REFERENCES LaborHours(labor_id),\n    total_cost DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Budgeting (\n    budget_id UUID PRIMARY KEY,\n    production_id UUID REFERENCES ProductionCosts(production_id),\n    budget_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RawMaterials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50),\n  price_per_unit DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE LaborWorkers (\n  worker_id INT PRIMARY KEY,\n  worker_name VARCHAR(50),\n  hourly_rate DECIMAL(8, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionRecords (\n  record_id INT PRIMARY KEY,\n  material_id INT,\n  worker_id INT,\n  production_date DATE,\n  units_produced INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionCosts (\n  cost_id INT PRIMARY KEY,\n  record_id INT,\n  total_cost DECIMAL(12, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Budgeting (\n  budget_id INT PRIMARY KEY,\n  record_id INT,\n  budget_amount DECIMAL(12, 2)\n);\n"
+      }
+    ]
+  }
+]

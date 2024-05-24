@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trade_execution_logs (\n    trade_id INT PRIMARY KEY,\n    trade_date TIMESTAMP,\n    symbol VARCHAR(50) NOT NULL,\n    buy_price DECIMAL(10, 2),\n    sell_price DECIMAL(10, 2),\n    volume INT,\n    profit DECIMAL(12, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trade_execution_logs (\n  trade_id INT PRIMARY KEY,\n  execution_time TIMESTAMP,\n  security_name VARCHAR(255),\n  quantity INT,\n  price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE arbitrage_strategies (\n  strategy_id INT PRIMARY KEY,\n  strategy_name VARCHAR(255),\n  description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trade_execution_logs (\n    trade_id INT PRIMARY KEY,\n    trade_timestamp TIMESTAMP,\n    trader_name VARCHAR(50),\n    executed_price DECIMAL(10,2),\n    executed_quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_history (\n    transaction_id INT PRIMARY KEY,\n    trade_id INT REFERENCES trade_execution_logs(trade_id),\n    transaction_date DATE,\n    transaction_type VARCHAR(10),\n    transaction_amount DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE arbitrage_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(50),\n    potential_profit DECIMAL(10,2),\n    risk_level VARCHAR(10),\n    strategy_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TradeExecutionLogs (\n  log_id INT PRIMARY KEY,\n  trade_date DATE,\n  stock_symbol VARCHAR(10),\n  quantity INT,\n  execution_price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TradeHistory (\n  trade_id INT PRIMARY KEY,\n  trader_name VARCHAR(50),\n  trade_date DATE,\n  stock_symbol VARCHAR(10),\n  quantity INT,\n  executed_price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ArbitrageStrategies (\n  strategy_id INT PRIMARY KEY,\n  strategy_name VARCHAR(50),\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TransactionDetails (\n  transaction_id INT PRIMARY KEY,\n  trade_id INT,\n  execution_log_id INT,\n  strategy_id INT,\n  execution_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trade_execution_logs (\n    trade_id INT PRIMARY KEY,\n    symbol VARCHAR(50) NOT NULL,\n    price DECIMAL(10,2) NOT NULL,\n    quantity INT NOT NULL,\n    executed_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_partners (\n    partner_id INT PRIMARY KEY,\n    partner_name VARCHAR(100) NOT NULL,\n    country_code CHAR(2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_history (\n    trade_id INT,\n    symbol VARCHAR(50) NOT NULL,\n    price DECIMAL(10,2) NOT NULL,\n    quantity INT NOT NULL,\n    executed_at TIMESTAMP NOT NULL,\n    partner_id INT,\n    FOREIGN KEY (partner_id) REFERENCES trade_partners(partner_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE arbitrage_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(100) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_analysis (\n    analysis_id INT PRIMARY KEY,\n    trade_id INT,\n    strategy_id INT,\n    result VARCHAR(50),\n    FOREIGN KEY (trade_id) REFERENCES trade_execution_logs(trade_id),\n    FOREIGN KEY (strategy_id) REFERENCES arbitrage_strategies(strategy_id)\n);"
+      }
+    ]
+  }
+]

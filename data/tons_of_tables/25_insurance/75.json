@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_expiration (\n    policy_id UUID PRIMARY KEY,\n    property_id UUID,\n    expiration_date DATE,\n    owner_email VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_expiration (\n    policy_id INT PRIMARY KEY,\n    property_owner_id INT,\n    expiration_date DATE\n);\nCREATE TABLE reminder_notifications (\n    notification_id INT PRIMARY KEY,\n    policy_id INT,\n    notification_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PolicyOwners (\n   owner_id INT PRIMARY KEY,\n   owner_name VARCHAR(50) NOT NULL,\n   email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n   policy_id INT PRIMARY KEY,\n   owner_id INT REFERENCES PolicyOwners(owner_id),\n   policy_start_date DATE NOT NULL,\n   policy_end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reminders (\n   reminder_id INT PRIMARY KEY,\n   owner_id INT REFERENCES PolicyOwners(owner_id),\n   reminder_date DATE NOT NULL,\n   reminder_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_owners (\n    owner_id UUID PRIMARY KEY,\n    owner_name VARCHAR(255),\n    policy_expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id UUID PRIMARY KEY,\n    policy_name VARCHAR(255),\n    owner_id UUID REFERENCES policy_owners(owner_id),\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reminders (\n    reminder_id UUID PRIMARY KEY,\n    policy_id UUID REFERENCES policies(policy_id),\n    reminder_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notification_logs (\n    log_id UUID PRIMARY KEY,\n    reminder_id UUID REFERENCES reminders(reminder_id),\n    log_message TEXT,\n    log_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PolicyOwners (\n    owner_id UUID PRIMARY KEY,\n    owner_name VARCHAR(50),\n    email VARCHAR(100),\n    address VARCHAR(150),\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n    policy_id UUID PRIMARY KEY,\n    policy_name VARCHAR(50),\n    policy_type VARCHAR(50),\n    policy_description VARCHAR(150),\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Reminders (\n    reminder_id UUID PRIMARY KEY,\n    policy_id UUID REFERENCES Policies(policy_id),\n    owner_id UUID REFERENCES PolicyOwners(owner_id),\n    reminder_date DATE,\n    reminder_message VARCHAR(200)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RenewalHistory (\n    renewal_id UUID PRIMARY KEY,\n    policy_id UUID REFERENCES Policies(policy_id),\n    renewal_date DATE,\n    renewal_amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SubscriptionStatus (\n    status_id UUID PRIMARY KEY,\n    owner_id UUID REFERENCES PolicyOwners(owner_id),\n    subscription_status VARCHAR(20),\n    last_notification_date DATE\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_images (\n  id INT PRIMARY KEY,\n  image_url TEXT,\n  tags TEXT[],\n  description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE photographs (\n  photo_id INT PRIMARY KEY,\n  photo_name VARCHAR(255),\n  photo_description TEXT,\n  photo_date DATE,\n  tags JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tags (\n  tag_id INT PRIMARY KEY,\n  tag_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE photos (\n  photo_id INT PRIMARY KEY,\n  photo_name VARCHAR(255) NOT NULL,\n  tag_id INT,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tags (\n  tag_id INT PRIMARY KEY,\n  tag_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE photo_tag_map (\n  map_id INT PRIMARY KEY,\n  photo_id INT,\n  tag_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HistoricalPhotographs (\n    id UUID PRIMARY KEY,\n    image_url TEXT NOT NULL,\n    description TEXT,\n    date_taken DATE,\n    tag_ids ARRAY<UUID>\n);\n\nCREATE TABLE Tag (\n    id UUID PRIMARY KEY,\n    tag_name TEXT NOT NULL\n);\n\nCREATE TABLE ImageTagMapping (\n    image_id UUID,\n    tag_id UUID,\n    PRIMARY KEY (image_id, tag_id),\n    FOREIGN KEY (image_id) REFERENCES HistoricalPhotographs(id) ON DELETE CASCADE,\n    FOREIGN KEY (tag_id) REFERENCES Tag(id) ON DELETE CASCADE\n);\n\nCREATE TABLE ImageComments (\n    id UUID PRIMARY KEY,\n    image_id UUID,\n    comment TEXT NOT NULL,\n    commenter_name TEXT,\n    comment_date TIMESTAMP,\n    FOREIGN KEY (image_id) REFERENCES HistoricalPhotographs(id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE historical_photos (\n id INT PRIMARY KEY,\n image_url VARCHAR(255),\n description TEXT,\n date_taken DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tags (\n tag_id INT PRIMARY KEY,\n tag_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE photo_tags (\n photo_id INT,\n tag_id INT,\n PRIMARY KEY (photo_id, tag_id),\n FOREIGN KEY (photo_id) REFERENCES historical_photos(id),\n FOREIGN KEY (tag_id) REFERENCES tags(tag_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE photographers (\n photographer_id INT PRIMARY KEY,\n photographer_name VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE photo_uploads (\n photo_id INT,\n photographer_id INT,\n upload_date TIMESTAMP,\n PRIMARY KEY (photo_id),\n FOREIGN KEY (photo_id) REFERENCES historical_photos(id),\n FOREIGN KEY (photographer_id) REFERENCES photographers(photographer_id)\n)"
+      }
+    ]
+  }
+]

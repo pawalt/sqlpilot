@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_literacy_campaigns_performance (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    target_audience VARCHAR(100),\n    budget DECIMAL,\n    total_impact INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_campaign_performance (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    campaign_start_date DATE,\n    campaign_end_date DATE,\n    total_participants INT,\n    total_engagements INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_engagement_details (\n    engagement_id INT PRIMARY KEY,\n    campaign_id INT,\n    participant_id INT,\n    engagement_type VARCHAR(50),\n    engagement_date TIMESTAMP,\n    engagement_duration INT,\n    engagement_result VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_literacy_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_metrics (\n    metric_id INT PRIMARY KEY,\n    campaign_id INT NOT NULL,\n    metrics_type VARCHAR(100) NOT NULL,\n    metric_value INT NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participant_feedback (\n    feedback_id INT PRIMARY KEY,\n    campaign_id INT NOT NULL,\n    participant_id INT NOT NULL,\n    feedback_text TEXT,\n    submission_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_literacy_campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  total_participants INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_participants (\n  participant_id INT PRIMARY KEY,\n  participant_name VARCHAR(255),\n  participant_age INT,\n  participant_gender VARCHAR(10),\n  campaign_id INT REFERENCES digital_literacy_campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_activities (\n  activity_id INT PRIMARY KEY,\n  activity_name VARCHAR(255),\n  activity_date DATE,\n  activity_duration INT,\n  campaign_id INT REFERENCES digital_literacy_campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_feedback (\n  feedback_id INT PRIMARY KEY,\n  participant_id INT REFERENCES campaign_participants(participant_id),\n  feedback_date DATE,\n  feedback_description TEXT,\n  campaign_id INT REFERENCES digital_literacy_campaigns(campaign_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_campaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name TEXT NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL\n);\n\nCREATE TABLE campaign_metrics (\n    metric_id UUID PRIMARY KEY,\n    campaign_id UUID REFERENCES digital_campaigns(campaign_id),\n    date_measured DATE,\n    impressions INT,\n    clicks INT,\n    conversions INT\n);\n\nCREATE TABLE audience_demographics (\n    demo_id UUID PRIMARY KEY,\n    campaign_id UUID REFERENCES digital_campaigns(campaign_id),\n    age_group TEXT,\n    gender TEXT,\n    location TEXT\n);\n\nCREATE TABLE campaign_influencers (\n    influencer_id UUID PRIMARY KEY,\n    campaign_id UUID REFERENCES digital_campaigns(campaign_id),\n    influencer_name TEXT,\n    social_media_platform TEXT\n);\n\nCREATE TABLE campaign_feedback (\n    feedback_id UUID PRIMARY KEY,\n    campaign_id UUID REFERENCES digital_campaigns(campaign_id),\n    feedback TEXT,\n    rating INT\n);"
+      }
+    ]
+  }
+]

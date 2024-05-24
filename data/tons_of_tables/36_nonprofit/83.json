@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislators (\n    legislator_id INT PRIMARY KEY,\n    full_name VARCHAR(255) NOT NULL,\n    contact_email VARCHAR(255),\n    contact_phone VARCHAR(15),\n    party_affiliation VARCHAR(50),\n    district_number INT,\n    voting_record JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislators (\n  legislator_id INT PRIMARY KEY,\n  legislator_name STRING,\n  contact_info STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_records (\n  record_id INT PRIMARY KEY,\n  legislator_id INT,\n  vote_date DATE,\n  vote_result STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislators (\n\tnicename STRING PRIMARY KEY,\n\tparty STRING,\n\tstate STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contacts (\n\temail STRING PRIMARY KEY,\n\tphone STRING,\n\taddress STRING,\n\tlegislator_nicename STRING REFERENCES legislators(nicename)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_records (\n\trecord_id UUID PRIMARY KEY,\n\tlegislator_nicename STRING REFERENCES legislators(nicename),\n\tpolitical_party STRING,\n\tvote_decision STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislators (\n  id INT PRIMARY KEY,\n  first_name TEXT,\n  last_name TEXT,\n  email TEXT,\n  phone_number TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_records (\n  record_id INT PRIMARY KEY,\n  legislator_id INT REFERENCES legislators(id),\n  vote_decision TEXT,\n  vote_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE advocacy_groups (\n  group_id INT PRIMARY KEY,\n  group_name TEXT,\n  group_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE group_legislators (\n  group_id INT REFERENCES advocacy_groups(group_id),\n  legislator_id INT REFERENCES legislators(id),\n  join_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legislators (\n  legislator_id UUID PRIMARY KEY,\n  full_name VARCHAR(255) NOT NULL,\n  party VARCHAR(50),\n  state VARCHAR(50),\n  district INTEGER,\n  contact_number VARCHAR(20),\n  email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_records (\n  record_id UUID PRIMARY KEY,\n  legislator_id UUID,\n  vote_date DATE,\n  bill_number VARCHAR(50) NOT NULL,\n  vote_result BOOLEAN,\n  FOREIGN KEY (legislator_id) REFERENCES legislators(legislator_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE advocacy_targets (\n  target_id UUID PRIMARY KEY,\n  target_name VARCHAR(100) NOT NULL,\n  target_description TEXT,\n  issue_area VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contact_history (\n  history_id UUID PRIMARY KEY,\n  legislator_id UUID,\n  contact_date TIMESTAMP,\n  contact_type VARCHAR(50),\n  contact_description TEXT,\n  FOREIGN KEY (legislator_id) REFERENCES legislators(legislator_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE advocacy_actions (\n  action_id UUID PRIMARY KEY,\n  target_id UUID,\n  action_date TIMESTAMP,\n  action_type VARCHAR(50),\n  action_description TEXT,\n  FOREIGN KEY (target_id) REFERENCES advocacy_targets(target_id)\n);"
+      }
+    ]
+  }
+]

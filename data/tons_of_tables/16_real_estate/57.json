@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incoming_leads (\n    lead_id SERIAL PRIMARY KEY,\n    lead_name VARCHAR(50) NOT NULL,\n    lead_contact VARCHAR(20) NOT NULL,\n    lead_source VARCHAR(50),\n    lead_status VARCHAR(20) DEFAULT 'New',\n    lead_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incoming_leads (\nid SERIAL PRIMARY KEY,\nlead_name VARCHAR(50) NOT NULL,\nlead_email VARCHAR(100) NOT NULL,\nlead_phone VARCHAR(20),\nlead_message TEXT,\ncreated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE client_communications (\ncommunication_id SERIAL PRIMARY KEY,\nclient_id INT NOT NULL,\ncommunication_type VARCHAR(50) NOT NULL,\ncommunication_date DATE NOT NULL,\ncommunication_details TEXT,\nFOREIGN KEY (client_id) REFERENCES incoming_leads(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Leads (\n    lead_id SERIAL PRIMARY KEY,\n    lead_name VARCHAR(50) NOT NULL,\n    lead_email VARCHAR(100) NOT NULL,\n    lead_phone VARCHAR(15) NOT NULL,\n    lead_source VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Communications (\n    communication_id SERIAL PRIMARY KEY,\n    lead_id INT NOT NULL,\n    communication_date TIMESTAMP NOT NULL,\n    communication_type VARCHAR(50) NOT NULL,\n    communication_content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Agents (\n    agent_id SERIAL PRIMARY KEY,\n    agent_name VARCHAR(50) NOT NULL,\n    agent_email VARCHAR(100) NOT NULL,\n    agent_phone VARCHAR(15) NOT NULL,\n    agent_office VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE leads (\n    lead_id UUID PRIMARY KEY,\n    lead_name STRING,\n    lead_email STRING,\n    lead_phone STRING,\n    lead_source STRING,\n    lead_status STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communications (\n    comm_id UUID PRIMARY KEY,\n    comm_type STRING,\n    comm_date TIMESTAMP,\n    lead_id UUID REFERENCES leads (lead_id),\n    comm_content STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id UUID PRIMARY KEY,\n    agent_name STRING,\n    agent_email STRING,\n    agent_phone STRING,\n    agent_agency STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE properties (\n    property_id UUID PRIMARY KEY,\n    property_address STRING,\n    property_type STRING,\n    property_price DECIMAL,\n    agent_id UUID REFERENCES agents (agent_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE leads (\n    lead_id INT PRIMARY KEY,\n    lead_name VARCHAR(50),\n    lead_email VARCHAR(50),\n    lead_phone VARCHAR(15),\n    lead_source VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(50),\n    client_email VARCHAR(50),\n    client_phone VARCHAR(15),\n    lead_id INT,\n    FOREIGN KEY (lead_id) REFERENCES leads(lead_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n    log_id INT PRIMARY KEY,\n    log_date DATE,\n    log_time TIME,\n    log_type VARCHAR(20),\n    log_description TEXT,\n    client_id INT,\n    FOREIGN KEY (client_id) REFERENCES clients(client_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id INT PRIMARY KEY,\n    agent_name VARCHAR(50),\n    agent_email VARCHAR(50),\n    agent_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_assigned_leads (\n    lead_id INT,\n    agent_id INT,\n    assignment_date DATE,\n    PRIMARY KEY (lead_id, agent_id),\n    FOREIGN KEY (lead_id) REFERENCES leads(lead_id),\n    FOREIGN KEY (agent_id) REFERENCES agents(agent_id)\n);"
+      }
+    ]
+  }
+]

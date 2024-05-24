@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE palm_vein_biometrics (\n  id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  vein_data BYTEA NOT NULL,\n  scan_date TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE palm_vein_data (\n    id INT PRIMARY KEY,\n    palm_id INT NOT NULL,\n    vein_data BYTEA NOT NULL\n);\n\nCREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    palm_id INT NOT NULL,\n    FOREIGN KEY (palm_id) REFERENCES palm_vein_data(palm_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE palm_vein_users (\n    id SERIAL PRIMARY KEY,\n    name TEXT NOT NULL,\n    palm_vein_data BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE palm_vein_authentication (\n    id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    authentication_result BOOLEAN NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE palm_vein_logs (\n    id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    log_message TEXT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE palm_vein_data (\n    user_id INT PRIMARY KEY,\n    palm_vein_image BYTEA,\n    palm_vein_template VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id SERIAL PRIMARY KEY,\n    user_id INT,\n    login_time TIMESTAMP,\n    login_result BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT,\n    access_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PalmVeinUsers (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    palm_vein_data BYTEA NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT NOW()\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PalmVeinAccessLogs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_time TIMESTAMPTZ NOT NULL,\n    granted BOOLEAN NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES PalmVeinUsers(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PalmVeinAdmins (\n    admin_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password TEXT NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT NOW()\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PalmVeinDevices (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    status BOOLEAN NOT NULL,\n    created_at TIMESTAMPTZ DEFAULT NOW()\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PalmVeinSettings (\n    setting_id SERIAL PRIMARY KEY,\n    setting_name VARCHAR(50) NOT NULL,\n    setting_value TEXT NOT NULL\n)"
+      }
+    ]
+  }
+]

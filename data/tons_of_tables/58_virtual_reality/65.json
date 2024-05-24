@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE User_Data (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    encrypted_data BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n  user_id INT PRIMARY KEY,\n  encrypted_data BYTEA\n);\n\nCREATE TABLE blockchain (\n  block_id INT PRIMARY KEY,\n  block_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id SERIAL PRIMARY KEY,\n    encrypted_data TEXT,\n    blockchain_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_keys (\n    key_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_data(user_id),\n    encryption_key BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE block_logs (\n    log_id SERIAL PRIMARY KEY,\n    blockchain_id UUID REFERENCES user_data(blockchain_id),\n    timestamp TIMESTAMP,\n    activity TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    encrypted_data VARCHAR(200) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_keys (\n    user_id INT PRIMARY KEY,\n    encryption_key VARCHAR(100) NOT NULL,\n    decryption_key VARCHAR(100) NOT NULL,\n    public_key VARCHAR(150) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain (\n    block_id INT PRIMARY KEY,\n    block_data TEXT NOT NULL,\n    block_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    from_user_id INT NOT NULL,\n    to_user_id INT NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data (\n  data_id INT PRIMARY KEY,\n  user_id INT REFERENCES users(user_id),\n  encrypted_data TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain (\n  block_id INT PRIMARY KEY,\n  block_hash VARCHAR(100) NOT NULL,\n  previous_block_hash VARCHAR(100),\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  block_id INT REFERENCES blockchain(block_id),\n  data_id INT REFERENCES user_data(data_id),\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n  log_id INT PRIMARY KEY,\n  user_id INT REFERENCES users(user_id),\n  action VARCHAR(50) NOT NULL,\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

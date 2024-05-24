@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE DATABASE IF NOT EXISTS TradeOrders;CREATE TABLE TradeOrders.TradeOrdersDetails (order_id INT PRIMARY KEY, order_type VARCHAR(255), symbol VARCHAR(255), quantity INT, price DECIMAL(10,2), execution_time TIMESTAMP, executed_by VARCHAR(255));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TradeOrders (\n  order_id INT PRIMARY KEY,\n  order_type VARCHAR(255),\n  order_size INT,\n  symbol VARCHAR(10),\n  order_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExecutionDetails (\n  execution_id INT PRIMARY KEY,\n  order_id INT,\n  executed_price FLOAT,\n  executed_quantity INT,\n  execution_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trade_orders (\n  order_id INT PRIMARY KEY,\n  client_id INT,\n  symbol VARCHAR(50),\n  quantity INT,\n  order_type VARCHAR(20),\n  order_time TIMESTAMP,\n  execution_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE execution_details (\n  execution_id INT PRIMARY KEY,\n  order_id INT,\n  execution_time TIMESTAMP,\n  price DECIMAL(10, 2),\n  executed_quantity INT,\n  execution_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_history (\n  trade_id INT PRIMARY KEY,\n  order_id INT,\n  trade_time TIMESTAMP,\n  client_id INT,\n  symbol VARCHAR(50),\n  quantity INT,\n  trade_type VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TradeOrder (\n  order_id SERIAL PRIMARY KEY,\n  symbol VARCHAR(50) NOT NULL,\n  quantity INTEGER NOT NULL,\n  price DECIMAL(10, 2) NOT NULL,\n  order_type VARCHAR(10) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExecutionDetail (\n  execution_id SERIAL PRIMARY KEY,\n  order_id INTEGER REFERENCES TradeOrder(order_id),\n  executed_quantity INTEGER NOT NULL,\n  execution_price DECIMAL(10, 2) NOT NULL,\n  execution_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Trader (\n  trader_id SERIAL PRIMARY KEY,\n  trader_name VARCHAR(50) NOT NULL,\n  trader_email VARCHAR(100) UNIQUE NOT NULL,\n  trader_phone VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TradeHistory (\n  trade_id SERIAL PRIMARY KEY,\n  order_id INTEGER REFERENCES TradeOrder(order_id),\n  execution_id INTEGER REFERENCES ExecutionDetail(execution_id),\n  trader_id INTEGER REFERENCES Trader(trader_id),\n  trade_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trade_orders (\n    order_id UUID PRIMARY KEY,\n    order_type VARCHAR(50) NOT NULL,\n    order_status VARCHAR(50) NOT NULL,\n    order_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_executions (\n    execution_id UUID PRIMARY KEY,\n    order_id UUID NOT NULL,\n    execution_price DECIMAL(10, 2) NOT NULL,\n    execution_quantity INT NOT NULL,\n    execution_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_accounts (\n    account_id UUID PRIMARY KEY,\n    account_name VARCHAR(50) NOT NULL,\n    account_balance DECIMAL(15, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_assets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(100) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    asset_price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_users (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    user_email VARCHAR(100) NOT NULL,\n    user_phone VARCHAR(15) NOT NULL\n);"
+      }
+    ]
+  }
+]

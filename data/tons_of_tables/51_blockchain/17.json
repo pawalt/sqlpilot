@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE identity_management (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(255) NOT NULL,\n    user_email VARCHAR(255) NOT NULL,\n    user_role ENUM('Admin', 'User') NOT NULL,\n    is_verified BOOLEAN DEFAULT FALSE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IdentityVerification (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(255) NOT NULL,\n    id_number VARCHAR(20) UNIQUE,\n    photo BLOB,\n    verification_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControls (\n    access_id INT PRIMARY KEY,\n    user_id INT,\n    access_level INT,\n    access_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES IdentityVerification(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IdentityVerification (\n    user_id UUID PRIMARY KEY,\n    full_name VARCHAR(255),\n    email VARCHAR(255) UNIQUE,\n    phone_number VARCHAR(20),\n    verification_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControls (\n    user_id UUID PRIMARY KEY,\n    role VARCHAR(50),\n    access_level INTEGER,\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SmartContracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name VARCHAR(100),\n    creation_date DATE,\n    contract_address VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE User ( user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) UNIQUE, password VARCHAR(100) NOT NULL, created_at TIMESTAMP NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE Role ( role_id INT PRIMARY KEY, role_name VARCHAR(50) NOT NULL, description TEXT, created_at TIMESTAMP NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE UserRoleMapping ( user_id INT, role_id INT, PRIMARY KEY (user_id, role_id), FOREIGN KEY (user_id) REFERENCES User(user_id), FOREIGN KEY (role_id) REFERENCES Role(role_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessControl ( access_id INT PRIMARY KEY, resource_name VARCHAR(100) NOT NULL, user_id INT, role_id INT, permission VARCHAR(20) NOT NULL, created_at TIMESTAMP NOT NULL, FOREIGN KEY (user_id) REFERENCES User(user_id), FOREIGN KEY (role_id) REFERENCES Role(role_id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_identities (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    resource_id INT NOT NULL,\n    access_level ENUM('READ','WRITE','ADMIN') NOT NULL,\n    created_at TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    id INT PRIMARY KEY,\n    role_id INT NOT NULL,\n    permission VARCHAR(50) NOT NULL,\n    resource_id INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    session_token VARCHAR(100) NOT NULL,\n    expiration_time TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  }
+]

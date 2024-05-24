@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneProteinInteraction (\n  gene_id INT,\n  protein_id INT,\n  interaction_type VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255) NOT NULL,\n    gene_sequence TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE proteins (\n    protein_id INT PRIMARY KEY,\n    protein_name VARCHAR(255) NOT NULL,\n    protein_type VARCHAR(100),\n    gene_id INT,\n    FOREIGN KEY (gene_id) REFERENCES genes(gene_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n  gene_id UUID PRIMARY KEY,\n  gene_name VARCHAR(255),\n  gene_type VARCHAR(50),\n  gene_sequence TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE proteins (\n  protein_id UUID PRIMARY KEY,\n  protein_name VARCHAR(255),\n  protein_type VARCHAR(50),\n  protein_sequence TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_protein_interactions (\n  interaction_id UUID PRIMARY KEY,\n  gene_id UUID,\n  protein_id UUID,\n  interaction_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255) NOT NULL,\n    gene_sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE proteins (\n    protein_id INT PRIMARY KEY,\n    protein_name VARCHAR(255) NOT NULL,\n    protein_sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_protein_interaction (\n    interaction_id INT PRIMARY KEY,\n    gene_id INT NOT NULL,\n    protein_id INT NOT NULL,\n    interaction_type VARCHAR(50),\n    FOREIGN KEY (gene_id) REFERENCES genes(gene_id),\n    FOREIGN KEY (protein_id) REFERENCES proteins(protein_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255) NOT NULL,\n    gene_id INT NOT NULL,\n    protein_id INT NOT NULL,\n    interaction_id INT NOT NULL,\n    experiment_date DATE,\n    FOREIGN KEY (gene_id) REFERENCES genes(gene_id),\n    FOREIGN KEY (protein_id) REFERENCES proteins(protein_id),\n    FOREIGN KEY (interaction_id) REFERENCES gene_protein_interaction(interaction_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Genes (\n gene_id INT PRIMARY KEY,\n gene_name VARCHAR(255) NOT NULL,\n gene_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Proteins (\n protein_id INT PRIMARY KEY,\n protein_name VARCHAR(255) NOT NULL,\n protein_type VARCHAR(50),\n protein_sequence TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneProteinInteractions (\n interaction_id INT PRIMARY KEY,\n gene_id INT,\n protein_id INT,\n interaction_type VARCHAR(50),\n interaction_description TEXT,\n FOREIGN KEY (gene_id) REFERENCES Genes(gene_id),\n FOREIGN KEY (protein_id) REFERENCES Proteins(protein_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneFunctions (\n function_id INT PRIMARY KEY,\n gene_id INT,\n function_name VARCHAR(100) NOT NULL,\n function_description TEXT,\n FOREIGN KEY (gene_id) REFERENCES Genes(gene_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinFunctions (\n function_id INT PRIMARY KEY,\n protein_id INT,\n function_name VARCHAR(100) NOT NULL,\n function_description TEXT,\n FOREIGN KEY (protein_id) REFERENCES Proteins(protein_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_tokens (\n    token_id SERIAL PRIMARY KEY,\n    token_name VARCHAR(50) NOT NULL,\n    issuer VARCHAR(100) NOT NULL,\n    total_supply DECIMAL NOT NULL,\n    creation_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_asset_tokens (\n    token_id SERIAL PRIMARY KEY,\n    token_name VARCHAR(255) NOT NULL,\n    token_owner VARCHAR(255) NOT NULL,\n    token_value DECIMAL(18,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE token_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    token_id INT REFERENCES digital_asset_tokens(token_id),\n    sender_address VARCHAR(255) NOT NULL,\n    receiver_address VARCHAR(255) NOT NULL,\n    transaction_amount DECIMAL(18,2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(255) NOT NULL,\n  asset_symbol VARCHAR(10) NOT NULL,\n  asset_value DECIMAL(18, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_owners (\n  owner_id INT PRIMARY KEY,\n  owner_name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_transactions (\n  transaction_id INT PRIMARY KEY,\n  asset_id INT REFERENCES digital_assets(asset_id),\n  sender_id INT REFERENCES asset_owners(owner_id),\n  receiver_id INT REFERENCES asset_owners(owner_id),\n  amount DECIMAL(18, 2) NOT NULL,\n  transaction_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tokens (\n    id INT PRIMARY KEY,\n    token_name VARCHAR(50) NOT NULL,\n    token_symbol VARCHAR(10) NOT NULL,\n    total_supply BIGINT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    token_id INT NOT NULL,\n    sender_address VARCHAR(100) NOT NULL,\n    receiver_address VARCHAR(100) NOT NULL,\n    amount BIGINT NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blocks (\n    block_id INT PRIMARY KEY,\n    block_hash VARCHAR(100) NOT NULL,\n    previous_block_hash VARCHAR(100),\n    timestamp TIMESTAMP NOT NULL,\n    nonce INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_tokens (\n    id INT PRIMARY KEY,\n    token_name VARCHAR(50) NOT NULL,\n    token_symbol CHAR(3) NOT NULL,\n    total_supply BIGINT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_transactions (\n    transaction_id INT PRIMARY KEY,\n    token_id INT,\n    from_address VARCHAR(50) NOT NULL,\n    to_address VARCHAR(50) NOT NULL,\n    amount BIGINT NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_owners (\n    owner_id INT PRIMARY KEY,\n    token_id INT,\n    owner_address VARCHAR(50) NOT NULL,\n    ownership_percentage DECIMAL(5,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_metadata (\n    token_id INT PRIMARY KEY,\n    metadata_key VARCHAR(50) NOT NULL,\n    metadata_value VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_contracts (\n    contract_id INT PRIMARY KEY,\n    token_id INT,\n    contract_address VARCHAR(50) NOT NULL,\n    contract_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

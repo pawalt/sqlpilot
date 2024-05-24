@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitor_marketing_data (\n    competitor_id UUID PRIMARY KEY,\n    competitor_name STRING,\n    marketing_campaign_id UUID,\n    campaign_type STRING,\n    campaign_start_date TIMESTAMP,\n    campaign_end_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitor_data (\n    id INT PRIMARY KEY,\n    competitor_name VARCHAR(255),\n    marketing_campaign VARCHAR(255),\n    campaign_start_date DATE,\n    campaign_end_date DATE\n);\n\nCREATE TABLE marketing_metrics (\n    id INT PRIMARY KEY,\n    competitor_id INT,\n    impressions INT,\n    clicks INT,\n    conversions INT,\n    spent DECIMAL(10,2),\n    FOREIGN KEY (competitor_id) REFERENCES competitor_data(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CompetitorCompany (\n    company_id UUID PRIMARY KEY,\n    company_name VARCHAR NOT NULL,\n    industry VARCHAR,\n    location VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MarketingCampaign (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignPerformance (\n    performance_id UUID PRIMARY KEY,\n    campaign_id UUID REFERENCES MarketingCampaign(campaign_id),\n    impressions INT,\n    clicks INT,\n    conversions INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitors (\n    competitor_id INT,\n    competitor_name VARCHAR(255),\n    industry VARCHAR(50),\n    headquarters_address VARCHAR(255),\n    website_url VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n    campaign_id INT,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    performance_id INT,\n    campaign_id INT,\n    impressions INT,\n    clicks INT,\n    conversions INT,\n    revenue DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_copy (\n    ad_id INT,\n    campaign_id INT,\n    ad_text TEXT,\n    ad_image_url VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE competitors (id SERIAL PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  industry VARCHAR(100) NOT NULL,\n  website VARCHAR(255) NOT NULL,\n  location VARCHAR(100) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (id SERIAL PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  budget DECIMAL(10, 2) NOT NULL,\n  competitor_id INT NOT NULL,\n  FOREIGN KEY (competitor_id) REFERENCES competitors(id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_channels (id SERIAL PRIMARY KEY,\n  channel_name VARCHAR(255) NOT NULL,\n  platform VARCHAR(50) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_campaigns (id SERIAL PRIMARY KEY,\n  ad_name VARCHAR(255) NOT NULL,\n  ad_type VARCHAR(50) NOT NULL,\n  cost_per_click DECIMAL(10, 2) NOT NULL,\n  impression_count INT NOT NULL,\n  marketing_campaign_id INT NOT NULL,\n  FOREIGN KEY (marketing_campaign_id) REFERENCES marketing_campaigns(id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_performance (id SERIAL PRIMARY KEY,\n  ad_id INT NOT NULL,\n  clicks INT NOT NULL,\n  impressions INT NOT NULL,\n  conversion_rate DECIMAL(5, 2) NOT NULL,\n  cost DECIMAL(10, 2) NOT NULL,\n  date DATE NOT NULL,\n  FOREIGN KEY (ad_id) REFERENCES ad_campaigns(id));\n"
+      }
+    ]
+  }
+]

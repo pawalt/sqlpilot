@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_consent_forms (\n    form_id INT PRIMARY KEY,\n    patient_name TEXT,\n    date_signed DATE,\n    consent_details TEXT,\n    blockchain_hash TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_consent_forms (\n    patient_id INT PRIMARY KEY,\n    consent_form_hash BYTEA,\n    consent_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_records (\n    record_id UUID PRIMARY KEY,\n    patient_id INT REFERENCES patient_consent_forms(patient_id),\n    transaction_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_consents (\n    consent_id UUID PRIMARY KEY,\n    patient_id UUID NOT NULL,\n    consent_date DATE,\n    consent_text TEXT,\n    CONSTRAINT fk_patient_id FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id UUID PRIMARY KEY,\n    patient_name TEXT,\n    patient_dob DATE,\n    patient_address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_records (\n    record_id UUID PRIMARY KEY,\n    consent_id UUID NOT NULL,\n    block_hash TEXT,\n    block_timestamp TIMESTAMP,\n    CONSTRAINT fk_consent_id FOREIGN KEY (consent_id) REFERENCES patient_consents(consent_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_consent_forms (\n    patient_id INT PRIMARY KEY,\n    consent_date DATE,\n    consent_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_network (\n    node_id INT PRIMARY KEY,\n    node_address TEXT,\n    node_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_records (\n    record_id INT PRIMARY KEY,\n    patient_id INT,\n    record_data TEXT,\n    FOREIGN KEY (patient_id) REFERENCES patient_consent_forms(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n    transaction_id INT PRIMARY KEY,\n    from_node INT,\n    to_node INT,\n    transaction_data JSON,\n    FOREIGN KEY (from_node) REFERENCES blockchain_network(node_id),\n    FOREIGN KEY (to_node) REFERENCES blockchain_network(node_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_consents (\n   patient_id UUID PRIMARY KEY,\n   consent_text TEXT,\n   consent_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_network (\n   network_id UUID PRIMARY KEY,\n   network_name TEXT,\n   network_url TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE records (\n   record_id UUID PRIMARY KEY,\n   patient_id UUID,\n   network_id UUID,\n   record_data TEXT,\n   record_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_trail (\n   audit_id UUID PRIMARY KEY,\n   record_id UUID,\n   action TEXT,\n   action_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n   user_id UUID PRIMARY KEY,\n   username TEXT,\n   password TEXT,\n   role TEXT\n);"
+      }
+    ]
+  }
+]

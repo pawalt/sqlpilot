@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fashion_designers (\n    designer_id INT PRIMARY KEY,\n    designer_name VARCHAR(50),\n    designer_location VARCHAR(100),\n    designer_specialty VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE designers (\n    designer_id INT PRIMARY KEY,\n    designer_name VARCHAR(255),\n    designer_country VARCHAR(50),\n    designer_year_established INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collections (\n    collection_id INT PRIMARY KEY,\n    collection_name VARCHAR(255),\n    collection_year INT,\n    designer_id INT,\n    FOREIGN KEY (designer_id) REFERENCES designers(designer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE designers (\n    designer_id INT PRIMARY KEY,\n    designer_name VARCHAR(255) NOT NULL,\n    designer_location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collections (\n    collection_id INT PRIMARY KEY,\n    collection_name VARCHAR(255) NOT NULL,\n    designer_id INT,\n    CONSTRAINT fk_designer_id\n        FOREIGN KEY (designer_id)\n        REFERENCES designers(designer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborations (\n    collaboration_id INT PRIMARY KEY,\n    collaboration_name VARCHAR(255) NOT NULL,\n    designer_id INT,\n    collection_id INT,\n    CONSTRAINT fk_designer_id\n        FOREIGN KEY (designer_id)\n        REFERENCES designers(designer_id),\n    CONSTRAINT fk_collection_id\n        FOREIGN KEY (collection_id)\n        REFERENCES collections(collection_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE `designers` (\n  `designer_id` INT PRIMARY KEY,\n  `name` VARCHAR(50) NOT NULL,\n  `country` VARCHAR(50),\n  `birthdate` DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE `collections` (\n  `collection_id` INT PRIMARY KEY,\n  `name` VARCHAR(50) NOT NULL,\n  `year` INT,\n  `designer_id` INT,\n  FOREIGN KEY (designer_id) REFERENCES designers(designer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE `collaborations` (\n  `collaboration_id` INT PRIMARY KEY,\n  `designer_id` INT,\n  `partner_id` INT,\n  FOREIGN KEY (designer_id) REFERENCES designers(designer_id),\n  FOREIGN KEY (partner_id) REFERENCES designers(designer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE `partners` (\n  `partner_id` INT PRIMARY KEY,\n  `name` VARCHAR(50) NOT NULL,\n  `country` VARCHAR(50),\n  `established_date` DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fashion_designers (\n  designer_id SERIAL PRIMARY KEY,\n  designer_name VARCHAR(100) NOT NULL,\n  designer_country VARCHAR(50),\n  designer_specialization VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collections (\n  collection_id SERIAL PRIMARY KEY,\n  collection_name VARCHAR(100) NOT NULL,\n  collection_year INT,\n  designer_id INT,\n  FOREIGN KEY (designer_id) REFERENCES fashion_designers (designer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collaboration_partners (\n  collaboration_id SERIAL PRIMARY KEY,\n  partner_name VARCHAR(100) NOT NULL,\n  partner_country VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE designer_collections (\n  designer_id INT,\n  collection_id INT,\n  PRIMARY KEY (designer_id, collection_id),\n  FOREIGN KEY (designer_id) REFERENCES fashion_designers (designer_id),\n  FOREIGN KEY (collection_id) REFERENCES collections (collection_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE designer_collaborations (\n  designer_id INT,\n  collaboration_id INT,\n  PRIMARY KEY (designer_id, collaboration_id),\n  FOREIGN KEY (designer_id) REFERENCES fashion_designers (designer_id),\n  FOREIGN KEY (collaboration_id) REFERENCES collaboration_partners (collaboration_id)\n);"
+      }
+    ]
+  }
+]

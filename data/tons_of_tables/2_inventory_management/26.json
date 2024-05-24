@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_inventory (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(50),\n    asset_category VARCHAR(50),\n    asset_location VARCHAR(50),\n    asset_quantity INT,\n    asset_value DECIMAL(10,2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Asset (\n    asset_id SERIAL,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    purchase_date DATE,\n    location VARCHAR(100)\n);\nCREATE TABLE Inventory (\n    inventory_id SERIAL,\n    asset_id INT,\n    quantity INT,\n    last_updated TIMESTAMP,\n    FOREIGN KEY (asset_id) REFERENCES Asset(asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(50),\n    asset_type VARCHAR(50),\n    purchase_date DATE,\n    purchase_price DECIMAL(10,2),\n    current_location VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(50),\n    department VARCHAR(50),\n    position VARCHAR(50),\n    hire_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    asset_id INT,\n    employee_id INT,\n    transaction_date DATE,\n    return_date DATE,\n    FOREIGN KEY (asset_id) REFERENCES assets(asset_id),\n    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset (\n   asset_id SERIAL PRIMARY KEY,\n   asset_name VARCHAR(50) NOT NULL,\n   asset_type VARCHAR(50) NOT NULL,\n   quantity INT NOT NULL,\n   location VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee (\n   employee_id SERIAL PRIMARY KEY,\n   employee_name VARCHAR(50) NOT NULL,\n   department VARCHAR(50) NOT NULL,\n   position VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_category (\n   category_id SERIAL PRIMARY KEY,\n   category_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_assignment (\n   assignment_id SERIAL PRIMARY KEY,\n   asset_id INT NOT NULL,\n   employee_id INT NOT NULL,\n   assignment_date DATE NOT NULL,\n   return_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n    asset_id SERIAL PRIMARY KEY,\n    asset_name VARCHAR(50) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    asset_location VARCHAR(50) NOT NULL,\n    purchase_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n    employee_id SERIAL PRIMARY KEY,\n    employee_name VARCHAR(50) NOT NULL,\n    employee_department VARCHAR(50) NOT NULL,\n    employee_role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    asset_id INT REFERENCES assets(asset_id),\n    employee_id INT REFERENCES employees(employee_id),\n    transaction_type VARCHAR(50) NOT NULL,\n    transaction_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_log (\n    log_id SERIAL PRIMARY KEY,\n    transaction_id INT REFERENCES transactions(transaction_id),\n    log_description TEXT,\n    log_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance (\n    maintenance_id SERIAL PRIMARY KEY,\n    asset_id INT REFERENCES assets(asset_id),\n    maintenance_type VARCHAR(50) NOT NULL,\n    maintenance_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

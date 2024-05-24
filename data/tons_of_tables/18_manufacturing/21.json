@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id INT PRIMARY KEY,\n    material_name TEXT NOT NULL,\n    material_type TEXT NOT NULL,\n    unit_price DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE filaments (\n    filament_id INT PRIMARY KEY,\n    filament_name VARCHAR(50),\n    filament_type VARCHAR(50),\n    filament_color VARCHAR(30),\n    filament_quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resins (\n    resin_id INT PRIMARY KEY,\n    resin_name VARCHAR(50),\n    resin_type VARCHAR(50),\n    resin_color VARCHAR(30),\n    resin_quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE filaments (\n    filament_id UUID PRIMARY KEY,\n    material_name VARCHAR(255),\n    color VARCHAR(50),\n    quantity INT,\n    price DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resins (\n    resin_id UUID PRIMARY KEY,\n    material_name VARCHAR(255),\n    color VARCHAR(50),\n    volume INT,\n    price DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id UUID PRIMARY KEY,\n    material_name VARCHAR(255),\n    type VARCHAR(50),\n    quantity INT,\n    price DECIMAL(10,2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE filaments (\n    filament_id UUID PRIMARY KEY,\n    filament_name TEXT NOT NULL,\n    quantity INT,\n    color TEXT,\n    material TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resins (\n    resin_id UUID PRIMARY KEY,\n    resin_name TEXT NOT NULL,\n    quantity INT,\n    color TEXT,\n    cured_in_uv BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE printers (\n    printer_id UUID PRIMARY KEY,\n    printer_name TEXT NOT NULL,\n    manufacturer TEXT,\n    bed_size TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE prints (\n    print_id UUID PRIMARY KEY,\n    filament_id UUID REFERENCES filaments(filament_id),\n    resin_id UUID REFERENCES resins(resin_id),\n    printer_id UUID REFERENCES printers(printer_id),\n    print_duration INTERVAL,\n    print_quality TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50) NOT NULL,\n  material_type VARCHAR(50) NOT NULL,\n  material_quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE filaments (\n  filament_id INT PRIMARY KEY,\n  filament_name VARCHAR(50) NOT NULL,\n  filament_color VARCHAR(50),\n  filament_material_id INT,\n  FOREIGN KEY(filament_material_id) REFERENCES materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resins (\n  resin_id INT PRIMARY KEY,\n  resin_name VARCHAR(50) NOT NULL,\n  resin_color VARCHAR(50),\n  resin_material_id INT,\n  FOREIGN KEY(resin_material_id) REFERENCES materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE printers (\n  printer_id INT PRIMARY KEY,\n  printer_name VARCHAR(50) NOT NULL,\n  printer_model VARCHAR(50),\n  printer_filament_id INT,\n  FOREIGN KEY(printer_filament_id) REFERENCES filaments(filament_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE print_jobs (\n  job_id INT PRIMARY KEY,\n  job_timestamp TIMESTAMP NOT NULL,\n  job_printer_id INT,\n  job_material_id INT,\n  job_quantity INT,\n  FOREIGN KEY(job_printer_id) REFERENCES printers(printer_id),\n  FOREIGN KEY(job_material_id) REFERENCES materials(material_id)\n);"
+      }
+    ]
+  }
+]

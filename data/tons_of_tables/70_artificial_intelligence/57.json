@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VideoFrameData (\n    frame_id INT PRIMARY KEY,\n    frame_data BYTES,\n    timestamp TIMESTAMP,\n    video_id INT,\n    action_label VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE video_frames (\n\tframe_id INT PRIMARY KEY,\n\tvideo_id INT,\n\tframe_data BYTEA,\n\ttimestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE action_labels (\n\tlabel_id INT PRIMARY KEY,\n\taction_label VARCHAR(50),\n\tframe_id INT,\n\tFOREIGN KEY (frame_id) REFERENCES video_frames(frame_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE video_frames (\n  frame_id INT PRIMARY KEY,\n  video_id INT,\n  frame_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE videos (\n  video_id INT PRIMARY KEY,\n  video_name VARCHAR(255),\n  duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE actions (\n  action_id INT PRIMARY KEY,\n  action_name VARCHAR(255),\n  frame_id INT,\n  video_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE video_frame_data (\n    video_id INT PRIMARY KEY,\n    frame_num INT,\n    frame_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE action_labels (\n    label_id INT PRIMARY KEY,\n    label_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE video_actions (\n    video_id INT,\n    action_id INT,\n    start_frame INT,\n    end_frame INT,\n    FOREIGN KEY (video_id) REFERENCES video_frame_data(video_id),\n    FOREIGN KEY (action_id) REFERENCES action_labels(label_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_training_data (\n    training_id SERIAL PRIMARY KEY,\n    model_name VARCHAR(50),\n    features BYTEA,\n    label_id INT,\n    FOREIGN KEY (label_id) REFERENCES action_labels(label_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE video_frame_data (\n    frame_id INT PRIMARY KEY,\n    video_id INT,\n    frame_data BYTEA,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE action_labels (\n    label_id INT PRIMARY KEY,\n    action_label TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE video_metadata (\n    video_id INT PRIMARY KEY,\n    video_name TEXT,\n    video_duration INTERVAL,\n    video_resolution TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_weights (\n    weight_id INT PRIMARY KEY,\n    model_id INT,\n    weight_data BYTEA,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_info (\n    model_id INT PRIMARY KEY,\n    model_name TEXT,\n    model_type TEXT,\n    training_accuracy FLOAT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaign_results (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    strategy_id INT,\n    strategy_name VARCHAR(255),\n    segment_id INT,\n    segment_name VARCHAR(255),\n    conversion_rate DECIMAL(5, 2),\n    revenue_generated DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ab_test_results (\n    test_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    metric VARCHAR(255),\n    value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE test_users (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(255),\n    group_id INT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaigns (campaign_id INT PRIMARY KEY, campaign_name VARCHAR(255) NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL, strategy VARCHAR(255) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE test_group (group_id INT PRIMARY KEY, group_name VARCHAR(255) NOT NULL, campaign_id INT NOT NULL, group_size INT NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE test_results (result_id INT PRIMARY KEY, group_id INT NOT NULL, metric_1 DECIMAL NOT NULL, metric_2 DECIMAL NOT NULL, metric_3 DECIMAL NOT NULL);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailCampaigns (\n campaign_id INT PRIMARY KEY,\n campaign_name VARCHAR(255),\n start_date DATE,\n end_date DATE,\n strategy VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ABTestResults (\n result_id INT PRIMARY KEY,\n campaign_id INT,\n variation_name VARCHAR(50),\n clicks INT,\n conversions INT,\n FOREIGN KEY (campaign_id) REFERENCES EmailCampaigns(campaign_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TestGroupUsers (\n user_id INT PRIMARY KEY,\n group_id INT,\n email_address VARCHAR(255),\n conversion_status VARCHAR(10),\n FOREIGN KEY (group_id) REFERENCES ABTestResults(result_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TestGroupSettings (\n group_id INT PRIMARY KEY,\n test_percentage FLOAT,\n start_time TIME,\n end_time TIME,\n test_completed BOOLEAN,\n FOREIGN KEY (group_id) REFERENCES ABTestResults(result_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ab_test_campaign (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(50) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_participation (\n    user_id INT PRIMARY KEY,\n    campaign_id INT NOT NULL,\n    group_assigned VARCHAR(10) NOT NULL,\n    participation_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_results (\n    result_id INT PRIMARY KEY,\n    campaign_id INT NOT NULL,\n    user_id INT NOT NULL,\n    conversion_rate FLOAT NOT NULL,\n    conversion_status VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_metrics (\n    metric_id INT PRIMARY KEY,\n    campaign_id INT NOT NULL,\n    total_clicks INT NOT NULL,\n    total_conversions INT NOT NULL,\n    click_through_rate FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_groups (\n    group_id INT PRIMARY KEY,\n    campaign_id INT NOT NULL,\n    group_name VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  }
+]

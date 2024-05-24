@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM shipment_timeline;",
+      "SELECT shipment_id, shipment_date, expected_delivery_date FROM shipment_timeline;",
+      "SELECT shipment_status, actual_delivery_date FROM shipment_timeline;",
+      "SELECT * FROM shipment_timeline WHERE shipment_status = 'Delivered';",
+      "SELECT shipment_id, shipment_date, expected_delivery_date, actual_delivery_date FROM shipment_timeline WHERE actual_delivery_date IS NOT NULL;",
+      "SELECT * FROM shipment_timeline WHERE shipment_status = 'Delivered' ORDER BY actual_delivery_date DESC LIMIT 10;",
+      "SELECT shipment_id, shipment_date, expected_delivery_date FROM shipment_timeline WHERE shipment_date >= '2022-01-01' AND shipment_date < '2023-01-01';",
+      "SELECT shipment_id, shipment_status FROM shipment_timeline ORDER BY shipment_date ASC, shipment_status DESC LIMIT 5;",
+      "SELECT shipment_id, expected_delivery_date FROM shipment_timeline WHERE actual_delivery_date IS NULL AND shipment_status = 'In Transit' ORDER BY expected_delivery_date ASC;",
+      "SELECT COUNT(*) AS total_shipments, MAX(shipment_date) AS latest_shipment_date FROM shipment_timeline WHERE shipment_status LIKE 'In%' OR shipment_status LIKE 'Del%';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM shipments;",
+      "SELECT shipment_name, shipment_status FROM shipments ORDER BY estimated_delivery_date DESC;",
+      "SELECT shipment_id, shipment_name, actual_delivery_date FROM shipments WHERE shipment_status = 'Delivered';",
+      "SELECT shipment_id, shipment_name, delay_minutes FROM shipments WHERE delay_minutes > 30;",
+      "SELECT log_timestamp, log_description FROM shipment_logs ORDER BY log_timestamp ASC;",
+      "SELECT * FROM shipments WHERE shipment_status = 'Delivered' ORDER BY actual_delivery_date DESC;",
+      "SELECT shipment_id, shipment_name, estimated_delivery_date FROM shipments WHERE delay_minutes > 60 ORDER BY estimated_delivery_date ASC;",
+      "SELECT shipment_id, shipment_name, actual_delivery_date FROM shipments WHERE actual_delivery_date IS NOT NULL ORDER BY shipment_name;",
+      "SELECT s.shipment_id, sl.log_timestamp, sl.log_description FROM shipments s INNER JOIN shipment_logs sl ON s.shipment_id = sl.shipment_id WHERE s.shipment_status = 'In Transit' ORDER BY sl.log_timestamp DESC;",
+      "SELECT shipment_id, shipment_name, actual_delivery_date, delay_minutes FROM shipments WHERE delay_minutes IS NOT NULL AND actual_delivery_date >= '2022-01-01' ORDER BY delay_minutes DESC, actual_delivery_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT shipment_id, shipment_date, status FROM shipment_records WHERE shipment_id = 1;",
+      "SELECT * FROM shipment_records WHERE shipment_date > '2022-01-01' ORDER BY shipment_date ASC;",
+      "SELECT shipment_id, delay_reason, delay_duration FROM shipment_delays WHERE delay_duration > 5 ORDER BY delay_duration DESC;",
+      "SELECT shipment_id, customer_name FROM shipment_feedback WHERE feedback_id IN (1, 2, 3);",
+      "SELECT shipment_id, arrival_date, status FROM shipment_records WHERE status = 'On Hold';",
+      "SELECT * FROM shipment_records WHERE shipment_id = 1;",
+      "SELECT shipment_id, shipment_date, arrival_date FROM shipment_records ORDER BY arrival_date DESC;",
+      "SELECT shipment_id, shipment_date, status FROM shipment_records WHERE status = 'delivered';",
+      "SELECT shipment_feedback.customer_name, shipment_records.shipment_date, shipment_feedback.feedback_comment FROM shipment_feedback JOIN shipment_records ON shipment_feedback.shipment_id = shipment_records.shipment_id;",
+      "SELECT SUM(delay_duration) AS total_delay_duration FROM shipment_delays;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM shipment_status;",
+      "SELECT shipment_id, actual_delivery_date, status FROM shipment_status;",
+      "SELECT status, estimated_delivery_date FROM shipment_status WHERE shipment_id = 1;",
+      "SELECT * FROM shipment_delay ORDER BY delay_duration DESC;",
+      "SELECT shipment_id, reason FROM shipment_delay WHERE delay_id < 5;",
+      "SELECT * FROM shipment_status ORDER BY estimated_delivery_date DESC;",
+      "SELECT shipment_id, status, actual_delivery_date FROM shipment_status WHERE status = 'In transit' LIMIT 10;",
+      "SELECT s.shipment_id, s.status, sl.log_description, sl.log_timestamp FROM shipment_status s JOIN shipment_log sl ON s.shipment_id = sl.shipment_id;",
+      "SELECT sh.shipment_id, sh.status, sh.event_description, sh.event_timestamp, sd.reason FROM shipment_history sh LEFT JOIN shipment_delay sd ON sh.shipment_id = sd.shipment_id;",
+      "SELECT ss.shipment_id, ss.status, ss.estimated_delivery_date, sd.reason FROM shipment_status ss LEFT JOIN shipment_delay sd ON ss.shipment_id = sd.shipment_id ORDER BY ss.estimated_delivery_date ASC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM shipments;",
+      "SELECT sender_name, receiver_name FROM shipments WHERE shipment_date > '2022-01-01';",
+      "SELECT delay_id, reason FROM delays WHERE delay_duration > INTERVAL '1 day';",
+      "SELECT notification_id, message, notification_date FROM notifications ORDER BY notification_date DESC;",
+      "SELECT * FROM tracking WHERE location = 'New York' AND status = 'In transit';",
+      "SELECT * FROM shipments;",
+      "SELECT sender_name, receiver_name FROM shipments WHERE shipment_date >= '2022-01-01';",
+      "SELECT shipment_date, sender_name, receiver_name FROM shipments ORDER BY shipment_date DESC;",
+      "SELECT tracking.tracking_id, shipments.sender_name, tracking.status, tracking.location FROM tracking INNER JOIN shipments ON tracking.shipment_id = shipments.shipment_id;",
+      "SELECT shipments.sender_name, delays.reason, notifications.message FROM shipments LEFT JOIN delays ON shipments.shipment_id = delays.shipment_id LEFT JOIN notifications ON shipments.shipment_id = notifications.shipment_id WHERE delays.reason IS NOT NULL AND notifications.message IS NOT NULL ORDER BY shipments.sender_name ASC;"
+    ]
+  }
+]

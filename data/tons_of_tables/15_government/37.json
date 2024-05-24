@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_meetings_and_hearings (\n  meeting_id UUID PRIMARY KEY,\n  meeting_date TIMESTAMP,\n  meeting_location VARCHAR(255),\n  meeting_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_meetings (\n  meeting_id SERIAL PRIMARY KEY,\n  meeting_date DATE NOT NULL,\n  meeting_location VARCHAR(255) NOT NULL,\n  attendees TEXT[],\n  notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hearings (\n  hearing_id SERIAL PRIMARY KEY,\n  hearing_date DATE NOT NULL,\n  hearing_location VARCHAR(255) NOT NULL,\n  case_name VARCHAR(255) NOT NULL,\n  attendees TEXT[],\n  recording_url VARCHAR(255),\n  notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meetings (\n  meeting_id INT PRIMARY KEY,\n  meeting_date DATE,\n  meeting_time TIME,\n  meeting_location VARCHAR(255),\n  meeting_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n  attendee_id INT PRIMARY KEY,\n  meeting_id INT,\n  attendee_name VARCHAR(255),\n  attendee_email VARCHAR(255),\n  attendee_phone VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE agenda_items (\n  agenda_item_id INT PRIMARY KEY,\n  meeting_id INT,\n  agenda_item_title VARCHAR(255),\n  agenda_item_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_meetings (\n    meeting_id UUID PRIMARY KEY,\n    meeting_title TEXT NOT NULL,\n    meeting_date DATE NOT NULL,\n    meeting_location TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_attendees (\n    attendee_id UUID PRIMARY KEY,\n    meeting_id UUID REFERENCES public_meetings(meeting_id),\n    attendee_name TEXT NOT NULL,\n    attendee_email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_topics (\n    topic_id UUID PRIMARY KEY,\n    meeting_id UUID REFERENCES public_meetings(meeting_id),\n    topic_title TEXT NOT NULL,\n    topic_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_comments (\n    comment_id UUID PRIMARY KEY,\n    meeting_id UUID REFERENCES public_meetings(meeting_id),\n    comment_text TEXT NOT NULL,\n    commenter_name TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_meetings (\n  meeting_id          SERIAL PRIMARY KEY,\n  meeting_date        DATE,\n  meeting_time        TIME,\n  meeting_location    VARCHAR(255),\n  meeting_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_attendees (\n  attendee_id     SERIAL PRIMARY KEY,\n  attendee_name   VARCHAR(255),\n  attendee_email  VARCHAR(255),\n  attendee_status BOOLEAN,\n  meeting_id      INT,\n  FOREIGN KEY (meeting_id) REFERENCES public_meetings (meeting_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_agenda (\n  agenda_id        SERIAL PRIMARY KEY,\n  agenda_item      VARCHAR(255),\n  agenda_duration  INTERVAL,\n  meeting_id       INT,\n  FOREIGN KEY (meeting_id) REFERENCES public_meetings (meeting_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_feedback (\n  feedback_id    SERIAL PRIMARY KEY,\n  feedback_text  TEXT,\n  meeting_id     INT,\n  attendee_id    INT,\n  FOREIGN KEY (meeting_id) REFERENCES public_meetings (meeting_id),\n  FOREIGN KEY (attendee_id) REFERENCES meeting_attendees (attendee_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_documents (\n  document_id      SERIAL PRIMARY KEY,\n  document_name    VARCHAR(255),\n  document_type    VARCHAR(100),\n  document_path    VARCHAR(255),\n  meeting_id       INT,\n  FOREIGN KEY (meeting_id) REFERENCES public_meetings (meeting_id)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE temperature_control (\n  batch_id INT PRIMARY KEY,\n  temperature DECIMAL,\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE storage_temperature (\n  id INT PRIMARY KEY,\n  drug_name VARCHAR(50),\n  temperature FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE temperature_logs (\n  log_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  temperature_record FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TemperatureReadings (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    temperature FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TemperatureLog ( \n    log_id UUID PRIMARY KEY, \n    temperature DECIMAL, \n    log_time TIMESTAMP, \n    device_name VARCHAR \n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE TemperatureThresholds ( \n    threshold_id UUID PRIMARY KEY, \n    min_temperature DECIMAL, \n    max_temperature DECIMAL, \n    drug_name VARCHAR \n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE StorageLocation ( \n    location_id UUID PRIMARY KEY, \n    location_name VARCHAR, \n    address VARCHAR, \n    capacity INT \n) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorDevices ( \n    device_id UUID PRIMARY KEY, \n    device_type VARCHAR, \n    location_id UUID, \n    FOREIGN KEY (location_id) REFERENCES StorageLocation(location_id) \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TemperatureSensor (\n\tsensor_id INT PRIMARY KEY,\n\tlocation VARCHAR,\n\tsensor_type VARCHAR,\n\tstatus VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TemperatureReading (\n\treading_id INT PRIMARY KEY,\n\tsensor_id INT,\n\ttimestamp TIMESTAMP,\n\ttemperature DECIMAL,\n\tFOREIGN KEY (sensor_id) REFERENCES TemperatureSensor(sensor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Drug (\n\tdrug_id INT PRIMARY KEY,\n\tdrug_name VARCHAR,\n\tstorage_condition VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DrugInventory (\n\tinventory_id INT PRIMARY KEY,\n\tdrug_id INT,\n\tquantity INT,\n\texpiration_date DATE,\n\tFOREIGN KEY (drug_id) REFERENCES Drug(drug_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TemperatureAlert (\n\talert_id INT PRIMARY KEY,\n\treading_id INT,\t\n\talert_message VARCHAR,\n\talert_level VARCHAR,\n\ttimestamp TIMESTAMP,\n\tFOREIGN KEY (reading_id) REFERENCES TemperatureReading(reading_id)\n);"
+      }
+    ]
+  }
+]

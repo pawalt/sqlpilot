@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS leads (\n  lead_id UUID PRIMARY KEY,\n  first_name TEXT,\n  last_name TEXT,\n  email TEXT,\n  phone_number TEXT,\n  company TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE leads (\n    lead_id INT PRIMARY KEY,\n    full_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15),\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE activities (\n    activity_id INT PRIMARY KEY,\n    lead_id INT,\n    activity_date TIMESTAMP,\n    activity_description TEXT,\n    activity_type VARCHAR(50),\n    FOREIGN KEY (lead_id) REFERENCES leads(lead_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE potential_leads (\n    lead_id UUID PRIMARY KEY,\n    lead_name VARCHAR(50),\n    lead_email VARCHAR(100),\n    lead_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lead_status (\n    status_id UUID PRIMARY KEY,\n    status_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lead_activity (\n    activity_id UUID PRIMARY KEY,\n    lead_id UUID,\n    activity_date DATE,\n    activity_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE leads (\n    lead_id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(20),\n    status VARCHAR(20) DEFAULT 'New'\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id SERIAL PRIMARY KEY,\n    lead_id INT REFERENCES leads(lead_id),\n    interaction_date DATE NOT NULL,\n    interaction_type VARCHAR(50) NOT NULL,\n    notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lead_sources (\n    source_id SERIAL PRIMARY KEY,\n    source_name VARCHAR(50) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lead_assignments (\n    assignment_id SERIAL PRIMARY KEY,\n    lead_id INT REFERENCES leads(lead_id),\n    assigned_to VARCHAR(100) NOT NULL,\n    assigned_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE potential_leads (\n  lead_id INT PRIMARY KEY,\n  lead_name VARCHAR(255) NOT NULL,\n  lead_email VARCHAR(255) NOT NULL,\n  lead_phone VARCHAR(15),\n  lead_source VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lead_details (\n  detail_id INT PRIMARY KEY,\n  lead_id INT,\n  lead_status VARCHAR(50) NOT NULL,\n  lead_notes TEXT,\n  follow_up_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lead_interaction (\n  interaction_id INT PRIMARY KEY,\n  detail_id INT,\n  interaction_date TIMESTAMP NOT NULL,\n  interaction_type VARCHAR(50) NOT NULL,\n  interaction_notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lead_tags (\n  tag_id INT PRIMARY KEY,\n  lead_id INT,\n  tag_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lead_history (\n  history_id INT PRIMARY KEY,\n  lead_id INT,\n  history_date DATE NOT NULL,\n  history_action VARCHAR(255) NOT NULL,\n  history_description TEXT\n);"
+      }
+    ]
+  }
+]

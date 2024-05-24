@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_quality_audits (\n  audit_id INT PRIMARY KEY,\n  facility_name VARCHAR(50),\n  auditor_name VARCHAR(50),\n  audit_date DATE,\n  compliance_score INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hospital (\n    hospital_id INT PRIMARY KEY,\n    hospital_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AuditRecords (\n    audit_id INT PRIMARY KEY,\n    hospital_id INT NOT NULL,\n    audit_date DATE NOT NULL,\n    auditor_name VARCHAR(255) NOT NULL,\n    compliance_score INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hospital (\n\thospital_id INT PRIMARY KEY,\n\thospital_name VARCHAR(255),\n\thospital_location VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Audit (\n\taudit_id INT PRIMARY KEY,\n\taudit_date DATE,\n\taudit_score INT,\n\thospital_id INT,\n\tFOREIGN KEY (hospital_id) REFERENCES Hospital(hospital_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance (\n\tcompliance_id INT PRIMARY KEY,\n\tcompliance_type VARCHAR(50),\n\taudit_id INT,\n\tFOREIGN KEY (audit_id) REFERENCES Audit(audit_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audits (\n  audit_id UUID PRIMARY KEY,\n  audit_date DATE NOT NULL,\n  auditor_name VARCHAR(255) NOT NULL,\n  compliance_rating INT,\n  comments TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE facilities (\n  facility_id UUID PRIMARY KEY,\n  facility_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255),\n  accreditation_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE violations (\n  violation_id UUID PRIMARY KEY,\n  audit_id UUID REFERENCES audits(audit_id),\n  violation_description TEXT,\n  violation_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE standards (\n  standard_id UUID PRIMARY KEY,\n  standard_name VARCHAR(255) NOT NULL,\n  requirement_text TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hospitals (\n    hospital_id INT PRIMARY KEY,\n    hospital_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    bed_capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n    department_id INT PRIMARY KEY,\n    department_name VARCHAR(255) NOT NULL,\n    hospital_id INT,\n    FOREIGN KEY (hospital_id) REFERENCES hospitals(hospital_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE auditors (\n    auditor_id INT PRIMARY KEY,\n    auditor_name VARCHAR(255) NOT NULL,\n    department_id INT,\n    FOREIGN KEY (department_id) REFERENCES departments(department_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n    audit_id INT PRIMARY KEY,\n    audit_date DATE NOT NULL,\n    auditor_id INT,\n    FOREIGN KEY (auditor_id) REFERENCES auditors(auditor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE findings (\n    finding_id INT PRIMARY KEY,\n    audit_id INT,\n    finding_description TEXT NOT NULL,\n    compliance_status BOOLEAN\n);\n"
+      }
+    ]
+  }
+]

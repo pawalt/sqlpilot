@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id SERIAL PRIMARY KEY,\n    key_value VARCHAR(255) NOT NULL,\n    encryption_algo VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id SERIAL PRIMARY KEY,\n    data_value TEXT NOT NULL,\n    key_id INT REFERENCES encryption_keys(key_id) ON DELETE RESTRICT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_value VARCHAR(255) NOT NULL,\n    key_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    encrypted_data VARCHAR(255) NOT NULL,\n    data_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_transmission (\n    transmission_id INT PRIMARY KEY,\n    encrypted_content VARCHAR(255) NOT NULL,\n    transmission_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    data_name VARCHAR(50) NOT NULL,\n    data_value TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_transmission (\n    transmission_id INT PRIMARY KEY,\n    source_address VARCHAR(50) NOT NULL,\n    destination_address VARCHAR(50) NOT NULL,\n    transmission_data TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transmission_logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP NOT NULL,\n    transmission_id INT NOT NULL,\n    log_message TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_value VARCHAR(255),\n    encryption_algorithm VARCHAR(50),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password_hash VARCHAR(100),\n    email VARCHAR(100),\n    key_id INT,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    data_value TEXT,\n    encrypted BOOLEAN,\n    key_id INT,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    txn_id INT PRIMARY KEY,\n    user_id INT,\n    amount DECIMAL(10, 2),\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id INT PRIMARY KEY,\n    message TEXT,\n    log_timestamp TIMESTAMP\n)"
+      }
+    ]
+  }
+]

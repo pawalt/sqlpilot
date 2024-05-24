@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_watchlist (\n  customer_id SERIAL PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  dob DATE,\n  address VARCHAR(100),\n  government_watchlist_match BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  address VARCHAR(100),\n  phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE watchlists (\n  id INT PRIMARY KEY,\n  customer_id INT,\n  watchlist_name VARCHAR(50),\n  watchlist_type VARCHAR(20),\n  FOREIGN KEY (customer_id) REFERENCES customers(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_data (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255) NOT NULL,\n  customer_email VARCHAR(255) UNIQUE,\n  government_watchlist_flag BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE watchlists (\n  watchlist_id INT PRIMARY KEY,\n  watchlist_name VARCHAR(255) NOT NULL,\n  watchlist_type VARCHAR(50) NOT NULL,\n  watchlist_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE flag_history (\n  flag_id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  watchlist_id INT NOT NULL,\n  flag_date DATE,\n  flag_reason TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  full_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(20),\n  address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE watchlists (\n  watchlist_id INT PRIMARY KEY,\n  watchlist_name VARCHAR(255),\n  watchlist_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_watchlist (\n  customer_id INT,\n  watchlist_id INT,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n  FOREIGN KEY (watchlist_id) REFERENCES watchlists(watchlist_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_flags (\n  flag_id INT PRIMARY KEY,\n  customer_id INT,\n  watchlist_id INT,\n  flag_reason TEXT,\n  flag_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n  FOREIGN KEY (watchlist_id) REFERENCES watchlists(watchlist_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerData (\n  customer_id UUID PRIMARY KEY,\n  customer_name VARCHAR(255),\n  customer_email VARCHAR(255),\n  customer_address VARCHAR(255),\n  government_watchlist_flag BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Watchlist (\n  watchlist_id UUID PRIMARY KEY,\n  watchlist_name VARCHAR(255),\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerWatchlist (\n  customer_id UUID,\n  watchlist_id UUID,\n  flag_reason TEXT,\n  FOREIGN KEY (customer_id) REFERENCES CustomerData(customer_id),\n  FOREIGN KEY (watchlist_id) REFERENCES Watchlist(watchlist_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RiskNotifications (\n  notification_id UUID PRIMARY KEY,\n  customer_id UUID,\n  notification_message TEXT,\n  notification_date TIMESTAMP,\n  FOREIGN KEY (customer_id) REFERENCES CustomerData(customer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FlaggedCustomers (\n  customer_id UUID PRIMARY KEY,\n  flag_reason TEXT,\n  flag_date TIMESTAMP,\n  FOREIGN KEY (customer_id) REFERENCES CustomerData(customer_id)\n)"
+      }
+    ]
+  }
+]

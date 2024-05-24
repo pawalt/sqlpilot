@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE music_production_studio_inventory (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(50) NOT NULL,\n  equipment_type VARCHAR(50),\n  quantity INT,\n  storage_location VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE studios (\n    studio_id INT PRIMARY KEY,\n    studio_name STRING,\n    location STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name STRING,\n    quantity INT,\n    studio_id INT REFERENCES studios(studio_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Studio_Equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(50),\n    quantity INT,\n    price DECIMAL(10, 2),\n    manufacturer VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Studio_Employees (\n    employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(50),\n    role VARCHAR(50),\n    hire_date DATE,\n    salary DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Studio_Inventory (\n    inventory_id INT PRIMARY KEY,\n    inventory_name VARCHAR(50),\n    category VARCHAR(50),\n    quantity INT,\n    location VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Studios (\n  studio_id INT PRIMARY KEY,\n  studio_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Equipment (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(255) NOT NULL,\n  equipment_type VARCHAR(50) NOT NULL,\n  studio_id INT,\n  FOREIGN KEY (studio_id) REFERENCES Studios(studio_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Employees (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(255) NOT NULL,\n  role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EquipmentAssignments (\n  assignment_id INT PRIMARY KEY,\n  equipment_id INT,\n  employee_id INT,\n  assignment_date DATE NOT NULL,\n  return_date DATE,\n  FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id),\n  FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE StudioLocations ( id INT, location_name VARCHAR(255), address VARCHAR(255), city VARCHAR(100), state VARCHAR(100), zipcode VARCHAR(10) );"
+      },
+      {
+        "table_schema": "CREATE TABLE Equipment ( id INT, equipment_name VARCHAR(255), brand VARCHAR(100), model VARCHAR(100), serial_number VARCHAR(50), price DECIMAL(10, 2) );"
+      },
+      {
+        "table_schema": "CREATE TABLE StudioRooms ( id INT, room_number INT, room_name VARCHAR(255), description TEXT, location_id INT, PRIMARY KEY (id), FOREIGN KEY (location_id) REFERENCES StudioLocations(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE StudioInventory ( id INT, equipment_id INT, room_id INT, quantity INT, PRIMARY KEY (id), FOREIGN KEY (equipment_id) REFERENCES Equipment(id), FOREIGN KEY (room_id) REFERENCES StudioRooms(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE StudioEmployees ( id INT, employee_name VARCHAR(255), role VARCHAR(100), phone_number VARCHAR(20), email VARCHAR(255) );"
+      }
+    ]
+  }
+]

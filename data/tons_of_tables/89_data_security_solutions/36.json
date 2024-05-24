@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encrypted_files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_content BYTEA,\n    encryption_key VARCHAR(50),\n    upload_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encrypted_files (\n    file_id UUID PRIMARY KEY,\n    file_name TEXT NOT NULL,\n    file_content BYTEA NOT NULL,\n    encryption_key BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username TEXT NOT NULL,\n    password BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encrypted_files (\n  file_id INT PRIMARY KEY,\n  file_name VARCHAR(255) NOT NULL,\n  file_content BYTES NOT NULL,\n  encryption_key VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_metadata (\n  metadata_id INT PRIMARY KEY,\n  file_id INT REFERENCES encrypted_files(file_id) ON DELETE CASCADE,\n  upload_date TIMESTAMP NOT NULL,\n  file_size INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id INT PRIMARY KEY,\n  file_id INT REFERENCES encrypted_files(file_id) ON DELETE CASCADE,\n  access_date TIMESTAMP NOT NULL,\n  user_id INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_data BYTEA NOT NULL,\n    encryption_key VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserFiles (\n    user_id INT,\n    file_id INT,\n    PRIMARY KEY(user_id, file_id),\n    FOREIGN KEY (user_id) REFERENCES Users(user_id),\n    FOREIGN KEY (file_id) REFERENCES Files(file_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLogs (\n    log_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    file_id INT NOT NULL,\n    access_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES Users(user_id),\n    FOREIGN KEY (file_id) REFERENCES Files(file_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encrypted_files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_data BYTEA NOT NULL,\n    file_encryption_key VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    file_id INT REFERENCES encrypted_files(file_id),\n    user_id INT REFERENCES users(user_id),\n    read_permission BOOLEAN,\n    write_permission BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_logs (\n    log_id INT PRIMARY KEY,\n    file_id INT REFERENCES encrypted_files(file_id),\n    user_id INT REFERENCES users(user_id),\n    action VARCHAR(20) NOT NULL,\n    date_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    access_log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    access_status VARCHAR(10) NOT NULL,\n    date_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

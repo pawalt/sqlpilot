@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_access_controls (\n  id INT PRIMARY KEY,\n  dna_data VARCHAR(255),\n  authorized_personnel VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_data (\n  id INT PRIMARY KEY,\n  dna_sequence TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_controls (\n  user_id INT,\n  access_level TEXT,\n  FOREIGN KEY (user_id) REFERENCES dna_data(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AccessControls (\n    id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DNAData (\n    id SERIAL PRIMARY KEY,\n    dna_sequence TEXT NOT NULL,\n    owner_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AuthorizationLogs (\n    id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    action VARCHAR(50) NOT NULL,\n    log_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AccessControls (\n    id INT PRIMARY KEY,\n    user_id INT,\n    permission VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DNAData (\n    id INT PRIMARY KEY,\n    sample_id INT,\n    dna_sequence TEXT,\n    owner_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50),\n    role ENUM('admin','scientist','researcher')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_personnel (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    personnel_id INT NOT NULL,\n    accessed_table VARCHAR(255) NOT NULL,\n    access_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (personnel_id) REFERENCES authorized_personnel(id)\n);\n\nCREATE TABLE dna_data (\n    dna_id SERIAL PRIMARY KEY,\n    dna_sequence TEXT NOT NULL\n);\n\nCREATE TABLE permission_roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE data_permissions (\n    permission_id SERIAL PRIMARY KEY,\n    dna_id INT NOT NULL,\n    role_id INT NOT NULL,\n    FOREIGN KEY (dna_id) REFERENCES dna_data(dna_id),\n    FOREIGN KEY (role_id) REFERENCES permission_roles(role_id)\n);"
+      }
+    ]
+  }
+]

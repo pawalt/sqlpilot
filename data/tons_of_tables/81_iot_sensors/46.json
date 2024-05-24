@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_spots (\n    spot_id INT PRIMARY KEY,\n    area_id INT NOT NULL,\n    availability VARCHAR(10) NOT NULL,\n    spot_type VARCHAR(20) NOT NULL,\n    spot_location VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_spaces (\n\tparking_space_id INT PRIMARY KEY,\n\tlocation VARCHAR(100),\n\tavailable BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_logs (\n\tlog_id INT PRIMARY KEY,\n\tparking_space_id INT,\n\ttimestamp TIMESTAMP,\n\tstatus VARCHAR(50),\n\tFOREIGN KEY (parking_space_id) REFERENCES parking_spaces(parking_space_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_lot (\n    parking_lot_id UUID PRIMARY KEY,\n    location VARCHAR(255),\n    capacity INT,\n    available_spots INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_history (\n    parking_history_id SERIAL PRIMARY KEY,\n    parking_lot_id UUID,\n    timestamp TIMESTAMP,\n    is_reserved BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_cost (\n    parking_cost_id SERIAL PRIMARY KEY,\n    parking_lot_id UUID,\n    cost_per_hour DECIMAL(10, 2),\n    currency VARCHAR(3)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_lot (\n    parking_spot_id INT PRIMARY KEY,\n    spot_location VARCHAR(255) NOT NULL,\n    availability BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_history (\n    history_id INT PRIMARY KEY,\n    parking_spot_id INT,\n    date_time DATETIME,\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_rates (\n    rate_id INT PRIMARY KEY,\n    parking_spot_id INT,\n    rate DECIMAL(10, 2),\n    currency VARCHAR(3)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_parking_preferences (\n    user_id INT PRIMARY KEY,\n    preferred_location VARCHAR(255),\n    max_distance DECIMAL(10, 2),\n    notify BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_lots (\n\tparking_lot_id INT PRIMARY KEY,\n\tlocation VARCHAR(255),\n\ttotal_spaces INT,\n\tavailable_spaces INT,\n\tstatus ENUM('open', 'closed')\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_spaces (\n\tparking_space_id INT PRIMARY KEY,\n\tlot_id INT,\n\tlocation VARCHAR(255),\n\tavailability ENUM('available', 'occupied')\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_users (\n\tuser_id INT PRIMARY KEY,\n\tfull_name VARCHAR(255),\n\tlicense_plate VARCHAR(15),\n\tphone_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_transactions (\n\ttransaction_id INT PRIMARY KEY,\n\tuser_id INT,\n\tparking_space_id INT,\n\tstart_time TIMESTAMP,\n\tend_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_logs (\n\tlog_id INT PRIMARY KEY,\n\tevent_type ENUM('check_in','check_out'),\n\tuser_id INT,\n\tparking_space_id INT,\n\ttime_logged TIMESTAMP\n)"
+      }
+    ]
+  }
+]

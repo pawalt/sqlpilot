@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumEntanglementMeasures (\n    id INT PRIMARY KEY,\n    particle1_id INT,\n    particle2_id INT,\n    entanglement_measure FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE particle_entanglement (\n    id SERIAL PRIMARY KEY,\n    particle_1_id INT,\n    particle_2_id INT,\n    entanglement_measure DECIMAL\n);\n\nCREATE TABLE entanglement_properties (\n    property_id SERIAL PRIMARY KEY,\n    property_name VARCHAR(50),\n    property_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumParticles (\n    particle_id UUID PRIMARY KEY,\n    particle_type VARCHAR(50),\n    entanglement_measure DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EntanglementRelations (\n    relation_id UUID PRIMARY KEY,\n    particle1_id UUID,\n    particle2_id UUID,\n    entanglement_strength DECIMAL,\n    FOREIGN KEY (particle1_id) REFERENCES QuantumParticles(particle_id),\n    FOREIGN KEY (particle2_id) REFERENCES QuantumParticles(particle_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EntanglementHistory (\n    history_id UUID PRIMARY KEY,\n    relation_id UUID,\n    measurement_timestamp TIMESTAMP,\n    measurement_result VARCHAR(50),\n    FOREIGN KEY (relation_id) REFERENCES EntanglementRelations(relation_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE particles (\n    particle_id INT PRIMARY KEY,\n    particle_name VARCHAR(255),\n    entanglement_measure FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entanglement (\n    entanglement_id INT PRIMARY KEY,\n    particle1_id INT,\n    particle2_id INT,\n    measure_value FLOAT,\n    FOREIGN KEY (particle1_id) REFERENCES particles(particle_id),\n    FOREIGN KEY (particle2_id) REFERENCES particles(particle_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    particle_id INT,\n    entanglement_id INT,\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id),\n    FOREIGN KEY (particle_id) REFERENCES particles(particle_id),\n    FOREIGN KEY (entanglement_id) REFERENCES entanglement(entanglement_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE particles (\n    particle_id INT PRIMARY KEY,\n    particle_name VARCHAR(50) NOT NULL,\n    entanglement_measure FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entanglement_details (\n    entanglement_id INT PRIMARY KEY,\n    particle1_id INT NOT NULL,\n    particle2_id INT NOT NULL,\n    entanglement_strength FLOAT NOT NULL,\n    FOREIGN KEY (particle1_id) REFERENCES particles(particle_id),\n    FOREIGN KEY (particle2_id) REFERENCES particles(particle_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entanglement_history (\n    history_id INT PRIMARY KEY,\n    observation_date DATE NOT NULL,\n    entanglement_id INT NOT NULL,\n    observation_details TEXT,\n    FOREIGN KEY (entanglement_id) REFERENCES entanglement_details(entanglement_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE entanglement_types (\n    type_id INT PRIMARY KEY,\n    type_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE particle_types (\n    particle_type_id INT PRIMARY KEY,\n    particle_type_name VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      }
+    ]
+  }
+]

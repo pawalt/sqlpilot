@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_retention_policy (\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    retention_period INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policies (    policy_id UUID PRIMARY KEY,    retention_period INT NOT NULL,    regulation_type TEXT NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_logs (    log_id SERIAL PRIMARY KEY,    policy_id UUID NOT NULL,    action TEXT NOT NULL,    timestamp TIMESTAMP NOT NULL );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(50) NOT NULL,\n    retention_period INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_requirements (\n    requirement_id INT PRIMARY KEY,\n    requirement_name VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_requirements (\n    policy_id INT NOT NULL,\n    requirement_id INT NOT NULL,\n    FOREIGN KEY (policy_id) REFERENCES retention_policies(policy_id),\n    FOREIGN KEY (requirement_id) REFERENCES regulatory_requirements(requirement_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n  policy_id INT PRIMARY KEY,\n  policy_name TEXT,\n  retention_period INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tables_to_keep (\n  table_name TEXT PRIMARY KEY,\n  retention_policy_id INT REFERENCES retention_policies(policy_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_to_retain (\n  data_id SERIAL PRIMARY KEY,\n  table_name TEXT REFERENCES tables_to_keep(table_name),\n  retention_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n  log_id SERIAL PRIMARY KEY,\n  data_id INT REFERENCES data_to_retain(data_id),\n  action_taken TEXT,\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE retention_policy_table (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(255),\n    retention_period INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_columns (\n    column_id INT PRIMARY KEY,\n    column_name VARCHAR(255),\n    data_type VARCHAR(50),\n    policy_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(255),\n    encryption_algorithm VARCHAR(50),\n    policy_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id INT PRIMARY KEY,\n    event_type VARCHAR(50),\n    event_timestamp TIMESTAMP,\n    user_id INT,\n    policy_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    role VARCHAR(50),\n    policy_id INT\n);\n"
+      }
+    ]
+  }
+]

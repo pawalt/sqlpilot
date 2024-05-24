@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_tracking (\n    vulnerability_id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(255),\n    severity_level VARCHAR(50),\n    affected_system VARCHAR(100),\n    patched BOOLEAN,\n    patch_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id UUID NOT NULL,\n    vulnerability_name VARCHAR(255) NOT NULL,\n    severity VARCHAR(50) NOT NULL,\n    affected_systems INT NOT NULL,\n    description TEXT NOT NULL,\n    PRIMARY KEY (vulnerability_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id UUID NOT NULL,\n    patch_name VARCHAR(255) NOT NULL,\n    patch_date DATE NOT NULL,\n    patch_description TEXT NOT NULL,\n    patched_vulnerability_id UUID NOT NULL,\n    PRIMARY KEY (patch_id),\n    FOREIGN KEY (patched_vulnerability_id) REFERENCES vulnerabilities(vulnerability_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id SERIAL PRIMARY KEY,\n    name VARCHAR(255),\n    description TEXT,\n    severity VARCHAR(50),\n    created_at TIMESTAMPTZ\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id SERIAL PRIMARY KEY,\n    vulnerability_id INT REFERENCES vulnerabilities(vulnerability_id),\n    patch_description TEXT,\n    patch_version VARCHAR(50),\n    applied BOOLEAN,\n    applied_at TIMESTAMPTZ\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_tracking (\n    tracking_id SERIAL PRIMARY KEY,\n    vulnerability_id INT REFERENCES vulnerabilities(vulnerability_id),\n    patch_id INT REFERENCES patches(patch_id),\n    tracking_status VARCHAR(50),\n    last_updated_at TIMESTAMPTZ\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(255) NOT NULL,\n    severity_level VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id INT PRIMARY KEY,\n    patch_name VARCHAR(255) NOT NULL,\n    patch_timestamp TIMESTAMP NOT NULL,\n    vulnerability_id INT,\n    FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(vulnerability_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_history (\n    history_id INT PRIMARY KEY,\n    vulnerability_id INT,\n    patch_id INT,\n    patch_timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(vulnerability_id),\n    FOREIGN KEY (patch_id) REFERENCES patches(patch_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_reports (\n    report_id INT PRIMARY KEY,\n    report_name VARCHAR(255) NOT NULL,\n    report_timestamp TIMESTAMP NOT NULL,\n    vulnerability_id INT,\n    FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(vulnerability_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(255),\n    description TEXT,\n    severity ENUM('low', 'medium', 'high'),\n    affected_software_version VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id INT PRIMARY KEY,\n    patch_name VARCHAR(255),\n    description TEXT,\n    patch_date DATE,\n    affected_vulnerability_id INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE software_versions (\n    version_id INT PRIMARY KEY,\n    version_name VARCHAR(50),\n    release_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patch_history (\n    history_id INT PRIMARY KEY,\n    patch_id INT,\n    applied_date DATE,\n    applied_by_user VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_downtime_logs (\n  id UUID PRIMARY KEY,\n  incident_date TIMESTAMP,\n  downtime_duration INTERVAL,\n  incident_cause TEXT,\n  resolution TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incidents (\n  id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  downtime_duration INT,\n  cause VARCHAR,\n  resolution VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE root_causes (\n  id INT PRIMARY KEY,\n  incident_id INT,\n  cause_description VARCHAR,\n  resolution_plan VARCHAR,\n  FOREIGN KEY (incident_id) REFERENCES incidents(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incidents (\n  id SERIAL PRIMARY KEY,\n  incident_date DATE NOT NULL,\n  downtime_start TIMESTAMP NOT NULL,\n  downtime_end TIMESTAMP NOT NULL,\n  description TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE causes (\n  id SERIAL PRIMARY KEY,\n  incident_id INT REFERENCES incidents (id),\n  cause TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n  id SERIAL PRIMARY KEY,\n  incident_id INT REFERENCES incidents (id),\n  resolution TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incidents (\n  id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE causes (\n  id INT PRIMARY KEY,\n  incident_id INT,\n  cause_description TEXT,\n  FOREIGN KEY (incident_id) REFERENCES incidents(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n  id INT PRIMARY KEY,\n  incident_id INT,\n  resolution_description TEXT,\n  resolution_date DATE,\n  FOREIGN KEY (incident_id) REFERENCES incidents(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE root_causes (\n  id INT PRIMARY KEY,\n  cause_description TEXT,\n  impact_level TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incidents (\n    id INT PRIMARY KEY,\n    incident_date TIMESTAMP,\n    cause_id INT,\n    resolution_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE causes (\n    id INT PRIMARY KEY,\n    cause_name TEXT,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n    id INT PRIMARY KEY,\n    resolution_name TEXT,\n    solution TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE root_causes (\n    id INT PRIMARY KEY,\n    incident_id INT,\n    cause_id INT,\n    resolution_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE downtime_logs (\n    id INT PRIMARY KEY,\n    incident_id INT,\n    downtime_start TIMESTAMP,\n    downtime_end TIMESTAMP,\n    duration INTERVAL\n);"
+      }
+    ]
+  }
+]

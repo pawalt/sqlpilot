@@ -1,0 +1,49 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encrypted_backups (\n    backup_id INT PRIMARY KEY,\n    backup_name VARCHAR(255),\n    backup_file BYTEA,\n    encryption_key VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n    id UUID PRIMARY KEY,\n    file_name TEXT NOT NULL,\n    file_size INT NOT NULL,\n    encryption_key TEXT NOT NULL\n);\n\nCREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username TEXT NOT NULL,\n    password TEXT NOT NULL,\n    email TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_files (\n    id INT PRIMARY KEY,\n    file_name VARCHAR NOT NULL,\n    file_data BYTEA NOT NULL,\n    encryption_key VARCHAR NOT NULL\n);\n\nCREATE TABLE backup_logs (\n    log_id INT PRIMARY KEY,\n    backup_id INT NOT NULL,\n    log_message TEXT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL\n);\n\nCREATE TABLE backup_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR NOT NULL,\n    password VARCHAR NOT NULL,\n    email VARCHAR NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BackupFiles (\n    id SERIAL PRIMARY KEY,\n    file_name VARCHAR(255),\n    encryption_key VARCHAR(255),\n    backup_data BYTEA\n);\nCREATE TABLE BackupLogs (\n    log_id SERIAL PRIMARY KEY,\n    backup_file_id INT REFERENCES BackupFiles(id),\n    log_time TIMESTAMP,\n    log_message TEXT\n);\nCREATE TABLE Users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50),\n    password_hash VARCHAR(255),\n    email VARCHAR(100),\n    role VARCHAR(20)\n);\nCREATE TABLE Permissions (\n    permission_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES Users(user_id),\n    backup_file_id INT REFERENCES BackupFiles(id),\n    permission_level VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n    id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    encryption_key VARCHAR(50),\n    backup_size INT,\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password_hash VARCHAR(255),\n    email VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id INT PRIMARY KEY,\n    backup_id INT,\n    log_message TEXT,\n    log_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    key_value VARCHAR(255),\n    created_by INT,\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_files (\n    file_id INT PRIMARY KEY,\n    backup_id INT,\n    file_data BYTEA\n)"
+      }
+    ]
+  }
+]

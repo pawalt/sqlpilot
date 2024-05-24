@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_gates (\n    gate_id UUID PRIMARY KEY,\n    gate_name VARCHAR(255) NOT NULL,\n    operation VARCHAR(255) NOT NULL,\n    effect VARCHAR(255) NOT NULL,\n    qubit_index INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_gate_operations (\n    gate_id INT PRIMARY KEY,\n    gate_name VARCHAR(255) NOT NULL,\n    gate_description TEXT\n);\nCREATE TABLE qubit_effects (\n    effect_id INT PRIMARY KEY,\n    gate_id INT,\n    effect_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_gates (\n    gate_id UUID PRIMARY KEY,\n    gate_name STRING,\n    operation STRING,\n    effect_on_qubits STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id UUID PRIMARY KEY,\n    qubit_name STRING,\n    qubit_state STRING,\n    gate_applied UUID REFERENCES quantum_gates(gate_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gate_history (\n    history_id UUID PRIMARY KEY,\n    gate_id UUID REFERENCES quantum_gates(gate_id),\n    qubit_id UUID REFERENCES qubits(qubit_id),\n    execution_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_gates (\n    gate_id INT PRIMARY KEY,\n    gate_name VARCHAR(50),\n    gate_operation VARCHAR(50),\n    gate_matrix TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id INT PRIMARY KEY,\n    qubit_name VARCHAR(50),\n    qubit_value BOOLEAN,\n    qubit_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gate_effects (\n    effect_id INT PRIMARY KEY,\n    effect_name VARCHAR(50),\n    effect_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gate_qubit_relation (\n    relation_id INT PRIMARY KEY,\n    gate_id INT,\n    qubit_id INT,\n    FOREIGN KEY (gate_id) REFERENCES quantum_gates(gate_id),\n    FOREIGN KEY (qubit_id) REFERENCES qubits(qubit_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumGates (\n    gate_id UUID PRIMARY KEY,\n    gate_name VARCHAR(50) NOT NULL,\n    gate_matrix VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Qubits (\n    qubit_id UUID PRIMARY KEY,\n    qubit_state VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GateOperations (\n    operation_id UUID PRIMARY KEY,\n    gate_id UUID REFERENCES QuantumGates(gate_id),\n    qubit_id UUID REFERENCES Qubits(qubit_id),\n    operation_result VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserGateHistory (\n    history_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES Users(user_id),\n    operation_id UUID REFERENCES GateOperations(operation_id),\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

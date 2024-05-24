@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_issues (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    issue_description TEXT,\n    resolution TEXT,\n    status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE issues (\n  issue_id SERIAL PRIMARY KEY,\n  customer_id INT,\n  issue_description TEXT,\n  resolution TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n  resolution_id SERIAL PRIMARY KEY,\n  issue_id INT,\n  resolution_date TIMESTAMP,\n  resolution_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerIssues (\n    issue_id INT,\n    customer_id INT,\n    issue_description TEXT,\n    issue_status TEXT,\n    resolution TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerHistory (\n    history_id INT,\n    customer_id INT,\n    start_date DATE,\n    end_date DATE,\n    resolution TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IssueCategories (\n    category_id INT,\n    category_name TEXT,\n    category_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customer (\n  customer_id SERIAL PRIMARY KEY,\n  customer_name VARCHAR(100) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  phone VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Issue (\n  issue_id SERIAL PRIMARY KEY,\n  customer_id INT REFERENCES Customer(customer_id),\n  issue_description TEXT NOT NULL,\n  issue_status VARCHAR(20) DEFAULT 'Open',\n  date_reported TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Resolution (\n  resolution_id SERIAL PRIMARY KEY,\n  issue_id INT REFERENCES Issue(issue_id),\n  resolution_description TEXT NOT NULL,\n  resolved_by VARCHAR(100) NOT NULL,\n  resolution_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Insights (\n  insights_id SERIAL PRIMARY KEY,\n  issue_id INT REFERENCES Issue(issue_id),\n  resolution_id INT REFERENCES Resolution(resolution_id),\n  analysis_results TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE NOT NULL,\n    phone_number VARCHAR(15),\n    address VARCHAR(100),\n    date_created DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE issues (\n    issue_id INT PRIMARY KEY,\n    customer_id INT,\n    issue_description TEXT,\n    date_reported DATE,\n    resolved BOOLEAN DEFAULT false,\n    resolution_description TEXT,\n    resolved_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resolutions (\n    resolution_id INT PRIMARY KEY,\n    issue_id INT,\n    resolution_description TEXT,\n    resolution_date DATE,\n    technician_id INT,\n    completed BOOLEAN DEFAULT false\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE technicians (\n    technician_id INT PRIMARY KEY,\n    technician_name VARCHAR(50) NOT NULL,\n    expertise_area VARCHAR(50),\n    phone_number VARCHAR(15),\n    email VARCHAR(50) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE insights (\n    insight_id INT PRIMARY KEY,\n    issue_id INT,\n    resolution_id INT,\n    metric VARCHAR(50) NOT NULL,\n    value DECIMAL(10, 2) NOT NULL,\n    date_created DATE\n);\n"
+      }
+    ]
+  }
+]

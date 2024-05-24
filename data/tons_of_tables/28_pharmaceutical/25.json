@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_development_progress (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  phase1_start_date DATE,\n  phase1_end_date DATE,\n  phase2_start_date DATE,\n  phase2_end_date DATE,\n  phase3_start_date DATE,\n  phase3_end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DrugProgress (\n  drug_id SERIAL PRIMARY KEY,\n  drug_name VARCHAR(255) NOT NULL,\n  development_phase VARCHAR(50) NOT NULL,\n  phase_timeline TIMESTAMP,\n  progress_notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectManagement (\n  project_id SERIAL PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  project_status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_phases (\n  phase_id INT PRIMARY KEY,\n  phase_name VARCHAR(50) NOT NULL,\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_timeline (\n  project_id INT PRIMARY KEY,\n  phase_id INT,\n  start_date DATE,\n  end_date DATE,\n  FOREIGN KEY (phase_id) REFERENCES drug_phases(phase_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_management (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(50) NOT NULL,\n  budget DECIMAL(10, 2),\n  status VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_progress (\n    id SERIAL PRIMARY KEY,\n    drug_name VARCHAR(255) NOT NULL,\n    development_phase VARCHAR(50) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_timeline (\n    id SERIAL PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    phase_completed BOOLEAN NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    specialization VARCHAR(100) NOT NULL,\n    role VARCHAR(50) NOT NULL,\n    project_id INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_tasks (\n    id SERIAL PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    project_id INT NOT NULL,\n    assigned_to INT NOT NULL,\n    deadline DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DrugDevelopmentProjects (project_id INT PRIMARY KEY, project_name VARCHAR(255), start_date DATE, end_date DATE, status ENUM('Not Started', 'In Progress', 'Completed'))"
+      },
+      {
+        "table_schema": "CREATE TABLE DevelopmentPhases (phase_id INT PRIMARY KEY, phase_name VARCHAR(255), duration_in_weeks INT, start_date DATE, end_date DATE, project_id INT, FOREIGN KEY (project_id) REFERENCES DrugDevelopmentProjects(project_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE PhaseTasks (task_id INT PRIMARY KEY, task_name VARCHAR(255), description TEXT, status ENUM('Not Started', 'In Progress', 'Completed'), phase_id INT, FOREIGN KEY (phase_id) REFERENCES DevelopmentPhases(phase_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskAssignments (assignment_id INT PRIMARY KEY, assignee_name VARCHAR(255), assignment_date DATE, task_id INT, FOREIGN KEY (task_id) REFERENCES PhaseTasks(task_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskComments (comment_id INT PRIMARY KEY, comment_text TEXT, commenter_name VARCHAR(255), comment_date DATE, task_id INT, FOREIGN KEY (task_id) REFERENCES PhaseTasks(task_id))"
+      }
+    ]
+  }
+]

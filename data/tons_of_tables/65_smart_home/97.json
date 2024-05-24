@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_device_configurations ( \n    device_id UUID PRIMARY KEY, \n    device_name TEXT NOT NULL, \n    device_type VARCHAR(50) NOT NULL, \n    configuration JSONB NOT NULL, \n    last_backup_timestamp TIMESTAMP,  \n    security_level INTEGER CHECK (security_level >= 1 AND security_level <= 5)  \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    location VARCHAR(100),\n    configuration JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_configurations (\n    backup_id INT PRIMARY KEY,\n    device_id INT REFERENCES smart_home_devices(device_id),\n    backup_time TIMESTAMP,\n    backup_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_devices (\n    device_id UUID PRIMARY KEY,\n    device_name STRING,\n    configuration JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id serial PRIMARY KEY,\n    device_id UUID,\n    backup_time TIMESTAMP,\n    backup_status STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_events (\n    event_id serial PRIMARY KEY,\n    device_id UUID,\n    event_type STRING,\n    event_timestamp TIMESTAMP,\n    event_details JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR,\n    device_type VARCHAR,\n    configuration JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id UUID PRIMARY KEY,\n    device_id UUID,\n    backup_timestamp TIMESTAMP,\n    backup_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR,\n    email VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id UUID PRIMARY KEY,\n    event_timestamp TIMESTAMP,\n    event_description VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    configuration JSON NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backups (\n    backup_id INT PRIMARY KEY,\n    device_id INT NOT NULL,\n    backup_data JSON NOT NULL,\n    backup_date TIMESTAMP DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id INT PRIMARY KEY,\n    device_id INT NOT NULL,\n    log_message TEXT NOT NULL,\n    log_date TIMESTAMP DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    permission_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

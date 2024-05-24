@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RegulatoryComplianceDocuments (\n  document_id INT PRIMARY KEY,\n  document_type VARCHAR(50),\n  document_name VARCHAR(100),\n  document_content TEXT,\n  submission_date DATE,\n  last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_bodies (\n  id INT PRIMARY KEY,\n  body_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents (\n  doc_id INT PRIMARY KEY,\n  body_id INT,\n  document_name VARCHAR(255) NOT NULL,\n  document_type VARCHAR(50) NOT NULL,\n  document_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_bodies_documents (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(255),\n    document_type VARCHAR(50),\n    document_content TEXT,\n    regulatory_body_id INT\n);\n\nCREATE TABLE regulatory_bodies (\n    regulatory_body_id INT PRIMARY KEY,\n    regulatory_body_name VARCHAR(100),\n    regulatory_body_type VARCHAR(50),\n    regulatory_body_location VARCHAR(100)\n);\n\nCREATE TABLE compliance_checks (\n    check_id INT PRIMARY KEY,\n    check_name VARCHAR(100),\n    check_description TEXT,\n    regulatory_body_id INT,\n    document_id INT,\n    check_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_bodies (\n    id SERIAL PRIMARY KEY,\n    body_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents (\n    id SERIAL PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    document_type VARCHAR(50) NOT NULL,\n    upload_date TIMESTAMP NOT NULL,\n    body_id INT NOT NULL,\n    FOREIGN KEY (body_id) REFERENCES regulatory_bodies(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_contents (\n    id SERIAL PRIMARY KEY,\n    document_id INT NOT NULL,\n    content TEXT NOT NULL,\n    FOREIGN KEY (document_id) REFERENCES compliance_documents(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n    id SERIAL PRIMARY KEY,\n    audit_date DATE NOT NULL,\n    body_id INT NOT NULL,\n    FOREIGN KEY (body_id) REFERENCES regulatory_bodies(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_bodies (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents (\n    doc_id INT PRIMARY KEY,\n    body TEXT NOT NULL,\n    doc_type VARCHAR(50) NOT NULL,\n    regulatory_body_id INT,\n    FOREIGN KEY (regulatory_body_id) REFERENCES regulatory_bodies(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_records (\n    record_id INT PRIMARY KEY,\n    audit_date DATE NOT NULL,\n    compliance_status BOOLEAN NOT NULL,\n    compliance_document_id INT,\n    FOREIGN KEY (compliance_document_id) REFERENCES compliance_documents(doc_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE auditors (\n    auditor_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    certification_status BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE auditor_assignments (\n    assignment_id INT PRIMARY KEY,\n    auditor_id INT,\n    audit_record_id INT,\n    FOREIGN KEY (auditor_id) REFERENCES auditors(auditor_id),\n    FOREIGN KEY (audit_record_id) REFERENCES audit_records(record_id)\n);"
+      }
+    ]
+  }
+]

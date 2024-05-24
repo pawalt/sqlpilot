@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VPN_Client_Software_Updates (\n  id INT PRIMARY KEY,\n  client_name VARCHAR(255) NOT NULL,\n  version VARCHAR(50) NOT NULL,\n  update_url TEXT,\n  release_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(255),\n    client_version VARCHAR(50),\n    last_updated TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id INT PRIMARY KEY,\n    patch_name VARCHAR(255),\n    patch_version VARCHAR(50),\n    patch_description TEXT,\n    release_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(255),\n    last_connection TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE software_updates (\n    update_id INT PRIMARY KEY,\n    update_version VARCHAR(50),\n    update_description TEXT,\n    update_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id INT PRIMARY KEY,\n    update_id INT,\n    patch_version VARCHAR(50),\n    patch_description TEXT,\n    FOREIGN KEY (update_id) REFERENCES software_updates(update_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vpn_clients (\n    client_id UUID PRIMARY KEY,\n    client_name VARCHAR(50),\n    client_version VARCHAR(20),\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id UUID PRIMARY KEY,\n    patch_name VARCHAR(50),\n    patch_details TEXT,\n    release_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE updates (\n    update_id UUID PRIMARY KEY,\n    update_name VARCHAR(50),\n    update_details TEXT,\n    update_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clients_updates (\n    client_id UUID,\n    update_id UUID,\n    FOREIGN KEY (client_id) REFERENCES vpn_clients(client_id),\n    FOREIGN KEY (update_id) REFERENCES updates(update_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(255) NOT NULL,\n    client_version VARCHAR(50) NOT NULL,\n    last_update DATETIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE updates (\n    update_id INT PRIMARY KEY,\n    update_name VARCHAR(255) NOT NULL,\n    update_version VARCHAR(50) NOT NULL,\n    update_date DATETIME,\n    update_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patches (\n    patch_id INT PRIMARY KEY,\n    patch_name VARCHAR(255) NOT NULL,\n    patch_version VARCHAR(50) NOT NULL,\n    patch_date DATETIME,\n    patch_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clients_updates (\n    client_id INT,\n    update_id INT,\n    FOREIGN KEY (client_id) REFERENCES clients(client_id),\n    FOREIGN KEY (update_id) REFERENCES updates(update_id),\n    PRIMARY KEY (client_id, update_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE updates_patches (\n    update_id INT,\n    patch_id INT,\n    FOREIGN KEY (update_id) REFERENCES updates(update_id),\n    FOREIGN KEY (patch_id) REFERENCES patches(patch_id),\n    PRIMARY KEY (update_id, patch_id)\n);"
+      }
+    ]
+  }
+]

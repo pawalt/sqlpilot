@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_monitoring (\n    id INT PRIMARY KEY,\n    username VARCHAR(255),\n    message TEXT,\n    sentiment_score FLOAT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    customer_email VARCHAR(255),\n    customer_phone VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_posts (\n    post_id INT PRIMARY KEY,\n    customer_id INT,\n    post_content TEXT,\n    post_date TIMESTAMP,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_profiles (\n    profile_id UUID PRIMARY KEY,\n    platform VARCHAR,\n    handle VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_interactions (\n    interaction_id UUID PRIMARY KEY,\n    profile_id UUID,\n    interaction_date TIMESTAMP,\n    message TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE response_templates (\n    template_id UUID PRIMARY KEY,\n    platform VARCHAR,\n    template_text TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_accounts ( \n  account_id INT PRIMARY KEY, \n  username VARCHAR(50) NOT NULL, \n  platform VARCHAR(20) NOT NULL, \n  followers_count INT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts ( \n  post_id INT PRIMARY KEY, \n  account_id INT, \n  post_content TEXT, \n  post_date TIMESTAMP, \n  CONSTRAINT fk_account_id FOREIGN KEY (account_id) REFERENCES social_media_accounts(account_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_requests ( \n  request_id INT PRIMARY KEY, \n  customer_name VARCHAR(100) NOT NULL, \n  request_content TEXT, \n  request_date TIMESTAMP \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE responses ( \n  response_id INT PRIMARY KEY, \n  request_id INT, \n  response_content TEXT, \n  response_date TIMESTAMP, \n  CONSTRAINT fk_request_id FOREIGN KEY (request_id) REFERENCES customer_requests(request_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  customer_email VARCHAR(50) UNIQUE,\n  social_media_handles JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conversations (\n  conversation_id INT PRIMARY KEY,\n  customer_id INT,\n  agent_id INT,\n  start_datetime TIMESTAMP,\n  end_datetime TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE messages (\n  message_id INT PRIMARY KEY,\n  conversation_id INT,\n  sender VARCHAR(50),\n  message_text TEXT,\n  timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tickets (\n  ticket_id INT PRIMARY KEY,\n  customer_id INT,\n  agent_id INT,\n  status VARCHAR(20),\n  priority INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE responses (\n  response_id INT PRIMARY KEY,\n  ticket_id INT,\n  response_text TEXT,\n  response_datetime TIMESTAMP\n)"
+      }
+    ]
+  }
+]

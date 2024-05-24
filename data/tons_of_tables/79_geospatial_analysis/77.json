@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_processing_algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(50),\n    parameters JSONB,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageProcessingAlgorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    algorithm_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RemoteSensingParameters (\n    parameter_id INT PRIMARY KEY,\n    parameter_name VARCHAR(255),\n    parameter_value FLOAT,\n    algorithm_id INT,\n    FOREIGN KEY (algorithm_id) REFERENCES ImageProcessingAlgorithms (algorithm_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_algorithms (\n    algorithm_id UUID PRIMARY KEY,\n    algorithm_name VARCHAR(255) NOT NULL,\n    parameters JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_parameters (\n    parameter_id UUID PRIMARY KEY,\n    algorithm_id UUID REFERENCES image_algorithms(algorithm_id),\n    parameter_name VARCHAR(255) NOT NULL,\n    parameter_value VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE remote_sensing_data (\n    data_id UUID PRIMARY KEY,\n    image_path VARCHAR(255) NOT NULL,\n    algorithm_id UUID REFERENCES image_algorithms(algorithm_id),\n    parameter_id UUID REFERENCES algorithm_parameters(parameter_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_processing_algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    algorithm_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_parameters (\n    parameter_id INT PRIMARY KEY,\n    algorithm_id INT,\n    parameter_name VARCHAR(255),\n    parameter_type VARCHAR(50),\n    parameter_description TEXT,\n    FOREIGN KEY (algorithm_id) REFERENCES image_processing_algorithms(algorithm_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE remote_sensing_data (\n    data_id INT PRIMARY KEY,\n    data_name VARCHAR(255),\n    data_source VARCHAR(255),\n    data_format VARCHAR(50),\n    data_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_processing_tasks (\n    task_id INT PRIMARY KEY,\n    data_id INT,\n    algorithm_id INT,\n    parameter_id INT,\n    task_status VARCHAR(50),\n    task_result TEXT,\n    FOREIGN KEY (data_id) REFERENCES remote_sensing_data(data_id),\n    FOREIGN KEY (algorithm_id) REFERENCES image_processing_algorithms(algorithm_id),\n    FOREIGN KEY (parameter_id) REFERENCES algorithm_parameters(parameter_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    algorithm_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_parameters (\n    parameter_id INT PRIMARY KEY,\n    algorithm_id INT,\n    parameter_name VARCHAR(255),\n    parameter_type VARCHAR(50),\n    parameter_description TEXT,\n    FOREIGN KEY (algorithm_id) REFERENCES image_algorithms(algorithm_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE remote_sensing_data (\n    data_id INT PRIMARY KEY,\n    date_processed DATE,\n    satellite_name VARCHAR(100),\n    image_url TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_analysis_results (\n    result_id INT PRIMARY KEY,\n    data_id INT,\n    algorithm_id INT,\n    result_description TEXT,\n    result_metrics JSON,\n    FOREIGN KEY (data_id) REFERENCES remote_sensing_data(data_id),\n    FOREIGN KEY (algorithm_id) REFERENCES image_algorithms(algorithm_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_processing_log (\n    log_id INT PRIMARY KEY,\n    data_id INT,\n    algorithm_id INT,\n    timestamp TIMESTAMP,\n    log_details TEXT,\n    FOREIGN KEY (data_id) REFERENCES remote_sensing_data(data_id),\n    FOREIGN KEY (algorithm_id) REFERENCES image_algorithms(algorithm_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE irrigation_zones (\n    id INT PRIMARY KEY,\n    soil_type VARCHAR(50),\n    slope DECIMAL(5,2),\n    sun_exposure VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE soil_information (\n   soil_id SERIAL PRIMARY KEY,\n   soil_type VARCHAR(255) NOT NULL,\n   soil_texture VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_information (\n   zone_id SERIAL PRIMARY KEY,\n   zone_name VARCHAR(255) NOT NULL,\n   soil_id INT REFERENCES soil_information(soil_id),\n   slope DECIMAL,\n   sun_exposure VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE soil_information (\n    soil_id INT PRIMARY KEY,\n    soil_type VARCHAR(50) NOT NULL,\n    moisture_level FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE slope_information (\n    slope_id INT PRIMARY KEY,\n    slope_degree FLOAT NOT NULL,\n    slope_classification VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sun_exposure (\n    sun_id INT PRIMARY KEY,\n    sun_intensity FLOAT NOT NULL,\n    sun_duration FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE soil_information (\n    soil_id INT PRIMARY KEY,\n    soil_type VARCHAR(50),\n    soil_moisture_level INT,\n    soil_ph_level DECIMAL(4,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE slope_information (\n    slope_id INT PRIMARY KEY,\n    slope_degree DECIMAL(4,2),\n    slope_aspect VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sun_exposure (\n    exposure_id INT PRIMARY KEY,\n    sun_intensity INT,\n    sun_direction VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_zones (\n    zone_id INT PRIMARY KEY,\n    zone_name VARCHAR(50),\n    soil_id INT,\n    slope_id INT,\n    exposure_id INT,\n    FOREIGN KEY (soil_id) REFERENCES soil_information(soil_id),\n    FOREIGN KEY (slope_id) REFERENCES slope_information(slope_id),\n    FOREIGN KEY (exposure_id) REFERENCES sun_exposure(exposure_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SoilType (id INT PRIMARY KEY, name VARCHAR(255), description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE Slope (id INT PRIMARY KEY, slope_angle FLOAT, description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE SunExposure (id INT PRIMARY KEY, exposure_type VARCHAR(255), description TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE Zone (id INT PRIMARY KEY, zone_name VARCHAR(255), soil_type_id INT, slope_id INT, sun_exposure_id INT, FOREIGN KEY (soil_type_id) REFERENCES SoilType(id), FOREIGN KEY (slope_id) REFERENCES Slope(id), FOREIGN KEY (sun_exposure_id) REFERENCES SunExposure(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE IrrigationSchedule (id INT PRIMARY KEY, zone_id INT, start_time TIME, end_time TIME, FOREIGN KEY (zone_id) REFERENCES Zone(id));"
+      }
+    ]
+  }
+]

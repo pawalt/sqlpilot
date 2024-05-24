@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE intellectual_property_disputes (\n  case_number INT PRIMARY KEY,\n  resolution_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE intellectual_property_disputes (\n    case_number VARCHAR,\n    resolution_status VARCHAR\n);\n\nCREATE TABLE parties_involved (\n    party_name VARCHAR,\n    party_type VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE intellectual_property_disputes (\n    case_number INT PRIMARY KEY,\n    resolution_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parties_involved (\n    party_id INT PRIMARY KEY,\n    party_name VARCHAR(100),\n    party_type VARCHAR(50),\n    case_number INT REFERENCES intellectual_property_disputes(case_number)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dispute_details (\n    dispute_id INT PRIMARY KEY,\n    dispute_date DATE,\n    description TEXT,\n    case_number INT REFERENCES intellectual_property_disputes(case_number)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE intellectual_property_cases (\n    case_id INT PRIMARY KEY,\n    case_number VARCHAR(255) NOT NULL,\n    resolution_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parties_involved (\n    party_id INT PRIMARY KEY,\n    case_id INT NOT NULL,\n    party_name VARCHAR(255) NOT NULL,\n    party_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (case_id) REFERENCES intellectual_property_cases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE case_documents (\n    document_id INT PRIMARY KEY,\n    case_id INT NOT NULL,\n    document_name VARCHAR(255) NOT NULL,\n    document_type VARCHAR(50) NOT NULL,\n    document_url TEXT,\n    FOREIGN KEY (case_id) REFERENCES intellectual_property_cases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE case_notes (\n    note_id INT PRIMARY KEY,\n    case_id INT NOT NULL,\n    note_content TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (case_id) REFERENCES intellectual_property_cases(case_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE intellectual_property_cases (\n  case_number INT PRIMARY KEY,\n  plaintiff_name VARCHAR(50) NOT NULL,\n  defendant_name VARCHAR(50) NOT NULL,\n  case_details TEXT,\n  resolution_status VARCHAR(20) CHECK (resolution_status IN ('pending', 'resolved'))\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE case_documents (\n  document_id INT PRIMARY KEY,\n  case_number INT NOT NULL,\n  document_type VARCHAR(50) NOT NULL,\n  document_content TEXT,\n  FOREIGN KEY (case_number) REFERENCES intellectual_property_cases(case_number)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parties_involved (\n  party_id INT PRIMARY KEY,\n  party_name VARCHAR(50) NOT NULL,\n  party_type VARCHAR(30) NOT NULL,\n  party_role VARCHAR(30) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE case_outcomes (\n  outcome_id INT PRIMARY KEY,\n  case_number INT NOT NULL,\n  outcome_description TEXT,\n  resolution_date DATE,\n  FOREIGN KEY (case_number) REFERENCES intellectual_property_cases(case_number)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE legal_representatives (\n  lawyer_id INT PRIMARY KEY,\n  lawyer_name VARCHAR(50) NOT NULL,\n  firm_name VARCHAR(50) NOT NULL,\n  contact_details VARCHAR(100)\n)"
+      }
+    ]
+  }
+]

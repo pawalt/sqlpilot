@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE deep_learning_experiments_metadata (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    model_name VARCHAR(255),\n    dataset_name VARCHAR(255),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    accuracy FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment_metadata (\n    id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    result_details TEXT,\n    result_accuracy FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment_metadata (\n    experiment_id INT NOT NULL,\n    experiment_name VARCHAR(255) NOT NULL,\n    experiment_description TEXT,\n    experiment_owner VARCHAR(100),\n    experiment_start_date DATE,\n    experiment_end_date DATE,\n    PRIMARY KEY (experiment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_results (\n    model_id INT NOT NULL,\n    model_name VARCHAR(255) NOT NULL,\n    model_type VARCHAR(100),\n    model_accuracy FLOAT,\n    model_loss FLOAT,\n    model_parameters TEXT,\n    PRIMARY KEY (model_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    experiment_id INT NOT NULL,\n    model_id INT NOT NULL,\n    learning_rate FLOAT,\n    batch_size INT,\n    optimizer VARCHAR(100),\n    epochs INT,\n    PRIMARY KEY (experiment_id, model_id),\n    FOREIGN KEY (experiment_id) REFERENCES experiment_metadata(experiment_id),\n    FOREIGN KEY (model_id) REFERENCES model_results(model_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id SERIAL PRIMARY KEY,\n    experiment_name VARCHAR(100) NOT NULL,\n    start_date TIMESTAMP NOT NULL,\n    end_date TIMESTAMP,\n    status VARCHAR(20) DEFAULT 'In Progress'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE datasets (\n    dataset_id SERIAL PRIMARY KEY,\n    dataset_name VARCHAR(100) NOT NULL,\n    dataset_size INT,\n    upload_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id SERIAL PRIMARY KEY,\n    model_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    created_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id SERIAL PRIMARY KEY,\n    experiment_id INT REFERENCES experiments(experiment_id),\n    model_id INT REFERENCES models(model_id),\n    accuracy FLOAT,\n    loss FLOAT,\n    evaluation_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id UUID PRIMARY KEY,\n    experiment_name VARCHAR(100) NOT NULL,\n    start_date TIMESTAMP NOT NULL,\n    end_date TIMESTAMP,\n    status ENUM('running', 'completed', 'failed'),\n    accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(100) NOT NULL,\n    model_type ENUM('CNN', 'RNN', 'GAN') NOT NULL,\n    framework VARCHAR(50),\n    hyperparameters JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE datasets (\n    dataset_id UUID PRIMARY KEY,\n    dataset_name VARCHAR(100) NOT NULL,\n    dataset_type ENUM('image', 'text', 'audio') NOT NULL,\n    size_in_gb DECIMAL,\n    created_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments_results (\n    result_id UUID PRIMARY KEY,\n    experiment_id UUID NOT NULL,\n    model_id UUID NOT NULL,\n    dataset_id UUID NOT NULL,\n    execution_time INTERVAL,\n    loss FLOAT,\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id),\n    FOREIGN KEY (model_id) REFERENCES models(model_id),\n    FOREIGN KEY (dataset_id) REFERENCES datasets(dataset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_logs (\n    log_id UUID PRIMARY KEY,\n    experiment_id UUID NOT NULL,\n    log_time TIMESTAMP NOT NULL,\n    log_message TEXT,\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);"
+      }
+    ]
+  }
+]

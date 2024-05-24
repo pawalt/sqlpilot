@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_interactions (\n  id INT PRIMARY KEY,\n  user_id INT,\n  interaction_type VARCHAR(50),\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE website_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    registration_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_interactions (\n    interaction_id INT PRIMARY KEY,\n    user_id INT,\n    interaction_type VARCHAR(50) NOT NULL,\n    interaction_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES website_users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_interactions (\n    user_id INT PRIMARY KEY,\n    page_id INT,\n    interaction_type VARCHAR(50),\n    interaction_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT PRIMARY KEY,\n    theme VARCHAR(50),\n    language VARCHAR(50),\n    font_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE page_statistics (\n    page_id INT PRIMARY KEY,\n    visits INT,\n    avg_duration DECIMAL(10,2),\n    bounce_rate DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_interactions (\n    interaction_id INT PRIMARY KEY,\n    user_id INT,\n    interaction_type VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    preference_id INT PRIMARY KEY,\n    user_id INT,\n    preference_name VARCHAR(50) NOT NULL,\n    preference_value VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    log_description TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    registration_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,\n    session_start TIMESTAMP NOT NULL,\n    session_end TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_actions (\n    action_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,\n    action_name VARCHAR(50) NOT NULL,\n    action_time TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_devices (\n    device_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_feedback (\n    feedback_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,\n    feedback_text TEXT NOT NULL,\n    feedback_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

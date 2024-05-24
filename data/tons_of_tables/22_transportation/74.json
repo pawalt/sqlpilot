@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE space_transactions (\n  transaction_id SERIAL PRIMARY KEY,\n  transaction_date DATE NOT NULL,\n  transaction_type VARCHAR(50) NOT NULL,\n  amount DECIMAL NOT NULL,\n  description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255),\n    launch_date DATE,\n    budget DECIMAL(10, 2)\n);\n\nCREATE TABLE expenses (\n    expense_id UUID PRIMARY KEY,\n    project_id UUID,\n    expense_description TEXT,\n    expense_amount DECIMAL(10, 2),\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mission (\n  mission_id SERIAL PRIMARY KEY,\n  mission_name VARCHAR(100) NOT NULL,\n  launch_date DATE,\n  destination VARCHAR(100),\n  budget DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE expense (\n  expense_id SERIAL PRIMARY KEY,\n  mission_id INT,\n  expense_date DATE,\n  expense_type VARCHAR(50),\n  amount DECIMAL(10, 2),\n  FOREIGN KEY (mission_id) REFERENCES mission(mission_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE astronaut (\n  astronaut_id SERIAL PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  nationality VARCHAR(50),\n  mission_id INT,\n  FOREIGN KEY (mission_id) REFERENCES mission(mission_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SpaceProjects (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(100) NOT NULL,\n  project_description TEXT,\n  project_budget DECIMAL(15, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Expenses (\n  expense_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES SpaceProjects(project_id),\n  expense_date DATE NOT NULL,\n  expense_description TEXT,\n  expense_amount DECIMAL(10, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Astronauts (\n  astronaut_id UUID PRIMARY KEY,\n  astronaut_name VARCHAR(50) NOT NULL,\n  astronaut_age INTEGER,\n  astronaut_specialty VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MissionLogs (\n  log_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES SpaceProjects(project_id),\n  log_date TIMESTAMP NOT NULL,\n  log_entry TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE budget (\n  budget_id INT PRIMARY KEY,\n  project_id INT,\n  amount DECIMAL(10, 2),\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n  expense_id INT PRIMARY KEY,\n  project_id INT,\n  description VARCHAR(255),\n  amount DECIMAL(10, 2),\n  date DATE,\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE staff (\n  staff_id INT PRIMARY KEY,\n  staff_name VARCHAR(255) NOT NULL,\n  position VARCHAR(100),\n  project_id INT,\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n  resource_id INT PRIMARY KEY,\n  resource_name VARCHAR(255) NOT NULL,\n  cost DECIMAL(10, 2),\n  project_id INT,\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      }
+    ]
+  }
+]

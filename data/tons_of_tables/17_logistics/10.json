@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    id INT PRIMARY KEY,\n    make VARCHAR(100),\n    model VARCHAR(100),\n    registration_details JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Vehicles (\n    id INT PRIMARY KEY,\n    make VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    registration_number VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Registrations (\n    registration_id INT PRIMARY KEY,\n    vehicle_id INT,\n    registration_date DATE NOT NULL,\n    expiration_date DATE NOT NULL,\n    FOREIGN KEY (vehicle_id) REFERENCES Vehicles(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id UUID PRIMARY KEY,\n    make VARCHAR(255),\n    model VARCHAR(255),\n    registration_number VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drivers (\n    driver_id UUID PRIMARY KEY,\n    name VARCHAR(255),\n    age INT,\n    contact_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trips (\n    trip_id UUID PRIMARY KEY,\n    vehicle_id UUID REFERENCES vehicles(vehicle_id),\n    driver_id UUID REFERENCES drivers(driver_id),\n    trip_date DATE,\n    departure_time TIME,\n    destination VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_make (\n    make_id INT PRIMARY KEY,\n    make_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_model (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255) NOT NULL,\n    make_id INT NOT NULL,\n    FOREIGN KEY (make_id) REFERENCES vehicle_make(make_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_registration (\n    reg_id INT PRIMARY KEY,\n    reg_number VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_details (\n    vehicle_id INT PRIMARY KEY,\n    model_id INT NOT NULL,\n    reg_id INT NOT NULL,\n    FOREIGN KEY (model_id) REFERENCES vehicle_model(model_id),\n    FOREIGN KEY (reg_id) REFERENCES vehicle_registration(reg_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VehicleMake (\n    make_id UUID PRIMARY KEY,\n    make_name STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE VehicleModel (\n    model_id UUID PRIMARY KEY,\n    model_name STRING,\n    make_id UUID REFERENCES VehicleMake(make_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE VehicleRegistration (\n    reg_id UUID PRIMARY KEY,\n    reg_number STRING UNIQUE,\n    vehicle_id UUID REFERENCES VehicleModel(model_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE VehicleInsurance (\n    insurance_id UUID PRIMARY KEY,\n    insurance_provider STRING,\n    reg_id UUID REFERENCES VehicleRegistration(reg_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE VehicleLocation (\n    location_id UUID PRIMARY KEY,\n    location_name STRING,\n    reg_id UUID REFERENCES VehicleRegistration(reg_id)\n);\n"
+      }
+    ]
+  }
+]

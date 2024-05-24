@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE forums ( \n    id UUID PRIMARY KEY, \n    title STRING, \n    description STRING, \n    created_at TIMESTAMP, \n    num_posts INT \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    created_at TIMESTAMP\n);\n\nCREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    title VARCHAR(100) NOT NULL,\n    content TEXT,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE discussions (\n    discussion_id INT PRIMARY KEY,\n    title VARCHAR(255),\n    description TEXT,\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(255),\n    password VARCHAR(100),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    discussion_id INT,\n    user_id INT,\n    content TEXT,\n    created_at TIMESTAMP,\n    FOREIGN KEY (discussion_id) REFERENCES discussions(discussion_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Posts (\n    post_id INT PRIMARY KEY,\n    post_title VARCHAR(100) NOT NULL,\n    post_content TEXT,\n    posted_by INT,\n    FOREIGN KEY (posted_by) REFERENCES Students(student_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Comments (\n    comment_id INT PRIMARY KEY,\n    comment_content TEXT NOT NULL,\n    post_id INT,\n    commented_by INT,\n    FOREIGN KEY (post_id) REFERENCES Posts(post_id),\n    FOREIGN KEY (commented_by) REFERENCES Students(student_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Likes (\n    like_id INT PRIMARY KEY,\n    post_id INT,\n    liked_by INT,\n    FOREIGN KEY (post_id) REFERENCES Posts(post_id),\n    FOREIGN KEY (liked_by) REFERENCES Students(student_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(50) NOT NULL,\n    student_email VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Posts (\n    post_id INT PRIMARY KEY,\n    post_title VARCHAR(100) NOT NULL,\n    post_content TEXT NOT NULL,\n    post_author_id INT NOT NULL,\n    post_date TIMESTAMP DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Comments (\n    comment_id INT PRIMARY KEY,\n    comment_content TEXT NOT NULL,\n    comment_author_id INT NOT NULL,\n    comment_date TIMESTAMP DEFAULT NOW(),\n    post_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Likes (\n    like_id INT PRIMARY KEY,\n    post_id INT NOT NULL,\n    comment_id INT NOT NULL,\n    user_id INT NOT NULL,\n    like_date TIMESTAMP DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

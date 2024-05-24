@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_authentication (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    public_key VARCHAR(200) UNIQUE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username TEXT NOT NULL,\n  password_hash TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet (\n  wallet_id UUID PRIMARY KEY,\n  user_id UUID NOT NULL,\n  balance DECIMAL(18, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n    wallet_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL REFERENCES users(user_id),\n    balance DECIMAL(18,2) DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    wallet_id INT NOT NULL REFERENCES wallets(wallet_id),\n    amount DECIMAL(18,2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users ( \n  user_id SERIAL PRIMARY KEY, \n  username VARCHAR(50) UNIQUE NOT NULL, \n  password_hash VARCHAR(100) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets ( \n  wallet_id SERIAL PRIMARY KEY, \n  user_id INT REFERENCES users(user_id) NOT NULL, \n  balance DECIMAL(18, 2) DEFAULT 0.00 \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions ( \n  transaction_id SERIAL PRIMARY KEY, \n  wallet_id INT REFERENCES wallets(wallet_id) NOT NULL, \n  amount DECIMAL(18, 2) NOT NULL, \n  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokens ( \n  token_id SERIAL PRIMARY KEY, \n  user_id INT REFERENCES users(user_id) NOT NULL, \n  token VARCHAR(100) UNIQUE NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n    wallet_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    balance DECIMAL(18,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    sender_wallet_id INT REFERENCES wallets(wallet_id),\n    receiver_wallet_id INT REFERENCES wallets(wallet_id),\n    amount DECIMAL(18,2),\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain (\n    block_id INT PRIMARY KEY,\n    hash VARCHAR(64) NOT NULL,\n    previous_block_hash VARCHAR(64),\n    nonce INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE metadata (\n    id INT PRIMARY KEY,\n    data_key VARCHAR(50) NOT NULL,\n    data_value VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

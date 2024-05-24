@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_schedule (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE,\n    event_time TIME,\n    venue_id INT,\n    ticket_price DECIMAL(10, 2) \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR(255),\n  event_date DATE,\n  venue_id INT,\n  ticket_price DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE venues (\n  venue_id INT PRIMARY KEY,\n  venue_name VARCHAR(255),\n  venue_location VARCHAR(255),\n  capacity INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_schedule (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_time TIME,\n    venue_id INT,\n);\n\nCREATE TABLE ticketing_information (\n    ticket_id INT PRIMARY KEY,\n    event_id INT,\n    ticket_price DECIMAL(10, 2),\n    ticket_quantity INT,\n);\n\nCREATE TABLE venue_details (\n    venue_id INT PRIMARY KEY,\n    venue_name VARCHAR(255),\n    venue_location VARCHAR(255),\n    venue_capacity INT,\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EventSchedule (\n    event_id UUID PRIMARY KEY,\n    event_name TEXT NOT NULL,\n    event_date DATE NOT NULL,\n    event_time TIME NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TicketingInformation (\n    ticket_id UUID PRIMARY KEY,\n    event_id UUID REFERENCES EventSchedule(event_id),\n    ticket_type TEXT NOT NULL,\n    ticket_price DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VenueDetails (\n    venue_id UUID PRIMARY KEY,\n    venue_name TEXT NOT NULL,\n    venue_address TEXT NOT NULL,\n    venue_capacity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EventManagement (\n    event_id UUID REFERENCES EventSchedule(event_id),\n    venue_id UUID REFERENCES VenueDetails(venue_id),\n    ticket_id UUID REFERENCES TicketingInformation(ticket_id),\n    PRIMARY KEY (event_id, venue_id, ticket_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_schedules (\n\tevent_id UUID PRIMARY KEY,\n\tevent_name VARCHAR(255) NOT NULL,\n\tevent_date DATE NOT NULL,\n\tevent_time TIME NOT NULL,\n\tvenue_id UUID NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tickets (\n\tticket_id UUID PRIMARY KEY,\n\tevent_id UUID NOT NULL,\n\tticket_price DECIMAL(10,2) NOT NULL,\n\tticket_quantity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE venues (\n\tvenue_id UUID PRIMARY KEY,\n\tvenue_name VARCHAR(255) NOT NULL,\n\tvenue_address VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_venues (\n\tevent_id UUID,\n\tvenue_id UUID,\n\tPRIMARY KEY (event_id, venue_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bookings (\n\tbooking_id UUID PRIMARY KEY,\n\tevent_id UUID NOT NULL,\n\tcustomer_name VARCHAR(255) NOT NULL,\n\tbooking_date DATE NOT NULL\n);\n"
+      }
+    ]
+  }
+]

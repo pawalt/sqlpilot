@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE zoning_regulations (\n  neighborhood_id INT PRIMARY KEY,\n  zoning_type VARCHAR(50),\n  building_height INT,\n  setback_distance INT,\n  max_occupancy INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE zoning_regulations (\n    neighborhood_id INT PRIMARY KEY,\n    regulations TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE neighborhoods (\n    neighborhood_id INT PRIMARY KEY,\n    neighborhood_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neighborhood (neighborhood_id INT, name VARCHAR(255), location VARCHAR(255));\n\nCREATE TABLE zoning_regulations (regulation_id INT, neighborhood_id INT, regulation_text TEXT, regulation_type VARCHAR(50));\n\nCREATE TABLE violation_records (violation_id INT, regulation_id INT, description TEXT, date_recorded DATE);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neighborhood (\n    neighborhood_id INT PRIMARY KEY,\n    neighborhood_name VARCHAR(50) NOT NULL,\n    city VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE zoning_category (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL,\n    description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE zoning_regulations (\n    regulation_id INT PRIMARY KEY,\n    category_id INT REFERENCES zoning_category(category_id),\n    neighborhood_id INT REFERENCES neighborhood(neighborhood_id),\n    regulation_description VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_updates (\n    update_id INT PRIMARY KEY,\n    regulation_id INT REFERENCES zoning_regulations(regulation_id),\n    update_date DATE NOT NULL,\n    update_description VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neighborhoods (\n    neighborhood_id INT PRIMARY KEY,\n    neighborhood_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE zoning_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE regulations (\n    regulation_id INT PRIMARY KEY,\n    regulation_description TEXT,\n    category_id INT,\n    neighborhood_id INT,\n    FOREIGN KEY (category_id) REFERENCES zoning_categories(category_id),\n    FOREIGN KEY (neighborhood_id) REFERENCES neighborhoods(neighborhood_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_records (\n    record_id INT PRIMARY KEY,\n    compliance_status VARCHAR(50),\n    regulation_id INT,\n    FOREIGN KEY (regulation_id) REFERENCES regulations(regulation_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE violations (\n    violation_id INT PRIMARY KEY,\n    violation_description TEXT,\n    record_id INT,\n    FOREIGN KEY (record_id) REFERENCES compliance_records(record_id)\n);\n"
+      }
+    ]
+  }
+]

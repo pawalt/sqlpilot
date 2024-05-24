@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneticMutations (\n    mutation_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    mutation_type VARCHAR(50),\n    population_id INT,\n    observation_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mutations (\n  id UUID PRIMARY KEY,\n  gene_name VARCHAR(50) NOT NULL,\n  mutation_type VARCHAR(50) NOT NULL,\n  population_id UUID REFERENCES populations(id),\n  occurrence_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE populations (\n  id UUID PRIMARY KEY,\n  population_name VARCHAR(50) NOT NULL,\n  country VARCHAR(50) NOT NULL,\n  total_individuals INT NOT NULL,\n  tracking_start_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mutations (\n  mutation_id INT PRIMARY KEY,\n  mutation_name VARCHAR(255),\n  population_id INT,\n  is_detected BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE populations (\n  population_id INT PRIMARY KEY,\n  population_name VARCHAR(255),\n  country_code VARCHAR(3),\n  total_individuals INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE diseases (\n  disease_id INT PRIMARY KEY,\n  disease_name VARCHAR(255),\n  mutation_id INT,\n  population_id INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mutations (\n  mutation_id UUID PRIMARY KEY,\n  gene_name VARCHAR(50),\n  mutation_type VARCHAR(50),\n  population_id UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE populations (\n  population_id UUID PRIMARY KEY,\n  population_name VARCHAR(50),\n  region VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE samples (\n  sample_id UUID PRIMARY KEY,\n  sample_date DATE,\n  population_id UUID,\n  mutation_id UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE diseases (\n  disease_id UUID PRIMARY KEY,\n  disease_name VARCHAR(50),\n  mutation_id UUID\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Population (\n    id UUID PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Mutation (\n    id UUID PRIMARY KEY,\n    mutation_type VARCHAR(50) NOT NULL,\n    mutation_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Individual (\n    id UUID PRIMARY KEY,\n    population_id UUID REFERENCES Population(id),\n    mutation_id UUID REFERENCES Mutation(id),\n    age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Investigation (\n    id UUID PRIMARY KEY,\n    individual_id UUID REFERENCES Individual(id),\n    investigator VARCHAR(50) NOT NULL,\n    date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS Disease (\n    id UUID PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    description TEXT\n);"
+      }
+    ]
+  }
+]

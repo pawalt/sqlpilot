@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transparency_features (\n    feature_id UUID PRIMARY KEY,\n    feature_name STRING,\n    feature_description TEXT,\n    implementation_details JSON,\n    user_feedback JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transparency_features (\n    id INT PRIMARY KEY,\n    feature_name VARCHAR(255),\n    description TEXT,\n    implementation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_trust (\n    id INT PRIMARY KEY,\n    user_id INT,\n    trust_level VARCHAR(50),\n    trust_score DECIMAL(5,2),\n    is_trusted BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TransparencySettings (\n    setting_id UUID PRIMARY KEY,\n    setting_name STRING,\n    description STRING,\n    is_enabled BOOL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TransparencyLogs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID,\n    action STRING,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES Users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    username STRING,\n    email STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ArUsers (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ArProducts (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ArReviews (\n    review_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    product_id UUID NOT NULL,\n    rating INT NOT NULL,\n    comment TEXT,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ArTransactions (\n    transaction_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    product_id UUID NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES ar_users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_transparency (\n    transparency_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    session_id INT NOT NULL,\n    transparency_level INT NOT NULL,\n    comments TEXT,\n    FOREIGN KEY (user_id) REFERENCES ar_users(user_id),\n    FOREIGN KEY (session_id) REFERENCES ar_sessions(session_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    permission_type VARCHAR(50) NOT NULL,\n    grant_date DATE NOT NULL,\n    expire_date DATE,\n    FOREIGN KEY (user_id) REFERENCES ar_users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    event_type VARCHAR(50) NOT NULL,\n    details TEXT,\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES ar_users(user_id)\n);"
+      }
+    ]
+  }
+]

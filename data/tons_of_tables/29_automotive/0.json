@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_maintenance_records (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_make VARCHAR(50),\n  vehicle_model VARCHAR(50),\n  last_service_date DATE,\n  service_details TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VehicleMaintenance (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type VARCHAR(255),\n    service_date DATE,\n    service_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ServiceHistory (\n    history_id INT PRIMARY KEY,\n    vehicle_id INT,\n    service_date DATE,\n    service_cost DECIMAL(10,2),\n    mechanic_name VARCHAR(255)\n    FOREIGN KEY (vehicle_id) REFERENCES VehicleMaintenance(vehicle_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle ( vehicle_id SERIAL PRIMARY KEY,\n  make VARCHAR(50),\n  model VARCHAR(50),\n  year INT,\n  vin VARCHAR(17) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_history ( maintenance_id SERIAL PRIMARY KEY,\n  vehicle_id INT,\n  maintenance_type VARCHAR(50),\n  maintenance_date DATE,\n  mechanic VARCHAR(50),\n  cost DECIMAL(10, 2),\n  FOREIGN KEY (vehicle_id) REFERENCES vehicle(vehicle_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parts_used ( parts_id SERIAL PRIMARY KEY,\n  maintenance_id INT,\n  part_name VARCHAR(50),\n  part_cost DECIMAL(10, 2),\n  quantity INT,\n  FOREIGN KEY (maintenance_id) REFERENCES maintenance_history(maintenance_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Vehicle (\n    vehicle_id INT PRIMARY KEY,\n    make VARCHAR(50),\n    model VARCHAR(50),\n    year INT,\n    vin VARCHAR(17)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceEvent (\n    event_id INT PRIMARY KEY,\n    vehicle_id INT,\n    service_date DATE,\n    service_description TEXT,\n    cost DECIMAL(10, 2),\n    FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Mechanic (\n    mechanic_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    specialty VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EventAssignment (\n    event_id INT,\n    mechanic_id INT,\n    assigned_date DATE,\n    FOREIGN KEY (event_id) REFERENCES MaintenanceEvent(event_id),\n    FOREIGN KEY (mechanic_id) REFERENCES Mechanic(mechanic_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    id SERIAL PRIMARY KEY,\n    make VARCHAR(50) NOT NULL,\n    model VARCHAR(50) NOT NULL,\n    year INTEGER NOT NULL,\n    vin VARCHAR(17) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_records (\n    record_id SERIAL PRIMARY KEY,\n    vehicle_id INTEGER REFERENCES vehicles(id),\n    service_date DATE NOT NULL,\n    service_type VARCHAR(50) NOT NULL,\n    service_details TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mechanics (\n    mechanic_id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    specialization VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mechanic_records (\n    record_id SERIAL PRIMARY KEY,\n    mechanic_id INTEGER REFERENCES mechanics(mechanic_id),\n    service_date DATE NOT NULL,\n    service_type VARCHAR(50) NOT NULL,\n    service_details TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE parts_inventory (\n    part_id SERIAL PRIMARY KEY,\n    part_name VARCHAR(50) NOT NULL,\n    quantity INTEGER NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

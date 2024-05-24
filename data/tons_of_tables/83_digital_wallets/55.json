@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserVerification (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    verification_code VARCHAR(10) NOT NULL,\n    is_verified BOOLEAN DEFAULT FALSE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    verification_code VARCHAR(10) NOT NULL,\n    verified BOOLEAN DEFAULT FALSE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users (user_id),\n    session_token VARCHAR(255) UNIQUE NOT NULL,\n    expiry_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password_hash VARCHAR(256) NOT NULL,\n    is_verified BOOL DEFAULT false\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_codes (\n    code_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    code VARCHAR(10) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    ip_address VARCHAR(20) NOT NULL,\n    login_time TIMESTAMP NOT NULL,\n    success BOOL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  password VARCHAR(255),\n  email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_tokens (\n  token_id INT PRIMARY KEY,\n  user_id INT REFERENCES users(user_id),\n  token VARCHAR(100) UNIQUE,\n  is_expired BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reset_tokens (\n  reset_id INT PRIMARY KEY,\n  user_id INT REFERENCES users(user_id),\n  reset_token VARCHAR(100) UNIQUE,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet (\n  wallet_id INT PRIMARY KEY,\n  user_id INT REFERENCES users(user_id),\n  balance DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    session_token VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_codes (\n    code_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    verification_code VARCHAR(20) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE password_resets (\n    reset_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    reset_code VARCHAR(20) NOT NULL,\n    is_used BOOLEAN DEFAULT FALSE,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL NOT NULL,\n    transaction_type VARCHAR(10) NOT NULL,\n    transaction_date DATE NOT NULL\n);\n"
+      }
+    ]
+  }
+]

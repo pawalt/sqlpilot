@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_programs (\n  program_id UUID PRIMARY KEY,\n  program_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);\n\nCREATE TABLE customer_participation (\n    customer_id INT PRIMARY KEY,\n    program_id INT,\n    join_date DATE,\n    FOREIGN KEY (program_id) REFERENCES loyalty_programs(program_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customer (\n  customer_id SERIAL PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE NOT NULL,\n  loyalty_points INTEGER DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LoyaltyProgram (\n  program_id SERIAL PRIMARY KEY,\n  program_name VARCHAR(255) UNIQUE NOT NULL,\n  discount_rate DECIMAL(5,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Participation (\n  participation_id SERIAL PRIMARY KEY,\n  customer_id INTEGER REFERENCES Customer(customer_id),\n  program_id INTEGER REFERENCES LoyaltyProgram(program_id),\n  participation_date DATE DEFAULT CURRENT_DATE,\n  total_spent DECIMAL(10,2) DEFAULT 0.0\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    loyalty_points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT,\n    program_id INT,\n    transaction_date DATE,\n    transaction_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id INT PRIMARY KEY,\n    customer_id INT,\n    reward_type VARCHAR(50),\n    reward_value DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_programs (\n    program_id UUID PRIMARY KEY,\n    program_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    program_id UUID REFERENCES loyalty_programs(program_id),\n    transaction_date DATE NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id SERIAL PRIMARY KEY,\n    reward_name VARCHAR(100) NOT NULL,\n    points_required INT NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_rewards (\n    customer_id UUID REFERENCES customers(customer_id),\n    reward_id SERIAL REFERENCES rewards(reward_id),\n    claim_date DATE NOT NULL,\n    status VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  }
+]

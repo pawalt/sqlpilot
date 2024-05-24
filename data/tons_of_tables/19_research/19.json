@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE outliers_dataset (\n    id SERIAL PRIMARY KEY,\n    data_point FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE outliers_data (\n    record_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    value DECIMAL\n);\n\nCREATE TABLE anomaly_results (\n    result_id UUID PRIMARY KEY,\n    record_id UUID REFERENCES outliers_data(record_id),\n    anomaly_score DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    id INT PRIMARY KEY,\n    record_id INT,\n    record_value FLOAT,\n    anomaly_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE records (\n    record_id INT PRIMARY KEY,\n    data_timestamp TIMESTAMP,\n    data_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outlier_results (\n    result_id INT PRIMARY KEY,\n    record_id INT,\n    result_description VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE outliers_dataset (\n    record_id SERIAL PRIMARY KEY,\n    data_value FLOAT NOT NULL,\n    is_outlier BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomaly_scores (\n    score_id SERIAL PRIMARY KEY,\n    record_id INT REFERENCES outliers_dataset(record_id),\n    anomaly_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outlier_records (\n    outlier_id SERIAL PRIMARY KEY,\n    record_id INT REFERENCES outliers_dataset(record_id),\n    outlier_reason VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomaly_logs (\n    log_id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP,\n    message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE outliers_dataset (\n    record_id INT NOT NULL PRIMARY KEY,\n    feature_1 FLOAT,\n    feature_2 FLOAT,\n    feature_3 FLOAT,\n    date_recorded DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE anomaly_results (\n    result_id INT NOT NULL PRIMARY KEY,\n    record_id INT,\n    is_anomaly BOOLEAN,\n    anomaly_score FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_parameters (\n    algorithm_id INT NOT NULL PRIMARY KEY,\n    algorithm_name VARCHAR(50),\n    parameter_name VARCHAR(50),\n    parameter_value VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_info (\n    dataset_id INT NOT NULL PRIMARY KEY,\n    dataset_name VARCHAR(100),\n    dataset_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE anomaly_logs (\n    log_id INT NOT NULL PRIMARY KEY,\n    record_id INT,\n    log_message TEXT,\n    log_time TIMESTAMP\n)"
+      }
+    ]
+  }
+]

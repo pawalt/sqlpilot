@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id UUID PRIMARY KEY,\n    researcher_name VARCHAR(255),\n    research_field VARCHAR(255),\n    genomics_data JSONB,\n    drug_targets_found JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researchers (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(50) NOT NULL,\n  researcher_email VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GenomicsData (\n  data_id INT PRIMARY KEY,\n  researcher_id INT REFERENCES Researchers(researcher_id),\n  genomics_data TEXT NOT NULL, \n  data_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researcher_research (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genomics_data (\n    data_id INT PRIMARY KEY,\n    researcher_id INT NOT NULL,\n    data_type VARCHAR(100) NOT NULL,\n    data_content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_targets (\n    target_id INT PRIMARY KEY,\n    researcher_id INT NOT NULL,\n    gene_name VARCHAR(100) NOT NULL,\n    target_name VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researchers (\n\tresearcher_id INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\taffiliation VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GenomicsData (\n\tdata_id INT PRIMARY KEY,\n\tdna_sequence TEXT NOT NULL,\n\trna_expression FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DrugTargets (\n\ttarget_id INT PRIMARY KEY,\n\ttarget_name VARCHAR(255) NOT NULL,\n\ttarget_gene VARCHAR(50) NOT NULL,\n\taction_mechanism VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BiopharmaceuticalDevelopment (\n\tdevelopment_id INT PRIMARY KEY,\n\tdrug_name VARCHAR(255) NOT NULL,\n\ttarget_id INT NOT NULL,\n\tFOREIGN KEY (target_id) REFERENCES DrugTargets(target_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researcher (id INT PRIMARY KEY,\n  name VARCHAR,\n  email VARCHAR);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE genomics_data (id INT PRIMARY KEY,\n  data TEXT,\n  researcher_id INT,\n  FOREIGN KEY (researcher_id) REFERENCES researcher(id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_targets (id INT PRIMARY KEY,\n  target_name VARCHAR,\n  genomics_data_id INT,\n  FOREIGN KEY (genomics_data_id) REFERENCES genomics_data(id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE biopharmaceuticals (id INT PRIMARY KEY,\n  drug_name VARCHAR,\n  target_id INT,\n  FOREIGN KEY (target_id) REFERENCES drug_targets(id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (id INT PRIMARY KEY,\n  result TEXT,\n  date DATE,\n  researcher_id INT,\n  FOREIGN KEY (researcher_id) REFERENCES researcher(id));\n"
+      }
+    ]
+  }
+]

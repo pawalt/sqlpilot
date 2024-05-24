@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cell_types ( \n cell_id INT PRIMARY KEY, \n cell_type VARCHAR(255) NOT NULL, \n gene_expression_level FLOAT NOT NULL \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CellTypes (\n    cell_type_id UUID PRIMARY KEY,\n    cell_type_name TEXT,\n    gene_expression_data JSONB\n);\n\nCREATE TABLE Diseases (\n    disease_id UUID PRIMARY KEY,\n    disease_name TEXT,\n    associated_cell_type_id UUID REFERENCES CellTypes(cell_type_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CellTypes (\n    cell_type_id INT PRIMARY KEY,\n    cell_type_name VARCHAR(255),\n    cell_type_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneExpression (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    expression_level FLOAT,\n    cell_type_id INT,\n    FOREIGN KEY (cell_type_id) REFERENCES CellTypes(cell_type_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DiseaseMechanisms (\n    disease_id INT PRIMARY KEY,\n    disease_name VARCHAR(255),\n    associated_genes TEXT,\n    related_cell_types TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CellType (\n  cell_type_id UUID PRIMARY KEY,\n  cell_type_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Gene (\n  gene_id UUID PRIMARY KEY,\n  gene_name TEXT,\n  gene_symbol TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Expression (\n  expression_id UUID PRIMARY KEY,\n  cell_type_id UUID,\n  gene_id UUID,\n  expression_level FLOAT,\n  FOREIGN KEY (cell_type_id) REFERENCES CellType(cell_type_id),\n  FOREIGN KEY (gene_id) REFERENCES Gene(gene_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DiseaseMechanism (\n  mechanism_id UUID PRIMARY KEY,\n  mechanism_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CellTypes (\n    cell_type_id INT PRIMARY KEY,\n    cell_type_name VARCHAR(50) NOT NULL,\n    cell_type_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(50) NOT NULL,\n    gene_symbol VARCHAR(10) NOT NULL,\n    gene_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExpressionLevels (\n    expression_id INT PRIMARY KEY,\n    cell_type_id INT NOT NULL,\n    gene_id INT NOT NULL,\n    expression_level FLOAT NOT NULL,\n    FOREIGN KEY (cell_type_id) REFERENCES CellTypes(cell_type_id),\n    FOREIGN KEY (gene_id) REFERENCES Genes(gene_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DiseaseMechanisms (\n    mechanism_id INT PRIMARY KEY,\n    mechanism_name VARCHAR(50) NOT NULL,\n    mechanism_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MechanismAssociations (\n    association_id INT PRIMARY KEY,\n    cell_type_id INT NOT NULL,\n    mechanism_id INT NOT NULL,\n    association_strength FLOAT NOT NULL,\n    FOREIGN KEY (cell_type_id) REFERENCES CellTypes(cell_type_id),\n    FOREIGN KEY (mechanism_id) REFERENCES DiseaseMechanisms(mechanism_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterUsageRestrictions (\n  id INT PRIMARY KEY,\n  government_id INT,\n  location VARCHAR(255),\n  restriction_level INT,\n  start_date DATE,\n  end_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_restrictions (\n\\tid INT PRIMARY KEY,\n\tlocation_id INT,\n\tstart_date DATE,\n\tend_date DATE,\n\trestriction_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n\tid INT PRIMARY KEY,\n\tlocation_id INT,\n\tdate DATE,\n\tusage_amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE local_governments (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n    id INT PRIMARY KEY,\n    government_id INT NOT NULL,\n    household_id INT NOT NULL,\n    usage_amount DECIMAL(10, 2) NOT NULL,\n    date_recorded DATE NOT NULL,\n    CONSTRAINT fk_government FOREIGN KEY (government_id) REFERENCES local_governments(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_restrictions (\n    id INT PRIMARY KEY,\n    government_id INT NOT NULL,\n    restriction_level INT NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    CONSTRAINT fk_restriction FOREIGN KEY (government_id) REFERENCES local_governments(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterAuthorities (\n    authority_id INT PRIMARY KEY,\n    authority_name VARCHAR(50) NOT NULL,\n    region VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterUsers (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    user_type VARCHAR(20) NOT NULL,\n    authority_id INT,\n    FOREIGN KEY (authority_id) REFERENCES WaterAuthorities(authority_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterUsage (\n    usage_id INT PRIMARY KEY,\n    user_id INT,\n    usage_date DATE NOT NULL,\n    usage_amount FLOAT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES WaterUsers(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterRestrictions (\n    restriction_id INT PRIMARY KEY,\n    restriction_name VARCHAR(50) NOT NULL,\n    restriction_level INT NOT NULL,\n    region VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterConsumption (\n  consumer_id INT PRIMARY KEY,\n  consumption_amount FLOAT,\n  location VARCHAR(255),\n  date_recorded DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterRestrictions (\n  restriction_id INT PRIMARY KEY,\n  restriction_type VARCHAR(50),\n  start_date DATE,\n  end_date DATE,\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Violations (\n  violation_id INT PRIMARY KEY,\n  violation_type VARCHAR(50),\n  violation_date DATE,\n  location VARCHAR(255),\n  fine_amount DECIMAL(10, 2),\n  is_resolved BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspectors (\n  inspector_id INT PRIMARY KEY,\n  inspector_name VARCHAR(100),\n  inspector_email VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Notifications (\n  notification_id INT PRIMARY KEY,\n  notification_type VARCHAR(50),\n  recipient_id INT,\n  content TEXT,\n  is_read BOOLEAN\n)"
+      }
+    ]
+  }
+]

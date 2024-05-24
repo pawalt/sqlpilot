@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE route_tracking (\n  route_id INT,\n  departure_time TIMESTAMP,\n  arrival_time TIMESTAMP,\n  distance FLOAT,\n  traffic_intensity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RouteEfficiency (\n    route_id UUID PRIMARY KEY,\n    route_name VARCHAR(255) NOT NULL,\n    start_location VARCHAR(255) NOT NULL,\n    end_location VARCHAR(255) NOT NULL,\n    distance FLOAT NOT NULL,\n    efficiency_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrafficPatterns (\n    pattern_id UUID PRIMARY KEY,\n    route_id UUID NOT NULL,\n    traffic_density FLOAT NOT NULL,\n    average_speed FLOAT,\n    congestion_rate FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RouteEfficiency (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(255),\n    distance FLOAT,\n    avg_speed FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrafficPatterns (\n    pattern_id INT PRIMARY KEY,\n    pattern_name VARCHAR(255),\n    congestion_rate FLOAT,\n    road_conditions VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TransportationRoutes (\n    route_id INT,\n    pattern_id INT,\n    start_location VARCHAR(255),\n    end_location VARCHAR(255),\n    route_type VARCHAR(50),\n    FOREIGN KEY (route_id) REFERENCES RouteEfficiency(route_id),\n    FOREIGN KEY (pattern_id) REFERENCES TrafficPatterns(pattern_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  route_name TEXT,\n  start_location TEXT,\n  end_location TEXT,\n  distance_km FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_type TEXT,\n  max_load_kg INT,\n  current_location TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_patterns (\n  pattern_id INT PRIMARY KEY,\n  congestion_level TEXT,\n  average_speed_kmph FLOAT,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE route_schedule (\n  schedule_id INT PRIMARY KEY,\n  route_id INT,\n  vehicle_id INT,\n  departure_time TIMESTAMP,\n  arrival_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id INT PRIMARY KEY,\n    start_location VARCHAR(255),\n    end_location VARCHAR(255),\n    distance DECIMAL,\n    traffic_conditions VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type VARCHAR(50),\n    capacity INT,\n    driver_id INT,\n    route_id INT,\n    FOREIGN KEY (route_id) REFERENCES routes(route_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drivers (\n    driver_id INT PRIMARY KEY,\n    driver_name VARCHAR(100),\n    phone_number VARCHAR(20),\n    vehicle_id INT,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id INT PRIMARY KEY,\n    route_id INT,\n    departure_time TIMESTAMP,\n    arrival_time TIMESTAMP,\n    FOREIGN KEY (route_id) REFERENCES routes(route_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_data (\n    traffic_id INT PRIMARY KEY,\n    route_id INT,\n    traffic_indicator VARCHAR(20),\n    timestamp TIMESTAMP,\n    FOREIGN KEY (route_id) REFERENCES routes(route_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InsurancePolicy (\n    policy_id INT PRIMARY KEY,\n    policy_number VARCHAR(255),\n    policy_holder VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    coverage_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Policy ( \n  policy_id INT PRIMARY KEY, \n  policy_holder_name VARCHAR(50), \n  policy_type VARCHAR(50), \n  coverage_amount DECIMAL(10,2), \n  start_date DATE, \n  end_date DATE \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyClaim ( \n  claim_id INT PRIMARY KEY, \n  policy_id INT REFERENCES Policy(policy_id), \n  claim_amount DECIMAL(10,2), \n  claim_date DATE, \n  claim_status VARCHAR(20) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_companies (\n  company_id INT PRIMARY KEY,\n  company_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n  policy_id INT PRIMARY KEY,\n  policy_number VARCHAR(50) NOT NULL,\n  coverage_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policyholders (\n  policyholder_id INT PRIMARY KEY,\n  policyholder_name VARCHAR(255) NOT NULL,\n  policy_id INT,\n  FOREIGN KEY (policy_id) REFERENCES policies(policy_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Insurance_Companies (\n  company_id UUID PRIMARY KEY,\n  company_name VARCHAR(255) NOT NULL,\n  address VARCHAR(255) NOT NULL,\n  phone_number VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n  policy_id UUID PRIMARY KEY,\n  company_id UUID REFERENCES Insurance_Companies(company_id),\n  policy_type VARCHAR(50) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  premium DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Policy_Holders (\n  policy_holder_id UUID PRIMARY KEY,\n  policy_id UUID REFERENCES Policies(policy_id),\n  name VARCHAR(255) NOT NULL,\n  dob DATE,\n  address VARCHAR(255) NOT NULL,\n  phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Claims (\n  claim_id UUID PRIMARY KEY,\n  policy_id UUID REFERENCES Policies(policy_id),\n  claim_date DATE NOT NULL,\n  claim_amount DECIMAL(10, 2) NOT NULL,\n  status VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_holder (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy (\n    policy_id INT PRIMARY KEY,\n    policy_type VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    premium DECIMAL(10,2),\n    policy_holder_id INT,\n    FOREIGN KEY (policy_holder_id) REFERENCES policy_holder(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE insurance_company (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim (\n    claim_id INT PRIMARY KEY,\n    description VARCHAR(255),\n    claim_amount DECIMAL(10,2),\n    policy_id INT,\n    FOREIGN KEY (policy_id) REFERENCES policy(policy_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent (\n    agent_id INT PRIMARY KEY,\n    agent_name VARCHAR(255),\n    agent_email VARCHAR(255),\n    company_id INT,\n    FOREIGN KEY (company_id) REFERENCES insurance_company(company_id)\n);"
+      }
+    ]
+  }
+]

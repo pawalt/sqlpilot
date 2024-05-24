@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RetinaScanningData (\n    patient_id INT,\n    scan_date DATE,\n    retina_image BYTEA,\n    diagnosis TEXT,\n    treatment_plan TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RetinaScanningData (\n    patient_id UUID PRIMARY KEY,\n    scan_date DATE,\n    scan_results JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TreatmentPlans (\n    plan_id UUID PRIMARY KEY,\n    patient_id UUID REFERENCES RetinaScanningData(patient_id),\n    plan_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Retina_Scanning_Data (\n    patient_id INT PRIMARY KEY,\n    scanning_date DATE,\n    scanning_results TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Treatment_Plans (\n    plan_id INT PRIMARY KEY,\n    patient_id INT,\n    plan_description TEXT,\n    plan_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id INT PRIMARY KEY,\n    patient_name TEXT,\n    patient_age INT,\n    medical_history TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50) NOT NULL,\n  age INT,\n  gender VARCHAR(10),\n  blood_type VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Doctor (\n  doctor_id INT PRIMARY KEY,\n  doctor_name VARCHAR(50) NOT NULL,\n  specialty VARCHAR(50),\n  years_of_experience INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TreatmentPlan (\n  plan_id INT PRIMARY KEY,\n  patient_id INT,\n  doctor_id INT,\n  treatment_description TEXT,\n  start_date DATE,\n  end_date DATE,\n  FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),\n  FOREIGN KEY (doctor_id) REFERENCES Doctor(doctor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RetinaScanningData (\n  scan_id INT PRIMARY KEY,\n  patient_id INT,\n  scan_date TIMESTAMP,\n  scan_results JSON,\n  FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PatientData (\n    patient_id INT PRIMARY KEY,\n    full_name VARCHAR(50),\n    date_of_birth DATE,\n    blood_type VARCHAR(5),\n    retina_scan_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TreatmentPlans (\n    plan_id INT PRIMARY KEY,\n    patient_id INT,\n    treatment_description TEXT,\n    treatment_date DATE,\n    FOREIGN KEY (patient_id) REFERENCES PatientData(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DoctorData (\n    doctor_id INT PRIMARY KEY,\n    full_name VARCHAR(50),\n    specialization VARCHAR(50),\n    hospital VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RetinaScanRecords (\n    record_id INT PRIMARY KEY,\n    patient_id INT,\n    scan_timestamp TIMESTAMP,\n    scan_result TEXT,\n    FOREIGN KEY (patient_id) REFERENCES PatientData(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Prescription (\n    prescription_id INT PRIMARY KEY,\n    patient_id INT,\n    medication_name VARCHAR(50),\n    dosage VARCHAR(20),\n    prescription_date DATE,\n    FOREIGN KEY (patient_id) REFERENCES PatientData(patient_id)\n);\n"
+      }
+    ]
+  }
+]

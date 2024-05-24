@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE activity_monitoring (\n  id INT PRIMARY KEY,\n  activity_type VARCHAR(50) NOT NULL,\n  user_id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  ip_address VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    user_id INT PRIMARY KEY,\n    activity_type VARCHAR(50),\n    activity_timestamp TIMESTAMP,\n    activity_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE activity_alert (\n    alert_id INT PRIMARY KEY,\n    activity_id INT REFERENCES user_activity(user_id),\n    alert_type VARCHAR(50),\n    alert_timestamp TIMESTAMP,\n    alert_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE activity_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT,\n    activity_type VARCHAR(50),\n    activity_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suspicious_activities (\n    activity_id SERIAL PRIMARY KEY,\n    activity_type VARCHAR(50),\n    detected_time TIMESTAMP,\n    response_action VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    role VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE activity_monitoring (\n    user_id INT,\n    activity_type VARCHAR(50),\n    activity_timestamp TIMESTAMP,\n    activity_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    session_start TIMESTAMP,\n    session_end TIMESTAMP,\n    session_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suspicious_activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    activity_type VARCHAR(50),\n    activity_timestamp TIMESTAMP,\n    activity_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    activity_id INT,\n    alert_type VARCHAR(50),\n    alert_timestamp TIMESTAMP,\n    alert_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    activity_type VARCHAR(50) NOT NULL,\n    activity_time TIMESTAMP NOT NULL,\n    activity_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    activity_id INT REFERENCES activities(activity_id),\n    alert_type VARCHAR(50) NOT NULL,\n    alert_time TIMESTAMP NOT NULL,\n    alert_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blacklists (\n    blacklist_id INT PRIMARY KEY,\n    ip_address VARCHAR(50) NOT NULL,\n    blocked_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE whitelist (\n    whitelist_id INT PRIMARY KEY,\n    ip_address VARCHAR(50) NOT NULL,\n    whitelisted_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Agroforestry_Certification_Programs (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(255),\n  certification_level VARCHAR(50),\n  certification_status BOOLEAN,\n  certification_expiry_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Certification_Programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(255),\n    certification_type VARCHAR(50),\n    accreditation_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Program_Participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255),\n    program_id INT,\n    certification_date DATE,\n    certification_level VARCHAR(50),\n    FOREIGN KEY (program_id) REFERENCES Certification_Programs(program_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agroforestry_certification (\n    id SERIAL PRIMARY KEY,\n    certification_name TEXT NOT NULL,\n    certification_type TEXT NOT NULL,\n    certification_agency TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE farmers (\n    id SERIAL PRIMARY KEY,\n    farmer_name TEXT NOT NULL,\n    farm_location TEXT NOT NULL,\n    certification_id INT REFERENCES agroforestry_certification(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    id SERIAL PRIMARY KEY,\n    document_name TEXT NOT NULL,\n    document_type TEXT NOT NULL,\n    farmer_id INT REFERENCES farmers(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Agroforestry_Certification_Programs (\n  certification_id UUID PRIMARY KEY,\n  program_name VARCHAR NOT NULL,\n  certification_date TIMESTAMP,\n  certification_status VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Farmers (\n  farmer_id UUID PRIMARY KEY,\n  farmer_name VARCHAR NOT NULL,\n  farm_location VARCHAR,\n  certification_id UUID REFERENCES Agroforestry_Certification_Programs(certification_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance_Documents (\n  document_id UUID PRIMARY KEY,\n  document_name VARCHAR NOT NULL,\n  document_date TIMESTAMP,\n  certification_id UUID REFERENCES Agroforestry_Certification_Programs(certification_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspectors (\n  inspector_id UUID PRIMARY KEY,\n  inspector_name VARCHAR NOT NULL,\n  inspector_location VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certification_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(50) NOT NULL,\n    certification_type VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE farmers (\n    farmer_id INT PRIMARY KEY,\n    farmer_name VARCHAR(50) NOT NULL,\n    farm_size DECIMAL(10,2) NOT NULL,\n    location VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    document_id INT PRIMARY KEY,\n    document_type VARCHAR(50) NOT NULL,\n    document_date DATE NOT NULL,\n    document_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inspections (\n    inspection_id INT PRIMARY KEY,\n    inspector_id INT NOT NULL,\n    inspection_date DATE NOT NULL,\n    result BOOLEAN NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_records (\n    record_id INT PRIMARY KEY,\n    farmer_id INT NOT NULL,\n    document_id INT NOT NULL,\n    inspection_id INT NOT NULL,\n    compliance_status VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

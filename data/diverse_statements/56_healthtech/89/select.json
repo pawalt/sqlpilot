@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM VehicleLocation;",
+      "SELECT vehicle_id, latitude FROM VehicleLocation WHERE vehicle_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT longitude, latitude FROM VehicleLocation WHERE latitude > 40.0 ORDER BY timestamp DESC;",
+      "SELECT vehicle_id, latitude, longitude, timestamp FROM VehicleLocation WHERE timestamp > '2022-01-01' ORDER BY timestamp ASC;",
+      "SELECT vehicle_id, longitude FROM VehicleLocation WHERE longitude < -70.0;",
+      "SELECT * FROM VehicleLocation WHERE latitude < 0.0 ORDER BY timestamp DESC LIMIT 10",
+      "SELECT vehicle_id, latitude, longitude FROM VehicleLocation WHERE timestamp >= '2022-01-01' ORDER BY longitude ASC, latitude DESC",
+      "SELECT latitude, longitude, timestamp FROM VehicleLocation WHERE vehicle_id = '01234567-89ab-cdef-0123-456789abcdef' AND timestamp BETWEEN '2022-01-01' AND '2022-02-01' ORDER BY timestamp DESC",
+      "SELECT * FROM VehicleLocation WHERE latitude BETWEEN -90.0 AND -60.0 AND longitude BETWEEN -180.0 AND -120.0 ORDER BY latitude ASC, longitude DESC",
+      "SELECT DISTINCT vehicle_id FROM VehicleLocation WHERE latitude > 0.0 AND longitude < 0.0 ORDER BY vehicle_id ASC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM vehicle_locations;",
+      "SELECT vehicle_id, location, timestamp FROM vehicle_locations ORDER BY vehicle_id DESC;",
+      "SELECT vehicle_id, location FROM vehicle_locations WHERE timestamp > '2022-01-01';",
+      "SELECT vehicle_id, location, timestamp FROM vehicle_locations WHERE vehicle_id IN (1, 3, 5);",
+      "SELECT movement_id, vehicle_id, movement_type, start_location, end_location, start_timestamp, end_timestamp FROM vehicle_movements;",
+      "SELECT * FROM vehicle_locations WHERE vehicle_id = 1;",
+      "SELECT movement_id, vehicle_id, movement_type FROM vehicle_movements WHERE movement_type = 'arrival' ORDER BY end_timestamp DESC;",
+      "SELECT count(vehicle_id) AS total_vehicles, ROUND(AVG(ST_Y(location)), 2) AS avg_latitude FROM vehicle_locations GROUP BY vehicle_id HAVING count(vehicle_id) > 1;",
+      "SELECT v.vehicle_id, m.movement_type, ST_Distance(start_location, end_location) AS distance_traveled FROM vehicle_movements m INNER JOIN vehicle_locations v ON m.vehicle_id = v.vehicle_id WHERE distance_traveled > 10000 ORDER BY distance_traveled DESC;",
+      "SELECT DISTINCT vehicle_id, count(movement_id) AS total_movements FROM vehicle_movements GROUP BY vehicle_id HAVING total_movements < 5 ORDER BY total_movements ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM vehicles;",
+      "SELECT vehicle_name, location_id FROM vehicles ORDER BY vehicle_name DESC;",
+      "SELECT * FROM locations WHERE latitude > 10 AND longitude < 50;",
+      "SELECT vehicle_name, location_name FROM vehicles INNER JOIN locations ON vehicles.location_id = locations.location_id;",
+      "SELECT vehicle_name, last_update FROM vehicles WHERE last_update BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT * FROM vehicles WHERE location_id = 1 ORDER BY last_update DESC;",
+      "SELECT vehicle_name, location_name FROM vehicles JOIN locations ON vehicles.location_id = locations.location_id;",
+      "SELECT vehicle_name, movement_type FROM vehicles JOIN movements ON vehicles.vehicle_id = movements.vehicle_id WHERE movements.movement_timestamp > '2022-01-01';",
+      "SELECT COUNT(vehicle_id) AS total_vehicles FROM vehicles;",
+      "SELECT * FROM movements WHERE vehicle_id = 1 AND location_id = 2 ORDER BY movement_timestamp ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM vehicles;",
+      "SELECT vehicle_name, vehicle_type FROM vehicles WHERE vehicle_type = 'Car';",
+      "SELECT * FROM drivers ORDER BY driver_name DESC;",
+      "SELECT driver_name, driver_phone_number FROM drivers WHERE driver_phone_number LIKE '%123%';",
+      "SELECT route_name, start_location, end_location FROM routes WHERE distance_km > 50 ORDER BY distance_km ASC;",
+      "SELECT * FROM vehicles WHERE vehicle_type = 'Car' ORDER BY last_update_timestamp DESC LIMIT 10;",
+      "SELECT vehicle_name, last_known_location, last_update_timestamp FROM vehicles WHERE last_known_location LIKE '%City%' AND last_update_timestamp >= '2022-01-01' ORDER BY last_update_timestamp ASC;",
+      "SELECT d.driver_name, v.vehicle_name, r.route_name FROM drivers d JOIN vehicles v ON d.driver_id = v.vehicle_id JOIN routes r ON r.route_id = v.vehicle_id WHERE r.distance_km > 50;",
+      "SELECT COUNT(*) AS total_deliveries, d.driver_name FROM deliveries del JOIN drivers d ON del.driver_id = d.driver_id GROUP BY d.driver_name HAVING total_deliveries > 5 ORDER BY total_deliveries DESC;",
+      "SELECT v.vehicle_id, v.vehicle_name, r.route_name, d.driver_name, del.delivery_status FROM deliveries del JOIN vehicles v ON v.vehicle_id = del.vehicle_id JOIN drivers d ON d.driver_id = del.driver_id JOIN routes r ON r.route_id = del.route_id WHERE del.delivery_status = 'Delivered' ORDER BY r.route_name ASC, del.delivery_status DESC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM vehicles;",
+      "SELECT vehicle_id, vehicle_type, license_plate FROM vehicles WHERE vehicle_type = 'Sedan';",
+      "SELECT driver_id, first_name, last_name, phone_number, email FROM drivers ORDER BY last_name ASC;",
+      "SELECT route_id, start_location, end_location, distance_km, estimated_time_mins FROM routes WHERE distance_km > 100 ORDER BY distance_km DESC;",
+      "SELECT assignment_id, vehicle_id, driver_id, route_id, start_date, end_date FROM assignments WHERE start_date >= '2022-01-01' AND end_date <= '2022-02-28';",
+      "SELECT * FROM vehicles WHERE vehicle_type = 'Car';",
+      "SELECT vehicle_id, license_plate, current_location FROM vehicles ORDER BY vehicle_id DESC;",
+      "SELECT first_name, last_name, phone_number, email FROM drivers WHERE phone_number LIKE '%123%';",
+      "SELECT * FROM routes WHERE distance_km > 100 ORDER BY estimated_time_mins ASC;",
+      "SELECT v.vehicle_type, d.first_name, d.last_name, r.start_location, r.end_location FROM vehicles v JOIN assignments a ON v.vehicle_id = a.vehicle_id JOIN drivers d ON a.driver_id = d.driver_id JOIN routes r ON a.route_id = r.route_id WHERE a.start_date BETWEEN '2022-01-01' AND '2022-12-31';"
+    ]
+  }
+]

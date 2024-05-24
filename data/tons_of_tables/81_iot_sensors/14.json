@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_consumption_monitoring (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(50),\n    energy_usage DECIMAL,\n    cost_saving_initiative BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n    facility_id INT PRIMARY KEY,\n    energy_usage INT,\n    timestamp TIMESTAMP,\n    cost_saved FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FacilityDetails (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(255),\n    location VARCHAR(255),\n    manager_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facility_table (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(255),\n    location VARCHAR(255),\n    energy_consumption DECIMAL(10,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cost_saving_table (\n    saving_id INT PRIMARY KEY,\n    facility_id INT,\n    saving_amount DECIMAL(10,2),\n    saving_date DATE,\n    CONSTRAINT fk_facility FOREIGN KEY (facility_id) REFERENCES facility_table(facility_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption_table (\n    consumption_id INT PRIMARY KEY,\n    facility_id INT,\n    consumption_amount DECIMAL(10,2),\n    consumption_date DATE,\n    CONSTRAINT fk_facility_consumption FOREIGN KEY (facility_id) REFERENCES facility_table(facility_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_facilities (\n   facility_id INT PRIMARY KEY,\n   facility_name VARCHAR(100),\n   location VARCHAR(100),\n   total_energy_consumed DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_meters (\n   meter_id INT PRIMARY KEY,\n   facility_id INT,\n   meter_type VARCHAR(50),\n   installation_date DATE,\n   FOREIGN KEY (facility_id) REFERENCES manufacturing_facilities(facility_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_usage_records (\n   record_id INT PRIMARY KEY,\n   meter_id INT,\n   timestamp TIMESTAMP,\n   energy_consumed DECIMAL,\n   FOREIGN KEY (meter_id) REFERENCES energy_meters(meter_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cost_saving_initiatives (\n   initiative_id INT PRIMARY KEY,\n   initiative_name VARCHAR(100),\n   savings_amount DECIMAL,\n   initiative_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facility_locations (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_meters (\n    meter_id INT PRIMARY KEY,\n    facility_id INT NOT NULL,\n    meter_type VARCHAR(50) NOT NULL,\n    installation_date DATE NOT NULL,\n    PRIMARY KEY (meter_id, facility_id),\n    FOREIGN KEY (facility_id) REFERENCES facility_locations (facility_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_readings (\n    reading_id INT PRIMARY KEY,\n    meter_id INT NOT NULL,\n    reading_time TIMESTAMP NOT NULL,\n    energy_reading DECIMAL(10, 2) NOT NULL,\n    PRIMARY KEY (reading_id, meter_id),\n    FOREIGN KEY (meter_id) REFERENCES energy_meters (meter_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cost_saving_initiatives (\n    initiative_id INT PRIMARY KEY,\n    initiative_name VARCHAR(255) NOT NULL,\n    savings_estimate DECIMAL(10, 2) NOT NULL,\n    implementation_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE facility_energy_costs (\n    facility_id INT NOT NULL,\n    year INT NOT NULL,\n    total_cost DECIMAL(10, 2) NOT NULL,\n    PRIMARY KEY (facility_id, year),\n    FOREIGN KEY (facility_id) REFERENCES facility_locations (facility_id)\n);\n"
+      }
+    ]
+  }
+]

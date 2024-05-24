@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CourseSchedule (\n  course_id UUID PRIMARY KEY,\n  course_name VARCHAR(255) NOT NULL,\n  schedule_time TIMESTAMP NOT NULL,\n  instructor_id UUID NOT NULL,\n  instructor_name VARCHAR(255) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE course_schedule (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(255),\n    schedule_date DATE,\n    instructor_id INT\n);\n\nCREATE TABLE instructor_availability (\n    instructor_id INT PRIMARY KEY,\n    instructor_name VARCHAR(255),\n    available_days VARCHAR(50),\n    available_hours TIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CourseSchedule (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(50) NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE InstructorAvailability (\n    instructor_id INT PRIMARY KEY,\n    instructor_name VARCHAR(50) NOT NULL,\n    availability_start TIME NOT NULL,\n    availability_end TIME NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CourseInstructor (\n    course_id INT,\n    instructor_id INT,\n    FOREIGN KEY (course_id) REFERENCES CourseSchedule(course_id),\n    FOREIGN KEY (instructor_id) REFERENCES InstructorAvailability(instructor_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CourseSchedule (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Instructor (\n    instructor_id INT PRIMARY KEY,\n    instructor_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CourseInstructor (\n    course_id INT,\n    instructor_id INT,\n    FOREIGN KEY (course_id) REFERENCES CourseSchedule(course_id),\n    FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CourseRoom (\n    room_id INT PRIMARY KEY,\n    room_name VARCHAR(255),\n    capacity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Course (\n    course_id INT PRIMARY KEY,\n    course_name TEXT NOT NULL,\n    course_description TEXT,\n    course_credit INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Instructor (\n    instructor_id INT PRIMARY KEY,\n    instructor_name TEXT NOT NULL,\n    instructor_email TEXT UNIQUE,\n    instructor_phone TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Schedule (\n    schedule_id INT PRIMARY KEY,\n    course_id INT REFERENCES Course(course_id),\n    instructor_id INT REFERENCES Instructor(instructor_id),\n    schedule_date DATE,\n    schedule_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Room (\n    room_id INT PRIMARY KEY,\n    room_name TEXT NOT NULL,\n    room_capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CourseRoom (\n    course_id INT REFERENCES Course(course_id),\n    room_id INT REFERENCES Room(room_id),\n    schedule_id INT REFERENCES Schedule(schedule_id)\n);"
+      }
+    ]
+  }
+]

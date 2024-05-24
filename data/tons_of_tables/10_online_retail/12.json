@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_marketing_lists(\n    user_id INT PRIMARY KEY,\n    email_address VARCHAR(255),\n    behavior_track_1 VARCHAR(255),\n    behavior_track_2 VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserBehavior (\n  user_id INT,\n  email_address VARCHAR(255),\n  behavior_type VARCHAR(50),\n  behavior_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailMarketingLists (\n  list_id INT,\n  list_name VARCHAR(100),\n  created_by VARCHAR(50),\n  creation_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_behavior (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    behavior_type VARCHAR(50) NOT NULL,\n    behavior_date DATE\n);\n\nCREATE TABLE email_list (\n    list_id INT PRIMARY KEY,\n    list_name VARCHAR(100) NOT NULL,\n    segment_criteria VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE user_list_mapping (\n    map_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    list_id INT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES user_behavior(user_id),\n    FOREIGN KEY (list_id) REFERENCES email_list(list_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_behavior (id INT, user_id INT, email VARCHAR(255), behavior_type VARCHAR(50), timestamp TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_lists (list_id INT, list_name VARCHAR(100), segment_criteria VARCHAR(255), created_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_subscriptions (subscription_id INT, user_id INT, list_id INT, subscription_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_campaigns (campaign_id INT, name VARCHAR(100), list_id INT, start_date DATE, end_date DATE);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_demographics (\n  user_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_activity (\n  email_id INT PRIMARY KEY,\n  user_id INT REFERENCES user_demographics(user_id),\n  activity_type VARCHAR(20),\n  activity_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(100),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_behaviors (\n  behavior_id INT PRIMARY KEY,\n  user_id INT REFERENCES user_demographics(user_id),\n  behavior_type VARCHAR(50),\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE segment_lists (\n  segment_id INT PRIMARY KEY,\n  segment_name VARCHAR(100),\n  user_behavior_type VARCHAR(50) REFERENCES user_behaviors(behavior_type)\n);"
+      }
+    ]
+  }
+]

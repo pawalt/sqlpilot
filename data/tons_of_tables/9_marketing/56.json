@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_data (\n    customer_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(20),\n    address VARCHAR(255),\n    source_info VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_data (\n    customer_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15),\n    birthdate DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_data (\n    customer_id INT PRIMARY KEY,\n    segment VARCHAR(50),\n    campaign_id INT,\n    last_interaction_date TIMESTAMP,\n    total_purchases INT,\n    lifetime_value DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_sources (\n    customer_id INT PRIMARY KEY,\n    source_name VARCHAR(255),\n    source_type VARCHAR(255),\n    source_data JSONB\n);\n\nCREATE TABLE customer_demographics (\n    customer_id INT PRIMARY KEY,\n    first_name VARCHAR(255),\n    last_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20),\n    address VARCHAR(255),\n    city VARCHAR(100),\n    state VARCHAR(50),\n    country VARCHAR(50),\n    postal_code VARCHAR(20)\n);\n\nCREATE TABLE customer_activity (\n    customer_id INT PRIMARY KEY,\n    last_purchase_date DATE,\n    total_purchases INT,\n    total_spent DECIMAL(10, 2),\n    subscription_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    order_date DATE,\n    total_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(100),\n    price DECIMAL(10, 2),\n    category VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    order_id INT REFERENCES orders(order_id),\n    product_id INT REFERENCES products(product_id),\n    quantity INT,\n    transaction_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id UUID PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  phone_number VARCHAR(20),\n  address VARCHAR(100),\n  city VARCHAR(50),\n  state VARCHAR(50),\n  postal_code VARCHAR(15),\n  country VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n  order_id UUID PRIMARY KEY,\n  customer_id UUID REFERENCES customers(customer_id),\n  order_date TIMESTAMP NOT NULL,\n  total_amount DECIMAL(10, 2) NOT NULL,\n  status VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id UUID PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  description TEXT,\n  price DECIMAL(10, 2) NOT NULL,\n  category VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id UUID PRIMARY KEY,\n  order_id UUID REFERENCES orders(order_id),\n  product_id UUID REFERENCES products(product_id),\n  quantity INT NOT NULL,\n  transaction_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  interaction_id UUID PRIMARY KEY,\n  customer_id UUID REFERENCES customers(customer_id),\n  interaction_date TIMESTAMP NOT NULL,\n  type VARCHAR(50) NOT NULL,\n  description TEXT\n)"
+      }
+    ]
+  }
+]

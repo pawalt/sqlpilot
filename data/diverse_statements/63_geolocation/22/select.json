@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM notifications WHERE customer_id = 1;",
+      "SELECT message, created_at FROM notifications ORDER BY created_at DESC;",
+      "SELECT location FROM notifications WHERE special_offer_id = 3;",
+      "SELECT notification_id, message, customer_id FROM notifications ORDER BY notification_id ASC;",
+      "SELECT * FROM notifications WHERE created_at BETWEEN '2022-01-01' AND '2022-01-31';",
+      "SELECT notification_id, message, location, customer_id, special_offer_id, created_at FROM notifications WHERE customer_id = 1 ORDER BY created_at DESC;",
+      "SELECT * FROM notifications WHERE special_offer_id = 100 AND created_at > '2022-01-01' LIMIT 10;",
+      "SELECT customer_id, COUNT(notification_id) AS notification_count FROM notifications GROUP BY customer_id ORDER BY notification_count DESC;",
+      "SELECT message, ST_X(location) AS longitude, ST_Y(location) AS latitude FROM notifications WHERE ST_DistanceSphere(location, ST_GeomFromText('POINT(5.1234 6.5678)')) < 1000;",
+      "SELECT notification_id, message, customer_id, DATE_TRUNC('hour', created_at) AS hour_created FROM notifications WHERE DATE(created_at) = '2022-03-15' ORDER BY notification_id ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM locations;",
+      "SELECT location_id, latitude, longitude FROM locations ORDER BY location_id DESC;",
+      "SELECT customer_name, latitude, longitude FROM customers INNER JOIN locations ON customers.location_id = locations.location_id;",
+      "SELECT * FROM locations WHERE latitude > 40 AND longitude < -100;",
+      "SELECT COUNT(location_id) AS total_locations FROM locations;",
+      "SELECT * FROM customers JOIN locations ON customers.location_id = locations.location_id WHERE customers.customer_id = 1;",
+      "SELECT customer_name, latitude, longitude FROM customers JOIN locations ON customers.location_id = locations.location_id WHERE locations.latitude > 40;",
+      "SELECT customer_name FROM customers WHERE location_id IN (SELECT location_id FROM locations WHERE longitude < 0);",
+      "SELECT customer_name, latitude, longitude FROM customers JOIN locations ON customers.location_id = locations.location_id ORDER BY locations.longitude DESC;",
+      "SELECT DISTINCT customer_name, latitude FROM customers JOIN locations ON customers.location_id = locations.location_id LIMIT 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM customers;",
+      "SELECT customer_name, customer_location FROM customers WHERE customer_id = 1;",
+      "SELECT notification_text FROM notifications WHERE customer_id = 2 AND offer_id = 3;",
+      "SELECT * FROM customers WHERE customer_location IS NOT NULL;",
+      "SELECT customer_name FROM customers ORDER BY customer_name DESC;",
+      "SELECT * FROM customers WHERE customer_id = 1;",
+      "SELECT customer_name, customer_id FROM customers WHERE customer_location IS NOT NULL;",
+      "SELECT customer_name, offer_description FROM customers JOIN special_offers ON customers.customer_id = special_offers.offer_id;",
+      "SELECT customer_name, notification_text FROM customers JOIN notifications ON customers.customer_id = notifications.customer_id WHERE notification_id > 100;",
+      "SELECT customer_id, COUNT(offer_id) AS num_offers FROM notifications GROUP BY customer_id HAVING num_offers > 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM customers;",
+      "SELECT customer_name, customer_email FROM customers WHERE customer_location IS NOT NULL;",
+      "SELECT offer_name, offer_description, offer_expiry_date FROM offers WHERE offer_expiry_date > '2022-01-01';",
+      "SELECT location_name, location_latitude, location_longitude FROM locations ORDER BY location_name DESC;",
+      "SELECT notification_id, offer_id, customer_id, notification_timestamp FROM notifications WHERE notification_timestamp >= '2022-01-01 00:00:00';",
+      "SELECT * FROM customers;",
+      "SELECT customer_id, customer_name FROM customers ORDER BY customer_name DESC;",
+      "SELECT customer_id, customer_email FROM customers WHERE customer_location IS NOT NULL;",
+      "SELECT offer_name, offer_description FROM offers WHERE offer_expiry_date > '2022-01-01';",
+      "SELECT notification_id, notification_timestamp FROM notifications JOIN customers ON notifications.customer_id = customers.customer_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM customers;",
+      "SELECT customer_name, customer_location FROM customers WHERE customer_location='New York';",
+      "SELECT notification_text, notification_time FROM notifications ORDER BY notification_time DESC;",
+      "SELECT offer_description FROM special_offers WHERE offer_validity > '2022-01-01';",
+      "SELECT customer_id, notification_text FROM customer_notifications JOIN notifications ON customer_notifications.notification_id = notifications.notification_id WHERE customer_id = 1;",
+      "SELECT customer_id, customer_name, customer_location FROM customers;",
+      "SELECT * FROM special_offers WHERE offer_validity > '2022-01-01';",
+      "SELECT location_name, location_coordinates FROM locations ORDER BY location_id DESC;",
+      "SELECT customer_name, notification_text, notification_time FROM customers c JOIN customer_notifications cn ON c.customer_id = cn.customer_id JOIN notifications n ON cn.notification_id = n.notification_id;",
+      "SELECT c.customer_name, n.notification_text, l.location_name FROM customers c, notifications n, locations l JOIN customer_notifications cn ON c.customer_id = cn.customer_id AND n.notification_id = cn.notification_id AND l.location_id = c.customer_id;"
+    ]
+  }
+]

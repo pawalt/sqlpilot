@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups_and_disaster_recovery (\n  backup_id INT PRIMARY KEY,\n  backup_name VARCHAR(255) NOT NULL,\n  backup_timestamp TIMESTAMP NOT NULL,\n  backup_location VARCHAR(255) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BackupSettings (\n    backup_id UUID PRIMARY KEY,\n    backup_type VARCHAR(50),\n    storage_location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecoveryStrategies (\n    strategy_id UUID PRIMARY KEY,\n    strategy_name VARCHAR(50),\n    strategy_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n    backup_id INT PRIMARY KEY,\n    backup_name VARCHAR(255),\n    backup_location VARCHAR(255),\n    backup_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recovery_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    strategy_description TEXT,\n    strategy_owner VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_protection (\n    protection_id INT PRIMARY KEY,\n    data_type VARCHAR(255),\n    protection_level VARCHAR(255),\n    backup_frequency VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name STRING,\n    backup_frequency STRING,\n    retention_period INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id INT PRIMARY KEY,\n    policy_id INT REFERENCES backup_policies (policy_id),\n    backup_status STRING,\n    backup_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE restore_points (\n    point_id INT PRIMARY KEY,\n    log_id INT REFERENCES backup_logs (log_id),\n    restore_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE disaster_recovery_plans (\n    plan_id INT PRIMARY KEY,\n    plan_name STRING,\n    recovery_strategy STRING,\n    contact_details STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BackupStrategies (\n  id INT PRIMARY KEY,\n  strategy_name VARCHAR(50),\n  backup_frequency VARCHAR(20),\n  retention_policy VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DisasterRecovery (\n  id INT PRIMARY KEY,\n  recovery_plan_name VARCHAR(50),\n  failover_procedures TEXT,\n  data_replication_strategy VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BackupRuns (\n  id INT PRIMARY KEY,\n  backup_strategy_id INT,\n  timestamp TIMESTAMP,\n  success BOOLEAN,\n  FOREIGN KEY (backup_strategy_id) REFERENCES BackupStrategies(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RecoveryRuns (\n  id INT PRIMARY KEY,\n  recovery_plan_id INT,\n  timestamp TIMESTAMP,\n  success BOOLEAN,\n  FOREIGN KEY (recovery_plan_id) REFERENCES DisasterRecovery(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BackupLogs (\n  id INT PRIMARY KEY,\n  backup_run_id INT,\n  logs TEXT,\n  FOREIGN KEY (backup_run_id) REFERENCES BackupRuns(id)\n)"
+      }
+    ]
+  }
+]

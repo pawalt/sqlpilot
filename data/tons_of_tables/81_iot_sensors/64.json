@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE noise_levels (\n\tsensor_id INT,\n\tlocation VARCHAR(255),\n\tnoise_level FLOAT,\n\ttimestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UrbanAreas (\n    id INT PRIMARY KEY,\n    area_name VARCHAR(255),\n    sensor_id INT,\n    noise_level DECIMAL\n);\n\nCREATE TABLE Sensors (\n    id INT PRIMARY KEY,\n    sensor_name VARCHAR(255),\n    location VARCHAR(255),\n    installation_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE noise_level_sensors (\n    sensor_id UUID PRIMARY KEY,\n    location VARCHAR(255),\n    sensor_type VARCHAR(50),\n    noise_level DECIMAL(5,2),\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_readings (\n    reading_id UUID PRIMARY KEY,\n    sensor_id UUID REFERENCES noise_level_sensors(sensor_id),\n    noise_level DECIMAL(5,2),\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_metadata (\n    sensor_id UUID PRIMARY KEY,\n    installation_date DATE,\n    last_calibration_date DATE,\n    status VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UrbanAreas (\n  area_id INT PRIMARY KEY,\n  area_name VARCHAR(50) NOT NULL,\n  sensor_count INT,\n  monitoring_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Sensors (\n  sensor_id INT PRIMARY KEY,\n  area_id INT,\n  sensor_type VARCHAR(50) NOT NULL,\n  installation_date DATE,\n  location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE NoiseLevels (\n  reading_id INT PRIMARY KEY,\n  sensor_id INT,\n  noise_level DECIMAL(5,2),\n  timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MonitoringStatus (\n  status_id INT PRIMARY KEY,\n  area_id INT,\n  status_description TEXT,\n  last_update TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE noise_sensor (\n  id INT PRIMARY KEY,\n  sensor_name VARCHAR(50),\n  location VARCHAR(100),\n  noise_level DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n  data_id INT PRIMARY KEY,\n  sensor_id INT,\n  noise_level DECIMAL,\n  timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_location (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_status (\n  sensor_id INT PRIMARY KEY,\n  status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_history (\n  history_id INT PRIMARY KEY,\n  sensor_id INT,\n  event_type VARCHAR(50),\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  }
+]

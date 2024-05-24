@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE breach_notification (\n    breach_id SERIAL PRIMARY KEY,\n    breach_date TIMESTAMP,\n    notified BOOLEAN,\n    business_name TEXT,\n    affected_records INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE breach_notification (\n    breach_id INT PRIMARY KEY,\n    breach_date DATE,\n    breached_data TEXT,\n    notification_date DATE,\n    notification_method TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_report (\n    report_id INT PRIMARY KEY,\n    breach_id INT REFERENCES breach_notification(breach_id),\n    reporter_name TEXT,\n    report_date DATE,\n    report_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_breaches (\n  id INT PRIMARY KEY,\n  breach_type VARCHAR(255),\n  description TEXT,\n  date_occurred DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_notifications (\n  id INT PRIMARY KEY,\n  breach_id INT FOREIGN KEY REFERENCES data_breaches(id),\n  notification_sent BOOLEAN,\n  date_sent TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_audit_log (\n  id INT PRIMARY KEY,\n  breach_id INT FOREIGN KEY REFERENCES data_breaches(id),\n  action_taken TEXT,\n  date_logged TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_breaches (\n  id SERIAL PRIMARY KEY,\n  breach_name TEXT NOT NULL,\n  breach_date DATE,\n  notification_sent BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE breached_accounts (\n  id SERIAL PRIMARY KEY,\n  account_id INT UNIQUE,\n  breach_id INT,\n  breach_date DATE,\n  notification_sent BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE breached_users (\n  id SERIAL PRIMARY KEY,\n  user_id INT UNIQUE,\n  breach_id INT,\n  notification_sent BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_notifications (\n  id SERIAL PRIMARY KEY,\n  notification_id INT UNIQUE,\n  notification_date DATE,\n  notification_message TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BreachNotification (\n    breach_id INT,\n    entity_name VARCHAR(50),\n    breach_date DATE,\n    notified_date DATE,\n    breach_type VARCHAR(20),\n    breach_description TEXT,\n    PRIMARY KEY (breach_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BreachedEntity (\n    entity_id INT,\n    entity_name VARCHAR(50),\n    entity_type VARCHAR(20),\n    entity_location VARCHAR(100),\n    PRIMARY KEY (entity_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NotificationContacts (\n    contact_id INT,\n    contact_name VARCHAR(50),\n    contact_email VARCHAR(50),\n    contact_phone VARCHAR(15),\n    PRIMARY KEY (contact_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BreachResponse (\n    response_id INT,\n    breach_id INT,\n    response_type VARCHAR(20),\n    response_details TEXT,\n    PRIMARY KEY (response_id),\n    FOREIGN KEY (breach_id) REFERENCES BreachNotification(breach_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BreachEvidence (\n    evidence_id INT,\n    breach_id INT,\n    evidence_type VARCHAR(20),\n    evidence_details TEXT,\n    PRIMARY KEY (evidence_id),\n    FOREIGN KEY (breach_id) REFERENCES BreachNotification(breach_id)\n);"
+      }
+    ]
+  }
+]

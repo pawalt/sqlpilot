@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_topology (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    ip_address VARCHAR(15),\n    mac_address VARCHAR(17),\n    port_number INT,\n    connected_devices JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_topology (\n    id SERIAL PRIMARY KEY,\n    device_name TEXT NOT NULL,\n    ip_address INET NOT NULL,\n    mac_address MACADDR NOT NULL,\n    latency_ms INT\n);\n\nCREATE TABLE device_inventory (\n    id SERIAL PRIMARY KEY,\n    device_name TEXT NOT NULL,\n    model TEXT,\n    vendor TEXT,\n    version TEXT,\n    status TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_topology (\n    id INT PRIMARY KEY,\n    device_name VARCHAR,\n    device_type VARCHAR,\n    device_ip VARCHAR,\n    device_status VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_inventory (\n    id INT PRIMARY KEY,\n    device_name VARCHAR,\n    device_type VARCHAR,\n    manufacturer VARCHAR,\n    purchase_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_mapping (\n    id INT PRIMARY KEY,\n    device_id INT,\n    connection_type VARCHAR,\n    connection_speed INT,\n    FOREIGN KEY (device_id) REFERENCES device_inventory(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_topology (\n  node_id INT PRIMARY KEY,\n  node_name TEXT,\n  node_type TEXT,\n  connection_type TEXT,\n  connection_speed INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_inventory (\n  device_id INT PRIMARY KEY,\n  device_name TEXT,\n  device_type TEXT,\n  location TEXT,\n  purchase_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE connections (\n  connection_id INT PRIMARY KEY,\n  source_node_id INT,\n  destination_node_id INT,\n  latency INT,\n  bandwidth INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_mapping (\n  mapping_id INT PRIMARY KEY,\n  device_id INT,\n  node_id INT,\n  connection_id INT,\n  description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkDevices (\n  device_id UUID PRIMARY KEY,\n  device_name VARCHAR(255) NOT NULL,\n  device_type VARCHAR(50) NOT NULL,\n  ip_address INET,\n  mac_address MACADDR,\n  location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkConnections (\n  connection_id SERIAL PRIMARY KEY,\n  device_id UUID REFERENCES NetworkDevices(device_id),\n  connected_device_id UUID REFERENCES NetworkDevices(device_id),\n  port_number INT,\n  connection_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkTopology (\n  topology_id SERIAL PRIMARY KEY,\n  device_id UUID REFERENCES NetworkDevices(device_id),\n  connected_device_id UUID REFERENCES NetworkDevices(device_id),\n  connection_id INT REFERENCES NetworkConnections(connection_id),\n  link_speed INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceInventory (\n  inventory_id SERIAL PRIMARY KEY,\n  device_id UUID REFERENCES NetworkDevices(device_id),\n  manufacturer VARCHAR(255),\n  model VARCHAR(255),\n  serial_number VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LocationMetadata (\n  location_id SERIAL PRIMARY KEY,\n  location_name VARCHAR(255) UNIQUE NOT NULL,\n  location_description TEXT\n);"
+      }
+    ]
+  }
+]

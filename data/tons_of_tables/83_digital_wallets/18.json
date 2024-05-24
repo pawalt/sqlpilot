@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE verification_tokens ( \n    user_id INT, \n    token_id INT, \n    token_value VARCHAR(255), \n    generated_at TIMESTAMP, \n    expiry_at TIMESTAMP, \n    PRIMARY KEY (user_id, token_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE verification_tokens (\n    token_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    token_code TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_devices (\n    device_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES verification_tokens(user_id),\n    device_name TEXT NOT NULL,\n    device_type TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_tokens (\n    token_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    token VARCHAR(100) NOT NULL,\n    expiration_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    attempt_time TIMESTAMP NOT NULL,\n    success BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE verification_tokens (\n  id UUID PRIMARY KEY,\n  user_id UUID NOT NULL,\n  token VARCHAR(100) NOT NULL,\n  expiration_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  id UUID PRIMARY KEY,\n  username VARCHAR(100) UNIQUE NOT NULL,\n  password_hash VARCHAR(100) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n  id UUID PRIMARY KEY,\n  user_id UUID NOT NULL,\n  session_token VARCHAR(100) NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n  id UUID PRIMARY KEY,\n  user_id UUID NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  success BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_tokens (\n    token_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id) NOT NULL,\n    token VARCHAR(50) NOT NULL,\n    expiration_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_questions (\n    question_id INT PRIMARY KEY,\n    question_text TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_security_answers (\n    answer_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id) NOT NULL,\n    question_id INT REFERENCES security_questions(question_id) NOT NULL,\n    answer_text TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id) NOT NULL,\n    attempt_timestamp TIMESTAMP NOT NULL,\n    success BOOLEAN NOT NULL\n);"
+      }
+    ]
+  }
+]

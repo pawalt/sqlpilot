@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_usage (\n    user_id INT PRIMARY KEY,\n    quantum_resource_id INT,\n    usage_timestamp TIMESTAMP,\n    usage_data JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumNodes (\n    node_id INT PRIMARY KEY,\n    node_name VARCHAR(255),\n    location VARCHAR(255),\n    quantum_capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumTasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    node_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    FOREIGN KEY (node_id) REFERENCES QuantumNodes(node_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Quantum_Network_Resources (\n    resource_id INT,\n    resource_name VARCHAR(255),\n    network_location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Quantum_Users (\n    user_id INT,\n    user_name VARCHAR(255),\n    user_email VARCHAR(255),\n    user_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Quantum_Usage_Logs (\n    log_id INT,\n    resource_id INT,\n    user_id INT,\n    usage_type VARCHAR(50),\n    usage_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Quantum_Resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    network_id INT NOT NULL,\n    usage_status VARCHAR(50) DEFAULT 'Active'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Quantum_Networks (\n    network_id INT PRIMARY KEY,\n    network_name VARCHAR(255) NOT NULL,\n    administrator_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Quantum_Users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(255) NOT NULL,\n    email_address VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Quantum_Usage_Log (\n    log_id INT PRIMARY KEY,\n    resource_id INT NOT NULL,\n    user_id INT NOT NULL,\n    start_time DATETIME NOT NULL,\n    end_time DATETIME NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_resources (\n    resource_id UUID PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    network_location VARCHAR(100) NOT NULL,\n    is_available BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_users (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_usage (\n    usage_id UUID PRIMARY KEY,\n    resource_id UUID REFERENCES quantum_resources(resource_id),\n    user_id UUID REFERENCES quantum_users(user_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_networks (\n    network_id UUID PRIMARY KEY,\n    network_name VARCHAR(255) NOT NULL,\n    connection_type VARCHAR(50),\n    network_admin UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_logs (\n    log_id UUID PRIMARY KEY,\n    log_description TEXT,\n    log_timestamp TIMESTAMP,\n    user_id UUID REFERENCES quantum_users(user_id)\n);"
+      }
+    ]
+  }
+]

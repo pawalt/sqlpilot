@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_services (\n    service_id UUID PRIMARY KEY,\n    service_date DATE,\n    waste_type TEXT,\n    quantity INTEGER,\n    pickup_location TEXT,\n    disposal_location TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_pickup (\n    id INT PRIMARY KEY,\n    pickup_date DATE,\n    pickup_location VARCHAR(255),\n    pickup_status VARCHAR(50)\n);\n\nCREATE TABLE waste_disposal (\n    id INT PRIMARY KEY,\n    disposal_date DATE,\n    disposal_location VARCHAR(255),\n    disposal_method VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_pickup_services (\n    service_id INT PRIMARY KEY,\n    service_date DATE,\n    waste_type VARCHAR(50),\n    pickup_location VARCHAR(100),\n    disposal_location VARCHAR(100),\n    scheduled_by_user_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(100),\n    location VARCHAR(100),\n    capacity_in_tons INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE pickup_schedule (\n    schedule_id INT PRIMARY KEY,\n    service_id INT,\n    scheduled_date TIMESTAMP,\n    pickup_completed BOOL,\n    disposal_completed BOOL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE schedules (\n    id INT PRIMARY KEY,\n    pickup_date DATE,\n    pickup_time TIME,\n    address VARCHAR(255),\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_types (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pickups (\n    id INT PRIMARY KEY,\n    schedule_id INT,\n    waste_type_id INT,\n    quantity DECIMAL,\n    status VARCHAR(50),\n    FOREIGN KEY (schedule_id) REFERENCES schedules(id),\n    FOREIGN KEY (waste_type_id) REFERENCES waste_types(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE disposal_sites (\n    id INT PRIMARY KEY,\n    name VARCHAR(100),\n    address VARCHAR(255),\n    capacity DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_services (\n\tservice_id INT PRIMARY KEY,\n\tcustomer_id INT,\n\tservice_date DATE,\n\twaste_type VARCHAR(50),\n\tstatus VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n\tcustomer_id INT PRIMARY KEY,\n\tcustomer_name VARCHAR(100),\n\tcontact_email VARCHAR(100),\n\tphone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_sites (\n\tsite_id INT PRIMARY KEY,\n\tsite_name VARCHAR(100),\n\tlocation VARCHAR(100),\n\tcapacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE service_providers (\n\tprovider_id INT PRIMARY KEY,\n\tprovider_name VARCHAR(100),\n\tspecialization VARCHAR(100),\n\tcontact_email VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE service_logs (\n\tlog_id INT PRIMARY KEY,\n\tservice_id INT,\n\tprovider_id INT,\n\tsite_id INT,\n\ttimestamp TIMESTAMP,\n\tlog_details TEXT\n);\n"
+      }
+    ]
+  }
+]

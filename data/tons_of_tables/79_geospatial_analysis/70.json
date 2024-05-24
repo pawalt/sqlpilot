@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n    image_id INT PRIMARY KEY,\n    satellite_name VARCHAR(100),\n    image_date DATE,\n    image_data BYTEA,\n    deforestation_area DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n    image_id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    image_date DATE,\n    satellite_name VARCHAR(50),\n    deforestation_area DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeforestationHistory (\n    record_id INT PRIMARY KEY,\n    image_id INT,\n    deforestation_date DATE,\n    deforestation_percentage DECIMAL,\n    FOREIGN KEY (image_id) REFERENCES SatelliteImages(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n  satellite_id INT PRIMARY KEY,\n  satellite_name VARCHAR(255),\n  launch_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE images (\n  image_id INT PRIMARY KEY,\n  satellite_id INT,\n  image_date DATE,\n  image_url VARCHAR(255),\n  FOREIGN KEY (satellite_id) REFERENCES satellites(satellite_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deforestation_changes (\n  change_id INT PRIMARY KEY,\n  image_id INT,\n  change_date DATE,\n  change_description TEXT,\n  FOREIGN KEY (image_id) REFERENCES images(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    image_id UUID PRIMARY KEY,\n    image_name VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    location GEOMETRY NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deforestation_changes (\n    change_id UUID PRIMARY KEY,\n    image_id UUID NOT NULL,\n    change_type VARCHAR(50) NOT NULL,\n    area_effected FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_metadata (\n    image_id UUID PRIMARY KEY,\n    satellite_name VARCHAR(100) NOT NULL,\n    resolution INT NOT NULL,\n    sensor_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_tracks (\n    track_id UUID PRIMARY KEY,\n    image_id UUID NOT NULL,\n    track_data JSONB NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n  id INT PRIMARY KEY,\n  image_name VARCHAR(255),\n  image_data BYTEA,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeforestationAreas (\n  id INT PRIMARY KEY,\n  area_name VARCHAR(255),\n  area_data GEOMETRY,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SatelliteImageTags (\n  id INT PRIMARY KEY,\n  tag_name VARCHAR(255),\n  image_id INT,\n  FOREIGN KEY (image_id) REFERENCES SatelliteImages(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ChangeLogs (\n  id INT PRIMARY KEY,\n  change_details TEXT,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeforestationStatistics (\n  id INT PRIMARY KEY,\n  area_id INT,\n  deforestation_type VARCHAR(50),\n  change_log_id INT,\n  FOREIGN KEY (area_id) REFERENCES DeforestationAreas(id),\n  FOREIGN KEY (change_log_id) REFERENCES ChangeLogs(id)\n);\n"
+      }
+    ]
+  }
+]

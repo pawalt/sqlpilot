@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE literature_review_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(50) NOT NULL,\n    project_status VARCHAR(20) DEFAULT 'In Progress',\n    project_deadline DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project (\n  project_id SERIAL PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  project_description TEXT,\n  start_date DATE,\n  end_date DATE\n);\n\nCREATE TABLE document (\n  document_id SERIAL PRIMARY KEY,\n  project_id INT,\n  document_name VARCHAR(255) NOT NULL,\n  author VARCHAR(100),\n  publication_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_progress (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(50) NOT NULL,\n    project_status VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE literature_reviews (\n    review_id INT PRIMARY KEY,\n    project_id INT NOT NULL,\n    review_title VARCHAR(100) NOT NULL,\n    reviewer_name VARCHAR(50) NOT NULL,\n    review_status VARCHAR(20) NOT NULL,\n    review_date DATE NOT NULL,\n    FOREIGN KEY (project_id) REFERENCES project_progress(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE review_comments (\n    comment_id INT PRIMARY KEY,\n    review_id INT NOT NULL,\n    commenter_name VARCHAR(50) NOT NULL,\n    comment_text TEXT NOT NULL,\n    comment_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (review_id) REFERENCES literature_reviews(review_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project(\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(50) NOT NULL,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE paper(\n  paper_id INT PRIMARY KEY,\n  paper_title VARCHAR(100) NOT NULL,\n  authors VARCHAR(100),\n  publication_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE review(\n  review_id INT PRIMARY KEY,\n  reviewer_name VARCHAR(50) NOT NULL,\n  review_date DATE,\n  comments TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_paper(\n  project_id INT REFERENCES project(project_id),\n  paper_id INT REFERENCES paper(paper_id),\n  PRIMARY KEY (project_id, paper_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project (\n  project_id SERIAL PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  project_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reviewer (\n  reviewer_id SERIAL PRIMARY KEY,\n  reviewer_name VARCHAR(255) NOT NULL,\n  reviewer_email VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE review (\n  review_id SERIAL PRIMARY KEY,\n  project_id INT REFERENCES project(project_id),\n  reviewer_id INT REFERENCES reviewer(reviewer_id),\n  submission_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manuscript (\n  manuscript_id SERIAL PRIMARY KEY,\n  project_id INT REFERENCES project(project_id),\n  manuscript_title VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n  feedback_id SERIAL PRIMARY KEY,\n  review_id INT REFERENCES review(review_id),\n  feedback_text TEXT,\n  feedback_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotNavigationData (\n    id SERIAL PRIMARY KEY,\n    robot_id INT,\n    sector_id INT,\n    navigation_timestamp TIMESTAMP,\n    coordinates JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotStates (\n    robot_id UUID PRIMARY KEY,\n    location VARCHAR(100),\n    battery_level DECIMAL,\n    status VARCHAR(50)\n);\nCREATE TABLE RobotLogs (\n    log_id SERIAL PRIMARY KEY,\n    robot_id UUID,\n    timestamp TIMESTAMP,\n    event_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Robot (\n  robot_id INT PRIMARY KEY,\n  robot_name VARCHAR(50) NOT NULL,\n  battery_level DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Waypoint (\n  waypoint_id INT PRIMARY KEY,\n  waypoint_name VARCHAR(50) NOT NULL,\n  location_x DECIMAL,\n  location_y DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Navigation (\n  navigation_id INT PRIMARY KEY,\n  robot_id INT,\n  waypoint_id INT,\n  distance DECIMAL,\n  FOREIGN KEY (robot_id) REFERENCES Robot(robot_id),\n  FOREIGN KEY (waypoint_id) REFERENCES Waypoint(waypoint_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Robot (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  model VARCHAR(50),\n  battery_capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sensor (\n  id INT PRIMARY KEY,\n  type VARCHAR(50),\n  range INT,\n  accuracy FLOAT,\n  robot_id INT,\n  FOREIGN KEY (robot_id) REFERENCES Robot(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Navigation (\n  id INT PRIMARY KEY,\n  target_location VARCHAR(100),\n  distance INT,\n  robot_id INT,\n  FOREIGN KEY (robot_id) REFERENCES Robot(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Log (\n  id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  message TEXT,\n  robot_id INT,\n  FOREIGN KEY (robot_id) REFERENCES Robot(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Robot (id INT PRIMARY KEY,\nname VARCHAR(255) NOT NULL,\nmodel VARCHAR(255) NOT NULL,\nmanufacture_date DATE);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NavigationData (id INT PRIMARY KEY,\nrobot_id INT NOT NULL,\nlocation VARCHAR(255) NOT NULL,\ntimestamp TIMESTAMP);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorData (id INT PRIMARY KEY,\nrobot_id INT NOT NULL,\nsensor_type VARCHAR(255) NOT NULL,\nvalue FLOAT NOT NULL,\ntimestamp TIMESTAMP);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CommandLog (id INT PRIMARY KEY,\nrobot_id INT NOT NULL,\ncommand_type VARCHAR(255) NOT NULL,\nissued_by VARCHAR(255) NOT NULL,\ntimestamp TIMESTAMP);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BatteryStatus (id INT PRIMARY KEY,\nrobot_id INT NOT NULL,\ncharge_level FLOAT NOT NULL,\ntime_stamp TIMESTAMP);\n"
+      }
+    ]
+  }
+]

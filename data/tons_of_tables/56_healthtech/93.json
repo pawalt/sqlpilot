@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_consent_forms (\n    form_id INT PRIMARY KEY,\n    patient_id INT NOT NULL,\n    consent_date DATE,\n    consent_given BOOLEAN,\n    patient_signature BLOB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_consent_forms (\n    id INT PRIMARY KEY,\n    patient_id INT,\n    consent_text TEXT,\n    date_signed TIMESTAMP\n);\n\nCREATE TABLE documentation (\n    doc_id INT PRIMARY KEY,\n    patient_id INT,\n    doc_type TEXT,\n    doc_content TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_consent_forms (\n    patient_id INT PRIMARY KEY,\n    form_name VARCHAR(255),\n    consent_date DATE,\n    signed BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE documentation_records (\n    record_id INT PRIMARY KEY,\n    patient_id INT,\n    record_type VARCHAR(255),\n    created_date TIMESTAMP,\n    document TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulations_compliance (\n    rule_id INT PRIMARY KEY,\n    rule_name VARCHAR(255),\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id SERIAL PRIMARY KEY,\n    patient_name VARCHAR(50) NOT NULL,\n    date_of_birth DATE,\n    contact_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ConsentForms (\n    consent_id SERIAL PRIMARY KEY,\n    patient_id INT REFERENCES Patients(patient_id),\n    consent_date DATE,\n    consent_given BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Documentations (\n    document_id SERIAL PRIMARY KEY,\n    document_name VARCHAR(100) NOT NULL,\n    document_type VARCHAR(50),\n    document_size INT,\n    uploaded_by VARCHAR(50),\n    uploaded_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Regulations (\n    regulation_id SERIAL PRIMARY KEY,\n    regulation_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    regulation_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(50),\n    date_of_birth DATE,\n    consent_given BOOL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ConsentForm (\n    form_id INT PRIMARY KEY,\n    patient_id INT,\n    form_date DATE,\n    form_details TEXT,\n    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Documentation (\n    doc_id INT PRIMARY KEY,\n    form_id INT,\n    doc_type VARCHAR(20),\n    doc_content TEXT,\n    FOREIGN KEY (form_id) REFERENCES ConsentForm(form_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance (\n    compliance_id INT PRIMARY KEY,\n    doc_id INT,\n    compliance_status VARCHAR(20),\n    compliance_date DATE,\n    FOREIGN KEY (doc_id) REFERENCES Documentation(doc_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Regulations (\n    reg_id INT PRIMARY KEY,\n    reg_name VARCHAR(50),\n    reg_description TEXT\n);\n"
+      }
+    ]
+  }
+]

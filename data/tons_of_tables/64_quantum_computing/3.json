@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumErrorCorrectionResults (\n    id INT PRIMARY KEY,\n    algorithm_name TEXT,\n    error_correction_technique TEXT,\n    error_rate FLOAT,\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_error_correction_results (\n    result_id UUID PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    error_count INT,\n    correction_technique TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_error_correction_logs (\n    log_id UUID PRIMARY KEY,\n    result_id UUID REFERENCES quantum_error_correction_results(result_id),\n    log_timestamp TIMESTAMP,\n    log_details TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumErrors (\n  error_id INT PRIMARY KEY,\n  error_type VARCHAR(50),\n  error_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumCodes (\n  code_id INT PRIMARY KEY,\n  code_type VARCHAR(50),\n  code_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumResults (\n  result_id INT PRIMARY KEY,\n  error_id INT,\n  code_id INT,\n  result_data TEXT,\n  FOREIGN KEY (error_id) REFERENCES QuantumErrors(error_id),\n  FOREIGN KEY (code_id) REFERENCES QuantumCodes(code_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_error_correction (\n  error_id INT PRIMARY KEY,\n  description TEXT,\n  algorithm_used TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE error_types (\n  type_id INT PRIMARY KEY,\n  error_name TEXT,\n  probability FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qubits (\n  qubit_id INT PRIMARY KEY,\n  error_type INT,\n  foreign key (error_type) references error_types(type_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE error_logs (\n  log_id INT PRIMARY KEY,\n  error_id INT,\n  qubit_id INT,\n  timestamp TIMESTAMP,\n  foreign key (error_id) references quantum_error_correction(error_id),\n  foreign key (qubit_id) references qubits(qubit_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE error_correction_results (\n    result_id UUID PRIMARY KEY,\n    quantum_algorithm_id UUID,\n    error_correction_code TEXT,\n    number_of_qubits INT,\n    error_probability DOUBLE PRECISION\n);\n\nCREATE TABLE quantum_algorithms (\n    algorithm_id UUID PRIMARY KEY,\n    algorithm_name TEXT\n);\n\nCREATE TABLE error_correction_codes (\n    code_id UUID PRIMARY KEY,\n    code_name TEXT,\n    code_description TEXT\n);\n\nCREATE TABLE qubit_results (\n    result_id UUID,\n    qubit_id UUID,\n    error_detected BOOLEAN,\n    PRIMARY KEY (result_id, qubit_id)\n);\n\nCREATE TABLE qubits (\n    qubit_id UUID PRIMARY KEY,\n    qubit_state TEXT\n);"
+      }
+    ]
+  }
+]

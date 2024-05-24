@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance_checks (\n    trade_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    trader_id INT,\n    security VARCHAR(255),\n    compliance_check_result BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_activities (\n    trade_id SERIAL PRIMARY KEY,\n    trader_name VARCHAR(50) NOT NULL,\n    trade_date DATE,\n    trade_amount DECIMAL(10, 2) DEFAULT 0.00\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_checks (\n    check_id SERIAL PRIMARY KEY,\n    trade_id INTEGER REFERENCES trading_activities(trade_id),\n    is_compliant BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trades (\n    trade_id INT PRIMARY KEY,\n    trade_date DATE,\n    trade_type VARCHAR(50),\n    trade_quantity INT,\n    trade_price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traders (\n    trader_id INT PRIMARY KEY,\n    trader_name VARCHAR(100),\n    trader_city VARCHAR(50),\n    trader_country VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_checks (\n    check_id INT PRIMARY KEY,\n    trade_id INT,\n    check_description VARCHAR(200),\n    check_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_checks (\n    check_id INT PRIMARY KEY,\n    check_name VARCHAR(255) NOT NULL,\n    check_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_activities (\n    trade_id BIGINT PRIMARY KEY,\n    trade_type VARCHAR(50) NOT NULL,\n    trade_amount DECIMAL(10,2) NOT NULL,\n    trade_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_check_results (\n    result_id INT PRIMARY KEY,\n    check_id INT NOT NULL,\n    trade_id BIGINT NOT NULL,\n    result_status VARCHAR(20) NOT NULL,\n    result_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_check_logs (\n    log_id INT PRIMARY KEY,\n    check_id INT NOT NULL,\n    executed_by VARCHAR(100) NOT NULL,\n    execution_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_approval (\n    id SERIAL PRIMARY KEY,\n    approval_status VARCHAR(50) NOT NULL,\n    approval_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade (\n    trade_id SERIAL PRIMARY KEY,\n    trade_date DATE,\n    trade_amount NUMERIC(10, 2) NOT NULL,\n    counterparty VARCHAR(100) NOT NULL,\n    approval_id INT REFERENCES regulatory_approval(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_activity (\n    activity_id SERIAL PRIMARY KEY,\n    trade_id INT REFERENCES trade(trade_id),\n    activity_type VARCHAR(50) NOT NULL,\n    activity_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_check (\n    check_id SERIAL PRIMARY KEY,\n    trade_id INT REFERENCES trade(trade_id),\n    check_result VARCHAR(50) NOT NULL,\n    check_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_officer (\n    officer_id SERIAL PRIMARY KEY,\n    officer_name VARCHAR(100) NOT NULL,\n    officer_role VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

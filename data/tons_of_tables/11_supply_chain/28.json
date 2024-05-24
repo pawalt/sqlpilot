@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RFP_Responses (\n    response_id UUID PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    submission_date DATE,\n    response_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rfp_responses (\n    response_id SERIAL PRIMARY KEY,\n    supplier_name TEXT,\n    response_text TEXT,\n    submitted_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE procurement_analysis (\n    analysis_id SERIAL PRIMARY KEY,\n    response_id INT REFERENCES rfp_responses(response_id),\n    analysis_result TEXT,\n    analysis_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RFP_Responses (\n  response_id INT PRIMARY KEY,\n  supplier_name VARCHAR(255),\n  response_date DATE,\n  proposal_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Supplier_Information (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(255),\n  contact_person VARCHAR(255),\n  contact_email VARCHAR(255),\n  supplier_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Proposal_Analysis (\n  analysis_id INT PRIMARY KEY,\n  response_id INT,\n  supplier_id INT,\n  analysis_result TEXT,\n  analysis_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RFP_Responses (\n    response_id UUID PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    response_date DATE,\n    response_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Supplier_Information (\n    supplier_id UUID PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    contact_person VARCHAR(255),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Proposal_Review (\n    review_id UUID PRIMARY KEY,\n    response_id UUID,\n    reviewer_name VARCHAR(255),\n    review_date DATE,\n    approval_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Procurement_Statistics (\n    stat_id UUID PRIMARY KEY,\n    response_id UUID,\n    supplier_name VARCHAR(255),\n    overall_rating INT,\n    comments TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    contact_person VARCHAR(255),\n    address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RFPs (\n    rfp_id INT PRIMARY KEY,\n    rfp_name VARCHAR(255),\n    deadline DATE,\n    budget DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RFP_Responses (\n    response_id INT PRIMARY KEY,\n    rfp_id INT,\n    supplier_id INT,\n    response_text TEXT,\n    response_date DATE,\n    FOREIGN KEY (rfp_id) REFERENCES RFPs(rfp_id),\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Evaluation (\n    evaluation_id INT PRIMARY KEY,\n    response_id INT,\n    score INT,\n    comments TEXT,\n    FOREIGN KEY (response_id) REFERENCES RFP_Responses(response_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Analysis (\n    analysis_id INT PRIMARY KEY,\n    evaluation_id INT,\n    average_score DECIMAL(5, 2),\n    evaluation_date DATE,\n    FOREIGN KEY (evaluation_id) REFERENCES Evaluation(evaluation_id)\n);"
+      }
+    ]
+  }
+]

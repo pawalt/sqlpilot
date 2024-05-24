@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ConservationData (\n    id INT PRIMARY KEY,\n    species VARCHAR(50),\n    population INT,\n    region VARCHAR(50),\n    conservation_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE population_data (\n    id INT PRIMARY KEY,\n    species_name VARCHAR(255),\n    population_size INT,\n    conservation_status VARCHAR(50)\n);\n\nCREATE TABLE conservation_records (\n    record_id INT PRIMARY KEY,\n    observation_date DATE,\n    location VARCHAR(255),\n    conservation_success BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE conservation_agency (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(255) NOT NULL,\n    contact_info VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE species_population (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(255) NOT NULL,\n    population_size INT NOT NULL,\n    conservation_status VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE conservation_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    agency_id INT,\n    species_id INT,\n    FOREIGN KEY (agency_id) REFERENCES conservation_agency(agency_id),\n    FOREIGN KEY (species_id) REFERENCES species_population(species_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE population (\n    id SERIAL PRIMARY KEY,\n    species VARCHAR(50) NOT NULL,\n    population_count INT NOT NULL,\n    conservation_status VARCHAR(50) NOT NULL\n);\nCREATE TABLE location (\n    id SERIAL PRIMARY KEY,\n    region VARCHAR(50) NOT NULL,\n    latitude FLOAT NOT NULL,\n    longitude FLOAT NOT NULL\n);\nCREATE TABLE conservation_organization (\n    id SERIAL PRIMARY KEY,\n    org_name VARCHAR(100) NOT NULL,\n    location_id INT NOT NULL,\n    start_date DATE NOT NULL,\n    budget DECIMAL(12, 2) NOT NULL\n);\nCREATE TABLE observation (\n    id SERIAL PRIMARY KEY,\n    observation_date DATE NOT NULL,\n    location_id INT NOT NULL,\n    population_id INT NOT NULL,\n    observer_name VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50) NOT NULL,\n  habitat_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PopulationData (\n  population_id INT PRIMARY KEY,\n  species_id INT REFERENCES Species(species_id),\n  population_count INT NOT NULL,\n  observation_date DATE NOT NULL,\n  observer_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ConservationEfforts (\n  effort_id INT PRIMARY KEY,\n  species_id INT REFERENCES Species(species_id),\n  effort_type VARCHAR(50) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  success_rate FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researcher (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(50) NOT NULL,\n  researcher_email VARCHAR(50) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchData (\n  research_id INT PRIMARY KEY,\n  researcher_id INT REFERENCES Researcher(researcher_id),\n  species_id INT REFERENCES Species(species_id),\n  research_topic VARCHAR(100) NOT NULL,\n  publication_date DATE NOT NULL\n);\n"
+      }
+    ]
+  }
+]

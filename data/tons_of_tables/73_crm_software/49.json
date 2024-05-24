@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email_address VARCHAR(100),\n    encrypted_credit_card_info VARCHAR(200),\n    access_level VARCHAR(20) CHECK (access_level IN ('admin', 'user')), \n    last_login TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email_address VARCHAR(100) NOT NULL,\n    credit_card_number VARCHAR(16) ENCRYPTED,\n    encrypted_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    order_date DATE NOT NULL,\n    total_amount DECIMAL(10,2) NOT NULL,\n    CONSTRAINT order_customer_fk FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email_address VARCHAR(100) UNIQUE,\n    encrypted_address VARCHAR(150),\n    encrypted_credit_card VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) UNIQUE,\n    permissions TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backups (\n    backup_id INT PRIMARY KEY,\n    backup_date TIMESTAMP,\n    backup_location VARCHAR(100),\n    backup_size INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE,\n    phone_num VARCHAR(15),\n    address VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    customer_id INT,\n    data_description VARCHAR(100) NOT NULL,\n    data_type VARCHAR(50) NOT NULL,\n    data_value TEXT NOT NULL,\n    CONSTRAINT fk_customer_id FOREIGN KEY(customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    role VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE backups (\n    backup_id INT PRIMARY KEY,\n    backup_date TIMESTAMP NOT NULL,\n    backup_location VARCHAR(100) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(100) UNIQUE,\n    address TEXT,\n    phone_number VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    account_balance DECIMAL(10, 2),\n    account_type VARCHAR(20),\n    open_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    account_id INT REFERENCES accounts(account_id),\n    transaction_date TIMESTAMP,\n    amount DECIMAL(12, 2),\n    transaction_type VARCHAR(20),\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    timestamp TIMESTAMP,\n    action VARCHAR(50),\n    details TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE backups (\n    backup_id INT PRIMARY KEY,\n    backup_date DATE,\n    backup_type VARCHAR(20),\n    file_path TEXT\n)"
+      }
+    ]
+  }
+]

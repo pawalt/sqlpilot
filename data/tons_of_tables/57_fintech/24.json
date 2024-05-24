@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_filings (\n    filing_id INT PRIMARY KEY,\n    insurance_company_id INT,\n    filing_date DATE,\n    reporting_period VARCHAR(50),\n    filing_status VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_filings (\n   filing_id INT PRIMARY KEY,\n   company_name VARCHAR(255),\n   filing_date DATE,\n   filing_type VARCHAR(50),\n   status VARCHAR(20)\n);\n\nCREATE TABLE filing_documents (\n   document_id INT PRIMARY KEY,\n   filing_id INT,\n   document_name VARCHAR(255),\n   document_type VARCHAR(50),\n   document_link VARCHAR(255)\n   FOREIGN KEY (filing_id) REFERENCES regulatory_filings(filing_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_filings (\n  filing_id INT PRIMARY KEY,\n  company_name TEXT NOT NULL,\n  filing_date DATE,\n  filing_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE filing_documents (\n  document_id INT PRIMARY KEY,\n  filing_id INT REFERENCES regulatory_filings(filing_id),\n  document_name TEXT,\n  document_type TEXT,\n  document_url TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE filing_history (\n  history_id INT PRIMARY KEY,\n  filing_id INT REFERENCES regulatory_filings(filing_id),\n  status TEXT,\n  submission_date DATE,\n  reviewer TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_filings (\n    filing_id INT PRIMARY KEY,\n    company_name VARCHAR(255) NOT NULL,\n    filing_date DATE NOT NULL,\n    status VARCHAR(50) NOT NULL,\n    submitted_by VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE filing_documents (\n    document_id INT PRIMARY KEY,\n    filing_id INT NOT NULL,\n    document_name VARCHAR(255) NOT NULL,\n    document_type VARCHAR(50) NOT NULL,\n    document_link VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE filing_history (\n    filing_id INT NOT NULL,\n    action_date DATE NOT NULL,\n    action_description TEXT NOT NULL,\n    action_by VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    role VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InsuranceCompany (company_id INT PRIMARY KEY, company_name VARCHAR(255), company_type VARCHAR(50), state VARCHAR(50), license_number INT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RegulatoryFiling (filing_id INT PRIMARY KEY, company_id INT, filing_date DATE, filing_type VARCHAR(50), filing_status VARCHAR(50), FOREIGN KEY (company_id) REFERENCES InsuranceCompany(company_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FilingDocuments (document_id INT PRIMARY KEY, filing_id INT, document_name VARCHAR(255), document_type VARCHAR(50), document_url VARCHAR(255), FOREIGN KEY (filing_id) REFERENCES RegulatoryFiling(filing_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FilingHistory (history_id INT PRIMARY KEY, filing_id INT, filing_date DATE, filing_status VARCHAR(50), notes TEXT, FOREIGN KEY (filing_id) REFERENCES RegulatoryFiling(filing_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportingUsers (user_id INT PRIMARY KEY, user_name VARCHAR(100), email VARCHAR(255), role VARCHAR(50));\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ingredient_imports (\n  id INT PRIMARY KEY,\n  ingredient_name VARCHAR(50) NOT NULL,\n  quantity DECIMAL NOT NULL,\n  supplier_name VARCHAR(50) NOT NULL,\n  import_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS suppliers (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(255),\n  contact_person VARCHAR(255),\n  phone_number VARCHAR(20),\n  email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS ingredients (\n  ingredient_id INT PRIMARY KEY,\n  ingredient_name VARCHAR(255),\n  supplier_id INT REFERENCES suppliers(supplier_id),\n  unit_price DECIMAL(10, 2),\n  quantity INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Ingredients (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  category VARCHAR(50),\n  supplier_name VARCHAR(50),\n  quantity INT,\n  unit VARCHAR(10),\n  price DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  country VARCHAR(50),\n  contact_name VARCHAR(50),\n  phone_number VARCHAR(15),\n  email VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders (\n  order_id INT PRIMARY KEY,\n  ingredient_id INT,\n  supplier_id INT,\n  ordered_quantity INT,\n  order_date DATE,\n  delivery_date DATE,\n  status VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE specialty_ingredients (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    origin VARCHAR(100),\n    quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    ingredient_id INT,\n    supplier_id INT,\n    quantity INT,\n    order_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n    shipment_id INT PRIMARY KEY,\n    order_id INT,\n    supplier_id INT,\n    shipment_date DATE,\n    arrival_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ingredient_categories (\n    id SERIAL PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    id SERIAL PRIMARY KEY,\n    supplier_name VARCHAR(100) NOT NULL,\n    country VARCHAR(50) NOT NULL,\n    contact_email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ingredients (\n    id SERIAL PRIMARY KEY,\n    ingredient_name VARCHAR(100) NOT NULL,\n    category_id INT REFERENCES ingredient_categories (id),\n    supplier_id INT REFERENCES suppliers (id),\n    price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    id SERIAL PRIMARY KEY,\n    order_date DATE NOT NULL,\n    supplier_id INT REFERENCES suppliers (id),\n    total_price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE order_items (\n    order_id INT REFERENCES orders (id),\n    ingredient_id INT REFERENCES ingredients (id),\n    quantity INT NOT NULL\n);"
+      }
+    ]
+  }
+]

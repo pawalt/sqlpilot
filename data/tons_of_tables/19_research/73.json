@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researcher_data (\n  id INT PRIMARY KEY,\n  name VARCHAR,\n  age INT,\n  research_field VARCHAR,\n  data_value FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE outliers (\n  id INT PRIMARY KEY,\n  data_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investigations (\n  investigation_id INT PRIMARY KEY,\n  outlier_id INT,\n  reason TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Outliers (\n    id INT PRIMARY KEY,\n    data_value INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Investigations (\n    investigation_id INT PRIMARY KEY,\n    outlier_id INT,\n    researcher_id INT,\n    FOREIGN KEY (outlier_id) REFERENCES Outliers(id),\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researchers (\n researcher_id INT PRIMARY KEY,\n researcher_name VARCHAR,\n researcher_email VARCHAR\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE Datasets (\n dataset_id INT PRIMARY KEY,\n dataset_name VARCHAR,\n dataset_description TEXT\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE Outliers (\n outlier_id INT PRIMARY KEY,\n dataset_id INT,\n value FLOAT,\n outlier_type VARCHAR\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE Investigations (\n investigation_id INT PRIMARY KEY,\n outlier_id INT,\n researcher_id INT,\n investigation_result TEXT\n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id SERIAL PRIMARY KEY,\n    researcher_name VARCHAR(255) NOT NULL,\n    research_field VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Datasets (\n    dataset_id SERIAL PRIMARY KEY,\n    dataset_name VARCHAR(255) NOT NULL,\n    researcher_id INT,\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataPoints (\n    data_point_id SERIAL PRIMARY KEY,\n    dataset_id INT,\n    data_value FLOAT NOT NULL,\n    FOREIGN KEY (dataset_id) REFERENCES Datasets(dataset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Outliers (\n    outlier_id SERIAL PRIMARY KEY,\n    data_point_id INT,\n    outlier_reason TEXT,\n    FOREIGN KEY (data_point_id) REFERENCES DataPoints(data_point_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AnalysisLogs (\n    log_id SERIAL PRIMARY KEY,\n    researcher_id INT,\n    action_performed TEXT NOT NULL,\n    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n);"
+      }
+    ]
+  }
+]

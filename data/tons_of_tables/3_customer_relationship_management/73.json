@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_interactions (\n  interaction_id SERIAL PRIMARY KEY,\n  customer_id INT,\n  interaction_time TIMESTAMP,\n  interaction_type VARCHAR(50),\n  interaction_data JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_interactions (\n    user_id INT PRIMARY KEY,\n    page_visited VARCHAR(255),\n    interaction_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT PRIMARY KEY,\n    theme_preference VARCHAR(50),\n    language_preference VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    registration_date TIMESTAMP DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    customer_id INT,\n    interaction_type VARCHAR(50) NOT NULL,\n    interaction_date TIMESTAMP DEFAULT NOW(),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    preference_id INT PRIMARY KEY,\n    customer_id INT,\n    preference_name VARCHAR(50) NOT NULL,\n    preference_value VARCHAR(50) NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    user_id INT,\n    page_visited VARCHAR(100) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(100) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    stock_quantity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    user_id INT,\n    product_id INT,\n    quantity INT NOT NULL,\n    order_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_interaction (\n    customer_id INT PRIMARY KEY,\n    interaction_date DATE,\n    interaction_type VARCHAR,\n    interaction_details TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE page_views (\n    page_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customer_interaction(customer_id),\n    visit_timestamp TIMESTAMP,\n    page_url VARCHAR,\n    view_duration INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE purchases (\n    purchase_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customer_interaction(customer_id),\n    purchase_date DATE,\n    total_amount DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profile (\n    customer_id INT PRIMARY KEY,\n    full_name VARCHAR,\n    email VARCHAR,\n    phone_number VARCHAR,\n    address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    customer_id INT PRIMARY KEY,\n    theme_color VARCHAR,\n    language VARCHAR,\n    notifications_enabled BOOLEAN\n);\n"
+      }
+    ]
+  }
+]

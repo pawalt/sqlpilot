@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartHomeSchedule (\n  schedule_id SERIAL PRIMARY KEY,\n  device_id INT NOT NULL,\n  schedule_time TIMESTAMP NOT NULL,\n  action VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE schedules (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    time_start TIME,\n    time_end TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routines (\n    id INT PRIMARY KEY,\n    schedule_id INT,\n    action VARCHAR(50),\n    status BOOLEAN\n    FOREIGN KEY (schedule_id) REFERENCES schedules(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(50),\n  device_type VARCHAR(50),\n  room_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n  schedule_id INT PRIMARY KEY,\n  schedule_name VARCHAR(50),\n  device_id INT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE routines (\n  routine_id INT PRIMARY KEY,\n  routine_name VARCHAR(50),\n  day_of_week VARCHAR(10),\n  start_time TIME,\n  end_time TIME\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Room (\n room_id INT PRIMARY KEY,\n room_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Device (\n device_id INT PRIMARY KEY,\n device_name VARCHAR(50) NOT NULL,\n room_id INT,\n FOREIGN KEY (room_id) REFERENCES Room(room_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Schedule (\n schedule_id INT PRIMARY KEY,\n device_id INT,\n scheduled_time TIMESTAMP NOT NULL,\n FOREIGN KEY (device_id) REFERENCES Device(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Routine (\n routine_id INT PRIMARY KEY,\n routine_name VARCHAR(50) NOT NULL,\n schedule_id INT,\n FOREIGN KEY (schedule_id) REFERENCES Schedule(schedule_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id INT PRIMARY KEY,\n    schedule_name VARCHAR(255),\n    schedule_time TIME,\n    device_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE routines (\n    routine_id INT PRIMARY KEY,\n    routine_name VARCHAR(255),\n    activation_time TIME,\n    device_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE triggers (\n    trigger_id INT PRIMARY KEY,\n    trigger_name VARCHAR(255),\n    trigger_condition VARCHAR(255),\n    device_id INT,\n    routine_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP,\n    event_description TEXT,\n    device_id INT,\n    trigger_id INT\n);\n"
+      }
+    ]
+  }
+]

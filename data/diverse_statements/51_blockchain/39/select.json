@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM rma_tracking;",
+      "SELECT rma_id, order_id, status FROM rma_tracking WHERE status='Pending';",
+      "SELECT rma_id, return_reason, return_date FROM rma_tracking ORDER BY return_date DESC;",
+      "SELECT order_id, COUNT(*) AS return_count FROM rma_tracking GROUP BY order_id;",
+      "SELECT DISTINCT order_id, status FROM rma_tracking WHERE return_date>'2022-01-01';",
+      "SELECT rma_id, status FROM rma_tracking WHERE return_date >= '2022-01-01';",
+      "SELECT * FROM rma_tracking WHERE return_reason LIKE '%damaged%';",
+      "SELECT order_id, return_date FROM rma_tracking WHERE status = 'Completed' ORDER BY return_date DESC;",
+      "SELECT rma_id, jsonb_array_length(returned_items) AS items_count FROM rma_tracking WHERE status = 'Approved' AND order_id = 1001;",
+      "SELECT * FROM rma_tracking WHERE return_date < '2022-03-15' AND status IN ('Approved', 'Completed') ORDER BY return_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM rma_requests;",
+      "SELECT id, customer_id, product_id FROM rma_requests WHERE customer_id = 10;",
+      "SELECT product_id, reason FROM rma_requests ORDER BY product_id DESC;",
+      "SELECT * FROM rma_history WHERE status = 'Resolved';",
+      "SELECT id, date_requested, date_resolved FROM rma_history ORDER BY date_requested ASC;",
+      "SELECT * FROM rma_requests WHERE id = 1;",
+      "SELECT reason, customer_id FROM rma_requests WHERE product_id = 5 ORDER BY customer_id DESC;",
+      "SELECT * FROM rma_history WHERE status = 'resolved' AND date_requested >= '2022-01-01' ORDER BY date_resolved ASC;",
+      "SELECT request_id, status FROM rma_history WHERE status LIKE '%ed' AND date_requested BETWEEN '2022-01-01' AND '2022-02-28';",
+      "SELECT id, MAX(date_resolved) AS last_resolved_date FROM rma_history GROUP BY id HAVING COUNT(*) > 1 ORDER BY last_resolved_date DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM RMA_Request;",
+      "SELECT request_id, reason, created_at FROM RMA_Request ORDER BY created_at DESC;",
+      "SELECT customer_id, product_id FROM RMA_Request WHERE customer_id = 123;",
+      "SELECT * FROM RMA_Return WHERE return_status = 'Approved';",
+      "SELECT return_id, return_reason FROM RMA_Return WHERE return_date >= '2022-01-01';",
+      "SELECT * FROM RMA_Request WHERE customer_id = 101;",
+      "SELECT * FROM RMA_Return WHERE return_status = 'Approved' ORDER BY return_date DESC;",
+      "SELECT request_id, product_id, created_at FROM RMA_Request WHERE reason IS NOT NULL;",
+      "SELECT * FROM RMA_Replacement WHERE replacement_status IN ('Pending', 'Processing') ORDER BY replacement_date ASC;",
+      "SELECT return_id, return_reason FROM RMA_Return WHERE return_date BETWEEN '2022-01-01' AND '2022-12-31';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM RMARequest;",
+      "SELECT id, customer_id, return_reason FROM RMARequest WHERE return_status='Pending';",
+      "SELECT resolution_type, resolution_date FROM RMAResolution ORDER BY resolution_date DESC;",
+      "SELECT feedback_comments, feedback_score FROM RMACustomerFeedback WHERE feedback_score > 3;",
+      "SELECT log_date, action_taken FROM RMALog WHERE id=1;",
+      "SELECT * FROM RMARequest ORDER BY id DESC LIMIT 5;",
+      "SELECT * FROM RMAResolution WHERE resolution_type = 'Refund' ORDER BY resolution_date ASC LIMIT 10;",
+      "SELECT r.customer_id, r.product_id, l.action_taken FROM RMARequest r JOIN RMALog l ON r.id = l.rma_request_id;",
+      "SELECT r.id, r.return_reason, rf.feedback_score FROM RMARequest r LEFT JOIN RMACustomerFeedback rf ON r.id = rf.rma_request_id;",
+      "SELECT r.id, r.return_status, l.log_date, c.feedback_score FROM RMARequest r JOIN RMALog l ON r.id = l.rma_request_id LEFT JOIN RMACustomerFeedback c ON r.id = c.rma_request_id WHERE l.action_taken = 'Processed';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM RMA_Process;",
+      "SELECT product_name, product_price FROM Products WHERE product_quantity > 0;",
+      "SELECT customer_name, customer_email FROM Customers ORDER BY customer_name DESC;",
+      "SELECT return_id, rma_id, return_date FROM Returns WHERE return_status = 'Approved';",
+      "SELECT replacement_id, new_product_id, replacement_date FROM Replacements WHERE replacement_status = 'In Progress' ORDER BY replacement_date ASC;",
+      "SELECT r.rma_id, p.product_name, c.customer_name, r.return_date FROM RMA_Process r INNER JOIN Products p ON r.product_id = p.product_id INNER JOIN Customers c ON r.customer_id = c.customer_id;",
+      "SELECT * FROM Products WHERE product_price > 100 AND product_quantity < 50;",
+      "SELECT c.customer_name, c.customer_address, r.return_status FROM Customers c LEFT JOIN Returns r ON c.customer_id = r.rma_id;",
+      "SELECT p.product_name, p.product_description, r.return_date FROM Products p RIGHT JOIN RMA_Process r ON p.product_id = r.product_id;",
+      "SELECT * FROM Returns ORDER BY return_date DESC, return_status ASC;"
+    ]
+  }
+]

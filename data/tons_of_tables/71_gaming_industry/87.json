@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_analytics (\n    game_id INT PRIMARY KEY,\n    game_name VARCHAR(50) NOT NULL,\n    total_players INT,\n    active_players INT,\n    game_duration TIME,\n    revenue DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_analytics (\n    game_id INT PRIMARY KEY,\n    game_name VARCHAR(255),\n    active_users INT,\n    total_revenue DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id INT PRIMARY KEY,\n    game_id INT,\n    level_name VARCHAR(50),\n    completion_rate DECIMAL(5, 2),\n    play_time_minutes INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GameAnalytics (\n    game_id INT PRIMARY KEY,\n    game_title VARCHAR(255),\n    total_players INT,\n    revenue DECIMAL,\n    playtime_hours FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PlayerInteractions (\n    interaction_id INT PRIMARY KEY,\n    game_id INT,\n    player_id INT,\n    interaction_type VARCHAR(50),\n    interaction_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceMetrics (\n    metric_id INT PRIMARY KEY,\n    game_id INT,\n    average_fps FLOAT,\n    memory_usage INT,\n    cpu_utilization DECIMAL,\n    storage_capacity INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_developers (\n    developer_id UUID PRIMARY KEY,\n    developer_name TEXT NOT NULL,\n    email TEXT UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE games (\n    game_id UUID PRIMARY KEY,\n    game_name TEXT NOT NULL,\n    developer_id UUID REFERENCES game_developers(developer_id),\n    release_date DATE,\n    genre TEXT,\n    platform TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_data (\n    player_id UUID PRIMARY KEY,\n    game_id UUID REFERENCES games(game_id),\n    player_name TEXT,\n    playtime_hrs INT,\n    level INT,\n    last_played DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_metrics (\n    metric_id UUID PRIMARY KEY,\n    game_id UUID REFERENCES games(game_id),\n    active_players INT,\n    daily_revenue FLOAT,\n    total_downloads INT,\n    average_rating FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE games (game_id INT PRIMARY KEY,\n  game_title VARCHAR(255) NOT NULL,\n  release_date DATE,\n  genre VARCHAR(100),\n  developer_id INT,\n  FOREIGN KEY (developer_id) REFERENCES developers(developer_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE players (player_id INT PRIMARY KEY,\n  player_name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE,\n  country VARCHAR(50),\n  registration_date DATE)"
+      },
+      {
+        "table_schema": "CREATE TABLE game_sessions (session_id INT PRIMARY KEY,\n  player_id INT,\n  game_id INT,\n  session_date DATE,\n  duration_minutes INT,\n  score INT,\n  FOREIGN KEY (player_id) REFERENCES players(player_id),\n  FOREIGN KEY (game_id) REFERENCES games(game_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE game_events (event_id INT PRIMARY KEY,\n  event_name VARCHAR(255) NOT NULL,\n  event_type VARCHAR(50),\n  event_date DATE,\n  player_id INT,\n  game_id INT,\n  FOREIGN KEY (player_id) REFERENCES players(player_id),\n  FOREIGN KEY (game_id) REFERENCES games(game_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE developers (developer_id INT PRIMARY KEY,\n  developer_name VARCHAR(255) NOT NULL,\n  founding_date DATE,\n  headquarters_location VARCHAR(100))"
+      }
+    ]
+  }
+]

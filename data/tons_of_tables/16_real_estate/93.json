@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_maintenance (\n  property_id INT PRIMARY KEY,\n  property_name VARCHAR(255) NOT NULL,\n  maintenance_schedule TEXT,\n  last_maintenance_date DATE,\n  maintenance_expense DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PropertyMaintenanceSchedule (\n    maintenance_id INT PRIMARY KEY,\n    property_id INT,\n    maintenance_date DATE,\n    maintenance_details TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceExpenses (\n    expense_id INT PRIMARY KEY,\n    maintenance_id INT,\n    expense_date DATE,\n    expense_amount DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_maintenance_schedule (\n    property_id INT PRIMARY KEY,\n    maintenance_type VARCHAR(255),\n    maintenance_date DATE,\n    cost DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n    expense_id INT PRIMARY KEY,\n    property_id INT,\n    expense_type VARCHAR(255),\n    expense_date DATE,\n    amount DECIMAL,\n    FOREIGN KEY (property_id) REFERENCES property_maintenance_schedule(property_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_details (\n    property_id INT PRIMARY KEY,\n    address VARCHAR(255),\n    last_maintenance DATE,\n    next_maintenance DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PropertyOwners (\n  id UUID PRIMARY KEY,\n  owner_name VARCHAR(255),\n  property_address VARCHAR(255),\n  phone_number VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceTasks (\n  task_id UUID PRIMARY KEY,\n  description TEXT,\n  frequency VARCHAR(50),\n  cost DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLog (\n  log_id UUID PRIMARY KEY,\n  task_id UUID REFERENCES MaintenanceTasks(task_id),\n  property_id UUID REFERENCES PropertyOwners(id),\n  completion_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BudgetPlanning (\n  budget_id UUID PRIMARY KEY,\n  estimated_expense DECIMAL,\n  actual_expense DECIMAL,\n  budget_month DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE properties (\n   id INT PRIMARY KEY,\n   property_name VARCHAR(255),\n   address VARCHAR(255),\n   last_maintenance_date DATE,\n   next_maintenance_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_tasks (\n   id INT PRIMARY KEY,\n   task_name VARCHAR(255),\n   task_description TEXT,\n   estimated_duration INT,\n   cost DECIMAL(10, 2),\n   property_id INT REFERENCES properties(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n   id INT PRIMARY KEY,\n   expense_date DATE,\n   expense_description TEXT,\n   amount DECIMAL(10, 2),\n   property_id INT REFERENCES properties(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_history (\n   id INT PRIMARY KEY,\n   task_id INT REFERENCES maintenance_tasks(id),\n   completion_date DATE,\n   comments TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE budget_planning (\n   id INT PRIMARY KEY,\n   year INT,\n   total_budget DECIMAL(10, 2)\n)"
+      }
+    ]
+  }
+]

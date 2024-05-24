@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE battery_metrics (\n  id INT PRIMARY KEY,\n  battery_serial_number VARCHAR(50),\n  voltage DECIMAL(5,2),\n  current DECIMAL(5,2),\n  temperature DECIMAL(5,2),\n  charge_status VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Electric_Vehicle_Batteries (\n    battery_id UUID PRIMARY KEY,\n    manufacturer TEXT,\n    capacity DECIMAL,\n    cycle_life INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Battery_Performance_Metrics (\n    metric_id UUID PRIMARY KEY,\n    battery_id UUID,\n    charging_time INTERVAL,\n    discharging_time INTERVAL,\n    charging_efficiency DECIMAL,\n    cycle_count INTEGER\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BatteryMetrics (\n  battery_id SERIAL PRIMARY KEY,\n  brand VARCHAR(50) NOT NULL,\n  capacity INTEGER NOT NULL,\n  charging_time INTEGER,\n  discharge_rate INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BatteryHealth (\n  health_id SERIAL PRIMARY KEY,\n  battery_id INTEGER REFERENCES BatteryMetrics(battery_id),\n  health_status VARCHAR(20) NOT NULL,\n  cycles_completed INTEGER,\n  temperature INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BatteryHistory (\n  history_id SERIAL PRIMARY KEY,\n  battery_id INTEGER REFERENCES BatteryMetrics(battery_id),\n  date DATE NOT NULL,\n  charging_cycles INTEGER,\n  discharging_cycles INTEGER\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE battery_metrics (\n    battery_id INT PRIMARY KEY,\n    manufacturer VARCHAR(50),\n    capacity DECIMAL,\n    charging_speed INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE charging_stations (\n    station_id INT PRIMARY KEY,\n    location VARCHAR(100),\n    num_chargers INT,\n    operator VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE charge_cycles (\n    cycle_id INT PRIMARY KEY,\n    battery_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    kWh_charged DECIMAL,\n    CONSTRAINT fk_battery_id FOREIGN KEY (battery_id) REFERENCES battery_metrics(battery_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE battery_errors (\n    error_id INT PRIMARY KEY,\n    battery_id INT,\n    error_message TEXT,\n    error_timestamp TIMESTAMP,\n    CONSTRAINT fk_battery_id FOREIGN KEY (battery_id) REFERENCES battery_metrics(battery_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE battery_metrics (\n    battery_id INT PRIMARY KEY,\n    manufacturer VARCHAR(50),\n    capacity INT,\n    voltage DECIMAL(5,2),\n    temperature DECIMAL(5,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE charging_history (\n    charging_id INT PRIMARY KEY,\n    battery_id INT,\n    start_time DATETIME,\n    end_time DATETIME,\n    charging_duration INT,\n    charging_power DECIMAL(5,2),\n    FOREIGN KEY (battery_id) REFERENCES battery_metrics(battery_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE usage_records (\n    record_id INT PRIMARY KEY,\n    battery_id INT,\n    date DATE,\n    distance_covered DECIMAL(8,2),\n    efficiency DECIMAL(5,2),\n    FOREIGN KEY (battery_id) REFERENCES battery_metrics(battery_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE health_status (\n    status_id INT PRIMARY KEY,\n    battery_id INT,\n    status VARCHAR(50),\n    date DATE,\n    FOREIGN KEY (battery_id) REFERENCES battery_metrics(battery_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    log_id INT PRIMARY KEY,\n    battery_id INT,\n    date DATE,\n    description TEXT,\n    technician VARCHAR(50),\n    FOREIGN KEY (battery_id) REFERENCES battery_metrics(battery_id)\n);"
+      }
+    ]
+  }
+]

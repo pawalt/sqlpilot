@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ConcertSchedule (\n    concert_id INT PRIMARY KEY,\n    concert_name VARCHAR(50),\n    concert_date DATE,\n    ticket_price DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Concerts (\n    concert_id INT PRIMARY KEY,\n    concert_name VARCHAR(255) NOT NULL,\n    venue_name VARCHAR(255) NOT NULL,\n    date_time DATETIME NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Tickets (\n    ticket_id INT PRIMARY KEY,\n    concert_id INT NOT NULL,\n    price DECIMAL(10,2) NOT NULL,\n    seat_number VARCHAR(10) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE concert_schedule (\n    concert_id INT PRIMARY KEY,\n    artist_name VARCHAR(255),\n    venue_name VARCHAR(255),\n    event_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_sales (\n    ticket_id INT PRIMARY KEY,\n    concert_id INT,\n    ticket_price DECIMAL(10, 2),\n    total_tickets_sold INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_management (\n    event_id INT PRIMARY KEY,\n    concert_id INT,\n    total_revenue DECIMAL(12, 2),\n    event_manager VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Concerts(\n  concert_id INT PRIMARY KEY,\n  concert_name VARCHAR(255) NOT NULL,\n  artist_name VARCHAR(255) NOT NULL,\n  concert_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Venues(\n  venue_id INT PRIMARY KEY,\n  venue_name VARCHAR(255) NOT NULL,\n  capacity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Tickets(\n  ticket_id INT PRIMARY KEY,\n  concert_id INT,\n  venue_id INT,\n  price DECIMAL(10,2) NOT NULL,\n  availability BOOLEAN DEFAULT TRUE,\n  FOREIGN KEY (concert_id) REFERENCES Concerts(concert_id),\n  FOREIGN KEY (venue_id) REFERENCES Venues(venue_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TicketSales(\n  sales_id INT PRIMARY KEY,\n  ticket_id INT,\n  sale_date TIMESTAMP NOT NULL,\n  buyer_name VARCHAR(255) NOT NULL,\n  quantity INT NOT NULL,\n  total_amount DECIMAL(10,2) NOT NULL,\n  FOREIGN KEY (ticket_id) REFERENCES Tickets(ticket_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE concert_schedule (\n    concert_id SERIAL PRIMARY KEY,\n    concert_name VARCHAR(100) NOT NULL,\n    venue VARCHAR(100) NOT NULL,\n    date_time TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_sales (\n    ticket_id SERIAL PRIMARY KEY,\n    concert_id INT REFERENCES concert_schedule(concert_id),\n    ticket_price DECIMAL(10,2) NOT NULL,\n    ticket_quantity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id SERIAL PRIMARY KEY,\n    ticket_id INT REFERENCES ticket_sales(ticket_id),\n    attendee_name VARCHAR(100) NOT NULL,\n    attendee_email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE venues (\n    venue_id SERIAL PRIMARY KEY,\n    venue_name VARCHAR(100) NOT NULL,\n    venue_location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_managers (\n    manager_id SERIAL PRIMARY KEY,\n    manager_name VARCHAR(100) NOT NULL,\n    manager_email VARCHAR(100) NOT NULL,\n    venue_id INT REFERENCES venues(venue_id)\n);\n"
+      }
+    ]
+  }
+]

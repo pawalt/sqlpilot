@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_traits (\n  trait_id INT PRIMARY KEY,\n  trait_name VARCHAR(255),\n  dominant_trait BOOLEAN,\n  recessive_trait BOOLEAN,\n  inheritance_pattern VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Traits (\n  trait_id SERIAL PRIMARY KEY,\n  trait_name VARCHAR(50) NOT NULL,\n  inheritance_pattern VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Offspring (\n  offspring_id SERIAL PRIMARY KEY,\n  parent_trait_id INT NOT NULL,\n  inheritance_probability FLOAT NOT NULL,\n  CONSTRAINT fk_parent_trait FOREIGN KEY (parent_trait_id) REFERENCES Traits(trait_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneticTraits (\n  trait_id INT PRIMARY KEY,\n  trait_name VARCHAR(255),\n  trait_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OffspringTraits (\n  offspring_id INT PRIMARY KEY,\n  parent1_trait_id INT,\n  parent2_trait_id INT,\n  inherited_trait_id INT,\n  FOREIGN KEY (parent1_trait_id) REFERENCES GeneticTraits(trait_id),\n  FOREIGN KEY (parent2_trait_id) REFERENCES GeneticTraits(trait_id),\n  FOREIGN KEY (inherited_trait_id) REFERENCES GeneticTraits(trait_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TraitInheritance (\n  inheritance_id INT PRIMARY KEY,\n  parent_trait_id INT,\n  child_trait_id INT,\n  inheritance_pattern VARCHAR(50),\n  FOREIGN KEY (parent_trait_id) REFERENCES GeneticTraits(trait_id),\n  FOREIGN KEY (child_trait_id) REFERENCES GeneticTraits(trait_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(50) NOT NULL,\n    inheritance_type VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Individuals (\n    individual_id INT PRIMARY KEY,\n    individual_name VARCHAR(50) NOT NULL,\n    date_of_birth DATE NOT NULL,\n    gender VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Traits (\n    trait_id INT PRIMARY KEY,\n    trait_name VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inheritance (\n    inheritance_id INT PRIMARY KEY,\n    gene_id INT NOT NULL,\n    trait_id INT NOT NULL,\n    individual_id INT NOT NULL,\n    FOREIGN KEY (gene_id) REFERENCES Genes(gene_id),\n    FOREIGN KEY (trait_id) REFERENCES Traits(trait_id),\n    FOREIGN KEY (individual_id) REFERENCES Individuals(individual_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_traits (\n  trait_id INT PRIMARY KEY,\n  trait_name VARCHAR(50) NOT NULL,\n  trait_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inheritance_patterns (\n  pattern_id INT PRIMARY KEY,\n  pattern_type VARCHAR(50) NOT NULL,\n  pattern_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE families (\n  family_id INT PRIMARY KEY,\n  family_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE individuals (\n  individual_id INT PRIMARY KEY,\n  individual_name VARCHAR(50) NOT NULL,\n  gender VARCHAR(10),\n  age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trait_inheritance (\n  inheritance_id INT PRIMARY KEY,\n  trait_id INT,\n  pattern_id INT,\n  family_id INT,\n  individual_id INT,\n  FOREIGN KEY (trait_id) REFERENCES genetic_traits(trait_id),\n  FOREIGN KEY (pattern_id) REFERENCES inheritance_patterns(pattern_id),\n  FOREIGN KEY (family_id) REFERENCES families(family_id),\n  FOREIGN KEY (individual_id) REFERENCES individuals(individual_id)\n);"
+      }
+    ]
+  }
+]

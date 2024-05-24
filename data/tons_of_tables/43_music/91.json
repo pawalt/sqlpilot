@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE festival_tickets (\n    festival_id UUID PRIMARY KEY,\n    festival_name VARCHAR(255),\n    ticket_price DECIMAL(10, 2),\n    tickets_sold INT,\n    revenue DECIMAL(12, 2),\n    attendance INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE festival_tickets (\n    ticket_id INT PRIMARY KEY,\n    festival_name VARCHAR(255),\n    ticket_price DECIMAL(10, 2),\n    ticket_quantity INT,\n    purchase_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE festival_attendance (\n    attendance_id INT PRIMARY KEY,\n    festival_name VARCHAR(255),\n    attendance_date DATE,\n    total_attendees INT,\n    revenue DECIMAL(15, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ticket_sales (\n    ticket_id SERIAL PRIMARY KEY,\n    festival_id INT,\n    ticket_price DECIMAL,\n    ticket_quantity INT,\n    sale_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE festivals (\n    festival_id SERIAL PRIMARY KEY,\n    festival_name VARCHAR,\n    festival_date DATE,\n    location VARCHAR,\n    total_revenue DECIMAL,\n    total_attendance INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id SERIAL PRIMARY KEY,\n    festival_id INT,\n    attendee_name VARCHAR,\n    ticket_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE festival (festival_id INT PRIMARY KEY,\n  festival_name VARCHAR,\n  start_date DATE,\n  end_date DATE,\n  location VARCHAR);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket (ticket_id INT PRIMARY KEY,\n  ticket_type VARCHAR,\n  price DECIMAL,\n  quantity INT,\n  sold_at DATETIME,\n  festival_id INT,\n  FOREIGN KEY (festival_id) REFERENCES festival(festival_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendee (attendee_id INT PRIMARY KEY,\n  attendee_name VARCHAR,\n  email VARCHAR,\n  phone VARCHAR);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_purchase (purchase_id INT PRIMARY KEY,\n  ticket_id INT,\n  attendee_id INT,\n  purchase_date DATETIME,\n  quantity INT,\n  total_price DECIMAL,\n  FOREIGN KEY (ticket_id) REFERENCES ticket(ticket_id),\n  FOREIGN KEY (attendee_id) REFERENCES attendee(attendee_id));\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE festival (\n  festival_id INT PRIMARY KEY,\n  festival_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket (\n  ticket_id INT PRIMARY KEY,\n  festival_id INT,\n  ticket_price DECIMAL(10,2),\n  ticket_type VARCHAR(50),\n  FOREIGN KEY(festival_id) REFERENCES festival(festival_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (\n  sale_id INT PRIMARY KEY,\n  ticket_id INT,\n  sale_date DATETIME,\n  quantity_sold INT,\n  total_amount DECIMAL(10,2),\n  FOREIGN KEY(ticket_id) REFERENCES ticket(ticket_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255),\n  email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendance (\n  attendance_id INT PRIMARY KEY,\n  festival_id INT,\n  customer_id INT,\n  arrival_time DATETIME,\n  FOREIGN KEY(festival_id) REFERENCES festival(festival_id),\n  FOREIGN KEY(customer_id) REFERENCES customer(customer_id)\n);"
+      }
+    ]
+  }
+]

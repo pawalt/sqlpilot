@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM underwriting_process;",
+      "SELECT applicant_id, income, approved_policy FROM underwriting_process WHERE age > 30;",
+      "SELECT * FROM underwriting_process WHERE credit_score >= 700;",
+      "SELECT applicant_id, age, income FROM underwriting_process WHERE approved_policy = true;",
+      "SELECT applicant_id, income, credit_score FROM underwriting_process WHERE income > 50000;",
+      "SELECT * FROM underwriting_process WHERE age > 30 AND income > 50000 ORDER BY credit_score DESC",
+      "SELECT * FROM underwriting_process WHERE credit_score >= 700 AND approved_policy = TRUE ORDER BY age ASC",
+      "SELECT applicant_id, age, income FROM underwriting_process WHERE income < 40000 AND credit_score < 600",
+      "SELECT * FROM underwriting_process ORDER BY age ASC, credit_score DESC, income ASC",
+      "SELECT avg(income) as avg_income, max(credit_score) as max_credit FROM underwriting_process WHERE age BETWEEN 25 AND 40"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM policy_information;",
+      "SELECT policy_id, applicant_name FROM policy_information WHERE policy_type = 'Life';",
+      "SELECT policy_id, policy_type, policy_status FROM policy_information WHERE policy_status = 'Active';",
+      "SELECT * FROM risk_factors WHERE credit_score > 700;",
+      "SELECT policy_id, income FROM risk_factors WHERE health_condition = 'Excellent';",
+      "SELECT * FROM policy_information WHERE policy_type='Life' AND policy_status='Active';",
+      "SELECT policy_id, applicant_name FROM policy_information WHERE applicant_name LIKE 'J%';",
+      "SELECT policy_id, applicant_name, policy_type, policy_status FROM policy_information WHERE policy_id IN (SELECT policy_id FROM risk_factors WHERE credit_score > 700);",
+      "SELECT * FROM risk_factors WHERE income > 50000 AND health_condition='Excellent';",
+      "SELECT policy_id, policy_type, COUNT(*) AS risk_factors_count FROM policy_information INNER JOIN risk_factors ON policy_information.policy_id = risk_factors.policy_id GROUP BY policy_id, policy_type HAVING COUNT(*) > 2;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM risk_factors;",
+      "SELECT factor_name, weight FROM risk_factors ORDER BY weight DESC;",
+      "SELECT factor_name, weight FROM risk_factors WHERE weight > 0.5;",
+      "SELECT * FROM policy_applications WHERE policy_type = 'Life Insurance';",
+      "SELECT applicant_name, application_date FROM policy_applications ORDER BY application_date ASC;",
+      "SELECT * FROM risk_factors WHERE weight > 0.5;",
+      "SELECT factor_name, weight FROM risk_factors ORDER BY factor_name ASC;",
+      "SELECT applicant_name, application_date FROM policy_applications WHERE policy_type = 'Life Insurance';",
+      "SELECT * FROM policy_eligibility WHERE eligibility_status = TRUE;",
+      "SELECT applicant_name, policy_type, factor_name FROM policy_applications JOIN policy_eligibility ON policy_applications.application_id = policy_eligibility.application_id JOIN risk_factors ON policy_eligibility.factor_id = risk_factors.factor_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM RiskFactors;",
+      "SELECT id, age, credit_score FROM RiskFactors WHERE age > 30;",
+      "SELECT customer_id, policy_type FROM PolicyEligibility WHERE is_eligible = TRUE;",
+      "SELECT id, name FROM CustomerData ORDER BY name DESC;",
+      "SELECT customer_id, policy_id, start_date FROM PolicyHistory WHERE end_date >= '2022-01-01';",
+      "SELECT * FROM RiskFactors WHERE age > 25 ORDER BY credit_score DESC LIMIT 5;",
+      "SELECT id, name, email FROM CustomerData WHERE name LIKE '%John%' OR address LIKE '%Street%' ORDER BY id ASC;",
+      "SELECT PolicyEligibility.customer_id, PolicyEligibility.policy_type, CustomerData.name FROM PolicyEligibility JOIN CustomerData ON PolicyEligibility.customer_id = CustomerData.id WHERE PolicyEligibility.is_eligible = TRUE ORDER BY CustomerData.name;",
+      "SELECT CustomerData.name, CustomerData.email, PolicyHistory.start_date, PolicyHistory.end_date FROM CustomerData LEFT JOIN PolicyHistory ON CustomerData.id = PolicyHistory.customer_id ORDER BY PolicyHistory.start_date DESC;",
+      "SELECT p.policy_id, p.start_date, p.end_date, r.income FROM PolicyHistory p JOIN RiskFactors r ON p.customer_id = r.id WHERE r.credit_score > 700 ORDER BY p.end_date DESC LIMIT 10;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM applicants;",
+      "SELECT id, name, age FROM applicants WHERE age > 30;",
+      "SELECT policy_id, policy_name, coverage_amount FROM policies ORDER BY coverage_amount DESC;",
+      "SELECT risk_id, factor_name, weight FROM risk_factors WHERE weight < 3.5 ORDER BY factor_name ASC;",
+      "SELECT application_id, applicant_id, policy_id, application_date FROM policy_applications WHERE status = 'approved';",
+      "SELECT * FROM applicants ORDER BY age DESC, income ASC;",
+      "SELECT name, occupation, income FROM applicants WHERE credit_score > 700 ORDER BY income DESC;",
+      "SELECT policy_name, coverage_amount, premium_amount FROM policies WHERE deductible < 500 ORDER BY coverage_amount ASC;",
+      "SELECT * FROM policy_applications WHERE status = 'pending' ORDER BY application_date DESC;",
+      "SELECT a.name AS applicant_name, p.policy_name, u.approval_status FROM applicants a JOIN policy_applications pa ON a.id = pa.applicant_id JOIN policies p ON pa.policy_id = p.policy_id JOIN underwriting_results u ON pa.application_id = u.application_id WHERE u.approval_status = 'approved' ORDER BY a.name ASC, p.policy_name DESC;"
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_marketing_lists (\n  id UUID PRIMARY KEY,\n  customer_id UUID,\n  email_address TEXT,\n  preferences JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_preferences (\n    id INT PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    preference1 VARCHAR(50) NOT NULL,\n    preference2 VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_lists (\n    list_id INT PRIMARY KEY,\n    list_name VARCHAR(100) NOT NULL,\n    list_description TEXT,\n    target_criteria VARCHAR(255) NOT NULL,\n    FOREIGN KEY (list_id) REFERENCES customer_preferences(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(100),\n    preferences JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    target_audience INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_lists (\n    list_id INT PRIMARY KEY,\n    list_name VARCHAR(50),\n    campaign_id INT,\n    customer_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE preferences (\n  customer_id INT PRIMARY KEY,\n  email VARCHAR(255),\n  preference_1 BOOLEAN,\n  preference_2 BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  campaign_type VARCHAR(100),\n  start_date TIMESTAMP,\n  end_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE targeted_lists (\n  list_id INT PRIMARY KEY,\n  list_name VARCHAR(255),\n  campaign_id INT,\n  FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_results (\n  result_id INT PRIMARY KEY,\n  campaign_id INT,\n  list_id INT,\n  total_sent INT,\n  total_opened INT,\n  total_clicked INT,\n  FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id),\n  FOREIGN KEY (list_id) REFERENCES targeted_lists(list_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE preferences (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    email VARCHAR(255),\n    subscription_status BOOLEAN,\n    preferences TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_demographics (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    age INT,\n    gender VARCHAR(10),\n    location VARCHAR(50),\n    join_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    id INT PRIMARY KEY,\n    campaign_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_results (\n    id INT PRIMARY KEY,\n    campaign_id INT,\n    recipient_email VARCHAR(255),\n    open_rate DECIMAL(5,2),\n    click_rate DECIMAL(5,2),\n    conversion_rate DECIMAL(5,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE targeted_campaigns (\n    id INT PRIMARY KEY,\n    campaign_id INT,\n    segment_name VARCHAR(50),\n    segment_query TEXT,\n    target_count INT\n);\n"
+      }
+    ]
+  }
+]

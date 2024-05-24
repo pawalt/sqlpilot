@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE guest_information (\n    guest_id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100),\n    phone_number VARCHAR(15),\n    address VARCHAR(100),\n    reservation_date DATE,\n    reservation_time TIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE guests (\n  guest_id INT PRIMARY KEY,\n  guest_name VARCHAR(50) NOT NULL,\n  contact_number VARCHAR(15) NOT NULL,\n  email_address VARCHAR(100),\n  reservation_history JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reservations (\n  reservation_id INT PRIMARY KEY,\n  guest_id INT REFERENCES guests(guest_id),\n  check_in_date DATE,\n  check_out_date DATE,\n  room_number INT,\n  total_amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE guest_info (\n    guest_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reservation_history (\n    reservation_id INT PRIMARY KEY,\n    guest_id INT,\n    check_in_date DATE,\n    check_out_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contact_details (\n    contact_id INT PRIMARY KEY,\n    guest_id INT,\n    address VARCHAR(255),\n    city VARCHAR(100),\n    country VARCHAR(100),\n    postal_code VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE guests (\n    guest_id UUID PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) NOT NULL,\n    phone VARCHAR(15),\n    reservation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contact_details (\n    contact_id UUID PRIMARY KEY,\n    guest_id UUID REFERENCES guests(guest_id),\n    address TEXT,\n    city VARCHAR(50),\n    state VARCHAR(50),\n    zip_code VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reservations (\n    reservation_id UUID PRIMARY KEY,\n    guest_id UUID REFERENCES guests(guest_id),\n    check_in_date DATE,\n    check_out_date DATE,\n    room_number VARCHAR(10),\n    total_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id UUID PRIMARY KEY,\n    guest_id UUID REFERENCES guests(guest_id),\n    reservation_id UUID REFERENCES reservations(reservation_id),\n    rating INT CHECK (rating >= 1 AND rating <= 5),\n    review_text TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE guests (\n    guest_id INT PRIMARY KEY,\n    full_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE NOT NULL,\n    phone_number VARCHAR(20) NOT NULL,\n    reservation_count INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reservations (\n    reservation_id INT PRIMARY KEY,\n    guest_id INT,\n    reservation_date DATE,\n    check_in_date DATE,\n    check_out_date DATE,\n    FOREIGN KEY (guest_id) REFERENCES guests(guest_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    address_id INT PRIMARY KEY,\n    guest_id INT,\n    street_address VARCHAR(255),\n    city VARCHAR(100),\n    state VARCHAR(50),\n    zipcode VARCHAR(10),\n    FOREIGN KEY (guest_id) REFERENCES guests(guest_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_info (\n    payment_id INT PRIMARY KEY,\n    guest_id INT,\n    card_number VARCHAR(16),\n    card_holder_name VARCHAR(255),\n    expiration_date DATE,\n    cvv VARCHAR(3),\n    FOREIGN KEY (guest_id) REFERENCES guests(guest_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE guest_comments (\n    comment_id INT PRIMARY KEY,\n    guest_id INT,\n    comment_text TEXT,\n    comment_date TIMESTAMP,\n    FOREIGN KEY (guest_id) REFERENCES guests(guest_id)\n);"
+      }
+    ]
+  }
+]

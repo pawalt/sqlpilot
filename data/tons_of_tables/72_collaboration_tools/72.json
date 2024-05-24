@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE knowledge_taxonomy ( \n  topic_id SERIAL PRIMARY KEY, \n  topic_name VARCHAR(100) NOT NULL, \n  category VARCHAR(50) NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE knowledge_topics (\n    topic_id SERIAL PRIMARY KEY,\n    topic_name VARCHAR(255) NOT NULL,\n    category_id INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE knowledge_categories (\n    category_id SERIAL PRIMARY KEY,\n    category_name VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE knowledge_topics (\n    topic_id SERIAL PRIMARY KEY,\n    topic_name TEXT NOT NULL,\n    parent_topic_id INT,\n    FOREIGN KEY (parent_topic_id) REFERENCES knowledge_topics(topic_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE topic_categories (\n    category_id SERIAL PRIMARY KEY,\n    category_name TEXT NOT NULL,\n    topic_id INT,\n    FOREIGN KEY (topic_id) REFERENCES knowledge_topics(topic_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE topic_relationship (\n    relationship_id SERIAL PRIMARY KEY,\n    topic_id1 INT,\n    topic_id2 INT,\n    relationship_type TEXT NOT NULL,\n    FOREIGN KEY (topic_id1) REFERENCES knowledge_topics(topic_id),\n    FOREIGN KEY (topic_id2) REFERENCES knowledge_topics(topic_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE topics (\n    topic_id INT PRIMARY KEY,\n    topic_name VARCHAR(255) NOT NULL,\n    parent_topic_id INT,\n    FOREIGN KEY (parent_topic_id) REFERENCES topics(topic_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(255) NOT NULL,\n    topic_id INT,\n    FOREIGN KEY (topic_id) REFERENCES topics(topic_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    article_title VARCHAR(255) NOT NULL,\n    content TEXT,\n    category_id INT,\n    FOREIGN KEY (category_id) REFERENCES categories(category_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50) NOT NULL,\n    article_id INT,\n    FOREIGN KEY (article_id) REFERENCES articles(article_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE topics (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  parent_id INT,\n  FOREIGN KEY (parent_id) REFERENCES topics(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE topic_category (\n  topic_id INT,\n  category_id INT,\n  PRIMARY KEY (topic_id, category_id),\n  FOREIGN KEY (topic_id) REFERENCES topics(id),\n  FOREIGN KEY (category_id) REFERENCES categories(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username VARCHAR(100) NOT NULL UNIQUE,\n  email VARCHAR(255) NOT NULL UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_interests (\n  user_id INT,\n  topic_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(id),\n  FOREIGN KEY (topic_id) REFERENCES topics(id),\n  PRIMARY KEY (user_id, topic_id)\n);"
+      }
+    ]
+  }
+]

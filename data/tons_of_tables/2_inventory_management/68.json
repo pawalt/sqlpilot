@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipment_timeline (\n  shipment_id UUID PRIMARY KEY,\n  shipment_date TIMESTAMP NOT NULL,\n  expected_delivery_date TIMESTAMP NOT NULL,\n  actual_delivery_date TIMESTAMP,\n  shipment_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipments (\n  shipment_id UUID PRIMARY KEY,\n  shipment_name VARCHAR(50),\n  shipment_status VARCHAR(20),\n  estimated_delivery_date TIMESTAMP,\n  actual_delivery_date TIMESTAMP,\n  delay_minutes INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment_logs (\n  log_id UUID PRIMARY KEY,\n  shipment_id UUID,\n  log_timestamp TIMESTAMP,\n  log_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipment_records (\n  shipment_id INT PRIMARY KEY,\n  shipment_date DATE,\n  arrival_date DATE,\n  status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment_delays (\n  delay_id INT PRIMARY KEY,\n  shipment_id INT,\n  delay_reason VARCHAR(255),\n  delay_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment_feedback (\n  feedback_id INT PRIMARY KEY,\n  shipment_id INT,\n  customer_name VARCHAR(100),\n  feedback_comment TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipment_status (\n    shipment_id INT PRIMARY KEY,\n    status VARCHAR(50),\n    estimated_delivery_date DATE,\n    actual_delivery_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment_log (\n    log_id INT PRIMARY KEY,\n    shipment_id INT,\n    log_description TEXT,\n    log_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment_delay (\n    delay_id INT PRIMARY KEY,\n    shipment_id INT,\n    reason VARCHAR(200),\n    delay_duration INTERVAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment_history (\n    history_id INT PRIMARY KEY,\n    shipment_id INT,\n    status VARCHAR(50),\n    event_description TEXT,\n    event_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipments (\n    shipment_id INT PRIMARY KEY,\n    sender_name VARCHAR(255),\n    receiver_name VARCHAR(255),\n    shipment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tracking (\n    tracking_id INT PRIMARY KEY,\n    shipment_id INT REFERENCES shipments(shipment_id),\n    status VARCHAR(50),\n    location VARCHAR(100),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delays (\n    delay_id INT PRIMARY KEY,\n    shipment_id INT REFERENCES shipments(shipment_id),\n    reason TEXT,\n    delay_duration INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id INT PRIMARY KEY,\n    shipment_id INT REFERENCES shipments(shipment_id),\n    message TEXT,\n    notification_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100)\n);"
+      }
+    ]
+  }
+]

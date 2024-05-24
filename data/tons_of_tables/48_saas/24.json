@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CloudComputingOptimization (\n    id INT PRIMARY KEY,\n    query_name VARCHAR(255),\n    query_complexity VARCHAR(50),\n    workload_distribution VARCHAR(50),\n    optimization_strategy VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_environment (\n  environment_id INT PRIMARY KEY,\n  environment_name VARCHAR(50),\n  region VARCHAR(50),\n  workload_distribution VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE query_optimization (\n  query_id INT PRIMARY KEY,\n  query_description VARCHAR(100),\n  optimization_strategy VARCHAR(100),\n  execution_time_ms INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_workloads (id INT PRIMARY KEY, workload_name VARCHAR(255), workload_description TEXT, workload_type VARCHAR(50))\n\nCREATE TABLE compute_instances (instance_id INT PRIMARY KEY, instance_type VARCHAR(50), cpu_count INT, memory_gb FLOAT, storage_gb INT, status VARCHAR(20))\n\nCREATE TABLE workload_distribution (id INT PRIMARY KEY, workload_id INT, instance_id INT, start_time TIMESTAMP, end_time TIMESTAMP)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(255) NOT NULL,\n    region VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE virtual_machines (\n    vm_id INT PRIMARY KEY,\n    provider_id INT NOT NULL,\n    vm_name VARCHAR(100) NOT NULL,\n    cpu_cores INT NOT NULL,\n    memory_gb INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE workload (\n    workload_id INT PRIMARY KEY,\n    vm_id INT NOT NULL,\n    query_type VARCHAR(50) NOT NULL,\n    execution_time_ms INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE queries (\n    query_id INT PRIMARY KEY,\n    query_text TEXT NOT NULL,\n    execution_count INT NOT NULL,\n    last_executed_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cloud_computing_nodes (\n    node_id INT PRIMARY KEY,\n    node_name VARCHAR(255) NOT NULL,\n    node_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE computational_workloads (\n    workload_id INT PRIMARY KEY,\n    workload_name VARCHAR(255) NOT NULL,\n    assigned_node_id INT REFERENCES cloud_computing_nodes(node_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE query_executions (\n    execution_id INT PRIMARY KEY,\n    workload_id INT REFERENCES computational_workloads(workload_id),\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE workload_metrics (\n    metric_id INT PRIMARY KEY,\n    workload_id INT REFERENCES computational_workloads(workload_id),\n    metric_name VARCHAR(100) NOT NULL,\n    metric_value DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE node_metrics (\n    node_metric_id INT PRIMARY KEY,\n    node_id INT REFERENCES cloud_computing_nodes(node_id),\n    metric_name VARCHAR(100) NOT NULL,\n    metric_value DECIMAL NOT NULL\n);"
+      }
+    ]
+  }
+]

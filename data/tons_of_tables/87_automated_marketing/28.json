@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaign_data (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    email_recipients INT,\n    click_through_rate FLOAT,\n    conversion_rate FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    total_recipients INT,\n    total_clicks INT,\n    total_conversions INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_emails (\n    email_id INT PRIMARY KEY,\n    campaign_id INT,\n    recipient_email VARCHAR(255),\n    email_opened BOOLEAN,\n    click_timestamp TIMESTAMP,\n    conversion_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaign (\n campaign_id INT PRIMARY KEY,\n campaign_name VARCHAR(255) NOT NULL,\n campaign_type VARCHAR(50) NOT NULL,\n start_date DATE NOT NULL,\n end_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Subscriber (\n subscriber_id INT PRIMARY KEY,\n email VARCHAR(255) UNIQUE NOT NULL,\n first_name VARCHAR(50) NOT NULL,\n last_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignStats (\n stat_id INT PRIMARY KEY,\n campaign_id INT REFERENCES Campaign(campaign_id),\n open_rate FLOAT NOT NULL,\n click_rate FLOAT NOT NULL,\n conversion_rate FLOAT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n campaign_id INT PRIMARY KEY,\n campaign_name VARCHAR(255),\n start_date DATE,\n end_date DATE,\n total_recipients INT,\n open_rate FLOAT,\n click_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recipients (\n recipient_id INT PRIMARY KEY,\n email_address VARCHAR(255),\n first_name VARCHAR(50),\n last_name VARCHAR(50),\n subscription_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clicks (\n click_id INT PRIMARY KEY,\n campaign_id INT,\n recipient_id INT,\n click_timestamp TIMESTAMP,\n FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id),\n FOREIGN KEY (recipient_id) REFERENCES recipients(recipient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE opens (\n open_id INT PRIMARY KEY,\n campaign_id INT,\n recipient_id INT,\n open_timestamp TIMESTAMP,\n FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id),\n FOREIGN KEY (recipient_id) REFERENCES recipients(recipient_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n  campaign_id SERIAL PRIMARY KEY,\n  campaign_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Contacts (\n  contact_id SERIAL PRIMARY KEY,\n  email VARCHAR(255) UNIQUE NOT NULL,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  subscription_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SentEmails (\n  email_id SERIAL PRIMARY KEY,\n  campaign_id INT REFERENCES Campaigns(campaign_id),\n  contact_id INT REFERENCES Contacts(contact_id),\n  sent_datetime TIMESTAMP,\n  delivery_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OpenedEmails (\n  opened_id SERIAL PRIMARY KEY,\n  email_id INT REFERENCES SentEmails(email_id),\n  open_datetime TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ClickedLinks (\n  click_id SERIAL PRIMARY KEY,\n  email_id INT REFERENCES SentEmails(email_id),\n  link_url VARCHAR(255),\n  click_datetime TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

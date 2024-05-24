@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_quality_levels (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(50),\n  water_quality_index INT,\n  pollution_level DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterQualityLevels (\n  region_id INT PRIMARY KEY,\n  water_quality_level FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Regions (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterQualityRegions (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(50) NOT NULL,\n  water_quality_level VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PollutionSources (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(50) NOT NULL,\n  source_type VARCHAR(50) NOT NULL,\n  region_id INT REFERENCES WaterQualityRegions(region_id) ON DELETE CASCADE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterQualityReadings (\n  reading_id INT PRIMARY KEY,\n  water_quality_level VARCHAR(20) NOT NULL,\n  reading_date DATE NOT NULL,\n  region_id INT REFERENCES WaterQualityRegions(region_id) ON DELETE CASCADE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Regions(\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterSources(\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(50) NOT NULL,\n  region_id INT,\n  FOREIGN KEY (region_id) REFERENCES Regions(region_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterQualityLevels(\n  quality_id INT PRIMARY KEY,\n  quality_level VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterTests(\n  test_id INT PRIMARY KEY,\n  source_id INT,\n  quality_id INT,\n  test_date DATE,\n  test_result VARCHAR(50),\n  FOREIGN KEY (source_id) REFERENCES WaterSources(source_id),\n  FOREIGN KEY (quality_id) REFERENCES WaterQualityLevels(quality_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Region (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(255) NOT NULL,\n    region_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterSource (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL,\n    source_location VARCHAR(255) NOT NULL,\n    region_id INT NOT NULL,\n    FOREIGN KEY (region_id) REFERENCES Region(region_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterQuality (\n    quality_id INT PRIMARY KEY,\n    quality_level INT NOT NULL,\n    source_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (source_id) REFERENCES WaterSource(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PollutionData (\n    data_id INT PRIMARY KEY,\n    pollution_type VARCHAR(255) NOT NULL,\n    pollution_level INT NOT NULL,\n    source_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (source_id) REFERENCES WaterSource(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MonitoringStation (\n    station_id INT PRIMARY KEY,\n    station_name VARCHAR(255) NOT NULL,\n    station_location VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE personalized_quizzes (\n    quiz_id INT PRIMARY KEY,\n    quiz_name VARCHAR(255),\n    quiz_topic VARCHAR(255),\n    learning_goal VARCHAR(255),\n    number_of_questions INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quizzes (\n    quiz_id INT PRIMARY KEY,\n    quiz_name VARCHAR(255),\n    quiz_topic VARCHAR(255),\n    quiz_difficulty VARCHAR(50),\n    quiz_questions JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_goals (\n    user_id INT PRIMARY KEY,\n    learning_goal TEXT,\n    assessment_progress FLOAT,\n    last_activity TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (user_id INT PRIMARY KEY, username VARCHAR, email VARCHAR, learning_goal VARCHAR);"
+      },
+      {
+        "table_schema": "CREATE TABLE quizzes (quiz_id INT PRIMARY KEY, quiz_name VARCHAR, topic VARCHAR, difficulty VARCHAR, creator_id INT, FOREIGN KEY (creator_id) REFERENCES users(user_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE quiz_attempts (attempt_id INT PRIMARY KEY, user_id INT, quiz_id INT, score INT, attempt_date TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users(user_id), FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE learning_goals (\n    goal_id INT PRIMARY KEY,\n    goal_name TEXT,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quiz_questions (\n    question_id INT PRIMARY KEY,\n    question_text TEXT,\n    correct_answer TEXT,\n    learning_goal_id INT REFERENCES learning_goals(goal_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username TEXT,\n    email TEXT,\n    learning_goal_id INT REFERENCES learning_goals(goal_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_responses (\n    response_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_profiles(user_id),\n    question_id INT REFERENCES quiz_questions(question_id),\n    user_answer TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE User (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(255),\n    email VARCHAR(255),\n    learning_goal VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Quiz (\n    quiz_id INT PRIMARY KEY,\n    quiz_name VARCHAR(255),\n    topic VARCHAR(255),\n    difficulty INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Question (\n    question_id INT PRIMARY KEY,\n    question_text VARCHAR(255),\n    answer VARCHAR(255),\n    quiz_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserQuizResult (\n    result_id INT PRIMARY KEY,\n    user_id INT,\n    quiz_id INT,\n    score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LearningGoal (\n    goal_id INT PRIMARY KEY,\n    goal_name VARCHAR(255),\n    description TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FishingActivities (\n  activity_id SERIAL PRIMARY KEY,\n  activity_date DATE NOT NULL,\n  fish_species VARCHAR(50) NOT NULL,\n  fishing_location VARCHAR(100) NOT NULL,\n  fish_quantity DECIMAL(10,2) NOT NULL,\n  fishing_quota DECIMAL(10,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fisherman (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    age INT,\n    address VARCHAR(100)\n);\n\nCREATE TABLE fishing_quota (\n    quota_id INT PRIMARY KEY,\n    fish_species VARCHAR(50),\n    total_amount FLOAT,\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Fisherman (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    age INT,\n    address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FishingQuota (\n    quota_id INT PRIMARY KEY,\n    fish_type VARCHAR(50),\n    quota_amount INT,\n    valid_from DATE,\n    valid_to DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FishingActivity (\n    activity_id INT PRIMARY KEY,\n    fisherman_id INT,\n    quota_id INT,\n    activity_date DATE,\n    location VARCHAR(100),\n    FOREIGN KEY (fisherman_id) REFERENCES Fisherman(id),\n    FOREIGN KEY (quota_id) REFERENCES FishingQuota(quota_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fishing_vessels (\n   vessel_id INT PRIMARY KEY,\n   vessel_name VARCHAR(50) NOT NULL,\n   registration_date DATE,\n   fishing_license_number VARCHAR(20) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fishing_catches (\n   catch_id INT PRIMARY KEY,\n   vessel_id INT,\n   catch_date DATE,\n   catch_species VARCHAR(50) NOT NULL,\n   catch_weight DECIMAL(10,2) NOT NULL,\n   FOREIGN KEY (vessel_id) REFERENCES fishing_vessels(vessel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fishing_quotas (\n   quota_id INT PRIMARY KEY,\n   quota_species VARCHAR(50) NOT NULL,\n   quota_limit DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fishing_logs (\n   log_id INT PRIMARY KEY,\n   catch_id INT,\n   log_date DATE,\n   log_description TEXT,\n   FOREIGN KEY (catch_id) REFERENCES fishing_catches(catch_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Fishing_Zones (\n  zone_id UUID PRIMARY KEY,\n  zone_name VARCHAR(50) NOT NULL,\n  country VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Fishing_Vessels (\n  vessel_id UUID PRIMARY KEY,\n  vessel_name VARCHAR(100) NOT NULL,\n  vessel_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Fishing_Quotas (\n  quota_id UUID PRIMARY KEY,\n  zone_id UUID REFERENCES Fishing_Zones(zone_id),\n  quota_amount INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Fishing_Logs (\n  log_id UUID PRIMARY KEY,\n  vessel_id UUID REFERENCES Fishing_Vessels(vessel_id),\n  zone_id UUID REFERENCES Fishing_Zones(zone_id),\n  fish_type VARCHAR(50) NOT NULL,\n  catch_amount INT NOT NULL,\n  log_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Fishing_CatchData (\n  catch_id UUID PRIMARY KEY,\n  log_id UUID REFERENCES Fishing_Logs(log_id),\n  species VARCHAR(50) NOT NULL,\n  weight DECIMAL(10,2) NOT NULL\n);"
+      }
+    ]
+  }
+]

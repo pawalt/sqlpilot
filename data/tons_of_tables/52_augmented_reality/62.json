@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_data (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude DECIMAL(10, 8),\n    longitude DECIMAL(11, 8),\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ArvrLocationData (\n  id INT PRIMARY KEY,\n  latitude FLOAT NOT NULL,\n  longitude FLOAT NOT NULL,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ArvrUser (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  location_id INT,\n  online_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(50) NOT NULL,\n  latitude DECIMAL(10, 8),\n  longitude DECIMAL(11, 8)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(50) NOT NULL,\n  registration_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_locations (\n  user_id INT,\n  location_id INT,\n  visit_date DATE,\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (location_id) REFERENCES locations(location_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(50) NOT NULL,\n  latitude FLOAT NOT NULL,\n  longitude FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  user_id INT PRIMARY KEY,\n  user_name VARCHAR(50) NOT NULL,\n  email VARCHAR(50) UNIQUE,\n  role VARCHAR(20) DEFAULT 'user'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(50) NOT NULL,\n  user_id INT REFERENCES Users(user_id),\n  location_id INT REFERENCES Locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Logs (\n  log_id INT PRIMARY KEY,\n  user_id INT REFERENCES Users(user_id),\n  device_id INT REFERENCES Devices(device_id),\n  action_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    age INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id SERIAL PRIMARY KEY,\n    location_name VARCHAR(100) NOT NULL,\n    latitude DECIMAL(9,6) NOT NULL,\n    longitude DECIMAL(9,6) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    device_name VARCHAR(50) NOT NULL,\n    platform VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    device_id INT REFERENCES devices(device_id),\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE navigation (\n    navigation_id SERIAL PRIMARY KEY,\n    session_id INT REFERENCES sessions(session_id),\n    location_id INT REFERENCES locations(location_id),\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

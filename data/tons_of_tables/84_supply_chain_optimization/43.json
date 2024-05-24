@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_schedules (\n  schedule_id INT PRIMARY KEY,\n  carrier_name VARCHAR,\n  expected_arrival_date DATE,\n  shipment_status VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_schedules (\n  schedule_id INT PRIMARY KEY,\n  shipment_date DATE,\n  destination VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tracking_records (\n  record_id INT PRIMARY KEY,\n  schedule_id INT,\n  status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingCompanies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255) NOT NULL,\n    contact_email VARCHAR(255) NOT NULL,\n    contact_phone VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingSchedules (\n    schedule_id INT PRIMARY KEY,\n    company_id INT,\n    departure_location VARCHAR(255) NOT NULL,\n    arrival_location VARCHAR(255) NOT NULL,\n    departure_time TIMESTAMP,\n    arrival_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliveryStatus (\n    delivery_id INT PRIMARY KEY,\n    schedule_id INT,\n    status VARCHAR(50) NOT NULL,\n    update_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingSchedule (\n    shipment_id UUID PRIMARY KEY,\n    destination_address VARCHAR(255) NOT NULL,\n    delivery_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShipmentStatus (\n    shipment_id UUID PRIMARY KEY,\n    current_status VARCHAR(50) NOT NULL,\n    update_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliveryPersonnel (\n    personnel_id UUID PRIMARY KEY,\n    personnel_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliveryLog (\n    log_id UUID PRIMARY KEY,\n    shipment_id UUID REFERENCES ShippingSchedule(shipment_id),\n    delivery_date DATE,\n    delivery_personnel_id UUID REFERENCES DeliveryPersonnel(personnel_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingCompany (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(50),\n    company_location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingSchedule (\n    schedule_id INT PRIMARY KEY,\n    departure_date DATE,\n    arrival_date DATE,\n    route_id INT,\n    company_id INT,\n    FOREIGN KEY (company_id) REFERENCES ShippingCompany(company_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingRoute (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(50),\n    origin_location VARCHAR(100),\n    destination_location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliveryStatus (\n    status_id INT PRIMARY KEY,\n    status_description VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliveryTracking (\n    tracking_id INT PRIMARY KEY,\n    schedule_id INT,\n    status_id INT,\n    delivery_date DATE,\n    location VARCHAR(100),\n    FOREIGN KEY (schedule_id) REFERENCES ShippingSchedule(schedule_id),\n    FOREIGN KEY (status_id) REFERENCES DeliveryStatus(status_id)\n);\n"
+      }
+    ]
+  }
+]

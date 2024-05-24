@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ad_creatives(\n    ad_id INT PRIMARY KEY,\n    ad_name VARCHAR(255),\n    ad_content TEXT,\n    ad_type ENUM('image', 'video', 'text'),\n    test_group ENUM('A', 'B'),\n    clicks INT,\n    conversions INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ad_creatives (\n    ad_id INT PRIMARY KEY,\n    campaign_id INT,\n    creative_name VARCHAR,\n    creative_type VARCHAR,\n    clicks INT,\n    impressions INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_performance (\n    performance_id INT PRIMARY KEY,\n    ad_id INT,\n    date DATE,\n    conversion_rate FLOAT,\n    revenue DECIMAL,\n    cost DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ad_creatives (\n    id INT PRIMARY KEY,\n    ad_name VARCHAR(255),\n    creative_text TEXT,\n    image_url VARCHAR(255),\n    targeting_criteria VARCHAR(255),\n    active BOOL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    ad_creative_id INT REFERENCES ad_creatives(id),\n    experiment_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    id INT PRIMARY KEY,\n    experiment_id INT REFERENCES experiments(id),\n    conversion_rate FLOAT,\n    engagement_rate FLOAT,\n    revenue_generated DECIMAL(10,2),\n    successful_variation VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ad_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_creatives (\n    creative_id INT PRIMARY KEY,\n    campaign_id INT,\n    creative_name VARCHAR(255),\n    creative_type VARCHAR(50),\n    image_url VARCHAR(255),\n    video_url VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_variants (\n    variant_id INT PRIMARY KEY,\n    creative_id INT,\n    variant_name VARCHAR(255),\n    variant_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_performance (\n    performance_id INT PRIMARY KEY,\n    variant_id INT,\n    views INT,\n    clicks INT,\n    conversions INT,\n    spend DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ad_creative (\n  id UUID PRIMARY KEY,\n  creative_name VARCHAR,\n  campaign_id UUID,\n  variation_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign (\n  id UUID PRIMARY KEY,\n  campaign_name VARCHAR,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_placement (\n  id UUID PRIMARY KEY,\n  placement_name VARCHAR,\n  cost DECIMAL,\n  impressions INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_variant (\n  id UUID PRIMARY KEY,\n  variant_name VARCHAR,\n  creative_id UUID,\n  is_winner BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE test_results (\n  id UUID PRIMARY KEY,\n  test_id UUID,\n  variant_id UUID,\n  conversion_rate DECIMAL,\n  clicks INT\n);"
+      }
+    ]
+  }
+]

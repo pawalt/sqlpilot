@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_data (\n  parking_id INT PRIMARY KEY,\n  parking_location VARCHAR(255),\n  parking_status VARCHAR(50),\n  car_plate_number VARCHAR(20),\n  check_in_time TIMESTAMP,\n  check_out_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_lots (\n  parking_lot_id UUID PRIMARY KEY,\n  parking_lot_name TEXT,\n  total_spaces INT,\n  available_spaces INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_log (\n  log_id SERIAL PRIMARY KEY,\n  parking_lot_id UUID,\n  entry_time TIMESTAMP,\n  exit_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_zones (\n  zone_id INT PRIMARY KEY,\n  zone_name VARCHAR(50),\n  city_id INT,\n  total_spaces INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_spots (\n  spot_id INT PRIMARY KEY,\n  zone_id INT,\n  occupied BOOLEAN,\n  FOREIGN KEY (zone_id) REFERENCES parking_zones(zone_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_history (\n  entry_id SERIAL PRIMARY KEY,\n  spot_id INT,\n  entry_time TIMESTAMP,\n  exit_time TIMESTAMP,\n  FOREIGN KEY (spot_id) REFERENCES parking_spots(spot_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_lots (\n  lot_id INT PRIMARY KEY,\n  lot_name VARCHAR(50),\n  location VARCHAR(100),\n  total_spaces INT,\n  available_spaces INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_sensors (\n  sensor_id INT PRIMARY KEY,\n  lot_id INT,\n  floor INT,\n  sensor_type VARCHAR(20),\n  status VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_transactions (\n  transaction_id INT PRIMARY KEY,\n  sensor_id INT,\n  timestamp TIMESTAMP,\n  vehicle_plate VARCHAR(15),\n  payment_amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_statistics (\n  stat_id INT PRIMARY KEY,\n  lot_id INT,\n  date DATE,\n  total_visits INT,\n  revenue DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parking_lots (\n    lot_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    capacity INT,\n    current_occupancy INT,\n    status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id INT PRIMARY KEY,\n    license_plate VARCHAR(50),\n    vehicle_type VARCHAR(50),\n    user_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    name VARCHAR(100),\n    email VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE parking_events (\n    event_id INT PRIMARY KEY,\n    vehicle_id INT,\n    lot_id INT,\n    enter_time TIMESTAMP,\n    exit_time TIMESTAMP,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id),\n    FOREIGN KEY (lot_id) REFERENCES parking_lots(lot_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    event_id INT,\n    amount DECIMAL(10, 2),\n    payment_time TIMESTAMP,\n    FOREIGN KEY (event_id) REFERENCES parking_events(event_id)\n)"
+      }
+    ]
+  }
+]

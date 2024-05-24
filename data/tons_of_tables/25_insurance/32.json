@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE underwriting_guidelines (\n    guideline_id SERIAL PRIMARY KEY,\n    policy_type VARCHAR(50) NOT NULL,\n    max_loan_amount DECIMAL NOT NULL,\n    min_credit_score INTEGER NOT NULL,\n    debt_to_income_ratio DECIMAL NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE underwriting_guidelines (\n    id INT PRIMARY KEY,\n    policy_type VARCHAR(50),\n    age_limit INT,\n    income_limit DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_pricing (\n    id INT PRIMARY KEY,\n    policy_type VARCHAR(50),\n    base_price DECIMAL(10, 2),\n    risk_factor DECIMAL(5, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UnderwritingGuidelines (\n  guideline_id INT PRIMARY KEY,\n  guideline_name VARCHAR(255) NOT NULL,\n  description TEXT,\n  min_age INT,\n  max_age INT,\n  min_income DECIMAL,\n  max_income DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RiskAssessment (\n  assessment_id INT PRIMARY KEY,\n  guideline_id INT,\n  risk_score INT,\n  risk_category VARCHAR(50),\n  FOREIGN KEY (guideline_id) REFERENCES UnderwritingGuidelines(guideline_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyPricing (\n  policy_id INT PRIMARY KEY,\n  guideline_id INT,\n  base_price DECIMAL,\n  discount_rate DECIMAL,\n  FOREIGN KEY (guideline_id) REFERENCES UnderwritingGuidelines(guideline_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE underwriting_guidelines (\n\tid UUID PRIMARY KEY,\n\tproduct_name VARCHAR(255) NOT NULL,\n\tage_range JSONB,\n\tincome_range JSONB,\n\tcredit_score_range JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UnderwritingGuidelines (\n  guideline_id INT PRIMARY KEY,\n  guideline_description VARCHAR(255),\n  min_age INT,\n  max_age INT,\n  min_income DECIMAL(10,2),\n  max_income DECIMAL(10,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RiskAssessment (\n  risk_id INT PRIMARY KEY,\n  guideline_id INT,\n  risk_category VARCHAR(50),\n  risk_score INT,\n  FOREIGN KEY (guideline_id) REFERENCES UnderwritingGuidelines(guideline_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyPricing (\n  policy_id INT PRIMARY KEY,\n  risk_id INT,\n  base_premium DECIMAL(10,2),\n  final_premium DECIMAL(10,2),\n  FOREIGN KEY (risk_id) REFERENCES RiskAssessment(risk_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerInfo (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(100),\n  address VARCHAR(255),\n  email VARCHAR(50),\n  phone_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyHistory (\n  policy_id INT,\n  customer_id INT,\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(20),\n  PRIMARY KEY (policy_id, customer_id),\n  FOREIGN KEY (policy_id) REFERENCES PolicyPricing(policy_id),\n  FOREIGN KEY (customer_id) REFERENCES CustomerInfo(customer_id)\n)"
+      }
+    ]
+  }
+]

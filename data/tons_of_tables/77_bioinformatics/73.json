@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomicData (\n   sequence_id INT PRIMARY KEY,\n   sequence_name TEXT,\n   sequence_data BYTEA,\n   annotation TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomeData (\n id INT PRIMARY KEY,\n sequence TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AnnotationData (\n id INT PRIMARY KEY,\n gene_name TEXT,\n start_position INT,\n end_position INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomicSequences (\n  sequence_id SERIAL PRIMARY KEY,\n  sequence TEXT NOT NULL,\n  created_at TIMESTAMPTZ DEFAULT current_timestamp\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Annotations (\n  annotation_id SERIAL PRIMARY KEY,\n  sequence_id INTEGER REFERENCES GenomicSequences(sequence_id),\n  annotation TEXT NOT NULL,\n  created_at TIMESTAMPTZ DEFAULT current_timestamp\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE AnnotationsMetadata (\n  metadata_id SERIAL PRIMARY KEY,\n  annotation_id INTEGER REFERENCES Annotations(annotation_id),\n  metadata JSONB,\n  created_at TIMESTAMPTZ DEFAULT current_timestamp\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genomic_sequences (\n    id INT PRIMARY KEY,\n    sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n    id INT PRIMARY KEY,\n    sequence_id INT,\n    annotation_text TEXT,\n    FOREIGN KEY (sequence_id) REFERENCES genomic_sequences (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    access_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users (user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sequences (id SERIAL PRIMARY KEY,\nsequence TEXT NOT NULL,\nlength INT NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (id SERIAL PRIMARY KEY,\nsequence_id INT REFERENCES sequences(id),\nannotation TEXT NOT NULL,\nstart_position INT NOT NULL,\nend_position INT NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (id SERIAL PRIMARY KEY,\nusername TEXT UNIQUE NOT NULL,\npassword TEXT NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (id SERIAL PRIMARY KEY,\nuser_id INT REFERENCES users(id),\nlevel INT NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE metadata (id SERIAL PRIMARY KEY,\nsequence_id INT REFERENCES sequences(id),\ncreated_at TIMESTAMP NOT NULL);\n"
+      }
+    ]
+  }
+]

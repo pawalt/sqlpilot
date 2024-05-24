@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ForestMonitoring ( \n    id SERIAL PRIMARY KEY, \n    location VARCHAR(100), \n    deforestation_rate FLOAT, \n    monitoring_date DATE \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE forest_areas (\n    id INT PRIMARY KEY,\n    area_name VARCHAR(255),\n    latitude DECIMAL,\n    longitude DECIMAL,\n    deforestation_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deforestation_data (\n    data_id INT PRIMARY KEY,\n    area_id INT,\n    date DATE,\n    deforestation_amount DECIMAL,\n    CONSTRAINT fk_area FOREIGN KEY (area_id) REFERENCES forest_areas(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ForestRegions (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(50) NOT NULL,\n  area_in_hectares DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DeforestationData (\n  data_id INT PRIMARY KEY,\n  region_id INT,\n  timestamp TIMESTAMP NOT NULL,\n  deforestation_rate DECIMAL(5, 2) NOT NULL,\n  FOREIGN KEY (region_id) REFERENCES ForestRegions(region_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ReforestationEfforts (\n  effort_id INT PRIMARY KEY,\n  region_id INT,\n  timestamp TIMESTAMP NOT NULL,\n  trees_planted INT NOT NULL,\n  success_rate DECIMAL(5, 2) NOT NULL,\n  FOREIGN KEY (region_id) REFERENCES ForestRegions(region_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Forests (\n    forest_id INT PRIMARY KEY,\n    forest_name VARCHAR(50),\n    location VARCHAR(100),\n    deforestation_rate FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DeforestationData (\n    data_id INT PRIMARY KEY,\n    forest_id INT,\n    date DATE,\n    deforestation_area FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ReforestationEfforts (\n    effort_id INT PRIMARY KEY,\n    forest_id INT,\n    date DATE,\n    reforestation_area FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ReforestationTrends (\n    trend_id INT PRIMARY KEY,\n    forest_id INT,\n    trend_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ForestRegions (\n\tregion_id INT PRIMARY KEY,\n\tregion_name VARCHAR(50) NOT NULL,\n\tarea_covered FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeforestationData (\n\tdata_id INT PRIMARY KEY,\n\tregion_id INT REFERENCES ForestRegions(region_id),\n\tyear INT NOT NULL,\n\tdeforestation_rate FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ReforestationEfforts (\n\teffort_id INT PRIMARY KEY,\n\tregion_id INT REFERENCES ForestRegions(region_id),\n\tyear INT NOT NULL,\n\treforestation_area FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WeatherConditions (\n\tcondition_id INT PRIMARY KEY,\n\tyear INT NOT NULL,\n\tseason VARCHAR(20) NOT NULL,\n\taverage_temperature FLOAT NOT NULL,\n\trainfall_amount FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Organizations (\n\torg_id INT PRIMARY KEY,\n\torg_name VARCHAR(50) NOT NULL,\n\torg_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

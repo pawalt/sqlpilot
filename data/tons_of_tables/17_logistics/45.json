@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory_management (\n  hub_id INT PRIMARY KEY,\n  hub_name VARCHAR(255) NOT NULL,\n  product_id INT NOT NULL,\n  product_name VARCHAR(255) NOT NULL,\n  stock_quantity INT DEFAULT 0\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory_levels (\n    id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    current_stock INT,\n    min_stock_threshold INT,\n    delivery_hub_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_hubs (\n    id INT PRIMARY KEY,\n    hub_name VARCHAR(255),\n    location VARCHAR(255),\n    capacity INT,\n    hub_manager_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory_level (\n    id INT,\n    product_name VARCHAR(255),\n    quantity INT,\n    delivery_hub_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_hub (\n    id INT,\n    hub_name VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_availability (\n    id INT,\n    product_id INT,\n    hub_id INT,\n    quantity_available INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_hub (\n  hub_id INT PRIMARY KEY,\n  hub_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  category VARCHAR(50) NOT NULL,\n  price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n  inventory_id INT PRIMARY KEY,\n  product_id INT REFERENCES product(product_id),\n  hub_id INT REFERENCES delivery_hub(hub_id),\n  quantity INT NOT NULL,\n  last_update TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (\n  transaction_id INT PRIMARY KEY,\n  product_id INT REFERENCES product(product_id),\n  hub_id INT REFERENCES delivery_hub(hub_id),\n  quantity_sold INT NOT NULL,\n  transaction_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_hubs (\n\thub_id SERIAL PRIMARY KEY,\n\thub_name VARCHAR(50) NOT NULL,\n\tlocation VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_items (\n\titem_id SERIAL PRIMARY KEY,\n\titem_name VARCHAR(50) NOT NULL,\n\titem_description TEXT,\n\tprice DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_levels (\n\tstock_id SERIAL PRIMARY KEY,\n\titem_id INT REFERENCES inventory_items(item_id),\n\thub_id INT REFERENCES delivery_hubs(hub_id),\n\tquantity INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE deliveries (\n\tdelivery_id SERIAL PRIMARY KEY,\n\tdelivery_date DATE NOT NULL,\n\thub_id INT REFERENCES delivery_hubs(hub_id),\n\tstatus VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_items (\n\tdelivery_item_id SERIAL PRIMARY KEY,\n\tdelivery_id INT REFERENCES deliveries(delivery_id),\n\titem_id INT REFERENCES inventory_items(item_id),\n\tquantity INT NOT NULL\n);\n"
+      }
+    ]
+  }
+]

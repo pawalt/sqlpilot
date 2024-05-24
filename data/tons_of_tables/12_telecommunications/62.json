@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_positions (\n\tsatellite_id INT,\n\tsatellite_name VARCHAR(50),\n\tlatitude DECIMAL(10, 2),\n\tlongitude DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n    id UUID PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    altitude FLOAT NOT NULL,\n    longitude FLOAT NOT NULL,\n    latitude FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orbits (\n    orbit_id UUID PRIMARY KEY,\n    satellite_id UUID NOT NULL,\n    orbit_type VARCHAR(50) NOT NULL,\n    orbit_period FLOAT NOT NULL,\n    orbit_angle FLOAT NOT NULL,\n    FOREIGN KEY (satellite_id) REFERENCES satellites(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT\n);\nCREATE TABLE orbits (\n    id INT PRIMARY KEY,\n    satellite_id INT,\n    orbit_type VARCHAR(100),\n    altitude FLOAT\n);\nCREATE TABLE positions (\n    id INT PRIMARY KEY,\n    satellite_id INT,\n    timestamp TIMESTAMP,\n    position_x FLOAT,\n    position_y FLOAT,\n    position_z FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n    satellite_id UUID PRIMARY KEY,\n    satellite_name TEXT,\n    orbit_type TEXT,\n    altitude_km DOUBLE PRECISION\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE orbits (\n    orbit_id UUID PRIMARY KEY,\n    orbit_name TEXT,\n    period_minutes DOUBLE PRECISION\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE positions (\n    position_id UUID PRIMARY KEY,\n    satellite_id UUID REFERENCES satellites(satellite_id),\n    longitude_deg DOUBLE PRECISION,\n    latitude_deg DOUBLE PRECISION,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tracking_history (\n    tracking_id UUID PRIMARY KEY,\n    satellite_id UUID REFERENCES satellites(satellite_id),\n    position_id UUID REFERENCES positions(position_id),\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n  satellite_id INT PRIMARY KEY,\n  satellite_name TEXT,\n  orbit_radius FLOAT,\n  orbit_speed FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_positions (\n  position_id SERIAL PRIMARY KEY,\n  satellite_id INT,\n  timestamp TIMESTAMP,\n  latitude FLOAT,\n  longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_orbits (\n  orbit_id SERIAL PRIMARY KEY,\n  satellite_id INT,\n  orbit_type TEXT,\n  inclination FLOAT,\n  eccentricity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_tracks (\n  track_id SERIAL PRIMARY KEY,\n  satellite_id INT,\n  track_start TIMESTAMP,\n  track_end TIMESTAMP,\n  track_duration INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_telemetry (\n  telemetry_id SERIAL PRIMARY KEY,\n  satellite_id INT,\n  timestamp TIMESTAMP,\n  telemetry_data JSON\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cross_org_data_sharing (\n    contract_id SERIAL PRIMARY KEY,\n    organization_id INT NOT NULL,\n    data JSONB NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Organization (\n\torg_id INT PRIMARY KEY,\n\torg_name VARCHAR(100) NOT NULL,\n\torg_type VARCHAR(50) NOT NULL,\n\torg_size INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SmartContract (\n\tcontract_id INT PRIMARY KEY,\n\tcontract_name VARCHAR(100) NOT NULL,\n\torg_id INT,\n\tCONSTRAINT fk_organization FOREIGN KEY (org_id) REFERENCES Organization(org_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SmartContracts (\n    id INT PRIMARY KEY,\n    contract_name VARCHAR(255),\n    organization_id INT,\n    contract_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Organizations (\n    id INT PRIMARY KEY,\n    organization_name VARCHAR(255),\n    industry VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataSharing (\n    id INT PRIMARY KEY,\n    shared_data_id INT,\n    organization_id INT,\n    status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Organization (\n  org_id UUID PRIMARY KEY,\n  org_name VARCHAR(255) NOT NULL,\n  org_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE User (\n  user_id UUID PRIMARY KEY,\n  user_name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE,\n  org_id UUID REFERENCES Organization(org_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Contract (\n  contract_id UUID PRIMARY KEY,\n  contract_name VARCHAR(255) NOT NULL,\n  contract_amount DECIMAL(10,2),\n  org_id UUID REFERENCES Organization(org_id),\n  user_id UUID REFERENCES User(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SharePermission (\n  permission_id UUID PRIMARY KEY,\n  permission_type VARCHAR(50) NOT NULL,\n  contract_id UUID REFERENCES Contract(contract_id),\n  org_id UUID REFERENCES Organization(org_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE organization (\n    org_id INT PRIMARY KEY,\n    org_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_contract (\n    contract_id INT PRIMARY KEY,\n    contract_name VARCHAR(100) NOT NULL,\n    org_id INT REFERENCES organization(org_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_shared (\n    data_id INT PRIMARY KEY,\n    data_name VARCHAR(100) NOT NULL,\n    contract_id INT REFERENCES smart_contract(contract_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_access (\n    access_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    contract_id INT REFERENCES smart_contract(contract_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    access_time TIMESTAMP NOT NULL,\n    access_type VARCHAR(50) NOT NULL,\n    access_id INT REFERENCES data_access(access_id)\n);"
+      }
+    ]
+  }
+]

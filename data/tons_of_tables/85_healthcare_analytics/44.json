@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraud_detection (\n\ttransaction_id INT,\n\tcustomer_id INT,\n\ttransaction_amount DECIMAL(10, 2),\n\ttransaction_date DATE,\n\tis_fraudulent BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraudulent_transactions (\n    transaction_id UUID PRIMARY KEY,\n    amount DECIMAL NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    user_id UUID NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suspicious_users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    registration_date TIMESTAMP NOT NULL,\n    is_suspicious BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraudulent_transactions (\n    transaction_id UUID PRIMARY KEY,\n    amount DECIMAL,\n    transaction_date DATE,\n    account_id UUID\n);\n\nCREATE TABLE suspicious_activity (\n    activity_id UUID PRIMARY KEY,\n    activity_date DATE,\n    description TEXT,\n    transaction_id UUID\n);\n\nCREATE TABLE fraud_patterns (\n    pattern_id UUID PRIMARY KEY,\n    pattern_description TEXT,\n    pattern_type VARCHAR(50),\n    detection_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fraudsters (\n    id UUID PRIMARY KEY,\n    name VARCHAR(50),\n    address VARCHAR(100),\n    birthdate DATE,\n    fraud_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    amount DECIMAL(10, 2),\n    merchant VARCHAR(50),\n    customer_id UUID,\n    FOREIGN KEY (customer_id) REFERENCES fraudsters(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id UUID PRIMARY KEY,\n    transaction_id UUID,\n    alert_message VARCHAR(255),\n    status VARCHAR(10),\n    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id UUID PRIMARY KEY,\n    alert_id UUID,\n    reviewer VARCHAR(50),\n    review_date DATE,\n    review_comment TEXT,\n    FOREIGN KEY (alert_id) REFERENCES alerts(alert_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(50),\n    country VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT,\n    amount FLOAT,\n    transaction_date TIMESTAMP,\n    transaction_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flags (\n    flag_id INT PRIMARY KEY,\n    transaction_id INT,\n    flag_reason VARCHAR(100),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE suspicious_activity (\n    activity_id INT PRIMARY KEY,\n    transaction_id INT,\n    activity_type VARCHAR(50),\n    activity_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_patterns (\n    pattern_id INT PRIMARY KEY,\n    pattern_name VARCHAR(50),\n    associated_activity VARCHAR(100),\n    detection_method TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FarmActivity (\n  ID INT PRIMARY KEY,\n  Date DATE,\n  ActivityDescription TEXT,\n  DroneID INT,\n  CONSTRAINT fk_DroneID FOREIGN KEY (DroneID) REFERENCES Drones(ID)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE farm_activities ( \n    id INT PRIMARY KEY, \n    activity_type VARCHAR(50), \n    activity_date DATE, \n    activity_description TEXT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drone_imagery ( \n    image_id INT PRIMARY KEY, \n    drone_id INT, \n    image_path VARCHAR(100), \n    capture_date TIMESTAMP, \n    image_description TEXT, \n    FOREIGN KEY (drone_id) REFERENCES farm_activities(id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE farm_activities (\n  activity_id SERIAL PRIMARY KEY,\n  activity_name TEXT,\n  activity_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drone_images (\n  image_id SERIAL PRIMARY KEY,\n  image_name TEXT,\n  image_date DATE,\n  drone_id INT REFERENCES drones(drone_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drones (\n  drone_id SERIAL PRIMARY KEY,\n  drone_name TEXT,\n  drone_model TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n    drone_id INT PRIMARY KEY,\n    model VARCHAR(50),\n    manufacturer VARCHAR(50),\n    flight_range DECIMAL,\n    max_speed DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE farm_fields (\n    field_id INT PRIMARY KEY,\n    field_name VARCHAR(50),\n    crop_type VARCHAR(50),\n    field_area DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE drone_images (\n    image_id INT PRIMARY KEY,\n    drone_id INT,\n    image_timestamp TIMESTAMP,\n    image_data BYTEA,\n    FOREIGN KEY (drone_id) REFERENCES drones(drone_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE farm_activities (\n    activity_id INT PRIMARY KEY,\n    field_id INT,\n    activity_type VARCHAR(50),\n    activity_date DATE,\n    drone_image_id INT,\n    FOREIGN KEY (field_id) REFERENCES farm_fields(field_id),\n    FOREIGN KEY (drone_image_id) REFERENCES drone_images(image_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones (\n  drone_id INT PRIMARY KEY,\n  drone_type VARCHAR(50),\n  flight_range_km FLOAT,\n  max_speed_kmh INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE farms (\n  farm_id INT PRIMARY KEY,\n  farm_name VARCHAR(100),\n  farm_location VARCHAR(100),\n  farm_size_acres FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE images (\n  image_id INT PRIMARY KEY,\n  image_date DATE,\n  drone_id INT,\n  farm_id INT,\n  FOREIGN KEY(drone_id) REFERENCES drones(drone_id),\n  FOREIGN KEY(farm_id) REFERENCES farms(farm_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE monitoring_reports (\n  report_id INT PRIMARY KEY,\n  report_date DATE,\n  farm_id INT,\n  report_text TEXT,\n  FOREIGN KEY(farm_id) REFERENCES farms(farm_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE activities (\n  activity_id INT PRIMARY KEY,\n  activity_name VARCHAR(50),\n  activity_date DATE,\n  farm_id INT,\n  FOREIGN KEY(farm_id) REFERENCES farms(farm_id)\n);\n"
+      }
+    ]
+  }
+]

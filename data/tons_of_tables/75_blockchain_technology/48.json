@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_ownership (\n    asset_id UUID PRIMARY KEY,\n    owner_address VARCHAR(255) NOT NULL,\n    transfer_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_ownership (\n    asset_id INT PRIMARY KEY,\n    owner_address VARCHAR(255),\n    transfer_date TIMESTAMP\n);\n\nCREATE TABLE asset_transfer (\n    transfer_id INT PRIMARY KEY,\n    asset_id INT,\n    previous_owner VARCHAR(255),\n    new_owner VARCHAR(255),\n    transfer_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recording_ownership (\n  record_id SERIAL PRIMARY KEY,\n  asset_name VARCHAR(255) NOT NULL,\n  owner_name VARCHAR(255) NOT NULL,\n  transfer_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokenization_smart_contracts (\n  contract_id SERIAL PRIMARY KEY,\n  contract_name VARCHAR(255) NOT NULL,\n  contract_address VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_ownership (\n  token_id SERIAL PRIMARY KEY,\n  contract_id INT REFERENCES tokenization_smart_contracts(contract_id),\n  token_owner VARCHAR(255) NOT NULL,\n  transfer_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recording_ownership (\n    id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    owner_address VARCHAR(255),\n    contract_address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_transfer (\n    transfer_id INT PRIMARY KEY,\n    asset_id INT,\n    from_address VARCHAR(255),\n    to_address VARCHAR(255),\n    transfer_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_tokenization (\n    token_id INT PRIMARY KEY,\n    asset_id INT,\n    token_name VARCHAR(255),\n    token_symbol VARCHAR(10),\n    total_supply INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_tokens (\n    contract_id INT PRIMARY KEY,\n    owner_address VARCHAR(255),\n    token_id INT,\n    token_address VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_owners (\n  owner_id INT PRIMARY KEY,\n  owner_name VARCHAR(255) NOT NULL,\n  asset_id INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_transfers (\n  transfer_id INT PRIMARY KEY,\n  asset_id INT NOT NULL,\n  previous_owner_id INT NOT NULL,\n  new_owner_id INT NOT NULL,\n  transfer_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(255) NOT NULL,\n  asset_type VARCHAR(50) NOT NULL,\n  token_price DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE token_owners (\n  token_owner_id INT PRIMARY KEY,\n  token_owner_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_tokens (\n  asset_id INT NOT NULL,\n  token_id INT NOT NULL,\n  token_owner_id INT NOT NULL,\n  token_balance INT NOT NULL\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advertising_data (\n  platform_id UUID PRIMARY KEY,\n  platform_name VARCHAR(50),\n  ad_campaign_id UUID,\n  ad_campaign_name VARCHAR(100),\n  impressions INT,\n  clicks INT,\n  conversions INT,\n  revenue DECIMAL(10,2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE platform_data (\n    platform_id INT NOT NULL,\n    platform_name VARCHAR(255) NOT NULL,\n    impressions INT,\n    clicks INT,\n    revenue DECIMAL(10,2)\n);\n\nCREATE TABLE campaign_data (\n    campaign_id INT NOT NULL,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PlatformA_AdData (\n    ad_id INT PRIMARY KEY,\n    ad_name VARCHAR(255),\n    ad_platform VARCHAR(50),\n    ad_clicks INT,\n    ad_impressions INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PlatformB_AdData (\n    ad_id INT PRIMARY KEY,\n    ad_name VARCHAR(255),\n    ad_platform VARCHAR(50),\n    ad_clicks INT,\n    ad_impressions INT,\n    ad_conversions INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PlatformC_AdData (\n    ad_id INT PRIMARY KEY,\n    ad_name VARCHAR(255),\n    ad_platform VARCHAR(50),\n    ad_clicks INT,\n    ad_impressions INT,\n    ad_cost DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE advertising_platforms (\n    platform_id INT PRIMARY KEY,\n    platform_name VARCHAR(50) NOT NULL,\n    platform_type VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(100) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    platform_id INT,\n    FOREIGN KEY (platform_id) REFERENCES advertising_platforms(platform_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ads (\n    ad_id INT PRIMARY KEY,\n    ad_name VARCHAR(100) NOT NULL,\n    ad_type VARCHAR(20) NOT NULL,\n    campaign_id INT,\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_performance (\n    performance_id INT PRIMARY KEY,\n    ad_id INT,\n    impressions INT,\n    clicks INT,\n    conversions INT,\n    spend DECIMAL(10, 2),\n    date DATE,\n    FOREIGN KEY (ad_id) REFERENCES ads(ad_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ad_platforms (id INT PRIMARY KEY,\n platform_name TEXT,\n account_id TEXT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_campaigns (id INT PRIMARY KEY,\n campaign_name TEXT,\n platform_id INT,\n start_date DATE,\n end_date DATE);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_metrics (id INT PRIMARY KEY,\n campaign_id INT,\n clicks INT,\n impressions INT,\n conversions INT,\n spend FLOAT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_spend (id INT PRIMARY KEY,\n platform_id INT,\n date DATE,\n spend FLOAT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_performance (id INT PRIMARY KEY,\n platform_id INT,\n date DATE,\n total_clicks INT,\n total_impressions INT,\n total_conversions INT);\n"
+      }
+    ]
+  }
+]

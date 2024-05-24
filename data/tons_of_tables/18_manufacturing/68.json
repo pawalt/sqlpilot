@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QualityControlDashboards (\n    dashboard_id UUID PRIMARY KEY,\n    dashboard_name TEXT,\n    created_by TEXT,\n    creation_date TIMESTAMP,\n    last_updated TIMESTAMP,\n    metrics JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QualityMetrics (\n    metric_id UUID PRIMARY KEY,\n    metric_name STRING,\n    metric_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Dashboards (\n    dashboard_id UUID PRIMARY KEY,\n    analyst_id UUID,\n    dashboard_name STRING,\n    visibility BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quality_metrics (\n    metric_id SERIAL PRIMARY KEY,\n    metric_name VARCHAR(50) NOT NULL,\n    metric_value FLOAT NOT NULL\n);\n\nCREATE TABLE analysts (\n    analyst_id SERIAL PRIMARY KEY,\n    analyst_name VARCHAR(50) NOT NULL,\n    analyst_department VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE dashboards (\n    dashboard_id SERIAL PRIMARY KEY,\n    dashboard_name VARCHAR(50) NOT NULL,\n    dashboard_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE analysts (\n    analyst_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE metrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(50) NOT NULL,\n    metric_description VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboards (\n    dashboard_id INT PRIMARY KEY,\n    dashboard_name VARCHAR(50) NOT NULL,\n    created_by INT,\n    created_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE dashboard_metrics (\n    dashboard_id INT,\n    metric_id INT,\n    FOREIGN KEY (dashboard_id) REFERENCES dashboards(dashboard_id),\n    FOREIGN KEY (metric_id) REFERENCES metrics(metric_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QualityMetrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Analysts (\n    analyst_id INT PRIMARY KEY,\n    analyst_name VARCHAR(255),\n    analyst_role VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Dashboards (\n    dashboard_id INT PRIMARY KEY,\n    dashboard_name VARCHAR(255),\n    dashboard_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MetricsMapping (\n    mapping_id INT PRIMARY KEY,\n    metric_id INT,\n    analyst_id INT,\n    FOREIGN KEY (metric_id) REFERENCES QualityMetrics(metric_id),\n    FOREIGN KEY (analyst_id) REFERENCES Analysts(analyst_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DashboardMetrics (\n    dashboard_id INT,\n    mapping_id INT,\n    display_order INT,\n    FOREIGN KEY (dashboard_id) REFERENCES Dashboards(dashboard_id),\n    FOREIGN KEY (mapping_id) REFERENCES MetricsMapping(mapping_id)\n);\n"
+      }
+    ]
+  }
+]

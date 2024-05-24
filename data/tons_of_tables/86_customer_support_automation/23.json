@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_scheduling (\n    customer_id UUID PRIMARY KEY,\n    email_address VARCHAR(255),\n    email_time TIMESTAMP,\n    time_zone VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_preferences (\n    customer_id INT PRIMARY KEY,\n    email_preference VARCHAR(50),\n    time_zone VARCHAR(50)\n);\n\nCREATE TABLE email_scheduling (\n    email_id INT PRIMARY KEY,\n    customer_id INT,\n    scheduled_time TIMESTAMP,\n    FOREIGN KEY (customer_id) REFERENCES customer_preferences(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_preferences (\n    customer_id INT PRIMARY KEY,\n    email_frequency VARCHAR(50),\n    email_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_timezones (\n    customer_id INT PRIMARY KEY,\n    timezone VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scheduled_emails (\n    email_id INT PRIMARY KEY,\n    customer_id INT,\n    email_subject VARCHAR(50),\n    scheduled_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    timezone VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_preferences (\n    preference_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    preference_type VARCHAR(50) NOT NULL,\n    frequency VARCHAR(20) NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_schedule (\n    schedule_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    email_type VARCHAR(50) NOT NULL,\n    send_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE time_zones (\n    timezone_id INT PRIMARY KEY,\n    timezone_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_preferences (\n  customer_id INT PRIMARY KEY,\n  email_frequency VARCHAR(50),\n  email_content_preference TEXT,\n  timezone VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n  log_id INT PRIMARY KEY,\n  customer_id INT,\n  email_type VARCHAR(50),\n  sent_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_templates (\n  template_id INT PRIMARY KEY,\n  template_name VARCHAR(100),\n  template_content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE time_zones (\n  zone_id INT PRIMARY KEY,\n  zone_name VARCHAR(50),\n  utc_offset VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_schedule (\n  schedule_id INT PRIMARY KEY,\n  customer_id INT,\n  template_id INT,\n  send_time TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

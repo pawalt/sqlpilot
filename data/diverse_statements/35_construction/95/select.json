@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT project_id, project_name, start_date, end_date, created_by, created_at FROM survey_project_timeline;",
+      "SELECT * FROM survey_project_timeline WHERE start_date > '2022-01-01';",
+      "SELECT project_name, start_date, end_date FROM survey_project_timeline ORDER BY start_date DESC;",
+      "SELECT project_id, project_name, created_by FROM survey_project_timeline WHERE created_at >= '2022-01-01' ORDER BY created_at ASC;",
+      "SELECT project_id, created_by, created_at FROM survey_project_timeline WHERE project_name LIKE '%example%' AND created_by = 'John Doe';",
+      "SELECT project_name, start_date, end_date FROM survey_project_timeline WHERE project_id = '123e4567-e89b-12d3-a456-426655440000';",
+      "SELECT project_name, created_by, created_at FROM survey_project_timeline WHERE start_date > '2022-01-01';",
+      "SELECT * FROM survey_project_timeline WHERE project_name LIKE '%research%';",
+      "SELECT project_name, end_date, created_at FROM survey_project_timeline WHERE created_by = 'Alice' ORDER BY end_date DESC;",
+      "SELECT project_name, start_date, end_date, created_by FROM survey_project_timeline WHERE end_date < '2022-06-30' AND created_by = 'Bob' ORDER BY start_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM project_deadlines WHERE project_id = 1;",
+      "SELECT project_name, end_date FROM project_deadlines WHERE start_date < '2022-12-31';",
+      "SELECT project_id, project_name FROM project_deadlines ORDER BY project_id DESC;",
+      "SELECT * FROM task_deadlines WHERE completion_status = TRUE;",
+      "SELECT task_name, deadline_date FROM task_deadlines ORDER BY deadline_date ASC;",
+      "SELECT project_id, project_name, start_date, end_date FROM project_deadlines WHERE project_id = 1;",
+      "SELECT task_name, deadline_date, completion_status FROM task_deadlines WHERE completion_status = true ORDER BY deadline_date ASC;",
+      "SELECT project_name, start_date, end_date, COUNT(project_id) AS total_projects FROM project_deadlines GROUP BY project_name HAVING COUNT(project_id) > 1;",
+      "SELECT task_name, completion_status, DATE_FORMAT(deadline_date, '%Y-%m-%d') AS formatted_deadline FROM task_deadlines WHERE deadline_date BETWEEN '2022-10-01' AND '2022-12-31';",
+      "SELECT project_name, start_date, end_date, DATEDIFF(end_date, start_date) AS duration_days FROM project_deadlines ORDER BY duration_days DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM survey_projects;",
+      "SELECT project_name, start_date, project_manager FROM survey_projects WHERE project_id = 1;",
+      "SELECT project_id, project_name, start_date, end_date FROM survey_projects WHERE project_manager = 'John Doe';",
+      "SELECT task_name, deadline, task_status FROM survey_tasks WHERE project_id = 2 ORDER BY deadline DESC;",
+      "SELECT member_name, role FROM survey_team WHERE project_id = 3 AND role = 'Developer';",
+      "SELECT * FROM survey_projects WHERE project_name LIKE 'S%' ORDER BY project_name DESC;",
+      "SELECT project_id, project_name, start_date FROM survey_projects WHERE start_date >= '2022-01-01' AND end_date <= '2022-12-31';",
+      "SELECT project_id, project_manager, COUNT(task_id) AS total_tasks FROM survey_projects LEFT JOIN survey_tasks ON survey_projects.project_id = survey_tasks.project_id GROUP BY project_id HAVING COUNT(task_id) > 5;",
+      "SELECT project_name, task_name, deadline FROM survey_projects LEFT JOIN survey_tasks ON survey_projects.project_id = survey_tasks.project_id WHERE deadline >= '2022-11-01' ORDER BY deadline ASC;",
+      "SELECT member_name, role, survey_projects.project_name FROM survey_team JOIN survey_projects ON survey_team.project_id = survey_projects.project_id WHERE role = 'Manager';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Project;",
+      "SELECT project_name, start_date, end_date FROM Project;",
+      "SELECT task_name, deadline FROM Task;",
+      "SELECT project_id, project_name FROM Project WHERE project_id = 1;",
+      "SELECT task_name, deadline FROM Task WHERE project_id = 2;",
+      "SELECT * FROM Project;",
+      "SELECT project_id, project_name FROM Project WHERE start_date > '2022-01-01';",
+      "SELECT t.task_name, p.project_name, e.employee_name FROM Task t JOIN Project p ON t.project_id = p.project_id JOIN TaskAssignee ta ON t.task_id = ta.task_id JOIN Employee e ON ta.employee_id = e.employee_id;",
+      "SELECT t.task_name, COUNT(ta.employee_id) AS total_assignees FROM Task t LEFT JOIN TaskAssignee ta ON t.task_id = ta.task_id GROUP BY t.task_name;",
+      "SELECT e.employee_name, COUNT(ta.task_id) AS total_tasks_assigned FROM Employee e LEFT JOIN TaskAssignee ta ON e.employee_id = ta.employee_id GROUP BY e.employee_name HAVING total_tasks_assigned > 2;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM SurveyProjects;",
+      "SELECT project_name, start_date, end_date FROM SurveyProjects;",
+      "SELECT * FROM SurveyTasks WHERE deadline >= '2022-06-01';",
+      "SELECT project_id, project_name, start_date, end_date FROM SurveyProjects ORDER BY start_date DESC;",
+      "SELECT t.task_name, p.participant_name FROM SurveyTasks t JOIN TaskAssignments ta ON t.task_id = ta.task_id JOIN SurveyParticipants p ON ta.participant_id = p.participant_id;",
+      "SELECT * FROM SurveyProjects ORDER BY project_id DESC;",
+      "SELECT project_name, start_date, end_date FROM SurveyProjects WHERE is_active = TRUE;",
+      "SELECT p.project_name, COUNT(t.task_id) AS task_count FROM SurveyProjects p LEFT JOIN SurveyTasks t ON p.project_id = t.project_id GROUP BY p.project_name;",
+      "SELECT pa.participant_name, ta.task_name, ta.deadline FROM TaskAssignments ta JOIN SurveyParticipants pa ON ta.participant_id = pa.participant_id ORDER BY ta.deadline ASC;",
+      "SELECT t1.task_name AS dependent_task, t2.task_name AS required_task FROM TaskDependencies td JOIN SurveyTasks t1 ON td.dependent_task_id = t1.task_id JOIN SurveyTasks t2 ON td.required_task_id = t2.task_id ORDER BY t1.task_name ASC, t2.task_name DESC;"
+    ]
+  }
+]

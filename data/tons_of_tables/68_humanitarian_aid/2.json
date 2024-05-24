@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE volunteer_schedule (\n    schedule_id INT PRIMARY KEY,\n    volunteer_id INT,\n    task_id INT,\n    schedule_date DATE,\n    start_time TIME,\n    end_time TIME\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Volunteers (\n    volunteer_id INT PRIMARY KEY,\n    volunteer_name VARCHAR(50),\n    volunteer_email VARCHAR(100),\n    volunteer_phone VARCHAR(15)\n);\n\nCREATE TABLE Tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(50),\n    task_description TEXT,\n    task_location VARCHAR(100),\n    volunteer_id INT,\n    FOREIGN KEY (volunteer_id) REFERENCES Volunteers(volunteer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE volunteer_schedule (\n    volunteer_id UUID PRIMARY KEY,\n    date DATE,\n    shift_start TIME,\n    shift_end TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE task_assignment (\n    task_id UUID PRIMARY KEY,\n    volunteer_id UUID,\n    task_description TEXT,\n    assigned_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE deployment_map (\n    deployment_id UUID PRIMARY KEY,\n    location TEXT,\n    task_id UUID,\n    assigned_volunteer UUID\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Volunteer (\n    volunteer_id UUID PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    contact_number VARCHAR(15),\n    address TEXT,\n    availability BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Task (\n    task_id UUID PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    priority INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Schedule (\n    schedule_id UUID PRIMARY KEY,\n    volunteer_id UUID REFERENCES Volunteer(volunteer_id),\n    task_id UUID REFERENCES Task(task_id),\n    date DATE,\n    start_time TIME,\n    end_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Deployment (\n    deployment_id UUID PRIMARY KEY,\n    schedule_id UUID REFERENCES Schedule(schedule_id),\n    location VARCHAR(255) NOT NULL,\n    status VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE volunteers (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n  task_id INT PRIMARY KEY,\n  task_name VARCHAR(255),\n  task_description TEXT,\n  task_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n  schedule_id INT PRIMARY KEY,\n  volunteer_id INT,\n  task_id INT,\n  schedule_date DATE,\n  FOREIGN KEY (volunteer_id) REFERENCES volunteers(id),\n  FOREIGN KEY (task_id) REFERENCES tasks(task_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255),\n  address TEXT,\n  city VARCHAR(100),\n  state VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assignments (\n  assignment_id INT PRIMARY KEY,\n  volunteer_id INT,\n  task_id INT,\n  location_id INT,\n  assignment_date DATE,\n  FOREIGN KEY (volunteer_id) REFERENCES volunteers(id),\n  FOREIGN KEY (task_id) REFERENCES tasks(task_id),\n  FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);\n"
+      }
+    ]
+  }
+]

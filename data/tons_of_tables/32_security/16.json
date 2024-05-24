@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    key_value VARCHAR(100),\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EncryptionKeys (\n  key_id INT PRIMARY KEY,\n  key_value TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SensitiveData (\n  data_id INT PRIMARY KEY,\n  encrypted_data TEXT NOT NULL,\n  FOREIGN KEY (encryption_key_id) REFERENCES EncryptionKeys(key_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_name VARCHAR(255),\n    key_value VARCHAR(255),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id UUID PRIMARY KEY,\n    data_value TEXT,\n    key_id UUID REFERENCES encryption_keys(key_id),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_access_logs (\n    log_id UUID PRIMARY KEY,\n    data_id UUID REFERENCES sensitive_data(data_id),\n    access_type VARCHAR(50),\n    accessed_by VARCHAR(100),\n    access_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys ( key_id INT PRIMARY KEY, key_name VARCHAR(50) NOT NULL, key_value VARCHAR(100) NOT NULL, created_at TIMESTAMP NOT NULL )"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data ( data_id INT PRIMARY KEY, data_content TEXT NOT NULL, encryption_key_id INT NOT NULL, created_at TIMESTAMP NOT NULL, FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(key_id) ON DELETE CASCADE )"
+      },
+      {
+        "table_schema": "CREATE TABLE users ( user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, password_hash VARCHAR(100) NOT NULL, encryption_key_id INT NOT NULL, created_at TIMESTAMP NOT NULL, FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(key_id) ON DELETE CASCADE )"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs ( log_id INT PRIMARY KEY, user_id INT NOT NULL, action VARCHAR(50) NOT NULL, timestamp TIMESTAMP NOT NULL, FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id SERIAL PRIMARY KEY,\n    key_name VARCHAR(50) UNIQUE,\n    key_value BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_records (\n    record_id SERIAL PRIMARY KEY,\n    data_value TEXT,\n    encryption_key_id INT REFERENCES encryption_keys(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_role_mapping (\n    user_id INT REFERENCES users(user_id),\n    role_id INT REFERENCES user_roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n);"
+      }
+    ]
+  }
+]

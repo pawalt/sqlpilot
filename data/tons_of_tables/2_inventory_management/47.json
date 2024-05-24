@@ -1,0 +1,52 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_contracts (\n  contract_id INT PRIMARY KEY,\n  vendor_name VARCHAR,\n  key_terms TEXT,\n  renewal_date DATE,\n  performance_benchmarks TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_contracts (\n    contract_id INT PRIMARY KEY,\n    key_terms VARCHAR(255),\n    renewal_date DATE,\n    performance_benchmarks TEXT\n);\n\nCREATE TABLE vendor_performance (\n    vendor_id INT PRIMARY KEY,\n    metric_name VARCHAR(50),\n    metric_value FLOAT,\n    metric_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VendorContracts (\n    contract_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255),\n    key_terms TEXT,\n    renewal_date DATE,\n    performance_benchmarks TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ContractRenewal (\n    renewal_id INT PRIMARY KEY,\n    contract_id INT,\n    renewal_date DATE,\n    additional_terms TEXT,\n    CONSTRAINT fk_vendor_contract FOREIGN KEY (contract_id) REFERENCES VendorContracts(contract_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceMetrics (\n    metric_id INT PRIMARY KEY,\n    contract_id INT,\n    metric_name VARCHAR(255),\n    metric_value DECIMAL,\n    CONSTRAINT fk_vendor_contract FOREIGN KEY (contract_id) REFERENCES VendorContracts(contract_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_contracts (\n    contract_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255),\n    key_terms TEXT,\n    renewal_date DATE,\n    performance_benchmarks TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_terms (\n    term_id INT PRIMARY KEY,\n    contract_id INT REFERENCES vendor_contracts(contract_id),\n    term_text TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_renewals (\n    renewal_id INT PRIMARY KEY,\n    contract_id INT REFERENCES vendor_contracts(contract_id),\n    renewal_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE benchmarks (\n    benchmark_id INT PRIMARY KEY,\n    contract_id INT REFERENCES vendor_contracts(contract_id),\n    benchmark_text TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_contracts (\n    id UUID PRIMARY KEY,\n    vendor_name VARCHAR(255),\n    key_terms TEXT,\n    renewal_date DATE,\n    performance_benchmarks JSON\n);\n\nCREATE TABLE contract_terms (\n    id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES vendor_contracts(id),\n    term_description TEXT,\n    term_type VARCHAR(50),\n    term_value NUMERIC\n);\n\nCREATE TABLE contract_renewals (\n    id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES vendor_contracts(id),\n    renewal_date DATE,\n    renewed_by VARCHAR(100)\n);\n\nCREATE TABLE benchmarks (\n    id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES vendor_contracts(id),\n    benchmark_label VARCHAR(100),\n    benchmark_value NUMERIC,\n    target_value NUMERIC\n);\n\nCREATE TABLE contract_history (\n    id UUID PRIMARY KEY,\n    contract_id UUID REFERENCES vendor_contracts(id),\n    event_date TIMESTAMP,\n    event_description TEXT\n);"
+      }
+    ]
+  }
+]

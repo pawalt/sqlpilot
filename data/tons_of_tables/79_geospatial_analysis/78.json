@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_imagery (\n    image_id UUID PRIMARY KEY,\n    capture_date DATE,\n    image_url TEXT,\n    sensor_type TEXT,\n    resolution FLOAT,\n    city_name TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_imagery (\n    image_id UUID PRIMARY KEY,\n    image_data BYTEA,\n    timestamp TIMESTAMP,\n    location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE urban_sprawl_monitoring (\n    monitoring_id UUID PRIMARY KEY,\n    image_id UUID,\n    monitoring_date DATE,\n    monitoring_result JSONB,\n    FOREIGN KEY (image_id) REFERENCES satellite_imagery(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(50),\n    capture_date DATE,\n    resolution FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE urban_areas (\n    area_id INT PRIMARY KEY,\n    area_name VARCHAR(50),\n    population INT,\n    area_size FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    metadata_id INT PRIMARY KEY,\n    image_id INT,\n    capture_time TIME,\n    image_quality VARCHAR(20),\n    FOREIGN KEY (image_id) REFERENCES satellite_images(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n id SERIAL PRIMARY KEY,\n image_name TEXT NOT NULL,\n image_date DATE NOT NULL,\n image_resolution TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Satellites (\n id SERIAL PRIMARY KEY,\n satellite_name TEXT NOT NULL,\n launch_date DATE NOT NULL,\n orbit_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Locations (\n id SERIAL PRIMARY KEY,\n location_name TEXT NOT NULL,\n latitude DOUBLE PRECISION NOT NULL,\n longitude DOUBLE PRECISION NOT NULL,\n elevation DOUBLE PRECISION\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageData (\n id SERIAL PRIMARY KEY,\n image_id INTEGER REFERENCES SatelliteImages(id),\n satellite_id INTEGER REFERENCES Satellites(id),\n location_id INTEGER REFERENCES Locations(id),\n image_data BYTEA\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    image_id INT PRIMARY KEY,\n    image_url TEXT,\n    capture_date DATE,\n    location TEXT,\n    resolution TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    metadata_id INT PRIMARY KEY,\n    image_id INT,\n    satellite_name TEXT,\n    sensor_type TEXT,\n    cloud_coverage FLOAT,\n    FOREIGN KEY (image_id) REFERENCES satellite_images(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_annotations (\n    annotation_id INT PRIMARY KEY,\n    image_id INT,\n    annotation_content TEXT,\n    reviewed_by TEXT,\n    review_date DATE,\n    FOREIGN KEY (image_id) REFERENCES satellite_images(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    label_id INT PRIMARY KEY,\n    image_id INT,\n    label_name TEXT,\n    confidence_level FLOAT,\n    FOREIGN KEY (image_id) REFERENCES satellite_images(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_analysis_results (\n    analysis_id INT PRIMARY KEY,\n    image_id INT,\n    analysis_date DATE,\n    analysis_results JSON,\n    FOREIGN KEY (image_id) REFERENCES satellite_images(image_id)\n);"
+      }
+    ]
+  }
+]

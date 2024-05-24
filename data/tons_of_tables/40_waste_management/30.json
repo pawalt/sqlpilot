@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste (\n  industry_id INT,\n  waste_type VARCHAR(50),\n  quantity DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_types (\n  id INT PRIMARY KEY,\n  type_name TEXT,\n  industry_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_quantities (\n  id INT PRIMARY KEY,\n  waste_type_id INT,\n  quantity INT,\n  industry_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_types (\n    type_id INT PRIMARY KEY,\n    type_name VARCHAR(50),\n    industry_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_quantities (\n    quantity_id INT PRIMARY KEY,\n    quantity DECIMAL(10, 2),\n    type_id INT,\n    industry_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE industries (\n    industry_id INT PRIMARY KEY,\n    industry_name VARCHAR(50),\n    location VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_types (\n    type_id INT PRIMARY KEY,\n    type_name VARCHAR(255),\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE industries (\n    industry_id INT PRIMARY KEY,\n    industry_name VARCHAR(255),\n    industry_type VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_generation (\n    record_id INT PRIMARY KEY,\n    type_id INT,\n    industry_id INT,\n    quantity FLOAT,\n    date_generated DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal (\n    disposal_id INT PRIMARY KEY,\n    record_id INT,\n    disposal_location VARCHAR(255),\n    disposal_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE industries (\n    industry_id SERIAL PRIMARY KEY,\n    industry_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_types (\n    waste_type_id SERIAL PRIMARY KEY,\n    waste_type_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE hazardous_waste (\n    hazardous_waste_id SERIAL PRIMARY KEY,\n    industry_id INT NOT NULL,\n    waste_type_id INT NOT NULL,\n    quantity DECIMAL(10, 2) NOT NULL,\n    CONSTRAINT fk_industry FOREIGN KEY (industry_id) REFERENCES industries(industry_id),\n    CONSTRAINT fk_waste_type FOREIGN KEY (waste_type_id) REFERENCES waste_types(waste_type_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_generation (\n    generation_id SERIAL PRIMARY KEY,\n    hazardous_waste_id INT NOT NULL,\n    generation_date DATE NOT NULL,\n    generation_quantity DECIMAL(10, 2) NOT NULL,\n    CONSTRAINT fk_hazardous_waste FOREIGN KEY (hazardous_waste_id) REFERENCES hazardous_waste(hazardous_waste_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE disposal_sites (\n    site_id SERIAL PRIMARY KEY,\n    site_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

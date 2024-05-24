@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_payments (\n    id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    payment_method VARCHAR(50) NOT NULL,\n    card_number VARCHAR(16) NOT NULL,\n    expiry_date DATE NOT NULL,\n    cvv VARCHAR(3) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_payments (\n    customer_id INT PRIMARY KEY,\n    card_number VARCHAR(16),\n    card_expiry_date DATE,\n    payment_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_history (\n    transaction_id SERIAL PRIMARY KEY,\n    customer_id INT,\n    transaction_date TIMESTAMP,\n    transaction_amount DECIMAL(10, 2),\n    transaction_status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerDetails (\n  customer_id INT PRIMARY KEY,\n  customer_name TEXT,\n  customer_email TEXT UNIQUE,\n  customer_address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PaymentCards (\n  card_id INT PRIMARY KEY,\n  customer_id INT REFERENCES CustomerDetails(customer_id),\n  card_number TEXT UNIQUE,\n  expiry_date DATE,\n  cvv TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TransactionHistory (\n  transaction_id INT PRIMARY KEY,\n  customer_id INT REFERENCES CustomerDetails(customer_id),\n  transaction_amount DECIMAL,\n  transaction_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_details (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email_id VARCHAR(255) UNIQUE,\n    phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_details (\n    payment_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customer_details(customer_id),\n    payment_amount DECIMAL(10, 2),\n    payment_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE card_details (\n    card_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customer_details(customer_id),\n    card_number VARCHAR(16) UNIQUE,\n    card_expiry_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_details (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT REFERENCES payment_details(payment_id),\n    card_id INT REFERENCES card_details(card_id),\n    transaction_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    customer_email VARCHAR(100) UNIQUE,\n    customer_address VARCHAR(150)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_method (\n    method_id INT PRIMARY KEY,\n    method_type VARCHAR(20) NOT NULL,\n    method_description VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment (\n    payment_id INT PRIMARY KEY,\n    customer_id INT,\n    method_id INT,\n    amount DECIMAL(10,2) NOT NULL,\n    payment_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT,\n    transaction_date TIMESTAMP,\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    history_id INT PRIMARY KEY,\n    payment_id INT,\n    customer_id INT,\n    payment_amount DECIMAL(10,2),\n    payment_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

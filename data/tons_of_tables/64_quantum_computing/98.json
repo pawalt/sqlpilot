@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensors_usage_history (\n    sensor_id INT PRIMARY KEY,\n    experiment_id INT,\n    usage_date DATE,\n    usage_time TIME,\n    measurement_value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_sensors (\n  sensor_id INT PRIMARY KEY,\n  sensor_name VARCHAR(50) NOT NULL,\n  experiment_id INT NOT NULL,\n  usage_date DATE,\n  PRIMARY KEY (sensor_id, experiment_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n  experiment_id INT PRIMARY KEY,\n  experiment_name VARCHAR(50) NOT NULL,\n  researcher_id INT NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  CONSTRAINT fk_researcher_id FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_sensors (\n\tsensor_id INT PRIMARY KEY,\n\tsensor_name VARCHAR(50) NOT NULL,\n\texperiment_id INT,\n\tusage_history TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n\texperiment_id INT PRIMARY KEY,\n\texperiment_name VARCHAR(100) NOT NULL,\n\tstart_date DATE,\n\tend_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_usage (\n\tsensor_id INT,\n\texperiment_id INT,\n\tusage_date DATE,\n\tusage_duration INT,\n\tFOREIGN KEY (sensor_id) REFERENCES quantum_sensors(sensor_id),\n\tFOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment (\n  experiment_id SERIAL PRIMARY KEY,\n  experiment_name TEXT NOT NULL,\n  experiment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor (\n  sensor_id SERIAL PRIMARY KEY,\n  sensor_name TEXT NOT NULL,\n  sensor_type TEXT,\n  sensor_precision FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_usage (\n  usage_id SERIAL PRIMARY KEY,\n  sensor_id INT REFERENCES sensor(sensor_id),\n  experiment_id INT REFERENCES experiment(experiment_id),\n  usage_date DATE,\n  usage_duration INTERVAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n  data_id SERIAL PRIMARY KEY,\n  sensor_id INT REFERENCES sensor(sensor_id),\n  experiment_id INT REFERENCES experiment(experiment_id),\n  data_timestamp TIMESTAMP,\n  data_value FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    experiment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor (\n    sensor_id INT PRIMARY KEY,\n    sensor_name VARCHAR(255),\n    sensor_type VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_usage (\n    usage_id INT PRIMARY KEY,\n    sensor_id INT,\n    experiment_id INT,\n    usage_date DATE,\n    FOREIGN KEY (sensor_id) REFERENCES sensor(sensor_id),\n    FOREIGN KEY (experiment_id) REFERENCES experiment(experiment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    result_description TEXT,\n    result_date DATE,\n    FOREIGN KEY (experiment_id) REFERENCES experiment(experiment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lab_staff (\n    staff_id INT PRIMARY KEY,\n    staff_name VARCHAR(255),\n    staff_role VARCHAR(100)\n);\n"
+      }
+    ]
+  }
+]

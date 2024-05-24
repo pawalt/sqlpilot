@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_procedures (\n  id INT PRIMARY KEY,\n  experiment_name VARCHAR(255),\n  researcher_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  procedure_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_procedures (\n  id INT PRIMARY KEY,\n  procedure_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE procedure_timeline (\n  timeline_id INT PRIMARY KEY,\n  procedure_id INT,\n  timeline_date DATE,\n  timeline_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experimental_procedures (\n  id UUID PRIMARY KEY,\n  experiment_name VARCHAR(100),\n  procedure_date DATE,\n  researcher_name VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_timeline (\n  event_id UUID PRIMARY KEY,\n  experiment_id UUID,\n  event_description TEXT,\n  event_date TIMESTAMP,\n  researcher_name VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE procedure_history (\n  history_id UUID PRIMARY KEY,\n  procedure_id UUID,\n  history_date DATE,\n  history_description TEXT,\n  researcher_name VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiment_timeline (\n    id SERIAL PRIMARY KEY,\n    experiment_name VARCHAR(255) NOT NULL,\n    experiment_date DATE NOT NULL,\n    researcher_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_steps (\n    id SERIAL PRIMARY KEY,\n    step_number INT NOT NULL,\n    step_description TEXT NOT NULL,\n    experiment_id INT NOT NULL,\n    FOREIGN KEY (experiment_id) REFERENCES experiment_timeline(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    id SERIAL PRIMARY KEY,\n    result_name VARCHAR(255) NOT NULL,\n    result_value FLOAT NOT NULL,\n    experiment_id INT NOT NULL,\n    FOREIGN KEY (experiment_id) REFERENCES experiment_timeline(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_notes (\n    id SERIAL PRIMARY KEY,\n    note TEXT NOT NULL,\n    experiment_id INT NOT NULL,\n    FOREIGN KEY (experiment_id) REFERENCES experiment_timeline(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255) NOT NULL,\n    date_started DATE,\n    status ENUM('pending', 'ongoing', 'completed')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    full_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE,\n    department VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subjects (\n    subject_id INT PRIMARY KEY,\n    subject_name VARCHAR(255) NOT NULL,\n    species VARCHAR(100),\n    date_of_birth DATE,\n    gender ENUM('male', 'female', 'other')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE procedures (\n    procedure_id INT PRIMARY KEY,\n    procedure_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    duration_minutes INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_history (\n    history_id INT PRIMARY KEY,\n    experiment_id INT,\n    researcher_id INT,\n    subject_id INT,\n    procedure_id INT,\n    date_performed DATETIME,\n    outcome VARCHAR(100)\n);\n"
+      }
+    ]
+  }
+]

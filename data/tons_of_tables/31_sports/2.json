@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_roster (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50),\n    jersey_number INT,\n    position VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamRoster (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    coach_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SquadList (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(255) NOT NULL,\n    team_id INT,\n    position VARCHAR(50) NOT NULL,\n    FOREIGN KEY (team_id) REFERENCES TeamRoster(team_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamRoster (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(50) NOT NULL,\n    team_captain VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Player (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    player_position VARCHAR(50) NOT NULL,\n    player_age INT NOT NULL,\n    team_id INT REFERENCES TeamRoster(team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SquadList (\n    squad_id INT PRIMARY KEY,\n    squad_name VARCHAR(50) NOT NULL,\n    player_id INT REFERENCES Player(player_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_rosters (\n    team_id INT NOT NULL,\n    team_name VARCHAR(255) NOT NULL,\n    coach_name VARCHAR(255) NOT NULL,\n    PRIMARY KEY (team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_list (\n    player_id INT NOT NULL,\n    player_name VARCHAR(255) NOT NULL,\n    age INT NOT NULL,\n    position VARCHAR(50) NOT NULL,\n    team_id INT NOT NULL,\n    PRIMARY KEY (player_id),\n    FOREIGN KEY (team_id) REFERENCES team_rosters (team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE match_schedule (\n    match_id INT NOT NULL,\n    match_date DATE NOT NULL,\n    match_time TIME NOT NULL,\n    venue VARCHAR(255) NOT NULL,\n    PRIMARY KEY (match_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE match_participation (\n    match_id INT NOT NULL,\n    player_id INT NOT NULL,\n    goals_scored INT NOT NULL,\n    assists INT NOT NULL,\n    PRIMARY KEY (match_id, player_id),\n    FOREIGN KEY (match_id) REFERENCES match_schedule (match_id),\n    FOREIGN KEY (player_id) REFERENCES player_list (player_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE teams (\n  team_id SERIAL PRIMARY KEY,\n  team_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n  player_id SERIAL PRIMARY KEY,\n  player_name TEXT,\n  team_id INT REFERENCES teams(team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE positions (\n  position_id SERIAL PRIMARY KEY,\n  position_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_positions (\n  player_id INT REFERENCES players(player_id),\n  position_id INT REFERENCES positions(position_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE squad (\n  squad_id SERIAL PRIMARY KEY,\n  team_id INT REFERENCES teams(team_id),\n  player_id INT REFERENCES players(player_id)\n);"
+      }
+    ]
+  }
+]

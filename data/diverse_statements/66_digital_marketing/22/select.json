@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM email_delivery_status;",
+      "SELECT email_address, delivery_status FROM email_delivery_status;",
+      "SELECT id, email_address, delivery_status, delivery_timestamp FROM email_delivery_status WHERE delivery_status = 'delivered';",
+      "SELECT * FROM email_delivery_status ORDER BY delivery_timestamp DESC;",
+      "SELECT email_address, COUNT(*) AS total_deliveries FROM email_delivery_status GROUP BY email_address;",
+      "SELECT * FROM email_delivery_status WHERE delivery_status = 'delivered';",
+      "SELECT email_address, COUNT(*) FROM email_delivery_status GROUP BY email_address ORDER BY COUNT(*) DESC;",
+      "SELECT * FROM email_delivery_status WHERE delivery_timestamp BETWEEN '2022-01-01' AND '2022-01-31';",
+      "SELECT email_address, COUNT(*) FROM email_delivery_status WHERE delivery_status = 'failed' GROUP BY email_address HAVING COUNT(*) > 3;",
+      "SELECT email_address, MAX(delivery_timestamp) FROM email_delivery_status GROUP BY email_address;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT id, email_address, status FROM delivery_status;",
+      "SELECT * FROM delivery_status WHERE status='delivered';",
+      "SELECT email_address, delivery_date FROM delivery_status ORDER BY delivery_date DESC;",
+      "SELECT id, issue_description, reported_date FROM delivery_issues WHERE email_address='example@example.com';",
+      "SELECT * FROM delivery_status JOIN delivery_issues ON delivery_status.email_address = delivery_issues.email_address;",
+      "SELECT * FROM delivery_status WHERE email_address = 'example1@example.com';",
+      "SELECT id, email_address, status FROM delivery_status WHERE status = 'DELIVERED' ORDER BY delivery_date DESC;",
+      "SELECT email_address, issue_description FROM delivery_issues WHERE issue_description LIKE '%delay%' ORDER BY reported_date ASC;",
+      "SELECT MAX(id) AS max_delivery_status_id, email_address FROM delivery_status GROUP BY email_address;",
+      "SELECT COUNT(*) AS total_issues, email_address FROM delivery_issues GROUP BY email_address HAVING total_issues > 1;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_logs;",
+      "SELECT recipient_email, delivery_status FROM email_logs WHERE delivery_status = 'delivered';",
+      "SELECT * FROM email_logs ORDER BY sent_timestamp DESC;",
+      "SELECT recipient_email, delivery_status, sent_timestamp, received_timestamp FROM email_logs WHERE delivery_status = 'failed' ORDER BY received_timestamp ASC;",
+      "SELECT el.recipient_email, de.error_message, ec.error_description FROM email_logs el JOIN delivery_errors de ON el.id = de.email_log_id JOIN error_categories ec ON de.error_id = ec.category_id;",
+      "SELECT * FROM email_logs ORDER BY sent_timestamp DESC LIMIT 10",
+      "SELECT COUNT(*) AS total_errors, error_categories.error_description FROM delivery_errors JOIN error_categories ON delivery_errors.error_id = error_categories.category_id GROUP BY error_categories.error_description HAVING total_errors > 50 ORDER BY total_errors DESC",
+      "SELECT recipient_email, COUNT(*) AS total_emails FROM email_logs WHERE sent_timestamp > '2021-01-01' GROUP BY recipient_email HAVING total_emails >= 5 ORDER BY total_emails DESC",
+      "SELECT email_log_id, error_message FROM delivery_errors JOIN email_logs ON delivery_errors.email_log_id = email_logs.id WHERE delivery_errors.error_timestamp > '2021-06-01' ORDER BY delivery_errors.error_timestamp ASC LIMIT 5",
+      "SELECT * FROM email_logs el JOIN delivery_errors de ON el.id = de.email_log_id JOIN error_categories ec ON de.error_id = ec.category_id WHERE ec.error_code IN (500, 502, 503) ORDER BY ec.error_description"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM EmailStatus;",
+      "SELECT id, email_address, delivery_status FROM EmailStatus WHERE delivery_status = 'delivered';",
+      "SELECT * FROM BouncedEmails WHERE bounced_reason LIKE '%temporary%';",
+      "SELECT email_id, open_time FROM OpenedEmails ORDER BY open_time DESC;",
+      "SELECT email_id, link_url, click_time FROM ClickedLinks WHERE click_time > '2022-01-30';",
+      "SELECT * FROM EmailStatus;",
+      "SELECT email_address, delivery_status FROM EmailStatus WHERE delivery_status = 'Delivered';",
+      "SELECT email_address, delivery_time FROM EmailStatus WHERE delivery_time >= '2022-01-01';",
+      "SELECT * FROM BouncedEmails ORDER BY bounce_time DESC;",
+      "SELECT email_address, delivery_status, open_time FROM EmailStatus LEFT JOIN OpenedEmails ON EmailStatus.id = OpenedEmails.email_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM email_messages;",
+      "SELECT sender_email, recipient_email, timestamp FROM email_messages ORDER BY timestamp DESC;",
+      "SELECT subject, delivery_status FROM email_messages WHERE delivery_status = 'failed';",
+      "SELECT * FROM email_recipients WHERE opted_out = TRUE;",
+      "SELECT domain_name, domain_status FROM email_domains ORDER BY domain_name ASC;",
+      "SELECT * FROM email_messages;",
+      "SELECT message_id, sender_email, recipient_email, timestamp FROM email_messages WHERE delivery_status='Delivered';",
+      "SELECT message_id, subject, timestamp FROM email_messages WHERE sender_email='example@email.com' ORDER BY timestamp DESC;",
+      "SELECT er.error_id, el.log_info, er.error_message FROM email_errors er JOIN email_logs el ON er.log_id = el.log_id;",
+      "SELECT er.error_id, el.log_info, er.error_message, el.log_timestamp FROM email_errors er JOIN email_logs el ON er.log_id = el.log_id ORDER BY el.log_timestamp ASC;"
+    ]
+  }
+]

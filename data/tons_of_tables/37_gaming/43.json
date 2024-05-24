@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    registration_date TIMESTAMP NOT NULL,\n    last_login TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (id INT PRIMARY KEY,\nusername VARCHAR(50) NOT NULL,\nemail VARCHAR(50) UNIQUE,\npassword VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (session_id UUID PRIMARY KEY,\nuser_id INT NOT NULL,\ncreated_at TIMESTAMP NOT NULL,\nupdated_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL UNIQUE,\n    password_hash VARCHAR(255) NOT NULL,\n    registration_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    profile_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    display_name VARCHAR(50) NOT NULL,\n    avatar_url VARCHAR(255),\n    bio TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    session_token VARCHAR(100) UNIQUE NOT NULL,\n    expiration_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password_hash VARCHAR(255),\n    email VARCHAR(100) UNIQUE,\n    date_joined TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profile (\n    user_id UUID PRIMARY KEY,\n    display_name VARCHAR(50),\n    profile_picture_url VARCHAR(255),\n    bio TEXT,\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID,\n    session_start TIMESTAMP,\n    session_end TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id UUID PRIMARY KEY,\n    user_id UUID,\n    permission_level INT,\n    granted_on TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n    profile_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    display_name VARCHAR(50) NOT NULL,\n    avatar_url VARCHAR(255),\n    xp INT DEFAULT 0\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id BIGINT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    session_token VARCHAR(100) UNIQUE NOT NULL,\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    preference_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    theme VARCHAR(50) DEFAULT 'light',\n    language VARCHAR(50) DEFAULT 'english'\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    log_message TEXT,\n    log_timestamp TIMESTAMP\n)"
+      }
+    ]
+  }
+]

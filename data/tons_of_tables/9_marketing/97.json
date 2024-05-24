@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AudienceSegmentation (\n    id SERIAL PRIMARY KEY,\n    demographic TEXT,\n    interests TEXT,\n    buying_behavior TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE affiliates (\n  affiliate_id INT PRIMARY KEY,\n  affiliate_name TEXT NOT NULL,\n  affiliate_email TEXT UNIQUE,\n  affiliate_location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audience_segmentation (\n  segment_id INT PRIMARY KEY,\n  segment_name TEXT NOT NULL,\n  demographics JSON,\n  interests JSON,\n  buying_behavior JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audience_demographics (\n    audience_id INT PRIMARY KEY,\n    age INT,\n    gender VARCHAR(10),\n    location VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE audience_interests (\n    audience_id INT,\n    interest_category VARCHAR(50),\n    interest_level INT,\n    FOREIGN KEY (audience_id) REFERENCES audience_demographics(audience_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE audience_behavior (\n    audience_id INT,\n    purchase_history TEXT,\n    last_purchase_date DATE,\n    FOREIGN KEY (audience_id) REFERENCES audience_demographics(audience_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demographics (\n    user_id INT PRIMARY KEY,\n    age INT,\n    gender VARCHAR(10),\n    location VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE interests (\n    user_id INT PRIMARY KEY,\n    interest_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE buying_behavior (\n    user_id INT PRIMARY KEY,\n    purchase_history JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(50),\n    target_audience TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demographics (\n    user_id INT PRIMARY KEY,\n    age INT,\n    gender VARCHAR,\n    location VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interests (\n    user_id INT,\n    interest VARCHAR,\n    FOREIGN KEY (user_id) REFERENCES demographics(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE buying_behavior (\n    user_id INT,\n    purchase_count INT,\n    total_amount DECIMAL,\n    FOREIGN KEY (user_id) REFERENCES demographics(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_targeting (\n    campaign_id INT,\n    user_id INT,\n    target_date DATE,\n    campaign_score DECIMAL,\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id),\n    FOREIGN KEY (user_id) REFERENCES demographics(user_id)\n);\n"
+      }
+    ]
+  }
+]

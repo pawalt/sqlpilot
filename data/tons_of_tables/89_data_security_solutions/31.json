@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE credit_card_info (\n    card_number VARCHAR(16),\n    card_holder VARCHAR(255),\n    expiration_date DATE,\n    cvv VARCHAR(3)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE credit_cards (\n    id UUID PRIMARY KEY,\n    card_number BYTEA,\n    cardholder_name VARCHAR(255),\n    expiration_date DATE,\n    cvv BYTEA,\n    encrypted_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    card_id UUID,\n    amount FLOAT,\n    transaction_date TIMESTAMP,\n    status VARCHAR(50),\n    FOREIGN KEY (card_id) REFERENCES credit_cards(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE credit_cards (\n    id SERIAL PRIMARY KEY,\n    card_number VARCHAR(16) NOT NULL,\n    expiration_date DATE NOT NULL,\n    cvv VARCHAR(3) NOT NULL,\n    encrypted_data TEXT NOT NULL\n);\n\nCREATE TABLE customers (\n    id SERIAL PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    address VARCHAR(200) NOT NULL,\n    phone_number VARCHAR(15)\n);\n\nCREATE TABLE transactions (\n    id SERIAL PRIMARY KEY,\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    card_id INTEGER NOT NULL REFERENCES credit_cards(id),\n    customer_id INTEGER NOT NULL REFERENCES customers(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  credit_card_number VARCHAR(100) NOT NULL,\n  credit_card_expiry DATE,\n  credit_card_cvv VARCHAR(4) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  customer_id INT REFERENCES customers(id),\n  amount DECIMAL(10, 2) NOT NULL,\n  transaction_date TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  customer_id INT REFERENCES customers(id),\n  encryption_key VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n  log_id INT PRIMARY KEY,\n  action VARCHAR(50) NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CreditCardInfo (\n    credit_card_number INT,\n    cardholder_name VARCHAR(255),\n    expiration_date DATE,\n    security_code VARCHAR(5)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Customer (\n    customer_id INT,\n    first_name VARCHAR(255),\n    last_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Transaction (\n    transaction_id INT,\n    credit_card_number INT,\n    amount DECIMAL(10,2),\n    transaction_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EncryptionKey (\n    key_id INT,\n    encryption_alg VARCHAR(50),\n    encryption_key BINARY(64)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE User (\n    user_id INT,\n    username VARCHAR(50),\n    password_hash BINARY(64),\n    is_admin BOOL\n)"
+      }
+    ]
+  }
+]

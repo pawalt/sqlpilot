@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance_assessments (\n  assessment_id INT PRIMARY KEY,\n  company_name VARCHAR(255) NOT NULL,\n  assessment_date DATE,\n  compliance_rating ENUM('Exceptional', 'Good', 'Average', 'Below Average')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance_assessments (\n    assessment_id INT PRIMARY KEY,\n    assessment_name VARCHAR(255),\n    assessment_status VARCHAR(50),\n    assessment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assessment_details (\n    detail_id INT PRIMARY KEY,\n    assessment_id INT,\n    control_id INT,\n    control_status VARCHAR(50),\n    control_comments TEXT,\n    FOREIGN KEY (assessment_id) REFERENCES regulatory_compliance_assessments(assessment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance_assessments (\n  assessment_id INT PRIMARY KEY,\n  company_name VARCHAR(255),\n  assessment_date DATE,\n  compliance_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE assessment_details (\n  detail_id INT PRIMARY KEY,\n  assessment_id INT REFERENCES regulatory_compliance_assessments(assessment_id),\n  detail_text TEXT,\n  detail_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE assessment_answers (\n  answer_id INT PRIMARY KEY,\n  detail_id INT REFERENCES assessment_details(detail_id),\n  question VARCHAR(255),\n  answer TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_assessments (\n   assessment_id SERIAL PRIMARY KEY,\n   assessment_name VARCHAR(255) NOT NULL,\n   assessment_date DATE,\n   regulatory_requirement TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_tasks (\n   task_id SERIAL PRIMARY KEY,\n   task_name VARCHAR(255) NOT NULL,\n   task_description TEXT,\n   task_due_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assessment_results (\n   result_id SERIAL PRIMARY KEY,\n   assessment_id INT REFERENCES regulatory_assessments(assessment_id),\n   compliance_score INT,\n   assessment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_details (\n   detail_id SERIAL PRIMARY KEY,\n   task_id INT REFERENCES compliance_tasks(task_id),\n   result_id INT REFERENCES assessment_results(result_id),\n   detail_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance_assessments (\n    assessment_id INT PRIMARY KEY,\n    assessment_name VARCHAR(50),\n    assessment_status VARCHAR(20),\n    assessment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_checklist (\n    checklist_id INT PRIMARY KEY,\n    checklist_name VARCHAR(50),\n    checklist_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_issues (\n    issue_id INT PRIMARY KEY,\n    issue_description TEXT,\n    issue_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_audit (\n    audit_id INT PRIMARY KEY,\n    audit_date DATE,\n    auditor_name VARCHAR(50),\n    audit_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_records (\n    record_id INT PRIMARY KEY,\n    record_type VARCHAR(50),\n    record_date DATE,\n    record_description TEXT\n);"
+      }
+    ]
+  }
+]

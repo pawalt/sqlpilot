@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_alerts (\n  id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  geofence_name VARCHAR(255) NOT NULL,\n  geofence_type ENUM('entry', 'exit') NOT NULL,\n  alert_message TEXT NOT NULL,\n  alert_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_areas (\n    id UUID PRIMARY KEY,\n    area_name VARCHAR(100) NOT NULL,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL\n);\n\nCREATE TABLE user_geofence_alerts (\n    id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    geofence_area_id UUID NOT NULL,\n    alert_type VARCHAR(20) NOT NULL,\n    alert_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_alerts (\n  alert_id INT PRIMARY KEY,\n  user_id INT,\n  area_name VARCHAR(50),\n  alert_type VARCHAR(10),\n  alert_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(100),\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE geo_coordinates (\n  coordinate_id INT PRIMARY KEY,\n  latitude DECIMAL,\n  longitude DECIMAL,\n  user_id INT,\n  alert_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (alert_id) REFERENCES geofence_alerts(alert_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofences (\n    geofence_id UUID PRIMARY KEY,\n    area_name VARCHAR(100) NOT NULL,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL,\n    radius DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id UUID PRIMARY KEY,\n    alert_type VARCHAR(20) NOT NULL,\n    message TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    user_id UUID NOT NULL,\n    geofence_id UUID NOT NULL,\n    is_active BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_alerts (\n    user_id UUID NOT NULL,\n    alert_id UUID NOT NULL,\n    PRIMARY KEY (user_id, alert_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_areas (\n  area_id INT PRIMARY KEY,\n  area_name VARCHAR(255),\n  area_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_locations (\n  location_id INT PRIMARY KEY,\n  user_id INT,\n  latitude DECIMAL(9,6),\n  longitude DECIMAL(9,6),\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n  alert_id INT PRIMARY KEY,\n  user_id INT,\n  area_id INT,\n  alert_type VARCHAR(20),\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_logs (\n  log_id INT PRIMARY KEY,\n  alert_id INT,\n  log_timestamp TIMESTAMP,\n  log_details TEXT\n);"
+      }
+    ]
+  }
+]

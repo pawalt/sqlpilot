@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_efficiency (\n  id SERIAL PRIMARY KEY,\n  product_name VARCHAR(100) NOT NULL,\n  production_date DATE NOT NULL,\n  production_time TIME NOT NULL,\n  efficiency_rating DECIMAL(4,2),\n  bottleneck_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ManufacturingProcess (\n\tprocess_id INT PRIMARY KEY,\n\tprocess_name VARCHAR(255),\n\tproduct_name VARCHAR(255),\n\tproduction_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BottleneckAnalysis (\n\tanalysis_id INT PRIMARY KEY,\n\tprocess_id INT,\n\tbottleneck_description TEXT,\n\tbottleneck_status VARCHAR(50),\n\tFOREIGN KEY (process_id) REFERENCES ManufacturingProcess(process_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_efficiency_analysis (\n  id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  production_date DATE,\n  production_time TIME,\n  efficiency_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bottleneck_identification (\n  id INT PRIMARY KEY,\n  product_id INT,\n  bottleneck_type VARCHAR(50),\n  bottleneck_description TEXT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturing_process (\n  product_id INT PRIMARY KEY,\n  process_step VARCHAR(50),\n  step_duration TIME,\n  step_status ENUM('completed', 'in_progress', 'pending')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_line (\n    production_line_id UUID PRIMARY KEY,\n    production_date DATE,\n    product_id UUID,\n    quantity INT,\n    efficiency_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_errors (\n    error_id UUID PRIMARY KEY,\n    production_line_id UUID,\n    error_description TEXT,\n    error_timestamp TIMESTAMP,\n    resolved BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_tasks (\n    task_id UUID PRIMARY KEY,\n    production_line_id UUID,\n    task_description TEXT,\n    task_status TEXT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_bottlenecks (\n    bottleneck_id UUID PRIMARY KEY,\n    production_line_id UUID,\n    bottleneck_description TEXT,\n    bottleneck_timestamp TIMESTAMP,\n    resolved BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ManufacturingFacilities (\n facility_id INT PRIMARY KEY,\n facility_name TEXT,\n location TEXT,\n production_capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionLines (\n line_id INT PRIMARY KEY,\n facility_id INT,\n line_name TEXT,\n line_capacity INT,\n FOREIGN KEY (facility_id) REFERENCES ManufacturingFacilities(facility_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionLogs (\n log_id INT PRIMARY KEY,\n line_id INT,\n start_time TIMESTAMP,\n end_time TIMESTAMP,\n production_output INT,\n FOREIGN KEY (line_id) REFERENCES ProductionLines(line_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DefectLogs (\n defect_id INT PRIMARY KEY,\n log_id INT,\n defect_type TEXT,\n defect_description TEXT,\n FOREIGN KEY (log_id) REFERENCES ProductionLogs(log_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n maintenance_id INT PRIMARY KEY,\n line_id INT,\n maintenance_type TEXT,\n maintenance_duration INT,\n FOREIGN KEY (line_id) REFERENCES ProductionLines(line_id)\n)"
+      }
+    ]
+  }
+]

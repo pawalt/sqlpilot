@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE court_cases (\n  case_id INT PRIMARY KEY,\n  case_title VARCHAR(255),\n  case_description TEXT,\n  violation_type VARCHAR(50),\n  accused_party VARCHAR(100),\n  court_location VARCHAR(100),\n  filing_date DATE,\n  hearing_date DATE,\n  verdict VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE human_rights_violations (\n    case_id INT PRIMARY KEY,\n    case_name VARCHAR(255),\n    violation_type VARCHAR(100),\n    location VARCHAR(100),\n    date_occurred DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE legal_analysis (\n    analysis_id INT PRIMARY KEY,\n    case_id INT,\n    analyst_name VARCHAR(255),\n    analysis_date DATE,\n    analysis_result TEXT\n    FOREIGN KEY (case_id) REFERENCES human_rights_violations(case_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CourtCases (\n case_id SERIAL PRIMARY KEY,\n case_name VARCHAR(255),\n violation_type VARCHAR(100),\n court_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Plaintiffs (\n plaintiff_id SERIAL PRIMARY KEY,\n plaintiff_name VARCHAR(255),\n nationality VARCHAR(50),\n age INT,\n case_id INT,\n FOREIGN KEY (case_id) REFERENCES CourtCases (case_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Defendants (\n defendant_id SERIAL PRIMARY KEY,\n defendant_name VARCHAR(255),\n organization VARCHAR(100),\n case_id INT,\n FOREIGN KEY (case_id) REFERENCES CourtCases (case_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HumanRightsCases (\n  case_id UUID PRIMARY KEY,\n  case_name VARCHAR(255) NOT NULL,\n  violation_type VARCHAR(100),\n  country_code CHAR(2),\n  court_location VARCHAR(100),\n  date_filed DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Defendants (\n  defendant_id UUID PRIMARY KEY,\n  case_id UUID REFERENCES HumanRightsCases(case_id),\n  defendant_name VARCHAR(255) NOT NULL,\n  age INT,\n  gender VARCHAR(10),\n  nationality VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Lawyers (\n  lawyer_id UUID PRIMARY KEY,\n  lawyer_name VARCHAR(255) NOT NULL,\n  specialty VARCHAR(50),\n  years_practiced INT,\n  fee DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Proceedings (\n  proceeding_id UUID PRIMARY KEY,\n  case_id UUID REFERENCES HumanRightsCases(case_id),\n  proceeding_date DATE,\n  judge_name VARCHAR(255),\n  outcome TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE court_cases (\n case_id INT PRIMARY KEY,\n case_name VARCHAR(255),\n case_description TEXT,\n case_date DATE,\n case_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE victims (\n victim_id INT PRIMARY KEY,\n case_id INT,\n victim_name VARCHAR(255),\n victim_age INT,\n victim_gender VARCHAR(10),\n FOREIGN KEY (case_id) REFERENCES court_cases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE defendants (\n defendant_id INT PRIMARY KEY,\n case_id INT,\n defendant_name VARCHAR(255),\n defendant_role VARCHAR(50),\n FOREIGN KEY (case_id) REFERENCES court_cases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE evidence (\n evidence_id INT PRIMARY KEY,\n case_id INT,\n evidence_details TEXT,\n evidence_type VARCHAR(50),\n FOREIGN KEY (case_id) REFERENCES court_cases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rulings (\n ruling_id INT PRIMARY KEY,\n case_id INT,\n ruling_text TEXT,\n ruling_date DATE,\n FOREIGN KEY (case_id) REFERENCES court_cases(case_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_annotations (\n    id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    annotation_text TEXT,\n    bounding_box_x INT,\n    bounding_box_y INT,\n    bounding_box_width INT,\n    bounding_box_height INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageAnnotations (\n    annotation_id INT PRIMARY KEY,\n    image_id INT,\n    annotation TEXT,\n    bounding_box_x INT,\n    bounding_box_y INT,\n    bounding_box_width INT,\n    bounding_box_height INT\n);\n\nCREATE TABLE ObjectLocalization (\n    localization_id INT PRIMARY KEY,\n    object_id INT,\n    image_id INT,\n    localization_data TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n  image_id UUID PRIMARY KEY,\n  image_url VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations (\n  annotation_id UUID PRIMARY KEY,\n  image_id UUID NOT NULL,\n  annotation_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bounding_boxes (\n  bounding_box_id UUID PRIMARY KEY,\n  annotation_id UUID NOT NULL,\n  x1 INT NOT NULL,\n  y1 INT NOT NULL,\n  x2 INT NOT NULL,\n  y2 INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_annotations (\n    image_id UUID PRIMARY KEY,\n    object_name VARCHAR(255),\n    annotation_text TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bounding_boxes (\n    box_id UUID PRIMARY KEY,\n    image_id UUID REFERENCES image_annotations(image_id),\n    x_min INT,\n    y_min INT,\n    x_max INT,\n    y_max INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE object_categories (\n    category_id UUID PRIMARY KEY,\n    category_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_object_mapping (\n    mapping_id UUID PRIMARY KEY,\n    image_id UUID REFERENCES image_annotations(image_id),\n    object_id UUID REFERENCES object_categories(category_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_annotations (\n    image_id UUID PRIMARY KEY,\n    annotation TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bounding_boxes (\n    bounding_box_id UUID PRIMARY KEY,\n    image_id UUID,\n    x_min INTEGER,\n    y_min INTEGER,\n    x_max INTEGER,\n    y_max INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE annotations_bounding_boxes (\n    annotation_id UUID,\n    bounding_box_id UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE object_classes (\n    class_id UUID PRIMARY KEY,\n    class_name TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE annotation_classes (\n    annotation_id UUID,\n    class_id UUID\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n    username VARCHAR(255),\n    achievements TEXT,\n    stats JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n  username VARCHAR(50),\n  achievements VARCHAR(100),\n  stats VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    achievements TEXT[],\n    stats JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE achievements (\n    id SERIAL PRIMARY KEY,\n    achievement_name VARCHAR(255) NOT NULL,\n    player_id INT,\n    FOREIGN KEY (player_id) REFERENCES player_profiles(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stats (\n    id SERIAL PRIMARY KEY,\n    player_id INT,\n    games_played INT,\n    wins INT,\n    losses INT,\n    FOREIGN KEY (player_id) REFERENCES player_profiles(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profiles (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    achievements JSONB,\n    stats JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_achievements (\n    achievement_id SERIAL PRIMARY KEY,\n    player_id INT,\n    achievement_name VARCHAR(100) NOT NULL,\n    achievement_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_stats (\n    stat_id SERIAL PRIMARY KEY,\n    player_id INT,\n    matches_played INT,\n    wins INT,\n    losses INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_experience (\n    player_id INT PRIMARY KEY,\n    experience_level INT,\n    experience_points INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_profile (\n  player_id INT PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  total_achievements INT,\n  total_stats INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE achievements (\n  achievement_id INT PRIMARY KEY,\n  player_id INT REFERENCES player_profile(player_id),\n  achievement_name VARCHAR(100),\n  achievement_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stats (\n  stat_id INT PRIMARY KEY,\n  player_id INT REFERENCES player_profile(player_id),\n  stat_name VARCHAR(100),\n  stat_value INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE achievements_stats (\n  player_id INT REFERENCES player_profile(player_id),\n  achievement_id INT REFERENCES achievements(achievement_id),\n  stat_id INT REFERENCES stats(stat_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE player_friends (\n  friend_id INT PRIMARY KEY,\n  player_id INT REFERENCES player_profile(player_id),\n  friend_username VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

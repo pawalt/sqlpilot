@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE prescription_drug_usage (\n    transaction_id UUID PRIMARY KEY,\n    drug_name VARCHAR(255),\n    patient_id UUID,\n    pharmacy_id UUID,\n    transaction_date TIMESTAMP,\n    quantity INT,\n    price DECIMAL(10, 2),\n    blockchain_hash VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE prescription_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    patient_id INT NOT NULL,\n    drug_name TEXT NOT NULL,\n    prescribed_amount INT NOT NULL,\n    transaction_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_records (\n    record_id SERIAL PRIMARY KEY,\n    transaction_id INT NOT NULL,\n    block_hash TEXT NOT NULL,\n    block_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PrescriptionTransactions (\n  transaction_id SERIAL PRIMARY KEY,\n  patient_id INT NOT NULL,\n  drug_name VARCHAR(50) NOT NULL,\n  quantity INT NOT NULL,\n  transaction_date DATE NOT NULL\n);\n\nCREATE TABLE BlockchainTransactions (\n  block_id SERIAL PRIMARY KEY,\n  transaction_id INT REFERENCES PrescriptionTransactions(transaction_id) NOT NULL,\n  block_hash VARCHAR(255) NOT NULL,\n  previous_block_hash VARCHAR(255) NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);\n\nCREATE TABLE PrescriptionHistory (\n  history_id SERIAL PRIMARY KEY,\n  patient_id INT NOT NULL,\n  drug_name VARCHAR(50) NOT NULL,\n  quantity INT NOT NULL,\n  transaction_date DATE NOT NULL,\n  block_id INT REFERENCES BlockchainTransactions(block_id) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE prescription_drugs (\n\tdrug_id INTEGER PRIMARY KEY,\n\tdrug_name VARCHAR(255) NOT NULL,\n\tdrug_cost DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_transactions (\n\ttransaction_id SERIAL PRIMARY KEY,\n\tdrug_id INTEGER REFERENCES prescription_drugs(drug_id),\n\ttransaction_date DATE NOT NULL,\n\ttransaction_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n\tblock_id SERIAL PRIMARY KEY,\n\ttransaction_id INTEGER REFERENCES drug_transactions(transaction_id),\n\tblock_hash VARCHAR(64) NOT NULL,\n\tblock_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n\tuser_id SERIAL PRIMARY KEY,\n\tuser_name VARCHAR(255) NOT NULL,\n\tuser_email VARCHAR(255) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drug_prescriptions (\n  prescription_id INT PRIMARY KEY,\n  patient_id INT,\n  drug_name VARCHAR(50),\n  prescribed_date TIMESTAMP,\n  dosage INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_transactions (\n  transaction_id INT PRIMARY KEY,\n  prescription_id INT,\n  transaction_date TIMESTAMP,\n  pharmacy_id INT,\n  quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_data (\n  block_id INT PRIMARY KEY,\n  transaction_id INT,\n  hash VARCHAR(100),\n  previous_block_hash VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pharmacies (\n  pharmacy_id INT PRIMARY KEY,\n  pharmacy_name VARCHAR(50),\n  location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50),\n  address VARCHAR(100),\n  contact_number VARCHAR(20)\n);"
+      }
+    ]
+  }
+]

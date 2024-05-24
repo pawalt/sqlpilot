@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_interaction_data (\n    device_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    interaction_type VARCHAR(50),\n    interaction_time TIMESTAMP,\n    interaction_data JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_interaction_data (\n    device_id INT,\n    user_id INT,\n    interaction_type VARCHAR(50),\n    interaction_time TIMESTAMP,\n    interaction_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_recognition_data (\n    user_id INT,\n    biometric_type VARCHAR(50),\n    biometric_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_interactions (\n  user_id INT,\n  device_id INT,\n  interaction_type VARCHAR(50),\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n  user_id INT,\n  biometric_type VARCHAR(50),\n  biometric_value VARCHAR(255),\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recognition_models (\n  model_id INT,\n  model_name VARCHAR(50),\n  created_date DATE,\n  last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n    log_id SERIAL PRIMARY KEY,\n    device_id INT NOT NULL,\n    user_id INT NOT NULL,\n    interaction_time TIMESTAMP NOT NULL,\n    interaction_data TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    data_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    biometric_type VARCHAR(50) NOT NULL,\n    biometric_data TEXT NOT NULL,\n    captured_at TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  email VARCHAR(100) UNIQUE,\n  age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n  device_id INT PRIMARY KEY,\n  user_id INT REFERENCES users(id),\n  device_name VARCHAR(100),\n  last_interaction TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  interaction_id INT PRIMARY KEY,\n  device_id INT REFERENCES devices(device_id),\n  event_type VARCHAR(50),\n  event_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n  data_id INT PRIMARY KEY,\n  user_id INT REFERENCES users(id),\n  fingerprint_data BYTEA,\n  face_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recognition_results (\n  result_id INT PRIMARY KEY,\n  user_id INT REFERENCES users(id),\n  device_id INT REFERENCES devices(device_id),\n  match_score DECIMAL(5,2),\n  result_time TIMESTAMP\n);"
+      }
+    ]
+  }
+]

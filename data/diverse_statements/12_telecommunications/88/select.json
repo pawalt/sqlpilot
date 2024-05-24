@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM vulnerability_scans;",
+      "SELECT scan_id, scan_date, scanner_name FROM vulnerability_scans;",
+      "SELECT scanner_name, scan_date, target_ip FROM vulnerability_scans WHERE scanner_name = 'Nessus';",
+      "SELECT * FROM vulnerability_scans WHERE scanner_name = 'OpenVAS' AND target_ip = '192.168.1.10';",
+      "SELECT scan_id, scanner_name FROM vulnerability_scans ORDER BY scan_date DESC;",
+      "SELECT * FROM vulnerability_scans WHERE scanner_name = 'Nessus' ORDER BY scan_date DESC;",
+      "SELECT scan_id, scanner_name, target_ip FROM vulnerability_scans WHERE target_ip LIKE '192.168.%';",
+      "SELECT scan_id, scan_date FROM vulnerability_scans WHERE vulnerabilities @> '[{\"severity\":\"high\"}]';",
+      "SELECT count(*), date_trunc('day', scan_date) as scan_day FROM vulnerability_scans GROUP BY scan_day ORDER BY scan_day;",
+      "SELECT scan_id, jsonb_array_elements(vulnerabilities)->>'cve_id' as cve_id FROM vulnerability_scans WHERE vulnerabilities @> '[{\"severity\":\"critical\"}]' ORDER BY scan_id DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM vulnerability_scans;",
+      "SELECT vulnerability_description, target_host FROM vulnerability_scans ORDER BY scan_date DESC;",
+      "SELECT scan_id, scan_date, target_host, vulnerability_description FROM vulnerability_scans WHERE scan_id > 100;",
+      "SELECT scan_date, target_host FROM vulnerability_scans WHERE vulnerability_description LIKE '%SQL Injection%';",
+      "SELECT * FROM remediation_actions WHERE remediation_date > '2022-01-01';",
+      "SELECT * FROM vulnerability_scans ORDER BY scan_date DESC LIMIT 10;",
+      "SELECT target_host, vulnerability_description FROM vulnerability_scans WHERE scan_date >= '2022-01-01' AND scan_date <= '2022-12-31';",
+      "SELECT vs.target_host, ra.action_description FROM vulnerability_scans vs JOIN remediation_actions ra ON vs.scan_id = ra.scan_id;",
+      "SELECT vs.target_host, COUNT(ra.action_id) AS total_actions FROM vulnerability_scans vs LEFT JOIN remediation_actions ra ON vs.scan_id = ra.scan_id GROUP BY vs.target_host ORDER BY total_actions DESC;",
+      "SELECT scan_id, MAX(remediation_date) AS latest_remediation_date FROM remediation_actions GROUP BY scan_id HAVING COUNT(action_id) > 1;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM vulnerability_scans",
+      "SELECT scan_id, scan_date, scanner_name FROM vulnerability_scans ORDER BY scan_date DESC",
+      "SELECT * FROM scan_results WHERE severity='High'",
+      "SELECT scan_id, COUNT(weakness_id) AS total_weaknesses FROM scan_results GROUP BY scan_id",
+      "SELECT scan_date, scanner_name FROM vulnerability_scans WHERE scanner_name LIKE '%Alice%'",
+      "SELECT * FROM vulnerability_scans;",
+      "SELECT scan_date, scanner_name FROM vulnerability_scans ORDER BY scanner_name DESC;",
+      "SELECT weakness_name, description FROM security_weaknesses WHERE weakness_name LIKE '%SQL Injection%';",
+      "SELECT COUNT(result_id) AS total_results FROM scan_results GROUP BY scan_id HAVING COUNT(result_id) > 5;",
+      "SELECT scan_date, severity, status FROM vulnerability_scans INNER JOIN scan_results ON vulnerability_scans.scan_id = scan_results.scan_id ORDER BY scan_date ASC, severity DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM vulnerability_scans;",
+      "SELECT vulnerability_description, remediation_action FROM vulnerability_scans;",
+      "SELECT scan_date, vulnerability_description, remediation_action FROM vulnerability_scans ORDER BY scan_date DESC;",
+      "SELECT v.vulnerability_name, v.severity_level, vs.scan_date FROM vulnerabilities v INNER JOIN vulnerability_scans vs ON v.vulnerability_id = vs.id;",
+      "SELECT rp.report_type, rp.report_date, rp.report_description, vs.scan_date FROM reports rp INNER JOIN vulnerability_scans vs ON rp.report_id = vs.report_id;",
+      "SELECT * FROM vulnerability_scans",
+      "SELECT vulnerability_description, remediation_action FROM vulnerability_scans WHERE id = 1",
+      "SELECT * FROM reports ORDER BY report_date DESC",
+      "SELECT vulnerability_name, severity_level, risk_score FROM vulnerabilities WHERE severity_level = 'High' ORDER BY risk_score ASC",
+      "SELECT personnel_name, personnel_role, department FROM security_personnel"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM devices;",
+      "SELECT device_name, device_type FROM devices WHERE device_type='Server';",
+      "SELECT vulnerability_name, severity, description FROM vulnerabilities WHERE severity='High';",
+      "SELECT scan_date, scan_type FROM vulnerability_scans ORDER BY scan_date DESC;",
+      "SELECT action_description, action_status FROM remediation_actions WHERE action_status='Not Completed' ORDER BY action_id ASC;",
+      "SELECT * FROM vulnerability_scans;",
+      "SELECT device_name, ip_address FROM devices WHERE device_type = 'Router' ORDER BY device_name ASC;",
+      "SELECT vulnerability_name, severity, description FROM vulnerabilities WHERE severity = 'High';",
+      "SELECT scan_id, scan_date, scan_type, COUNT(scan_id) AS scan_count FROM vulnerability_scans GROUP BY scan_id;",
+      "SELECT device_name, device_type, COUNT(device_id) AS device_count FROM devices GROUP BY device_type HAVING COUNT(device_id) > 1;"
+    ]
+  }
+]

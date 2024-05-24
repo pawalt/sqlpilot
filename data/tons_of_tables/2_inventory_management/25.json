@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_depreciation ( \n    id INT PRIMARY KEY, \n    asset_name VARCHAR(255), \n    purchase_date DATE, \n    purchase_value DECIMAL(10, 2), \n    depreciation_rate DECIMAL(5, 2), \n    current_value DECIMAL(10, 2) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_depreciation (\n    id UUID PRIMARY KEY,\n    asset_name VARCHAR(255),\n    purchase_value DECIMAL,\n    purchase_date DATE,\n    depreciation_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE value_changes (\n    id UUID PRIMARY KEY,\n    asset_id UUID,\n    change_date DATE,\n    new_value DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_depreciation (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    purchase_date DATE,\n    purchase_value DECIMAL(10, 2),\n    current_value DECIMAL(10, 2),\n    depreciation_rate DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE value_changes (\n    value_change_id INT PRIMARY KEY,\n    asset_id INT,\n    change_date DATE,\n    previous_value DECIMAL(10, 2),\n    new_value DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_data (\n    financial_id INT PRIMARY KEY,\n    asset_id INT,\n    transaction_date DATE,\n    transaction_type VARCHAR(50),\n    transaction_amount DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_depreciation (\n asset_id INT PRIMARY KEY,\n asset_name VARCHAR(255),\n purchase_date DATE,\n purchase_value DECIMAL(10,2),\n depreciation_rate DECIMAL(5,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE depreciation_records (\n record_id INT PRIMARY KEY,\n asset_id INT,\n depreciation_amount DECIMAL(10,2),\n depreciation_date DATE,\n FOREIGN KEY (asset_id) REFERENCES asset_depreciation(asset_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE value_change (\n change_id INT PRIMARY KEY,\n asset_id INT,\n new_value DECIMAL(10,2),\n change_date DATE,\n FOREIGN KEY (asset_id) REFERENCES asset_depreciation(asset_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_data (\n data_id INT PRIMARY KEY,\n asset_id INT,\n revenue DECIMAL(10,2),\n expenses DECIMAL(10,2),\n profit_loss DECIMAL(10,2),\n report_date DATE,\n FOREIGN KEY (asset_id) REFERENCES asset_depreciation(asset_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_depreciation (\n    id SERIAL PRIMARY KEY,\n    asset_name VARCHAR(255),\n    purchase_date DATE,\n    initial_value DECIMAL(10, 2),\n    depreciation_rate DECIMAL(5, 2),\n    current_value DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE depreciation_schedule (\n    id SERIAL PRIMARY KEY,\n    asset_id INT REFERENCES asset_depreciation(id),\n    depreciation_date DATE,\n    depreciation_amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE value_changes (\n    id SERIAL PRIMARY KEY,\n    asset_id INT REFERENCES asset_depreciation(id),\n    change_date DATE,\n    new_value DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE financial_entries (\n    id SERIAL PRIMARY KEY,\n    asset_id INT REFERENCES asset_depreciation(id),\n    entry_date DATE,\n    amount DECIMAL(10, 2),\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_categories (\n    id SERIAL PRIMARY KEY,\n    category_name VARCHAR(255),\n    description TEXT\n)"
+      }
+    ]
+  }
+]

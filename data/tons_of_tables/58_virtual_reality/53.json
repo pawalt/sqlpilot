@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE spare_parts_inventory (\n    part_id INT PRIMARY KEY,\n    part_name TEXT,\n    part_type TEXT,\n    quantity INT,\n    cost DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE spare_parts (\n    part_id INT PRIMARY KEY,\n    part_name VARCHAR(255) NOT NULL,\n    part_category VARCHAR(100) NOT NULL,\n    quantity INT NOT NULL,\n    unit_price DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE robot_components (\n    component_id INT PRIMARY KEY,\n    component_name VARCHAR(255) NOT NULL,\n    component_type VARCHAR(100) NOT NULL,\n    quantity INT NOT NULL,\n    supplier_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE spare_parts (\n\tspare_part_id INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\tquantity INT NOT NULL,\n\tprice DECIMAL(10,2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE components (\n\tcomponent_id INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\tavailable BOOLEAN NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE robots (\n\trobot_id INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\tcomponent_id INT REFERENCES components(component_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SpareParts (\n    part_id INT PRIMARY KEY,\n    part_name VARCHAR(50),\n    quantity INT,\n    unit_price DECIMAL(10,2),\n    supplier_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Components (\n    component_id INT PRIMARY KEY,\n    component_name VARCHAR(50),\n    category VARCHAR(50),\n    unit_weight DECIMAL(6,2),\n    unit_cost DECIMAL(10,2),\n    in_stock BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Robots (\n    robot_id INT PRIMARY KEY,\n    robot_name VARCHAR(50),\n    manufacturing_date DATE,\n    warranty_expiry_date DATE,\n    last_maintenance_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RobotInventory (\n    robot_id INT,\n    part_id INT,\n    quantity INT,\n    PRIMARY KEY (robot_id, part_id),\n    FOREIGN KEY (robot_id) REFERENCES Robots(robot_id),\n    FOREIGN KEY (part_id) REFERENCES SpareParts(part_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SpareParts (\n part_id INT PRIMARY KEY,\n part_name VARCHAR(255),\n part_description TEXT,\n quantity INT,\n price DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Components (\n component_id INT PRIMARY KEY,\n component_name VARCHAR(255),\n component_type VARCHAR(50),\n part_id INT,\n FOREIGN KEY (part_id) REFERENCES SpareParts(part_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Robots (\n robot_id INT PRIMARY KEY,\n robot_name VARCHAR(255),\n manufacturing_date DATE,\n component_id INT,\n FOREIGN KEY (component_id) REFERENCES Components(component_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RobotInventory (\n inventory_id INT PRIMARY KEY,\n robot_id INT,\n quantity INT,\n location VARCHAR(100),\n FOREIGN KEY (robot_id) REFERENCES Robots(robot_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n log_id INT PRIMARY KEY,\n robot_id INT,\n maintenance_date DATE,\n maintenance_description TEXT,\n FOREIGN KEY (robot_id) REFERENCES Robots(robot_id)\n)"
+      }
+    ]
+  }
+]

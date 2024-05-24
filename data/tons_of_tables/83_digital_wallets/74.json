@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiometricData (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    biometric_type VARCHAR(50) NOT NULL,\n    biometric_data BYTEA NOT NULL,\n    access_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    user_id INT,\n    biometric_type VARCHAR(50),\n    biometric_data BYTEA,\n    timestamp TIMESTAMP,\n    CONSTRAINT pk_biometric_data PRIMARY KEY (user_id, biometric_type)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    user_id INT,\n    activity_type VARCHAR(50),\n    timestamp TIMESTAMP,\n    CONSTRAINT pk_user_activity PRIMARY KEY (user_id, activity_type)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    biometric_data BYTEA,\n    login_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_patterns (\n    pattern_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_activity(user_id),\n    pattern_data JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE unauthorized_access (\n    access_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_activity(user_id),\n    access_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    biometric_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    timestamp TIMESTAMP NOT NULL,\n    access_type VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_patterns (\n    pattern_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    pattern_details JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE unauthorized_access_attempts (\n    attempt_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  biometric_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n  user_id INT REFERENCES users(id),\n  login_time TIMESTAMP NOT NULL,\n  login_result BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  user_id INT REFERENCES users(id),\n  access_time TIMESTAMP NOT NULL,\n  location VARCHAR(100),\n  success BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_patterns (\n  user_id INT REFERENCES users(id),\n  pattern_type VARCHAR(50) NOT NULL,\n  pattern_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_alerts (\n  user_id INT REFERENCES users(id),\n  alert_time TIMESTAMP NOT NULL,\n  alert_message TEXT\n);\n"
+      }
+    ]
+  }
+]

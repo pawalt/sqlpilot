@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneExpressionData (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255) NOT NULL,\n  expression_level DECIMAL,\n  drug_target BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drugs (\n  drug_id INT PRIMARY KEY,\n  drug_name VARCHAR(255),\n  target_gene VARCHAR(255),\n  mechanism_of_action TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_expression (\n  sample_id INT PRIMARY KEY,\n  gene_name VARCHAR(255),\n  expression_level FLOAT,\n  sample_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_expression_data (\n  gene_id UUID PRIMARY KEY,\n  gene_name STRING,\n  expression_level FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_targets (\n  target_id UUID PRIMARY KEY,\n  target_name STRING,\n  target_function STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_drug_mapping (\n  mapping_id UUID PRIMARY KEY,\n  gene_id UUID REFERENCES gene_expression_data(gene_id),\n  target_id UUID REFERENCES drug_targets(target_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_expression_data (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    expression_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_targets (\n    target_id INT PRIMARY KEY,\n    target_gene_id INT,\n    target_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_data (\n    drug_id INT PRIMARY KEY,\n    drug_name VARCHAR(100),\n    target_id INT,\n    manufacturer VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_drug_relationship (\n    gene_id INT,\n    drug_id INT,\n    CONSTRAINT fk_gene_id FOREIGN KEY (gene_id) REFERENCES gene_expression_data(gene_id),\n    CONSTRAINT fk_drug_id FOREIGN KEY (drug_id) REFERENCES drug_data(drug_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_expression_data (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    expression_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_targets (\n    target_id INT PRIMARY KEY,\n    target_name VARCHAR(255),\n    gene_id INT REFERENCES gene_expression_data(gene_id),\n    binding_affinity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drugs (\n    drug_id INT PRIMARY KEY,\n    drug_name VARCHAR(255),\n    target_id INT REFERENCES drug_targets(target_id),\n    potency FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drug_category_mapping (\n    mapping_id INT PRIMARY KEY,\n    drug_id INT REFERENCES drugs(drug_id),\n    category_id INT REFERENCES drug_categories(category_id)\n);"
+      }
+    ]
+  }
+]

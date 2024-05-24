@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gmoseeds_usage (\n  id INT PRIMARY KEY,\n  region_name VARCHAR(50),\n  seed_type VARCHAR(50),\n  usage_amount INT,\n  research_purpose TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE region_usage (\n\tregion_id INT PRIMARY KEY,\n\tregion_name VARCHAR(255) NOT NULL,\n\tgmo_seed_usage INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE seed_supplier (\n\tsupplier_id INT PRIMARY KEY,\n\tsupplier_name VARCHAR(255) NOT NULL,\n\tcontact_person VARCHAR(255),\n\temail_address VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gmo_seed_usage (\n    id INT PRIMARY KEY,\n    region VARCHAR(50),\n    research_purpose VARCHAR(100),\n    usage_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE region_details (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(50),\n    country VARCHAR(50),\n    continent VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE research_centers (\n    center_id INT PRIMARY KEY,\n    center_name VARCHAR(100),\n    region_id INT,\n    research_purpose VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regions (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crops (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(50) NOT NULL,\n    crop_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE seeds (\n    seed_id INT PRIMARY KEY,\n    seed_name VARCHAR(50) NOT NULL,\n    crop_id INT REFERENCES crops (crop_id),\n    region_id INT REFERENCES regions (region_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE seed_usage (\n    usage_id INT PRIMARY KEY,\n    seed_id INT REFERENCES seeds (seed_id),\n    usage_date DATE,\n    usage_quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regions ( region_id INT PRIMARY KEY, region_name VARCHAR(50) NOT NULL )"
+      },
+      {
+        "table_schema": "CREATE TABLE seeds ( seed_id INT PRIMARY KEY, seed_name VARCHAR(50) NOT NULL, genetic_info TEXT )"
+      },
+      {
+        "table_schema": "CREATE TABLE research_centers ( center_id INT PRIMARY KEY, center_name VARCHAR(50) NOT NULL, region_id INT, FOREIGN KEY (region_id) REFERENCES regions(region_id) )"
+      },
+      {
+        "table_schema": "CREATE TABLE seed_usage ( usage_id INT PRIMARY KEY, seed_id INT, center_id INT, usage_date DATE, quantity_used INT, FOREIGN KEY (seed_id) REFERENCES seeds(seed_id), FOREIGN KEY (center_id) REFERENCES research_centers(center_id) )"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers ( researcher_id INT PRIMARY KEY, researcher_name VARCHAR(50) NOT NULL, center_id INT, FOREIGN KEY (center_id) REFERENCES research_centers(center_id) )"
+      }
+    ]
+  }
+]

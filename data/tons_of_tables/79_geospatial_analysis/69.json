@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VegetationMonitoring (\n  image_id UUID PRIMARY KEY,\n  location GEOGRAPHY,\n  date DATE,\n  vegetation_cover FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vegetation_cover (\n    id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    image_date DATE,\n    vegetation_type VARCHAR(50),\n    vegetation_coverage DECIMAL\n);\n\nCREATE TABLE spatial_data (\n    id INT PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    satellite_id INT,\n    image_id INT,\n    FOREIGN KEY (satellite_id) REFERENCES satellites(id),\n    FOREIGN KEY (image_id) REFERENCES images(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n  image_id UUID PRIMARY KEY,\n  image_name VARCHAR(100),\n  image_data BYTEA,\n  captured_date TIMESTAMP,\n  captured_location GEOMETRY\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE spatial_data (\n  data_id UUID PRIMARY KEY,\n  data_name VARCHAR(100),\n  data_value DOUBLE PRECISION,\n  data_location GEOMETRY,\n  data_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vegetation_monitoring (\n  monitor_id UUID PRIMARY KEY,\n  image_id UUID REFERENCES satellite_images(image_id),\n  data_id UUID REFERENCES spatial_data(data_id),\n  monitoring_date DATE,\n  change_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    image_id SERIAL PRIMARY KEY,\n    image_name TEXT NOT NULL,\n    image_date DATE NOT NULL,\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE spatial_data (\n    spatial_id SERIAL PRIMARY KEY,\n    spatial_coordinates POINT NOT NULL,\n    vegetation_coverage FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    metadata_id SERIAL PRIMARY KEY,\n    image_id INT REFERENCES satellite_images(image_id),\n    spatial_id INT REFERENCES spatial_data(spatial_id),\n    capture_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vegetation_changes (\n    change_id SERIAL PRIMARY KEY,\n    image_id INT REFERENCES satellite_images(image_id),\n    change_description TEXT,\n    change_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vegetation_cover (\n    date DATE,\n    satellite_image_id INT,\n    vegetation_index FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    satellite_image_id INT,\n    image_url VARCHAR,\n    acquisition_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE spatial_data (\n    location_point VARCHAR,\n    satellite_image_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE change_detection (\n    change_id INT,\n    date DATE,\n    satellite_image_id1 INT,\n    satellite_image_id2 INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vegetation_types (\n    vegetation_type_id INT,\n    vegetation_type_name VARCHAR\n);"
+      }
+    ]
+  }
+]

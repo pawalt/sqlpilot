@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_geotags (\n  image_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  gps_latitude FLOAT,\n  gps_longitude FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageTimestamps (\n    image_id UUID PRIMARY KEY,\n    timestamp TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GPSCoordinates (\n    image_id UUID PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageTimestamps (\n    image_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GpsCoordinates (\n    gps_id UUID PRIMARY KEY,\n    latitude DECIMAL,\n    longitude DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageGeotags (\n    geotag_id UUID PRIMARY KEY,\n    image_id UUID,\n    gps_id UUID,\n    FOREIGN KEY (image_id) REFERENCES ImageTimestamps(image_id),\n    FOREIGN KEY (gps_id) REFERENCES GpsCoordinates(gps_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_data (\n   image_id SERIAL PRIMARY KEY,\n   image_name VARCHAR(255) NOT NULL,\n   timestamp TIMESTAMP NOT NULL,\n   gps_latitude DECIMAL(10, 6) NOT NULL,\n   gps_longitude DECIMAL(10, 6) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_tags (\n   tag_id SERIAL PRIMARY KEY,\n   tag_name VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_mapping (\n   mapping_id SERIAL PRIMARY KEY,\n   image_id INT NOT NULL,\n   tag_id INT NOT NULL,\n   FOREIGN KEY (image_id) REFERENCES image_data(image_id),\n   FOREIGN KEY (tag_id) REFERENCES image_tags(tag_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data (\n   user_id SERIAL PRIMARY KEY,\n   username VARCHAR(50) UNIQUE NOT NULL,\n   email VARCHAR(255) UNIQUE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE image_timestamps (\n    image_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    location_id INT,\n    FOREIGN KEY (location_id) REFERENCES locations (location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    latitude FLOAT,\n    longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    image_id INT PRIMARY KEY,\n    title VARCHAR(50),\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (\n    keyword_id INT PRIMARY KEY,\n    keyword VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_keywords (\n    image_id INT,\n    keyword_id INT,\n    PRIMARY KEY (image_id, keyword_id),\n    FOREIGN KEY (image_id) REFERENCES image_metadata (image_id),\n    FOREIGN KEY (keyword_id) REFERENCES keywords (keyword_id)\n);\n"
+      }
+    ]
+  }
+]

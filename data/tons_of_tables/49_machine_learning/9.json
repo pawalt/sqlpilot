@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_schedule (\n    id SERIAL PRIMARY KEY,\n    agent_name VARCHAR(255) NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    status VARCHAR(50) DEFAULT 'Scheduled'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agent_tasks (\n    task_id INT PRIMARY KEY,\n    agent_name VARCHAR(255),\n    task_status VARCHAR(50),\n    scheduled_time TIMESTAMP,\n    completed_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_logs (\n    log_id INT PRIMARY KEY,\n    task_id INT,\n    agent_name VARCHAR(255),\n    log_message TEXT,\n    log_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id UUID PRIMARY KEY,\n    agent_name VARCHAR(50) NOT NULL,\n    training_status VARCHAR(20) DEFAULT 'pending'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id UUID PRIMARY KEY,\n    agent_id UUID REFERENCES agents(agent_id),\n    task_name VARCHAR(50) NOT NULL,\n    task_status VARCHAR(20) DEFAULT 'pending'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id UUID PRIMARY KEY,\n    agent_id UUID REFERENCES agents(agent_id),\n    task_id UUID REFERENCES tasks(task_id),\n    log_text TEXT NOT NULL,\n    log_timestamp TIMESTAMP DEFAULT now()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rl_agents (\n  agent_id UUID PRIMARY KEY,\n  agent_name VARCHAR(50) NOT NULL,\n  status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_jobs (\n  job_id UUID PRIMARY KEY,\n  agent_id UUID REFERENCES rl_agents(agent_id),\n  start_time TIMESTAMP NOT NULL,\n  end_time TIMESTAMP,\n  status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE job_logs (\n  log_id UUID PRIMARY KEY,\n  job_id UUID REFERENCES training_jobs(job_id),\n  log_time TIMESTAMP NOT NULL,\n  message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_performance (\n  performance_id UUID PRIMARY KEY,\n  agent_id UUID REFERENCES rl_agents(agent_id),\n  training_accuracy FLOAT NOT NULL,\n  training_loss FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_jobs (\n    job_id INT PRIMARY KEY,\n    agent_id INT NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP,\n    status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id INT PRIMARY KEY,\n    agent_name VARCHAR(100) NOT NULL,\n    creation_date DATE NOT NULL,\n    training_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_logs (\n    log_id INT PRIMARY KEY,\n    agent_id INT NOT NULL,\n    log_text TEXT NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_performance (\n    performance_id INT PRIMARY KEY,\n    agent_id INT NOT NULL,\n    training_duration INTERVAL NOT NULL,\n    rewards_received FLOAT NOT NULL,\n    constraint fk_agent_id FOREIGN KEY (agent_id) REFERENCES agents(agent_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_parameters (\n    param_id INT PRIMARY KEY,\n    agent_id INT NOT NULL,\n    param_name VARCHAR(50) NOT NULL,\n    param_value TEXT NOT NULL\n);"
+      }
+    ]
+  }
+]

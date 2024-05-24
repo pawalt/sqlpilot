@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id SERIAL PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    name VARCHAR(100) NOT NULL,\n    age INT,\n    preferences JSON,\n    interactions JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    email VARCHAR(255),\n    name VARCHAR(100),\n    preferences JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    customer_id INT,\n    interaction_type VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  email VARCHAR(50) NOT NULL,\n  preference VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  interaction_id INT PRIMARY KEY,\n  customer_id INT REFERENCES customers(customer_id),\n  interaction_type VARCHAR(50) NOT NULL,\n  interaction_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(50) NOT NULL,\n  campaign_type VARCHAR(50) NOT NULL,\n  campaign_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100) UNIQUE\n);\n\nCREATE TABLE preferences (\n    preference_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    category VARCHAR(50),\n    value VARCHAR(100)\n);\n\nCREATE TABLE interactions (\n    interaction_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    interaction_type VARCHAR(50),\n    interaction_time TIMESTAMP,\n    interaction_data JSONB\n);\n\nCREATE TABLE campaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR(100),\n    start_date TIMESTAMP,\n    end_date TIMESTAMP,\n    segment VARCHAR(50),\n    status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  id INT PRIMARY KEY,\n  email VARCHAR(255) NOT NULL,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  preference VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n  interaction_id SERIAL PRIMARY KEY,\n  customer_id INT,\n  interaction_type VARCHAR(50),\n  interaction_date TIMESTAMP,\n  FOREIGN KEY (customer_id) REFERENCES customers(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n  campaign_id SERIAL PRIMARY KEY,\n  campaign_name VARCHAR(100),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_customers (\n  campaign_id INT,\n  customer_id INT,\n  PRIMARY KEY (campaign_id, customer_id),\n  FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id),\n  FOREIGN KEY (customer_id) REFERENCES customers(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_interactions (\n  campaign_id INT,\n  interaction_id INT,\n  PRIMARY KEY (campaign_id, interaction_id),\n  FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id),\n  FOREIGN KEY (interaction_id) REFERENCES interactions(interaction_id)\n);"
+      }
+    ]
+  }
+]

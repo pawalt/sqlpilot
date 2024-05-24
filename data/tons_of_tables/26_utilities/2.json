@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_usage_reports (\n    report_id UUID PRIMARY KEY,\n    department_name STRING,\n    water_consumption DECIMAL,\n    report_month DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_usage_reports (\n  report_id INT PRIMARY KEY,\n  department_id INT,\n  report_date DATE,\n  water_consumed DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n  department_id INT PRIMARY KEY,\n  department_name VARCHAR(255),\n  department_head VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE departments (\n    department_id INT PRIMARY KEY,\n    department_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n    usage_id INT PRIMARY KEY,\n    department_id INT REFERENCES departments(department_id),\n    month VARCHAR(10) NOT NULL,\n    water_consumed DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE monthly_reports (\n    report_id INT PRIMARY KEY,\n    department_id INT REFERENCES departments(department_id),\n    month VARCHAR(10) NOT NULL,\n    total_water_consumed DECIMAL(10,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE department (\n  department_id INT PRIMARY KEY,\n  department_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(255) NOT NULL,\n  department_id INT,\n  FOREIGN KEY (department_id) REFERENCES department(department_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_meter (\n  meter_id INT PRIMARY KEY,\n  meter_reading INT NOT NULL,\n  employee_id INT,\n  reading_date DATE,\n  FOREIGN KEY (employee_id) REFERENCES employee(employee_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE report (\n  report_id INT PRIMARY KEY,\n  report_month INT NOT NULL,\n  report_year INT NOT NULL,\n  department_id INT,\n  meter_id INT,\n  FOREIGN KEY (department_id) REFERENCES department(department_id),\n  FOREIGN KEY (meter_id) REFERENCES water_meter(meter_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE department (\n  department_id UUID PRIMARY KEY,\n  department_name STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee (\n  employee_id UUID PRIMARY KEY,\n  employee_name STRING,\n  department_id UUID,\n  FOREIGN KEY (department_id) REFERENCES department(department_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_meter (\n  meter_id UUID PRIMARY KEY,\n  meter_location STRING,\n  department_id UUID,\n  FOREIGN KEY (department_id) REFERENCES department(department_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n  usage_id UUID PRIMARY KEY,\n  meter_id UUID,\n  month INTEGER,\n  year INTEGER,\n  usage_in_gallons INTEGER,\n  FOREIGN KEY (meter_id) REFERENCES water_meter(meter_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE monthly_report (\n  report_id UUID PRIMARY KEY,\n  department_id UUID,\n  month INTEGER,\n  year INTEGER,\n  total_usage_in_gallons INTEGER,\n  FOREIGN KEY (department_id) REFERENCES department(department_id)\n);"
+      }
+    ]
+  }
+]

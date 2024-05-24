@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_reports (\n  report_id SERIAL PRIMARY KEY,\n  location_name TEXT NOT NULL,\n  geofence_radius INT NOT NULL,\n  target_population INT NOT NULL,\n  campaign_start_date DATE,\n  campaign_end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_report (\n  id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_efforts (\n  id INT PRIMARY KEY,\n  campaign_name VARCHAR(50) NOT NULL,\n  target_audience VARCHAR(100) NOT NULL,\n  budget DECIMAL(10, 2) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_reports (\n    report_id INT PRIMARY KEY,\n    location_id INT,\n    report_date DATE,\n    marketing_campaign TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE geofence_locations (\n    location_id INT PRIMARY KEY,\n    location_name TEXT,\n    latitude FLOAT,\n    longitude FLOAT,\n    radius INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name TEXT,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL,\n    target_audience TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofences (id SERIAL PRIMARY KEY,\n name VARCHAR(255) NOT NULL,\n latitude DOUBLE PRECISION NOT NULL,\n longitude DOUBLE PRECISION NOT NULL,\n radius INT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (id SERIAL PRIMARY KEY,\n date TIMESTAMP NOT NULL,\n geofence_id INT NOT NULL,\n total_visits INT NOT NULL,\n UNIQUE (date, geofence_id),\n FOREIGN KEY (geofence_id) REFERENCES geofences(id) ON DELETE CASCADE);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (id SERIAL PRIMARY KEY,\n name VARCHAR(255) NOT NULL,\n start_date DATE NOT NULL,\n end_date DATE NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_reports (id SERIAL PRIMARY KEY,\n campaign_id INT NOT NULL,\n report_id INT NOT NULL,\n UNIQUE (campaign_id, report_id),\n FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE CASCADE,\n FOREIGN KEY (report_id) REFERENCES reports(id) ON DELETE CASCADE);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofences (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location_geometry GEOGRAPHY,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n    id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_history (\n    id INT PRIMARY KEY,\n    campaign_id INT,\n    geofence_id INT,\n    report_date DATE,\n    impressions INT,\n    clicks INT,\n    conversions INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_metrics (\n    id INT PRIMARY KEY,\n    campaign_id INT,\n    report_date DATE,\n    impressions INT,\n    clicks INT,\n    conversions INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20)\n);"
+      }
+    ]
+  }
+]

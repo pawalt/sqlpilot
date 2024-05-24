@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suspicious_transactions (\n    transaction_id INT PRIMARY KEY,\n    block_number INT,\n    from_wallet_address VARCHAR(255),\n    to_wallet_address VARCHAR(255),\n    amount DECIMAL(18,2),\n    transaction_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suspicious_transactions (\n    transaction_id UUID PRIMARY KEY,\n    sender_address TEXT,\n    receiver_address TEXT,\n    amount DECIMAL,\n    timestamp TIMESTAMP\n);\n\nCREATE TABLE transaction_metadata (\n    metadata_id UUID PRIMARY KEY,\n    transaction_id UUID REFERENCES suspicious_transactions(transaction_id),\n    metadata TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suspicious_transactions (\n  transaction_id UUID PRIMARY KEY,\n  sender_address VARCHAR(255) NOT NULL,\n  receiver_address VARCHAR(255) NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE flagged_addresses (\n  address_id UUID PRIMARY KEY,\n  address VARCHAR(255) UNIQUE NOT NULL,\n  flagged_reason VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n  log_id UUID PRIMARY KEY,\n  transaction_id UUID REFERENCES suspicious_transactions (transaction_id),\n  log_message TEXT NOT NULL,\n  log_timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    sender_address VARCHAR(255),\n    receiver_address VARCHAR(255),\n    amount DECIMAL(10, 2),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blocks (\n    block_id INT PRIMARY KEY,\n    block_hash VARCHAR(255),\n    previous_block_hash VARCHAR(255),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    address_id INT PRIMARY KEY,\n    address VARCHAR(255),\n    is_suspicious BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions_metadata (\n    transaction_id INT PRIMARY KEY,\n    block_id INT,\n    address_id INT,\n    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id),\n    FOREIGN KEY (block_id) REFERENCES blocks(block_id),\n    FOREIGN KEY (address_id) REFERENCES addresses(address_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suspicious_accounts (\n    account_id INT PRIMARY KEY,\n    account_address VARCHAR(255),\n    account_type VARCHAR(100),\n    suspicious_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    account_id INT,\n    transaction_date TIMESTAMP,\n    transaction_amount DECIMAL(10,2),\n    transaction_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain (\n    block_id INT PRIMARY KEY,\n    block_hash VARCHAR(255),\n    previous_block_hash VARCHAR(255),\n    block_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suspect_transactions (\n    transaction_id INT PRIMARY KEY,\n    suspect_reason TEXT,\n    suspect_score INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_details (\n    transaction_id INT PRIMARY KEY,\n    transaction_hash VARCHAR(255),\n    block_id INT,\n    confirmation_status BOOLEAN\n);\n"
+      }
+    ]
+  }
+]

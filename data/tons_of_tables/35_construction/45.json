@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_timelines (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  milestone_name VARCHAR(255),\n  milestone_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date TIMESTAMP,\n    end_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Milestones (\n    milestone_id UUID PRIMARY KEY,\n    project_id UUID,\n    milestone_name VARCHAR(255),\n    milestone_date TIMESTAMP,\n    completed BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Project (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Milestone (\n  milestone_id INT PRIMARY KEY,\n  project_id INT,\n  milestone_name VARCHAR(255),\n  milestone_date DATE,\n  FOREIGN KEY (project_id) REFERENCES Project(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Task (\n  task_id INT PRIMARY KEY,\n  milestone_id INT,\n  task_name VARCHAR(255),\n  task_description TEXT,\n  task_status VARCHAR(50),\n  FOREIGN KEY (milestone_id) REFERENCES Milestone(milestone_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Project (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Milestone (\n    milestone_id INT PRIMARY KEY,\n    milestone_name VARCHAR(255) NOT NULL,\n    project_id INT,\n    milestone_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Task (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    milestone_id INT,\n    assigned_to VARCHAR(255),\n    task_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Assignee (\n    assignee_id INT PRIMARY KEY,\n    assignee_name VARCHAR(255) NOT NULL,\n    assignee_email VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Projects (\n    project_id SERIAL PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    status VARCHAR(50) DEFAULT 'Active'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Milestones (\n    milestone_id SERIAL PRIMARY KEY,\n    project_id INT REFERENCES Projects(project_id) ON DELETE CASCADE,\n    milestone_name VARCHAR(255) NOT NULL,\n    milestone_date DATE NOT NULL,\n    status VARCHAR(50) DEFAULT 'Incomplete'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Tasks (\n    task_id SERIAL PRIMARY KEY,\n    project_id INT REFERENCES Projects(project_id) ON DELETE CASCADE,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    due_date DATE,\n    status VARCHAR(50) DEFAULT 'Incomplete'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TaskAssignees (\n    task_id INT REFERENCES Tasks(task_id) ON DELETE CASCADE,\n    assignee_id INT REFERENCES Employees(employee_id) ON DELETE CASCADE,\n    PRIMARY KEY (task_id, assignee_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Employees (\n    employee_id SERIAL PRIMARY KEY,\n    employee_name VARCHAR(255) NOT NULL,\n    department VARCHAR(100) NOT NULL,\n    email VARCHAR(255) UNIQUE\n);"
+      }
+    ]
+  }
+]

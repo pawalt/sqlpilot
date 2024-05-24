@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VirtualObjectsInventory (\n\tobject_id UUID PRIMARY KEY,\n\tobject_name VARCHAR(50) NOT NULL,\n\tdescription TEXT,\n\tquantity INT NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_objects (\n    id INT PRIMARY KEY,\n    object_name VARCHAR(50),\n    object_type VARCHAR(50),\n    quantity INT\n);\n\nCREATE TABLE ar_scenes (\n    id INT PRIMARY KEY,\n    scene_name VARCHAR(50),\n    scene_description TEXT,\n    object_id INT,\n    FOREIGN KEY (object_id) REFERENCES virtual_objects(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_objects (\n    id INT PRIMARY KEY,\n    object_name VARCHAR(255),\n    category VARCHAR(50),\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE scenes (\n    scene_id INT PRIMARY KEY,\n    location VARCHAR(100),\n    date_added DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE object_inventory (\n    inventory_id INT PRIMARY KEY,\n    object_id INT,\n    scene_id INT,\n    quantity INT,\n    FOREIGN KEY (object_id) REFERENCES virtual_objects(id),\n    FOREIGN KEY (scene_id) REFERENCES scenes(scene_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VirtualObjects (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  description TEXT,\n  category VARCHAR(50),\n  quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ARScenes (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ObjectInstances (\n  id SERIAL PRIMARY KEY,\n  virtual_object_id INT REFERENCES VirtualObjects(id),\n  ar_scene_id INT REFERENCES ARScenes(id),\n  position_x FLOAT,\n  position_y FLOAT,\n  position_z FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  password VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_objects (\n    object_id UUID PRIMARY KEY,\n    object_name VARCHAR(255) NOT NULL,\n    object_type VARCHAR(50),\n    object_size VARCHAR(20),\n    object_color VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_scenes (\n    scene_id UUID PRIMARY KEY,\n    scene_name VARCHAR(255) NOT NULL,\n    scene_description TEXT,\n    scene_location VARCHAR(100),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE object_inventory (\n    inventory_id UUID PRIMARY KEY,\n    object_id UUID,\n    scene_id UUID,\n    quantity INT,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id UUID PRIMARY KEY,\n    role_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scene_permissions (\n    permission_id UUID PRIMARY KEY,\n    scene_id UUID,\n    user_id UUID,\n    permission_type VARCHAR(20)\n);"
+      }
+    ]
+  }
+]

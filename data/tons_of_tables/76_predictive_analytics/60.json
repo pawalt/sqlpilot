@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NeuralNetworkTrainingData (\n    training_id INT PRIMARY KEY,\n    input_data TEXT,\n    output_data TEXT,\n    training_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NeuralNetworkModels (\n    model_id SERIAL PRIMARY KEY,\n    model_name VARCHAR(50) NOT NULL,\n    input_size INT NOT NULL,\n    output_size INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingData (\n    data_id SERIAL PRIMARY KEY,\n    model_id INT REFERENCES NeuralNetworkModels(model_id),\n    training_set JSONB NOT NULL,\n    validation_set JSONB NOT NULL,\n    created_at TIMESTAMP DEFAULT NOW()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data (  id INT PRIMARY KEY,  data JSONB NOT NULL,  label VARCHAR(50) NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parameters (  model_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),  learning_rate FLOAT NOT NULL,  layers INTEGER NOT NULL,  epoch INTEGER NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE model_logs (  log_id SERIAL PRIMARY KEY,  model_id UUID REFERENCES model_parameters(model_id),  timestamp TIMESTAMP NOT NULL,  loss FLOAT NOT NULL );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TrainingData (\n    id INT PRIMARY KEY,\n    input_data VARCHAR(255),\n    target_data VARCHAR(255),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE NeuralNetworkModels (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50),\n    layers INT,\n    accuracy FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingLogs (\n    log_id INT PRIMARY KEY,\n    model_id INT,\n    training_loss FLOAT,\n    training_time INT,\n    FOREIGN KEY (model_id) REFERENCES NeuralNetworkModels(model_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Hyperparameters (\n    hyperparam_id INT PRIMARY KEY,\n    model_id INT,\n    learning_rate FLOAT,\n    batch_size INT,\n    FOREIGN KEY (model_id) REFERENCES NeuralNetworkModels(model_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(50),\n    training_input JSON,\n    training_output JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metadata (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50),\n    description VARCHAR(255),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_performance (\n    model_id INT PRIMARY KEY,\n    precision FLOAT,\n    recall FLOAT,\n    f1_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_history (\n    model_id INT,\n    epoch INT,\n    loss FLOAT,\n    accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parameters (\n    model_id INT,\n    parameter_name VARCHAR(50),\n    parameter_value JSON\n);"
+      }
+    ]
+  }
+]

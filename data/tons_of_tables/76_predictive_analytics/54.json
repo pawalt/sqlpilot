@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ai_model_configurations (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_type VARCHAR(50),\n    configuration JSON,\n    parameters JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ai_model_configs (\n  model_id UUID PRIMARY KEY,\n  model_name VARCHAR(255) NOT NULL,\n  model_description TEXT,\n  created_at TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ai_model_parameters (\n  parameter_id UUID PRIMARY KEY,\n  model_id UUID REFERENCES ai_model_configs(model_id),\n  parameter_name VARCHAR(255) NOT NULL,\n  parameter_value FLOAT NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_configurations (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    configuration_json JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parameters (\n    id INT PRIMARY KEY,\n    model_id INT,\n    parameter_name VARCHAR(255),\n    parameter_value FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_logs (\n    log_id INT PRIMARY KEY,\n    model_id INT,\n    log_message TEXT,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ai_model_configurations (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    creator_name VARCHAR(255),\n    creation_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parameters (\n    id INT PRIMARY KEY,\n    parameter_name VARCHAR(255),\n    parameter_value FLOAT,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metadata (\n    id INT PRIMARY KEY,\n    model_id INT,\n    training_data_source VARCHAR(255),\n    validation_data_source VARCHAR(255),\n    test_data_source VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_logs (\n    id INT PRIMARY KEY,\n    log_date TIMESTAMP,\n    log_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ai_models (\n    model_id UUID PRIMARY KEY,\n    model_name TEXT NOT NULL,\n    model_description TEXT,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parameters (\n    param_id UUID PRIMARY KEY,\n    model_id UUID REFERENCES ai_models (model_id),\n    param_name TEXT NOT NULL,\n    param_value TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    hyperparam_id UUID PRIMARY KEY,\n    param_id UUID REFERENCES model_parameters (param_id),\n    hyperparam_name TEXT NOT NULL,\n    hyperparam_value TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    data_id UUID PRIMARY KEY,\n    model_id UUID REFERENCES ai_models (model_id),\n    data_description TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE evaluation_metrics (\n    metric_id UUID PRIMARY KEY,\n    model_id UUID REFERENCES ai_models (model_id),\n    metric_name TEXT NOT NULL,\n    metric_value FLOAT NOT NULL\n);"
+      }
+    ]
+  }
+]

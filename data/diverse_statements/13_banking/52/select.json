@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM bill_payments;",
+      "SELECT bill_name, amount FROM bill_payments WHERE amount > 100;",
+      "SELECT * FROM bill_payments WHERE due_date < '2022-01-01';",
+      "SELECT payment_id, bill_name, amount FROM bill_payments WHERE payer_id = 123;",
+      "SELECT bill_name, amount, due_date FROM bill_payments ORDER BY due_date DESC;",
+      "SELECT * FROM bill_payments WHERE amount > 100 ORDER BY due_date DESC;",
+      "SELECT bill_name, amount, due_date, payer_id FROM bill_payments WHERE reminder_enabled = TRUE;",
+      "SELECT * FROM bill_payments WHERE amount BETWEEN 50 AND 200 AND payer_id = 3 ORDER BY due_date ASC, amount DESC;",
+      "SELECT payment_id, bill_name, amount, due_date FROM bill_payments WHERE reminder_date IS NOT NULL;",
+      "SELECT payer_id, SUM(amount) AS total_amount_paid FROM bill_payments GROUP BY payer_id HAVING total_amount_paid > 500;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM reminders WHERE reminder_id = 1;",
+      "SELECT reminder_description, due_date FROM reminders WHERE due_date > NOW();",
+      "SELECT reminder_description, amount FROM reminders ORDER BY amount DESC;",
+      "SELECT * FROM scheduled_queries WHERE last_executed IS NOT NULL;",
+      "SELECT query_description, frequency FROM scheduled_queries WHERE frequency = '1 day';",
+      "SELECT reminder_id, reminder_description FROM reminders WHERE due_date > '2022-01-01' ORDER BY due_date DESC LIMIT 5;",
+      "SELECT * FROM reminders WHERE due_date BETWEEN '2022-01-01' AND '2022-12-31' AND amount > 100 ORDER BY amount DESC, due_date ASC;",
+      "SELECT query_id, query_description, EXTRACT(MONTH FROM last_executed) AS last_executed_month FROM scheduled_queries WHERE frequency = '1 month' ORDER BY last_executed_month ASC;",
+      "SELECT reminder_description, due_date, amount FROM reminders WHERE reminder_id IN (1, 3, 5) ORDER BY amount DESC, due_date ASC;",
+      "SELECT reminder_id, reminder_description, due_date, amount FROM reminders WHERE reminder_description ILIKE '%meeting%' OR amount < 50 ORDER BY reminder_id DESC LIMIT 10;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM bill_payments WHERE amount > 1000;",
+      "SELECT bill_name, amount FROM bill_payments WHERE due_date >= '2022-01-01';",
+      "SELECT * FROM reminders WHERE status = 'pending' ORDER BY reminder_date DESC;",
+      "SELECT query_id, frequency FROM scheduled_queries WHERE last_run IS NOT NULL;",
+      "SELECT * FROM bill_payments WHERE bill_name LIKE 'Electric%' ORDER BY amount DESC;",
+      "SELECT * FROM bill_payments WHERE amount > 100 ORDER BY due_date DESC;",
+      "SELECT bill_name, amount FROM bill_payments LEFT JOIN reminders ON bill_payments.id = reminders.bill_id WHERE reminders.status = 'pending';",
+      "SELECT DISTINCT bill_name, due_date FROM bill_payments WHERE amount BETWEEN 50 AND 200 ORDER BY bill_name ASC, due_date;",
+      "SELECT MAX(amount) AS max_amount, MIN(amount) AS min_amount FROM bill_payments GROUP BY bill_name HAVING COUNT(id) > 1;",
+      "SELECT query_text FROM scheduled_queries WHERE frequency = 'daily' AND last_run < CURRENT_TIMESTAMP - INTERVAL '1' DAY;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM PaymentReminders;",
+      "SELECT bill_name, bill_amount FROM PaymentReminders WHERE due_date = '2022-12-31';",
+      "SELECT user_id, username, email FROM Users WHERE phone_number LIKE '%555%';",
+      "SELECT query_id, query_text, active FROM ScheduledQueries WHERE schedule_datetime > '2023-01-01 08:00:00';",
+      "SELECT log_id, log_date, status FROM RemindersLogs ORDER BY log_date DESC;",
+      "SELECT * FROM PaymentReminders WHERE due_date >= '2023-01-01' ORDER BY bill_amount DESC, bill_name ASC;",
+      "SELECT user_id, bill_name, due_date FROM PaymentReminders WHERE user_id = 12345 AND bill_amount > 100 ORDER BY due_date ASC;",
+      "SELECT Users.username, PaymentReminders.bill_name, PaymentReminders.due_date FROM Users INNER JOIN PaymentReminders ON Users.user_id = PaymentReminders.user_id WHERE Users.email LIKE '%@gmail.com';",
+      "SELECT query_id, LEFT(query_text, 50) AS truncated_query_text, schedule_datetime FROM ScheduledQueries WHERE active = TRUE ORDER BY schedule_datetime ASC;",
+      "SELECT rl.log_id, pr.bill_name, rl.log_date, rl.status FROM RemindersLogs rl INNER JOIN PaymentReminders pr ON rl.reminder_id = pr.reminder_id WHERE pr.due_date > '2022-06-01';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM bills;",
+      "SELECT bill_name, amount FROM bills WHERE due_date > '2022-06-30';",
+      "SELECT bill_name, amount FROM bills ORDER BY amount DESC;",
+      "SELECT users.username, bills.bill_name FROM users JOIN bills ON users.user_id = bills.bill_id;",
+      "SELECT users.username, logs.execution_time FROM users JOIN scheduled_queries ON users.user_id = scheduled_queries.user_id JOIN logs ON scheduled_queries.query_id = logs.query_id;",
+      "SELECT * FROM users;",
+      "SELECT bill_name, amount, due_date FROM bills WHERE amount > 1000 ORDER BY due_date DESC;",
+      "SELECT r.reminder_id, r.bill_id, b.bill_name, r.scheduled_time FROM reminders r INNER JOIN bills b ON r.bill_id = b.bill_id WHERE r.sent = FALSE;",
+      "SELECT u.username, sq.query_text, sq.schedule_interval FROM users u JOIN scheduled_queries sq ON u.user_id = sq.user_id WHERE u.username LIKE 'A%';",
+      "SELECT l.log_id, l.query_id, sq.query_text, l.execution_time FROM logs l JOIN scheduled_queries sq ON l.query_id = sq.query_id WHERE l.execution_time >= '2022-01-01' ORDER BY l.execution_time ASC;"
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumHardwareComponents (\n    component_id UUID PRIMARY KEY,\n    component_name TEXT NOT NULL,\n    manufacturer TEXT,\n    serial_number TEXT,\n    specification JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE components (\n    component_id INT PRIMARY KEY,\n    component_name VARCHAR(255) NOT NULL,\n    manufacturer VARCHAR(255) NOT NULL,\n    component_type VARCHAR(50) NOT NULL,\n    specification TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE simulations (\n    simulation_id INT PRIMARY KEY,\n    component_id INT NOT NULL,\n    simulation_name VARCHAR(255) NOT NULL,\n    simulation_date DATE,\n    duration_hours INT,\n    FOREIGN KEY (component_id) REFERENCES components(component_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_computers (\n    computer_id UUID PRIMARY KEY,\n    computer_name VARCHAR(50),\n    manufacturer VARCHAR(50),\n    qubit_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_gates (\n    gate_id UUID PRIMARY KEY,\n    gate_name VARCHAR(50),\n    gate_type VARCHAR(50),\n    error_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_simulations (\n    simulation_id UUID PRIMARY KEY,\n    simulation_name VARCHAR(50),\n    simulation_date DATE,\n    simulation_results JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_hardware_components (\n  component_id INT PRIMARY KEY,\n  component_name VARCHAR(255),\n  manufacturer VARCHAR(255),\n  year_of_manufacture INT,\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE component_specifications (\n  spec_id INT PRIMARY KEY,\n  component_id INT REFERENCES quantum_hardware_components(component_id),\n  spec_name VARCHAR(255),\n  spec_value VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE simulations (\n  simulation_id INT PRIMARY KEY,\n  spec_id INT REFERENCES component_specifications(spec_id),\n  simulation_type VARCHAR(255),\n  simulation_result TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE simulation_logs (\n  log_id INT PRIMARY KEY,\n  simulation_id INT REFERENCES simulations(simulation_id),\n  log_timestamp TIMESTAMP,\n  log_message TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE qubits (\n    qubit_id INT PRIMARY KEY,\n    qubit_name VARCHAR(100),\n    qubit_type VARCHAR(50),\n    qubit_properties JSON,\n    qubit_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE gates (\n    gate_id INT PRIMARY KEY,\n    gate_name VARCHAR(100),\n    gate_type VARCHAR(50),\n    gate_matrix JSON,\n    gate_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE simulations (\n    simulation_id INT PRIMARY KEY,\n    simulation_name VARCHAR(100),\n    simulation_type VARCHAR(50),\n    simulation_parameters JSON,\n    simulation_result TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE circuits (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(100),\n    circuit_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(100),\n    device_type VARCHAR(50),\n    device_properties JSON,\n    device_description TEXT\n);\n"
+      }
+    ]
+  }
+]

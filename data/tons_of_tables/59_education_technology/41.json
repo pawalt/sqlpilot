@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ARContentMetadata (\n    ar_content_id UUID PRIMARY KEY,\n    ar_content_name VARCHAR(255),\n    ar_content_description TEXT,\n    ar_content_path VARCHAR(255),\n    ar_content_type VARCHAR(50),\n    ar_content_size INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ARContentMetadata (\n    id INT PRIMARY KEY,\n    title VARCHAR(255),\n    description TEXT,\n    author VARCHAR(100),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ARContentImages (\n    image_id INT PRIMARY KEY,\n    content_id INT,\n    image_url TEXT,\n    caption VARCHAR(255),\n    FOREIGN KEY (content_id) REFERENCES ARContentMetadata(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ARContentMetadata (\n    id SERIAL PRIMARY KEY,\n    content_name TEXT NOT NULL,\n    content_description TEXT,\n    content_url TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ARTags (\n    tag_id SERIAL PRIMARY KEY,\n    tag_name TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ContentTagMapping (\n    mapping_id SERIAL PRIMARY KEY,\n    content_id INT REFERENCES ARContentMetadata(id),\n    tag_id INT REFERENCES ARTags(tag_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_content_metadata (\n    id SERIAL PRIMARY KEY,\n    content_name VARCHAR(255) NOT NULL,\n    author VARCHAR(100),\n    creation_date DATE,\n    hash VARCHAR(50) UNIQUE\n);\n\nCREATE TABLE ar_tags (\n    tag_id SERIAL PRIMARY KEY,\n    tag_name VARCHAR(50) UNIQUE\n);\n\nCREATE TABLE ar_content_tags (\n    tag_id INT REFERENCES ar_tags(tag_id),\n    content_id INT REFERENCES ar_content_metadata(id),\n    PRIMARY KEY (tag_id, content_id)\n);\n\nCREATE TABLE ar_users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(100) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_content (\n    id INT PRIMARY KEY,\n    content_name VARCHAR(255),\n    content_description TEXT,\n    content_type VARCHAR(50),\n    uploaded_date TIMESTAMP,\n    file_path VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_tags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    asset_size INT,\n    asset_format VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(255),\n    join_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_likes (\n    like_id INT PRIMARY KEY,\n    user_id INT,\n    content_id INT,\n    like_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES ar_users(user_id),\n    FOREIGN KEY (content_id) REFERENCES ar_content(id)\n);"
+      }
+    ]
+  }
+]

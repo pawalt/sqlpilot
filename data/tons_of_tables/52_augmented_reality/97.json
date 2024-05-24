@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sustainable_development_goals (\n goal_id INT,\n goal_name TEXT,\n target TEXT,\n indicator TEXT,\n progress FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sdg_progress (\n  sdg_id INT PRIMARY KEY,\n  target VARCHAR(50) NOT NULL,\n  progress FLOAT NOT NULL,\n  update_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_visualization (\n  visualization_id INT PRIMARY KEY,\n  location VARCHAR(100) NOT NULL,\n  visualization_data BYTEA\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE progress_data (\n    id SERIAL PRIMARY KEY,\n    goal_name VARCHAR(50) NOT NULL,\n    goal_description TEXT,\n    progress_percentage DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    country VARCHAR(50),\n    age INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE visualization_data (\n    visualization_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_data(user_id),\n    goal_id INT REFERENCES progress_data(id),\n    visualization_type VARCHAR(50),\n    visualization_data BYTEA\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SustainableGoalsData (\n    goal_id INT PRIMARY KEY,\n    goal_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    target_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProgressData (\n    progress_id INT PRIMARY KEY,\n    goal_id INT,\n    progress_percentage DECIMAL(5,2) NOT NULL,\n    updated_on TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LocationData (\n    location_id INT PRIMARY KEY,\n    country VARCHAR(255) NOT NULL,\n    region VARCHAR(255),\n    latitude DECIMAL(8,6),\n    longitude DECIMAL(9,6)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ARVisualization (\n    visualization_id INT PRIMARY KEY,\n    goal_id INT,\n    location_id INT,\n    visualization_type ENUM('3D', '2D'),\n    created_on TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE goals (\n    goal_id INT PRIMARY KEY,\n    goal_name VARCHAR(255) NOT NULL,\n    target_value INT NOT NULL,\n    current_progress INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE indicators (\n    indicator_id INT PRIMARY KEY,\n    indicator_name VARCHAR(255) NOT NULL,\n    target_goal_id INT NOT NULL,\n    current_value INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL,\n    source_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_records (\n    record_id INT PRIMARY KEY,\n    indicator_id INT NOT NULL,\n    source_id INT NOT NULL,\n    record_date DATE NOT NULL,\n    record_value INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE visualization_tools (\n    tool_id INT PRIMARY KEY,\n    tool_name VARCHAR(255) NOT NULL,\n    tool_type VARCHAR(50) NOT NULL,\n    supported_data_sources VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  }
+]

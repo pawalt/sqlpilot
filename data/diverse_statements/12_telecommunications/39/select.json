@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM NetworkCoverage WHERE region = 'North'",
+      "SELECT location_name, coverage_area FROM NetworkCoverage WHERE network_type = '4G'",
+      "SELECT location_id, region FROM NetworkCoverage WHERE coverage_area >= 1000",
+      "SELECT * FROM NetworkCoverage WHERE network_type = '5G' ORDER BY location_name ASC",
+      "SELECT location_name, coverage_area, region FROM NetworkCoverage WHERE coverage_area < 500 OR coverage_area > 2000",
+      "SELECT * FROM NetworkCoverage WHERE region = 'North' ORDER BY location_name DESC LIMIT 5",
+      "SELECT location_id, location_name FROM NetworkCoverage WHERE coverage_area > 1000 ORDER BY coverage_area ASC",
+      "SELECT location_id, coverage_area FROM NetworkCoverage WHERE network_type = '4G' AND coverage_area BETWEEN 500 AND 1000 ORDER BY location_id ASC",
+      "SELECT location_name, coverage_area FROM NetworkCoverage WHERE coverage_area < 500 OR coverage_area > 2000 ORDER BY coverage_area DESC",
+      "SELECT * FROM NetworkCoverage WHERE region <> 'South' ORDER BY location_id"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT node_id, location, latitude, longitude, node_type FROM network_nodes;",
+      "SELECT * FROM network_nodes WHERE node_type = 'gateway';",
+      "SELECT location, latitude, longitude FROM network_nodes ORDER BY location DESC;",
+      "SELECT end_node_id, start_node_id, distance FROM network_edges WHERE distance > 100 ORDER BY distance ASC, end_node_id DESC;",
+      "SELECT node_id, location FROM network_nodes WHERE location LIKE '%Street';",
+      "SELECT * FROM network_nodes;",
+      "SELECT node_id, node_type, location FROM network_nodes WHERE latitude > 30 ORDER BY location DESC;",
+      "SELECT node_id, latitude, longitude FROM network_nodes WHERE node_type = 'Router' ORDER BY node_id ASC;",
+      "SELECT edge_id, start_node_id, end_node_id, distance FROM network_edges WHERE distance BETWEEN 100 AND 500 ORDER BY distance DESC;",
+      "SELECT start_node_id, COUNT(*) AS edge_count FROM network_edges GROUP BY start_node_id HAVING COUNT(*) > 2 ORDER BY edge_count DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM regions;",
+      "SELECT region_id, region_name FROM regions ORDER BY region_id DESC;",
+      "SELECT location_name FROM locations WHERE region_id = 1;",
+      "SELECT device_id, device_name FROM network_devices WHERE location_id = 3;",
+      "SELECT * FROM regions WHERE coverage_area > 1000;",
+      "SELECT * FROM regions INNER JOIN locations ON regions.region_id = locations.region_id INNER JOIN network_devices ON locations.location_id = network_devices.location_id WHERE regions.region_id = 1;",
+      "SELECT region_name, location_name, device_name FROM regions, locations, network_devices WHERE regions.region_id = locations.region_id AND locations.location_id = network_devices.location_id;",
+      "SELECT location_name, device_name FROM locations INNER JOIN network_devices ON locations.location_id = network_devices.location_id WHERE locations.location_id > 3;",
+      "SELECT region_name, COUNT(device_id) AS total_devices FROM regions INNER JOIN locations ON regions.region_id = locations.region_id INNER JOIN network_devices ON locations.location_id = network_devices.location_id GROUP BY region_name;",
+      "SELECT region_name, device_name FROM regions INNER JOIN locations ON regions.region_id = locations.region_id INNER JOIN network_devices ON locations.location_id = network_devices.location_id WHERE region_name LIKE '%West%';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM locations;",
+      "SELECT location_name, latitude, longitude FROM locations WHERE location_id = 1;",
+      "SELECT location_name, latitude, longitude FROM locations ORDER BY location_name DESC;",
+      "SELECT * FROM networks WHERE deployment_date > '2022-01-01';",
+      "SELECT area_name, coverage_type, coverage_range FROM coverage_areas WHERE coverage_range >= 50;",
+      "SELECT * FROM locations WHERE location_name LIKE 'New%'",
+      "SELECT location_id, location_name, latitude, longitude FROM locations ORDER BY location_name DESC",
+      "SELECT network_name, technology FROM networks WHERE deployment_date > '2021-01-01'",
+      "SELECT area_name, coverage_type, coverage_range FROM coverage_areas WHERE coverage_range > 100",
+      "SELECT * FROM network_usage WHERE usage_date BETWEEN '2022-01-01' AND '2022-12-31' ORDER BY usage_date"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM coverage_areas",
+      "SELECT area_name, coverage_type FROM coverage_areas",
+      "SELECT node_id, node_name, node_location FROM network_nodes",
+      "SELECT network_name, network_type, coverage_area_id FROM networks",
+      "SELECT connection_id, source_node_id, destination_node_id, connection_type FROM node_connections",
+      "SELECT * FROM coverage_areas ORDER BY area_name DESC, coverage_type ASC",
+      "SELECT network_name, network_type, area_name FROM networks JOIN coverage_areas ON networks.coverage_area_id = coverage_areas.area_id WHERE network_type = '4G' ORDER BY area_name",
+      "SELECT node_name, node_location FROM network_nodes WHERE node_id IN (SELECT source_node_id FROM node_connections WHERE connection_type = 'fiber optic')",
+      "SELECT node_name, node_location FROM network_nodes WHERE node_id NOT IN (SELECT node_id FROM usage_statistics WHERE total_traffic > 1000) ORDER BY node_name",
+      "SELECT coverage_type, COUNT(*) AS network_count FROM coverage_areas JOIN networks ON coverage_areas.area_id = networks.coverage_area_id GROUP BY coverage_type ORDER BY network_count DESC"
+    ]
+  }
+]

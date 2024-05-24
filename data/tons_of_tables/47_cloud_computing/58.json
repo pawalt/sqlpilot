@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    encrypted_data VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    encrypted_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL,\n    transaction_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    encrypted_data TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    role_name VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES user_data(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    permission_name VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES user_data(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    encrypted_data TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_wallet (\n    wallet_id INT PRIMARY KEY,\n    user_id INT,\n    balance DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_keys (\n    key_id INT PRIMARY KEY,\n    user_id INT,\n    private_key TEXT,\n    public_key TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT,\n    amount DECIMAL(10, 2),\n    date timestamp\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password_hash VARCHAR(100),\n    email VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id INT,\n    data_key VARCHAR(50),\n    encrypted_data TEXT,\n    PRIMARY KEY (user_id, data_key),\n    CONSTRAINT user_data_fk FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    accessed_at TIMESTAMP,\n    action VARCHAR(50),\n    CONSTRAINT access_logs_fk FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n    tx_id INT PRIMARY KEY,\n    user_id INT,\n    tx_type VARCHAR(50),\n    tx_data JSON,\n    timestamp TIMESTAMP,\n    CONSTRAINT blockchain_transactions_fk FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    user_id INT,\n    encryption_key VARCHAR(100),\n    created_at TIMESTAMP,\n    CONSTRAINT encryption_keys_fk FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      }
+    ]
+  }
+]

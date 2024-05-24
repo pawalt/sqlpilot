@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clinical_trial_data (\n    trial_id INT PRIMARY KEY,\n    trial_name VARCHAR(255),\n    patient_id INT,\n    patient_name VARCHAR(255),\n    patient_age INT,\n    patient_gender VARCHAR(10),\n    trial_start_date DATE,\n    trial_end_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ClinicalTrials (\n  trial_id UUID PRIMARY KEY,\n  trial_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(50) DEFAULT 'Active'\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id UUID PRIMARY KEY,\n  patient_name VARCHAR(255) NOT NULL,\n  age INT,\n  gender VARCHAR(10),\n  trial_id UUID REFERENCES ClinicalTrials(trial_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id UUID PRIMARY KEY,\n  patient_name VARCHAR(50),\n  age INT,\n  gender VARCHAR(10),\n  condition VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE clinical_trials (\n  trial_id UUID PRIMARY KEY,\n  trial_name VARCHAR(100),\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trial_data (\n  data_id UUID PRIMARY KEY,\n  trial_id UUID,\n  patient_id UUID,\n  data_value TEXT,\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id UUID PRIMARY KEY,\n  patient_name VARCHAR(50) NOT NULL,\n  age INT,\n  gender VARCHAR(10),\n  date_of_birth DATE,\n  address VARCHAR(100),\n  phone_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE hospitals (\n  hospital_id UUID PRIMARY KEY,\n  hospital_name VARCHAR(100) NOT NULL,\n  location VARCHAR(50),\n  bed_capacity INT,\n  hospital_type VARCHAR(20),\n  contact_person VARCHAR(50),\n  contact_number VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE clinical_trials (\n  trial_id UUID PRIMARY KEY,\n  trial_name VARCHAR(100),\n  start_date DATE,\n  end_date DATE,\n  protocol TEXT,\n  sponsor VARCHAR(100),\n  status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trial_participants (\n  participant_id UUID PRIMARY KEY,\n  trial_id UUID,\n  patient_id UUID,\n  hospital_id UUID,\n  enrollment_date DATE,\n  exit_date DATE,\n  status VARCHAR(20),\n  FOREIGN KEY (trial_id) REFERENCES clinical_trials(trial_id),\n  FOREIGN KEY (patient_id) REFERENCES patients(patient_id),\n  FOREIGN KEY (hospital_id) REFERENCES hospitals(hospital_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Trials (\n    trial_id UUID PRIMARY KEY,\n    trial_name VARCHAR,\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR,\n    age INT,\n    gender VARCHAR,\n    address VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrialPatients (\n    trial_id UUID,\n    patient_id UUID,\n    enrollment_date DATE,\n    PRIMARY KEY (trial_id, patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrialResults (\n    result_id UUID PRIMARY KEY,\n    trial_id UUID,\n    patient_id UUID,\n    result_value VARCHAR,\n    result_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id UUID PRIMARY KEY,\n    researcher_name VARCHAR,\n    specialization VARCHAR,\n    institution VARCHAR\n);"
+      }
+    ]
+  }
+]

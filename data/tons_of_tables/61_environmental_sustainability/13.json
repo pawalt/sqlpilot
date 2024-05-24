@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_conservation_technologies (\n    technology_id SERIAL PRIMARY KEY,\n    technology_name VARCHAR(50) NOT NULL,\n    description TEXT,\n    impact_on_reduction DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE technologies (\n  technology_id INT PRIMARY KEY,\n  technology_name VARCHAR(50),\n  description TEXT,\n  usage_reduction DECIMAL(5,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE organizations (\n  org_id INT PRIMARY KEY,\n  org_name VARCHAR(50),\n  location VARCHAR(100),\n  contact_person VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Water_Saving_Technologies (\n    technology_id INT PRIMARY KEY,\n    technology_name VARCHAR(50),\n    description TEXT,\n    water_savings FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Usage_Reduction (\n    reduction_id INT PRIMARY KEY,\n    technology_id INT,\n    user_id INT,\n    date_installed DATE,\n    amount_saved FLOAT,\n    FOREIGN KEY (technology_id) REFERENCES Water_Saving_Technologies(technology_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50),\n    user_email VARCHAR(50),\n    organization VARCHAR(50),\n    date_joined DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterTech (\n    tech_id SERIAL PRIMARY KEY,\n    tech_name VARCHAR(50) NOT NULL,\n    description TEXT,\n    usage_reduction DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Organization (\n    org_id SERIAL PRIMARY KEY,\n    org_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100),\n    contact_email VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TechOrganization (\n    tech_org_id SERIAL PRIMARY KEY,\n    tech_id INT REFERENCES WaterTech(tech_id),\n    org_id INT REFERENCES Organization(org_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImpactMetrics (\n    metric_id SERIAL PRIMARY KEY,\n    tech_id INT REFERENCES WaterTech(tech_id),\n    impact_measure VARCHAR(50),\n    value DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WaterConservationOrganization (\n    id INT PRIMARY KEY,\n    organization_name VARCHAR(255),\n    contact_email VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterSavingTechnologies (\n    id INT PRIMARY KEY,\n    technology_name VARCHAR(255),\n    description TEXT,\n    organization_id INT REFERENCES WaterConservationOrganization(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UsageReduction (\n    id INT PRIMARY KEY,\n    reduction_date DATE,\n    gallons_saved DECIMAL,\n    technology_id INT REFERENCES WaterSavingTechnologies(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserFeedback (\n    id INT PRIMARY KEY,\n    user_id INT,\n    feedback_text TEXT,\n    feedback_date TIMESTAMP,\n    technology_id INT REFERENCES WaterSavingTechnologies(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OrganizationsStats (\n    id INT PRIMARY KEY,\n    organization_id INT REFERENCES WaterConservationOrganization(id),\n    total_gallons_saved DECIMAL,\n    total_technologies_used INT\n);"
+      }
+    ]
+  }
+]

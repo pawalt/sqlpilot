@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ChordProgressions (\n  progression_id SERIAL PRIMARY KEY,\n  chord_progression VARCHAR(255) NOT NULL,\n  emotion VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ChordProgressions (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  chords TEXT[] NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EmotionalEffects (\n  id SERIAL PRIMARY KEY,\n  progression_id INT REFERENCES ChordProgressions(id),\n  effect TEXT NOT NULL,\n  intensity INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE chord_progressions (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  progression TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE emotional_effects (\n  id INT PRIMARY KEY,\n  effect_name VARCHAR(255),\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE progressions_effects (\n  progression_id INT,\n  effect_id INT,\n  FOREIGN KEY (progression_id) REFERENCES chord_progressions(id),\n  FOREIGN KEY (effect_id) REFERENCES emotional_effects(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Chords (\n    id INT PRIMARY KEY,\n    chord_name VARCHAR(50),\n    root_note VARCHAR(10),\n    chord_type VARCHAR(20),\n    musical_key VARCHAR(10),\n    emotion_effect VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Emotions (\n    id INT PRIMARY KEY,\n    emotion_name VARCHAR(50),\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ChordEmotionMapping (\n    id INT PRIMARY KEY,\n    chord_id INT,\n    emotion_id INT,\n    FOREIGN KEY (chord_id) REFERENCES Chords(id),\n    FOREIGN KEY (emotion_id) REFERENCES Emotions(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    registration_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Chords (\n  chord_id UUID PRIMARY KEY,\n  chord_name VARCHAR(255),\n  root_note VARCHAR(10),\n  chord_type VARCHAR(20),\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EmotionalEffects (\n  effect_id UUID PRIMARY KEY,\n  effect_name VARCHAR(255),\n  positive BOOLEAN,\n  intensity INTEGER,\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Progressions (\n  progression_id UUID PRIMARY KEY,\n  progression_name VARCHAR(255),\n  chord_ids UUID[],\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProgressionEffects (\n  progression_effect_id UUID PRIMARY KEY,\n  progression_id UUID,\n  effect_id UUID,\n  impact FLOAT,\n  FOREIGN KEY (progression_id) REFERENCES Progressions (progression_id),\n  FOREIGN KEY (effect_id) REFERENCES EmotionalEffects (effect_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ChordProgressions (\n  cp_id UUID PRIMARY KEY,\n  chord_id UUID,\n  progression_id UUID,\n  FOREIGN KEY (chord_id) REFERENCES Chords (chord_id),\n  FOREIGN KEY (progression_id) REFERENCES Progressions (progression_id)\n);\n"
+      }
+    ]
+  }
+]

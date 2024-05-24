@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE allergy_information (\n  ingredient_id INT PRIMARY KEY,\n  ingredient_name VARCHAR(255) NOT NULL,\n  allergen_type VARCHAR(50) NOT NULL,\n  allergen_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ingredients(ingredient_id INT PRIMARY KEY, ingredient_name VARCHAR(255), allergy_information TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE allergies(allergy_id INT PRIMARY KEY, allergy_name VARCHAR(255), allergy_description TEXT, ingredient_id INT REFERENCES ingredients(ingredient_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ingredient_allergies (\n  ingredient_id INT PRIMARY KEY,\n  allergy_type VARCHAR(50),\n  allergy_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ingredient_categories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ingredient_sources (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(100),\n  source_address TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ingredient_allergies (\n    ingredient_id INT PRIMARY KEY,\n    ingredient_name VARCHAR(255) NOT NULL,\n    allergy_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE allergy_types (\n    allergy_id INT PRIMARY KEY,\n    allergy_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ingredient_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ingredient_category_mapping (\n    ingredient_id INT,\n    category_id INT,\n    PRIMARY KEY (ingredient_id, category_id),\n    FOREIGN KEY (ingredient_id) REFERENCES ingredient_allergies(ingredient_id),\n    FOREIGN KEY (category_id) REFERENCES ingredient_categories(category_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ingredient_allergy_info (\n    ingredient_id INT PRIMARY KEY,\n    allergy_type VARCHAR(50) NOT NULL,\n    allergy_severity VARCHAR(20) NOT NULL,\n    allergy_description TEXT,\n    CONSTRAINT fk_ingredient_id FOREIGN KEY (ingredient_id) REFERENCES ingredients(ingredient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ingredients (\n    ingredient_id INT PRIMARY KEY,\n    ingredient_name VARCHAR(100) NOT NULL,\n    ingredient_category VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE recipe_ingredients (\n    recipe_id INT,\n    ingredient_id INT,\n    quantity INT NOT NULL,\n    unit VARCHAR(20) NOT NULL,\n    CONSTRAINT fk_recipe_id FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id),\n    CONSTRAINT fk_ingredient_id FOREIGN KEY (ingredient_id) REFERENCES ingredients(ingredient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE recipes (\n    recipe_id INT PRIMARY KEY,\n    recipe_name VARCHAR(100) NOT NULL,\n    instructions TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FashionShowInvitations (\n  invitation_id UUID PRIMARY KEY,\n  guest_name VARCHAR(50),\n  guest_email VARCHAR(100),\n  guest_category VARCHAR(50),\n  attending BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GuestList (\n    guest_id INT PRIMARY KEY,\n    guest_name TEXT,\n    email TEXT,\n    phone_number TEXT\n);\n\nCREATE TABLE Invitation (\n    invitation_id INT PRIMARY KEY,\n    guest_id INT,\n    event_date DATE,\n    event_location TEXT,\n    event_theme TEXT,\n    CONSTRAINT fk_guest_id FOREIGN KEY (guest_id) REFERENCES GuestList(guest_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FashionShow (id INT PRIMARY KEY,\n               event_name VARCHAR(255),\n               event_date DATE,\n               location VARCHAR(255));"
+      },
+      {
+        "table_schema": "CREATE TABLE Attendee (id INT PRIMARY KEY,\n               name VARCHAR(255),\n               email VARCHAR(255),\n               profession VARCHAR(255));"
+      },
+      {
+        "table_schema": "CREATE TABLE Invitation (id INT PRIMARY KEY,\n               attendee_id INT,\n               fashion_show_id INT,\n               status VARCHAR(50));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FashionShowEvents (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    event_date TIMESTAMP NOT NULL,\n    event_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Guests (\n    guest_id UUID PRIMARY KEY,\n    guest_name VARCHAR(100) NOT NULL,\n    guest_email VARCHAR(100) NOT NULL,\n    guest_phone VARCHAR(20) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Invitations (\n    invitation_id UUID PRIMARY KEY,\n    event_id UUID REFERENCES FashionShowEvents(event_id),\n    guest_id UUID REFERENCES Guests(guest_id),\n    invitation_status VARCHAR(20) DEFAULT 'Pending'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GuestPreferences (\n    preference_id UUID PRIMARY KEY,\n    guest_id UUID REFERENCES Guests(guest_id),\n    seating_preference VARCHAR(50),\n    dietary_restrictions VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Invitation (\n  invitation_id INT PRIMARY KEY,\n  attendee_name VARCHAR(50),\n  email VARCHAR(100),\n  event_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GuestList (\n  guest_id INT PRIMARY KEY,\n  guest_name VARCHAR(50),\n  invited_by VARCHAR(50),\n  invitation_id INT,\n  FOREIGN KEY (invitation_id) REFERENCES Invitation(invitation_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FashionShow (\n  show_id INT PRIMARY KEY,\n  show_name VARCHAR(50),\n  show_date DATE,\n  location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AttendeePreferences (\n  attendee_id INT PRIMARY KEY,\n  attendee_name VARCHAR(50),\n  fashion_style VARCHAR(50),\n  favorite_designer VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RSVP (\n  rsvp_id INT PRIMARY KEY,\n  invitation_id INT,\n  response VARCHAR(10),\n  FOREIGN KEY (invitation_id) REFERENCES Invitation(invitation_id)\n);"
+      }
+    ]
+  }
+]

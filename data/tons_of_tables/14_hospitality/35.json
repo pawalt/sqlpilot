@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event_notifications (\n    event_id INT,\n    event_name VARCHAR(50),\n    event_date DATE,\n    event_time TIME,\n    description TEXT,\n    recipient_email VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n\tevent_id INT PRIMARY KEY,\n\tevent_name VARCHAR(255) NOT NULL,\n\tevent_datetime TIMESTAMP NOT NULL,\n\tevent_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_notifications (\n\tnotification_id INT PRIMARY KEY,\n\tevent_id INT,\n\temail_address VARCHAR(255) NOT NULL,\n\tnotification_type VARCHAR(50) NOT NULL,\n\tnotification_message TEXT,\n\tFOREIGN KEY (event_id) REFERENCES events(event_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EventReminders (\n    event_id SERIAL PRIMARY KEY,\n    event_name TEXT NOT NULL,\n    event_date TIMESTAMP NOT NULL,\n    reminder_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EventParticipants (\n    participant_id SERIAL PRIMARY KEY,\n    participant_name TEXT NOT NULL,\n    participant_email TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailNotifications (\n    notification_id SERIAL PRIMARY KEY,\n    event_id INT NOT NULL,\n    participant_id INT NOT NULL,\n    notification_subject TEXT NOT NULL,\n    notification_body TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id SERIAL PRIMARY KEY,\n    event_name VARCHAR(100) NOT NULL,\n    event_date DATE,\n    event_location VARCHAR(255),\n    event_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id SERIAL PRIMARY KEY,\n    event_id INT REFERENCES events(event_id),\n    attendee_name VARCHAR(100) NOT NULL,\n    attendee_email VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id SERIAL PRIMARY KEY,\n    event_id INT REFERENCES events(event_id),\n    attendee_id INT REFERENCES attendees(attendee_id),\n    notification_type VARCHAR(50) NOT NULL,\n    notification_content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE log (\n    log_id SERIAL PRIMARY KEY,\n    event_id INT REFERENCES events(event_id),\n    action_performed VARCHAR(100) NOT NULL,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id UUID PRIMARY KEY,\n    event_name TEXT,\n    event_date DATE,\n    event_location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    email TEXT,\n    full_name TEXT,\n    phone_number TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_events (\n    user_id UUID,\n    event_id UUID,\n    notification_sent BOOLEAN,\n    notification_date TIMESTAMP,\n    PRIMARY KEY (user_id, event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_subscribers (\n    event_id UUID,\n    user_id UUID,\n    subscription_date TIMESTAMP,\n    PRIMARY KEY (event_id, user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    log_id UUID PRIMARY KEY,\n    event_id UUID,\n    user_id UUID,\n    log_date TIMESTAMP,\n    log_message TEXT\n);"
+      }
+    ]
+  }
+]

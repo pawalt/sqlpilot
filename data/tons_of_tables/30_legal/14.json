@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reforms_tracking (\n   reform_id SERIAL PRIMARY KEY,\n   reform_name VARCHAR(255) NOT NULL,\n   implement_date DATE,\n   progress_status VARCHAR(50),\n   challenges TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_reforms (\n    reform_id UUID PRIMARY KEY,\n    reform_name VARCHAR(100),\n    implementation_date DATE,\n    jurisdiction VARCHAR(50)\n);\n\nCREATE TABLE challenges (\n    challenge_id UUID PRIMARY KEY,\n    challenge_desc TEXT,\n    reform_id UUID REFERENCES legal_reforms(reform_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE women_rights_reforms (\n    reform_id INT PRIMARY KEY,\n    reform_title VARCHAR(255),\n    enacted_date DATE,\n    implementation_status VARCHAR(50)\n);\n\nCREATE TABLE reform_progress (\n    progress_id INT PRIMARY KEY,\n    reform_id INT,\n    progress_description TEXT,\n    progress_date DATE,\n    CONSTRAINT fk_reform_id FOREIGN KEY (reform_id) REFERENCES women_rights_reforms(reform_id)\n);\n\nCREATE TABLE reform_challenges (\n    challenge_id INT PRIMARY KEY,\n    reform_id INT,\n    challenge_description TEXT,\n    challenge_date DATE,\n    CONSTRAINT fk_reform_id FOREIGN KEY (reform_id) REFERENCES women_rights_reforms(reform_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_reforms (\n  id INT PRIMARY KEY,\n  reform_name TEXT NOT NULL,\n  implementation_date DATE,\n  progress_status TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE challenges (\n  id INT PRIMARY KEY,\n  challenge_name TEXT NOT NULL,\n  description TEXT,\n  resolution_status TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE progress_tracking (\n  id INT PRIMARY KEY,\n  reform_id INT NOT NULL,\n  progress_date DATE,\n  progress_update TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stakeholders (\n  id INT PRIMARY KEY,\n  stakeholder_name TEXT NOT NULL,\n  involvement_level TEXT,\n  contact_information TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reform_status (\n    reform_id INT PRIMARY KEY,\n    reform_name TEXT NOT NULL,\n    implementation_status TEXT,\n    challenges TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reform_details (\n    reform_id INT PRIMARY KEY,\n    reform_description TEXT,\n    implementation_start_date DATE,\n    implementation_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE progress_updates (\n    update_id INT PRIMARY KEY,\n    reform_id INT REFERENCES reform_status(reform_id),\n    update_date DATE,\n    update_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reform_impact (\n    impact_id INT PRIMARY KEY,\n    reform_id INT REFERENCES reform_status(reform_id),\n    impact_type TEXT,\n    impact_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reform_challenges (\n    challenge_id INT PRIMARY KEY,\n    reform_id INT REFERENCES reform_status(reform_id),\n    challenge_description TEXT,\n    proposed_solutions TEXT\n);"
+      }
+    ]
+  }
+]

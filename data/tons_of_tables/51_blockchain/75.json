@@ -1,0 +1,52 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inter_chain_transactions (\n    transaction_id UUID PRIMARY KEY,\n    sender_address VARCHAR(255) NOT NULL,\n    receiver_address VARCHAR(255) NOT NULL,\n    amount NUMERIC NOT NULL,\n    transaction_time TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inter_chain_transactions (\n    transaction_id INT PRIMARY KEY,\n    sender_address VARCHAR(255),\n    receiver_address VARCHAR(255),\n    amount DECIMAL,\n    transaction_time TIMESTAMP\n);\n\nCREATE TABLE atomic_swaps (\n    swap_id INT PRIMARY KEY,\n    initiator_address VARCHAR(255),\n    participating_address VARCHAR(255),\n    swap_amount DECIMAL,\n    swap_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inter_chain_transactions (\n    transaction_id INT PRIMARY KEY,\n    from_chain VARCHAR(255),\n    to_chain VARCHAR(255),\n    amount DECIMAL(10, 2),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE atomic_swaps (\n    swap_id INT PRIMARY KEY,\n    participant1 VARCHAR(255),\n    participant2 VARCHAR(255),\n    asset_type VARCHAR(50),\n    amount DECIMAL(10, 2),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_history (\n    history_id INT PRIMARY KEY,\n    transaction_type VARCHAR(50),\n    transaction_id INT,\n    swap_id INT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (transaction_id) REFERENCES inter_chain_transactions(transaction_id),\n    FOREIGN KEY (swap_id) REFERENCES atomic_swaps(swap_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InterChainTransactions (\n    transaction_id SERIAL PRIMARY KEY,\n    sender_chain VARCHAR(255) NOT NULL,\n    receiver_chain VARCHAR(255) NOT NULL,\n    amount DECIMAL NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AtomicSwaps (\n    swap_id SERIAL PRIMARY KEY,\n    initiator VARCHAR(255) NOT NULL,\n    acceptor VARCHAR(255) NOT NULL,\n    swap_amount DECIMAL NOT NULL,\n    status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InterChainTransactionLogs (\n    log_id SERIAL PRIMARY KEY,\n    transaction_id INT REFERENCES InterChainTransactions(transaction_id),\n    log_details TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AtomicSwapLogs (\n    log_id SERIAL PRIMARY KEY,\n    swap_id INT REFERENCES AtomicSwaps(swap_id),\n    log_details TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE interchain_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    from_chain VARCHAR(50),\n    to_chain VARCHAR(50),\n    amount DECIMAL,\n    timestamp TIMESTAMP\n);\n\nCREATE TABLE atomic_swaps (\n    swap_id SERIAL PRIMARY KEY,\n    initiator_address VARCHAR(50),\n    recipient_address VARCHAR(50),\n    swap_amount DECIMAL,\n    status VARCHAR(20),\n    start_time TIMESTAMP,\n    expiry_time TIMESTAMP\n);\n\nCREATE TABLE transaction_details (\n    transaction_id SERIAL PRIMARY KEY,\n    sender_address VARCHAR(50),\n    receiver_address VARCHAR(50),\n    amount DECIMAL,\n    description TEXT,\n    transaction_time TIMESTAMP\n);\n\nCREATE TABLE swap_history (\n    swap_id SERIAL PRIMARY KEY,\n    initiator_address VARCHAR(50),\n    recipient_address VARCHAR(50),\n    swap_amount DECIMAL,\n    status VARCHAR(20),\n    action_time TIMESTAMP\n);\n\nCREATE TABLE chain_info (\n    chain_id SERIAL PRIMARY KEY,\n    chain_name VARCHAR(50),\n    chain_type VARCHAR(50)\n);\n"
+      }
+    ]
+  }
+]

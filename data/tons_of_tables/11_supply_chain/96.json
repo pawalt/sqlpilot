@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Reports (\n report_id INT PRIMARY KEY,\n report_name VARCHAR(255) NOT NULL,\n report_date DATE,\n reviewer_id INT,\n INDEX idx_report_name (report_name)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE risk_assessment_reports ( \n report_id INTEGER PRIMARY KEY, \n report_title VARCHAR(255), \n report_date DATE, \n report_content TEXT \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE index_optimization ( \n index_id INTEGER PRIMARY KEY, \n report_id INTEGER, \n index_type VARCHAR(50), \n index_date DATE, \n INDEX(report_id), \n FOREIGN KEY(report_id) REFERENCES risk_assessment_reports(report_id) \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE risk_assessment_reports (\n    report_id INT PRIMARY KEY,\n    report_name VARCHAR(255) NOT NULL,\n    report_date DATE,\n    risk_level VARCHAR(50),\n    INDEX (report_date)\n);\n\nCREATE TABLE decision_makers (\n    decision_maker_id INT PRIMARY KEY,\n    decision_maker_name VARCHAR(255) NOT NULL,\n    decision_maker_role VARCHAR(100)\n);\n\nCREATE TABLE assessment_comments (\n    comment_id INT PRIMARY KEY,\n    report_id INT,\n    comment_text TEXT,\n    comment_date TIMESTAMP,\n    INDEX (report_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE risk_assessment_reports ( \n  id INT PRIMARY KEY, \n  report_title VARCHAR(255), \n  report_date DATE, \n  report_content TEXT, \n  INDEX idx_title (report_title) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users ( \n  user_id INT PRIMARY KEY, \n  user_name VARCHAR(50), \n  user_email VARCHAR(100) UNIQUE \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assessment_status ( \n  status_id INT PRIMARY KEY, \n  status_name VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control ( \n  access_id INT PRIMARY KEY, \n  user_id INT REFERENCES users(user_id), \n  report_id INT REFERENCES risk_assessment_reports(id), \n  status_id INT REFERENCES assessment_status(status_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE risk_assessment_reports (\n\trisk_id INT PRIMARY KEY,\n\treport_date DATE,\n\treport_content TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessment_index (\n\trisk_id INT REFERENCES risk_assessment_reports(risk_id),\n\treport_date DATE,\n\treport_score INT,\n\tINDEX idx_report_score(report_score)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessment_comments (\n\tcomment_id INT PRIMARY KEY,\n\trisk_id INT REFERENCES risk_assessment_reports(risk_id),\n\tcomment_content TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessment_users (\n\tuser_id INT PRIMARY KEY,\n\tusername VARCHAR(50),\n\temail VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessment_history (\n\thistory_id INT PRIMARY KEY,\n\trisk_id INT REFERENCES risk_assessment_reports(risk_id),\n\thistory_timestamp TIMESTAMP\n)"
+      }
+    ]
+  }
+]

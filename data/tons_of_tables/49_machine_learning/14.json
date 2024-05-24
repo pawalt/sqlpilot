@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE time_series_data (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data (\n  id SERIAL PRIMARY KEY,\n  timestamp TIMESTAMPTZ NOT NULL,\n  input_data JSONB NOT NULL,\n  output_data JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_results (\n  id SERIAL PRIMARY KEY,\n  model_id UUID NOT NULL,\n  result_data JSONB NOT NULL,\n  prediction_time TIMESTAMPTZ\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE time_series_data (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    value FLOAT\n);\n\nCREATE TABLE rnn_training_data (\n    id INT PRIMARY KEY,\n    sequence_id INT,\n    input_data TEXT,\n    output_data TEXT\n);\n\nCREATE TABLE trained_rnn_models (\n    model_id INT PRIMARY KEY,\n    architecture TEXT,\n    trained_weights BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE time_series_data (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE neural_networks (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    layers INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_sessions (\n    id INT PRIMARY KEY,\n    session_date DATE,\n    duration_minutes INT,\n    neural_network_id INT,\n    FOREIGN KEY (neural_network_id) REFERENCES neural_networks(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id INT PRIMARY KEY,\n    neural_network_id INT,\n    timestamp TIMESTAMP,\n    input_values VARCHAR(255),\n    output_values VARCHAR(255),\n    FOREIGN KEY (neural_network_id) REFERENCES neural_networks(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE time_series_data (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE neural_networks (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    network_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id INT PRIMARY KEY,\n    neural_network_id INT,\n    data_value FLOAT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE layers (\n    id INT PRIMARY KEY,\n    neural_network_id INT,\n    layer_type VARCHAR(50),\n    sequence_number INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE activations (\n    id INT PRIMARY KEY,\n    layer_id INT,\n    activation_function VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

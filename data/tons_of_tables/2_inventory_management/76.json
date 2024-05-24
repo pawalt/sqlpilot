@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_carriers (\n    carrier_id INT PRIMARY KEY,\n    carrier_name STRING,\n    location STRING,\n    shipping_cost DECIMAL(10,2),\n    delivery_time STRING\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingCarriers (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    api_key VARCHAR(100),\n    carrier_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingLabels (\n    label_id INT PRIMARY KEY,\n    carrier_id INT,\n    shipment_id INT,\n    label_data BYTEA,\n    FOREIGN KEY (carrier_id) REFERENCES ShippingCarriers(id),\n    FOREIGN KEY (shipment_id) REFERENCES Shipments(shipment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_carriers (\n carrier_id INT PRIMARY KEY,\n carrier_name VARCHAR(50) NOT NULL,\n carrier_code VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipping_rates (\n rate_id INT PRIMARY KEY,\n carrier_id INT REFERENCES shipping_carriers(carrier_id),\n weight_min DECIMAL(10,2) NOT NULL,\n weight_max DECIMAL(10,2) NOT NULL,\n rate DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipping_labels (\n label_id INT PRIMARY KEY,\n rate_id INT REFERENCES shipping_rates(rate_id),\n label_data BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_carriers (\n  carrier_id INT PRIMARY KEY,\n  carrier_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipping_rates (\n  rate_id INT PRIMARY KEY,\n  carrier_id INT,\n  rate DECIMAL(10, 2) NOT NULL,\n  weight_lb DECIMAL(10, 2) NOT NULL,\n  CONSTRAINT fk_shipping_rates_carrier_id FOREIGN KEY (carrier_id) REFERENCES shipping_carriers(carrier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipping_labels (\n  label_id INT PRIMARY KEY,\n  rate_id INT,\n  label_data BYTEA NOT NULL,\n  CONSTRAINT fk_shipping_labels_rate_id FOREIGN KEY (rate_id) REFERENCES shipping_rates(rate_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n  shipment_id INT PRIMARY KEY,\n  label_id INT,\n  carrier_id INT,\n  shipping_date TIMESTAMP NOT NULL,\n  tracking_number VARCHAR(20) UNIQUE,\n  CONSTRAINT fk_shipments_label_id FOREIGN KEY (label_id) REFERENCES shipping_labels(label_id),\n  CONSTRAINT fk_shipments_carrier_id FOREIGN KEY (carrier_id) REFERENCES shipping_carriers(carrier_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingCarriers (\n  carrier_id INT PRIMARY KEY,\n  carrier_name TEXT NOT NULL,\n  carrier_code TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingLocations (\n  location_id INT PRIMARY KEY,\n  location_name TEXT NOT NULL,\n  location_address TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingPackages (\n  package_id INT PRIMARY KEY,\n  package_weight DECIMAL NOT NULL,\n  package_dimensions TEXT NOT NULL,\n  location_id INT NOT NULL,\n  FOREIGN KEY (location_id) REFERENCES ShippingLocations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingRates (\n  rate_id INT PRIMARY KEY,\n  rate_value DECIMAL NOT NULL,\n  carrier_id INT NOT NULL,\n  FOREIGN KEY (carrier_id) REFERENCES ShippingCarriers(carrier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingLabels (\n  label_id INT PRIMARY KEY,\n  package_id INT NOT NULL,\n  shipping_date DATE NOT NULL,\n  shipping_cost DECIMAL NOT NULL,\n  rate_id INT NOT NULL,\n  FOREIGN KEY (package_id) REFERENCES ShippingPackages(package_id),\n  FOREIGN KEY (rate_id) REFERENCES ShippingRates(rate_id)\n);"
+      }
+    ]
+  }
+]

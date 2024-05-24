@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE authorized_access (\n    id INT PRIMARY KEY,\n    business_name VARCHAR(255),\n    sensitive_data VARCHAR(255),\n    access_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BusinessInformation (\n    id INT PRIMARY KEY,\n    business_name TEXT NOT NULL,\n    sensitive_data TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLogs (\n    log_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    activity_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BusinessOwners (owner_id INT PRIMARY KEY,\n  owner_name VARCHAR(100) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BusinessEmployees (employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(100) NOT NULL,\n  role VARCHAR(50) NOT NULL,\n  access_level INT NOT NULL,\n  business_id INT NOT NULL,\n  FOREIGN KEY (business_id) REFERENCES BusinessOwners(owner_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLogs (log_id SERIAL PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  action VARCHAR(50) NOT NULL,\n  user_id INT NOT NULL,\n  FOREIGN KEY (user_id) REFERENCES BusinessEmployees(employee_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE businesses (\n    business_id INT PRIMARY KEY,\n    business_name VARCHAR(255) NOT NULL,\n    industry VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password_hash VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n    data_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    data_type VARCHAR(50) NOT NULL,\n    data_content TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    timestamp TIMESTAMP NOT NULL,\n    action VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE employees (\n  employee_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  department VARCHAR(50),\n  job_title VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  log_id INT PRIMARY KEY,\n  employee_id INT,\n  access_time TIMESTAMP,\n  accessed_table VARCHAR(50),\n  access_type VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensitive_data (\n  data_id INT PRIMARY KEY,\n  employee_id INT,\n  data_type VARCHAR(50),\n  data_content VARCHAR(255),\n  access_level VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n  dept_id INT PRIMARY KEY,\n  dept_name VARCHAR(50),\n  manager_id INT,\n  location VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_audit (\n  audit_id INT PRIMARY KEY,\n  action VARCHAR(50),\n  audit_time TIMESTAMP,\n  outcome VARCHAR(20),\n  details TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE course_content (\n  course_id INT,\n  course_name VARCHAR(255),\n  video_url VARCHAR(255),\n  pdf_url VARCHAR(255),\n  interactive_modules JSON,\n  PRIMARY KEY (course_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE courses (\n  course_id INT PRIMARY KEY,\n  course_name VARCHAR(255),\n  course_description TEXT,\n  course_video_url TEXT,\n  course_pdf_url TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE modules (\n  module_id INT PRIMARY KEY,\n  module_name VARCHAR(255),\n  module_content TEXT,\n  module_type VARCHAR(50),\n  module_course_id INT,\n  FOREIGN KEY (module_course_id) REFERENCES courses(course_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE videos (\n  id INT PRIMARY KEY,\n  title TEXT,\n  duration INT,\n  file_url TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pdfs (\n  id INT PRIMARY KEY,\n  title TEXT,\n  size INT,\n  file_url TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactive_modules (\n  id INT PRIMARY KEY,\n  title TEXT,\n  duration INT,\n  content JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE videos (\n    video_id INT PRIMARY KEY,\n    title VARCHAR(255),\n    duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pdfs (\n    pdf_id INT PRIMARY KEY,\n    title VARCHAR(255),\n    size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactive_modules (\n    module_id INT PRIMARY KEY,\n    title VARCHAR(255),\n    module_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE course_content (\n    content_id INT PRIMARY KEY,\n    video_id INT,\n    pdf_id INT,\n    module_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE course_materials (course_id INT, title STRING, type STRING, content BLOB, PRIMARY KEY (course_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE videos (video_id INT, course_id INT, title STRING, video_url STRING, PRIMARY KEY (video_id), FOREIGN KEY (course_id) REFERENCES course_materials(course_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE pdfs (pdf_id INT, course_id INT, title STRING, pdf_content BLOB, PRIMARY KEY (pdf_id), FOREIGN KEY (course_id) REFERENCES course_materials(course_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE modules (module_id INT, course_id INT, title STRING, content STRING, PRIMARY KEY (module_id), FOREIGN KEY (course_id) REFERENCES course_materials(course_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE quizzes (quiz_id INT, module_id INT, question STRING, options STRING[], correct_option STRING, PRIMARY KEY (quiz_id), FOREIGN KEY (module_id) REFERENCES modules(module_id));"
+      }
+    ]
+  }
+]

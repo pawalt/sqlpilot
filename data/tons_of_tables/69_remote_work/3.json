@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_availability (\n    team_id INT,\n    team_member VARCHAR(50),\n    date DATE,\n    available_time_start TIME,\n    available_time_end TIME\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamMembers ( \n\tid INT PRIMARY KEY, \n\tname VARCHAR(50) NOT NULL, \n\temail VARCHAR(100) UNIQUE, \n\tlocation VARCHAR(50), \n\tschedule JSON \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamSchedule ( \n\tid INT PRIMARY KEY, \n\tmember_id INT, \n\tevent_name VARCHAR(100), \n\tstart_time TIMESTAMP, \n\tend_time TIMESTAMP, \n\tFOREIGN KEY (member_id) REFERENCES TeamMembers(id) \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(50),\n    position VARCHAR(50),\n    location VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_schedule (\n    schedule_id INT PRIMARY KEY,\n    member_id INT,\n    date DATE,\n    start_time TIME,\n    end_time TIME,\n    FOREIGN KEY (member_id) REFERENCES team_members(member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_availability (\n    availability_id INT PRIMARY KEY,\n    member_id INT,\n    date DATE,\n    available BOOLEAN,\n    FOREIGN KEY (member_id) REFERENCES team_members(member_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id SERIAL PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    member_email VARCHAR(100) NOT NULL,\n    member_role VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_schedule (\n    event_id SERIAL PRIMARY KEY,\n    event_title VARCHAR(100) NOT NULL,\n    event_date DATE NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_availability (\n    availability_id SERIAL PRIMARY KEY,\n    member_id INT NOT NULL,\n    event_id INT NOT NULL,\n    available BOOLEAN NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_communication (\n    message_id SERIAL PRIMARY KEY,\n    sender_id INT NOT NULL,\n    receiver_id INT NOT NULL,\n    message_text TEXT NOT NULL,\n    sent_at TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR(50) NOT NULL,\n  member_email VARCHAR(50) UNIQUE NOT NULL,\n  member_role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_schedule (\n  schedule_id INT PRIMARY KEY,\n  member_id INT REFERENCES team_members(member_id),\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_availability (\n  availability_id INT PRIMARY KEY,\n  member_id INT REFERENCES team_members(member_id),\n  available_date DATE NOT NULL,\n  available_start_time TIME NOT NULL,\n  available_end_time TIME NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_leave (\n  leave_id INT PRIMARY KEY,\n  member_id INT REFERENCES team_members(member_id),\n  leave_reason TEXT,\n  leave_start_date DATE NOT NULL,\n  leave_end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_communication (\n  message_id INT PRIMARY KEY,\n  sender_id INT REFERENCES team_members(member_id),\n  receiver_id INT REFERENCES team_members(member_id),\n  message_content TEXT,\n  message_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

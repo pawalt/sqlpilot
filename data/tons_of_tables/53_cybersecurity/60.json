@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_credentials (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(255) NOT NULL,\n    username VARCHAR(255) NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DeviceUsers (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeviceAccess (\n    device_id INT PRIMARY KEY,\n    user_id INT,\n    access_level VARCHAR(20),\n    FOREIGN KEY (user_id) REFERENCES DeviceUsers(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_credentials (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    device_id INT REFERENCES device_credentials(device_id),\n    login_time TIMESTAMP NOT NULL,\n    logout_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_events (\n    event_id SERIAL PRIMARY KEY,\n    device_id INT REFERENCES device_credentials(device_id),\n    event_type VARCHAR(50) NOT NULL,\n    event_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_credentials (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    authentication_key BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password_hash VARCHAR(255),\n    salt BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_log (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    user_id INT,\n    access_time TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES device_credentials(device_id),\n    FOREIGN KEY (user_id) REFERENCES user_credentials(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE admin_credentials (\n    admin_id INT PRIMARY KEY,\n    admin_name VARCHAR(50),\n    admin_role VARCHAR(50),\n    admin_password_hash VARCHAR(255),\n    admin_salt BLOB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_credentials (\n\tdevice_id VARCHAR(255) PRIMARY KEY,\n\tusername VARCHAR(255) NOT NULL,\n\tpassword VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n\tlog_id SERIAL PRIMARY KEY,\n\tdevice_id VARCHAR(255) NOT NULL,\n\tlog_timestamp TIMESTAMP NOT NULL,\n\tlog_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n\trole_id SERIAL PRIMARY KEY,\n\trole_name VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_access (\n\taccess_id SERIAL PRIMARY KEY,\n\tdevice_id VARCHAR(255) NOT NULL,\n\taccess_type VARCHAR(50) NOT NULL,\n\taccess_timestamp TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n\tlog_id SERIAL PRIMARY KEY,\n\taccess_id INT NOT NULL,\n\taccess_timestamp TIMESTAMP NOT NULL,\n\taccess_result BOOLEAN NOT NULL\n)"
+      }
+    ]
+  }
+]

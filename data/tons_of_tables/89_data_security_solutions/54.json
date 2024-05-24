@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_authentication_records (\n  user_id INT PRIMARY KEY,\n  fingerprint_data BLOB,\n  iris_scan_data BLOB,\n  face_scan_data BLOB,\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiometricRecords (\n    user_id INT PRIMARY KEY,\n    fingerprint_data BYTEA,\n    facial_data BYTEA,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserAccessLogs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    verification_method VARCHAR(50),\n    access_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_biometrics (\n    user_id INT PRIMARY KEY,\n    fingerprint_data BYTEA,\n    face_data BYTEA,\n    voice_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fingerprint_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_biometrics(user_id),\n    timestamp TIMESTAMPTZ,\n    verification_result BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE face_recognition_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_biometrics(user_id),\n    timestamp TIMESTAMPTZ,\n    verification_result BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_records (\n    user_id INT PRIMARY KEY,\n    fingerprint_data BYTEA NOT NULL,\n    scan_time TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    date_of_birth DATE,\n    email VARCHAR(100) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT,\n    access_time TIMESTAMP NOT NULL,\n    action VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_info (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    last_seen TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_users (\n    user_id INT PRIMARY KEY,\n    username TEXT NOT NULL,\n    fingerprint_template BYTEA NOT NULL,\n    face_template BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fingerprint_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES biometric_users(user_id),\n    log_timestamp TIMESTAMP NOT NULL,\n    fingerprint_scanned BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE face_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES biometric_users(user_id),\n    log_timestamp TIMESTAMP NOT NULL,\n    face_image BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES biometric_users(user_id),\n    log_timestamp TIMESTAMP NOT NULL,\n    access_type TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id INT REFERENCES biometric_users(user_id),\n    permission_level INT NOT NULL\n);"
+      }
+    ]
+  }
+]

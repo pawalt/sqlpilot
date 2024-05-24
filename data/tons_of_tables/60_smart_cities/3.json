@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyDemandData (\n    timestamp TIMESTAMP,\n    location VARCHAR(255),\n    demand_kW DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyDemandData (\n    id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP,\n    demand_value DECIMAL\n);\n\nCREATE TABLE GridOperators (\n    operator_id SERIAL PRIMARY KEY,\n    operator_name VARCHAR(50),\n    location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Smart_Grid_Operators (\n    grid_operator_id SERIAL PRIMARY KEY,\n    operator_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Energy_Demand_Data (\n    demand_id SERIAL PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    demand_value FLOAT NOT NULL,\n    grid_operator_id INTEGER REFERENCES Smart_Grid_Operators(grid_operator_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Distribution_Efficiency (\n    efficiency_id SERIAL PRIMARY KEY,\n    efficiency_rating FLOAT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    grid_operator_id INTEGER REFERENCES Smart_Grid_Operators(grid_operator_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyConsumers (\n  consumer_id INT PRIMARY KEY,\n  consumer_name VARCHAR(50),\n  address VARCHAR(100),\n  energy_usage FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProviders (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR(50),\n  location VARCHAR(100),\n  energy_capacity FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyTransactions (\n  transaction_id INT PRIMARY KEY,\n  consumer_id INT,\n  provider_id INT,\n  energy_amount FLOAT,\n  transaction_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyDistribution (\n  distribution_id INT PRIMARY KEY,\n  provider_id INT,\n  energy_amount FLOAT,\n  distribution_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyDemandData ( \n    id INT PRIMARY KEY, \n    timestamp TIMESTAMPTZ NOT NULL, \n    location_id INT NOT NULL, \n    demand FLOAT NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Locations ( \n    id INT PRIMARY KEY, \n    name VARCHAR(255) NOT NULL, \n    latitude FLOAT NOT NULL, \n    longitude FLOAT NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Operators ( \n    id INT PRIMARY KEY, \n    name VARCHAR(255) NOT NULL, \n    email VARCHAR(255) NOT NULL, \n    phone VARCHAR(20) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DistributionData ( \n    id INT PRIMARY KEY, \n    timestamp TIMESTAMPTZ NOT NULL, \n    location_id INT NOT NULL, \n    capacity FLOAT NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AnalysisResults ( \n    id INT PRIMARY KEY, \n    timestamp TIMESTAMPTZ NOT NULL, \n    location_id INT NOT NULL, \n    analysis_result JSONB NOT NULL \n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_algorithms (\n    algorithm_id UUID PRIMARY KEY,\n    algorithm_name VARCHAR NOT NULL,\n    parameter_set JSONB NOT NULL,\n    historical_data JSONB NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    parameters JSONB,\n    backtest_results JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE historical_data (\n    data_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    price DECIMAL(10, 2),\n    volume DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backtest_results (\n    backtest_id SERIAL PRIMARY KEY,\n    algorithm_name VARCHAR(255) NOT NULL,\n    parameters JSONB NOT NULL,\n    result DECIMAL(10,2) NOT NULL,\n    backtest_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE historical_data (\n    data_id SERIAL PRIMARY KEY,\n    symbol VARCHAR(10) NOT NULL,\n    date DATE NOT NULL,\n    open_price DECIMAL(10,2) NOT NULL,\n    high_price DECIMAL(10,2) NOT NULL,\n    low_price DECIMAL(10,2) NOT NULL,\n    close_price DECIMAL(10,2) NOT NULL,\n    volume INTEGER NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_parameters (\n    algorithm_id SERIAL PRIMARY KEY,\n    algorithm_name VARCHAR(255) NOT NULL,\n    parameter_name VARCHAR(255) NOT NULL,\n    parameter_value VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_algorithms (\n\talgorithm_id INT PRIMARY KEY,\n\talgorithm_name VARCHAR(255) NOT NULL,\n\tparameters JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE historical_data (\n\thistory_id INT PRIMARY KEY,\n\tstock_symbol VARCHAR(10) NOT NULL,\n\tdate DATE NOT NULL,\n\thigh_price DECIMAL NOT NULL,\n\tlow_price DECIMAL NOT NULL,\n\topen_price DECIMAL NOT NULL,\n\tclose_price DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backtesting_results (\n\tresult_id INT PRIMARY KEY,\n\talgorithm_id INT NOT NULL,\n\thistory_id INT NOT NULL,\n\tprofit DECIMAL NOT NULL,\n\tevaluation_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parameter_logs (\n\tlog_id INT PRIMARY KEY,\n\talgorithm_id INT NOT NULL,\n\tparameter_changes JSONB NOT NULL,\n\tlog_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BacktestResults (\n    backtest_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    parameter_variation JSONB,\n    result DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE HistoricalMarketData (\n    data_id INT PRIMARY KEY,\n    date DATE,\n    open_price DECIMAL,\n    close_price DECIMAL,\n    high_price DECIMAL,\n    low_price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TradingStrategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    strategy_code TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ParameterVariations (\n    variation_id INT PRIMARY KEY,\n    backtest_id INT REFERENCES BacktestResults(backtest_id),\n    parameter_name VARCHAR(255),\n    parameter_value TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BacktestLogs (\n    log_id INT PRIMARY KEY,\n    backtest_id INT REFERENCES BacktestResults(backtest_id),\n    log_date TIMESTAMP,\n    log_message TEXT\n);"
+      }
+    ]
+  }
+]

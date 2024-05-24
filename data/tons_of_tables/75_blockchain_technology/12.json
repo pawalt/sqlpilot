@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE identity_verification (\n    user_id UUID PRIMARY KEY,\n    full_name VARCHAR(255),\n    date_of_birth DATE,\n    address VARCHAR(255),\n    id_document BLOB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_verification (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(50),\n    address VARCHAR(100),\n    id_proof TEXT\n);\n\nCREATE TABLE loan_history (\n    loan_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_verification(user_id),\n    loan_amount DECIMAL(12, 2),\n    repayment_status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    identity_document VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n    loan_id INT PRIMARY KEY,\n    amount DECIMAL(10, 2) NOT NULL,\n    user_id INT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE approvals (\n    approval_id INT PRIMARY KEY,\n    loan_id INT NOT NULL,\n    approved_by VARCHAR(50) NOT NULL,\n    approval_date DATE NOT NULL,\n    FOREIGN KEY (loan_id) REFERENCES loans(loan_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE identity (\n    identity_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    date_of_birth DATE,\n    identity_number VARCHAR(20) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n    loan_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL(15, 2) NOT NULL,\n    interest_rate DECIMAL(7, 4) NOT NULL,\n    start_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    amount DECIMAL(15, 2) NOT NULL,\n    transaction_type VARCHAR(20) NOT NULL,\n    transaction_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_identity (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255) UNIQUE,\n  phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loan_application (\n  application_id INT PRIMARY KEY,\n  user_id INT REFERENCES user_identity(id),\n  amount DECIMAL,\n  date_applied DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_verification (\n  verification_id INT PRIMARY KEY,\n  user_id INT REFERENCES user_identity(id),\n  document_type VARCHAR(50),\n  is_verified BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collateral (\n  collateral_id INT PRIMARY KEY,\n  user_id INT REFERENCES user_identity(id),\n  asset_type VARCHAR(50),\n  value DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loan (\n  loan_id INT PRIMARY KEY,\n  application_id INT REFERENCES loan_application(application_id),\n  collateral_id INT REFERENCES collateral(collateral_id),\n  amount_approved DECIMAL,\n  date_approved DATE\n);"
+      }
+    ]
+  }
+]

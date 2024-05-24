@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_inventory (\n    tool_id INT PRIMARY KEY,\n    tool_name VARCHAR(255) NOT NULL,\n    license_key VARCHAR(50) UNIQUE,\n    expiration_date DATE,\n    renewal_reminder_sent BOOL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_tools (\n    tool_id INT PRIMARY KEY,\n    tool_name VARCHAR(255) NOT NULL,\n    license_expiration_date DATE,\n    renewal_reminder_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_licenses (\n    license_id INT PRIMARY KEY,\n    tool_id INT,\n    license_key VARCHAR(50) UNIQUE NOT NULL,\n    expiration_date DATE,\n    FOREIGN KEY (tool_id) REFERENCES security_tools(tool_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_tools (\n    tool_id UUID PRIMARY KEY,\n    tool_name VARCHAR(100),\n    license_key VARCHAR(50),\n    expiration_date DATE,\n    renewal_reminder DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tool_owners (\n    owner_id UUID PRIMARY KEY,\n    owner_name VARCHAR(100),\n    email VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tool_assignments (\n    assignment_id UUID PRIMARY KEY,\n    tool_id UUID,\n    owner_id UUID,\n    assigned_date DATE,\n    return_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_tools (\n    id INT PRIMARY KEY,\n    tool_name VARCHAR(50) NOT NULL,\n    license_key VARCHAR(50) NOT NULL,\n    expiration_date DATE,\n    renewal_reminder DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tool_categories (\n    tool_id INT,\n    category_id INT,\n    PRIMARY KEY(tool_id, category_id),\n    FOREIGN KEY (tool_id) REFERENCES security_tools(id),\n    FOREIGN KEY (category_id) REFERENCES categories(category_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id INT PRIMARY KEY,\n    tool_id INT,\n    notification_date DATE,\n    message TEXT,\n    FOREIGN KEY (tool_id) REFERENCES security_tools(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_tools (   tool_id INT PRIMARY KEY,   tool_name VARCHAR(255) NOT NULL,   license_key VARCHAR(50) UNIQUE,   expiration_date DATE NOT NULL,   reminder_date DATE NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE license_types (   license_id INT PRIMARY KEY,   license_name VARCHAR(50) UNIQUE NOT NULL,   description TEXT );"
+      },
+      {
+        "table_schema": "CREATE TABLE vendors (   vendor_id INT PRIMARY KEY,   vendor_name VARCHAR(100) NOT NULL,   contact_person VARCHAR(255),   email VARCHAR(100),   phone_number VARCHAR(20) );"
+      },
+      {
+        "table_schema": "CREATE TABLE tool_vendors (   tool_id INT,   vendor_id INT,   FOREIGN KEY (tool_id) REFERENCES security_tools(tool_id),   FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id),   PRIMARY KEY (tool_id, vendor_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE renewal_history (   renewal_id INT PRIMARY KEY,   tool_id INT,   renewal_date DATE NOT NULL,   amount_paid DECIMAL(10, 2) NOT NULL,   payment_method VARCHAR(50) );"
+      }
+    ]
+  }
+]

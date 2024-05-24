@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geospatial_data_table (\n  id INT PRIMARY KEY,\n  location_name TEXT,\n  latitude FLOAT,\n  longitude FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  location GEOMETRY\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  coordinates POINT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  latitude DECIMAL(9,6) NOT NULL,\n  longitude DECIMAL(9,6) NOT NULL,\n  address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE geospatial_data (\n  data_id INT PRIMARY KEY,\n  location_id INT,\n  data_type VARCHAR(50),\n  data_value JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE spatial_analysis (\n  analysis_id INT PRIMARY KEY,\n  data_id INT,\n  analysis_type VARCHAR(50),\n  result JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geospatial_data(\n  id BIGSERIAL PRIMARY KEY,\n  location_name VARCHAR(100),\n  latitude DECIMAL(9, 6),\n  longitude DECIMAL(9, 6),\n  created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_locations(\n  user_id BIGINT,\n  location_id BIGINT,\n  check_in_timestamp TIMESTAMP,\n  FOREIGN KEY (user_id) REFERENCES users(id),\n  FOREIGN KEY (location_id) REFERENCES geospatial_data(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE spatial_analysis(\n  analysis_id BIGSERIAL PRIMARY KEY,\n  analysis_name VARCHAR(100),\n  result TEXT,\n  created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user(\n  id BIGSERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  email VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  latitude DECIMAL(9,6),\n  longitude DECIMAL(9,6)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(50),\n  location_id INT,\n  FOREIGN KEY (location_id) REFERENCES locations(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(50),\n  distance DECIMAL(10,2),\n  start_location_id INT,\n  end_location_id INT,\n  FOREIGN KEY (start_location_id) REFERENCES locations(id),\n  FOREIGN KEY (end_location_id) REFERENCES locations(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n  result_id INT PRIMARY KEY,\n  route_id INT,\n  analysis_date DATE,\n  result_text TEXT,\n  FOREIGN KEY (route_id) REFERENCES routes(route_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE geofences (\n  geofence_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  area DECIMAL(12,2),\n  center_location_id INT,\n  FOREIGN KEY (center_location_id) REFERENCES locations(id)\n)"
+      }
+    ]
+  }
+]

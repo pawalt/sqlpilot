@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_grants (\n grant_id SERIAL PRIMARY KEY,\n grant_title VARCHAR(255),\n grant_description TEXT,\n grant_amount NUMERIC,\n start_date DATE,\n end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_grants (\n    grant_id UUID PRIMARY KEY,\n    grant_title VARCHAR(255),\n    grant_amount DECIMAL,\n    grant_status VARCHAR(50),\n    grant_deadline DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_information (\n    funding_id UUID PRIMARY KEY,\n    grant_id UUID REFERENCES research_grants(grant_id),\n    funding_source VARCHAR(100),\n    funding_amount DECIMAL,\n    funding_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_grants (\n  grant_id INT PRIMARY KEY,\n  grant_title VARCHAR(255),\n  researcher_name VARCHAR(100),\n  funding_amount DECIMAL(10,2),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_sources (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(100),\n  contact_person VARCHAR(100),\n  email_address VARCHAR(255),\n  phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_categories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(100),\n  description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grants (\n grant_id SERIAL PRIMARY KEY,\n grant_title TEXT NOT NULL,\n grant_description TEXT,\n grant_amount DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n researcher_id SERIAL PRIMARY KEY,\n researcher_name TEXT NOT NULL,\n researcher_email TEXT UNIQUE,\n researcher_department TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_sources (\n funding_id SERIAL PRIMARY KEY,\n funding_name TEXT NOT NULL,\n funding_type TEXT,\n funding_amount DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_researcher_mapping (\n grant_id INT REFERENCES grants(grant_id),\n researcher_id INT REFERENCES researchers(researcher_id),\n PRIMARY KEY (grant_id, researcher_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grant_applications (\n    grant_id INT PRIMARY KEY,\n    applicant_name VARCHAR(50),\n    grant_amount DECIMAL(10, 2),\n    application_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_reviewers (\n    reviewer_id INT PRIMARY KEY,\n    reviewer_name VARCHAR(50),\n    affiliation VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_projects (\n    project_id INT PRIMARY KEY,\n    project_title VARCHAR(100),\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE funding_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(100),\n    funding_type VARCHAR(50),\n    amount_allocated DECIMAL(15, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_funding (\n    project_id INT,\n    source_id INT,\n    amount_received DECIMAL(15, 2),\n    PRIMARY KEY(project_id, source_id),\n    FOREIGN KEY (project_id) REFERENCES research_projects(project_id),\n    FOREIGN KEY (source_id) REFERENCES funding_sources(source_id)\n);\n"
+      }
+    ]
+  }
+]

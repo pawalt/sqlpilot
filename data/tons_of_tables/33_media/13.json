@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Show_Schedule ( \n    show_id INT PRIMARY KEY, \n    show_name TEXT NOT NULL, \n    schedule_time TIMESTAMP NOT NULL \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShowSchedule (\n    show_id SERIAL PRIMARY KEY,\n    show_name VARCHAR(255) NOT NULL,\n    show_type VARCHAR(50) NOT NULL,\n    schedule_time TIMESTAMP NOT NULL\n);\n\nCREATE TABLE ViewerRatings (\n    rating_id SERIAL PRIMARY KEY,\n    show_id INT REFERENCES ShowSchedule(show_id),\n    viewer_name VARCHAR(100) NOT NULL,\n    rating FLOAT NOT NULL,\n    comment TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shows (\n    show_id INT PRIMARY KEY,\n    show_name VARCHAR(255) NOT NULL,\n    show_description TEXT,\n    show_genre VARCHAR(50)\n);\n\nCREATE TABLE episodes (\n    episode_id INT PRIMARY KEY,\n    episode_title VARCHAR(255) NOT NULL,\n    air_date DATE,\n    show_id INT,\n    FOREIGN KEY (show_id) REFERENCES shows(show_id)\n);\n\nCREATE TABLE ratings (\n    rating_id INT PRIMARY KEY,\n    rating FLOAT NOT NULL,\n    episode_id INT,\n    viewer_id INT,\n    FOREIGN KEY (episode_id) REFERENCES episodes(episode_id),\n    FOREIGN KEY (viewer_id) REFERENCES viewers(viewer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE show_schedule (\n    show_id INT PRIMARY KEY,\n    show_name VARCHAR(255) NOT NULL,\n    show_time TIME NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE episode_air_dates (\n    episode_id INT PRIMARY KEY,\n    episode_title VARCHAR(255) NOT NULL,\n    episode_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE viewer_ratings (\n    rating_id INT PRIMARY KEY,\n    episode_id INT NOT NULL,\n    viewer_id INT NOT NULL,\n    rating FLOAT NOT NULL,\n    FOREIGN KEY (episode_id) REFERENCES episode_air_dates(episode_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shows (\n    show_id INT PRIMARY KEY,\n    show_name VARCHAR(255) NOT NULL,\n    genre VARCHAR(100),\n    rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n    schedule_id INT PRIMARY KEY,\n    show_id INT,\n    airing_date DATE,\n    start_time TIME,\n    end_time TIME,\n    CONSTRAINT fk_show_id FOREIGN KEY (show_id) REFERENCES shows(show_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE episodes (\n    episode_id INT PRIMARY KEY,\n    show_id INT,\n    episode_number INT,\n    air_date DATE,\n    duration TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE viewers (\n    viewer_id INT PRIMARY KEY,\n    viewer_name VARCHAR(255) NOT NULL,\n    age INT,\n    gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ratings (\n    rating_id INT PRIMARY KEY,\n    viewer_id INT,\n    show_id INT,\n    episode_id INT,\n    rating FLOAT,\n    CONSTRAINT fk_viewer_id FOREIGN KEY (viewer_id) REFERENCES viewers(viewer_id),\n    CONSTRAINT fk_show_id FOREIGN KEY (show_id) REFERENCES shows(show_id),\n    CONSTRAINT fk_episode_id FOREIGN KEY (episode_id) REFERENCES episodes(episode_id)\n);"
+      }
+    ]
+  }
+]

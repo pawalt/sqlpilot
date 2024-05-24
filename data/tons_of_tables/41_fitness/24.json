@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE nutrient_consumption (\n  user_id INT PRIMARY KEY,\n  nutrient_name VARCHAR(50),\n  consumption_quantity FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    age INT,\n    gender VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE nutrient_consumption (\n    consumption_id INT PRIMARY KEY,\n    user_id INT,\n    nutrient_type VARCHAR(20),\n    consumed_amount DECIMAL,\n    consumed_date DATE\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID NOT NULL,\n    username TEXT NOT NULL,\n    age INT,\n    gender TEXT,\n    PRIMARY KEY (user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE nutrient_consumption (\n    consumption_id UUID NOT NULL,\n    user_id UUID NOT NULL,\n    nutrient_name TEXT NOT NULL,\n    consumed_amount DECIMAL,\n    consumption_date DATE,\n    PRIMARY KEY (consumption_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE nutrient_recommendations (\n    recommendation_id UUID NOT NULL,\n    nutrient_name TEXT NOT NULL,\n    recommended_amount DECIMAL,\n    age_range TEXT,\n    gender TEXT,\n    PRIMARY KEY (recommendation_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles(\n    user_id UUID PRIMARY KEY,\n    age INT,\n    gender VARCHAR(10),\n    height FLOAT,\n    weight FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE food_entries(\n    entry_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES user_profiles(user_id),\n    food_name VARCHAR(50),\n    serving_size FLOAT,\n    calories INT,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE nutrient_info(\n    nutrient_id UUID PRIMARY KEY,\n    nutrient_name VARCHAR(50),\n    daily_recommendation FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_nutrient_consumption(\n    user_id UUID REFERENCES user_profiles(user_id),\n    nutrient_id UUID REFERENCES nutrient_info(nutrient_id),\n    consumed_quantity FLOAT,\n    date_consumed DATE,\n    PRIMARY KEY (user_id, nutrient_id, date_consumed)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    country VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE food_items (\n    food_id INT PRIMARY KEY,\n    food_name VARCHAR(100) NOT NULL,\n    calories INT,\n    protein FLOAT,\n    fat FLOAT,\n    carbohydrates FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_food_consumption (\n    user_id INT,\n    food_id INT,\n    consumption_date DATE,\n    quantity INT,\n    PRIMARY KEY (user_id, food_id, consumption_date),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (food_id) REFERENCES food_items(food_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_daily_intake (\n    user_id INT,\n    intake_date DATE,\n    total_calories_consumed INT,\n    total_protein_consumed FLOAT,\n    total_fat_consumed FLOAT,\n    total_carbohydrates_consumed FLOAT,\n    PRIMARY KEY (user_id, intake_date),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_goals (\n    user_id INT,\n    goal_date DATE,\n    target_calories INT,\n    target_protein FLOAT,\n    target_fat FLOAT,\n    target_carbohydrates FLOAT,\n    PRIMARY KEY (user_id, goal_date),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserLocationARInformation (\n    user_id INT PRIMARY KEY,\n    user_name STRING,\n    user_location_geo GEOGRAPHY,\n    user_ar_environment JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_user_locations (\n    user_id INT PRIMARY KEY,\n    user_location GEOGRAPHY\n);\n\nCREATE TABLE ar_information (\n    information_id INT PRIMARY KEY,\n    user_id INT,\n    information TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_location (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(255),\n    user_location POINT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_environment (\n    environment_id UUID PRIMARY KEY,\n    environment_name VARCHAR(255),\n    environment_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_ar_interaction (\n    interaction_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES user_location(user_id),\n    environment_id UUID REFERENCES ar_environment(environment_id),\n    interaction_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    location VARCHAR(50),\n    ar_enabled BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50),\n    latitude DECIMAL(9,6),\n    longitude DECIMAL(9,6)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_objects (\n    object_id INT PRIMARY KEY,\n    object_name VARCHAR(50),\n    location_id INT,\n    FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_ar_objects (\n    user_id INT,\n    object_id INT,\n    last_viewed TIMESTAMP,\n    PRIMARY KEY (user_id, object_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (object_id) REFERENCES ar_objects(object_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserLocations (\n  user_id INT PRIMARY KEY,\n  user_name VARCHAR(50),\n  location_lat FLOAT,\n  location_long FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ARObjects (\n  object_id INT PRIMARY KEY,\n  object_name VARCHAR(50),\n  object_description VARCHAR(255),\n  object_location_lat FLOAT,\n  object_location_long FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserDevice (\n  device_id INT PRIMARY KEY,\n  user_id INT,\n  device_type VARCHAR(50),\n  device_os VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserPreferences (\n  user_id INT PRIMARY KEY,\n  theme_color VARCHAR(20),\n  font_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserActions (\n  action_id INT PRIMARY KEY,\n  user_id INT,\n  action_type VARCHAR(50),\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

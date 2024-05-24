@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory_turnover_policy (\n    product_id INT,\n    quantity INT,\n    turnover_rate DECIMAL(10,2),\n    CONSTRAINT unique_product_id UNIQUE (product_id),\n    CONSTRAINT positive_quantity CHECK (quantity > 0),\n    CONSTRAINT valid_turnover_rate CHECK (turnover_rate >= 0)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Inventory ( \n    product_id INT PRIMARY KEY, \n    product_name VARCHAR(255) NOT NULL, \n    quantity INT CHECK (quantity >= 0) \n); \n"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders ( \n    order_id INT PRIMARY KEY, \n    product_id INT REFERENCES Inventory(product_id), \n    order_date DATE, \n    order_quantity INT CHECK (order_quantity > 0) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory (\n    product_id INT PRIMARY KEY,\n    quantity INT NOT NULL,\n    turnover_rate FLOAT CHECK (turnover_rate >= 0),\n    CONSTRAINT turnover_policy CHECK (quantity * turnover_rate <= 1000)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE turnover_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(50) UNIQUE,\n    max_quantity INT NOT NULL,\n    max_turnover_rate FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_logs (\n    log_id INT PRIMARY KEY,\n    product_id INT,\n    quantity_change INT,\n    timestamp TIMESTAMP NOT NULL DEFAULT now(),\n    FOREIGN KEY (product_id) REFERENCES inventory(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name STRING,\n  quantity INT,\n  price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n  order_id INT PRIMARY KEY,\n  product_id INT,\n  order_date DATE,\n  quantity_ordered INT,\n  FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name STRING,\n  address STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n  product_id INT PRIMARY KEY,\n  quantity_in_stock INT,\n  reorder_level INT,\n  FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Inventory_Items (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(255) NOT NULL,\n    quantity INT CHECK (quantity >= 0),\n    unit_price DECIMAL(10, 2) CHECK (unit_price >= 0.00),\n    turnover_ratio DECIMAL(5, 2) CHECK (turnover_ratio >= 0.00)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sales (\n    sale_id INT PRIMARY KEY,\n    item_id INT REFERENCES Inventory_Items(item_id),\n    sale_date DATE,\n    quantity_sold INT CHECK (quantity_sold >= 0),\n    selling_price DECIMAL(10, 2) CHECK (selling_price >= 0.00)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Purchases (\n    purchase_id INT PRIMARY KEY,\n    item_id INT REFERENCES Inventory_Items(item_id),\n    supplier_id INT REFERENCES Suppliers(supplier_id),\n    purchase_date DATE,\n    quantity_purchased INT CHECK (quantity_purchased > 0),\n    purchase_price DECIMAL(10, 2) CHECK (purchase_price > 0.00)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inventory_Log (\n    log_id INT PRIMARY KEY,\n    item_id INT REFERENCES Inventory_Items(item_id),\n    log_date TIMESTAMP,\n    log_description TEXT\n);"
+      }
+    ]
+  }
+]

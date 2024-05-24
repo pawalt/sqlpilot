@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_costs (\n  distance INT, \n  weight INT, \n  delivery_speed VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingCosts (\n    id INT PRIMARY KEY,\n    distance FLOAT,\n    weight FLOAT,\n    delivery_speed VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TransportationCompanies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(100),\n    location VARCHAR(100),\n    website VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE shipping_costs (\n    id INT PRIMARY KEY,\n    distance FLOAT,\n    weight FLOAT,\n    delivery_speed VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distance_cost_rates (\n    id INT PRIMARY KEY,\n    distance_range VARCHAR(50),\n    cost_per_unit_distance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE weight_cost_rates (\n    id INT PRIMARY KEY,\n    weight_range VARCHAR(50),\n    cost_per_unit_weight FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ShippingCompanies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255) NOT NULL,\n    company_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingRates (\n    rate_id INT PRIMARY KEY,\n    distance_range VARCHAR(50) NOT NULL,\n    weight_range VARCHAR(50) NOT NULL,\n    rate DECIMAL(10,2) NOT NULL,\n    company_id INT,\n    FOREIGN KEY (company_id) REFERENCES ShippingCompanies(company_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliverySpeeds (\n    speed_id INT PRIMARY KEY,\n    speed_name VARCHAR(50) NOT NULL,\n    speed_multiplier DECIMAL(5,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Shipments (\n    shipment_id INT PRIMARY KEY,\n    distance DECIMAL(10,2) NOT NULL,\n    weight DECIMAL(10,2) NOT NULL,\n    speed_id INT,\n    shipping_cost DECIMAL(15,2) NOT NULL,\n    FOREIGN KEY (speed_id) REFERENCES DeliverySpeeds(speed_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Distance (\n  id INT PRIMARY KEY,\n  source_location VARCHAR(255),\n  destination_location VARCHAR(255),\n  distance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Weight (\n  id INT PRIMARY KEY,\n  item_name VARCHAR(255),\n  weight FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DeliverySpeed (\n  id INT PRIMARY KEY,\n  speed_name VARCHAR(255),\n  delivery_time INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShippingCost (\n  id INT PRIMARY KEY,\n  distance_id INT,\n  weight_id INT,\n  speed_id INT,\n  cost FLOAT,\n  FOREIGN KEY (distance_id) REFERENCES Distance(id),\n  FOREIGN KEY (weight_id) REFERENCES Weight(id),\n  FOREIGN KEY (speed_id) REFERENCES DeliverySpeed(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TransportationCompany (\n  id INT PRIMARY KEY,\n  company_name VARCHAR(255),\n  company_location VARCHAR(255)\n);"
+      }
+    ]
+  }
+]

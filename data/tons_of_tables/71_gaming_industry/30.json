@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PlayerData (\n    player_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    score INT NOT NULL,\n    inventory VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_data (\n    id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    score INT NOT NULL,\n    inventory JSONB\n);\n\nCREATE TABLE player_inventory (\n    id UUID PRIMARY KEY,\n    player_id UUID NOT NULL,\n    item_name VARCHAR(50) NOT NULL,\n    quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n  id SERIAL PRIMARY KEY,\n  username TEXT NOT NULL,\n  score INTEGER NOT NULL,\n  inventory JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE items (\n  item_id SERIAL PRIMARY KEY,\n  item_name TEXT NOT NULL,\n  item_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_items (\n  player_id INTEGER REFERENCES players(id) ON DELETE CASCADE,\n  item_id INTEGER REFERENCES items(item_id) ON DELETE CASCADE,\n  quantity INTEGER NOT NULL,\n  PRIMARY KEY (player_id, item_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    score INT NOT NULL,\n    inventory JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE items (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(50) NOT NULL,\n    item_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_items (\n    player_id INT,\n    item_id INT,\n    quantity INT NOT NULL,\n    FOREIGN KEY (player_id) REFERENCES players(id),\n    FOREIGN KEY (item_id) REFERENCES items(item_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_stats (\n    player_id INT,\n    health INT NOT NULL,\n    level INT NOT NULL,\n    experience INT NOT NULL,\n    FOREIGN KEY (player_id) REFERENCES players(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    score INT,\n    inventory JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE items (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(50),\n    item_description TEXT,\n    item_type VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_inventory (\n    player_id INT,\n    item_id INT,\n    quantity INT,\n    FOREIGN KEY(player_id) REFERENCES players(id),\n    FOREIGN KEY(item_id) REFERENCES items(item_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE levels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(50),\n    difficulty VARCHAR(20),\n    high_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_levels (\n    player_id INT,\n    level_id INT,\n    completed BOOLEAN,\n    FOREIGN KEY(player_id) REFERENCES players(id),\n    FOREIGN KEY(level_id) REFERENCES levels(level_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_interactions (\n    interaction_id UUID PRIMARY KEY,\n    message_text TEXT,\n    customer_id UUID,\n    sent_at TIMESTAMP,\n    sentiment_score FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    social_media_handle VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    customer_id INT,\n    interaction_datetime TIMESTAMP NOT NULL,\n    interaction_type VARCHAR(50) NOT NULL,\n    interaction_content TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SocialMediaPosts (\n    post_id INT PRIMARY KEY,\n    post_content TEXT,\n    post_date TIMESTAMP,\n    sentiment_analysis VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerInteractions (\n    interaction_id INT PRIMARY KEY,\n    customer_id INT,\n    interaction_date TIMESTAMP,\n    interaction_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MessageTailoring (\n    message_id INT PRIMARY KEY,\n    message_content TEXT,\n    message_date TIMESTAMP,\n    targeted_group VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_accounts (\n  account_id INT PRIMARY KEY,\n  account_name VARCHAR(50) NOT NULL,\n  account_type VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n  post_id INT PRIMARY KEY,\n  account_id INT REFERENCES social_media_accounts(account_id),\n  post_content TEXT NOT NULL,\n  post_date TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n  comment_id INT PRIMARY KEY,\n  post_id INT REFERENCES posts(post_id),\n  commenter_name VARCHAR(50) NOT NULL,\n  comment_content TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reactions (\n  reaction_id INT PRIMARY KEY,\n  post_id INT REFERENCES posts(post_id),\n  reactor_name VARCHAR(50) NOT NULL,\n  reaction_type VARCHAR(20) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(50),\n    age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Posts (\n    post_id INT PRIMARY KEY,\n    post_content TEXT,\n    post_date TIMESTAMP,\n    customer_id INT,\n    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Comments (\n    comment_id INT PRIMARY KEY,\n    comment_content TEXT,\n    comment_date TIMESTAMP,\n    post_id INT,\n    FOREIGN KEY (post_id) REFERENCES Posts(post_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Likes (\n    like_id INT PRIMARY KEY,\n    customer_id INT,\n    post_id INT,\n    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),\n    FOREIGN KEY (post_id) REFERENCES Posts(post_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Messages (\n    message_id INT PRIMARY KEY,\n    message_content TEXT,\n    message_date TIMESTAMP,\n    sender_id INT,\n    receiver_id INT,\n    FOREIGN KEY (sender_id) REFERENCES Customers(customer_id),\n    FOREIGN KEY (receiver_id) REFERENCES Customers(customer_id)\n);"
+      }
+    ]
+  }
+]

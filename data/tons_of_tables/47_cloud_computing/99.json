@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE 5g_network_elements_configuration (\n  element_id UUID PRIMARY KEY,\n  element_name VARCHAR(255) NOT NULL,\n  parameter_name VARCHAR(255) NOT NULL,\n  parameter_value TEXT,\n  last_updated TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE configuration_settings (\n    setting_id SERIAL PRIMARY KEY,\n    element_id INT NOT NULL,\n    setting_name VARCHAR(255) NOT NULL,\n    setting_value TEXT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE parameter_values (\n    param_id SERIAL PRIMARY KEY,\n    element_id INT NOT NULL,\n    param_name VARCHAR(255) NOT NULL,\n    param_value TEXT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_elements (\n    element_id UUID PRIMARY KEY,\n    element_name TEXT,\n    element_type TEXT,\n    configuration_settings JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parameter_values (\n    parameter_id UUID PRIMARY KEY,\n    element_id UUID,\n    parameter_name TEXT,\n    parameter_value TEXT,\n    FOREIGN KEY (element_id) REFERENCES network_elements(element_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE element_categories (\n    category_id UUID PRIMARY KEY,\n    category_name TEXT,\n    element_type TEXT,\n    FOREIGN KEY (element_type) REFERENCES network_elements(element_type)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE 5g_network_elements (\n    element_id INT PRIMARY KEY,\n    element_name VARCHAR(50) NOT NULL,\n    parameter_set JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE configuration_settings (\n    setting_id INT PRIMARY KEY,\n    setting_name VARCHAR(50) NOT NULL,\n    setting_value TEXT,\n    element_id INT REFERENCES 5g_network_elements(element_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE parameter_values (\n    parameter_id INT PRIMARY KEY,\n    parameter_name VARCHAR(50) NOT NULL,\n    parameter_type VARCHAR(20),\n    element_id INT REFERENCES 5g_network_elements(element_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_logs (\n    log_id SERIAL PRIMARY KEY,\n    log_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    log_message TEXT,\n    element_id INT REFERENCES 5g_network_elements(element_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkElementConfigurations (\n    element_id INT PRIMARY KEY,\n    element_type VARCHAR(50),\n    parameter_name VARCHAR(100),\n    parameter_value VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkElementTypes (\n    type_id INT PRIMARY KEY,\n    type_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ElementParameters (\n    parameter_id INT PRIMARY KEY,\n    parameter_name VARCHAR(100),\n    data_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ElementInstances (\n    instance_id INT PRIMARY KEY,\n    element_id INT,\n    instance_name VARCHAR(100),\n    FOREIGN KEY (element_id) REFERENCES NetworkElementConfigurations(element_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ElementParameterValues (\n    element_id INT,\n    parameter_id INT,\n    value VARCHAR(255),\n    PRIMARY KEY (element_id, parameter_id),\n    FOREIGN KEY (element_id) REFERENCES NetworkElementConfigurations(element_id),\n    FOREIGN KEY (parameter_id) REFERENCES ElementParameters(parameter_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_session_data (\n  session_id UUID PRIMARY KEY,\n  player_id UUID,\n  game_name VARCHAR,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  duration INTERVAL,\n  score INTEGER,\n  feedback TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_sessions (\n  session_id UUID PRIMARY KEY,\n  player_id UUID,\n  game_id UUID,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n  feedback_id UUID PRIMARY KEY,\n  session_id UUID,\n  player_id UUID,\n  rating INT,\n  comment TEXT,\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE game_sessions (\n    session_id UUID PRIMARY KEY,\n    player_id UUID,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_scores (\n    score_id UUID PRIMARY KEY,\n    player_id UUID,\n    session_id UUID,\n    score INT,\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_feedback (\n    feedback_id UUID PRIMARY KEY,\n    player_id UUID,\n    session_id UUID,\n    feedback_text TEXT,\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id INT PRIMARY KEY,\n    player_name VARCHAR(50),\n    player_email VARCHAR(100),\n    join_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE games (\n    game_id INT PRIMARY KEY,\n    game_name VARCHAR(50),\n    game_category VARCHAR(50),\n    release_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE game_sessions (\n    session_id INT PRIMARY KEY,\n    player_id INT,\n    game_id INT,\n    session_date TIMESTAMP,\n    duration_minutes INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n    feedback_id INT PRIMARY KEY,\n    session_id INT,\n    feedback_text TEXT,\n    feedback_rating INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id UUID PRIMARY KEY,\n    player_name VARCHAR(50) NOT NULL,\n    email_address VARCHAR(100) NOT NULL,\n    registration_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_sessions (\n    session_id UUID PRIMARY KEY,\n    player_id UUID REFERENCES players(player_id),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_scores (\n    score_id UUID PRIMARY KEY,\n    session_id UUID REFERENCES game_sessions(session_id),\n    score INT NOT NULL,\n    level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE game_feedback (\n    feedback_id UUID PRIMARY KEY,\n    session_id UUID REFERENCES game_sessions(session_id),\n    player_id UUID REFERENCES players(player_id),\n    feedback_text TEXT,\n    rating INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_progress (\n    progress_id UUID PRIMARY KEY,\n    player_id UUID REFERENCES players(player_id),\n    level_completed INT,\n    last_login TIMESTAMP\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_claims (\n    claim_id INT PRIMARY KEY,\n    policy_holder_name VARCHAR(50) NOT NULL,\n    claim_amount DECIMAL(10, 2) NOT NULL,\n    claim_date DATE NOT NULL,\n    blockchain_hash VARCHAR(64) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_holder VARCHAR(255) NOT NULL,\n    insurance_type VARCHAR(100) NOT NULL,\n    contract_amount DECIMAL(10, 2) NOT NULL\n);\n\nCREATE TABLE claim_records (\n    claim_id UUID PRIMARY KEY,\n    contract_id UUID NOT NULL,\n    claim_date DATE NOT NULL,\n    claim_amount DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_contracts (\n    contract_id UUID PRIMARY KEY,\n    smart_contract_addr STRING,\n    policy_holder_id UUID,\n    claim_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_holders (\n    policy_holder_id UUID PRIMARY KEY,\n    first_name STRING,\n    last_name STRING,\n    email STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id UUID PRIMARY KEY,\n    contract_id UUID,\n    claim_status STRING,\n    claim_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claimants (\n    claimant_id UUID PRIMARY KEY,\n    first_name STRING,\n    last_name STRING,\n    email STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id UUID PRIMARY KEY,\n    claimant_id UUID REFERENCES claimants(claimant_id),\n    claim_amount DECIMAL,\n    claim_status STRING,\n    claim_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name STRING,\n    contract_type STRING,\n    contract_terms TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n    tx_id UUID PRIMARY KEY,\n    block_id UUID,\n    transaction_type STRING,\n    transaction_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_policies (\n    policy_id INT PRIMARY KEY,\n    policy_holder_name VARCHAR(255),\n    policy_type VARCHAR(50),\n    policy_start_date DATE,\n    policy_end_date DATE,\n    claim_amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE claims (\n    claim_id INT PRIMARY KEY,\n    policy_id INT REFERENCES insurance_policies (policy_id),\n    claim_date DATE,\n    claimed_amount DECIMAL(10, 2),\n    status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_processing (\n    claim_id INT REFERENCES claims (claim_id),\n    process_type VARCHAR(50),\n    process_status VARCHAR(50),\n    process_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_records (\n    block_id INT PRIMARY KEY,\n    claim_id INT REFERENCES claims (claim_id),\n    block_hash VARCHAR(255),\n    block_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id INT PRIMARY KEY,\n    smart_contract_name VARCHAR(100),\n    contract_address VARCHAR(255),\n    deployment_date DATE\n)"
+      }
+    ]
+  }
+]

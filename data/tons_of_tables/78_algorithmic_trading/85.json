@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE analyst_reports (\n report_id INT PRIMARY KEY,\n stock_symbol VARCHAR(10) NOT NULL,\n report_text TEXT NOT NULL,\n sentiment_score FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE StockReports (\n  report_id SERIAL PRIMARY KEY,\n  report_text TEXT,\n  report_date DATE,\n  stock_symbol VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SentimentAnalysis (\n  analysis_id SERIAL PRIMARY KEY,\n  report_id INT,\n  sentiment_score FLOAT,\n  sentiment_label VARCHAR(20),\n  FOREIGN KEY (report_id) REFERENCES StockReports(report_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE analyst_reports (\n  id UUID PRIMARY KEY,\n  report_text TEXT,\n  report_date TIMESTAMP,\n  stock_symbol TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_scores (\n  id UUID PRIMARY KEY,\n  report_id UUID REFERENCES analyst_reports(id),\n  overall_sentiment FLOAT,\n  positive_sentiment FLOAT,\n  negative_sentiment FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_performance (\n  id UUID PRIMARY KEY,\n  stock_symbol TEXT REFERENCES analyst_reports(stock_symbol),\n  price FLOAT,\n  volume INT,\n  performance_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stock_reports (\n  report_id UUID PRIMARY KEY,\n  stock_symbol VARCHAR(10),\n  report_date DATE,\n  analyst_name VARCHAR(50),\n  report_text TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_scores (\n  report_id UUID PRIMARY KEY,\n  sentiment_score FLOAT,\n  sentiment_category VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_sentiment (\n  stock_symbol VARCHAR(10) PRIMARY KEY,\n  overall_sentiment VARCHAR(20),\n  total_reports_processed INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE analyst_sentiment (\n  analyst_name VARCHAR(50) PRIMARY KEY,\n  average_sentiment_score FLOAT,\n  total_reports_analyzed INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stock_reports (\n report_id SERIAL PRIMARY KEY,\n report_text TEXT,\n report_date TIMESTAMP,\n stock_ticker VARCHAR\n)"
+      }
+    ]
+  }
+]

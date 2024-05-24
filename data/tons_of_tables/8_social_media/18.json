@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n  event_id SERIAL PRIMARY KEY,\n  event_title VARCHAR(100) NOT NULL,\n  event_description TEXT,\n  event_date TIMESTAMP NOT NULL,\n  event_location VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Events (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    event_time TIME NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    organizer_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Registrations (\n    registration_id UUID PRIMARY KEY,\n    event_id UUID NOT NULL,\n    attendee_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    registration_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (event_id) REFERENCES Events(event_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    event_time TIME NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    event_id INT,\n    attendee_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    registration_date DATE NOT NULL,\n    FOREIGN KEY (event_id) REFERENCES events(event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE organizers (\n    organizer_id INT PRIMARY KEY,\n    event_id INT,\n    organizer_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    role VARCHAR(50) NOT NULL,\n    FOREIGN KEY (event_id) REFERENCES events(event_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    event_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    attendee_name VARCHAR(255) NOT NULL,\n    attendee_email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_attendees (\n    event_id INT,\n    attendee_id INT,\n    CONSTRAINT fk_event_id FOREIGN KEY (event_id) REFERENCES events(event_id),\n    CONSTRAINT fk_attendee_id FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_feedback (\n    feedback_id INT PRIMARY KEY,\n    event_id INT,\n    attendee_id INT,\n    feedback_text TEXT,\n    CONSTRAINT fk_event_id FOREIGN KEY (event_id) REFERENCES events(event_id),\n    CONSTRAINT fk_attendee_id FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    event_time TIME NOT NULL,\n    event_location VARCHAR(255),\n    event_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Attendees (\n    attendee_id INT PRIMARY KEY,\n    attendee_name VARCHAR(255) NOT NULL,\n    attendee_email VARCHAR(255) NOT NULL,\n    event_id INT REFERENCES Events(event_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Speakers (\n    speaker_id INT PRIMARY KEY,\n    speaker_name VARCHAR(255) NOT NULL,\n    speaker_bio TEXT,\n    event_id INT REFERENCES Events(event_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Organizers (\n    organizer_id INT PRIMARY KEY,\n    organizer_name VARCHAR(255) NOT NULL,\n    organizer_email VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sponsors (\n    sponsor_id INT PRIMARY KEY,\n    sponsor_name VARCHAR(255) NOT NULL,\n    sponsor_type VARCHAR(50),\n    event_id INT REFERENCES Events(event_id)\n);\n"
+      }
+    ]
+  }
+]

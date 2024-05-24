@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS MaintenanceSchedules (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    maintenance_type VARCHAR(50) NOT NULL,\n    maintenance_date DATE NOT NULL,\n    maintenance_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoTDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100),\n    installation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceSchedule (\n    schedule_id INT PRIMARY KEY,\n    device_id INT,\n    schedule_date DATE,\n    maintenance_type VARCHAR(50),\n    notes TEXT,\n    FOREIGN KEY (device_id) REFERENCES IoTDevices(device_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255) NOT NULL,\n    device_model VARCHAR(255) NOT NULL,\n    last_maintenance_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n    schedule_id INT PRIMARY KEY,\n    device_id INT,\n    maintenance_date DATE,\n    maintenance_type VARCHAR(50),\n    FOREIGN KEY (device_id) REFERENCES device(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_log (\n    log_id INT PRIMARY KEY,\n    schedule_id INT,\n    maintenance_date DATE,\n    maintenance_status VARCHAR(50),\n    notes TEXT,\n    FOREIGN KEY (schedule_id) REFERENCES maintenance_schedule(schedule_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iot_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    installation_date DATE,\n    last_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedules (\n    schedule_id INT PRIMARY KEY,\n    device_id INT,\n    maintenance_type VARCHAR(50),\n    schedule_date DATE,\n    completion_date DATE,\n    FOREIGN KEY (device_id) REFERENCES iot_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    log_id INT PRIMARY KEY,\n    schedule_id INT,\n    log_description TEXT,\n    log_date DATE,\n    FOREIGN KEY (schedule_id) REFERENCES maintenance_schedules(schedule_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE technicians (\n    technician_id INT PRIMARY KEY,\n    technician_name VARCHAR(255),\n    technician_specialty VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device (\n   device_id INT PRIMARY KEY,\n   device_name VARCHAR(50),\n   device_type VARCHAR(50),\n   condition VARCHAR(50),\n   last_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n   schedule_id INT PRIMARY KEY,\n   device_id INT,\n   maintenance_date DATE,\n   maintenance_type VARCHAR(50),\n   completed BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_log (\n   log_id INT PRIMARY KEY,\n   schedule_id INT,\n   maintenance_date DATE,\n   maintenance_notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE technician (\n   technician_id INT PRIMARY KEY,\n   technician_name VARCHAR(50),\n   technician_specialty VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_assignment (\n   assignment_id INT PRIMARY KEY,\n   device_id INT,\n   technician_id INT\n);"
+      }
+    ]
+  }
+]

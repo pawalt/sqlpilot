@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR(255),\n    destination_ip VARCHAR(255),\n    protocol VARCHAR(50),\n    status_code INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_logs (\n    id INT PRIMARY KEY,\n    source_ip VARCHAR(255),\n    destination_ip VARCHAR(255),\n    timestamp TIMESTAMP,\n    message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_breaches (\n    id INT PRIMARY KEY,\n    log_id INT,\n    breach_type VARCHAR(50),\n    description TEXT,\n    FOREIGN KEY (log_id) REFERENCES network_traffic_logs(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_logs (\n    timestamp TIMESTAMP,\n    source_ip VARCHAR,\n    destination_ip VARCHAR,\n    port INT,\n    protocol VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_events (\n    event_id INT,\n    timestamp TIMESTAMP,\n    event_description VARCHAR,\n    severity VARCHAR,\n    source_ip VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_detection (\n    detection_id INT,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR,\n    destination_ip VARCHAR,\n    alert VARCHAR,\n    action_taken VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR,\n    destination_ip VARCHAR,\n    protocol VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_breaches (\n    breach_id INT PRIMARY KEY,\n    log_id INT,\n    breach_type VARCHAR,\n    description TEXT,\n    FOREIGN KEY (log_id) REFERENCES network_traffic_logs(log_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR,\n    email VARCHAR,\n    role VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    activity_type VARCHAR,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_logs (\n    log_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR,\n    destination_ip VARCHAR,\n    protocol VARCHAR,\n    bytes_transferred BIGINT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE potential_breaches (\n    breach_id UUID PRIMARY KEY,\n    log_id UUID REFERENCES network_traffic_logs(log_id),\n    breach_type VARCHAR,\n    breach_severity INT,\n    detected_on TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_details (\n    detail_id UUID PRIMARY KEY,\n    breach_id UUID REFERENCES potential_breaches(breach_id),\n    detail_description TEXT,\n    detected_by VARCHAR,\n    action_taken VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE security_events (\n    event_id UUID PRIMARY KEY,\n    event_type VARCHAR,\n    event_description TEXT,\n    occurred_at TIMESTAMP,\n    detected_by VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE security_admins (\n    admin_id UUID PRIMARY KEY,\n    admin_name VARCHAR,\n    admin_email VARCHAR,\n    admin_role VARCHAR\n)"
+      }
+    ]
+  }
+]

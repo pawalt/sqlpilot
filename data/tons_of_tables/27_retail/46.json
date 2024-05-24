@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaign_performance_data (\n  campaign_id INT,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  impressions INT,\n  clicks INT,\n  conversions INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name STRING,\n    start_date DATE,\n    end_date DATE,\n    marketing_channel STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    performance_id INT PRIMARY KEY,\n    campaign_id INT,\n    impressions INT,\n    clicks INT,\n    conversions INT,\n    spend DECIMAL(10, 2),\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL,\n    engagement_rate DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_performance (\n    ad_id INT PRIMARY KEY,\n    campaign_id INT,\n    ad_name VARCHAR(255),\n    impressions INT,\n    clicks INT,\n    conversions INT,\n    revenue DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audience_demographics (\n    audience_id INT PRIMARY KEY,\n    campaign_id INT,\n    age_group VARCHAR(50),\n    gender VARCHAR(10),\n    location VARCHAR(100),\n    interests VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE past_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    total_spent DECIMAL(10,2),\n    total_clicks INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    performance_id INT PRIMARY KEY,\n    campaign_id INT,\n    impressions INT,\n    conversions INT,\n    revenue DECIMAL(10,2),\n    CONSTRAINT fk_campaign_id FOREIGN KEY (campaign_id)\n        REFERENCES past_campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_channels (\n    channel_id INT PRIMARY KEY,\n    channel_name VARCHAR(50),\n    channel_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_channels (\n    campaign_id INT,\n    channel_id INT,\n    CONSTRAINT fk_campaign_id FOREIGN KEY (campaign_id)\n        REFERENCES past_campaigns(campaign_id),\n    CONSTRAINT fk_channel_id FOREIGN KEY (channel_id)\n        REFERENCES marketing_channels(channel_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    performance_id INT PRIMARY KEY,\n    campaign_id INT,\n    impressions INT,\n    clicks INT,\n    conversions INT,\n    revenue DECIMAL,\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE channels (\n    channel_id INT PRIMARY KEY,\n    channel_name VARCHAR(255),\n    budget DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE channel_performance (\n    performance_id INT PRIMARY KEY,\n    channel_id INT,\n    impressions INT,\n    clicks INT,\n    conversions INT,\n    revenue DECIMAL,\n    FOREIGN KEY (channel_id) REFERENCES channels(channel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audience_segments (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(255),\n    segment_description TEXT\n);"
+      }
+    ]
+  }
+]

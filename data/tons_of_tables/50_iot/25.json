@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routing_information (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_name VARCHAR(50),\n  route_id INT,\n  current_location VARCHAR(100),\n  destination VARCHAR(100),\n  estimated_time_of_arrival TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fleet_vehicles (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_name VARCHAR(50) NOT NULL,\n  vehicle_type VARCHAR(50) NOT NULL,\n  current_location VARCHAR(100),\n  driver_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routing_information (\n  route_id INT PRIMARY KEY,\n  vehicle_id INT NOT NULL,\n  origin_location VARCHAR(100) NOT NULL,\n  destination_location VARCHAR(100) NOT NULL,\n  distance_miles FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routing_information (\n    vehicle_id INT PRIMARY KEY,\n    current_location TEXT,\n    destination TEXT,\n    estimated_time_of_arrival TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_routes (\n    route_id INT PRIMARY KEY,\n    vehicle_id INT,\n    route_details TEXT,\n    distance_covered FLOAT,\n    CONSTRAINT fk_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES routing_information(vehicle_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE optimization_logs (\n    log_id INT PRIMARY KEY,\n    route_id INT,\n    optimization_details TEXT,\n    execution_time TIMESTAMP,\n    CONSTRAINT fk_route_id FOREIGN KEY (route_id) REFERENCES vehicle_routes(route_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n  id INT PRIMARY KEY,\n  vehicle_name VARCHAR(50),\n  vehicle_type VARCHAR(50),\n  license_plate VARCHAR(15),\n  driver_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drivers (\n  driver_id INT PRIMARY KEY,\n  driver_name VARCHAR(50),\n  driver_license VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  start_location VARCHAR(100),\n  end_location VARCHAR(100),\n  distance_in_km FLOAT,\n  vehicle_id INT,\n  CONSTRAINT fk_vehicle_id\n    FOREIGN KEY (vehicle_id)\n    REFERENCES vehicles(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules (\n  schedule_id INT PRIMARY KEY,\n  driver_id INT,\n  route_id INT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  CONSTRAINT fk_driver_id\n    FOREIGN KEY (driver_id)\n    REFERENCES drivers(driver_id),\n  CONSTRAINT fk_route_id\n    FOREIGN KEY (route_id)\n    REFERENCES routes(route_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "fleet_vehicles"
+      },
+      {
+        "table_schema": "vehicle_routes"
+      },
+      {
+        "table_schema": "route_segments"
+      },
+      {
+        "table_schema": "route_optimization"
+      },
+      {
+        "table_schema": "routing_history"
+      }
+    ]
+  }
+]

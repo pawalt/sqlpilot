@@ -1,0 +1,52 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GenomicSequences (\n  id INT PRIMARY KEY,\n  sequence TEXT,\n  species_name VARCHAR(255),\n  sequence_source VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Sequence (\n    sequence_id SERIAL PRIMARY KEY,\n    sequence_name VARCHAR(100) NOT NULL,\n    sequence_data TEXT NOT NULL\n);\n\nCREATE TABLE Relationship (\n    relationship_id SERIAL PRIMARY KEY,\n    sequence1_id INT NOT NULL,\n    sequence2_id INT NOT NULL,\n    relationship_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (sequence1_id) REFERENCES Sequence(sequence_id),\n    FOREIGN KEY (sequence2_id) REFERENCES Sequence(sequence_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Sequence (id INT PRIMARY KEY,\nsequence_name TEXT,\nsequence_data TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE EvolutionaryRelationships (relationship_id INT PRIMARY KEY,\nsequence1_id INT,\nsequence2_id INT,\nrelationship_type TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComparisonResults (comparison_id INT PRIMARY KEY,\nrelationship_id INT,\nsimilarity_score FLOAT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_sequences (\n    sequence_id INT PRIMARY KEY,\n    sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_alignments (\n    alignment_id INT PRIMARY KEY,\n    sequence_id INT,\n    alignment_data TEXT,\n    FOREIGN KEY (sequence_id) REFERENCES gene_sequences(sequence_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE evolutionary_relationships (\n    relationship_id INT PRIMARY KEY,\n    alignment_id INT,\n    evolution_distance FLOAT,\n    FOREIGN KEY (alignment_id) REFERENCES gene_alignments(alignment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE species (\n    species_id INT PRIMARY KEY,\n    species_name TEXT,\n    average_evolution_distance FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Genomes (\n    genome_id INT PRIMARY KEY,\n    species_name VARCHAR(100),\n    sequence TEXT\n);\n\nCREATE TABLE Mutations (\n    mutation_id INT PRIMARY KEY,\n    genome_id INT,\n    mutation_type VARCHAR(50),\n    mutation_position INT,\n    CONSTRAINT fk_genome_id FOREIGN KEY (genome_id) REFERENCES Genomes(genome_id)\n);\n\nCREATE TABLE EvolutionaryRelationships (\n    relationship_id INT PRIMARY KEY,\n    genome1_id INT,\n    genome2_id INT,\n    similarity_score FLOAT,\n    CONSTRAINT fk_genome1_id FOREIGN KEY (genome1_id) REFERENCES Genomes(genome_id),\n    CONSTRAINT fk_genome2_id FOREIGN KEY (genome2_id) REFERENCES Genomes(genome_id)\n);\n\nCREATE TABLE PhylogeneticTrees (\n    tree_id INT PRIMARY KEY,\n    tree_name VARCHAR(100),\n    tree_structure JSON\n);\n\nCREATE TABLE SequenceAlignments (\n    alignment_id INT PRIMARY KEY,\n    genome_id INT,\n    alignment_text TEXT,\n    CONSTRAINT fk_genome_id FOREIGN KEY (genome_id) REFERENCES Genomes(genome_id)\n);"
+      }
+    ]
+  }
+]

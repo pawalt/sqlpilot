@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_home_access_control (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    role ENUM ('admin', 'guest') NOT NULL,\n    access_level INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  device_id UUID,\n  permission_type VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users(\n    user_id INT PRIMARY KEY,\n    name TEXT,\n    role TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles(\n    role_id INT PRIMARY KEY,\n    role_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions(\n    permission_id INT PRIMARY KEY,\n    permission_name TEXT,\n    role_id INT,\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    role_id UUID REFERENCES Roles(role_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    user_id UUID REFERENCES Users(user_id) ON DELETE CASCADE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessLogs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES Users(user_id) ON DELETE CASCADE,\n    device_id UUID REFERENCES Devices(device_id) ON DELETE CASCADE,\n    action_type VARCHAR(20) NOT NULL,\n    access_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE roles (\n  role_id INT PRIMARY KEY,\n  role_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  role_id INT,\n  FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n  permission_id INT PRIMARY KEY,\n  permission_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE roles_permissions (\n  role_id INT,\n  permission_id INT,\n  PRIMARY KEY (role_id, permission_id),\n  FOREIGN KEY (role_id) REFERENCES roles(role_id),\n  FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n  user_id INT,\n  permission_id INT,\n  PRIMARY KEY (user_id, permission_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)\n);\n"
+      }
+    ]
+  }
+]

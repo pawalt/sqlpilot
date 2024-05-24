@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory_management (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50) NOT NULL,\n    stock_level INT DEFAULT 0,\n    last_updated TIMESTAMP DEFAULT NOW()\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory (\n    product_id INT PRIMARY KEY,\n    product_name TEXT,\n    stock_level INT,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    product_id INT,\n    transaction_type TEXT,\n    quantity INT,\n    transaction_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    stock_level INT DEFAULT 0,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    product_id INT NOT NULL,\n    quantity INT NOT NULL,\n    order_date TIMESTAMP,\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    address VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products ( \n id INT PRIMARY KEY, \n name VARCHAR(255), \n quantity INT, \n price DECIMAL(10, 2), \n date_added TIMESTAMP \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations ( \n location_id INT PRIMARY KEY, \n location_name VARCHAR(255) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_levels ( \n id SERIAL PRIMARY KEY, \n product_id INT, \n location_id INT, \n quantity INT, \n last_updated TIMESTAMP \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions ( \n transaction_id SERIAL PRIMARY KEY, \n product_id INT, \n location_id INT, \n transaction_type VARCHAR(255), \n quantity_changed INT, \n timestamp TIMESTAMP \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory_management_products (\n   product_id INT PRIMARY KEY,\n   product_name TEXT NOT NULL,\n   quantity INT,\n   price DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_management_warehouses (\n   warehouse_id INT PRIMARY KEY,\n   warehouse_name TEXT NOT NULL,\n   location TEXT,\n   capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_management_inventory (\n   product_id INT,\n   warehouse_id INT,\n   quantity INT,\n   PRIMARY KEY (product_id, warehouse_id),\n   FOREIGN KEY (product_id) REFERENCES inventory_management_products(product_id),\n   FOREIGN KEY (warehouse_id) REFERENCES inventory_management_warehouses(warehouse_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_management_sales (\n   sale_id INT PRIMARY KEY,\n   product_id INT,\n   quantity_sold INT,\n   sale_date TIMESTAMP,\n   FOREIGN KEY (product_id) REFERENCES inventory_management_products(product_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_management_reports (\n   report_id INT PRIMARY KEY,\n   report_date DATE,\n   report_title TEXT,\n   report_content TEXT\n);\n"
+      }
+    ]
+  }
+]

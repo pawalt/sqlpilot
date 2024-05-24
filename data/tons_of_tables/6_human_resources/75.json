@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certifications ( \n    certification_id INT PRIMARY KEY, \n    certification_name VARCHAR(255), \n    required_experience INT, \n    certification_authority VARCHAR(100) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certifications (\n  id UUID PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  description TEXT,\n  category VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qualifications (\n  id UUID PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  level INT NOT NULL,\n  certification_id UUID REFERENCES certifications(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certifications (\n    id UUID PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qualifications (\n    id UUID PRIMARY KEY,\n    qualification_name VARCHAR(100) NOT NULL,\n    level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE career_advancement (\n    employee_id UUID PRIMARY KEY,\n    certification_id UUID REFERENCES certifications(id),\n    qualification_id UUID REFERENCES qualifications(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certifications (\n  certification_id INT PRIMARY KEY,\n  certification_name VARCHAR(255) NOT NULL,\n  required_experience_years INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE qualifications (\n  qualification_id INT PRIMARY KEY,\n  qualification_name VARCHAR(255) NOT NULL,\n  qualification_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_certifications (\n  employee_id INT,\n  certification_id INT,\n  date_achieved DATE,\n  PRIMARY KEY (employee_id, certification_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_qualifications (\n  employee_id INT,\n  qualification_id INT,\n  expiration_date DATE,\n  PRIMARY KEY (employee_id, qualification_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certifications (\n  certification_id INT PRIMARY KEY,\n  certification_name VARCHAR(255) NOT NULL,\n  required_experience INT,\n  required_courses JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n  employee_id INT PRIMARY KEY,\n  employee_name VARCHAR(255) NOT NULL,\n  employee_email VARCHAR(255) NOT NULL,\n  employee_role VARCHAR(50),\n  certification_id INT REFERENCES certifications(certification_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n  course_id INT PRIMARY KEY,\n  course_name VARCHAR(255) NOT NULL,\n  course_duration INT,\n  certification_id INT REFERENCES certifications(certification_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE job_positions (\n  position_id INT PRIMARY KEY,\n  position_title VARCHAR(100) NOT NULL,\n  minimum_experience INT,\n  required_certification_id INT REFERENCES certifications(certification_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee_certifications (\n  cert_id INT PRIMARY KEY,\n  employee_id INT REFERENCES employees(employee_id),\n  certification_id INT REFERENCES certifications(certification_id),\n  certification_date DATE\n);"
+      }
+    ]
+  }
+]

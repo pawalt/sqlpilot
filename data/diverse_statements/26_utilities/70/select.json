@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM zoning_regulations WHERE neighborhood_id = 1;",
+      "SELECT neighborhood_id, zoning_type FROM zoning_regulations WHERE building_height > 5;",
+      "SELECT * FROM zoning_regulations WHERE max_occupancy BETWEEN 50 AND 100 ORDER BY building_height DESC;",
+      "SELECT max_occupancy, zoning_type, building_height FROM zoning_regulations WHERE zoning_type = 'Residential' AND setback_distance < 10;",
+      "SELECT neighborhood_id, max_occupancy FROM zoning_regulations WHERE max_occupancy > 100 ORDER BY neighborhood_id ASC;",
+      "SELECT * FROM zoning_regulations WHERE max_occupancy > 100 ORDER BY neighborhood_id DESC;",
+      "SELECT zoning_type, building_height FROM zoning_regulations WHERE building_height < 50 AND setback_distance > 10;",
+      "SELECT neighborhood_id, zoning_type, max_occupancy FROM zoning_regulations WHERE zoning_type = 'Residential' ORDER BY max_occupancy DESC;",
+      "SELECT neighborhood_id, zoning_type, setback_distance FROM zoning_regulations WHERE zoning_type LIKE '%Commercial%' ORDER BY neighborhood_id ASC, setback_distance DESC;",
+      "SELECT * FROM zoning_regulations WHERE max_occupancy <= 50 OR building_height >= 30 ORDER BY neighborhood_id ASC, building_height DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM zoning_regulations;",
+      "SELECT neighborhood_id, regulations FROM zoning_regulations WHERE neighborhood_id = 1;",
+      "SELECT neighborhood_id, regulations FROM zoning_regulations WHERE neighborhood_id > 10;",
+      "SELECT neighborhood_name FROM neighborhoods WHERE neighborhood_id = 5;",
+      "SELECT neighborhood_id, regulations FROM zoning_regulations WHERE regulations LIKE '%residential%';",
+      "SELECT neighborhood_name, regulations FROM neighborhoods JOIN zoning_regulations ON neighborhoods.neighborhood_id = zoning_regulations.neighborhood_id WHERE neighborhoods.neighborhood_name = 'Downtown'",
+      "SELECT * FROM neighborhoods WHERE neighborhood_id = 5 ORDER BY neighborhood_name DESC",
+      "SELECT neighborhood_name, regulations FROM neighborhoods JOIN zoning_regulations ON neighborhoods.neighborhood_id = zoning_regulations.neighborhood_id WHERE regulations LIKE '%residential%'",
+      "SELECT neighborhood_name, regulations FROM neighborhoods JOIN zoning_regulations ON neighborhoods.neighborhood_id = zoning_regulations.neighborhood_id WHERE neighborhood_name IN ('Midtown', 'Uptown')",
+      "SELECT * FROM zoning_regulations JOIN neighborhoods ON zoning_regulations.neighborhood_id = neighborhoods.neighborhood_id ORDER BY neighborhoods.neighborhood_id ASC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM neighborhood;",
+      "SELECT name, location FROM neighborhood WHERE neighborhood_id = 1;",
+      "SELECT neighborhood_id, name FROM neighborhood WHERE location = 'Downtown';",
+      "SELECT * FROM zoning_regulations ORDER BY regulation_id DESC;",
+      "SELECT regulation_text, regulation_type FROM zoning_regulations WHERE neighborhood_id = 2;",
+      "SELECT * FROM neighborhood;",
+      "SELECT name, location FROM neighborhood ORDER BY name ASC;",
+      "SELECT neighborhood_id, COUNT(*) AS number_of_regulations FROM zoning_regulations GROUP BY neighborhood_id HAVING COUNT(*) > 0;",
+      "SELECT n.name, zr.regulation_text, vr.description FROM neighborhood n INNER JOIN zoning_regulations zr ON n.neighborhood_id = zr.neighborhood_id INNER JOIN violation_records vr ON zr.regulation_id = vr.regulation_id WHERE vr.date_recorded BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT n.name AS neighborhood_name, zr.regulation_type, vr.description FROM neighborhood n LEFT JOIN zoning_regulations zr ON n.neighborhood_id = zr.neighborhood_id LEFT JOIN violation_records vr ON zr.regulation_id = vr.regulation_id WHERE zr.regulation_type = 'Residential' AND vr.description IS NOT NULL ORDER BY n.name DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM neighborhood;",
+      "SELECT neighborhood_name, city FROM neighborhood WHERE city = 'New York';",
+      "SELECT regulation_id, regulation_description FROM zoning_regulations ORDER BY regulation_id DESC;",
+      "SELECT category_name, description FROM zoning_category WHERE category_name LIKE 'Res%';",
+      "SELECT neighborhood_name, category_name, regulation_description FROM neighborhood JOIN zoning_regulations ON neighborhood.neighborhood_id = zoning_regulations.neighborhood_id JOIN zoning_category ON zoning_regulations.category_id = zoning_category.category_id;",
+      "SELECT * FROM neighborhood;",
+      "SELECT neighborhood_name, city FROM neighborhood WHERE city='New York';",
+      "SELECT category_name, description FROM zoning_category WHERE category_id=1;",
+      "SELECT neighborhood_name, regulation_description FROM neighborhood INNER JOIN zoning_regulations ON neighborhood.neighborhood_id = zoning_regulations.neighborhood_id;",
+      "SELECT * FROM zone_updates ORDER BY update_date DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM neighborhoods;",
+      "SELECT neighborhood_name, neighborhood_id FROM neighborhoods ORDER BY neighborhood_name DESC;",
+      "SELECT category_name FROM zoning_categories WHERE category_id = 3;",
+      "SELECT * FROM regulations WHERE neighborhood_id = 2 AND category_id = 1;",
+      "SELECT violation_description, compliance_status FROM violations INNER JOIN compliance_records ON violations.record_id = compliance_records.record_id WHERE compliance_status = 'Pending';",
+      "SELECT * FROM neighborhoods;",
+      "SELECT regulation_description, category_name FROM regulations JOIN zoning_categories ON regulations.category_id = zoning_categories.category_id;",
+      "SELECT neighborhood_name, category_name, compliance_status FROM neighborhoods JOIN regulations ON neighborhoods.neighborhood_id = regulations.neighborhood_id JOIN zoning_categories ON regulations.category_id = zoning_categories.category_id JOIN compliance_records ON regulations.regulation_id = compliance_records.regulation_id;",
+      "SELECT COUNT(*) AS total_violations FROM violations WHERE violation_description LIKE '%unsafe%';",
+      "SELECT neighborhood_name, SUM(CASE WHEN compliance_status='Compliant' THEN 1 ELSE 0 END) AS compliant_count, SUM(CASE WHEN compliance_status='Non-compliant' THEN 1 ELSE 0 END) AS non_compliant_count FROM neighborhoods JOIN regulations ON neighborhoods.neighborhood_id = regulations.neighborhood_id JOIN compliance_records ON regulations.regulation_id = compliance_records.regulation_id GROUP BY neighborhood_name;"
+    ]
+  }
+]

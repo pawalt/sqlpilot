@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscription_payments (\n    payment_id INT PRIMARY KEY,\n    payment_date DATE,\n    subscription_id INT,\n    amount DECIMAL(10, 2),\n    payment_status VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    user_id INT,\n    subscription_name VARCHAR(50),\n    subscription_amount FLOAT,\n    start_date DATE,\n    next_billing_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_transactions (\n    transaction_id INT PRIMARY KEY,\n    subscription_id INT,\n    transaction_date DATE,\n    amount_paid FLOAT,\n    payment_method VARCHAR(20),\n    FOREIGN KEY (subscription_id) REFERENCES subscriptions(subscription_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recurring_payments (\n    subscription_id UUID PRIMARY KEY,\n    customer_id UUID,\n    payment_amount DECIMAL,\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id UUID PRIMARY KEY,\n    customer_id UUID,\n    plan_id UUID,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE plans (\n    plan_id UUID PRIMARY KEY,\n    plan_name VARCHAR,\n    price DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    subscription_status BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n    method_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    method_type VARCHAR(20) NOT NULL,\n    card_number VARCHAR(16) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id UUID PRIMARY KEY,\n    subscription_id UUID REFERENCES subscriptions(subscription_id),\n    payment_date DATE NOT NULL,\n    payment_amount DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n  subscription_id UUID PRIMARY KEY,\n  customer_id UUID,\n  subscription_plan TEXT,\n  start_date TIMESTAMP,\n  end_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id UUID PRIMARY KEY,\n  full_name TEXT,\n  email TEXT UNIQUE,\n  phone_number TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id UUID PRIMARY KEY,\n  subscription_id UUID,\n  amount DECIMAL,\n  payment_date TIMESTAMP,\n  payment_method TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subscription_plans (\n  plan_id UUID PRIMARY KEY,\n  plan_name TEXT,\n  price DECIMAL,\n  interval TEXT,\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE recurring_payments (\n  recurring_id UUID PRIMARY KEY,\n  subscription_id UUID,\n  next_payment_date TIMESTAMP,\n  is_active BOOLEAN,\n  payment_schedule TEXT\n);\n"
+      }
+    ]
+  }
+]

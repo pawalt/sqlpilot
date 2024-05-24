@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThirdPartyIntegration (\n    id INT PRIMARY KEY,\n    api_name VARCHAR(255),\n    integration_type VARCHAR(50),\n    service_name VARCHAR(100),\n    documentation_url TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE third_party_tools (\n    id INT PRIMARY KEY,\n    tool_name TEXT NOT NULL,\n    api_key TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE integration_platforms (\n    id INT PRIMARY KEY,\n    platform_name TEXT NOT NULL,\n    api_endpoint TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Integrations (\n    integration_id UUID PRIMARY KEY,\n    integration_name VARCHAR(255) NOT NULL,\n    api_key VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ThirdPartyTools (\n    tool_id UUID PRIMARY KEY,\n    tool_name VARCHAR(255) NOT NULL,\n    tool_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PlatformFunctionality (\n    functionality_id UUID PRIMARY KEY,\n    functionality_name VARCHAR(255) NOT NULL,\n    tool_id UUID REFERENCES ThirdPartyTools(tool_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE third_party_tools (\n    tool_id UUID PRIMARY KEY,\n    tool_name STRING NOT NULL,\n    tool_description STRING,\n    tool_api_url STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id UUID PRIMARY KEY,\n    service_name STRING NOT NULL,\n    service_description STRING,\n    service_api_key STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE platform_integration (\n    integration_id UUID PRIMARY KEY,\n    tool_id UUID REFERENCES third_party_tools(tool_id),\n    service_id UUID REFERENCES services(service_id),\n    integration_status STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE api_logs (\n    log_id UUID PRIMARY KEY,\n    integration_id UUID REFERENCES platform_integration(integration_id),\n    log_timestamp TIMESTAMP,\n    log_message STRING\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE third_party_apis (\n    id INT PRIMARY KEY,\n    api_name VARCHAR(255) NOT NULL,\n    api_key VARCHAR(100) NOT NULL,\n    integration_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE platform_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    role VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE integration_logs (\n    log_id INT PRIMARY KEY,\n    api_name VARCHAR(255) NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL,\n    log_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE platform_activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    activity_type VARCHAR(50) NOT NULL,\n    activity_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(100) NOT NULL,\n    api_endpoint VARCHAR(255) NOT NULL,\n    integration_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

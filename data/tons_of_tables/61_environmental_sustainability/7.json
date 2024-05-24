@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WindFarms (\n    id INT PRIMARY KEY,\n    location VARCHAR(255),\n    latitude DECIMAL,\n    longitude DECIMAL,\n    wind_speed DECIMAL,\n    wind_direction VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WindFarms (\n    id INT PRIMARY KEY,\n    location VARCHAR(255),\n    wind_speed DECIMAL,\n    wind_direction VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WindFarmLocations (\n    location_id INT PRIMARY KEY,\n    city VARCHAR(100),\n    latitude DECIMAL,\n    longitude DECIMAL,\n    optimal_for_wind_farm BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LocationData (\n    location_id INT PRIMARY KEY,\n    latitude FLOAT,\n    longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WindSpeedData (\n    wind_speed_id INT PRIMARY KEY,\n    location_id INT,\n    wind_speed FLOAT,\n    FOREIGN KEY (location_id) REFERENCES LocationData(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WindDirectionData (\n    wind_direction_id INT PRIMARY KEY,\n    location_id INT,\n    wind_direction VARCHAR(255),\n    FOREIGN KEY (location_id) REFERENCES LocationData(location_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WindFarms (\n    id INT PRIMARY KEY,\n    location VARCHAR(255),\n    wind_speed FLOAT,\n    wind_direction VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WindFarmLocations (\n    id INT PRIMARY KEY,\n    latitude FLOAT,\n    longitude FLOAT,\n    address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE OptimalLocations (\n    id INT PRIMARY KEY,\n    location_id INT,\n    optimal_for_wind_speed FLOAT,\n    optimal_for_wind_direction VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WeatherData (\n    id INT PRIMARY KEY,\n    location_id INT,\n    date DATE,\n    temperature FLOAT,\n    humidity FLOAT,\n    wind_speed FLOAT,\n    wind_direction VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wind_farm_locations (\n    id SERIAL PRIMARY KEY,\n    location_name VARCHAR(100),\n    latitude DECIMAL(9, 6),\n    longitude DECIMAL(9, 6)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wind_speed_data (\n    id SERIAL PRIMARY KEY,\n    location_id INTEGER REFERENCES wind_farm_locations(id),\n    speed DECIMAL(5, 2),\n    direction VARCHAR(20),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wind_turbines (\n    id SERIAL PRIMARY KEY,\n    turbine_model VARCHAR(50),\n    manufacturer VARCHAR(50),\n    blade_length DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE turbine_installations (\n    id SERIAL PRIMARY KEY,\n    turbine_id INTEGER REFERENCES wind_turbines(id),\n    location_id INTEGER REFERENCES wind_farm_locations(id),\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wind_farm_rating (\n    id SERIAL PRIMARY KEY,\n    location_id INTEGER REFERENCES wind_farm_locations(id),\n    efficiency_rating DECIMAL(4, 2),\n    evaluation_date DATE\n);"
+      }
+    ]
+  }
+]

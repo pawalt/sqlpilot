@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE stem_educators (\n  id UUID PRIMARY KEY,\n  first_name TEXT,\n  last_name TEXT,\n  email TEXT,\n  institution TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Educators (\n    educator_id INT PRIMARY KEY,\n    educator_name VARCHAR(50) NOT NULL,\n    educator_email VARCHAR(100) UNIQUE NOT NULL,\n    educator_department VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(50) NOT NULL,\n    researcher_email VARCHAR(100) UNIQUE NOT NULL,\n    researcher_field VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    role VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(100) NOT NULL,\n    course_description TEXT,\n    instructor_id INT NOT NULL REFERENCES Users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchPapers (\n    paper_id INT PRIMARY KEY,\n    paper_title VARCHAR(200) NOT NULL,\n    author_id INT NOT NULL REFERENCES Users(user_id),\n    publication_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Educators (\n  educator_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  institution VARCHAR(255),\n  field_of_expertise VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n  researcher_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  institution VARCHAR(255),\n  research_focus VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Collaboration (\n  collaboration_id INT PRIMARY KEY,\n  project_id INT,\n  educator_id INT,\n  researcher_id INT,\n  FOREIGN KEY (project_id) REFERENCES Projects(project_id),\n  FOREIGN KEY (educator_id) REFERENCES Educators(educator_id),\n  FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE educators (\n    educator_id INT PRIMARY KEY,\n    educator_name VARCHAR(50),\n    email VARCHAR(100),\n    institution VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(50),\n    email VARCHAR(100),\n    research_area VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(50),\n    course_description TEXT,\n    educator_id INT,\n    CONSTRAINT fk_educator FOREIGN KEY (educator_id) REFERENCES educators(educator_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_papers (\n    paper_id INT PRIMARY KEY,\n    paper_title VARCHAR(100),\n    researcher_id INT,\n    CONSTRAINT fk_researcher FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborations (\n    collaboration_id INT PRIMARY KEY,\n    course_id INT,\n    paper_id INT,\n    CONSTRAINT fk_course FOREIGN KEY (course_id) REFERENCES courses(course_id),\n    CONSTRAINT fk_paper FOREIGN KEY (paper_id) REFERENCES research_papers(paper_id)\n);"
+      }
+    ]
+  }
+]

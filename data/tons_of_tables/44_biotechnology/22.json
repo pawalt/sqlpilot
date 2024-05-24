@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BacteriaSequencingData (\n    id UUID PRIMARY KEY,\n    bacteria_name TEXT,\n    dna_sequence TEXT,\n    sequencing_date DATE,\n    analysis_result JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bacteria_genomes (\n    genome_id UUID PRIMARY KEY,\n    species_name TEXT,\n    sequence TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n    result_id UUID PRIMARY KEY,\n    genome_id UUID REFERENCES bacteria_genomes(genome_id),\n    analysis_date TIMESTAMP,\n    result_data JSON\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bacteria_genomes (\n   genome_id VARCHAR(255) PRIMARY KEY,\n   species VARCHAR(255),\n   sequence_data TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n   experiment_id VARCHAR(255) PRIMARY KEY,\n   bacteria_id VARCHAR(255),\n   experiment_date DATE,\n   results TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_projects (\n   project_id VARCHAR(255) PRIMARY KEY,\n   project_name VARCHAR(255),\n   start_date DATE,\n   end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Bacteria (id INT PRIMARY KEY,\nname VARCHAR(50) NOT NULL,\ngenetic_code VARCHAR(50) NOT NULL,\ngenetic_sequence TEXT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Samples (sample_id INT PRIMARY KEY,\nsource_bacteria_id INT,\nsample_date DATE,\nsample_type VARCHAR(50) NOT NULL,\nFOREIGN KEY (source_bacteria_id) REFERENCES Bacteria(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (experiment_id INT PRIMARY KEY,\nsample_id INT,\nexperiment_date DATE,\nexperimental_condition VARCHAR(100) NOT NULL,\nresult_data TEXT NOT NULL,\nFOREIGN KEY (sample_id) REFERENCES Samples(sample_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Results (result_id INT PRIMARY KEY,\nexperiment_id INT,\nresult_date DATE,\nresult_value FLOAT NOT NULL,\nresult_description TEXT,\nFOREIGN KEY (experiment_id) REFERENCES Experiments(experiment_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bacteria_genomes(\n    genome_id INT PRIMARY KEY,\n    species_name TEXT,\n    genome_sequence TEXT\n);\n\nCREATE TABLE bacterial_genes(\n    gene_id INT PRIMARY KEY,\n    gene_name TEXT,\n    gene_sequence TEXT,\n    genome_id INT,\n    FOREIGN KEY (genome_id) REFERENCES bacteria_genomes(genome_id)\n);\n\nCREATE TABLE gene_functions(\n    function_id INT PRIMARY KEY,\n    function_name TEXT\n);\n\nCREATE TABLE gene_annotations(\n    annotation_id INT PRIMARY KEY,\n    gene_id INT,\n    function_id INT,\n    FOREIGN KEY (gene_id) REFERENCES bacterial_genes(gene_id),\n    FOREIGN KEY (function_id) REFERENCES gene_functions(function_id)\n);\n\nCREATE TABLE gene_variations(\n    variation_id INT PRIMARY KEY,\n    gene_id INT,\n    variation_type TEXT,\n    variation_description TEXT,\n    FOREIGN KEY (gene_id) REFERENCES bacterial_genes(gene_id)\n);"
+      }
+    ]
+  }
+]

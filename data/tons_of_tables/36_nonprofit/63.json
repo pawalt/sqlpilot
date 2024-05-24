@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Philanthropic_Foundations (\n    foundation_id INT PRIMARY KEY,\n    foundation_name VARCHAR(255),\n    funding_amount DECIMAL,\n    social_initiative VARCHAR(255),\n    impact_evaluation TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Grants (\n  id UUID PRIMARY KEY,\n  foundation_id UUID REFERENCES Foundations(id),\n  amount DECIMAL,\n  recipient VARCHAR,\n  date DATE\n);\n\nCREATE TABLE Foundations (\n  id UUID PRIMARY KEY,\n  name VARCHAR,\n  location VARCHAR,\n  focus_area VARCHAR,\n  founding_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Foundation (\n  foundation_id INT PRIMARY KEY,\n  foundation_name VARCHAR(50),\n  location VARCHAR(50),\n  funds_allocated DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SocialInitiative (\n  initiative_id INT PRIMARY KEY,\n  initiative_name VARCHAR(50),\n  start_date DATE,\n  end_date DATE,\n  funding_amount DECIMAL,\n  foundation_id INT,\n  CONSTRAINT fk_foundation_id FOREIGN KEY (foundation_id) REFERENCES Foundation(foundation_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ImpactEvaluation (\n  evaluation_id INT PRIMARY KEY,\n  initiative_id INT,\n  evaluation_date DATE,\n  impact_rating INT,\n  CONSTRAINT fk_initiative_id FOREIGN KEY (initiative_id) REFERENCES SocialInitiative(initiative_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Foundations (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    mission_statement TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Initiatives (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Grants (\n    id INT PRIMARY KEY,\n    amount DECIMAL(10, 2),\n    foundation_id INT,\n    initiative_id INT,\n    FOREIGN KEY (foundation_id) REFERENCES Foundations(id),\n    FOREIGN KEY (initiative_id) REFERENCES Initiatives(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImpactMetrics (\n    id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    value DECIMAL(10, 2),\n    initiative_id INT,\n    FOREIGN KEY (initiative_id) REFERENCES Initiatives(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Grants (\n   grant_id INT PRIMARY KEY,\n   grant_amount DECIMAL,\n   grant_date DATE,\n   recipient_id INT,\n   project_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Recipients (\n   recipient_id INT PRIMARY KEY,\n   recipient_name VARCHAR(255),\n   city VARCHAR(100),\n   country VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Projects (\n   project_id INT PRIMARY KEY,\n   project_name VARCHAR(255),\n   start_date DATE,\n   end_date DATE,\n   budget DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Donors (\n   donor_id INT PRIMARY KEY,\n   donor_name VARCHAR(255),\n   city VARCHAR(100),\n   country VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Impact (\n   impact_id INT PRIMARY KEY,\n   project_id INT,\n   outcome TEXT,\n   evaluation_date DATE,\n   evaluator_name VARCHAR(255)\n);"
+      }
+    ]
+  }
+]

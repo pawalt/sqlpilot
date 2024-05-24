@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TicketAvailability (\n  ticket_id INT PRIMARY KEY,\n  ticket_name VARCHAR(255),\n  ticket_price DECIMAL(10, 2),\n  current_quantity INT,\n  total_quantity INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tickets (  id INT PRIMARY KEY,  ticket_name VARCHAR(255),  availability INT,  price DECIMAL(10, 2) );"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_sales (  sale_id INT PRIMARY KEY,  ticket_id INT,  sale_date TIMESTAMP,  quantity INT,  total_price DECIMAL(10, 2),  FOREIGN KEY (ticket_id) REFERENCES tickets(id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tickets (\n    ticket_id INT PRIMARY KEY,\n    ticket_name VARCHAR(255),\n    price DECIMAL(10, 2),\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (\n    sale_id INT PRIMARY KEY,\n    ticket_id INT,\n    sale_time TIMESTAMP,\n    quantity_sold INT,\n    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE availability (\n    availability_id INT PRIMARY KEY,\n    ticket_id INT,\n    remaining_quantity INT,\n    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tickets (\n    ticket_id SERIAL PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    ticket_price DECIMAL(10, 2) NOT NULL,\n    tickets_available INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_sales (\n    sale_id SERIAL PRIMARY KEY,\n    ticket_id INT NOT NULL,\n    sale_date TIMESTAMP NOT NULL,\n    sale_quantity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id SERIAL PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n event_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ticket_event (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date TIMESTAMP,\n    total_tickets INT,\n    available_tickets INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_sale (\n    sale_id UUID PRIMARY KEY,\n    event_id UUID REFERENCES ticket_event(event_id),\n    sale_date TIMESTAMP,\n    ticket_quantity INT,\n    total_amount DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ticket_booking (\n    booking_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customer(customer_id),\n    event_id UUID REFERENCES ticket_event(event_id),\n    booking_date TIMESTAMP,\n    booking_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment (\n    payment_id UUID PRIMARY KEY,\n    booking_id UUID REFERENCES ticket_booking(booking_id),\n    total_amount DECIMAL(10,2),\n    payment_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

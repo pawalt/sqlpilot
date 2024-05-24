@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_control (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    access_level VARCHAR(20) NOT NULL,\n    department VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_control (\n    id INT PRIMARY KEY,\n    role_id INT,\n    user_id INT,\n    permission VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50),\n    description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permissions (\n    id INT PRIMARY KEY,\n    role VARCHAR(50),\n    access_level INT,\n    permission_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    role VARCHAR(50),\n    permission_id INT,\n    FOREIGN KEY (permission_id) REFERENCES permissions(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    access_time TIMESTAMP,\n    action VARCHAR(50),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    role_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    role_id INT REFERENCES access_roles(role_id),\n    user_email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL,\n    permission_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    role_id INT REFERENCES access_roles(role_id),\n    permission_id INT REFERENCES permissions(permission_id),\n    PRIMARY KEY (role_id, permission_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AccessControl (\n    id INT PRIMARY KEY,\n    username VARCHAR(255),\n    password VARCHAR(255),\n    role VARCHAR(50),\n    access_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Permissions (\n    id INT PRIMARY KEY,\n    permission_name VARCHAR(100),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserData (\n    id INT PRIMARY KEY,\n    user_id INT,\n    full_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SecurityLogs (\n    id INT PRIMARY KEY,\n    event_timestamp TIMESTAMP,\n    event_description TEXT,\n    user_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AccessHistory (\n    id INT PRIMARY KEY,\n    user_id INT,\n    access_timestamp TIMESTAMP,\n    accessed_resource VARCHAR(255),\n    access_type VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

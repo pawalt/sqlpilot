@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE interactive_quiz (\n  quiz_id INT PRIMARY KEY,\n  quiz_title VARCHAR(255),\n  question_count INT,\n  is_active BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quizzes (\n    quiz_id INT PRIMARY KEY,\n    quiz_name VARCHAR(255) NOT NULL,\n    question_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE questions (\n    question_id INT PRIMARY KEY,\n    quiz_id INT,\n    question_text TEXT NOT NULL,\n    correct_answer TEXT NOT NULL,\n    FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quizzes (quiz_id INT PRIMARY KEY,\nquiz_name VARCHAR(100) NOT NULL,\ntopic VARCHAR(50) NOT NULL,\ndifficulty_level INT NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE questions (question_id INT PRIMARY KEY,\nquiz_id INT REFERENCES quizzes(quiz_id),\nquestion_text VARCHAR(255) NOT NULL,\ncorrect_answer VARCHAR(100) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE answers (answer_id INT PRIMARY KEY,\nquestion_id INT REFERENCES questions(question_id),\nanswer_text VARCHAR(100) NOT NULL,\nis_correct BOOLEAN NOT NULL);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quizzes (\n  quiz_id INT PRIMARY KEY,\n  topic VARCHAR(255) NOT NULL,\n  difficulty_level INT NOT NULL,\n  total_questions INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE questions (\n  question_id INT PRIMARY KEY,\n  quiz_id INT REFERENCES quizzes(quiz_id),\n  question_text TEXT NOT NULL,\n  correct_answer TEXT NOT NULL,\n  points INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE answers (\n  answer_id INT PRIMARY KEY,\n  question_id INT REFERENCES questions(question_id),\n  answer_text TEXT NOT NULL,\n  is_correct BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quiz_results (\n  result_id INT PRIMARY KEY,\n  quiz_id INT REFERENCES quizzes(quiz_id),\n  student_id INT NOT NULL,\n  score INT NOT NULL,\n  date_taken DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Quizzes (\n    quiz_id UUID PRIMARY KEY,\n    quiz_title VARCHAR(255) NOT NULL,\n    quiz_description TEXT,\n    created_at TIMESTAMP\n);\n\nCREATE TABLE Questions (\n    question_id UUID PRIMARY KEY,\n    question_text TEXT NOT NULL,\n    quiz_id UUID NOT NULL,\n    FOREIGN KEY (quiz_id) REFERENCES Quizzes(quiz_id)\n);\n\nCREATE TABLE Answers (\n    answer_id UUID PRIMARY KEY,\n    answer_text TEXT NOT NULL,\n    question_id UUID NOT NULL,\n    is_correct BOOLEAN,\n    FOREIGN KEY (question_id) REFERENCES Questions(question_id)\n);\n\nCREATE TABLE QuizResults (\n    result_id UUID PRIMARY KEY,\n    quiz_id UUID NOT NULL,\n    user_id UUID NOT NULL,\n    score INTEGER,\n    completed_at TIMESTAMP,\n    FOREIGN KEY (quiz_id) REFERENCES Quizzes(quiz_id)\n);\n\nCREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(100) NOT NULL,\n    email VARCHAR(255) UNIQUE\n);"
+      }
+    ]
+  }
+]

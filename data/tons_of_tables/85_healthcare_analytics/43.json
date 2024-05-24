@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    claim_id UUID PRIMARY KEY,\n    claim_date DATE,\n    claim_amount DECIMAL,\n    claim_type VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE anomalies (\n  anomaly_id INT PRIMARY KEY,\n  claim_id INT NOT NULL,\n  anomaly_type VARCHAR(50) NOT NULL,\n  anomaly_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_data (\n  claim_id INT PRIMARY KEY,\n  policy_number VARCHAR(20) NOT NULL,\n  claim_amount DECIMAL(10,2) NOT NULL,\n  claim_status VARCHAR(20) DEFAULT 'Pending'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Claims (\n    claim_id INT PRIMARY KEY,\n    claimant_name VARCHAR(255),\n    claim_amount DECIMAL,\n    claim_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Claim_Items (\n    item_id INT PRIMARY KEY,\n    claim_id INT,\n    item_description VARCHAR(255),\n    item_amount DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Claim_Payments (\n    payment_id INT PRIMARY KEY,\n    claim_id INT,\n    payment_amount DECIMAL,\n    payment_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    claim_id INT PRIMARY KEY,\n    claim_date DATE,\n    claim_amount DECIMAL,\n    claim_type VARCHAR(50),\n    claim_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claimants (\n    claimant_id INT PRIMARY KEY,\n    claimant_name VARCHAR(100),\n    claimant_address VARCHAR(200),\n    claimant_phone VARCHAR(20),\n    claimant_email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    claim_id INT,\n    payment_date DATE,\n    payment_amount DECIMAL,\n    payment_method VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies_log (\n    log_id INT PRIMARY KEY,\n    claim_id INT,\n    anomaly_description TEXT,\n    log_date TIMESTAMP,\n    logged_by VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE anomaly_claim_data (\n\tclaim_id INT PRIMARY KEY,\n\tclaim_amount DECIMAL,\n\tclaim_date DATE,\n\tpolicy_type VARCHAR,\n\tinsured_name VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_payments (\n\tpayment_id INT PRIMARY KEY,\n\tclaim_id INT REFERENCES anomaly_claim_data(claim_id),\n\tpayment_amount DECIMAL,\n\tpayment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_transactions (\n\ttransaction_id INT PRIMARY KEY,\n\tclaim_id INT REFERENCES anomaly_claim_data(claim_id),\n\ttransaction_type VARCHAR,\n\ttransaction_amount DECIMAL,\n\ttransaction_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_status (\n\tstatus_id INT PRIMARY KEY,\n\tclaim_id INT REFERENCES anomaly_claim_data(claim_id),\n\tstatus_description VARCHAR,\n\tstatus_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_observation (\n\tobservation_id INT PRIMARY KEY,\n\tclaim_id INT REFERENCES anomaly_claim_data(claim_id),\n\tofficer_name VARCHAR,\n\tobservation_date DATE,\n\tofficer_notes TEXT\n);"
+      }
+    ]
+  }
+]

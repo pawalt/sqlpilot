@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_variation (\n  individual_id INT PRIMARY KEY,\n  population_id INT,\n  allele_1 VARCHAR(10),\n  allele_2 VARCHAR(10),\n  variant_type VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE variants ( id SERIAL PRIMARY KEY,\n\tchromosome INT,\n\tposition INT,\n\tallele1 TEXT,\n\tallele2 TEXT )\n"
+      },
+      {
+        "table_schema": "CREATE TABLE populations ( id SERIAL PRIMARY KEY,\n\tpopulation_name TEXT,\n\tregion TEXT,\n\tsample_size INT )\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE species (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE individuals (\n  individual_id INT PRIMARY KEY,\n  species_id INT REFERENCES species(species_id),\n  individual_name VARCHAR(50) NOT NULL,\n  sex CHAR(1),\n  age INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_data (\n  genetic_id INT PRIMARY KEY,\n  individual_id INT REFERENCES individuals(individual_id),\n  genetic_sequence TEXT,\n  mutation_rate FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Population (id INT PRIMARY KEY,\n    population_name VARCHAR,\n    region VARCHAR,\n    average_genetic_variation FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Sample (sample_id INT PRIMARY KEY,\n    population_id INT,\n    ethnicity VARCHAR,\n    sample_size INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Variation (variation_id INT PRIMARY KEY,\n    sample_id INT,\n    chromosome VARCHAR,\n    position INT,\n    genotype VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Migration (migration_id INT PRIMARY KEY,\n    source_population_id INT,\n    destination_population_id INT,\n    migration_rate FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE population_data (\n    sample_id INT PRIMARY KEY,\n    population_name VARCHAR(255),\n    location VARCHAR(255),\n    genetic_variation FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE migration_patterns (\n    migration_id INT PRIMARY KEY,\n    source_population VARCHAR(255),\n    destination_population VARCHAR(255),\n    migration_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_markers (\n    marker_id INT PRIMARY KEY,\n    marker_name VARCHAR(255),\n    chromosome_number INT,\n    genetic_distance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_samples (\n    sample_id INT PRIMARY KEY,\n    marker_id INT,\n    genotype VARCHAR(255),\n   FOREIGN KEY (marker_id) REFERENCES gene_markers(marker_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE population_relationship (\n    relationship_id INT PRIMARY KEY,\n    population1_name VARCHAR(255),\n    population2_name VARCHAR(255),\n    genetic_distance FLOAT\n);"
+      }
+    ]
+  }
+]

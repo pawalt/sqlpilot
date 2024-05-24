@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE support_calls (\n    call_id SERIAL PRIMARY KEY,\n    call_timestamp TIMESTAMP NOT NULL,\n    call_duration INTERVAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE timestamps (\n    id SERIAL PRIMARY KEY,\n    call_timestamp TIMESTAMP NOT NULL,\n    duration INTERVAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE support_calls (\n    call_id SERIAL PRIMARY KEY,\n    start_timestamp TIMESTAMP NOT NULL,\n    end_timestamp TIMESTAMP NOT NULL,\n    staff_id INT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE timestamps (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    call_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scheduling (\n    id INT PRIMARY KEY,\n    staff_id INT,\n    call_id INT,\n    schedule_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE staffing (\n    id INT PRIMARY KEY,\n    staff_id INT,\n    availability BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE timestamps (timestamp_id SERIAL PRIMARY KEY,\n  call_timestamp TIMESTAMP NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE call_durations (duration_id SERIAL PRIMARY KEY,\n  call_duration INTERVAL NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE support_call_schedule (schedule_id SERIAL PRIMARY KEY,\n  timestamp_id INT REFERENCES timestamps(timestamp_id),\n  duration_id INT REFERENCES call_durations(duration_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE support_staffing (staffing_id SERIAL PRIMARY KEY,\n  schedule_id INT REFERENCES support_call_schedule(schedule_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE calls ( call_id SERIAL PRIMARY KEY, call_timestamp TIMESTAMP, call_duration INTERVAL )"
+      },
+      {
+        "table_schema": "CREATE TABLE agents ( agent_id SERIAL PRIMARY KEY, agent_name VARCHAR(50), shift_start TIME, shift_end TIME )"
+      },
+      {
+        "table_schema": "CREATE TABLE schedules ( schedule_id SERIAL PRIMARY KEY, agent_id INT, call_id INT, scheduled_time TIMESTAMP )"
+      },
+      {
+        "table_schema": "CREATE TABLE metrics ( metric_id SERIAL PRIMARY KEY, timestamp TIMESTAMP, total_calls INT, total_duration INTERVAL )"
+      },
+      {
+        "table_schema": "CREATE TABLE holidays ( holiday_id SERIAL PRIMARY KEY, holiday_date DATE, holiday_name VARCHAR(50) )"
+      }
+    ]
+  }
+]

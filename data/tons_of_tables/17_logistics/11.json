@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FleetVehicles (\n    vehicle_id SERIAL PRIMARY KEY,\n    vehicle_name TEXT,\n    location_lat DECIMAL,\n    location_long DECIMAL,\n    gps_timestamp TIMESTAMP,\n    vehicle_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fleet_vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_name VARCHAR(50) NOT NULL,\n    gps_data JSONB,\n    status VARCHAR(20) DEFAULT 'Active'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_locations (\n    location_id SERIAL PRIMARY KEY,\n    vehicle_id INT,\n    latitude DECIMAL(10, 8) NOT NULL,\n    longitude DECIMAL(11, 8) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n    CONSTRAINT fk_vehicle_id\n        FOREIGN KEY (vehicle_id)\n        REFERENCES fleet_vehicles (vehicle_id)\n        ON DELETE CASCADE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fleet_vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_name VARCHAR(50),\n    gps_data JSONB,\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_locations (\n    location_id SERIAL PRIMARY KEY,\n    vehicle_id INT REFERENCES fleet_vehicles(vehicle_id),\n    timestamp TIMESTAMP,\n    latitude DECIMAL,\n    longitude DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_status_history (\n    history_id SERIAL PRIMARY KEY,\n    vehicle_id INT REFERENCES fleet_vehicles(vehicle_id),\n    timestamp TIMESTAMP,\n    status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_name VARCHAR(50),\n    vehicle_type VARCHAR(20),\n    location_lat FLOAT,\n    location_long FLOAT,\n    status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE drivers (\n    driver_id INT PRIMARY KEY,\n    driver_name VARCHAR(50),\n    contact_number VARCHAR(15),\n    license_number VARCHAR(20),\n    vehicle_id INT,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trips (\n    trip_id INT PRIMARY KEY,\n    vehicle_id INT,\n    driver_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    distance FLOAT,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id),\n    FOREIGN KEY (driver_id) REFERENCES drivers(driver_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE gps_data (\n    data_id INT PRIMARY KEY,\n    vehicle_id INT,\n    time TIMESTAMP,\n    location_lat FLOAT,\n    location_long FLOAT,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fleet_vehicles (\n    vehicle_id VARCHAR PRIMARY KEY,\n    vehicle_type VARCHAR,\n    current_location VARCHAR,\n    status VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE gps_data (\n    gps_id SERIAL PRIMARY KEY,\n    vehicle_id VARCHAR,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    timestamp TIMESTAMPTZ\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_history (\n    history_id SERIAL PRIMARY KEY,\n    vehicle_id VARCHAR,\n    location VARCHAR,\n    status VARCHAR,\n    event_timestamp TIMESTAMPTZ\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_types (\n    type_id SERIAL PRIMARY KEY,\n    type_name VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_status (\n    status_id SERIAL PRIMARY KEY,\n    status_name VARCHAR\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE influencer_partnerships (\n    partnership_id UUID PRIMARY KEY,\n    influencer_id UUID,\n    engagement_score DECIMAL,\n    sales_amount DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InfluencerEngagement (\n    influencer_id INT PRIMARY KEY,\n    post_date DATE,\n    likes INT,\n    comments INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SalesData (\n    sale_id INT PRIMARY KEY,\n    influencer_id INT,\n    sale_amount DECIMAL,\n    sale_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Influencers (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    followers INT,\n    engagement_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EngagementData (\n    id INT PRIMARY KEY,\n    influencer_id INT,\n    engagement_score FLOAT,\n    engagement_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SalesData (\n    id INT PRIMARY KEY,\n    influencer_id INT,\n    total_sales DECIMAL(10, 2),\n    sale_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE influencers (\n    influencer_id INT PRIMARY KEY,\n    influencer_name VARCHAR(255),\n    influencer_category VARCHAR(50),\n    followers_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE engagements (\n    engagement_id INT PRIMARY KEY,\n    influencer_id INT REFERENCES influencers (influencer_id),\n    engagement_date DATE,\n    engagement_type VARCHAR(50),\n    engagement_metric INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (\n    sale_id INT PRIMARY KEY,\n    influencer_id INT REFERENCES influencers (influencer_id),\n    sale_date DATE,\n    sale_amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE partnership_metrics (\n    metric_id INT PRIMARY KEY,\n    influencer_id INT REFERENCES influencers (influencer_id),\n    engagement_id INT REFERENCES engagements (engagement_id),\n    sale_id INT REFERENCES sales (sale_id),\n    engagement_metric INT,\n    sale_amount DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Influencers (\n    influencer_id INT PRIMARY KEY,\n    influencer_name VARCHAR(255) NOT NULL,\n    followers_count INT,\n    engagement_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Partnerships (\n    partnership_id INT PRIMARY KEY,\n    influencer_id INT,\n    partnership_date DATE,\n    partnership_fee DECIMAL(10,2),\n    FOREIGN KEY (influencer_id) REFERENCES Influencers (influencer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EngagementData (\n    data_id INT PRIMARY KEY,\n    partnership_id INT,\n    engagement_score FLOAT,\n    engagement_date DATE,\n    FOREIGN KEY (partnership_id) REFERENCES Partnerships (partnership_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SalesData (\n    sale_id INT PRIMARY KEY,\n    partnership_id INT,\n    sale_amount DECIMAL(10,2),\n    sale_date DATE,\n    FOREIGN KEY (partnership_id) REFERENCES Partnerships (partnership_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceMetrics (\n    metrics_id INT PRIMARY KEY,\n    partnership_id INT,\n    engagement_score FLOAT,\n    sale_amount DECIMAL(10,2),\n    date_analyzed DATE,\n    FOREIGN KEY (partnership_id) REFERENCES Partnerships (partnership_id)\n);"
+      }
+    ]
+  }
+]

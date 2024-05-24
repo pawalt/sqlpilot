@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_traceability (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  manufacturer VARCHAR(255) NOT NULL,\n  manufacturing_date DATE,\n  expiry_date DATE,\n  batch_number VARCHAR(50) UNIQUE,\n  quantity INT,\n  location VARCHAR(100),\n  traceability_code VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    manufacturer VARCHAR(255),\n    production_date DATE,\n    expiration_date DATE,\n    serial_number VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE product_logs (\n    log_id INT PRIMARY KEY,\n    product_id INT,\n    event_type VARCHAR(50),\n    event_description TEXT,\n    event_timestamp TIMESTAMP,\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name TEXT NOT NULL,\n    manufacturer_name TEXT NOT NULL,\n    manufacturing_date DATE NOT NULL,\n    expiration_date DATE NOT NULL\n);\n\nCREATE TABLE product_locations (\n    location_id INT PRIMARY KEY,\n    location_name TEXT NOT NULL,\n    product_id INT REFERENCES products(product_id),\n    quantity INT NOT NULL\n);\n\nCREATE TABLE product_tracking (\n    tracking_id INT PRIMARY KEY,\n    product_id INT REFERENCES products(product_id),\n    location_id INT REFERENCES product_locations(location_id),\n    date_time TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Product (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50) NOT NULL,\n    manufacturer VARCHAR(50) NOT NULL,\n    production_date DATE,\n    batch_number INT,\n    UNIQUE (product_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Supplier (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(50) NOT NULL,\n    contact_email VARCHAR(50),\n    contact_phone VARCHAR(15),\n    address VARCHAR(100),\n    UNIQUE (supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Order (\n    order_id INT PRIMARY KEY,\n    product_id INT,\n    supplier_id INT,\n    order_date DATE,\n    quantity INT,\n    FOREIGN KEY (product_id) REFERENCES Product(product_id),\n    FOREIGN KEY (supplier_id) REFERENCES Supplier(supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Shipment (\n    shipment_id INT PRIMARY KEY,\n    order_id INT,\n    delivery_date DATE,\n    delivered_quantity INT,\n    carrier_name VARCHAR(50),\n    tracking_number VARCHAR(20),\n    FOREIGN KEY (order_id) REFERENCES Order(order_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Product (product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    manufacturer VARCHAR(255) NOT NULL,\n    manufacturing_date DATE,\n    expiration_date DATE,\n    batch_number INT,\n    UNIQUE (batch_number));"
+      },
+      {
+        "table_schema": "CREATE TABLE Warehouse (warehouse_id INT PRIMARY KEY,\n    location VARCHAR(255) NOT NULL,\n    capacity INT,\n    manager_id INT,\n    FOREIGN KEY (manager_id) REFERENCES Employee(employee_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Supplier (supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    contact_number VARCHAR(20),\n    email VARCHAR(255) UNIQUE);"
+      },
+      {
+        "table_schema": "CREATE TABLE Shipment (shipment_id INT PRIMARY KEY,\n    product_id INT,\n    supplier_id INT,\n    warehouse_id INT,\n    shipment_date DATE,\n    quantity INT,\n    FOREIGN KEY (product_id) REFERENCES Product(product_id),\n    FOREIGN KEY (supplier_id) REFERENCES Supplier(supplier_id),\n    FOREIGN KEY (warehouse_id) REFERENCES Warehouse(warehouse_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Employee (employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(255) NOT NULL,\n    job_title VARCHAR(255),\n    hire_date DATE,\n    salary DECIMAL,\n    warehouse_id INT,\n    FOREIGN KEY (warehouse_id) REFERENCES Warehouse(warehouse_id));"
+      }
+    ]
+  }
+]

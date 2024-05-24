@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_processing (\n  transaction_id UUID PRIMARY KEY,\n  customer_id UUID NOT NULL,\n  payment_amount DECIMAL NOT NULL,\n  payment_method VARCHAR(255) NOT NULL,\n  transaction_date TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction_info (\n  transaction_id SERIAL PRIMARY KEY,\n  amount DECIMAL(10, 2),\n  currency VARCHAR(3),\n  transaction_date TIMESTAMP,\n  customer_id UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_details (\n  payment_id SERIAL PRIMARY KEY,\n  payment_method VARCHAR(50),\n  card_number VARCHAR(16),\n  expiry_date DATE,\n  security_code VARCHAR(3),\n  customer_id UUID,\n  FOREIGN KEY (customer_id) REFERENCES transaction_info(customer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Payments (\n    payment_id INT PRIMARY KEY,\n    payment_date DATE,\n    amount DECIMAL(10, 2),\n    payment_method VARCHAR(50),\n    customer_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(100),\n    email VARCHAR(100),\n    phone_number VARCHAR(15),\n    address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT,\n    customer_id INT,\n    transaction_date DATE,\n    status VARCHAR(20),\n    FOREIGN KEY(payment_id) REFERENCES Payments(payment_id),\n    FOREIGN KEY(customer_id) REFERENCES Customers(customer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    order_date TIMESTAMP,\n    total_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n    payment_method_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(customer_id),\n    payment_type VARCHAR(50),\n    card_number VARCHAR(16),\n    expiry_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    order_id UUID REFERENCES orders(order_id),\n    payment_method_id UUID REFERENCES payment_methods(payment_method_id),\n    transaction_date TIMESTAMP,\n    status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_info (\n    payment_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    card_number VARCHAR(16) NOT NULL,\n    card_expiry_date DATE NOT NULL,\n    cvv INTEGER NOT NULL,\n    payment_amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_log (\n    log_id UUID PRIMARY KEY,\n    payment_id UUID NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    transaction_status VARCHAR(20) NOT NULL,\n    transaction_type VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_account (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password_hash VARCHAR(64) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    payment_date TIMESTAMP NOT NULL,\n    payment_amount DECIMAL(10, 2) NOT NULL,\n    payment_status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE refund_history (\n    refund_id UUID PRIMARY KEY,\n    payment_id UUID NOT NULL,\n    refund_date TIMESTAMP NOT NULL,\n    refund_amount DECIMAL(10, 2) NOT NULL,\n    refund_reason TEXT\n);"
+      }
+    ]
+  }
+]

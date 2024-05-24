@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaign_funding (\n    campaign_id INT PRIMARY KEY,\n    campaign_name TEXT,\n    amount_raised DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    raised_amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE donations (\n    donation_id INT PRIMARY KEY,\n    campaign_id INT,\n    donor_name VARCHAR(255),\n    donation_amount DECIMAL,\n    donation_date DATETIME,\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donations (\n    donation_id INT PRIMARY KEY,\n    campaign_id INT,\n    donation_amount DECIMAL,\n    donor_name VARCHAR(255),\n    donation_date DATE,\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_totals (\n    campaign_id INT PRIMARY KEY,\n    total_amount_raised DECIMAL,\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaign (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donor (\n    donor_id UUID PRIMARY KEY,\n    donor_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE donation (\n    donation_id UUID PRIMARY KEY,\n    campaign_id UUID REFERENCES campaign(campaign_id),\n    donor_id UUID REFERENCES donor(donor_id),\n    amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_totals (\n    campaign_id UUID REFERENCES campaign(campaign_id),\n    total_amount_raised DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE campaign (campaign_id INT PRIMARY KEY, campaign_name STRING, start_date DATE, end_date DATE, goal_amount DECIMAL);"
+      },
+      {
+        "table_schema": "CREATE TABLE donation (donation_id INT PRIMARY KEY, campaign_id INT, donor_name STRING, donation_amount DECIMAL, donation_date DATE, FOREIGN KEY (campaign_id) REFERENCES campaign(campaign_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_participant (participant_id INT PRIMARY KEY, campaign_id INT, participant_name STRING, participant_email STRING, FOREIGN KEY (campaign_id) REFERENCES campaign(campaign_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE payment (payment_id INT PRIMARY KEY, donation_id INT, payment_method STRING, payment_date DATE, FOREIGN KEY (donation_id) REFERENCES donation(donation_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_stats (stats_id INT PRIMARY KEY, campaign_id INT, total_amount_raised DECIMAL, total_donations INT, FOREIGN KEY (campaign_id) REFERENCES campaign(campaign_id));"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(100),\n    email VARCHAR(100),\n    is_admin BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    session_token VARCHAR(100) NOT NULL,\n    expiration_time TIMESTAMP NOT NULL\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(50) NOT NULL,\n  email VARCHAR(50) NOT NULL,\n  display_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  role_id INT PRIMARY KEY,\n  role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n  log_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  login_time TIMESTAMP NOT NULL,\n  logout_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserAccounts (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) UNIQUE,\n  password_hash VARCHAR(100),\n  email VARCHAR(100),\n  created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE StudentProfiles (\n  student_id INT PRIMARY KEY,\n  user_id INT UNIQUE,\n  full_name VARCHAR(100),\n  grade_level INT,\n  student_type ENUM('regular', 'premium'),\n  FOREIGN KEY (user_id) REFERENCES UserAccounts(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TeacherProfiles (\n  teacher_id INT PRIMARY KEY,\n  user_id INT UNIQUE,\n  full_name VARCHAR(100),\n  subject_taught VARCHAR(50),\n  experience_years INT,\n  FOREIGN KEY (user_id) REFERENCES UserAccounts(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CourseEnrollments (\n  enrollment_id INT PRIMARY KEY,\n  student_id INT,\n  course_id INT,\n  enrollment_date DATE,\n  completion_status ENUM('incomplete', 'complete'),\n  FOREIGN KEY (student_id) REFERENCES StudentProfiles(student_id),\n  FOREIGN KEY (course_id) REFERENCES Courses(course_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    role_name VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    session_token VARCHAR(100) UNIQUE NOT NULL,\n    created_at TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    activity_name VARCHAR(50) NOT NULL,\n    activity_date DATE,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE password_reset (\n    reset_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    reset_token VARCHAR(100) UNIQUE NOT NULL,\n    created_at TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  }
+]

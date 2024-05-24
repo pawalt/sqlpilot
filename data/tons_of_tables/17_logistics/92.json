@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_forecast ( \n  forecast_id UUID PRIMARY KEY, \n  model_name VARCHAR(255), \n  factors JSONB, \n  forecasted_demand INT, \n  created_at TIMESTAMP \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_forecast (\n    product_id INT PRIMARY KEY,\n    date DATE,\n    demand INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE factors (\n    factor_id INT PRIMARY KEY,\n    product_id INT,\n    factor_name VARCHAR(50),\n    factor_value VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DemandForecastFactors (\n  factor_id UUID PRIMARY KEY,\n  factor_name STRING,\n  factor_weight FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DemandForecastData (\n  data_id UUID PRIMARY KEY,\n  factor_id UUID REFERENCES DemandForecastFactors(factor_id),\n  demand_value FLOAT,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MachineLearningModels (\n  model_id UUID PRIMARY KEY,\n  model_name STRING,\n  model_description STRING,\n  training_data_table STRING REFERENCES DemandForecastData(data_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DemandFactors (\n    id INT PRIMARY KEY,\n    factor_name VARCHAR(50),\n    factor_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DemandForecast (\n    forecast_id INT PRIMARY KEY,\n    Date DATE,\n    forecast_value DECIMAL,\n    model_used VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelParameters (\n    parameter_id INT PRIMARY KEY,\n    parameter_name VARCHAR(50),\n    parameter_value DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PredictionResults (\n    result_id INT PRIMARY KEY,\n    Date DATE,\n    predicted_value DECIMAL,\n    actual_value DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ml_models (\n    model_id INT PRIMARY KEY,\n    model_type VARCHAR(50),\n    features TEXT,\n    training_data VARCHAR(100),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE forecasts (\n    forecast_id INT PRIMARY KEY,\n    model_id INT REFERENCES ml_models(model_id),\n    forecast_date DATE,\n    demand_forecast DECIMAL(10, 2),\n    confidence_level DECIMAL(5, 4),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE factors (\n    factor_id INT PRIMARY KEY,\n    factor_name VARCHAR(50),\n    factor_type VARCHAR(50),\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE factor_values (\n    factor_value_id INT PRIMARY KEY,\n    factor_id INT REFERENCES factors(factor_id),\n    value DECIMAL(10, 2),\n    date DATE,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE datasets (\n    dataset_id INT PRIMARY KEY,\n    dataset_name VARCHAR(50),\n    source_url VARCHAR(255),\n    data_format VARCHAR(20),\n    created_at TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSequences (\n  protein_id INT PRIMARY KEY,\n  protein_name VARCHAR(255),\n  sequence TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protein_sequences (\n   id SERIAL PRIMARY KEY,\n   protein_id VARCHAR(50) UNIQUE,\n   sequence TEXT\n);\n\nCREATE TABLE analysis_results (\n   id SERIAL PRIMARY KEY,\n   protein_id VARCHAR(50) REFERENCES protein_sequences(protein_id),\n   analysis_type VARCHAR(50),\n   result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE proteins (\n\tprotein_id INT PRIMARY KEY,\n\tsequence VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE protein_annotations (\n\tannotation_id INT PRIMARY KEY,\n\tprotein_id INT,\n\tdescription TEXT,\n\tFOREIGN KEY (protein_id) REFERENCES proteins(protein_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE protein_structures (\n\tstructure_id INT PRIMARY KEY,\n\tprotein_id INT,\n\tstructure_file VARCHAR(255),\n\tFOREIGN KEY (protein_id) REFERENCES proteins(protein_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSequence (\n id INT PRIMARY KEY,\n sequence TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinInfo (\n id INT PRIMARY KEY,\n name TEXT,\n description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinStructure (\n id INT PRIMARY KEY,\n structure BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinAnalysis (\n id INT PRIMARY KEY,\n analysis_result TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSequences (\n    id SERIAL PRIMARY KEY,\n    protein_name TEXT NOT NULL,\n    sequence TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinAnnotations (\n    id SERIAL PRIMARY KEY,\n    protein_id INT REFERENCES ProteinSequences(id),\n    annotation TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinDomains (\n    id SERIAL PRIMARY KEY,\n    protein_id INT REFERENCES ProteinSequences(id),\n    domain_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinStructures (\n    id SERIAL PRIMARY KEY,\n    protein_id INT REFERENCES ProteinSequences(id),\n    structure_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProteinInteractions (\n    id SERIAL PRIMARY KEY,\n    protein_id INT REFERENCES ProteinSequences(id),\n    interacting_protein_id INT REFERENCES ProteinSequences(id),\n    interaction_type TEXT\n);"
+      }
+    ]
+  }
+]

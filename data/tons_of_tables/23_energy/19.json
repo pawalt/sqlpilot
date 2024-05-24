@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_technologies (\n    technology_id INT PRIMARY KEY,\n    technology_name VARCHAR(255) NOT NULL,\n    energy_saving_rating FLOAT,\n    manufacturer_name VARCHAR(255),\n    release_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_technologies (\n  technology_id UUID PRIMARY KEY,\n  technology_name VARCHAR(255) NOT NULL,\n  energy_saving_rating INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n  consumption_id UUID PRIMARY KEY,\n  technology_id UUID NOT NULL,\n  energy_consumed DECIMAL,\n  date_recorded DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergySavingTechnologies (\n id SERIAL PRIMARY KEY,\n technology_name VARCHAR(50) NOT NULL,\n efficiency_rating FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n id SERIAL PRIMARY KEY,\n date_time TIMESTAMP NOT NULL,\n consumption_kwh FLOAT NOT NULL,\n technology_id INT NOT NULL,\n FOREIGN KEY (technology_id) REFERENCES EnergySavingTechnologies(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyAssessment (\n id SERIAL PRIMARY KEY,\n assessment_date DATE NOT NULL,\n assessment_result VARCHAR(100) NOT NULL,\n technology_id INT NOT NULL,\n FOREIGN KEY (technology_id) REFERENCES EnergySavingTechnologies(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n    technology_id INT PRIMARY KEY,\n    technology_name VARCHAR(255),\n    energy_saved DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyUsage (\n    usage_id INT PRIMARY KEY,\n    technology_id INT,\n    usage_date DATE,\n    usage_amount DECIMAL,\n    FOREIGN KEY (technology_id) REFERENCES EnergyConsumption(technology_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergySavings (\n    saving_id INT PRIMARY KEY,\n    technology_id INT,\n    saving_date DATE,\n    saving_amount DECIMAL,\n    FOREIGN KEY (technology_id) REFERENCES EnergyConsumption(technology_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyEfficiency (\n    efficiency_id INT PRIMARY KEY,\n    technology_id INT,\n    efficiency_rating DECIMAL,\n    efficiency_date DATE,\n    FOREIGN KEY (technology_id) REFERENCES EnergyConsumption(technology_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyEfficiencyDevices (\n\teed_id INT PRIMARY KEY,\n\teed_name VARCHAR(255) NOT NULL,\n\teed_category VARCHAR(100),\n\teed_manufacturer VARCHAR(100),\n\teed_year_of_manufacture INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n\tec_id INT PRIMARY KEY,\n\teed_id INT,\n\tec_date TIMESTAMP,\n\tec_power_consumed DECIMAL(10,2),\n\tec_units VARCHAR(50),\nFOREIGN KEY (eed_id) REFERENCES EnergyEfficiencyDevices(eed_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergySavings (\n\tes_id INT PRIMARY KEY,\n\tec_id INT,\n\tes_date TIMESTAMP,\n\tes_power_saved DECIMAL(10,2),\n\tes_units VARCHAR(50),\nFOREIGN KEY (ec_id) REFERENCES EnergyConsumption(ec_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergySavingsComparison (\n\tesc_id INT PRIMARY KEY,\n\tes_id1 INT,\n\tes_id2 INT,\n\tesc_power_saved_difference DECIMAL(10,2),\nFOREIGN KEY (es_id1) REFERENCES EnergySavings(es_id),\nFOREIGN KEY (es_id2) REFERENCES EnergySavings(es_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumptionHistory (\n\tech_id INT PRIMARY KEY,\n\tec_id INT,\n\teed_id INT,\n\tec_previous_power_consumed DECIMAL(10,2),\n\tec_previous_date TIMESTAMP,\nFOREIGN KEY (ec_id) REFERENCES EnergyConsumption(ec_id),\nFOREIGN KEY (eed_id) REFERENCES EnergyEfficiencyDevices(eed_id)\n);"
+      }
+    ]
+  }
+]

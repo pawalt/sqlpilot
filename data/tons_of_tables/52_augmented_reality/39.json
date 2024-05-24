@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sports_equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(255) NOT NULL,\n    sport_type VARCHAR(50) NOT NULL,\n    brand VARCHAR(100),\n    material VARCHAR(100),\n    color VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE 3d_models (\n  model_id INT PRIMARY KEY,\n  model_name VARCHAR(255) NOT NULL,\n  brand VARCHAR(100) NOT NULL,\n  category VARCHAR(50) NOT NULL,\n  price DECIMAL(10, 2) NOT NULL,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customization_options (\n  option_id INT PRIMARY KEY,\n  model_id INT REFERENCES 3d_models(model_id),\n  option_name VARCHAR(255) NOT NULL,\n  option_type VARCHAR(50) NOT NULL,\n  option_value VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sports_equipment (\n    equipment_id SERIAL PRIMARY KEY,\n    equipment_type VARCHAR(50) NOT NULL,\n    brand VARCHAR(50) NOT NULL,\n    model VARCHAR(50) NOT NULL,\n    color VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customization_options (\n    option_id SERIAL PRIMARY KEY,\n    option_name VARCHAR(50) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    image_url VARCHAR(100) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customizations (\n    customization_id SERIAL PRIMARY KEY,\n    equipment_id INT NOT NULL,\n    option_id INT NOT NULL,\n    selected_option VARCHAR(50) NOT NULL,\n    FOREIGN KEY (equipment_id) REFERENCES sports_equipment(equipment_id),\n    FOREIGN KEY (option_id) REFERENCES customization_options(option_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sports_equipment (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  brand VARCHAR(255),\n  size VARCHAR(50),\n  color VARCHAR(50),\n  price DECIMAL(10,2),\n  image_url VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE gear_customization (\n  id INT PRIMARY KEY,\n  equipment_id INT,\n  customization_option VARCHAR(50),\n  customization_value VARCHAR(50),\n  FOREIGN KEY (equipment_id) REFERENCES sports_equipment(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n  id INT PRIMARY KEY,\n  user_id INT,\n  equipment_id INT,\n  customization_option VARCHAR(50),\n  customization_value VARCHAR(50),\n  FOREIGN KEY (user_id) REFERENCES users(id),\n  FOREIGN KEY (equipment_id) REFERENCES sports_equipment(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(255),\n  password VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sports_equipment (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  type VARCHAR(50),\n  brand VARCHAR(50),\n  price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customization_options (\n  id INT PRIMARY KEY,\n  equipment_id INT,\n  option_name VARCHAR(50),\n  color VARCHAR(50),\n  material VARCHAR(50),\n  FOREIGN KEY (equipment_id) REFERENCES sports_equipment(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  age INT,\n  gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_customizations (\n  id INT PRIMARY KEY,\n  user_id INT,\n  equipment_id INT,\n  option_id INT,\n  customization_time TIMESTAMP,\n  FOREIGN KEY (user_id) REFERENCES users(id),\n  FOREIGN KEY (equipment_id) REFERENCES sports_equipment(id),\n  FOREIGN KEY (option_id) REFERENCES customization_options(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n  session_id INT PRIMARY KEY,\n  user_id INT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      }
+    ]
+  }
+]

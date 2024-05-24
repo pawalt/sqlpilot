@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetically_modified_crops (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(255),\n    growth_stage VARCHAR(50),\n    development_stage ENUM('germination', 'seedling', 'vegetative', 'flowering', 'fruiting', 'ripening')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CropDevelopmentStages (\n    id SERIAL PRIMARY KEY,\n    crop_name VARCHAR(50) NOT NULL,\n    growth_stage VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CropGrowthData (\n    id SERIAL PRIMARY KEY,\n    crop_id INT REFERENCES CropDevelopmentStages(id) NOT NULL,\n    growth_date DATE NOT NULL,\n    growth_height DECIMAL(5,2) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gm_crops (\n    crop_id INT PRIMARY KEY,\n    crop_name TEXT,\n    growth_stage INT,\n    modified_gene TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE growth_stages (\n    stage_id INT PRIMARY KEY,\n    stage_name TEXT,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_per_stage (\n    crop_id INT,\n    stage_id INT,\n    FOREIGN KEY (crop_id) REFERENCES gm_crops (crop_id),\n    FOREIGN KEY (stage_id) REFERENCES growth_stages (stage_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop (crop_id INT PRIMARY KEY, crop_name STRING, growth_stage STRING, development_stage STRING) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE growth_stage (growth_stage_id INT PRIMARY KEY, stage_name STRING, duration INT) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE development_stage (dev_stage_id INT PRIMARY KEY, stage_name STRING, description STRING) \n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_stage_mapping (mapping_id INT PRIMARY KEY, crop_id INT, growth_stage_id INT, development_stage_id INT) \n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Crop_Species (\n  id INT PRIMARY KEY,\n  species_name VARCHAR(50) NOT NULL,\n  growth_stage VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Growth_Stage_Log (\n  id INT PRIMARY KEY,\n  crop_id INT NOT NULL,\n  growth_stage VARCHAR(20) NOT NULL,\n  growth_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Plant_Measurements (\n  id INT PRIMARY KEY,\n  crop_id INT NOT NULL,\n  height_cm DECIMAL(10,2) NOT NULL,\n  leaf_width_cm DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genetic_Modifications (\n  id INT PRIMARY KEY,\n  modification_type VARCHAR(50) NOT NULL,\n  modification_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Crop_History (\n  id INT PRIMARY KEY,\n  crop_id INT NOT NULL,\n  event_description TEXT NOT NULL,\n  event_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

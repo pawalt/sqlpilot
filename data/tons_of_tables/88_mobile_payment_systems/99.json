@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_tokenization_processes (\n  asset_token_id INT PRIMARY KEY,\n  asset_name VARCHAR(255),\n  tokenization_date DATE,\n  tokenization_price DECIMAL(10, 2),\n  tokenization_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_tokens (\n    token_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(100),\n    issuance_date DATE,\n    total_supply INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_owners (\n    owner_id INT PRIMARY KEY,\n    token_id INT,\n    owner_name VARCHAR(255),\n    ownership_percentage DECIMAL(5,2),\n    FOREIGN KEY (token_id) REFERENCES asset_tokens(token_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_tokens (\n    token_id INT PRIMARY KEY,\n    token_name VARCHAR(255),\n    token_symbol VARCHAR(10),\n    token_supply BIGINT,\n    issuer_address VARCHAR(255),\n    issuance_date TIMESTAMP,\n    last_updated TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE token_holders (\n    holder_id INT PRIMARY KEY,\n    token_id INT,\n    holder_address VARCHAR(255),\n    holding_amount BIGINT,\n    holding_date TIMESTAMP,\n    FOREIGN KEY(token_id) REFERENCES asset_tokens(token_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE token_transactions (\n    transaction_id INT PRIMARY KEY,\n    token_id INT,\n    sender_address VARCHAR(255),\n    receiver_address VARCHAR(255),\n    transaction_amount BIGINT,\n    transaction_date TIMESTAMP,\n    FOREIGN KEY(token_id) REFERENCES asset_tokens(token_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_tokens (\n  id INT PRIMARY KEY,\n  token_id INT,\n  asset_name VARCHAR(255),\n  token_amount DECIMAL(18, 2),\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_owners (\n  id INT PRIMARY KEY,\n  token_id INT,\n  owner_address VARCHAR(255),\n  ownership_percentage FLOAT,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_transactions (\n  id INT PRIMARY KEY,\n  token_id INT,\n  from_address VARCHAR(255),\n  to_address VARCHAR(255),\n  amount DECIMAL(18, 2),\n  transaction_type VARCHAR(50),\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_metadata (\n  id INT PRIMARY KEY,\n  token_id INT,\n  metadata_key VARCHAR(255),\n  metadata_value TEXT,\n  created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_tokenization (\n    asset_id SERIAL PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    token_owner VARCHAR(255) NOT NULL,\n    token_amount INTEGER NOT NULL,\n    token_creation_date TIMESTAMP NOT NULL\n);\n\nCREATE TABLE token_history (\n    token_id SERIAL PRIMARY KEY,\n    asset_id INTEGER REFERENCES asset_tokenization(asset_id),\n    action_type VARCHAR(50) NOT NULL,\n    action_date TIMESTAMP NOT NULL,\n    action_description TEXT\n);\n\nCREATE TABLE token_transfers (\n    transfer_id SERIAL PRIMARY KEY,\n    token_id INTEGER REFERENCES token_history(token_id),\n    sender_address VARCHAR(255) NOT NULL,\n    receiver_address VARCHAR(255) NOT NULL,\n    transfer_amount INTEGER NOT NULL,\n    transfer_date TIMESTAMP NOT NULL\n);\n\nCREATE TABLE token_ownership (\n    ownership_id SERIAL PRIMARY KEY,\n    token_id INTEGER REFERENCES token_transfers(token_id),\n    new_owner_address VARCHAR(255) NOT NULL,\n    transfer_date TIMESTAMP NOT NULL\n);\n\nCREATE TABLE compliance_logs (\n    log_id SERIAL PRIMARY KEY,\n    log_timestamp TIMESTAMP NOT NULL,\n    action_performed VARCHAR(255) NOT NULL,\n    performed_by VARCHAR(255) NOT NULL,\n    log_description TEXT\n);\n"
+      }
+    ]
+  }
+]

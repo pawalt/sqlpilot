@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meetings (\n    meeting_id UUID PRIMARY KEY,\n    meeting_date DATE,\n    meeting_time TIME,\n    agenda TEXT,\n    organizer VARCHAR(50),\n    attendees JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meetings_schedule (\n    meeting_id SERIAL PRIMARY KEY,\n    meeting_date DATE NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL,\n    topic VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_agendas (\n    agenda_id SERIAL PRIMARY KEY,\n    meeting_id INT REFERENCES meetings_schedule(meeting_id),\n    agenda_item TEXT NOT NULL,\n    presenter VARCHAR(100),\n    duration_minutes INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Meetings (\n    meeting_id SERIAL PRIMARY KEY,\n    meeting_title VARCHAR(255) NOT NULL,\n    meeting_date DATE,\n    meeting_time TIME,\n    meeting_duration INTERVAL,\n    meeting_agenda TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Participants (\n    participant_id SERIAL PRIMARY KEY,\n    participant_name VARCHAR(255) NOT NULL,\n    participant_email VARCHAR(255),\n    meeting_id INT,\n    FOREIGN KEY (meeting_id) REFERENCES Meetings(meeting_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Invitation (\n    invitation_id SERIAL PRIMARY KEY,\n    meeting_id INT,\n    participant_id INT,\n    is_accepted BOOLEAN,\n    FOREIGN KEY (meeting_id) REFERENCES Meetings(meeting_id),\n    FOREIGN KEY (participant_id) REFERENCES Participants(participant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meetings (\n    meeting_id INT PRIMARY KEY,\n    meeting_title VARCHAR(255),\n    meeting_date DATE,\n    meeting_time TIME,\n    agenda TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (\n    attendee_id INT PRIMARY KEY,\n    meeting_id INT,\n    attendee_name VARCHAR(255),\n    attendee_email VARCHAR(255),\n    FOREIGN KEY (meeting_id) REFERENCES meetings (meeting_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rooms (\n    room_id INT PRIMARY KEY,\n    room_name VARCHAR(255),\n    room_capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meetings_rooms (\n    meeting_id INT,\n    room_id INT,\n    FOREIGN KEY (meeting_id) REFERENCES meetings (meeting_id),\n    FOREIGN KEY (room_id) REFERENCES rooms (room_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meetings (meeting_id UUID PRIMARY KEY,\nmeeting_date DATE,\nmeeting_time TIME,\nagenda TEXT,\nattendees VARCHAR[])"
+      },
+      {
+        "table_schema": "CREATE TABLE attendees (attendee_id UUID PRIMARY KEY,\nattendee_name VARCHAR,\nattendee_email VARCHAR,\nattendee_role VARCHAR)"
+      },
+      {
+        "table_schema": "CREATE TABLE calendar (calendar_id UUID PRIMARY KEY,\nmeeting_id UUID,\nmeeting_date DATE,\nmeeting_time TIME)"
+      },
+      {
+        "table_schema": "CREATE TABLE rooms (room_id UUID PRIMARY KEY,\nroom_name VARCHAR,\ncapacity INT)"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (notification_id UUID PRIMARY KEY,\nmeeting_id UUID,\nnotification_type VARCHAR,\nnotification_message TEXT)"
+      }
+    ]
+  }
+]

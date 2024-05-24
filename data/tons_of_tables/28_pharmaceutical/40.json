@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MedicationInventory (\n\tid SERIAL PRIMARY KEY,\n\tmedication_name TEXT NOT NULL,\n\tquantity INT NOT NULL,\n\twarehouse_id INT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id UUID PRIMARY KEY,\n    location VARCHAR(255),\n    capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medications (\n    medication_id UUID PRIMARY KEY,\n    name VARCHAR(255),\n    quantity INT,\n    warehouse_id UUID,\n    FOREIGN KEY (warehouse_id) REFERENCES warehouses(warehouse_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medication_inventory (\n    medication_id INT PRIMARY KEY,\n    medication_name VARCHAR(255),\n    warehouse_id INT,\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id INT PRIMARY KEY,\n    warehouse_name VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_history (\n    history_id INT PRIMARY KEY,\n    medication_id INT,\n    warehouse_id INT,\n    quantity_changed INT,\n    change_type VARCHAR(50),\n    change_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medications (\n    medication_id UUID PRIMARY KEY,\n    medication_name VARCHAR(255),\n    quantity INT,\n    warehouse_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouses (\n    warehouse_id UUID PRIMARY KEY,\n    warehouse_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_logs (\n    log_id UUID PRIMARY KEY,\n    medication_id UUID,\n    quantity_change INT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE warehouse_inventory (\n    warehouse_id UUID,\n    medication_id UUID,\n    quantity INT,\n    PRIMARY KEY (warehouse_id, medication_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouses (\n  warehouse_id INT PRIMARY KEY,\n  warehouse_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medications (\n  medication_id INT PRIMARY KEY,\n  medication_name VARCHAR(50) NOT NULL,\n  dosage VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n  inventory_id INT PRIMARY KEY,\n  warehouse_id INT NOT NULL,\n  medication_id INT NOT NULL,\n  quantity INT NOT NULL,\n  FOREIGN KEY (warehouse_id) REFERENCES warehouses(warehouse_id),\n  FOREIGN KEY (medication_id) REFERENCES medications(medication_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment (\n  shipment_id INT PRIMARY KEY,\n  warehouse_id INT NOT NULL,\n  shipment_date DATE NOT NULL,\n  shipment_quantity INT NOT NULL,\n  FOREIGN KEY (warehouse_id) REFERENCES warehouses(warehouse_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  transaction_date DATE NOT NULL,\n  warehouse_id INT NOT NULL,\n  medication_id INT NOT NULL,\n  transaction_type VARCHAR(20) NOT NULL,\n  quantity INT NOT NULL,\n  FOREIGN KEY (warehouse_id) REFERENCES warehouses(warehouse_id),\n  FOREIGN KEY (medication_id) REFERENCES medications(medication_id)\n);"
+      }
+    ]
+  }
+]

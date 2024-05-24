@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n    backup_id UUID PRIMARY KEY,\n    backup_timestamp TIMESTAMP,\n    data_location STRING,\n    backup_size INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n    id INT PRIMARY KEY,\n    backup_name VARCHAR(50),\n    backup_date TIMESTAMP,\n    backup_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recovery_processes (\n    process_id INT PRIMARY KEY,\n    process_name VARCHAR(50),\n    process_status VARCHAR(20),\n    process_start_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n    backup_id UUID PRIMARY KEY,\n    backup_date TIMESTAMP,\n    backup_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recovery_logs (\n    log_id UUID PRIMARY KEY,\n    recovery_date TIMESTAMP,\n    recovered_data TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_policies (\n    policy_id UUID PRIMARY KEY,\n    policy_name VARCHAR(50),\n    retention_period INTERVAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n    id INT PRIMARY KEY,\n    backup_name VARCHAR(255),\n    backup_date TIMESTAMP,\n    backup_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id INT PRIMARY KEY,\n    backup_id INT,\n    log_timestamp TIMESTAMP,\n    log_message TEXT,\n    FOREIGN KEY (backup_id) REFERENCES backups(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recovery_logs (\n    recovery_id INT PRIMARY KEY,\n    backup_id INT,\n    recovery_timestamp TIMESTAMP,\n    recovery_status VARCHAR(50),\n    FOREIGN KEY (backup_id) REFERENCES backups(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recovery_history (\n    history_id INT PRIMARY KEY,\n    recovery_id INT,\n    recovery_time TIMESTAMP,\n    recovery_result VARCHAR(50),\n    FOREIGN KEY (recovery_id) REFERENCES recovery_logs(recovery_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    id INT PRIMARY KEY,\n    backup_time TIMESTAMP,\n    backup_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    retention_period INT,\n    backup_frequency VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50),\n    storage_type VARCHAR(50),\n    storage_capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_jobs (\n    job_id INT PRIMARY KEY,\n    policy_id INT,\n    location_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE recovery_logs (\n    log_id INT PRIMARY KEY,\n    job_id INT,\n    recovery_time TIMESTAMP,\n    recovery_status VARCHAR(50)\n);\n"
+      }
+    ]
+  }
+]

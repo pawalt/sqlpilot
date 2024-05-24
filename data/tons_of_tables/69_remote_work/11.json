@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_project (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    manager_id INT,\n    start_date DATE,\n    end_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_progress (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    progress_percentage FLOAT\n);\n\nCREATE TABLE team_tasks (\n    task_id INT PRIMARY KEY,\n    task_description TEXT,\n    assigned_to VARCHAR(100),\n    due_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Project (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamMember (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(255),\n    member_email VARCHAR(255),\n    member_role VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Task (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    task_status VARCHAR(50),\n    assigned_to INT,\n    FOREIGN KEY (assigned_to) REFERENCES TeamMember(member_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    manager_id INT,\n    FOREIGN KEY (manager_id) REFERENCES team_members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id INT PRIMARY KEY,\n    task_description TEXT,\n    task_status VARCHAR(50) DEFAULT 'Pending',\n    deadline DATE,\n    project_id INT,\n    assigned_to INT,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id),\n    FOREIGN KEY (assigned_to) REFERENCES team_members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(100) NOT NULL,\n    department VARCHAR(50),\n    email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE progress_updates (\n    update_id INT PRIMARY KEY,\n    task_id INT,\n    update_description TEXT,\n    update_date DATE,\n    FOREIGN KEY (task_id) REFERENCES tasks(task_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id SERIAL PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  project_description TEXT,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n  member_id SERIAL PRIMARY KEY,\n  member_name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) UNIQUE,\n  role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n  task_id SERIAL PRIMARY KEY,\n  task_name VARCHAR(255) NOT NULL,\n  task_description TEXT,\n  deadline DATE,\n  status VARCHAR(20) DEFAULT 'Pending',\n  assigned_to INTEGER REFERENCES team_members(member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_tasks (\n  link_id SERIAL PRIMARY KEY,\n  project_id INTEGER REFERENCES projects(project_id),\n  task_id INTEGER REFERENCES tasks(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_assignments (\n  assignment_id SERIAL PRIMARY KEY,\n  project_id INTEGER REFERENCES projects(project_id),\n  member_id INTEGER REFERENCES team_members(member_id),\n  task_id INTEGER REFERENCES tasks(task_id)\n);"
+      }
+    ]
+  }
+]

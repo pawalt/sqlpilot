@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_data (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  email_address VARCHAR(100),\n  phone_number VARCHAR(15),\n  address VARCHAR(255),\n  preferences JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    customer_email VARCHAR(100) UNIQUE,\n    customer_address VARCHAR(200),\n    customer_phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    preference_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    preferred_pickup_day VARCHAR(20),\n    preferred_recycling_method VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL UNIQUE,\n    phone_number VARCHAR(20),\n    address TEXT\n);\n\nCREATE TABLE preferences (\n    preference_id UUID PRIMARY KEY,\n    customer_id UUID,\n    recyclable_materials JSONB,\n    pickup_schedule TIME,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n\nCREATE TABLE pick_up_services (\n    service_id UUID PRIMARY KEY,\n    service_type VARCHAR(50) NOT NULL,\n    service_description TEXT,\n    service_cost DECIMAL(10, 2) NOT NULL,\n    active BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  customer_email VARCHAR(100),\n  customer_address VARCHAR(150)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n  preference_id INT PRIMARY KEY,\n  customer_id INT,\n  preference_type VARCHAR(50),\n  is_active BOOL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_categories (\n  category_id INT PRIMARY KEY,\n  category_name VARCHAR(50),\n  category_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pick_up_requests (\n  request_id INT PRIMARY KEY,\n  customer_id INT,\n  request_date DATE,\n  category_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customer (\n    customer_id UUID PRIMARY KEY,\n    first_name STRING,\n    last_name STRING,\n    email STRING,\n    phone_number STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Address (\n    address_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES Customer(customer_id),\n    street_address STRING,\n    city STRING,\n    state STRING,\n    zip_code STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Preferences (\n    preference_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES Customer(customer_id),\n    service_type STRING,\n    frequency STRING,\n    reminders BOOLEAN,\n    notifications BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PickUpSchedule (\n    schedule_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES Customer(customer_id),\n    date DATE,\n    time TIME,\n    notes STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclingCenter (\n    center_id UUID PRIMARY KEY,\n    center_name STRING,\n    address_id UUID REFERENCES Address(address_id),\n    capacity INT,\n    availability BOOLEAN\n)"
+      }
+    ]
+  }
+]

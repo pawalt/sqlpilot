@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clinical_trials (\n    trial_id INT PRIMARY KEY,\n    trial_name VARCHAR(255),\n    sponsor_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    patient_count INT,\n    ethical_approval BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clinical_trials (\n    trial_id UUID PRIMARY KEY,\n    trial_name VARCHAR(255) NOT NULL,\n    lead_researcher VARCHAR(100) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trial_participants (\n    participant_id UUID PRIMARY KEY,\n    trial_id UUID REFERENCES clinical_trials(trial_id),\n    participant_name VARCHAR(100) NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    enrollment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  name VARCHAR(50),\n  age INT,\n  gender VARCHAR(10),\n  location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE treatments (\n  treatment_id INT PRIMARY KEY,\n  patient_id INT,\n  medication VARCHAR(50),\n  dosage VARCHAR(20),\n  start_date DATE,\n  end_date DATE,\n  FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trials (\n  trial_id INT PRIMARY KEY,\n  trial_name VARCHAR(100),\n  trial_description TEXT,\n  start_date DATE,\n  end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clinical_trials (\n  trial_id INT PRIMARY KEY,\n  trial_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trial_sites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(255),\n  location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trial_patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(255),\n  patient_age INT,\n  site_id INT,\n  FOREIGN KEY (site_id) REFERENCES trial_sites (site_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trial_results (\n  result_id INT PRIMARY KEY,\n  trial_id INT,\n  patient_id INT,\n  result TEXT,\n  FOREIGN KEY (trial_id) REFERENCES clinical_trials (trial_id),\n  FOREIGN KEY (patient_id) REFERENCES trial_patients (patient_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trials (\n  trial_id INT PRIMARY KEY,\n  trial_name VARCHAR(255),\n  organization VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subjects (\n  subject_id INT PRIMARY KEY,\n  subject_name VARCHAR(255),\n  age INT,\n  gender VARCHAR(10),\n  trial_id INT,\n  FOREIGN KEY (trial_id) REFERENCES trials(trial_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE treatments (\n  treatment_id INT PRIMARY KEY,\n  treatment_name VARCHAR(255),\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subject_trials (\n  subject_id INT,\n  trial_id INT,\n  start_date DATE,\n  end_date DATE,\n  PRIMARY KEY (subject_id, trial_id),\n  FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),\n  FOREIGN KEY (trial_id) REFERENCES trials(trial_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE measurements (\n  measurement_id INT PRIMARY KEY,\n  subject_id INT,\n  trial_id INT,\n  measurement_date DATE,\n  value FLOAT,\n  FOREIGN KEY (subject_id, trial_id) REFERENCES subject_trials(subject_id, trial_id)\n);"
+      }
+    ]
+  }
+]

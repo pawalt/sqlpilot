@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM billing_and_insurance_claims_processing;",
+      "SELECT patient_id, billed_amount FROM billing_and_insurance_claims_processing WHERE insurance_claim_status = 'Pending';",
+      "SELECT consultation_id, billed_amount, insurance_claim_status FROM billing_and_insurance_claims_processing ORDER BY billed_amount DESC;",
+      "SELECT * FROM billing_and_insurance_claims_processing WHERE consultation_date >= '2022-01-01' AND consultation_date <= '2022-01-31';",
+      "SELECT consultation_id, billed_amount FROM billing_and_insurance_claims_processing WHERE billed_amount > 500;",
+      "SELECT * FROM billing_and_insurance_claims_processing WHERE consultation_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT consultation_id, patient_id, billed_amount FROM billing_and_insurance_claims_processing WHERE consultation_date BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT patient_id, consultation_date, billed_amount FROM billing_and_insurance_claims_processing ORDER BY consultation_date DESC, billed_amount ASC;",
+      "SELECT AVG(billed_amount) AS average_amount, COUNT(*) AS total_records FROM billing_and_insurance_claims_processing WHERE insurance_claim_status = 'Approved';",
+      "SELECT consultation_id, patient_id, consultation_date, consultation_time, billed_amount, insurance_claim_status FROM billing_and_insurance_claims_processing WHERE billed_amount > 1000 AND insurance_claim_status = 'Pending' ORDER BY consultation_date;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM appointments WHERE status = 'scheduled';",
+      "SELECT patient_id, doctor_id, appointment_date FROM appointments ORDER BY appointment_date DESC;",
+      "SELECT appointment_id, appointment_date, status FROM appointments WHERE doctor_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT * FROM insurance_claims WHERE status = 'pending' ORDER BY claim_date ASC;",
+      "SELECT patient_id, amount, status FROM insurance_claims WHERE amount > 1000;",
+      "SELECT * FROM appointments ORDER BY appointment_date DESC;",
+      "SELECT appointment_id, patient_id, doctor_id, appointment_date FROM appointments WHERE status='scheduled';",
+      "SELECT appointment_id, doctor_id, status FROM appointments WHERE doctor_id='bb2c9b9d-04c0-4c10-a01e-3b1f3a91fb8d' ORDER BY appointment_date ASC;",
+      "SELECT COUNT(*) AS total_appointments FROM appointments WHERE status='completed';",
+      "SELECT appointment_id, status, appointment_date FROM appointments WHERE appointment_date BETWEEN '2022-01-01' AND '2022-02-01';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM consultations;",
+      "SELECT consultation_id, patient_id, psychiatric_id, consultation_date FROM consultations;",
+      "SELECT insurer_name, claim_status FROM insurance_claims;",
+      "SELECT consultation_id, consultation_duration FROM consultations WHERE patient_id = 1;",
+      "SELECT * FROM invoices WHERE invoice_status = 'PAID';",
+      "SELECT * FROM consultations ORDER BY consultation_date DESC, consultation_duration ASC;",
+      "SELECT consultation_id, patient_id, psychiatrist_id FROM consultations WHERE consultation_date >= '2022-01-01' AND consultation_date <= '2022-12-31';",
+      "SELECT consultations.*, invoices.total_amount FROM consultations JOIN invoices ON consultations.consultation_id = invoices.consultation_id WHERE invoices.total_amount > 1000;",
+      "SELECT consultations.consultation_id, consultations.consultation_date, insurance_claims.insurer_name FROM consultations JOIN invoices ON consultations.consultation_id = invoices.consultation_id JOIN insurance_claims ON invoices.invoice_id = insurance_claims.invoice_id WHERE insurance_claims.claim_status = 'approved';",
+      "SELECT COUNT(*), AVG(total_amount) FROM invoices GROUP BY invoice_status HAVING AVG(total_amount) > 5000 ORDER BY COUNT(*) DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM patients;",
+      "SELECT patient_id, patient_name FROM patients ORDER BY patient_id DESC;",
+      "SELECT insurance_provider FROM patients WHERE insurance_policy_number IS NOT NULL;",
+      "SELECT appointment_date, billing_code FROM appointments WHERE consultation_fee > 100;",
+      "SELECT clinician_name, license_number FROM clinicians WHERE clinician_name LIKE 'Dr.%';",
+      "SELECT * FROM patients WHERE insurance_provider='BlueCross';",
+      "SELECT patient_name, insurance_policy_number FROM patients WHERE patient_id=1;",
+      "SELECT clinician_name, license_number FROM clinicians ORDER BY clinician_name DESC;",
+      "SELECT patient_name, appointment_date, consultation_fee FROM patients JOIN appointments ON patients.patient_id = appointments.patient_id WHERE appointment_date='2022-09-15';",
+      "SELECT DISTINCT insurance_provider FROM patients;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Patients;",
+      "SELECT patient_name, date_of_birth FROM Patients WHERE insurance_provider IS NOT NULL;",
+      "SELECT psychiatrist_name, specialization FROM Psychiatrists ORDER BY psychiatrist_name DESC;",
+      "SELECT * FROM Consultations WHERE consultation_duration > '1 hour';",
+      "SELECT c.consultation_date, b.total_amount FROM Consultations c JOIN Billing b ON c.consultation_id = b.consultation_id;",
+      "SELECT * FROM Patients;",
+      "SELECT patient_name, date_of_birth FROM Patients ORDER BY date_of_birth DESC;",
+      "SELECT Patients.patient_name, Consultations.consultation_date, Billing.total_amount FROM Patients JOIN Consultations ON Patients.patient_id = Consultations.patient_id JOIN Billing ON Consultations.consultation_id = Billing.consultation_id WHERE Billing.total_amount > 1000;",
+      "SELECT Psychiatrists.psychiatrist_name, COUNT(Consultations.consultation_id) AS total_consultations FROM Psychiatrists JOIN Consultations ON Psychiatrists.psychiatrist_id = Consultations.psychiatrist_id GROUP BY Psychiatrists.psychiatrist_name;",
+      "SELECT Patients.patient_name, Billing.total_amount, InsuranceClaims.claim_status FROM Patients LEFT JOIN Billing ON Patients.patient_id = Billing.consultation_id LEFT JOIN InsuranceClaims ON Billing.billing_id = InsuranceClaims.billing_id WHERE InsuranceClaims.claim_status = 'Pending';"
+    ]
+  }
+]

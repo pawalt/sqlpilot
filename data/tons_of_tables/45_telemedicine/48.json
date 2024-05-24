@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Study_Participants (\n  participant_id INT PRIMARY KEY,\n  age INT,\n  gender VARCHAR(10),\n  study_group VARCHAR(20),\n  enrollment_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telepsychiatry_study (\n  study_id INT PRIMARY KEY,\n  study_name VARCHAR(255),\n  study_description TEXT,\n  study_start_date DATE,\n  study_end_date DATE,\n  researcher_name VARCHAR(100),\n  location VARCHAR(100),\n  participants_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE telepsychiatry_interventions (\n  intervention_id INT PRIMARY KEY,\n  intervention_name VARCHAR(255),\n  intervention_description TEXT,\n  intervention_type VARCHAR(50),\n  study_id INT,\n  FOREIGN KEY (study_id) REFERENCES telepsychiatry_study(study_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telepsychiatry_interventions (study_id INT PRIMARY KEY,\npatient_id INT,\nintervention_type VARCHAR(50),\nintervention_date DATE,\noutcome VARCHAR(50));"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (patient_id INT PRIMARY KEY,\npatient_name VARCHAR(100),\nage INT,\ngender VARCHAR(10),\ncontact_number VARCHAR(15));"
+      },
+      {
+        "table_schema": "CREATE TABLE research_studies (study_id INT PRIMARY KEY,\nstudy_name VARCHAR(100),\nresearcher_name VARCHAR(100),\nstart_date DATE,\nend_date DATE);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_studies (\n study_id INT PRIMARY KEY,\n study_title TEXT,\n study_description TEXT,\n start_date DATE,\n end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n participant_id INT PRIMARY KEY,\n study_id INT,\n participant_name TEXT,\n gender TEXT,\n age INT,\n FOREIGN KEY (study_id) REFERENCES research_studies(study_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE interventions (\n intervention_id INT PRIMARY KEY,\n intervention_name TEXT,\n intervention_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE study_results (\n result_id INT PRIMARY KEY,\n study_id INT,\n participant_id INT,\n intervention_id INT,\n result_description TEXT,\n result_date DATE,\n FOREIGN KEY (study_id) REFERENCES research_studies(study_id),\n FOREIGN KEY (participant_id) REFERENCES participants(participant_id),\n FOREIGN KEY (intervention_id) REFERENCES interventions(intervention_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ResearchStudies (\n  study_id INT PRIMARY KEY,\n  study_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  researcher_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Participants (\n  participant_id INT PRIMARY KEY,\n  participant_name VARCHAR(255),\n  age INT,\n  gender VARCHAR(10),\n  study_id INT,\n  FOREIGN KEY (study_id) REFERENCES ResearchStudies(study_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TherapySessions (\n  session_id INT PRIMARY KEY,\n  session_date DATE,\n  session_duration TIME,\n  participant_id INT,\n  PRIMARY KEY (session_id),\n  FOREIGN KEY (participant_id) REFERENCES Participants(participant_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Psychiatrists (\n  psychiatrist_id INT PRIMARY KEY,\n  psychiatrist_name VARCHAR(255),\n  specialization VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SessionFeedback (\n  feedback_id INT PRIMARY KEY,\n  session_id INT,\n  feedback_text TEXT,\n  rating INT,\n  PRIMARY KEY (feedback_id),\n  FOREIGN KEY (session_id) REFERENCES TherapySessions(session_id)\n);\n"
+      }
+    ]
+  }
+]

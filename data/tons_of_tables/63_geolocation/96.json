@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofencing_areas (\n  area_id UUID PRIMARY KEY,\n  area_name VARCHAR(255),\n  latitude DOUBLE PRECISION,\n  longitude DOUBLE PRECISION,\n  radius DOUBLE PRECISION\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeofenceAreas (\n  area_id INT PRIMARY KEY,\n  area_name VARCHAR(50) NOT NULL,\n  polygon GEOMETRY NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GameEvents (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR(50) NOT NULL,\n  event_description TEXT,\n  area_id INT,\n  CONSTRAINT fk_area_id FOREIGN KEY (area_id) REFERENCES GeofenceAreas(area_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_areas (\n  id SERIAL PRIMARY KEY,\n  area_name VARCHAR(255) NOT NULL,\n  latitude DECIMAL(10, 8) NOT NULL,\n  longitude DECIMAL(11, 8) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n  event_id SERIAL PRIMARY KEY,\n  event_name VARCHAR(255) NOT NULL,\n  event_type VARCHAR(50) NOT NULL,\n  trigger_geofence_id INT NOT NULL,\n  event_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_challenges (\n  challenge_id SERIAL PRIMARY KEY,\n  player_id INT NOT NULL,\n  challenge_name VARCHAR(255) NOT NULL,\n  challenge_difficulty INT NOT NULL,\n  completed BOOLEAN DEFAULT FALSE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofence_areas (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_description TEXT,\n    event_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE player_progress (\n    player_id INT NOT NULL,\n    event_id INT NOT NULL,\n    progress_status BOOLEAN NOT NULL DEFAULT FALSE,\n    PRIMARY KEY (player_id, event_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE challenges (\n    challenge_id INT PRIMARY KEY,\n    challenge_name VARCHAR(255) NOT NULL,\n    requirements TEXT,\n    rewards TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE areas (\n  area_id INT PRIMARY KEY,\n  area_name VARCHAR(50) NOT NULL,\n  area_description TEXT,\n  area_location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE players (\n  player_id INT PRIMARY KEY,\n  player_name VARCHAR(50) NOT NULL,\n  player_level INT DEFAULT 1,\n  player_score INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR(50) NOT NULL,\n  event_type VARCHAR(30),\n  event_reward INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE challenges (\n  challenge_id INT PRIMARY KEY,\n  challenge_name VARCHAR(50) NOT NULL,\n  challenge_difficulty VARCHAR(20),\n  challenge_reward INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE player_progress (\n  player_id INT REFERENCES players(player_id),\n  event_id INT REFERENCES events(event_id),\n  challenge_id INT REFERENCES challenges(challenge_id),\n  players_completed_challenge BOOLEAN DEFAULT FALSE,\n  PRIMARY KEY (player_id, event_id, challenge_id)\n);"
+      }
+    ]
+  }
+]

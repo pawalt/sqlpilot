@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_tracking (\n    id INT PRIMARY KEY,\n    employee_id INT,\n    policy_id INT,\n    date_entered DATE,\n    compliance_status VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ComplianceData (\n    id INT PRIMARY KEY,\n    employee_id INT,\n    policy_name VARCHAR(50),\n    compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyRecords (\n    record_id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    description TEXT,\n    last_updated_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Policy (\n  id INT PRIMARY KEY,\n  policy_name VARCHAR(255) NOT NULL,\n  description TEXT,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance (\n  id INT PRIMARY KEY,\n  policy_id INT NOT NULL,\n  department VARCHAR(255),\n  compliance_status ENUM('Compliant', 'Non-Compliant') NOT NULL,\n  last_checked TIMESTAMP,\n  FOREIGN KEY (policy_id) REFERENCES Policy(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Regulation (\n  id INT PRIMARY KEY,\n  regulation_name VARCHAR(255) NOT NULL,\n  description TEXT,\n  entered_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_entries (\n  entry_id UUID PRIMARY KEY,\n  date DATE,\n  policy_name VARCHAR(50),\n  employee_id INT,\n  department VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n  policy_id UUID PRIMARY KEY,\n  policy_name VARCHAR(50),\n  description TEXT,\n  category VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employees (\n  employee_id INT PRIMARY KEY,\n  full_name VARCHAR(100),\n  job_title VARCHAR(50),\n  department VARCHAR(50),\n  hire_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n  department_id INT PRIMARY KEY,\n  department_name VARCHAR(50),\n  location VARCHAR(100),\n  manager_id INT,\n  department_head VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Policy( policy_id INT PRIMARY KEY, policy_name VARCHAR(255) NOT NULL, policy_description TEXT NOT NULL, policy_category VARCHAR(50) NOT NULL, date_created DATE NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE Employee( employee_id INT PRIMARY KEY, employee_name VARCHAR(255) NOT NULL, employee_dept VARCHAR(50) NOT NULL, hire_date DATE NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceRecord( record_id INT PRIMARY KEY, employee_id INT NOT NULL, policy_id INT NOT NULL, compliance_date DATE NOT NULL, FOREIGN KEY (employee_id) REFERENCES Employee(employee_id), FOREIGN KEY (policy_id) REFERENCES Policy(policy_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE Department( dept_id INT PRIMARY KEY, dept_name VARCHAR(255) NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE AuditLog( log_id INT PRIMARY KEY, action VARCHAR(50) NOT NULL, log_date TIMESTAMP NOT NULL, user_id INT NOT NULL );"
+      }
+    ]
+  }
+]

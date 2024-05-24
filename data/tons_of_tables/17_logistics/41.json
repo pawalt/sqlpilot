@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n  driver_id INT PRIMARY KEY,\n  driver_name VARCHAR(50),\n  start_location VARCHAR(100),\n  end_location VARCHAR(100),\n  distance_covered FLOAT,\n  delivery_count INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_routes (\n    id INT PRIMARY KEY,\n    driver_id INT,\n    route VARCHAR,\n    distance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_history (\n    history_id INT PRIMARY KEY,\n    delivery_id INT,\n    driver_id INT,\n    delivery_date DATE,\n    delivery_time TIME,\n    route_id INT,\n    delivery_status VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_data (\n    delivery_id UUID PRIMARY KEY,\n    driver_id UUID,\n    delivery_time TIMESTAMP,\n    delivery_address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE driver_routes (\n    route_id UUID PRIMARY KEY,\n    driver_id UUID,\n    route_details JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE driver_performance (\n    driver_id UUID PRIMARY KEY,\n    total_deliveries INT,\n    average_delivery_time INTERVAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n driver_id INT PRIMARY KEY,\n driver_name VARCHAR(50) NOT NULL,\n driver_phone VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deliveries (\n delivery_id INT PRIMARY KEY,\n driver_id INT NOT NULL,\n delivery_time TIMESTAMP NOT NULL,\n delivery_address VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_history (\n delivery_id INT,\n driver_id INT,\n delivery_status VARCHAR(20) NOT NULL,\n delivery_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n route_id INT PRIMARY KEY,\n driver_id INT NOT NULL,\n route_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drivers (\n  driver_id UUID PRIMARY KEY,\n  driver_name VARCHAR(255),\n  driver_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_orders (\n  order_id UUID PRIMARY KEY,\n  driver_id UUID REFERENCES drivers(driver_id),\n  order_timestamp TIMESTAMP,\n  order_address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_routes (\n  route_id UUID PRIMARY KEY,\n  driver_id UUID REFERENCES drivers(driver_id),\n  route_date DATE,\n  route_distance FLOAT,\n  route_duration TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE delivery_history (\n  delivery_id UUID PRIMARY KEY,\n  order_id UUID REFERENCES delivery_orders(order_id),\n  route_id UUID REFERENCES delivery_routes(route_id),\n  delivery_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE driver_performance (\n  driver_id UUID PRIMARY KEY REFERENCES drivers(driver_id),\n  completed_deliveries INT,\n  total_distance_covered FLOAT,\n  average_rating FLOAT\n);"
+      }
+    ]
+  }
+]

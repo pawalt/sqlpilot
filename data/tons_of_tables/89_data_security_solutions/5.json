@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_scans (\n    scan_id INT PRIMARY KEY,\n    scan_date DATE,\n    vulnerability_name VARCHAR(255),\n    vulnerability_severity ENUM('Low', 'Medium', 'High'),\n    vulnerability_status ENUM('Open', 'Closed'),\n    assessment_notes TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_scan_results (\n    scan_id UUID PRIMARY KEY,\n    vulnerability_name VARCHAR(255),\n    vulnerability_severity VARCHAR(50),\n    scan_date DATE\n);\nCREATE TABLE vulnerability_assessments (\n    assessment_id UUID PRIMARY KEY,\n    scan_id UUID REFERENCES vulnerability_scan_results(scan_id),\n    assessment_status VARCHAR(50),\n    assessment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_scans (\n  scan_id INT PRIMARY KEY,\n  scan_name VARCHAR(255),\n  scan_date DATE,\n  vulnerability_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_assessments (\n  assessment_id INT PRIMARY KEY,\n  scan_id INT,\n  assessment_date DATE,\n  severity VARCHAR(50),\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_status (\n  status_id INT PRIMARY KEY,\n  assessment_id INT,\n  vulnerability_status VARCHAR(50),\n  update_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_scan_results (\n    scan_id INT PRIMARY KEY,\n    scan_date TIMESTAMP NOT NULL,\n    scan_result TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assessments (\n    assessment_id INT PRIMARY KEY,\n    scan_id INT NOT NULL,\n    vulnerability_id INT NOT NULL,\n    status VARCHAR(50) NOT NULL,\n    CONSTRAINT fk_scan_id FOREIGN KEY (scan_id) REFERENCES vulnerability_scan_results(scan_id),\n    CONSTRAINT fk_vulnerability_id FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(vulnerability_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_scans (\n    scan_id INT PRIMARY KEY,\n    scan_date DATE,\n    scanner_name VARCHAR(50),\n    num_vulnerabilities INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE assessments (\n    assessment_id INT PRIMARY KEY,\n    scan_id INT,\n    assessment_date DATE,\n    reviewer_name VARCHAR(50),\n    assessment_result VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id INT PRIMARY KEY,\n    scan_id INT,\n    vulnerability_name VARCHAR(100),\n    vulnerability_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    vulnerability_id INT,\n    commenter_name VARCHAR(50),\n    comment_text TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE assessment_history (\n    history_id INT PRIMARY KEY,\n    assessment_id INT,\n    status VARCHAR(50),\n    update_date DATE\n)"
+      }
+    ]
+  }
+]

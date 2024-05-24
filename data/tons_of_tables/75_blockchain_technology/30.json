@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PatientMedicalRecords (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255),\n    diagnosis VARCHAR(255),\n    treatment VARCHAR(255),\n    admitted_date TIMESTAMP,\n    discharged_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(50) NOT NULL,\n    date_of_birth DATE,\n    gender VARCHAR(10),\n    address VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalRecords (\n    record_id INT PRIMARY KEY,\n    patient_id INT,\n    record_date DATE,\n    diagnosis TEXT,\n    treatment_plan TEXT,\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_records (\n    patient_id UUID PRIMARY KEY,\n    name VARCHAR(100),\n    dob DATE,\n    diagnosis VARCHAR(255),\n    treatment VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_history (\n    history_id SERIAL PRIMARY KEY,\n    patient_id UUID,\n    date DATE,\n    description TEXT,\n    doctor VARCHAR(100),\n    FOREIGN KEY (patient_id) REFERENCES patient_records(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_hashes (\n    hash_id SERIAL PRIMARY KEY,\n    patient_id UUID,\n    hash TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (patient_id) REFERENCES patient_records(patient_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255),\n    date_of_birth DATE,\n    medical_condition TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_records (\n    record_id INT PRIMARY KEY,\n    patient_id INT,\n    record_date DATE,\n    diagnosis TEXT,\n    prescription TEXT,\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE doctors (\n    doctor_id INT PRIMARY KEY,\n    doctor_name VARCHAR(255),\n    specialty VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n    appointment_id INT PRIMARY KEY,\n    patient_id INT,\n    doctor_id INT,\n    appointment_date DATETIME,\n    status VARCHAR(50),\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id),\n    FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50) NOT NULL,\n  date_of_birth DATE,\n  gender ENUM('M', 'F'),\n  address VARCHAR(100),\n  contact_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalHistory (\n  record_id INT PRIMARY KEY,\n  patient_id INT,\n  diagnosis VARCHAR(100) NOT NULL,\n  prescription VARCHAR(100),\n  appointment_date DATE,\n  CONSTRAINT fk_patient_id FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Doctors (\n  doctor_id INT PRIMARY KEY,\n  doctor_name VARCHAR(50) NOT NULL,\n  specialty VARCHAR(50),\n  contact_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointments (\n  appointment_id INT PRIMARY KEY,\n  patient_id INT,\n  doctor_id INT,\n  appointment_date DATE,\n  CONSTRAINT fk_patient_id FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),\n  CONSTRAINT fk_doctor_id FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE InsuranceInfo (\n  insurance_id INT PRIMARY KEY,\n  patient_id INT,\n  insurance_provider VARCHAR(50),\n  policy_number VARCHAR(20) NOT NULL,\n  expiration_date DATE,\n  CONSTRAINT fk_patient_id FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);\n"
+      }
+    ]
+  }
+]

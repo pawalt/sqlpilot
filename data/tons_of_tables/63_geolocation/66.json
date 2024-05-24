@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_altitude_changes (\n    satellite_id INT,\n    timestamp TIMESTAMP,\n    altitude FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_data (\n    satellite_id UUID PRIMARY KEY,\n    altitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE report (\n    report_id UUID PRIMARY KEY,\n    satellite_id UUID,\n    date TIMESTAMP,\n    change_amount FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteData (\n    satellite_id INT,\n    altitude FLOAT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportOverview (\n    report_id INT,\n    report_name VARCHAR,\n    creation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AltitudeChange (\n    change_id INT,\n    satellite_id INT,\n    change_amount FLOAT,\n    change_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite (satellite_id INT PRIMARY KEY,\n    satellite_name VARCHAR(255),\n    altitude FLOAT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE altitude_changes (change_id INT PRIMARY KEY,\n    satellite_id INT,\n    change_date DATE,\n    change_amount FLOAT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (report_id INT PRIMARY KEY,\n    report_date DATE,\n    satellite_id INT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE aggregated_reports (satellite_id INT PRIMARY KEY,\n    average_altitude FLOAT,\n    max_altitude FLOAT,\n    min_altitude FLOAT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Satellites (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  altitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AltitudeChanges (\n  id INT PRIMARY KEY,\n  satellite_id INT REFERENCES Satellites(id),\n  timestamp TIMESTAMP,\n  change FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportGeneration (\n  id INT PRIMARY KEY,\n  report_name VARCHAR(255),\n  report_date DATE,\n  generated_by VARCHAR(255),\n  generated_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reports (\n  id INT PRIMARY KEY,\n  report_id INT REFERENCES ReportGeneration(id),\n  satellite_id INT REFERENCES Satellites(id),\n  min_altitude FLOAT,\n  max_altitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AggregateData (\n  id INT PRIMARY KEY,\n  report_id INT REFERENCES ReportGeneration(id),\n  average_altitude FLOAT,\n  total_changes FLOAT\n);"
+      }
+    ]
+  }
+]

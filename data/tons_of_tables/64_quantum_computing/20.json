@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuit_parameters (\n circuit_id UUID PRIMARY KEY,\n circuit_name VARCHAR(255),\n gate_type VARCHAR(50),\n gate_params JSON,\n execution_time DOUBLE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id UUID PRIMARY KEY,\n    circuit_name VARCHAR(255) NOT NULL,\n    circuit_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE circuit_parameters (\n    param_id UUID PRIMARY KEY,\n    circuit_id UUID REFERENCES quantum_circuits(circuit_id),\n    parameter_name VARCHAR(255) NOT NULL,\n    parameter_type VARCHAR(50) NOT NULL,\n    parameter_value FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuit_parameters (\n    circuit_id INT PRIMARY KEY,\n    circuit_name TEXT NOT NULL,\n    parameter_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE machine_learning_models (\n    model_id INT PRIMARY KEY,\n    model_name TEXT NOT NULL,\n    model_description TEXT,\n    model_parameters JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    data_id INT PRIMARY KEY,\n    circuit_id INT REFERENCES quantum_circuit_parameters(circuit_id),\n    model_id INT REFERENCES machine_learning_models(model_id),\n    training_data JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n circuit_id SERIAL PRIMARY KEY,\n circuit_name VARCHAR(255),\n parameters JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE circuit_parameters (\n parameter_id SERIAL PRIMARY KEY,\n circuit_id INT,\n parameter_name VARCHAR(255),\n parameter_value FLOAT,\n FOREIGN KEY (circuit_id) REFERENCES quantum_circuits(circuit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_models (\n model_id SERIAL PRIMARY KEY,\n model_name VARCHAR(255),\n circuit_id INT,\n FOREIGN KEY (circuit_id) REFERENCES quantum_circuits(circuit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metrics (\n metric_id SERIAL PRIMARY KEY,\n model_id INT,\n metric_name VARCHAR(255),\n metric_value FLOAT,\n FOREIGN KEY (model_id) REFERENCES quantum_models(model_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(50) NOT NULL,\n    num_qubits INT NOT NULL,\n    gate_operations TEXT[]\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE circuit_parameters (\n    parameter_id INT PRIMARY KEY,\n    circuit_id INT REFERENCES quantum_circuits(circuit_id),\n    parameter_name VARCHAR(50) NOT NULL,\n    parameter_value FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    data_id INT PRIMARY KEY,\n    circuit_id INT REFERENCES quantum_circuits(circuit_id),\n    input_data JSONB NOT NULL,\n    output_data JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_parameters (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50) UNIQUE NOT NULL,\n    hyperparameters JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_performance (\n    performance_id INT PRIMARY KEY,\n    model_id INT REFERENCES model_parameters(model_id),\n    accuracy FLOAT NOT NULL,\n    loss FLOAT NOT NULL\n);"
+      }
+    ]
+  }
+]

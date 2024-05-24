@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WarehouseLayout (\n    warehouse_id INT PRIMARY KEY,\n    warehouse_location DECIMAL(10, 6),\n    warehouse_capacity INT,\n    layout_geometry GEOGRAPHY,\n    inventory_list JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_layout (\n    id INT PRIMARY KEY,\n    aisle_number INT,\n    rack_number INT,\n    shelf_number INT,\n    product_name VARCHAR(255),\n    quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_placement (\n    id INT PRIMARY KEY,\n    product_id INT,\n    aisle_number INT,\n    rack_number INT,\n    shelf_number INT,\n    position_lat DECIMAL,\n    position_long DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_layout (\n  warehouse_id INT PRIMARY KEY,\n  warehouse_name VARCHAR,\n  location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR,\n  quantity INT,\n  location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_handling (\n  handler_id INT PRIMARY KEY,\n  handler_name VARCHAR,\n  department VARCHAR,\n  handling_capacity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_layout (\n    warehouse_id INT PRIMARY KEY,\n    warehouse_name TEXT,\n    warehouse_location GEOGRAPHY,\n    total_capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id INT PRIMARY KEY,\n    product_name TEXT,\n    quantity INT,\n    location_id INT,\n    FOREIGN KEY (location_id) REFERENCES warehouse_layout(warehouse_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE material_handling (\n    handling_id INT PRIMARY KEY,\n    handling_type TEXT,\n    equipment_id INT,\n    handling_cost FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_movement (\n    movement_id INT PRIMARY KEY,\n    inventory_id INT,\n    from_location_id INT,\n    to_location_id INT,\n    movement_date DATE,\n    FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id),\n    FOREIGN KEY (from_location_id) REFERENCES warehouse_layout(warehouse_id),\n    FOREIGN KEY (to_location_id) REFERENCES warehouse_layout(warehouse_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_layout ( id INT, location_name VARCHAR(255), total_capacity INT, PRIMARY KEY (id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_items ( item_id INT, item_name VARCHAR(255), quantity INT, location_id INT, PRIMARY KEY (item_id), FOREIGN KEY (location_id) REFERENCES warehouse_layout(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_status ( item_id INT, last_checked TIMESTAMP, status VARCHAR(50), PRIMARY KEY (item_id), FOREIGN KEY (item_id) REFERENCES inventory_items(item_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE material_handling_devices ( device_id INT, device_name VARCHAR(255), device_type VARCHAR(50), location_id INT, PRIMARY KEY (device_id), FOREIGN KEY (location_id) REFERENCES warehouse_layout(id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE device_status ( device_id INT, last_checked TIMESTAMP, status VARCHAR(50), PRIMARY KEY (device_id), FOREIGN KEY (device_id) REFERENCES material_handling_devices(device_id) );"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM data_backups;",
+      "SELECT backup_id, backup_name, backup_type FROM data_backups WHERE backup_status = 'completed';",
+      "SELECT backup_id, backup_name, backup_time FROM data_backups ORDER BY backup_time DESC;",
+      "SELECT backup_name, backup_location FROM data_backups WHERE backup_type = 'manual' LIMIT 3;",
+      "SELECT COUNT(*) AS total_backups FROM data_backups WHERE backup_status = 'in_progress';",
+      "SELECT backup_id, backup_name, backup_location FROM data_backups WHERE backup_type = 'Full' ORDER BY backup_time DESC LIMIT 10;",
+      "SELECT backup_id, backup_type, backup_status FROM data_backups WHERE backup_status = 'Success' ORDER BY backup_time ASC;",
+      "SELECT * FROM data_backups WHERE backup_location LIKE '%/prod%' AND backup_status = 'Failed';",
+      "SELECT backup_id, backup_name, backup_location FROM data_backups WHERE backup_time BETWEEN '2022-01-01' AND '2022-03-31' ORDER BY backup_id;",
+      "SELECT COUNT(backup_id) AS total_backups, backup_type FROM data_backups GROUP BY backup_type HAVING COUNT(backup_id) > 5 ORDER BY total_backups DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM backups;",
+      "SELECT backup_name, backup_schedule FROM backups WHERE backup_id = 1;",
+      "SELECT backup_id, backup_name, backup_schedule FROM backups WHERE backup_schedule > '2022-01-01';",
+      "SELECT backup_id, backup_name FROM backups ORDER BY backup_id DESC;",
+      "SELECT backup_id, backup_name, log_timestamp, log_message FROM backups b JOIN backup_logs bl ON b.backup_id = bl.backup_id;",
+      "SELECT * FROM backups WHERE backup_id = 1",
+      "SELECT backup_name, backup_schedule FROM backups ORDER BY backup_name DESC",
+      "SELECT backups.backup_id, backup_name, log_timestamp, log_message FROM backups JOIN backup_logs ON backups.backup_id = backup_logs.backup_id WHERE backups.backup_id IN (1, 2, 3)",
+      "SELECT MAX(log_timestamp), MIN(log_timestamp) FROM backup_logs",
+      "SELECT backup_id, COUNT(log_id) AS log_count FROM backup_logs GROUP BY backup_id HAVING log_count > 5"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM backups;",
+      "SELECT backup_name, backup_path FROM backups WHERE id = 1;",
+      "SELECT backup_name, backup_time FROM backups WHERE backup_path LIKE '%/home/%' ORDER BY backup_time DESC;",
+      "SELECT * FROM backup_schedule WHERE is_active = TRUE;",
+      "SELECT log_id, log_message, log_time FROM backup_logs WHERE backup_id = 3 ORDER BY log_time ASC;",
+      "SELECT * FROM backups WHERE backup_time >= '2022-01-01'",
+      "SELECT backup_name, backup_path FROM backups WHERE id = 1",
+      "SELECT backup_name FROM backups ORDER BY backup_time DESC LIMIT 5",
+      "SELECT backup_name, backup_path FROM backups WHERE backup_time BETWEEN '2022-01-01' AND '2022-02-01'",
+      "SELECT backup_name, backup_path, backup_time FROM backups INNER JOIN backup_schedule ON backups.id = backup_schedule.backup_id"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM backups;",
+      "SELECT backup_name, backup_schedule FROM backups ORDER BY backup_schedule DESC;",
+      "SELECT backup_id, backup_name, backup_location FROM backups WHERE backup_schedule < NOW();",
+      "SELECT * FROM backup_logs WHERE log_timestamp BETWEEN '2022-01-01' AND '2022-01-31';",
+      "SELECT backup_id, COUNT(*) AS log_count FROM backup_logs GROUP BY backup_id HAVING COUNT(*) > 10;",
+      "SELECT * FROM backups;",
+      "SELECT backup_name, backup_location FROM backups WHERE backup_schedule >= '2022-01-01';",
+      "SELECT COUNT(*) FROM backup_logs WHERE log_timestamp BETWEEN '2022-01-01' AND '2022-03-01';",
+      "SELECT backups.backup_id, backup_name, job_status, job_details FROM backups JOIN backup_jobs ON backups.backup_id = backup_jobs.backup_id WHERE job_status = 'Completed';",
+      "SELECT backup_id, MAX(history_timestamp) AS latest_history_timestamp FROM backup_history GROUP BY backup_id ORDER BY latest_history_timestamp DESC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM backup_config;",
+      "SELECT backup_name, backup_frequency FROM backup_config ORDER BY backup_name DESC;",
+      "SELECT backup_name, backup_location FROM backup_config WHERE id = 1;",
+      "SELECT * FROM backup_job WHERE status = 'Scheduled' ORDER BY end_time DESC;",
+      "SELECT start_time, end_time FROM backup_job WHERE backup_id = 2;",
+      "SELECT * FROM backup_config;",
+      "SELECT backup_name, backup_location FROM backup_config WHERE backup_frequency > INTERVAL '1 day';",
+      "SELECT b.backup_id, b.start_time, bh.backup_time, bh.backup_size FROM backup_job b JOIN backup_history bh ON b.backup_id = bh.backup_id;",
+      "SELECT bu.username, bu.password, bl.log_message FROM backup_users bu LEFT JOIN backup_logs bl ON bu.user_id = bl.backup_id;",
+      "SELECT * FROM backup_logs WHERE log_time BETWEEN '2022-01-01' AND '2022-01-31';"
+    ]
+  }
+]

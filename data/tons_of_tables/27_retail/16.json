@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_program (\n    customer_id INT PRIMARY KEY,\n    points INT,\n    rewards VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_points (\n    customer_id INT PRIMARY KEY,\n    total_points INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id INT PRIMARY KEY,\n    reward_name VARCHAR(255),\n    required_points INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE points (\n    point_id INT PRIMARY KEY,\n    customer_id INT,\n    points INT,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id INT PRIMARY KEY,\n    reward_name VARCHAR(50),\n    points_required INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    points int DEFAULT 0\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id INT PRIMARY KEY,\n    reward_name VARCHAR(50) NOT NULL,\n    point_cost INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    reward_id INT NOT NULL,\n    transaction_date DATE NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n    FOREIGN KEY (reward_id) REFERENCES rewards(reward_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE points_history (\n    history_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    points_change INT NOT NULL,\n    transaction_id INT NOT NULL,\n    history_date DATE NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer (\n\tcustomer_id INT PRIMARY KEY,\n\tname VARCHAR(50),\n\temail VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_program (\n\tprogram_id INT PRIMARY KEY,\n\tprogram_name VARCHAR(50),\n\tstart_date DATE,\n\tend_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE points (\n\tpoints_id INT PRIMARY KEY,\n\tcustomer_id INT,\n\tpoints INT,\n\ttransaction_date DATE,\n\tFOREIGN KEY (customer_id) REFERENCES customer(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n\treward_id INT PRIMARY KEY,\n\treward_name VARCHAR(50),\n\trequired_points INT,\n\texpiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE redeemed_rewards (\n\tredeemed_id INT PRIMARY KEY,\n\tcustomer_id INT,\n\treward_id INT,\n\tredeemed_date DATE,\n\tFOREIGN KEY (customer_id) REFERENCES customer(customer_id),\n\tFOREIGN KEY (reward_id) REFERENCES rewards(reward_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE consent_mechanisms_for_ar_experiences ( \n    id SERIAL PRIMARY KEY, \n    user_id INT NOT NULL, \n    ar_experience_id INT NOT NULL, \n    consent_given BOOLEAN NOT NULL, \n    consent_timestamp TIMESTAMP, \n    sensitive_information TEXT \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE consent_mechanisms (\n    id INT PRIMARY KEY,\n    user_id INT,\n    ar_experience_id INT,\n    consent_given BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_experiences (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    description TEXT,\n    sensitive_info_protected BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE consent_users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  consent_given BOOLEAN NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_experiences (\n  experience_id INT PRIMARY KEY,\n  experience_name VARCHAR(100) NOT NULL,\n  description TEXT,\n  created_by INT,\n  FOREIGN KEY (created_by) REFERENCES consent_users(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_logs (\n  log_id INT PRIMARY KEY,\n  user_id INT,\n  experience_id INT,\n  date_time TIMESTAMP,\n  consent_given BOOLEAN,\n  FOREIGN KEY (user_id) REFERENCES consent_users(user_id),\n  FOREIGN KEY (experience_id) REFERENCES ar_experiences(experience_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE consent_requests (\n    id UUID PRIMARY KEY,\n    user_id UUID,\n    ar_experience_id UUID,\n    consent_given BOOLEAN,\n    date_created TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    name VARCHAR,\n    email VARCHAR,\n    phone_number VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_experiences (\n    ar_experience_id UUID PRIMARY KEY,\n    ar_name VARCHAR,\n    description TEXT,\n    sensitive_info BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID,\n    ar_experience_id UUID,\n    consent_status BOOLEAN,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "AR_User_Information (user_id INT PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) UNIQUE NOT NULL, consent_given BOOLEAN NOT NULL)"
+      }
+    ]
+  }
+]

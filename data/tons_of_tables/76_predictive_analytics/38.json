@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE query_anomalies (\n  query_id INT PRIMARY KEY,\n  query_text TEXT,\n  anomaly_detected BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE anomalies_table (id INT PRIMARY KEY,\n                          description STRING,\n                          timestamp TIMESTAMP,\n                          severity INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE investigation_table (id INT PRIMARY KEY,\n                             anomaly_id INT,\n                             query STRING,\n                             result STRING,\n                             FOREIGN KEY (anomaly_id) REFERENCES anomalies_table(id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    id INT PRIMARY KEY,\n    anomaly_description VARCHAR(255),\n    anomaly_type VARCHAR(50),\n    detection_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE queries (\n    id INT PRIMARY KEY,\n    query_text TEXT,\n    query_date DATE,\n    user_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    join_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE anomaly_detection (\n    id INT PRIMARY KEY,\n    query_name VARCHAR(255) NOT NULL,\n    query_description TEXT,\n    anomaly_threshold FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE query_execution (\n    execution_id SERIAL PRIMARY KEY,\n    query_id INT REFERENCES anomaly_detection(id),\n    execution_time TIMESTAMPTZ NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE anomaly_results (\n    result_id SERIAL PRIMARY KEY,\n    execution_id INT REFERENCES query_execution(execution_id),\n    result_description TEXT,\n    anomaly_score FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE query_logs (\n    log_id SERIAL PRIMARY KEY,\n    execution_id INT REFERENCES query_execution(execution_id),\n    log_message TEXT,\n    log_time TIMESTAMPTZ NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    id INT PRIMARY KEY,\n    anomaly_description TEXT,\n    data_source VARCHAR(50),\n    anomaly_type VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_inventory (\n    warehouse_id UUID PRIMARY KEY,\n    product_id UUID,\n    product_name TEXT,\n    quantity INT,\n    location TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_locations (\n  warehouse_id INT PRIMARY KEY,\n  location_name VARCHAR(50) NOT NULL,\n  city VARCHAR(50) NOT NULL,\n  state VARCHAR(2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_items (\n  item_id INT PRIMARY KEY,\n  item_name VARCHAR(100) NOT NULL,\n  quantity INT NOT NULL,\n  warehouse_id INT REFERENCES warehouse_locations(warehouse_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_locations (id INT, location_name VARCHAR(50), address VARCHAR(100), capacity INT)"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (product_id INT, location_id INT, quantity INT, last_updated TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution_views (view_id INT, view_name VARCHAR(50), warehouse_locations_ids ARRAY<INT>, total_inventory INT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    address VARCHAR(255),\n    city VARCHAR(100),\n    state VARCHAR(50),\n    zip_code VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    item_id INT PRIMARY KEY,\n    item_name VARCHAR(255),\n    category VARCHAR(100),\n    quantity INT,\n    location_id INT,\n    FOREIGN KEY (location_id) REFERENCES warehouse_locations(location_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution_centers (\n    dc_id INT PRIMARY KEY,\n    dc_name VARCHAR(255),\n    location_id INT,\n    FOREIGN KEY (location_id) REFERENCES warehouse_locations(location_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution_plan (\n    plan_id INT PRIMARY KEY,\n    dc_id INT,\n    item_id INT,\n    quantity INT,\n    FOREIGN KEY (dc_id) REFERENCES distribution_centers(dc_id),\n    FOREIGN KEY (item_id) REFERENCES inventory(item_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_locations (\n    id SERIAL PRIMARY KEY,\n    location_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    id SERIAL PRIMARY KEY,\n    product_name VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    warehouse_id INT NOT NULL,\n    FOREIGN KEY (warehouse_id) REFERENCES warehouse_locations(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution_centers (\n    id SERIAL PRIMARY KEY,\n    center_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution_mapping (\n    id SERIAL PRIMARY KEY,\n    inventory_id INT NOT NULL,\n    distribution_center_id INT NOT NULL,\n    FOREIGN KEY (inventory_id) REFERENCES inventory(id),\n    FOREIGN KEY (distribution_center_id) REFERENCES distribution_centers(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution_views (\n    id SERIAL PRIMARY KEY,\n    view_name VARCHAR(50) NOT NULL,\n    view_description TEXT NOT NULL,\n    distribution_center_id INT NOT NULL,\n    FOREIGN KEY (distribution_center_id) REFERENCES distribution_centers(id)\n);"
+      }
+    ]
+  }
+]

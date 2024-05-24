@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ImageDataset (\n    image_id UUID PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_data BYTEA,\n    image_size INT,\n    uploaded_at TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id UUID PRIMARY KEY,\n    image_filename VARCHAR(255),\n    image_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id UUID PRIMARY KEY,\n    label_name VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id SERIAL PRIMARY KEY,\n    image_name TEXT NOT NULL,\n    image_data BYTEA NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id SERIAL PRIMARY KEY,\n    label_name TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    image_id INT REFERENCES images(image_id),\n    label_id INT REFERENCES labels(label_id),\n    PRIMARY KEY (image_id, label_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Images (\n    image_id INT PRIMARY KEY,\n    image_data BYTEA,\n    image_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Categories (\n    category_id INT PRIMARY KEY,\n    category_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageCategories (\n    image_id INT,\n    category_id INT,\n    PRIMARY KEY (image_id, category_id),\n    FOREIGN KEY (image_id) REFERENCES Images(image_id),\n    FOREIGN KEY (category_id) REFERENCES Categories(category_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageLabels (\n    label_id INT PRIMARY KEY,\n    label_name TEXT,\n    confidence FLOAT,\n    image_id INT,\n    FOREIGN KEY (image_id) REFERENCES Images(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id SERIAL PRIMARY KEY,\n    image_name VARCHAR(255) NOT NULL,\n    image_data BYTEA NOT NULL,\n    upload_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id SERIAL PRIMARY KEY,\n    label_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    image_id INT NOT NULL,\n    label_id INT NOT NULL,\n    PRIMARY KEY (image_id, label_id),\n    FOREIGN KEY (image_id) REFERENCES images (image_id),\n    FOREIGN KEY (label_id) REFERENCES labels (label_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_features (\n    image_id INT NOT NULL,\n    feature_name VARCHAR(50) NOT NULL,\n    feature_value FLOAT NOT NULL,\n    PRIMARY KEY (image_id, feature_name)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    image_id INT NOT NULL,\n    description TEXT,\n    date_added DATE NOT NULL,\n    PRIMARY KEY (image_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE yoga_members (\n    member_id INT PRIMARY KEY,\n    name STRING,\n    contact_details STRING,\n    membership_status STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n  member_id INT PRIMARY KEY,\n  full_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100),\n  phone_number VARCHAR(15),\n  membership_status VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE classes (\n  class_id INT PRIMARY KEY,\n  class_name VARCHAR(50) NOT NULL,\n  instructor VARCHAR(50) NOT NULL,\n  class_time TIMESTAMP,\n  capacity INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n\tmember_id INT PRIMARY KEY,\n\tname VARCHAR(50),\n\tcontact_details VARCHAR(100),\n\tmembership_status ENUM('Active', 'Inactive')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE class_schedule (\n\tclass_id INT PRIMARY KEY,\n\tclass_name VARCHAR(50),\n\tclass_date DATE,\n\tclass_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attendance (\n\tattendance_id INT PRIMARY KEY,\n\tmember_id INT,\n\tclass_id INT,\n\tattendance_date DATE,\n\tFOREIGN KEY (member_id) REFERENCES members(member_id),\n\tFOREIGN KEY (class_id) REFERENCES class_schedule(class_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n  member_id INT PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(20),\n  membership_status ENUM('Active', 'Inactive')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE classes (\n  class_id INT PRIMARY KEY,\n  class_name VARCHAR(50) NOT NULL,\n  instructor VARCHAR(50) NOT NULL,\n  class_time TIMESTAMP NOT NULL,\n  max_capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE memberships (\n  membership_id INT PRIMARY KEY,\n  member_id INT NOT NULL,\n  class_id INT NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  FOREIGN KEY (member_id) REFERENCES members(member_id),\n  FOREIGN KEY (class_id) REFERENCES classes(class_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id INT PRIMARY KEY,\n  membership_id INT NOT NULL,\n  amount DECIMAL(10,2) NOT NULL,\n  payment_date DATE NOT NULL,\n  FOREIGN KEY (membership_id) REFERENCES memberships(membership_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n    member_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL UNIQUE,\n    phone_number VARCHAR(20),\n    membership_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE instructors (\n    instructor_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL UNIQUE,\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE classes (\n    class_id INT PRIMARY KEY,\n    class_name VARCHAR(50) NOT NULL,\n    instructor_id INT REFERENCES instructors(instructor_id),\n    class_date DATE,\n    class_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    member_id INT REFERENCES members(member_id),\n    payment_amount DECIMAL(10,2) NOT NULL,\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE memberships (\n    membership_id INT PRIMARY KEY,\n    member_id INT REFERENCES members(member_id),\n    start_date DATE NOT NULL,\n    end_date DATE\n);"
+      }
+    ]
+  }
+]

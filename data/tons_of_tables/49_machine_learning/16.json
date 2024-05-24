@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_history (\n    training_id UUID PRIMARY KEY,\n    model_name VARCHAR(255),\n    training_date DATE,\n    training_time TIME,\n    loss FLOAT,\n    accuracy FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_training_history (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(255) NOT NULL,\n    training_date DATE NOT NULL,\n    training_duration INTERVAL,\n    training_accuracy FLOAT\n);\n\nCREATE TABLE performance_metrics (\n    model_id UUID PRIMARY KEY,\n    loss_rate FLOAT NOT NULL,\n    prediction_accuracy FLOAT NOT NULL,\n    validation_accuracy FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_training (\n  training_id SERIAL PRIMARY KEY,\n  model_name TEXT NOT NULL,\n  training_date DATE,\n  training_time TIME,\n  training_duration INTERVAL,\n  loss FLOAT,\n  accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n  id SERIAL PRIMARY KEY,\n  training_id INT REFERENCES model_training(training_id),\n  param_name TEXT,\n  param_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE evaluation_metrics (\n  eval_id SERIAL PRIMARY KEY,\n  training_id INT REFERENCES model_training(training_id),\n  evaluation_date DATE,\n  evaluation_time TIME,\n  precision FLOAT,\n  recall FLOAT,\n  f1_score FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_training_history (\n    model_id INT PRIMARY KEY,\n    model_name TEXT,\n    training_date DATE,\n    accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_performance_metrics (\n    performance_id INT PRIMARY KEY,\n    model_id INT,\n    precision FLOAT,\n    recall FLOAT,\n    f1_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_parameters (\n    training_id INT PRIMARY KEY,\n    model_id INT,\n    batch_size INT,\n    learning_rate FLOAT,\n    epochs INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_details (\n    dataset_id INT PRIMARY KEY,\n    dataset_name TEXT,\n    dataset_size INT,\n    dataset_path TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_history (\n    id INT PRIMARY KEY,\n    model_name VARCHAR,\n    training_date TIMESTAMP,\n    loss FLOAT,\n    accuracy FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    id INT PRIMARY KEY,\n    model_id INT,\n    validation_date TIMESTAMP,\n    precision FLOAT,\n    recall FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    id INT PRIMARY KEY,\n    model_name VARCHAR,\n    architecture VARCHAR,\n    hyperparameters JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE datasets (\n    id INT PRIMARY KEY,\n    dataset_name VARCHAR,\n    source VARCHAR,\n    size_mb INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE training_datasets (\n    training_id INT,\n    dataset_id INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE model_runs (\n    run_id INT,\n    model_id INT,\n    training_id INT,\n    validation_id INT,\n    status VARCHAR\n)"
+      }
+    ]
+  }
+]

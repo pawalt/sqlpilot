@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE alerts_for_budget_milestones (\n  alert_id INT PRIMARY KEY,\n  alert_type VARCHAR(50) NOT NULL,\n  alert_description TEXT,\n  budget_amount DECIMAL(10,2),\n  expense_amount DECIMAL(10,2),\n  alert_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE alerts (\n    alert_id INT PRIMARY KEY,\n    alert_type VARCHAR(255),\n    alert_description TEXT,\n    alert_threshold DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n    expense_id INT PRIMARY KEY,\n    expense_name VARCHAR(255),\n    expense_amount DECIMAL,\n    expense_category VARCHAR(255),\n    expense_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE budget_alerts (\n    alert_id UUID PRIMARY KEY,\n    alert_type VARCHAR(255),\n    alert_description TEXT,\n    alert_threshold DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_logs (\n    log_id UUID PRIMARY KEY,\n    alert_id UUID,\n    logged_timestamp TIMESTAMP,\n    log_message TEXT,\n    FOREIGN KEY (alert_id) REFERENCES budget_alerts(alert_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_budgets (\n    user_id UUID PRIMARY KEY,\n    budget_amount DECIMAL,\n    alert_id UUID,\n    FOREIGN KEY (alert_id) REFERENCES budget_alerts(alert_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BudgetMilestoneAlerts (\n    alert_id INT PRIMARY KEY,\n    alert_name VARCHAR(255),\n    spending_limit DECIMAL,\n    planned_expense DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlertSubscribers (\n    subscriber_id INT PRIMARY KEY,\n    subscriber_name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlertHistory (\n    alert_id INT,\n    subscriber_id INT,\n    alert_date DATE,\n    alert_message VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlertSettings (\n    setting_id INT PRIMARY KEY,\n    subscriber_id INT,\n    enable_email_alert BOOL,\n    enable_sms_alert BOOL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE budget_alerts (\n  alert_id INT PRIMARY KEY,\n  alert_type VARCHAR(50),\n  alert_message TEXT,\n  alert_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE spending_limits (\n  limit_id INT PRIMARY KEY,\n  user_id INT,\n  spending_limit DECIMAL(10, 2),\n  alert_id INT,\n  FOREIGN KEY (alert_id) REFERENCES budget_alerts(alert_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n  expense_id INT PRIMARY KEY,\n  user_id INT,\n  expense_amount DECIMAL(10, 2),\n  expense_date DATE,\n  alert_id INT,\n  FOREIGN KEY (alert_id) REFERENCES budget_alerts(alert_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  user_name VARCHAR(50),\n  user_email VARCHAR(100),\n  user_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_history (\n  alert_history_id INT PRIMARY KEY,\n  alert_id INT,\n  user_id INT,\n  alert_time TIMESTAMP,\n  viewed BOOLEAN,\n  FOREIGN KEY (alert_id) REFERENCES budget_alerts(alert_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  }
+]

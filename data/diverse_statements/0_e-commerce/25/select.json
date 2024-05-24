@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM suspicious_transactions;",
+      "SELECT transaction_id, account_id, amount, transaction_date FROM suspicious_transactions;",
+      "SELECT account_id, amount FROM suspicious_transactions WHERE flag_reason = 'Fraud';",
+      "SELECT MAX(amount) AS max_amount FROM suspicious_transactions;",
+      "SELECT MIN(amount) AS min_amount, AVG(amount) AS avg_amount FROM suspicious_transactions;",
+      "SELECT * FROM suspicious_transactions WHERE account_id = 100 ORDER BY transaction_date DESC, amount ASC",
+      "SELECT transaction_id, amount FROM suspicious_transactions WHERE amount > 1000 AND flagged_by_user = 'Admin'",
+      "SELECT account_id, flag_reason FROM suspicious_transactions WHERE amount BETWEEN 500 AND 1000 AND flag_reason IS NOT NULL ORDER BY account_id ASC",
+      "SELECT * FROM suspicious_transactions WHERE flagged_by_user = 'Fraud' AND transaction_date >= '2022-01-01' ORDER BY transaction_id ASC",
+      "SELECT account_id, amount, transaction_date FROM suspicious_transactions WHERE amount > 200 AND flag_reason LIKE '%Suspicious%' ORDER BY amount DESC, transaction_date DESC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM suspicious_transactions;",
+      "SELECT transaction_id, amount FROM suspicious_transactions WHERE flagged = TRUE;",
+      "SELECT * FROM transaction_history ORDER BY transaction_time DESC;",
+      "SELECT transaction_id, transaction_time FROM suspicious_transactions WHERE amount > 1000;",
+      "SELECT * FROM transaction_history WHERE user_id = 'a1b2c3d4';",
+      "SELECT * FROM suspicious_transactions WHERE amount > 1000 ORDER BY transaction_time DESC LIMIT 10;",
+      "SELECT transaction_id, amount FROM suspicious_transactions WHERE flagged = true ORDER BY amount ASC LIMIT 5;",
+      "SELECT transaction_id, amount, transaction_time FROM suspicious_transactions WHERE flagged = false ORDER BY amount DESC, transaction_time ASC LIMIT 5;",
+      "SELECT transaction_id, SUM(amount) AS total_amount FROM suspicious_transactions GROUP BY transaction_id ORDER BY total_amount DESC LIMIT 5;",
+      "SELECT th.transaction_id, th.transaction_time, st.amount FROM transaction_history th INNER JOIN suspicious_transactions st ON th.transaction_id = st.transaction_id WHERE th.user_id = '123e4567-e89b-12d3-a456-426614174000' ORDER BY st.amount ASC, th.transaction_time DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM flagging_transactions;",
+      "SELECT transaction_id, transaction_amount FROM flagging_transactions WHERE suspicious_flag = true;",
+      "SELECT user_name, user_email FROM flagged_users;",
+      "SELECT rule_description FROM flagging_rules WHERE rule_status = true;",
+      "SELECT user_name, user_email, flag_reason FROM flagged_users ORDER BY user_name DESC;",
+      "SELECT transaction_id, transaction_amount, transaction_date, suspicious_flag FROM flagging_transactions WHERE transaction_amount > 1000 ORDER BY transaction_date DESC",
+      "SELECT user_name, user_email FROM flagged_users WHERE user_name LIKE 'J%'",
+      "SELECT * FROM flagging_transactions JOIN flagged_users ON flagging_transactions.transaction_id = flagged_users.user_id WHERE flag_reason = 'Fraudulent Activity'",
+      "SELECT COUNT(*) AS total_records FROM flagged_users WHERE flag_reason IS NOT NULL",
+      "SELECT rule_description FROM flagging_rules WHERE rule_status = TRUE"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM suspicious_transactions;",
+      "SELECT transaction_id, transaction_type, amount FROM suspicious_transactions WHERE amount > 1000;",
+      "SELECT * FROM transactions_tracking ORDER BY updated_at DESC;",
+      "SELECT transaction_id, tracking_status FROM transactions_tracking WHERE tracking_status = 'pending';",
+      "SELECT transaction_id, flag_reason FROM flagged_transactions WHERE flagged_at >= '2022-01-01';",
+      "SELECT * FROM suspicious_transactions;",
+      "SELECT transaction_id, transaction_type, amount FROM suspicious_transactions WHERE amount > 1000;",
+      "SELECT transaction_id, transaction_type, amount, flag_reason FROM suspicious_transactions WHERE flag_reason IS NOT NULL;",
+      "SELECT * FROM transactions_tracking WHERE tracking_status = 'Pending' ORDER BY updated_at DESC;",
+      "SELECT transaction_id, flag_reason FROM flagged_transactions WHERE flagged_at >= '2022-01-01' ORDER BY flagged_at;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM transactions;",
+      "SELECT customer_id, name, email FROM customers;",
+      "SELECT MAX(amount) AS max_amount FROM transactions;",
+      "SELECT flag_id, flag_reason, flagger_id FROM flags ORDER BY timestamp DESC;",
+      "SELECT t.transaction_id, t.amount, t.timestamp, c.name AS customer_name FROM transactions t JOIN customers c ON t.customer_id = c.customer_id;",
+      "SELECT * FROM transactions WHERE amount > 100 ORDER BY timestamp DESC LIMIT 5;",
+      "SELECT customer_id, name, email FROM customers WHERE phone_number IN ('1234567890', '0987654321');",
+      "SELECT flag_id, flag_reason FROM flags INNER JOIN flag_mappings ON flags.flag_id = flag_mappings.flag_id WHERE flags.flag_id = 1;",
+      "SELECT transactions.*, flags.flag_reason FROM transactions INNER JOIN flag_mappings ON transactions.transaction_id = flag_mappings.transaction_id INNER JOIN flags ON flag_mappings.flag_id = flags.flag_id WHERE flags.timestamp BETWEEN '2022-01-01' AND '2022-02-01';",
+      "SELECT customers.name AS customer_name, flags.flag_reason FROM customers LEFT JOIN flags ON customers.customer_id = flags.flagger_id WHERE customers.address LIKE '%Street%' ORDER BY customers.name ASC;"
+    ]
+  }
+]

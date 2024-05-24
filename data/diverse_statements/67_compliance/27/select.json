@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM retention_policies;",
+      "SELECT policy_name, retention_period FROM retention_policies WHERE retention_period > INTERVAL '30 days';",
+      "SELECT policy_id, policy_name, retention_period FROM retention_policies ORDER BY policy_id DESC;",
+      "SELECT * FROM retention_policies WHERE created_datetime BETWEEN TIMESTAMP '2021-01-01' AND TIMESTAMP '2022-01-01';",
+      "SELECT policy_name FROM retention_policies WHERE policy_name ILIKE 'archive%';",
+      "SELECT * FROM retention_policies WHERE policy_name = 'Policy A' ORDER BY created_datetime DESC;",
+      "SELECT policy_name, retention_period FROM retention_policies WHERE retention_period > INTERVAL '2' DAY ORDER BY retention_period ASC;",
+      "SELECT policy_id, policy_name, retention_period FROM retention_policies WHERE created_datetime BETWEEN '2022-01-01 00:00:00' AND '2022-03-31 23:59:59' ORDER BY policy_id ASC;",
+      "SELECT policy_id, policy_name, retention_period FROM retention_policies WHERE retention_period <= INTERVAL '1' YEAR ORDER BY policy_id DESC, created_datetime ASC;",
+      "SELECT COUNT(*), MIN(retention_period), MAX(retention_period) FROM retention_policies GROUP BY policy_name HAVING COUNT(*) > 1 ORDER BY MAX(retention_period) DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM DataRetentionPolicy;",
+      "SELECT policy_name, retention_period FROM DataRetentionPolicy WHERE id = 1;",
+      "SELECT policy_name, legal_requirement, last_updated FROM DataRetentionPolicy WHERE retention_period > 365;",
+      "SELECT * FROM DataDeletionLog ORDER BY deletion_timestamp DESC;",
+      "SELECT record_id, deletion_timestamp, reason FROM DataDeletionLog WHERE reason LIKE '%personal data%';",
+      "SELECT * FROM DataRetentionPolicy WHERE retention_period > 365;",
+      "SELECT policy_name, retention_period, legal_requirement FROM DataRetentionPolicy WHERE legal_requirement = 'GDPR';",
+      "SELECT policy_name, retention_period, last_updated FROM DataRetentionPolicy ORDER BY last_updated DESC;",
+      "SELECT policy_name, record_id, deletion_timestamp FROM DataDeletionLog INNER JOIN DataRetentionPolicy ON DataDeletionLog.policy_id = DataRetentionPolicy.id;",
+      "SELECT policy_name, COUNT(record_id) AS total_records FROM DataDeletionLog INNER JOIN DataRetentionPolicy ON DataDeletionLog.policy_id = DataRetentionPolicy.id GROUP BY policy_name HAVING total_records > 10;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM data_category;",
+      "SELECT category_name, category_id FROM data_category ORDER BY category_id DESC;",
+      "SELECT item_name, date_created FROM data_item WHERE is_sensitive = TRUE;",
+      "SELECT policy_id, policy_name FROM retention_policy WHERE policy_id IN (1, 3, 5);",
+      "SELECT * FROM data_item ORDER BY date_created ASC;",
+      "SELECT policy_name, retention_period FROM retention_policy WHERE policy_id = 1;",
+      "SELECT item_name, date_created FROM data_item WHERE category_id = 2 ORDER BY date_created DESC;",
+      "SELECT item_name, category_name, date_created FROM data_item JOIN data_category ON data_item.category_id = data_category.category_id;",
+      "SELECT policy_name, retention_period FROM retention_policy WHERE policy_name LIKE '%daily%' AND retention_period > INTERVAL '30 days';",
+      "SELECT item_name, date_created FROM data_item WHERE is_sensitive = TRUE AND date_created >= '2021-01-01';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM retention_policy;",
+      "SELECT policy_name, retention_period FROM retention_policy WHERE compliance_level = 'High';",
+      "SELECT category_name, description FROM data_category;",
+      "SELECT record_id, creation_date FROM data_record ORDER BY creation_date DESC;",
+      "SELECT log_id, record_id, deletion_reason, deletion_date FROM deletion_log WHERE deletion_date IS NOT NULL;",
+      "SELECT * FROM retention_policy;",
+      "SELECT policy_name, retention_period FROM retention_policy WHERE compliance_level = 'high';",
+      "SELECT record_id, data_category_id, creation_date FROM data_record ORDER BY creation_date DESC;",
+      "SELECT policy_name, retention_period, compliance_level FROM retention_policy ORDER BY retention_period ASC;",
+      "SELECT data_category.category_name, data_record.record_data FROM data_category JOIN data_record ON data_category.category_id = data_record.data_category_id WHERE data_category.category_name = 'Sensitive';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM retention_policy;",
+      "SELECT policy_name, retention_period FROM retention_policy WHERE policy_id = 1;",
+      "SELECT category_id, category_name, description FROM data_categories ORDER BY category_id DESC;",
+      "SELECT record_id, data_category_id, record_data FROM data_records WHERE upload_date > '2022-01-01' ORDER BY upload_date;",
+      "SELECT log_id, access_date, user_id FROM data_access_log WHERE access_date < '2022-03-01' ORDER BY log_id ASC;",
+      "SELECT * FROM retention_policy WHERE retention_period > 30 ORDER BY created_date DESC;",
+      "SELECT policy_name, retention_period FROM retention_policy WHERE policy_id IN (1, 3, 5);",
+      "SELECT record_id, record_data->>'name' AS data_name, upload_date FROM data_records WHERE upload_date >= '2022-01-01' ORDER BY upload_date ASC;",
+      "SELECT log_id, access_date, user_id FROM data_access_log WHERE access_date BETWEEN '2022-01-01' AND '2022-06-30' ORDER BY log_id DESC LIMIT 10;",
+      "SELECT r.policy_name, d.category_name, d.description FROM retention_policy r JOIN data_categories d ON r.policy_id = d.category_id;"
+    ]
+  }
+]

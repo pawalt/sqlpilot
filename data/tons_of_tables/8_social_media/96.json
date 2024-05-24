@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SocialMediaInfluenceOnElections (\n    election_id UUID PRIMARY KEY,\n    agency_id UUID,\n    social_media_platform VARCHAR,\n    influencer_name VARCHAR,\n    posts_count INT,\n    post_engagement INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_platform (\n    platform_id SERIAL PRIMARY KEY,\n    platform_name VARCHAR(50) NOT NULL,\n    platform_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE election_influencers (\n    influencer_id SERIAL PRIMARY KEY,\n    influencer_name VARCHAR(100) NOT NULL,\n    influencer_handle VARCHAR(50) NOT NULL,\n    platform_id INT REFERENCES social_media_platform(platform_id),\n    followers_count INT,\n    posts_count INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE socialmedia_influence (\n id INT PRIMARY KEY,\n election_id INT,\n social_media_platform VARCHAR,\n influence_score FLOAT\n )"
+      },
+      {
+        "table_schema": "CREATE TABLE elections (\n id INT PRIMARY KEY,\n election_name VARCHAR,\n election_date DATE,\n winning_party VARCHAR\n )"
+      },
+      {
+        "table_schema": "CREATE TABLE government_agencies (\n id INT PRIMARY KEY,\n agency_name VARCHAR,\n headquarters_location VARCHAR\n )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE government_agencies (\n  agency_id INT PRIMARY KEY,\n  agency_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_accounts (\n  account_id INT PRIMARY KEY,\n  account_name VARCHAR(100) NOT NULL,\n  followers_count INT,\n  posts_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE election_data (\n  election_id INT PRIMARY KEY,\n  election_name VARCHAR(100) NOT NULL,\n  election_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_influence (\n  influence_id INT PRIMARY KEY,\n  account_id INT,\n  election_id INT,\n  influence_score DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Government_Agencies (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(50) NOT NULL,\n    agency_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Social_Media_Platforms (\n    platform_id INT PRIMARY KEY,\n    platform_name VARCHAR(50) NOT NULL,\n    platform_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Elections (\n    election_id INT PRIMARY KEY,\n    election_name VARCHAR(50) NOT NULL,\n    election_year INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Posts (\n    post_id INT PRIMARY KEY,\n    post_content TEXT NOT NULL,\n    post_date DATE NOT NULL,\n    platform_id INT,\n    agency_id INT,\n    election_id INT,\n    FOREIGN KEY (platform_id) REFERENCES Social_Media_Platforms(platform_id),\n    FOREIGN KEY (agency_id) REFERENCES Government_Agencies(agency_id),\n    FOREIGN KEY (election_id) REFERENCES Elections(election_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Interactions (\n    interaction_id INT PRIMARY KEY,\n    post_id INT,\n    user_id INT,\n    interaction_type VARCHAR(20) NOT NULL,\n    interaction_date DATETIME NOT NULL,\n    FOREIGN KEY (post_id) REFERENCES Posts(post_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE travel_itineraries (\n    itinerary_id INT PRIMARY KEY,\n    itinerary_name VARCHAR(255) NOT NULL,\n    starting_location VARCHAR(255) NOT NULL,\n    destination_location VARCHAR(255) NOT NULL,\n    cultural_site VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE travel_itineraries (\n  itinerary_id INT PRIMARY KEY,\n  itinerary_name TEXT,\n  start_date DATE,\n  end_date DATE,\n  cultural_site_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cultural_sites (\n  site_id INT PRIMARY KEY,\n  site_name TEXT,\n  location TEXT,\n  opening_hours TEXT,\n  entry_fee DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE travel_itineraries (\n    id INT PRIMARY KEY,\n    itinerary_name VARCHAR(255) NOT NULL,\n    cultural_site VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cultural_sites (\n    id INT PRIMARY KEY,\n    site_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE itinerary_schedule (\n    itinerary_id INT,\n    site_id INT,\n    day INT NOT NULL,\n    time TIMESTAMP,\n    FOREIGN KEY (itinerary_id) REFERENCES travel_itineraries(id),\n    FOREIGN KEY (site_id) REFERENCES cultural_sites(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE travel_itineraries (\n    itinerary_id UUID PRIMARY KEY,\n    itinerary_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    cultural_sites JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cultural_sites (\n    site_id UUID PRIMARY KEY,\n    site_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255),\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE itinerary_sites (\n    itinerary_id UUID REFERENCES travel_itineraries(itinerary_id),\n    site_id UUID REFERENCES cultural_sites(site_id),\n    visit_date DATE,\n    duration_hours INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(100) UNIQUE,\n    email VARCHAR(255) UNIQUE,\n    password_hash VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE travel_itineraries (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cultural_sites (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location VARCHAR(255),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE itinerary_cultural_sites (\n    id INT PRIMARY KEY,\n    itinerary_id INT,\n    cultural_site_id INT,\n    FOREIGN KEY (itinerary_id) REFERENCES travel_itineraries(id),\n    FOREIGN KEY (cultural_site_id) REFERENCES cultural_sites(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_itineraries (\n    id INT PRIMARY KEY,\n    user_id INT,\n    itinerary_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(id),\n    FOREIGN KEY (itinerary_id) REFERENCES travel_itineraries(id)\n);"
+      }
+    ]
+  }
+]

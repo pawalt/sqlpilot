@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loans (\n  loan_id INT PRIMARY KEY,\n  loan_amount DECIMAL,\n  interest_rate DECIMAL,\n  loan_term INT,\n  borrower_name VARCHAR(50),\n  loan_purpose TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE lenders (\n  lender_id INT NOT NULL,\n  lender_name VARCHAR(50) NOT NULL,\n  investment_amount DECIMAL(10, 2) NOT NULL,\n  PRIMARY KEY (lender_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n  loan_id INT NOT NULL,\n  loan_name VARCHAR(100) NOT NULL,\n  loan_type VARCHAR(50) NOT NULL,\n  loan_amount DECIMAL(10, 2) NOT NULL,\n  interest_rate DECIMAL(5, 2) NOT NULL,\n  lender_id INT NOT NULL,\n  PRIMARY KEY (loan_id),\n  FOREIGN KEY (lender_id) REFERENCES lenders(lender_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loan_opportunities (\n    opportunity_id UUID PRIMARY KEY,\n    borrower_name VARCHAR,\n    loan_amount DECIMAL,\n    interest_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lender_info (\n    lender_id UUID PRIMARY KEY,\n    lender_name VARCHAR,\n    total_investment DECIMAL,\n    investment_limit DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_logs (\n    log_id UUID PRIMARY KEY,\n    opportunity_id UUID,\n    lender_id UUID,\n    investment_amount DECIMAL,\n    invest_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE borrowers (\n    borrower_id INT PRIMARY KEY,\n    borrower_name VARCHAR(50),\n    loan_amount DECIMAL,\n    loan_term INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n    loan_id INT PRIMARY KEY,\n    loan_type VARCHAR(50),\n    loan_amount DECIMAL,\n    interest_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lenders (\n    lender_id INT PRIMARY KEY,\n    lender_name VARCHAR(50),\n    location VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investments (\n    investment_id INT PRIMARY KEY,\n    lender_id INT,\n    loan_id INT,\n    invest_amount DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE borrowers (\n  borrower_id UUID PRIMARY KEY,\n  borrower_name VARCHAR(50),\n  loan_amount DECIMAL(10, 2),\n  loan_purpose TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n  loan_id UUID PRIMARY KEY,\n  loan_type VARCHAR(50),\n  interest_rate DECIMAL(5, 2),\n  loan_term INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lenders (\n  lender_id UUID PRIMARY KEY,\n  lender_name VARCHAR(50),\n  investment_amount DECIMAL(10, 2),\n  investment_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE loan_opportunities (\n  opportunity_id UUID PRIMARY KEY,\n  loan_id UUID REFERENCES loans(loan_id),\n  borrower_id UUID REFERENCES borrowers(borrower_id),\n  opportunity_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE investments (\n  investment_id UUID PRIMARY KEY,\n  lender_id UUID REFERENCES lenders(lender_id),\n  opportunity_id UUID REFERENCES loan_opportunities(opportunity_id),\n  investment_amount DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  }
+]

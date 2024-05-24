@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_profiles (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email_address VARCHAR(100),\n    age INT,\n    gender VARCHAR(10),\n    interests VARCHAR[],\n    geo_location GEOGRAPHY\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(100),\n    location_geofence POINT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(50),\n    target_geofence POLYGON,\n    start_date TIMESTAMP,\n    end_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofencing_data (\n    geofence_id UUID PRIMARY KEY,\n    location_name STRING,\n    latitude FLOAT,\n    longitude FLOAT\n);\n\nCREATE TABLE customer_profiles (\n    customer_id UUID PRIMARY KEY,\n    first_name STRING,\n    last_name STRING,\n    email STRING,\n    phone_number STRING\n);\n\nCREATE TABLE marketing_campaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name STRING,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geofencing_data (\n    id UUID PRIMARY KEY,\n    geofence_name VARCHAR(255),\n    latitude FLOAT,\n    longitude FLOAT,\n    radius FLOAT\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_profiles (\n    customer_id UUID PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(20),\n    age INT,\n    address VARCHAR(255)\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL\n)\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_targets (\n    id UUID PRIMARY KEY,\n    campaign_id UUID,\n    geofence_id UUID,\n    CONSTRAINT fk_campaign\n    FOREIGN KEY (campaign_id)\n    REFERENCES marketing_campaigns(campaign_id),\n    CONSTRAINT fk_geofence\n    FOREIGN KEY (geofence_id)\n    REFERENCES geofencing_data(id)\n)\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerProfile (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    geofence_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Geofence (\n    geofence_id INT PRIMARY KEY,\n    geofence_name VARCHAR(255),\n    latitude DECIMAL,\n    longitude DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MarketingCampaign (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerCampaign (\n    customer_id INT,\n    campaign_id INT,\n    PRIMARY KEY (customer_id, campaign_id),\n    FOREIGN KEY (customer_id) REFERENCES CustomerProfile(customer_id),\n    FOREIGN KEY (campaign_id) REFERENCES MarketingCampaign(campaign_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerGeofence (\n    customer_id INT,\n    geofence_id INT,\n    PRIMARY KEY (customer_id, geofence_id),\n    FOREIGN KEY (customer_id) REFERENCES CustomerProfile(customer_id),\n    FOREIGN KEY (geofence_id) REFERENCES Geofence(geofence_id)\n);"
+      }
+    ]
+  }
+]

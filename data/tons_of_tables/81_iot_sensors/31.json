@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_growth_tracking (\n    crop_id UUID PRIMARY KEY,\n    growth_stage TEXT,\n    sensor_data JSONB,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    sensor_id INT PRIMARY KEY,\n    crop_id INT NOT NULL,\n    timestamp TIMESTAMPTZ NOT NULL,\n    temperature FLOAT,\n    humidity FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_growth (\n    crop_id INT PRIMARY KEY,\n    stage VARCHAR(50) NOT NULL,\n    description TEXT,\n    start_timestamp TIMESTAMPTZ,\n    end_timestamp TIMESTAMPTZ\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_growths (\n    crop_id INT PRIMARY KEY,\n    growth_stage VARCHAR(50),\n    sensor_data JSON,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    sensor_id INT PRIMARY KEY,\n    sensor_type VARCHAR(50),\n    sensor_location VARCHAR(100),\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_sensors (\n    crop_id INT,\n    sensor_id INT,\n    FOREIGN KEY (crop_id) REFERENCES crop_growths(crop_id),\n    FOREIGN KEY (sensor_id) REFERENCES sensor_data(sensor_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_info (\n    id INT PRIMARY KEY,\n    crop_name VARCHAR(255),\n    growth_stage VARCHAR(100),\n    sensor_data JSONB,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_location (\n    sensor_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    latitude DECIMAL,\n    longitude DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    temperature DECIMAL,\n    humidity DECIMAL,\n    light_intensity DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE growth_stage_history (\n    id INT PRIMARY KEY,\n    crop_id INT,\n    growth_stage VARCHAR(100),\n    start_timestamp TIMESTAMP,\n    end_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop (\n    crop_id UUID PRIMARY KEY,\n    crop_name VARCHAR(100),\n    planting_date TIMESTAMP,\n    harvest_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor (\n    sensor_id UUID PRIMARY KEY,\n    sensor_type VARCHAR(50),\n    location VARCHAR(100),\n    installation_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE growth_stage (\n    stage_id UUID PRIMARY KEY,\n    stage_name VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    data_id UUID PRIMARY KEY,\n    sensor_id UUID,\n    crop_id UUID,\n    recorded_timestamp TIMESTAMP,\n    temperature FLOAT,\n    humidity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stage_progress (\n    progress_id UUID PRIMARY KEY,\n    sensor_data_id UUID,\n    stage_id UUID,\n    progress_percentage INT,\n    observed_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

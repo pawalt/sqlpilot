@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE client_portfolio (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(255),\n    portfolio_url VARCHAR(255),\n    shoot_schedule TIMESTAMP,\n    image_license_agreement TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Client_Portfolios (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR,\n    portfolio_description TEXT,\n    portfolio_images JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Photoshoot_Schedules (\n    schedule_id SERIAL PRIMARY KEY,\n    client_id INT REFERENCES Client_Portfolios(client_id),\n    shoot_date TIMESTAMP,\n    photographer VARCHAR,\n    location VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE client_portfolios (\n client_id INT PRIMARY KEY,\n client_name VARCHAR(255),\n client_email VARCHAR(255),\n portfolio_desc TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE photoshoot_schedules (\n schedule_id INT PRIMARY KEY,\n client_id INT,\n date DATE,\n start_time TIME,\n end_time TIME\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE image_licensing_agreements (\n agreement_id INT PRIMARY KEY,\n client_id INT,\n agreement_date DATE,\n agreement_desc TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ClientPortfolios (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(255) NOT NULL,\n  portfolio_url VARCHAR(255),\n  email VARCHAR(255) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PhotoshootSchedules (\n  schedule_id INT PRIMARY KEY,\n  client_id INT REFERENCES ClientPortfolios(client_id),\n  photoshoot_date DATE,\n  photoshoot_time TIME,\n  location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageLicenses (\n  license_id INT PRIMARY KEY,\n  client_id INT REFERENCES ClientPortfolios(client_id),\n  license_type VARCHAR(50) NOT NULL,\n  license_start_date DATE,\n  license_end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE StockImages (\n  image_id INT PRIMARY KEY,\n  image_path VARCHAR(255) NOT NULL,\n  license_id INT REFERENCES ImageLicenses(license_id),\n  photographer_name VARCHAR(255),\n  upload_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Client_Portfolios (client_id INT, client_name VARCHAR(255), portfolio_url VARCHAR(255));\nCREATE TABLE Photoshoot_Schedules (shoot_id INT, client_id INT, schedule_date DATE, location VARCHAR(255));\nCREATE TABLE Image_Licensing (license_id INT, shoot_id INT, client_id INT, license_type VARCHAR(50), license_expiry DATE);\nCREATE TABLE Image_Metadata (image_id INT, shoot_id INT, photographer_id INT, image_name VARCHAR(255), image_description TEXT);\nCREATE TABLE Photographer_Info (photographer_id INT, photographer_name VARCHAR(255), experience_years INT, specialty VARCHAR(100));"
+      }
+    ]
+  }
+]

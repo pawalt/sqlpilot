@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE properties (\n    property_id UUID PRIMARY KEY,\n    property_name VARCHAR(255),\n    property_type VARCHAR(50),\n    location VARCHAR(100),\n    price DECIMAL,\n    availability BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_properties (\n    property_id UUID PRIMARY KEY,\n    property_name VARCHAR,\n    property_location VARCHAR,\n    property_price INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE market_comparison (\n    comparison_id UUID PRIMARY KEY,\n    property_id UUID REFERENCES rental_properties(property_id),\n    market_price INT,\n    comparison_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_availability (\n  property_id INT PRIMARY KEY,\n  property_name VARCHAR(255),\n  city VARCHAR(100),\n  available_units INT,\n  price_per_unit DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rental_history (\n  rental_id INT PRIMARY KEY,\n  property_id INT REFERENCES property_availability(property_id),\n  rental_date DATE,\n  rental_duration INT,\n  rental_price DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE market_comparison (\n  comparison_id INT PRIMARY KEY,\n  property_id INT REFERENCES property_availability(property_id),\n  market_rental_price DECIMAL(10, 2),\n  market_average_price DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_listings (\n  listing_id INT PRIMARY KEY,\n  property_type VARCHAR(255),\n  address VARCHAR(255),\n  rental_price DECIMAL,\n  availability_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_owners (\n  owner_id INT PRIMARY KEY,\n  owner_name VARCHAR(255),\n  contact_email VARCHAR(255),\n  contact_phone VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rental_history (\n  rental_id INT PRIMARY KEY,\n  listing_id INT,\n  rental_date DATE,\n  rental_price DECIMAL,\n  FOREIGN KEY (listing_id) REFERENCES property_listings(listing_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE market_comparison (\n  comparison_id INT PRIMARY KEY,\n  property_type VARCHAR(255),\n  rental_price DECIMAL,\n  market_average_price DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE rental_properties (\n    id INT PRIMARY KEY,\n    address VARCHAR(255),\n    city VARCHAR(100),\n    state VARCHAR(50),\n    zip_code VARCHAR(10),\n    rent_price DECIMAL(10, 2),\n    availability BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE market_comparison (\n    id INT PRIMARY KEY,\n    property_id INT,\n    market_rent_price DECIMAL(10, 2),\n    market_comparison_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_images (\n    id INT PRIMARY KEY,\n    property_id INT,\n    image_url VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE property_reviews (\n    id INT PRIMARY KEY,\n    property_id INT,\n    user_id INT,\n    rating INT,\n    review_text TEXT\n);"
+      }
+    ]
+  }
+]

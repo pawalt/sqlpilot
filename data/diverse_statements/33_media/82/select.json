@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM media_coverage_tracking;",
+      "SELECT media_source, number_of_mentions FROM media_coverage_tracking WHERE topic_id = 5;",
+      "SELECT topic_id, sentiment_analysis FROM media_coverage_tracking WHERE number_of_mentions > 100;",
+      "SELECT media_source, sentiment_analysis FROM media_coverage_tracking ORDER BY number_of_mentions DESC;",
+      "SELECT COUNT(*) AS total_mentions FROM media_coverage_tracking WHERE sentiment_analysis = 'positive';",
+      "SELECT * FROM media_coverage_tracking WHERE topic_id = 1;",
+      "SELECT media_source, number_of_mentions FROM media_coverage_tracking WHERE sentiment_analysis = 'Positive' ORDER BY number_of_mentions DESC;",
+      "SELECT topic_id, media_source, sentiment_analysis, number_of_mentions FROM media_coverage_tracking WHERE media_source LIKE '%news%' OR media_source LIKE '%newspaper%';",
+      "SELECT topic_id, COUNT(media_source) AS num_media_sources FROM media_coverage_tracking GROUP BY topic_id ORDER BY num_media_sources DESC;",
+      "SELECT AVG(number_of_mentions) AS avg_mentions, MAX(number_of_mentions) AS max_mentions, MIN(number_of_mentions) AS min_mentions FROM media_coverage_tracking WHERE sentiment_analysis = 'Negative';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM media_mentions;",
+      "SELECT id, topic, mention_date FROM media_mentions WHERE sentiment_score IS NOT NULL;",
+      "SELECT topic, mention_date, mention_count FROM media_mentions ORDER BY mention_date DESC;",
+      "SELECT id, sentiment_type, sentiment_confidence FROM sentiment_analysis WHERE sentiment_confidence > 0.8;",
+      "SELECT m.topic, s.sentiment_type, s.sentiment_confidence FROM media_mentions m JOIN sentiment_analysis s ON m.id = s.mention_id;",
+      "SELECT * FROM media_mentions WHERE sentiment_score > 0.5 ORDER BY mention_date DESC LIMIT 10;",
+      "SELECT topic, mention_count, sentiment_score FROM media_mentions WHERE sentiment_score IS NULL AND mention_count > 100 ORDER BY mention_count ASC;",
+      "SELECT m.topic, s.sentiment_type, s.sentiment_confidence FROM media_mentions m JOIN sentiment_analysis s ON m.id = s.mention_id WHERE s.sentiment_confidence > 0.8 AND (m.topic LIKE '%financial%' OR m.topic LIKE '%economic%') ORDER BY s.sentiment_confidence DESC LIMIT 5;",
+      "SELECT m.topic, SUM(s.sentiment_confidence) AS total_confidence FROM media_mentions m JOIN sentiment_analysis s ON m.id = s.mention_id GROUP BY m.topic HAVING total_confidence > 2.5 ORDER BY total_confidence DESC;",
+      "SELECT m.topic, AVG(s.sentiment_confidence) AS avg_confidence FROM media_mentions m JOIN sentiment_analysis s ON m.id = s.mention_id WHERE m.mention_count < 50 GROUP BY m.topic HAVING COUNT(s.sentiment_type) > 1 ORDER BY avg_confidence DESC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM media_mentions;",
+      "SELECT mention_id, mention_date, media_source FROM media_mentions ORDER BY mention_date DESC;",
+      "SELECT topic_name, COUNT(*) AS total_mentions FROM media_mentions JOIN topics ON media_mentions.topic_id = topics.topic_id GROUP BY topic_name;",
+      "SELECT sentiment, COUNT(*) AS total_mentions FROM media_mentions GROUP BY sentiment ORDER BY total_mentions DESC;",
+      "SELECT * FROM media_mentions WHERE mention_date >= '2022-01-01' AND mention_date <= '2022-12-31';",
+      "SELECT mention_id, mention_date, media_source FROM media_mentions WHERE topic_id = 1;",
+      "SELECT * FROM topics t JOIN media_mentions m ON t.topic_id = m.topic_id;",
+      "SELECT topic_name, mention_date, sentiment FROM topics t JOIN media_mentions m ON t.topic_id = m.topic_id WHERE m.sentiment = 'positive';",
+      "SELECT media_source, COUNT(mention_id) AS mention_count FROM media_mentions GROUP BY media_source ORDER BY mention_count DESC;",
+      "SELECT topic_name, source_name, mention_date FROM topics t JOIN media_mentions m ON t.topic_id = m.topic_id JOIN media_sources s ON s.source_id = m.source_id WHERE t.topic_name LIKE '%health%' ORDER BY mention_date DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT mention_date, topic, media_source FROM media_coverage_mentions;",
+      "SELECT * FROM sentiment_analysis WHERE sentiment_score > 0.5;",
+      "SELECT source_name, COUNT(*) FROM media_sources GROUP BY source_name;",
+      "SELECT mention_date, topic, sentiment_score FROM sentiment_analysis JOIN media_coverage_mentions ON sentiment_analysis.mention_id = media_coverage_mentions.mention_id;",
+      "SELECT topic_name, mention_count FROM media_coverage_mentions JOIN topics ON media_coverage_mentions.topic = topics.topic_name;",
+      "SELECT * FROM media_coverage_mentions ORDER BY mention_date DESC, mention_count ASC LIMIT 10;",
+      "SELECT mention_id, mention_date, topic, media_source, mention_count FROM media_coverage_mentions WHERE mention_count > 5 ORDER BY mention_count DESC;",
+      "SELECT mcm.topic, ma.sentiment_score, ma.sentiment_category FROM media_coverage_mentions mcm JOIN sentiment_analysis ma ON mcm.mention_id = ma.mention_id WHERE ma.sentiment_score > 0.5;",
+      "SELECT ms.source_name, COUNT(*) AS total_mentions FROM media_coverage_mentions mcm JOIN media_sources ms ON mcm.media_source = ms.source_id GROUP BY ms.source_name HAVING total_mentions > 3 ORDER BY total_mentions DESC;",
+      "SELECT t.topic_name, COUNT(*) AS total_mentions, AVG(ma.sentiment_score) AS avg_sentiment_score FROM media_coverage_mentions mcm JOIN topics t ON mcm.topic = t.topic_id JOIN sentiment_analysis ma ON mcm.mention_id = ma.mention_id GROUP BY t.topic_name HAVING total_mentions > 1 ORDER BY avg_sentiment_score DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM media_mentions ORDER BY mention_date DESC LIMIT 5;",
+      "SELECT topic, sentiment FROM media_mentions WHERE mention_count > 100;",
+      "SELECT id, topic, mention_count FROM trending_topics ORDER BY mention_count DESC LIMIT 5;",
+      "SELECT * FROM news_articles WHERE sentiment = 'Positive' OR sentiment = 'Neutral';",
+      "SELECT topic, sentiment, mention_count FROM trending_topics WHERE sentiment = 'Negative';",
+      "SELECT * FROM media_mentions ORDER BY mention_date DESC, mention_count ASC;",
+      "SELECT topic, sentiment FROM media_mentions WHERE mention_count > 10 ORDER BY mention_count DESC;",
+      "SELECT topic, sentiment FROM media_mentions WHERE mention_date BETWEEN '2022-01-01' AND '2022-03-31' ORDER BY mention_count DESC;",
+      "SELECT headline, publication_date FROM news_articles WHERE sentiment = 'Positive' ORDER BY publication_date DESC;",
+      "SELECT DISTINCT platform FROM social_media_mentions WHERE sentiment = 'Negative';"
+    ]
+  }
+]

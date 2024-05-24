@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TradeMatchingEngine (\n    trade_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    buy_order_id INT,\n    buy_quantity DECIMAL,\n    sell_order_id INT,\n    sell_quantity DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BuyOrders ( \n  order_id INT PRIMARY KEY, \n  instrument VARCHAR(255) NOT NULL, \n  quantity INT NOT NULL, \n  price DECIMAL(10, 2) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SellOrders ( \n  order_id INT PRIMARY KEY, \n  instrument VARCHAR(255) NOT NULL, \n  quantity INT NOT NULL, \n  price DECIMAL(10, 2) NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trade_orders (\n    order_id INT PRIMARY KEY,\n    order_type VARCHAR(20),\n    order_quantity INT,\n    order_price DECIMAL(10,2),\n    order_status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE buy_orders (\n    buy_order_id INT PRIMARY KEY,\n    buy_order_type VARCHAR(20),\n    buy_quantity INT,\n    buy_price DECIMAL(10,2),\n    buy_status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sell_orders (\n    sell_order_id INT PRIMARY KEY,\n    sell_order_type VARCHAR(20),\n    sell_quantity INT,\n    sell_price DECIMAL(10,2),\n    sell_status VARCHAR(20)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE buy_orders (\n  order_id SERIAL PRIMARY KEY,\n  symbol VARCHAR(50) NOT NULL,\n  price DECIMAL(10, 2) NOT NULL,\n  quantity INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sell_orders (\n  order_id SERIAL PRIMARY KEY,\n  symbol VARCHAR(50) NOT NULL,\n  price DECIMAL(10, 2) NOT NULL,\n  quantity INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE order_book (\n  order_id SERIAL PRIMARY KEY,\n  buy_order_id INT REFERENCES buy_orders(order_id),\n  sell_order_id INT REFERENCES sell_orders(order_id),\n  trade_price DECIMAL(10, 2) NOT NULL,\n  trade_quantity INT NOT NULL,\n  trade_timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_history (\n  trade_id SERIAL PRIMARY KEY,\n  buy_order_id INT REFERENCES buy_orders(order_id),\n  sell_order_id INT REFERENCES sell_orders(order_id),\n  trade_price DECIMAL(10, 2) NOT NULL,\n  trade_quantity INT NOT NULL,\n  trade_timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trades (\n    trade_id SERIAL PRIMARY KEY,\n    symbol VARCHAR(255) NOT NULL,\n    quantity INTEGER NOT NULL,\n    price NUMERIC(10, 2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE buy_orders (\n    order_id SERIAL PRIMARY KEY,\n    symbol VARCHAR(255) NOT NULL,\n    quantity INTEGER NOT NULL,\n    price NUMERIC(10, 2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sell_orders (\n    order_id SERIAL PRIMARY KEY,\n    symbol VARCHAR(255) NOT NULL,\n    quantity INTEGER NOT NULL,\n    price NUMERIC(10, 2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE matched_trades (\n    trade_id SERIAL PRIMARY KEY,\n    buy_order_id INTEGER NOT NULL,\n    sell_order_id INTEGER NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(255) UNIQUE NOT NULL,\n    balance NUMERIC(10, 2) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

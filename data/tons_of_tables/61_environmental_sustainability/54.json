@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RecyclingPrograms (\n  program_id UUID PRIMARY KEY,\n  program_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE,\n  total_recycled_amount DECIMAL(10, 2),\n  success_rate FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recycling_programs (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  program_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_statistics (\n  statistic_id INT PRIMARY KEY,\n  program_id INT,\n  collection_date DATE NOT NULL,\n  recyclables_collected DECIMAL(10,2) NOT NULL,\n  CONSTRAINT fk_program_id FOREIGN KEY (program_id) REFERENCES recycling_programs(program_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RecyclingPrograms (\n\tprogram_id INT PRIMARY KEY,\n\tprogram_name VARCHAR(255) NOT NULL,\n\tprogram_type VARCHAR(50) NOT NULL,\n\tstart_date DATE,\n\tend_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionCenters (\n\tcenter_id INT PRIMARY KEY,\n\tcenter_name VARCHAR(255) NOT NULL,\n\tlocation VARCHAR(100),\n\tcontact_person VARCHAR(100),\n\tcontact_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclingRecords (\n\trecord_id INT PRIMARY KEY,\n\tprogram_id INT,\n\tcenter_id INT,\n\trecycled_material VARCHAR(50) NOT NULL,\n\tquantity DECIMAL(10,2) NOT NULL,\n\trecycling_date DATE,\n\tFOREIGN KEY (program_id) REFERENCES RecyclingPrograms(program_id),\n\tFOREIGN KEY (center_id) REFERENCES CollectionCenters(center_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RecyclingPrograms (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  recycling_center_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecyclingCenters (\n  center_id INT PRIMARY KEY,\n  center_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255),\n  contact_email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecycledMaterials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255) NOT NULL,\n  recycle_date DATE,\n  quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProgramMaterials (\n  program_id INT,\n  material_id INT,\n  PRIMARY KEY(program_id, material_id),\n  FOREIGN KEY (program_id) REFERENCES RecyclingPrograms(program_id),\n  FOREIGN KEY (material_id) REFERENCES RecycledMaterials(material_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE recycling_centers (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR NOT NULL,\n    location VARCHAR NOT NULL,\n    capacity INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_bins (\n    bin_id SERIAL PRIMARY KEY,\n    bin_type VARCHAR NOT NULL,\n    location_id INTEGER,\n    capacity INTEGER,\n    FOREIGN KEY (location_id) REFERENCES recycling_centers(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collection_records (\n    record_id SERIAL PRIMARY KEY,\n    bin_id INTEGER,\n    collection_date DATE,\n    collected_amount INTEGER,\n    FOREIGN KEY (bin_id) REFERENCES recycling_bins(bin_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_categories (\n    category_id SERIAL PRIMARY KEY,\n    category_name VARCHAR NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_programs (\n    program_id SERIAL PRIMARY KEY,\n    program_name VARCHAR NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    coordinator VARCHAR,\n    budget NUMERIC\n);"
+      }
+    ]
+  }
+]

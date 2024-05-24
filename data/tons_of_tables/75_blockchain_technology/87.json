@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_transactions_history (\n    transaction_id SERIAL PRIMARY KEY,\n    energy_provider VARCHAR(255) NOT NULL,\n    energy_consumer VARCHAR(255) NOT NULL,\n    energy_amount DECIMAL NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_transactions (\n  transaction_id INT PRIMARY KEY,\n  transaction_date DATE,\n  energy_source VARCHAR(100),\n  energy_amount DECIMAL(10, 2),\n  client_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_transaction_history (\n  history_id INT PRIMARY KEY,\n  transaction_id INT,\n  previous_energy_amount DECIMAL(10, 2),\n  current_energy_amount DECIMAL(10, 2),\n  transaction_date DATE,\n  CONSTRAINT fk_transaction_id FOREIGN KEY (transaction_id) REFERENCES energy_transactions(transaction_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_transactions (\n    transaction_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    source VARCHAR,\n    destination VARCHAR,\n    energy_amount DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_producers (\n    producer_id UUID PRIMARY KEY,\n    producer_name VARCHAR,\n    location VARCHAR,\n    energy_type VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumers (\n    consumer_id UUID PRIMARY KEY,\n    consumer_name VARCHAR,\n    location VARCHAR,\n    energy_usage DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_transactions(\n    transaction_id INT NOT NULL,\n    energy_amount DECIMAL NOT NULL,\n    transaction_date DATE NOT NULL,\n    transaction_type VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE energy_providers(\n    provider_id INT NOT NULL,\n    provider_name VARCHAR(100) NOT NULL,\n    provider_location VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE energy_consumers(\n    consumer_id INT NOT NULL,\n    consumer_name VARCHAR(100) NOT NULL,\n    consumer_location VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE transaction_history(\n    history_id INT NOT NULL,\n    transaction_id INT NOT NULL,\n    event_type VARCHAR(50) NOT NULL,\n    event_date DATETIME NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyConsumers (\n    consumer_id INT PRIMARY KEY,\n    consumer_name VARCHAR(100),\n    address VARCHAR(255),\n    energy_usage FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProviders (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(100),\n    address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyTransactions (\n    transaction_id INT PRIMARY KEY,\n    consumer_id INT,\n    provider_id INT,\n    transaction_date DATE,\n    energy_amount FLOAT,\n    FOREIGN KEY (consumer_id) REFERENCES EnergyConsumers(consumer_id),\n    FOREIGN KEY (provider_id) REFERENCES EnergyProviders(provider_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyMeterReadings (\n    reading_id INT PRIMARY KEY,\n    consumer_id INT,\n    reading_date DATE,\n    meter_reading FLOAT,\n    FOREIGN KEY (consumer_id) REFERENCES EnergyConsumers(consumer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyPayments (\n    payment_id INT PRIMARY KEY,\n    transaction_id INT,\n    payment_date DATE,\n    amount_paid FLOAT,\n    FOREIGN KEY (transaction_id) REFERENCES EnergyTransactions(transaction_id)\n);\n"
+      }
+    ]
+  }
+]

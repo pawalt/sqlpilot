@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_data (\n    id INT PRIMARY KEY,\n    company_name VARCHAR(50),\n    location VARCHAR(100),\n    compliance_status BOOLEAN,\n    last_inspection_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_compliance_data (\n  id INT PRIMARY KEY,\n  company_name VARCHAR(50),\n  location VARCHAR(100),\n  compliance_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE regulations (\n  regulation_id INT PRIMARY KEY,\n  regulation_name VARCHAR(100),\n  description TEXT,\n  compliance_deadline DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ComplianceAgency (\n    id UUID PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    code VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Facility (\n    id UUID PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    compliance_status BOOLEAN NOT NULL DEFAULT FALSE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceRecord (\n    id UUID PRIMARY KEY,\n    facility_id UUID NOT NULL,\n    agency_id UUID NOT NULL,\n    date DATE NOT NULL,\n    status VARCHAR(50) NOT NULL,\n    FOREIGN KEY (facility_id) REFERENCES Facility(id),\n    FOREIGN KEY (agency_id) REFERENCES ComplianceAgency(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Environmental_Compliance_Data (\n  id SERIAL PRIMARY KEY,\n  company_name VARCHAR(100) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  compliance_status VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Regulations (\n  regulation_id SERIAL PRIMARY KEY,\n  regulation_name VARCHAR(100) NOT NULL,\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspections (\n  inspection_id SERIAL PRIMARY KEY,\n  inspection_date DATE NOT NULL,\n  inspector_name VARCHAR(100) NOT NULL,\n  findings TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Standards (\n  standard_id SERIAL PRIMARY KEY,\n  standard_name VARCHAR(100) NOT NULL,\n  description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_compliance_data (\n  id INT PRIMARY KEY,\n  company_name VARCHAR(255),\n  address VARCHAR(255),\n  city VARCHAR(100),\n  state VARCHAR(50),\n  country VARCHAR(50),\n  compliance_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE regulation_standards (\n  regulation_id INT PRIMARY KEY,\n  regulation_name VARCHAR(255),\n  standard_id INT,\n  standard_name VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE violations (\n  violation_id INT PRIMARY KEY,\n  violation_description TEXT,\n  violation_date DATE,\n  company_id INT,\n  FOREIGN KEY (company_id) REFERENCES environmental_compliance_data(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inspections (\n  inspection_id INT PRIMARY KEY,\n  inspection_date DATE,\n  inspector_name VARCHAR(100),\n  company_id INT,\n  FOREIGN KEY (company_id) REFERENCES environmental_compliance_data(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE fines (\n  fine_id INT PRIMARY KEY,\n  fine_amount DECIMAL(10,2),\n  fine_date DATE,\n  company_id INT,\n  FOREIGN KEY (company_id) REFERENCES environmental_compliance_data(id)\n)"
+      }
+    ]
+  }
+]

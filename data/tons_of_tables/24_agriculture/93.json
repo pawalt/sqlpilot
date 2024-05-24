@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GMO_Distribution (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  distributor_name VARCHAR(255),\n  distribution_date DATE,\n  compliance_status BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gmo_products (\n    id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    distributor_name VARCHAR(255),\n    distribution_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_regulations (\n    id INT PRIMARY KEY,\n    regulation_name VARCHAR(255),\n    regulation_description TEXT,\n    jurisdiction VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GMO_Distributors (\n\tid INT PRIMARY KEY,\n\tname VARCHAR(255),\n\tlocation VARCHAR(255),\n\tcontact_person VARCHAR(255),\n\tregistration_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE GMO_Products (\n\tproduct_id INT PRIMARY KEY,\n\tproduct_name VARCHAR(255),\n\tproduct_type VARCHAR(255),\n\tdistributor_id INT,\n\tproduction_date DATE,\n\texpiration_date DATE,\n\tFOREIGN KEY (distributor_id) REFERENCES GMO_Distributors(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE GMO_Regulations (\n\tregulation_id INT PRIMARY KEY,\n\tregulation_text TEXT,\n\tenforcement_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE distribution_centers (\n    center_id INT PRIMARY KEY,\n    center_name VARCHAR(255),\n    location VARCHAR(255),\n    manager_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    manufacturer VARCHAR(255),\n    is_gmo BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n    shipment_id INT PRIMARY KEY,\n    product_id INT,\n    center_id INT,\n    quantity INT,\n    shipment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_agencies (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(255),\n    contact_person VARCHAR(255),\n    region VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Product ( \n   id INT PRIMARY KEY, \n   name VARCHAR(255) NOT NULL, \n   category VARCHAR(50) NOT NULL, \n   is_gmo BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Distributor ( \n   id INT PRIMARY KEY, \n   name VARCHAR(255) NOT NULL, \n   location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance ( \n   id INT PRIMARY KEY, \n   product_id INT REFERENCES Product(id), \n   distributor_id INT REFERENCES Distributor(id), \n   compliance_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspection ( \n   id INT PRIMARY KEY, \n   compliance_id INT REFERENCES Compliance(id), \n   inspector VARCHAR(255) NOT NULL, \n   inspection_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Violation ( \n   id INT PRIMARY KEY, \n   inspection_id INT REFERENCES Inspection(id), \n   violation_type VARCHAR(50) NOT NULL, \n   description TEXT\n);"
+      }
+    ]
+  }
+]

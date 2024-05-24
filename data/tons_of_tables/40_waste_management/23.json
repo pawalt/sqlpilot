@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_material_sources (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(255),\n  origin_country VARCHAR(100),\n  quality_rating INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_sources (\n    id SERIAL PRIMARY KEY,\n    source_name VARCHAR(100) NOT NULL,\n    source_type VARCHAR(50) NOT NULL,\n    origin_location VARCHAR(100) NOT NULL,\n    quality_rating INTEGER\n);\n\nCREATE TABLE compost_materials (\n    id SERIAL PRIMARY KEY,\n    material_name VARCHAR(100) NOT NULL,\n    source_id INTEGER REFERENCES compost_sources(id),\n    quantity INTEGER NOT NULL,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_sources (\n    id UUID PRIMARY KEY,\n    source_name STRING,\n    origin_location STRING,\n    quality_rating INT\n);\n\nCREATE TABLE compost_categories (\n    id UUID PRIMARY KEY,\n    category_name STRING,\n    description STRING\n);\n\nCREATE TABLE compost_logs (\n    id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    source_id UUID REFERENCES compost_sources(id),\n    category_id UUID REFERENCES compost_categories(id),\n    weight DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_sources (\n  id INT PRIMARY KEY,\n  source_name VARCHAR(50),\n  location VARCHAR(100),\n  contact_person VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_materials (\n  material_id INT PRIMARY KEY,\n  material_name VARCHAR(50),\n  material_type VARCHAR(50),\n  source_id INT,\n  FOREIGN KEY (source_id) REFERENCES compost_sources(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_quality (\n  quality_id INT PRIMARY KEY,\n  material_id INT,\n  quality_rating INT,\n  test_date DATE,\n  FOREIGN KEY (material_id) REFERENCES compost_materials(material_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_analyses (\n  analysis_id INT PRIMARY KEY,\n  quality_id INT,\n  analysis_type VARCHAR(50),\n  result VARCHAR(100),\n  FOREIGN KEY (quality_id) REFERENCES compost_quality(quality_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_sources (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255),\n  contact_person VARCHAR(255) NOT NULL,\n  material_type VARCHAR(50),\n  quality_rating INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE material_types (\n  type_id INT PRIMARY KEY,\n  type_name VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE material_producers (\n  producer_id INT PRIMARY KEY,\n  producer_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255),\n  contact_person VARCHAR(255) NOT NULL,\n  production_capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE source_materials (\n  source_id INT,\n  type_id INT,\n  quantity INT,\n  FOREIGN KEY (source_id) REFERENCES compost_sources (source_id),\n  FOREIGN KEY (type_id) REFERENCES material_types (type_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE material_transactions (\n  transaction_id INT PRIMARY KEY,\n  source_id INT,\n  type_id INT,\n  quantity INT,\n  transaction_date DATE,\n  FOREIGN KEY (source_id) REFERENCES compost_sources (source_id),\n  FOREIGN KEY (type_id) REFERENCES material_types (type_id)\n)"
+      }
+    ]
+  }
+]

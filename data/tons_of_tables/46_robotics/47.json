@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE OsteoporosisTracking (\n    patient_id INT,\n    bone_density DECIMAL,\n    measurement_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50),\n  age INT,\n  gender VARCHAR(10),\n  bone_density FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BoneDensityMeasurement (\n  measurement_id INT PRIMARY KEY,\n  patient_id INT REFERENCES Patient(patient_id),\n  measurement_date DATE,\n  density_value FLOAT,\n  measurement_type VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bone_density (\n    id INT PRIMARY KEY,\n    patient_id INT,\n    date DATE,\n    bone_density FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    age INT,\n    gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_data (\n    id INT PRIMARY KEY,\n    patient_id INT,\n    study_date DATE,\n    research_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient (\n    patient_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    age INT,\n    gender VARCHAR(50)\n);\n\nCREATE TABLE BoneDensity (\n    record_id INT PRIMARY KEY,\n    patient_id INT,\n    density DECIMAL,\n    measurement_date DATE\n    FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)\n);\n\nCREATE TABLE ResearchCenter (\n    center_id INT PRIMARY KEY,\n    name VARCHAR(255),\n    location VARCHAR(255)\n);\n\nCREATE TABLE ResearchTeam (\n    team_id INT PRIMARY KEY,\n    center_id INT,\n    leader_id INT,\n    member_count INT,\n    FOREIGN KEY (center_id) REFERENCES ResearchCenter(center_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_data (\n  patient_id SERIAL PRIMARY KEY,\n  patient_name VARCHAR(100) NOT NULL,\n  age INT,\n  gender VARCHAR(10),\n  bone_density DOUBLE PRECISION\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bone_density_measurements (\n  measurement_id SERIAL PRIMARY KEY,\n  patient_id INT,\n  measurement_date DATE,\n  bone_density_value DOUBLE PRECISION,\n  FOREIGN KEY (patient_id) REFERENCES patient_data(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_centers (\n  center_id SERIAL PRIMARY KEY,\n  center_name VARCHAR(100) NOT NULL,\n  location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_studies (\n  study_id SERIAL PRIMARY KEY,\n  study_name VARCHAR(100) NOT NULL,\n  center_id INT,\n  start_date DATE,\n  end_date DATE,\n  FOREIGN KEY (center_id) REFERENCES research_centers(center_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE study_participants (\n  participant_id SERIAL PRIMARY KEY,\n  study_id INT,\n  patient_id INT,\n  enrollment_date DATE,\n  FOREIGN KEY (study_id) REFERENCES research_studies(study_id),\n  FOREIGN KEY (patient_id) REFERENCES patient_data(patient_id)\n);"
+      }
+    ]
+  }
+]

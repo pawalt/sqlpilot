@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_reports (\n    id SERIAL PRIMARY KEY,\n    mediator_name VARCHAR(255) NOT NULL,\n    case_id INT NOT NULL,\n    success_rate DECIMAL(5,2),\n    case_duration INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_success_rates (\n  id SERIAL PRIMARY KEY,\n  case_id INT,\n  success_rate DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE case_durations (\n  id SERIAL PRIMARY KEY,\n  case_id INT,\n  duration_minutes INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MediationSuccessRates (\n  id INT PRIMARY KEY,\n  mediator_name VARCHAR(50),\n  success_rate DECIMAL(5,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseDurations (\n  id INT PRIMARY KEY,\n  case_number VARCHAR(20),\n  start_date DATE,\n  end_date DATE,\n  duration INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportData (\n  id INT PRIMARY KEY,\n  report_date DATE,\n  report_content TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_reports (\n    report_id UUID PRIMARY KEY,\n    mediator_id UUID,\n    case_id UUID,\n    success_rate DECIMAL,\n    duration_minutes INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mediators (\n    mediator_id UUID PRIMARY KEY,\n    mediator_name TEXT,\n    mediator_email TEXT UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cases (\n    case_id UUID PRIMARY KEY,\n    case_name TEXT,\n    case_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE case_durations (\n    duration_id UUID PRIMARY KEY,\n    case_id UUID,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_centers (\n  center_id INT PRIMARY KEY,\n  center_name VARCHAR(50) NOT NULL,\n  city VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mediators (\n  mediator_id INT PRIMARY KEY,\n  mediator_name VARCHAR(50) NOT NULL,\n  center_id INT,\n  FOREIGN KEY (center_id) REFERENCES mediation_centers(center_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cases (\n  case_id INT PRIMARY KEY,\n  case_name VARCHAR(50) NOT NULL,\n  mediation_date DATE,\n  mediator_id INT,\n  FOREIGN KEY (mediator_id) REFERENCES mediators(mediator_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE case_parties (\n  party_id INT PRIMARY KEY,\n  party_name VARCHAR(50) NOT NULL,\n  case_id INT,\n  FOREIGN KEY (case_id) REFERENCES cases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mediation_outcomes (\n  outcome_id INT PRIMARY KEY,\n  case_id INT,\n  success_rate DECIMAL(5,2),\n  case_duration INT,\n  FOREIGN KEY (case_id) REFERENCES cases(case_id)\n);"
+      }
+    ]
+  }
+]

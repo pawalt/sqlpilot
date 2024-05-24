@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_generation_rates (  production_line_id INT,  waste_type VARCHAR(50),  waste_weight DECIMAL(10,2),  date_generated DATE,  PRIMARY KEY (production_line_id, date_generated) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_lines (\n    production_line_id INT PRIMARY KEY,\n    production_line_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_generation (\n    waste_id INT PRIMARY KEY,\n    production_line_id INT NOT NULL,\n    waste_type VARCHAR(50) NOT NULL,\n    waste_amount DECIMAL(10,2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (production_line_id) REFERENCES production_lines(production_line_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_lines (\n  production_line_id INT PRIMARY KEY,\n  production_line_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_generation (\n  id SERIAL PRIMARY KEY,\n  production_line_id INT NOT NULL,\n  waste_type VARCHAR(50) NOT NULL,\n  waste_amount DECIMAL(10,2) NOT NULL,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_stats (\n  id SERIAL PRIMARY KEY,\n  production_line_id INT NOT NULL,\n  total_waste_amount DECIMAL(10,2) NOT NULL,\n  measured_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_lines (\n    production_line_id INT PRIMARY KEY,\n    production_line_name STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_generation (\n    waste_id INT PRIMARY KEY,\n    production_line_id INT,\n    waste_type STRING,\n    waste_weight DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_rate (\n    rate_id INT PRIMARY KEY,\n    production_line_id INT,\n    production_date DATE,\n    production_rate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal (\n    disposal_id INT PRIMARY KEY,\n    waste_id INT,\n    disposal_date DATE,\n    disposal_method STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE production_line (\n  id INT PRIMARY KEY,\n  line_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_bin (\n  id INT PRIMARY KEY,\n  bin_location VARCHAR(255) NOT NULL,\n  line_id INT NOT NULL,\n  FOREIGN KEY (line_id) REFERENCES production_line(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_type (\n  id INT PRIMARY KEY,\n  type_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_measurement (\n  id INT PRIMARY KEY,\n  bin_id INT NOT NULL,\n  type_id INT NOT NULL,\n  weight DECIMAL(10,2) NOT NULL,\n  measurement_date DATE NOT NULL,\n  FOREIGN KEY (bin_id) REFERENCES waste_bin(id),\n  FOREIGN KEY (type_id) REFERENCES waste_type(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE production_stats (\n  id INT PRIMARY KEY,\n  line_id INT NOT NULL,\n  total_waste DECIMAL(10,2) NOT NULL,\n  measurement_date DATE NOT NULL,\n  FOREIGN KEY (line_id) REFERENCES production_line(id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE firewall_rules (\n    rule_id INT PRIMARY KEY,\n    rule_name VARCHAR(255) NOT NULL,\n    source_ip VARCHAR(50) NOT NULL,\n    destination_ip VARCHAR(50) NOT NULL,\n    port INT NOT NULL,\n    protocol VARCHAR(10) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE firewall_rules (\n    rule_id INT PRIMARY KEY,\n    rule_name VARCHAR(50) NOT NULL,\n    rule_description TEXT,\n    rule_protocol VARCHAR(10) NOT NULL,\n    rule_port INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_zones (\n    zone_id INT PRIMARY KEY,\n    zone_name VARCHAR(50) NOT NULL,\n    zone_description TEXT,\n    zone_subnet VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE firewall_config (id INT PRIMARY KEY, rule_name VARCHAR(255) NOT NULL, rule_description TEXT NOT NULL, rule_type VARCHAR(50) NOT NULL, rule_enabled BOOLEAN NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE firewall_rules_config (\n    rule_id SERIAL PRIMARY KEY,\n    rule_name VARCHAR(255) NOT NULL,\n    rule_description TEXT,\n    rule_priority INT,\n    rule_allow BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_settings (\n    setting_id SERIAL PRIMARY KEY,\n    network_name VARCHAR(255) NOT NULL,\n    network_address VARCHAR(255) NOT NULL,\n    subnet_mask VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rule_audit_logs (\n    log_id SERIAL PRIMARY KEY,\n    rule_id INT REFERENCES firewall_rules_config(rule_id),\n    action VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL,\n    role_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE firewall_settings (\n  id INT PRIMARY KEY,\n  rule_name VARCHAR(255),\n  rule_type VARCHAR(50),\n  allow_traffic BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rule_conditions (\n  id INT PRIMARY KEY,\n  condition_name VARCHAR(255),\n  condition_type VARCHAR(50),\n  condition_value VARCHAR(255),\n  rule_id INT REFERENCES firewall_settings(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_zones (\n  id INT PRIMARY KEY,\n  zone_name VARCHAR(255),\n  zone_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE zone_rules (\n  id INT PRIMARY KEY,\n  zone_id INT REFERENCES network_zones(id),\n  rule_id INT REFERENCES firewall_settings(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  access_type VARCHAR(50),\n  user_id INT,\n  rule_id INT REFERENCES firewall_settings(id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quality_analysis (\n   issue_id INT PRIMARY KEY,\n   issue_description TEXT,\n   production_data TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quality_issues (\n  id SERIAL PRIMARY KEY,\n  issue_name VARCHAR(255),\n  issue_description TEXT,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_data (\n  entry_id SERIAL PRIMARY KEY,\n  production_date DATE,\n  issue_id INT,\n  department VARCHAR(100),\n  quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quality_issues (\n  id UUID PRIMARY KEY,\n  issue_description TEXT,\n  issue_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_data (\n  data_id SERIAL PRIMARY KEY,\n  data_value VARCHAR(255),\n  data_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE root_causes (\n  cause_id SERIAL PRIMARY KEY,\n  cause_description TEXT,\n  issue_id UUID REFERENCES quality_issues(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QualityIssues (\n    id INT PRIMARY KEY,\n    issue_description TEXT,\n    production_data TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RootCauses (\n    id INT PRIMARY KEY,\n    cause_description TEXT,\n    issue_id INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionData (\n    id INT PRIMARY KEY,\n    date DATE,\n    issue_id INT,\n    product_id INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SQLQueries (\n    id INT PRIMARY KEY,\n    query TEXT,\n    result TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Issue (id INT PRIMARY KEY, description TEXT, created_at TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE RootCause (id INT PRIMARY KEY, issue_id INT, analysis TEXT, FOREIGN KEY (issue_id) REFERENCES Issue(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionData (id INT PRIMARY KEY, issue_id INT, value FLOAT, timestamp TIMESTAMP, FOREIGN KEY (issue_id) REFERENCES Issue(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE QualityCheck (id INT PRIMARY KEY, issue_id INT, passed BOOLEAN, timestamp TIMESTAMP, FOREIGN KEY (issue_id) REFERENCES Issue(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE QueryAnalysis (id INT PRIMARY KEY, issue_id INT, query TEXT, result TEXT, FOREIGN KEY (issue_id) REFERENCES Issue(id));"
+      }
+    ]
+  }
+]

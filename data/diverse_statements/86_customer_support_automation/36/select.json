@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM support_calls ORDER BY call_timestamp DESC;",
+      "SELECT call_id, call_duration FROM support_calls WHERE call_duration > '1 hour';",
+      "SELECT call_timestamp, call_duration FROM support_calls WHERE EXTRACT(MONTH FROM call_timestamp) = 1;",
+      "SELECT call_id, call_timestamp FROM support_calls ORDER BY call_id LIMIT 5;",
+      "SELECT call_id, call_timestamp, call_duration FROM support_calls WHERE call_duration IS NOT NULL;",
+      "SELECT call_id, call_timestamp, call_duration FROM support_calls WHERE call_timestamp >= '2022-01-01' ORDER BY call_timestamp DESC LIMIT 10;",
+      "SELECT * FROM support_calls WHERE call_duration > '1 hour' ORDER BY call_duration ASC;",
+      "SELECT call_timestamp, EXTRACT(MONTH FROM call_timestamp) AS call_month FROM support_calls GROUP BY call_month ORDER BY call_month;",
+      "SELECT call_id, call_duration FROM support_calls WHERE call_duration >= '30 minutes' AND call_timestamp BETWEEN '2021-06-01' AND '2022-01-01' ORDER BY call_id DESC LIMIT 5;",
+      "SELECT COUNT(call_id) AS total_calls, AVG(EXTRACT(EPOCH FROM call_duration)) AS avg_duration_seconds FROM support_calls;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM timestamps;",
+      "SELECT id, call_timestamp, duration FROM timestamps ORDER BY call_timestamp DESC;",
+      "SELECT * FROM support_calls WHERE staff_id = 101;",
+      "SELECT AVG(EXTRACT(EPOCH FROM duration)) AS avg_duration FROM timestamps;",
+      "SELECT id, start_timestamp, end_timestamp FROM support_calls WHERE end_timestamp > '2022-01-01';",
+      "SELECT * FROM timestamps WHERE id = 1;",
+      "SELECT id, call_timestamp, duration FROM timestamps WHERE call_timestamp > '2021-01-01';",
+      "SELECT call_id, staff_id, start_timestamp, end_timestamp FROM support_calls WHERE staff_id = 100 ORDER BY end_timestamp DESC;",
+      "SELECT start_timestamp, end_timestamp, staff_id FROM support_calls WHERE staff_id IN (101, 102) AND start_timestamp BETWEEN '2021-01-01' AND '2021-02-28';",
+      "SELECT COUNT(*) AS call_count, AVG(EXTRACT(EPOCH FROM duration)) AS avg_duration FROM timestamps INNER JOIN support_calls ON timestamps.id = support_calls.call_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM timestamps;",
+      "SELECT id, call_duration, timestamp FROM timestamps ORDER BY timestamp DESC;",
+      "SELECT staff_id, call_id, schedule_date FROM scheduling WHERE staff_id = 101;",
+      "SELECT staff_id, availability FROM staffing WHERE availability = true;",
+      "SELECT id, staff_id, call_id FROM scheduling ORDER BY schedule_date ASC, staff_id DESC;",
+      "SELECT * FROM timestamps WHERE call_duration > 10 ORDER BY timestamp DESC",
+      "SELECT DISTINCT staff_id FROM scheduling WHERE schedule_date = '2023-06-15'",
+      "SELECT id, staff_id FROM staffing WHERE availability = true",
+      "SELECT MIN(call_duration) AS min_duration, MAX(call_duration) AS max_duration FROM timestamps",
+      "SELECT * FROM timestamps INNER JOIN staffing ON timestamps.id = staffing.id"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM timestamps;",
+      "SELECT call_timestamp FROM timestamps ORDER BY call_timestamp DESC;",
+      "SELECT * FROM call_durations WHERE duration_id = 1;",
+      "SELECT * FROM support_call_schedule JOIN timestamps ON support_call_schedule.timestamp_id = timestamps.timestamp_id;",
+      "SELECT staffing_id, schedule_id FROM support_staffing ORDER BY staffing_id ASC;",
+      "SELECT * FROM timestamps JOIN call_durations ON timestamps.timestamp_id = call_durations.duration_id;",
+      "SELECT * FROM support_call_schedule JOIN support_staffing ON support_call_schedule.schedule_id = support_staffing.schedule_id;",
+      "SELECT * FROM support_call_schedule JOIN timestamps ON support_call_schedule.timestamp_id = timestamps.timestamp_id JOIN call_durations ON support_call_schedule.duration_id = call_durations.duration_id;",
+      "SELECT timestamp_id, call_timestamp FROM timestamps WHERE call_timestamp > '2022-01-01' ORDER BY call_timestamp DESC;",
+      "SELECT * FROM support_staffing JOIN support_call_schedule ON support_staffing.schedule_id = support_call_schedule.schedule_id WHERE support_call_schedule.timestamp_id IS NOT NULL;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM calls;",
+      "SELECT agent_id, agent_name FROM agents;",
+      "SELECT call_id, call_timestamp, call_duration FROM calls WHERE call_duration > INTERVAL '1 hour';",
+      "SELECT count(*), date_trunc('day', call_timestamp) FROM calls GROUP BY date_trunc('day',call_timestamp);",
+      "SELECT agent_id, shift_start, shift_end FROM agents ORDER BY agent_name DESC LIMIT 5;",
+      "SELECT * FROM schedules JOIN agents ON schedules.agent_id = agents.agent_id JOIN calls ON schedules.call_id = calls.call_id WHERE agents.agent_name = 'Alice' AND calls.call_timestamp >= '2022-01-01' ORDER BY calls.call_timestamp DESC;",
+      "SELECT metric_id, total_calls, total_duration FROM metrics WHERE timestamp >= '2022-01-01' ORDER BY total_calls DESC, total_duration ASC;",
+      "SELECT agent_name, shift_start, shift_end FROM agents WHERE shift_start < shift_end ORDER BY agent_name ASC;",
+      "SELECT * FROM holidays WHERE holiday_date BETWEEN '2022-01-01' AND '2022-12-31' ORDER BY holiday_date ASC;",
+      "SELECT * FROM schedules s LEFT JOIN agents a ON s.agent_id = a.agent_id LEFT JOIN calls c ON s.call_id = c.call_id WHERE s.scheduled_time >= '2022-01-01' ORDER BY s.scheduled_time ASC;"
+    ]
+  }
+]

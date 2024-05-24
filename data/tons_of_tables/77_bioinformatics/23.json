@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSamples (\n  sample_id UUID PRIMARY KEY,\n  sample_name VARCHAR(255) NOT NULL,\n  experiment_date DATE,\n  researcher_name VARCHAR(255),\n  project_name VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSamples (\n    sample_id UUID PRIMARY KEY,\n    sample_name TEXT,\n    sample_type TEXT,\n    sample_origin TEXT,\n    collection_date DATE,\n    storage_location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentLogs (\n    log_id UUID PRIMARY KEY,\n    experiment_date TIMESTAMP,\n    experiment_description TEXT,\n    researcher_name TEXT,\n    sample_id UUID,\n    FOREIGN KEY (sample_id) REFERENCES ProteinSamples(sample_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protein_samples (\n  sample_id SERIAL PRIMARY KEY,\n  sample_name VARCHAR(100) NOT NULL,\n  sample_description TEXT,\n  sample_type VARCHAR(50),\n  created_at TIMESTAMPTZ DEFAULT current_timestamp\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_details (\n  experiment_id SERIAL PRIMARY KEY,\n  sample_id INT NOT NULL,\n  experiment_date DATE,\n  researcher_name VARCHAR(100) NOT NULL,\n  experiment_description TEXT,\n  FOREIGN KEY (sample_id) REFERENCES protein_samples(sample_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n  analysis_id SERIAL PRIMARY KEY,\n  experiment_id INT NOT NULL,\n  analysis_date DATE,\n  analysis_result TEXT,\n  analyst_name VARCHAR(100) NOT NULL,\n  FOREIGN KEY (experiment_id) REFERENCES experiment_details(experiment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSamples (\n    sample_id INT PRIMARY KEY,\n    sample_name VARCHAR(255) NOT NULL,\n    sample_type VARCHAR(50),\n    date_collected DATE,\n    storage_location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentResults (\n    result_id INT PRIMARY KEY,\n    sample_id INT,\n    experiment_date DATE,\n    result_description TEXT,\n    FOREIGN KEY (sample_id) REFERENCES ProteinSamples(sample_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(100) NOT NULL,\n    email VARCHAR(255),\n    affiliation VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentLogs (\n    log_id INT PRIMARY KEY,\n    experiment_id INT,\n    researcher_id INT,\n    log_date TIMESTAMP,\n    log_description TEXT,\n    FOREIGN KEY (experiment_id) REFERENCES ExperimentResults(result_id),\n    FOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinSamples (sample_id INT PRIMARY KEY, sample_name VARCHAR(255) NOT NULL, project_id INT NOT NULL, researcher_id INT NOT NULL, collection_date DATE NOT NULL, creation_date DATE NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Projects (project_id INT PRIMARY KEY, project_name VARCHAR(255) NOT NULL, project_description TEXT, project_lead_id INT NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (researcher_id INT PRIMARY KEY, researcher_name VARCHAR(255) NOT NULL, researcher_email VARCHAR(255) UNIQUE NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (experiment_id INT PRIMARY KEY, sample_id INT NOT NULL, project_id INT NOT NULL, researcher_id INT NOT NULL, experiment_date DATE NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE Results (result_id INT PRIMARY KEY, experiment_id INT NOT NULL, result_data TEXT, result_date DATE NOT NULL, result_comments TEXT)"
+      }
+    ]
+  }
+]

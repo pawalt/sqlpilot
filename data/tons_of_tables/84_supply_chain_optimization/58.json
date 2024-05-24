@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_locations (\n    id SERIAL PRIMARY KEY,\n    vehicle_id INT,\n    location VARCHAR(255),\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_locations (\n    vehicle_id UUID PRIMARY KEY,\n    location_point GEOGRAPHY(POINT),\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_utilization (\n    resource_id UUID PRIMARY KEY,\n    vehicle_id UUID REFERENCES vehicle_locations(vehicle_id),\n    status ENUM('active', 'inactive'),\n    utilization_percent DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id INT PRIMARY KEY,\n    license_plate VARCHAR(10),\n    vehicle_type VARCHAR(20),\n    last_known_location VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drivers (\n    driver_id INT PRIMARY KEY,\n    driver_name VARCHAR(30),\n    driver_license VARCHAR(20),\n    contact_info VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trips (\n    trip_id INT PRIMARY KEY,\n    vehicle_id INT, \n    driver_id INT, \n    start_location VARCHAR(50), \n    end_location VARCHAR(50), \n    start_time TIMESTAMP, \n    end_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id UUID PRIMARY KEY,\n    vehicle_name VARCHAR(255) NOT NULL,\n    vehicle_type VARCHAR(50) NOT NULL,\n    last_known_location VARCHAR(255),\n    last_updated TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE drivers (\n    driver_id UUID PRIMARY KEY,\n    driver_name VARCHAR(255) NOT NULL,\n    contact_number VARCHAR(15) NOT NULL,\n    vehicle_id UUID REFERENCES vehicles (vehicle_id) ON DELETE CASCADE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id UUID PRIMARY KEY,\n    start_location VARCHAR(255) NOT NULL,\n    end_location VARCHAR(255) NOT NULL,\n    distance FLOAT NOT NULL,\n    estimated_duration INTEGER NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE assignments (\n    assignment_id UUID PRIMARY KEY,\n    vehicle_id UUID REFERENCES vehicles (vehicle_id) ON DELETE CASCADE,\n    driver_id UUID REFERENCES drivers (driver_id) ON DELETE CASCADE,\n    route_id UUID REFERENCES routes (route_id) ON DELETE CASCADE,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_name VARCHAR(50),\n    vehicle_type VARCHAR(50),\n    last_known_location VARCHAR(100)\n);\n\nCREATE TABLE drivers (\n    driver_id INT PRIMARY KEY,\n    driver_name VARCHAR(50),\n    driver_license VARCHAR(20),\n    phone_number VARCHAR(15)\n);\n\nCREATE TABLE routes (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(50),\n    start_location VARCHAR(100),\n    end_location VARCHAR(100)\n);\n\nCREATE TABLE assigned_tasks (\n    task_id INT PRIMARY KEY,\n    vehicle_id INT,\n    driver_id INT,\n    route_id INT,\n    task_status VARCHAR(20)\n);\n\nCREATE TABLE maintenance_logs (\n    log_id INT PRIMARY KEY,\n    vehicle_id INT,\n    maintenance_type VARCHAR(50),\n    maintenance_date DATE\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id SERIAL PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    progress INT,\n    materials_used TEXT,\n    printing_time TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    progress INT,\n    materials_used VARCHAR(255),\n    printing_time_hours INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(255) NOT NULL,\n    material_type VARCHAR(50) NOT NULL,\n    cost_per_unit DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    project_description TEXT,\n    project_status VARCHAR(50) DEFAULT 'Pending',\n    project_start_date DATE,\n    project_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE materials_used (\n    material_id UUID PRIMARY KEY,\n    material_name VARCHAR(100) NOT NULL,\n    material_quantity INT NOT NULL,\n    project_id UUID REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE printing_time (\n    time_id UUID PRIMARY KEY,\n    printing_start TIMESTAMP,\n    printing_end TIMESTAMP,\n    printing_duration INTERVAL,\n    project_id UUID REFERENCES projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    project_status VARCHAR(50),\n    project_start_date DATE,\n    project_finish_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id UUID PRIMARY KEY,\n    material_name VARCHAR(100),\n    material_type VARCHAR(50),\n    material_color VARCHAR(50),\n    material_quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE print_logs (\n    log_id UUID PRIMARY KEY,\n    project_id UUID,\n    printing_date DATE,\n    printing_time INT,\n    material_used UUID[],\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE printers (\n    printer_id UUID PRIMARY KEY,\n    printer_brand VARCHAR(100),\n    printer_model VARCHAR(100),\n    printer_type VARCHAR(50),\n    purchase_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    project_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE materials (\n    material_id INT PRIMARY KEY,\n    material_name VARCHAR(100),\n    material_type VARCHAR(50),\n    material_color VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE printers (\n    printer_id INT PRIMARY KEY,\n    printer_name VARCHAR(100),\n    printer_brand VARCHAR(50),\n    printer_model VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE prints (\n    print_id INT PRIMARY KEY,\n    project_id INT,\n    material_id INT,\n    printer_id INT,\n    print_time TIMESTAMP,\n    print_progress INT,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id),\n    FOREIGN KEY (material_id) REFERENCES materials(material_id),\n    FOREIGN KEY (printer_id) REFERENCES printers(printer_id)\n);"
+      }
+    ]
+  }
+]

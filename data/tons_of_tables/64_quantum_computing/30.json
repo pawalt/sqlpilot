@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE secure_key_exchange (\n    user_id INT PRIMARY KEY,\n    public_key BYTEA NOT NULL,\n    private_key BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE key_exchange (\n    key_id INT PRIMARY KEY,\n    public_key TEXT,\n    private_key TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE key_logs (\n    log_id INT PRIMARY KEY,\n    key_id INT,\n    log_time TIMESTAMP,\n    log_message TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE key_exchange_protocol (\n    id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    encryption_key VARCHAR(256) NOT NULL,\n    date_created TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    id SERIAL PRIMARY KEY,\n    user_id INT UNIQUE NOT NULL,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash VARCHAR(256) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA NOT NULL,\n    user_id INT NOT NULL,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id INT NOT NULL,\n    session_start TIMESTAMP,\n    session_end TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permissions (\n    permission_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    permission_type VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE key_exchanges (\n    exchange_id INT PRIMARY KEY,\n    key_type VARCHAR(50) NOT NULL,\n    exchange_data VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE key_permissions (\n    permission_id INT PRIMARY KEY,\n    key_id INT NOT NULL,\n    user_id INT NOT NULL,\n    permission_type VARCHAR(20) NOT NULL\n);\n\nCREATE TABLE key_usage_logs (\n    log_id INT PRIMARY KEY,\n    key_id INT NOT NULL,\n    user_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

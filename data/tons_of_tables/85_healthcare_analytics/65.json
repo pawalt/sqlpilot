@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FinancialReports (\n    report_id INT PRIMARY KEY,\n    patient_id INT,\n    report_date DATE,\n    total_amount DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Telehealth_Services (\n  service_id SERIAL PRIMARY KEY,\n  service_name VARCHAR(255) NOT NULL,\n  service_description TEXT,\n  service_cost DECIMAL(10, 2) NOT NULL,\n  provider_id INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Billing_Statements (\n  statement_id SERIAL PRIMARY KEY,\n  statement_date DATE NOT NULL,\n  patient_id INT NOT NULL,\n  total_amount DECIMAL(10, 2) NOT NULL,\n  payment_status BOOLEAN NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Telehealth_Patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50) NOT NULL,\n  phone_number VARCHAR(15) NOT NULL,\n  date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Telehealth_Appointments (\n  appointment_id INT PRIMARY KEY,\n  patient_id INT,\n  appointment_date DATE,\n  appointment_time TIME,\n  doctor_name VARCHAR(50),\n  appointment_type VARCHAR(30),\n  FOREIGN KEY (patient_id) REFERENCES Telehealth_Patients(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Telehealth_Billing (\n  bill_id INT PRIMARY KEY,\n  appointment_id INT,\n  amount_due DECIMAL(10, 2) NOT NULL,\n  payment_status VARCHAR(20) NOT NULL,\n  FOREIGN KEY (appointment_id) REFERENCES Telehealth_Appointments(appointment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50) NOT NULL,\n  insurance_provider VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointments (\n  appointment_id INT PRIMARY KEY,\n  patient_id INT NOT NULL,\n  appointment_date DATE NOT NULL,\n  appointment_time TIME NOT NULL,\n  doctor_name VARCHAR(50) NOT NULL,\n  status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Services (\n  service_id INT PRIMARY KEY,\n  service_name VARCHAR(50) NOT NULL,\n  service_description VARCHAR(255) NOT NULL,\n  service_cost DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Bills (\n  bill_id INT PRIMARY KEY,\n  patient_id INT NOT NULL,\n  service_id INT NOT NULL,\n  bill_date DATE NOT NULL,\n  total_amount DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE doctors (\n    doctor_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n    appointment_id INT PRIMARY KEY,\n    patient_id INT,\n    doctor_id INT,\n    appointment_date DATE,\n    appointment_time TIME,\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id),\n    FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(100),\n    service_description TEXT,\n    service_fee DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_statements (\n    statement_id INT PRIMARY KEY,\n    patient_id INT,\n    service_id INT,\n    appointment_id INT,\n    total_amount DECIMAL(10, 2),\n    paid BOOLEAN,\n    issued_date DATE,\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id),\n    FOREIGN KEY (service_id) REFERENCES services(service_id),\n    FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id)\n);"
+      }
+    ]
+  }
+]

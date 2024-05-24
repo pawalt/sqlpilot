@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_turning_dates (\n  batch_id INT PRIMARY KEY,\n  turn_date DATE,\n  mix_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_batches (\n    batch_id INT PRIMARY KEY,\n    turn_date DATE,\n    mix_date DATE\n);\n\nCREATE TABLE compost_log (\n    log_id INT PRIMARY KEY,\n    batch_id INT,\n    action VARCHAR(50),\n    log_date TIMESTAMP,\n    FOREIGN KEY (batch_id) REFERENCES compost_batches(batch_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_batches (\n    batch_id SERIAL PRIMARY KEY,\n    batch_date DATE NOT NULL,\n    aeration_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE turning_events (\n    event_id SERIAL PRIMARY KEY,\n    batch_id INT NOT NULL,\n    turn_date DATE NOT NULL,\n    FOREIGN KEY (batch_id) REFERENCES compost_batches(batch_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mixing_events (\n    event_id SERIAL PRIMARY KEY,\n    batch_id INT NOT NULL,\n    mix_date DATE NOT NULL,\n    FOREIGN KEY (batch_id) REFERENCES compost_batches(batch_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_batches (\n    batch_id SERIAL PRIMARY KEY,\n    batch_name VARCHAR(50) NOT NULL,\n    turn_date DATE NOT NULL,\n    mix_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_turning_logs (\n    log_id SERIAL PRIMARY KEY,\n    batch_id INT NOT NULL,\n    turn_date DATE NOT NULL,\n    notes TEXT,\n    FOREIGN KEY (batch_id) REFERENCES compost_batches(batch_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_mixing_logs (\n    log_id SERIAL PRIMARY KEY,\n    batch_id INT NOT NULL,\n    mix_date DATE NOT NULL,\n    notes TEXT,\n    FOREIGN KEY (batch_id) REFERENCES compost_batches(batch_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_aeration_schedule (\n    schedule_id SERIAL PRIMARY KEY,\n    batch_id INT NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    frequency SMALLINT NOT NULL,\n    FOREIGN KEY (batch_id) REFERENCES compost_batches(batch_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_batches (\n  batch_id SERIAL PRIMARY KEY,\n  batch_date DATE,\n  turn_date DATE,\n  mix_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_locations (\n  location_id SERIAL PRIMARY KEY,\n  location_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE batch_locations (\n  batch_id INT REFERENCES compost_batches(batch_id),\n  location_id INT REFERENCES compost_locations(location_id),\n  PRIMARY KEY(batch_id, location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE batch_comments (\n  comment_id SERIAL PRIMARY KEY,\n  batch_id INT REFERENCES compost_batches(batch_id),\n  comment TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_materials (\n  material_id SERIAL PRIMARY KEY,\n  material_name VARCHAR(50),\n  material_type VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

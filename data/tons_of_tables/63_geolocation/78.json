@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_histories (\n  user_id UUID,\n  location_name VARCHAR(255),\n  latitude DECIMAL,\n  longitude DECIMAL,\n  visit_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_locations (\n  user_id INT,\n  location_name VARCHAR(255),\n  latitude FLOAT,\n  longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE travel_routes (\n  route_id INT,\n  user_id INT,\n  starting_location VARCHAR(255),\n  ending_location VARCHAR(255),\n  travel_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_locations (\n    user_id INT PRIMARY KEY,\n    location_name VARCHAR,\n    latitude FLOAT,\n    longitude FLOAT,\n    visit_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_routes (\n    route_id INT PRIMARY KEY,\n    user_id INT,\n    start_location VARCHAR,\n    end_location VARCHAR,\n    route_description TEXT,\n    route_distance FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    activity_name VARCHAR,\n    activity_date DATE,\n    activity_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(100) NOT NULL,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_locations (\n    user_id INT,\n    location_id INT,\n    visited_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE routes (\n    route_id INT PRIMARY KEY,\n    user_id INT,\n    start_location_id INT,\n    end_location_id INT,\n    route_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (start_location_id) REFERENCES locations(location_id),\n    FOREIGN KEY (end_location_id) REFERENCES locations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserLocations (\n  user_id UUID PRIMARY KEY,\n  location_name VARCHAR(255),\n  latitude DECIMAL,\n  longitude DECIMAL,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserTravelRoutes (\n  route_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES UserLocations(user_id),\n  start_location VARCHAR(255),\n  end_location VARCHAR(255),\n  route_duration INTERVAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PopularDestinations (\n  destination_id UUID PRIMARY KEY,\n  location_name VARCHAR(255),\n  total_visits INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LocationCategories (\n  category_id UUID PRIMARY KEY,\n  location_name VARCHAR(255),\n  category_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserPreferences (\n  user_id UUID REFERENCES UserLocations(user_id),\n  category_id UUID REFERENCES LocationCategories(category_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM transaction_fees;",
+      "SELECT id, transfer_amount, fee_rate FROM transaction_fees WHERE fee_rate > 0.1;",
+      "SELECT transfer_amount, fee_rate, max_fee FROM transaction_fees ORDER BY max_fee DESC;",
+      "SELECT id, min_fee, max_fee FROM transaction_fees WHERE transfer_amount BETWEEN 1000 AND 5000;",
+      "SELECT id, fee_rate, min_fee FROM transaction_fees WHERE fee_rate < 0.05;",
+      "SELECT * FROM transaction_fees WHERE transfer_amount > 1000 ORDER BY fee_rate DESC, id ASC;",
+      "SELECT id, transfer_amount, fee_rate, (fee_rate * transfer_amount) AS calculated_fee FROM transaction_fees WHERE fee_rate > 0.02;",
+      "SELECT id, min_fee, max_fee FROM transaction_fees WHERE min_fee < 5 OR max_fee > 20 ORDER BY id DESC;",
+      "SELECT transfer_amount, fee_rate, min_fee, max_fee FROM transaction_fees WHERE fee_rate BETWEEN 0.01 AND 0.05 AND min_fee < max_fee;",
+      "SELECT transfer_amount, fee_rate, min_fee, max_fee FROM transaction_fees WHERE transfer_amount = (SELECT MAX(transfer_amount) FROM transaction_fees);"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM transactions;",
+      "SELECT transaction_id, amount, fee FROM transactions WHERE amount > 100;",
+      "SELECT transaction_id, amount, fee FROM transactions ORDER BY amount DESC;",
+      "SELECT transaction_id, amount, fee FROM transactions WHERE amount BETWEEN 50 AND 200;",
+      "SELECT t.transaction_id, t.amount, f.fee_percentage FROM transactions t JOIN fee_rules f ON t.fee = f.rule_id;",
+      "SELECT * FROM transactions WHERE amount > 100",
+      "SELECT transaction_id, amount, fee FROM transactions WHERE fee > 5",
+      "SELECT * FROM transactions ORDER BY amount DESC",
+      "SELECT AVG(amount) AS avg_amount FROM transactions",
+      "SELECT transaction_id, amount, fee, fee_percentage FROM transactions JOIN fee_rules ON amount BETWEEN min_amount AND max_amount"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM transactions;",
+      "SELECT transaction_id, transfer_amount, fee FROM transactions ORDER BY transaction_date DESC;",
+      "SELECT transaction_id, transfer_amount, fee, transaction_date FROM transactions WHERE fee > 10;",
+      "SELECT transaction_id, transfer_amount, fee, transaction_date FROM transactions WHERE transaction_date BETWEEN '2022-01-01' AND '2022-01-31';",
+      "SELECT * FROM transaction_fees JOIN fee_rules ON fee_rules.rule_id = transaction_fees.rule_id;",
+      "SELECT * FROM transactions WHERE transaction_id = 1;",
+      "SELECT transaction_id, transfer_amount, fee, transaction_date FROM transactions ORDER BY transaction_date DESC;",
+      "SELECT transaction_id, transfer_amount, fee, transaction_date FROM transactions WHERE fee > 50;",
+      "SELECT * FROM transactions JOIN transaction_fees ON transactions.transaction_id = transaction_fees.transaction_id;",
+      "SELECT transactions.transaction_id, transactions.transfer_amount, transaction_fees.calculated_fee FROM transactions INNER JOIN transaction_fees ON transactions.transaction_id = transaction_fees.transaction_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM Transfers;",
+      "SELECT sender_id, receiver_id FROM Transfers WHERE sender_id = 123;",
+      "SELECT account_name, account_id FROM Accounts ORDER BY account_name DESC;",
+      "SELECT MAX(amount) AS max_amount FROM Transactions WHERE transaction_id = 456;",
+      "SELECT account_id, account_name FROM Accounts WHERE account_name LIKE 'S%' ORDER BY account_id DESC;",
+      "SELECT * FROM TransferRules WHERE min_amount < 100 AND max_amount > 500 ORDER BY fee_rate DESC;",
+      "SELECT transaction_id, amount, fee_amount FROM Transactions WHERE fee_amount > 0 ORDER BY amount ASC;",
+      "SELECT transfer_id, sender_id, receiver_id FROM Transfers WHERE sender_id = 123 OR receiver_id = 456 ORDER BY transfer_id DESC;",
+      "SELECT account_id, account_name FROM Accounts WHERE account_name LIKE '%Savings%' ORDER BY account_id ASC;",
+      "SELECT * FROM TransferRules TR JOIN Transactions T ON TR.rule_id = T.transfer_id WHERE TR.fee_rate > 0 AND T.amount > TR.min_amount;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM User WHERE balance > 1000;",
+      "SELECT name, email FROM User WHERE balance < 500;",
+      "SELECT id, amount, fee FROM Transaction WHERE amount >= 100 AND fee < 10;",
+      "SELECT id, type FROM TransactionType ORDER BY type DESC;",
+      "SELECT id, min_amount, max_amount, fee_percentage FROM FeeRule WHERE fee_percentage > 1.5;",
+      "SELECT * FROM User WHERE balance > 1000;",
+      "SELECT id, email, balance FROM User WHERE balance < 500 AND name LIKE 'A%';",
+      "SELECT U.name, T.amount, F.fee_percentage FROM User U JOIN Transaction T ON U.id = T.user_id JOIN FeeRule F ON T.fee_percentage = F.id;",
+      "SELECT T.created_at, T.amount, F.min_amount, F.max_amount FROM Transaction T JOIN FeeRule F ON T.amount BETWEEN F.min_amount AND F.max_amount;",
+      "SELECT COUNT(*) AS total_transactions, SUM(amount) AS total_amount FROM Transaction WHERE created_at < '2022-01-01';"
+    ]
+  }
+]

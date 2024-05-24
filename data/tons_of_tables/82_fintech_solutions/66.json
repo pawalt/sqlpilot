@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_consent (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    consent_date DATE,\n    consent_given BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_consent (\n   customer_id INT PRIMARY KEY,\n   consent_status VARCHAR(255),\n   date_given DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_logs (\n   log_id INT AUTO_INCREMENT PRIMARY KEY,\n   customer_id INT,\n   consent_status_change VARCHAR(255),\n   log_date DATETIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    consent_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_types (\n    consent_id INT PRIMARY KEY,\n    consent_description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_consent (\n    customer_id INT,\n    consent_id INT,\n    consent_date DATE,\n    PRIMARY KEY (customer_id, consent_id),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n    FOREIGN KEY (consent_id) REFERENCES consent_types(consent_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_consent (\n    customer_id INT PRIMARY KEY,\n    consent_date DATE,\n    consent_type VARCHAR(50),\n    consent_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_history (\n    history_id SERIAL PRIMARY KEY,\n    customer_id INT,\n    consent_date DATE,\n    action VARCHAR(50),\n    action_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_types (\n    type_id SERIAL PRIMARY KEY,\n    type_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_details (\n    customer_id INT PRIMARY KEY,\n    full_name VARCHAR(100),\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_consent (\n  customer_id INT PRIMARY KEY,\n  consent_date DATE NOT NULL,\n  consent_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_history (\n  consent_id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  consent_date DATE NOT NULL,\n  consent_type VARCHAR(50) NOT NULL,\n  CONSTRAINT fk_customer_consent FOREIGN KEY (customer_id) REFERENCES customer_consent(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_removal (\n  removal_id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  removal_date DATE NOT NULL,\n  removal_reason VARCHAR(100) NOT NULL,\n  CONSTRAINT fk_customer_consent FOREIGN KEY (customer_id) REFERENCES customer_consent(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_audit (\n  audit_id INT PRIMARY KEY,\n  consent_id INT NOT NULL,\n  action_type VARCHAR(50) NOT NULL,\n  audit_date TIMESTAMP NOT NULL,\n  CONSTRAINT fk_consent_history FOREIGN KEY (consent_id) REFERENCES consent_history(consent_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consent_statistics (\n  statistics_id INT PRIMARY KEY,\n  consent_type VARCHAR(50) NOT NULL,\n  total_count INT NOT NULL,\n  approval_rate DECIMAL(5,2) NOT NULL\n);"
+      }
+    ]
+  }
+]

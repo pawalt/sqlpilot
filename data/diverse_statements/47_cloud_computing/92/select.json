@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM iot_data",
+      "SELECT device_id, timestamp FROM iot_data WHERE device_id = 1",
+      "SELECT device_id, data FROM iot_data ORDER BY timestamp DESC",
+      "SELECT AVG(device_id) FROM iot_data",
+      "SELECT * FROM iot_data WHERE data ->> 'status' = 'active'",
+      "SELECT * FROM iot_data WHERE device_id = 1 ORDER BY timestamp DESC;",
+      "SELECT device_id, COUNT(*) FROM iot_data GROUP BY device_id ORDER BY device_id;",
+      "SELECT device_id, timestamp, jsonb_array_elements_text(data->'sensors') AS sensor_data FROM iot_data WHERE device_id = 2;",
+      "SELECT device_id, timestamp, jsonb_pretty(data) AS formatted_data FROM iot_data WHERE timestamp >= '2022-01-01' ORDER BY timestamp LIMIT 5;",
+      "SELECT device_id, jsonb_array_elements_text(data->'sensors') AS sensor_data FROM iot_data WHERE EXTRACT(HOUR FROM timestamp) = 12 ORDER BY device_id ASC, timestamp DESC LIMIT 3;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM DeviceData ORDER BY data_time ASC LIMIT 10;",
+      "SELECT device_id, data_time, data_value FROM DeviceData WHERE device_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT * FROM DeviceData WHERE data_value > 50 ORDER BY data_value DESC LIMIT 5;",
+      "SELECT device_id, MAX(data_value) AS max_value FROM DeviceData GROUP BY device_id;",
+      "SELECT status, COUNT(*) AS status_count FROM DeviceStatus GROUP BY status;",
+      "SELECT * FROM DeviceData ORDER BY data_time DESC LIMIT 5",
+      "SELECT device_id, data_value FROM DeviceData WHERE data_value > 50",
+      "SELECT device_id, status FROM DeviceData JOIN DeviceStatus ON DeviceData.device_id = DeviceStatus.device_id",
+      "SELECT device_id, MAX(data_value) AS max_value FROM DeviceData GROUP BY device_id",
+      "SELECT device_id, AVG(data_value) AS avg_value FROM DeviceData GROUP BY device_id HAVING avg_value > 30"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM IoT_devices;",
+      "SELECT device_id, device_name FROM IoT_devices ORDER BY device_id DESC;",
+      "SELECT device_name, device_location FROM IoT_devices WHERE device_type='sensor';",
+      "SELECT data_id, device_id, data_timestamp, data_value FROM IoT_data ORDER BY data_timestamp ASC;",
+      "SELECT device_id, metadata_key, metadata_value FROM IoT_metadata WHERE metadata_key='location';",
+      "SELECT * FROM IoT_devices WHERE device_type = 'sensor' ORDER BY device_name ASC;",
+      "SELECT device_name, device_location FROM IoT_devices WHERE device_location LIKE '%Room%' ORDER BY device_name DESC;",
+      "SELECT device_name, data_value, data_timestamp FROM IoT_devices JOIN IoT_data ON IoT_devices.device_id = IoT_data.device_id WHERE data_value > 50 ORDER BY data_timestamp DESC;",
+      "SELECT device_name, metadata_key, metadata_value FROM IoT_devices JOIN IoT_metadata ON IoT_devices.device_id = IoT_metadata.device_id WHERE metadata_key = 'location' ORDER BY metadata_value ASC;",
+      "SELECT d.device_name, m.metadata_key, m.metadata_value, i.data_value, i.data_timestamp FROM IoT_devices d JOIN IoT_metadata m ON d.device_id = m.device_id JOIN IoT_data i ON d.device_id = i.device_id WHERE i.data_timestamp > '2022-01-01' ORDER BY i.data_timestamp DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM devices;",
+      "SELECT device_name, device_type FROM devices ORDER BY device_name ASC;",
+      "SELECT device_name, device_type, device_location FROM devices WHERE device_type = 'mobile';",
+      "SELECT device_name, device_type, location_name FROM devices JOIN devices_locations ON devices.device_id = devices_locations.device_id JOIN locations ON locations.location_id = devices_locations.location_id;",
+      "SELECT AVG(measurement_value) FROM measurements WHERE measurement_type = 'temperature';",
+      "SELECT * FROM devices ORDER BY device_name DESC;",
+      "SELECT device_name, device_type FROM devices WHERE device_type = 'sensor';",
+      "SELECT device_name, measurement_type, measurement_value FROM devices JOIN measurements ON devices.device_id = measurements.device_id WHERE measurement_type = 'temperature';",
+      "SELECT DISTINCT device_type FROM devices;",
+      "SELECT device_name, location_name FROM devices JOIN devices_locations ON devices.device_id = devices_locations.device_id JOIN locations ON devices_locations.location_id = locations.location_id ORDER BY device_name ASC, location_name DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM devices LIMIT 10;",
+      "SELECT device_name, device_type FROM devices WHERE device_type = 'sensor';",
+      "SELECT device_id, device_name, device_type FROM devices WHERE device_name LIKE 'dev%';",
+      "SELECT * FROM readings ORDER BY timestamp DESC LIMIT 5;",
+      "SELECT location_id, latitude, longitude FROM locations WHERE latitude > 40 AND longitude < -100;",
+      "SELECT * FROM devices WHERE device_type = 'sensor';",
+      "SELECT device_name, device_type FROM devices WHERE device_type = 'actuator';",
+      "SELECT d.device_name, l.latitude, l.longitude FROM devices d INNER JOIN locations l ON d.device_id = l.device_id;",
+      "SELECT u.user_name, u.email, d.device_name, r.reading_type, r.reading_value, r.timestamp FROM users u INNER JOIN devices d ON u.user_id = d.device_id INNER JOIN readings r ON d.device_id = r.device_id;",
+      "SELECT d.device_name, dh.timestamp, dh.status FROM devices d INNER JOIN devices_history dh ON d.device_id = dh.device_id WHERE dh.status = 'active';"
+    ]
+  }
+]

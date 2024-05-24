@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cybersecurity_reports (\n  report_id UUID PRIMARY KEY,\n  report_name VARCHAR(255),\n  report_date DATE,\n  report_data JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_reports (\n  report_id INT PRIMARY KEY,\n  report_date DATE,\n  report_name VARCHAR(255),\n  regulatory_body VARCHAR(100),\n  compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n  log_id INT PRIMARY KEY,\n  log_timestamp TIMESTAMP,\n  user_id INT,\n  action VARCHAR(50),\n  description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_reports (\n    report_id INT PRIMARY KEY,\n    report_date DATE,\n    report_data TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_bodies (\n    body_id INT PRIMARY KEY,\n    body_name VARCHAR(50),\n    body_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP,\n    log_description TEXT,\n    body_id INT,\n    FOREIGN KEY (body_id) REFERENCES regulatory_bodies(body_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RegulatoryBodies (\n    body_id INT PRIMARY KEY,\n    body_name VARCHAR(255) NOT NULL,\n    region VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SQLDataReports (\n    report_id INT PRIMARY KEY,\n    report_name VARCHAR(255) NOT NULL,\n    report_date DATE NOT NULL,\n    body_id INT,\n    FOREIGN KEY (body_id) REFERENCES RegulatoryBodies(body_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceVerification (\n    verification_id INT PRIMARY KEY,\n    report_id INT,\n    approved BOOLEAN NOT NULL,\n    verification_date DATE NOT NULL,\n    FOREIGN KEY (report_id) REFERENCES SQLDataReports(report_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AuditPurpose (\n    audit_id INT PRIMARY KEY,\n    verification_id INT,\n    auditor_name VARCHAR(255) NOT NULL,\n    audit_date DATE NOT NULL,\n    FOREIGN KEY (verification_id) REFERENCES ComplianceVerification(verification_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_bodies (\n  id INT PRIMARY KEY,\n  name VARCHAR,\n  contact_person VARCHAR,\n  contact_email VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sql_data_reports (\n  id INT PRIMARY KEY,\n  report_timestamp TIMESTAMP,\n  report_type VARCHAR,\n  report_data VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_verification (\n  id INT PRIMARY KEY,\n  report_id INT,\n  verification_status VARCHAR,\n  verification_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_purposes (\n  id INT PRIMARY KEY,\n  report_id INT,\n  auditor_name VARCHAR,\n  audit_timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cybersecurity_domain (\n  id INT PRIMARY KEY,\n  domain_name VARCHAR,\n  company_id INT,\n  certification_status VARCHAR\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_misconduct (\n  allegation_id SERIAL PRIMARY KEY,\n  researcher_name VARCHAR(100) NOT NULL,\n  allegation_date DATE NOT NULL,\n  allegation_description TEXT,\n  investigation_status VARCHAR(50) DEFAULT 'Pending'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_misconduct_allegations (\n    allegation_id INT PRIMARY KEY,\n    allegation_description TEXT,\n    institution_id INT,\n    researcher_id INT,\n    date_reported DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_investigations (\n    investigation_id INT PRIMARY KEY,\n    allegation_id INT,\n    investigation_start_date DATE,\n    investigation_end_date DATE,\n    findings TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE research_institutions (\n    institution_id INT PRIMARY KEY,\n    institution_name VARCHAR(100),\n    institution_address VARCHAR(255),\n    institution_country VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_misconduct (\n    misconduct_id INT PRIMARY KEY,\n    misconduct_date DATE,\n    misconduct_description TEXT,\n    investigator_id INT,\n    institution_id INT,\n    FOREIGN KEY (investigator_id) REFERENCES investigators (investigator_id),\n    FOREIGN KEY (institution_id) REFERENCES research_institutions (institution_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE investigators (\n    investigator_id INT PRIMARY KEY,\n    investigator_name VARCHAR(100),\n    investigator_email VARCHAR(255),\n    investigator_phone VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ResearchInstitutions (\n  institution_id INT PRIMARY KEY,\n  institution_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(255) NOT NULL,\n  department VARCHAR(255) NOT NULL,\n  institution_id INT,\n  FOREIGN KEY (institution_id) REFERENCES ResearchInstitutions (institution_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Allegations (\n  allegation_id INT PRIMARY KEY,\n  allegation_description TEXT NOT NULL,\n  researcher_id INT,\n  FOREIGN KEY (researcher_id) REFERENCES Researchers (researcher_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Investigations (\n  investigation_id INT PRIMARY KEY,\n  investigation_description TEXT NOT NULL,\n  allegation_id INT,\n  FOREIGN KEY (allegation_id) REFERENCES Allegations (allegation_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ResearchInstitutions (\n  institution_id INT PRIMARY KEY,\n  institution_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(100) NOT NULL,\n  institution_id INT NOT NULL,\n  FOREIGN KEY (institution_id) REFERENCES ResearchInstitutions (institution_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MisconductAllegations (\n  allegation_id INT PRIMARY KEY,\n  researcher_id INT NOT NULL,\n  allegation_date DATE,\n  allegation_description TEXT,\n  FOREIGN KEY (researcher_id) REFERENCES Researchers (researcher_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Investigations (\n  investigation_id INT PRIMARY KEY,\n  allegation_id INT NOT NULL,\n  investigator_name VARCHAR(100) NOT NULL,\n  investigation_date DATE,\n  investigation_outcome TEXT,\n  FOREIGN KEY (allegation_id) REFERENCES MisconductAllegations (allegation_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Evidence (\n  evidence_id INT PRIMARY KEY,\n  investigation_id INT NOT NULL,\n  evidence_description TEXT,\n  FOREIGN KEY (investigation_id) REFERENCES Investigations (investigation_id)\n);"
+      }
+    ]
+  }
+]

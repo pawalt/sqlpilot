@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_configurations (\n    id INT PRIMARY KEY,\n    device_name TEXT,\n    device_type TEXT,\n    software_version TEXT,\n    security_protocol TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_configurations (\n    id SERIAL PRIMARY KEY,\n    device_name VARCHAR(100) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    security_level INT NOT NULL,\n    last_update TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE application_settings (\n    id SERIAL PRIMARY KEY,\n    app_name VARCHAR(100) NOT NULL,\n    app_type VARCHAR(50) NOT NULL,\n    setting_name VARCHAR(100) NOT NULL,\n    setting_value TEXT,\n    last_modified TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_configurations(\n    id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    ip_address VARCHAR(15),\n    port INT,\n    security_protocol VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE network_devices(\n    id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    location VARCHAR(255),\n    is_active BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE application_settings(\n    id INT PRIMARY KEY,\n    app_name VARCHAR(255),\n    version VARCHAR(50),\n    setting_name VARCHAR(100),\n    setting_value TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    ip_address VARCHAR(255),\n    port INT,\n    status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_settings (\n    setting_id INT PRIMARY KEY,\n    device_id INT,\n    setting_name VARCHAR(255),\n    setting_value VARCHAR(255),\n    CONSTRAINT fk_device FOREIGN KEY (device_id) REFERENCES network_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE applications (\n    app_id INT PRIMARY KEY,\n    app_name VARCHAR(255),\n    app_type VARCHAR(255),\n    version VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE app_permissions (\n    permission_id INT PRIMARY KEY,\n    app_id INT,\n    permission_type VARCHAR(255),\n    CONSTRAINT fk_app FOREIGN KEY (app_id) REFERENCES applications(app_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_devices (\n device_id INT PRIMARY KEY,\n device_name TEXT NOT NULL,\n device_type TEXT NOT NULL,\n device_ip_address TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_settings (\n setting_id INT PRIMARY KEY,\n device_id INT NOT NULL,\n setting_name TEXT NOT NULL,\n setting_value TEXT NOT NULL,\n FOREIGN KEY (device_id) REFERENCES security_devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE applications (\n app_id INT PRIMARY KEY,\n app_name TEXT NOT NULL,\n app_description TEXT,\n app_version TEXT NOT NULL,\n app_vendor TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE app_settings (\n app_setting_id INT PRIMARY KEY,\n app_id INT NOT NULL,\n setting_name TEXT NOT NULL,\n setting_value TEXT NOT NULL,\n FOREIGN KEY (app_id) REFERENCES applications(app_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n user_id INT PRIMARY KEY,\n device_id INT NOT NULL,\n app_id INT NOT NULL,\n permission_level INT NOT NULL,\n FOREIGN KEY (device_id) REFERENCES security_devices(device_id),\n FOREIGN KEY (app_id) REFERENCES applications(app_id)\n);\n"
+      }
+    ]
+  }
+]

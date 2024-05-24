@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanelEnergyProduction ( \n  panel_id INT PRIMARY KEY, \n  production_date DATE, \n  production_time TIME, \n  energy_produced DECIMAL(10,2) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanelCertification (\n    panel_id INT PRIMARY KEY,\n    production_date DATE,\n    production_time TIME,\n    production_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CertificationAgency (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(50),\n    contact_person VARCHAR(50),\n    certification_status ENUM('pending', 'approved', 'rejected')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanels (\n    panel_id INT PRIMARY KEY,\n    panel_brand VARCHAR(255),\n    panel_capacity DOUBLE PRECISION,\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProduction (\n    production_id INT PRIMARY KEY,\n    panel_id INT REFERENCES SolarPanels(panel_id),\n    production_date DATE,\n    production_amount DOUBLE PRECISION\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Certification (\n    certification_id INT PRIMARY KEY,\n    production_id INT REFERENCES EnergyProduction(production_id),\n    certification_date DATE,\n    certification_result BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_panels (\n  panel_id INT PRIMARY KEY,\n  panel_location VARCHAR(255),\n  panel_area FLOAT,\n  panel_angle FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_production (\n  production_id INT PRIMARY KEY,\n  panel_id INT,\n  production_date DATE,\n  production_kwh FLOAT,\n  FOREIGN KEY (panel_id) REFERENCES solar_panels(panel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE certification (\n  certification_id INT PRIMARY KEY,\n  production_id INT,\n  certification_date DATE,\n  certification_status VARCHAR(50),\n  certification_notes TEXT,\n  FOREIGN KEY (production_id) REFERENCES energy_production(production_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspectors (\n  inspector_id INT PRIMARY KEY,\n  inspector_name VARCHAR(100),\n  inspector_email VARCHAR(255),\n  inspector_phone VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanelCertification (\n    id INT PRIMARY KEY,\n    panel_id INT,\n    production_date DATE,\n    production_time TIME,\n    energy_produced DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PanelInformation (\n    panel_id INT PRIMARY KEY,\n    panel_location VARCHAR(100),\n    panel_capacity DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CertificationAgency (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(100),\n    contact_person VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CertificationRecords (\n    record_id INT PRIMARY KEY,\n    panel_id INT,\n    agency_id INT,\n    certification_date DATE,\n    certification_result VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyUsage (\n    id INT PRIMARY KEY,\n    usage_date DATE,\n    usage_time TIME,\n    energy_consumed DECIMAL\n);\n"
+      }
+    ]
+  }
+]

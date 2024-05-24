@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_copies (\n    backup_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    backup_date TIMESTAMP,\n    size_in_bytes INT,\n    Backup_location VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE critical_data_backups (\n  id INT PRIMARY KEY,\n  backup_name TEXT,\n  backup_timestamp TIMESTAMP,\n  backup_size INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE disaster_recovery_logs (\n  log_id INT PRIMARY KEY,\n  backup_id INT,\n  success BOOLEAN,\n error_message TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_data (\n    backup_id INT PRIMARY KEY,\n    backup_name VARCHAR(255),\n    backup_timestamp TIMESTAMP,\n    backup_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recovery_logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP,\n    recovery_status VARCHAR(50),\n    recovery_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_audit (\n    audit_id INT PRIMARY KEY,\n    audit_timestamp TIMESTAMP,\n    audit_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    backup_data JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_wallets (\n    wallet_id INT PRIMARY KEY,\n    user_id INT REFERENCES backup_users(user_id),\n    wallet_name VARCHAR(50) NOT NULL,\n    balance DECIMAL(18, 8)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_transactions (\n    transaction_id INT PRIMARY KEY,\n    wallet_id INT REFERENCES backup_wallets(wallet_id),\n    amount DECIMAL(18, 8),\n    transaction_type VARCHAR(20),\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES backup_users(user_id),\n    log_message TEXT,\n    log_type VARCHAR(50),\n    log_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    backup_data TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    transaction_amount DECIMAL NOT NULL,\n    transaction_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_wallets (\n    wallet_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    wallet_balance DECIMAL NOT NULL,\n    last_updated TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id INT PRIMARY KEY,\n    log_message TEXT NOT NULL,\n    log_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_settings (\n    setting_id INT PRIMARY KEY,\n    setting_name VARCHAR(50) NOT NULL,\n    setting_value TEXT NOT NULL\n);"
+      }
+    ]
+  }
+]

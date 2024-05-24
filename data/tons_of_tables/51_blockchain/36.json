@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WarehouseLayout (\n    warehouse_id INT,\n    rack_id INT,\n    sku_id INT,\n    sku_description TEXT,\n    demand_pattern TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_layout (\n    warehouse_id UUID PRIMARY KEY,\n    rack_id INT,\n    sku_id INT,\n    demand_rate FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sku_characteristics (\n    sku_id INT PRIMARY KEY,\n    item_name varchar(255),\n    item_category varchar(50),\n    item_size FLOAT,\n    reorder_point INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_layout (\n    warehouse_id INT,\n    area_name VARCHAR(50),\n    rack_id INT,\n    shelf_id INT,\n    max_capacity INT,\n    PRIMARY KEY (warehouse_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sku_characteristics (\n    sku_id INT,\n    sku_name VARCHAR(100),\n    category VARCHAR(50),\n    weight DECIMAL,\n    dimensions VARCHAR(50),\n    PRIMARY KEY (sku_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE demand_patterns (\n    pattern_id INT,\n    sku_id INT,\n    demand_rate DECIMAL,\n    order_lead_time INT,\n    PRIMARY KEY (pattern_id),\n    FOREIGN KEY (sku_id) REFERENCES sku_characteristics(sku_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WarehouseLayout (\n    warehouse_id UUID PRIMARY KEY,\n    warehouse_name STRING,\n    warehouse_location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SKUCharacteristics (\n    sku_id UUID PRIMARY KEY,\n    sku_name STRING,\n    sku_description STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE StorageAllocation (\n    allocation_id UUID PRIMARY KEY,\n    warehouse_id UUID,\n    storage_space_id UUID,\n    allocation_date DATE,\n    allocation_quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DemandPatterns (\n    demand_id UUID PRIMARY KEY,\n    sku_id UUID,\n    demand_date DATE,\n    demand_quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warehouse_layout (\n    id INT PRIMARY KEY,\n    location VARCHAR(255),\n    area_code VARCHAR(10),\n    capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sku_characteristics (\n    sku_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    category VARCHAR(50),\n    dimensions VARCHAR(20),\n    weight DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE demand_patterns (\n    demand_id INT PRIMARY KEY,\n    sku_id INT,\n    month VARCHAR(10),\n    demand INT,\n    CONSTRAINT fk_sku_id FOREIGN KEY (sku_id) REFERENCES sku_characteristics(sku_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE storage_allocation (\n    allocation_id INT PRIMARY KEY,\n    sku_id INT,\n    location_id INT,\n    quantity INT,\n    CONSTRAINT fk_sku_id FOREIGN KEY (sku_id) REFERENCES sku_characteristics(sku_id),\n    CONSTRAINT fk_location_id FOREIGN KEY (location_id) REFERENCES warehouse_layout(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE allocation_history (\n    history_id INT PRIMARY KEY,\n    allocation_id INT,\n    date DATE,\n    action VARCHAR(20),\n    quantity_changed INT,\n    CONSTRAINT fk_allocation_id FOREIGN KEY (allocation_id) REFERENCES storage_allocation(allocation_id)\n);\n"
+      }
+    ]
+  }
+]

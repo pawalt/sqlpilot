@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_vital_signs (\n  patient_id INTEGER,\n  heart_rate INTEGER,\n  blood_pressure VARCHAR(20),\n  temperature FLOAT,\n  oxygen_level FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE providers (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR(255) NOT NULL,\n  provider_specialty VARCHAR(100),\n  provider_location VARCHAR(100) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_vital_signs (\n  patient_id INT PRIMARY KEY,\n  heart_rate INT,\n  blood_pressure VARCHAR(20),\n  temperature FLOAT,\n  last_updated TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE healthcare_providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(50) NOT NULL,\n    specialization VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(50) NOT NULL,\n    age INT NOT NULL,\n    gender VARCHAR(10) NOT NULL,\n    patient_condition VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vital_signs (\n    vital_signs_id INT PRIMARY KEY,\n    patient_id INT REFERENCES patients(patient_id),\n    provider_id INT REFERENCES healthcare_providers(provider_id),\n    heart_rate INT NOT NULL,\n    blood_pressure VARCHAR(10) NOT NULL,\n    temperature FLOAT NOT NULL,\n    oxygen_saturation FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Providers (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR(50),\n  specialty VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50),\n  age INT,\n  gender VARCHAR(10),\n  provider_id INT REFERENCES Providers(provider_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VitalSigns (\n  vital_sign_id INT PRIMARY KEY,\n  patient_id INT REFERENCES Patients(patient_id),\n  heart_rate INT,\n  blood_pressure VARCHAR(20),\n  temperature FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointments (\n  appointment_id INT PRIMARY KEY,\n  patient_id INT REFERENCES Patients(patient_id),\n  provider_id INT REFERENCES Providers(provider_id),\n  appointment_date TIMESTAMP,\n  notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(50),\n    age INT,\n    gender VARCHAR(10),\n    medical_history TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE VitalSigns (\n    patient_id INT,\n    heart_rate INT,\n    blood_pressure VARCHAR(15),\n    temperature FLOAT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE HealthcareProviders (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(50),\n    specialty VARCHAR(50),\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointments (\n    appointment_id INT PRIMARY KEY,\n    patient_id INT,\n    provider_id INT,\n    appointment_date DATE,\n    appointment_time TIME,\n    status VARCHAR(20),\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),\n    FOREIGN KEY (provider_id) REFERENCES HealthcareProviders(provider_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TelehealthLogs (\n    log_id INT PRIMARY KEY,\n    patient_id INT,\n    provider_id INT,\n    log_details TEXT,\n    log_date TIMESTAMP,\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),\n    FOREIGN KEY (provider_id) REFERENCES HealthcareProviders(provider_id)\n);\n"
+      }
+    ]
+  }
+]

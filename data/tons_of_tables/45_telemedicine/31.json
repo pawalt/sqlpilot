@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medication_prescriptions (\n  prescription_id INT,\n  patient_id INT,\n  medication_name VARCHAR(255),\n  dosage FLOAT,\n  frequency VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(255) NOT NULL,\n  date_of_birth DATE,\n  gender VARCHAR(10) CHECK (gender IN ('Male', 'Female', 'Other'))\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE prescriptions (\n  prescription_id INT PRIMARY KEY,\n  patient_id INT REFERENCES patients(patient_id),\n  medication_name VARCHAR(255) NOT NULL,\n  dosage FLOAT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255) NOT NULL,\n    date_of_birth DATE,\n    gender VARCHAR(10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medications (\n    medication_id INT PRIMARY KEY,\n    medication_name VARCHAR(255) NOT NULL,\n    dosage VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE prescriptions (\n    prescription_id INT PRIMARY KEY,\n    patient_id INT REFERENCES patients(patient_id),\n    medication_id INT REFERENCES medications(medication_id),\n    dosage VARCHAR(50),\n    prescription_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Prescription (\n    prescription_id UUID PRIMARY KEY,\n    patient_id UUID,\n    medication_name VARCHAR(255),\n    dosage FLOAT,\n    frequency VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Patient (\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR(255),\n    age INTEGER,\n    gender VARCHAR(10),\n    address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Doctor (\n    doctor_id UUID PRIMARY KEY,\n    doctor_name VARCHAR(255),\n    specialization VARCHAR(100),\n    clinic_address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PrescriptionHistory (\n    prescription_id UUID,\n    patient_id UUID,\n    prescribed_by UUID,\n    date_prescribed DATE,\n    dosage_taken FLOAT,\n    CONSTRAINT fk_prescription FOREIGN KEY (prescription_id) REFERENCES Prescription(prescription_id),\n    CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES Patient(patient_id),\n    CONSTRAINT fk_doctor FOREIGN KEY (prescribed_by) REFERENCES Doctor(doctor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patients (\n  patient_id INT PRIMARY KEY,\n  patient_name STRING,\n  date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Medications (\n  medication_id INT PRIMARY KEY,\n  medication_name STRING,\n  dosage FLOAT,\n  frequency INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Prescriptions (\n  prescription_id INT PRIMARY KEY,\n  patient_id INT,\n  medication_id INT,\n  dosage FLOAT,\n  prescription_date DATE,\n  FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),\n  FOREIGN KEY (medication_id) REFERENCES Medications(medication_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Administrations (\n  administration_id INT PRIMARY KEY,\n  prescription_id INT,\n  administration_date DATE,\n  time_of_day STRING,\n  quantity INT,\n  FOREIGN KEY (prescription_id) REFERENCES Prescriptions(prescription_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Nurses (\n  nurse_id INT PRIMARY KEY,\n  nurse_name STRING\n);"
+      }
+    ]
+  }
+]

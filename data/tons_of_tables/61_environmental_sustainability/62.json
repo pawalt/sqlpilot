@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BirdMigrationLocations (\n  id UUID PRIMARY KEY,\n  bird_name VARCHAR(50),\n  location_lat FLOAT,\n  location_long FLOAT,\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE birds (\n   bird_id INT PRIMARY KEY,\n   bird_name VARCHAR(50),\n   location_name VARCHAR(50),\n   migration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n   location_id INT PRIMARY KEY,\n   location_name VARCHAR(50),\n   latitude FLOAT,\n   longitude FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BirdLocations (\n  bird_id INT PRIMARY KEY,\n  location VARCHAR(255) NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BirdSpecies (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(255) NOT NULL,\n  average_wingspan DECIMAL(5,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MigrationRoutes (\n  route_id INT PRIMARY KEY,\n  bird_id INT NOT NULL,\n  start_location VARCHAR(255) NOT NULL,\n  end_location VARCHAR(255) NOT NULL,\n  distance_km FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Birds (\n   bird_id INT PRIMARY KEY,\n   bird_name TEXT,\n   migration_date DATE,\n   location_lat FLOAT,\n   location_long FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BirdSpecies (\n   species_id INT PRIMARY KEY,\n   species_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BirdTracks (\n   track_id INT PRIMARY KEY,\n   bird_id INT,\n   track_date DATE,\n   location_lat FLOAT,\n   location_long FLOAT,\n   FOREIGN KEY (bird_id) REFERENCES Birds(bird_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BirdWatchers (\n   watcher_id INT PRIMARY KEY,\n   watcher_name TEXT,\n   region TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bird_species (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bird_locations (\n  location_id INT PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  latitude DECIMAL(9,6) NOT NULL,\n  longitude DECIMAL(9,6) NOT NULL,\n  species_id INT,\n  FOREIGN KEY (species_id) REFERENCES bird_species(species_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE migration_routes (\n  route_id INT PRIMARY KEY,\n  start_location_id INT NOT NULL,\n  end_location_id INT NOT NULL,\n  migration_distance DECIMAL(10,2) NOT NULL,\n  CONSTRAINT start_location_fk FOREIGN KEY (start_location_id) REFERENCES bird_locations(location_id),\n  CONSTRAINT end_location_fk FOREIGN KEY (end_location_id) REFERENCES bird_locations(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tracking_devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bird_tracking (\n  tracking_id INT PRIMARY KEY,\n  bird_id INT NOT NULL,\n  device_id INT NOT NULL,\n  location_id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  CONSTRAINT bird_fk FOREIGN KEY (bird_id) REFERENCES bird_species(species_id),\n  CONSTRAINT device_fk FOREIGN KEY (device_id) REFERENCES tracking_devices(device_id),\n  CONSTRAINT location_fk FOREIGN KEY (location_id) REFERENCES bird_locations(location_id)\n);\n"
+      }
+    ]
+  }
+]

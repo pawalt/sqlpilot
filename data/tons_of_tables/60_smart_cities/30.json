@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_panel_efficiency_ratings (\n  panel_id INT PRIMARY KEY,\n  efficiency_rating FLOAT,\n  installation_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanels (\n  panel_id INT PRIMARY KEY,\n  brand VARCHAR(50),\n  efficiency_rating FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceData (\n  data_id INT PRIMARY KEY,\n  panel_id INT REFERENCES SolarPanels(panel_id),\n  date TIMESTAMP,\n  efficiency FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE solar_panels (\n  panel_id INT PRIMARY KEY,\n  panel_name STRING,\n  efficiency_rating FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_performance (\n  performance_id INT PRIMARY KEY,\n  panel_id INT,\n  performance_date DATE,\n  energy_generated FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_usage (\n  usage_id INT PRIMARY KEY,\n  panel_id INT,\n  usage_date DATE,\n  usage_hours INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE panel_manufacturer (\n    manufacturer_id INT PRIMARY KEY,\n    manufacturer_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_rating (\n    panel_id INT PRIMARY KEY,\n    manufacturer_id INT NOT NULL,\n    efficiency_rating DECIMAL NOT NULL,\n    production_year INT NOT NULL,\n    FOREIGN KEY (manufacturer_id) REFERENCES panel_manufacturer(manufacturer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_location (\n    location_id INT PRIMARY KEY,\n    panel_id INT NOT NULL,\n    installation_date DATE NOT NULL,\n    location_name VARCHAR(255) NOT NULL,\n    FOREIGN KEY (panel_id) REFERENCES panel_rating(panel_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE panel_performance (\n    performance_id INT PRIMARY KEY,\n    panel_id INT NOT NULL,\n    performance_date DATE NOT NULL,\n    efficiency_measurement DECIMAL NOT NULL,\n    FOREIGN KEY (panel_id) REFERENCES panel_rating(panel_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SolarPanelEfficiencyRatings (\n    panel_id INT PRIMARY KEY,\n    efficiency_rating FLOAT,\n    installation_date DATE,\n    manufacturer VARCHAR(255),\n    country_of_origin VARCHAR(255)\n)"
+      }
+    ]
+  }
+]

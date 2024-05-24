@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneExpressionData (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255) NOT NULL,\n  expression_level FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneExpressionData (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    expression_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComparativeGenomicAnalysis (\n    analysis_id INT PRIMARY KEY,\n    gene_id INT,\n    species_name VARCHAR(255),\n    analysis_results TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_expression_data (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(50),\n  expression_level DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_data (\n  sample_id INT PRIMARY KEY,\n  sample_name VARCHAR(50),\n  species VARCHAR(50),\n  tissue_type VARCHAR(50),\n  expression_value DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE comparative_analysis (\n  analysis_id INT PRIMARY KEY,\n  gene_id INT,\n  sample_id INT,\n  comparison_result VARCHAR(50),\n  FOREIGN KEY (gene_id) REFERENCES gene_expression_data(gene_id),\n  FOREIGN KEY (sample_id) REFERENCES sample_data(sample_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_data (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(50) NOT NULL,\n  expression_level FLOAT,\n  species_id INT,\n  FOREIGN KEY (species_id) REFERENCES species_data(species_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE species_data (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50) NOT NULL,\n  common_name VARCHAR(50),\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_data (\n  sample_id INT PRIMARY KEY,\n  gene_id INT,\n  sample_name VARCHAR(50) NOT NULL,\n  expression_value FLOAT,\n  FOREIGN KEY (gene_id) REFERENCES gene_data(gene_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n  result_id INT PRIMARY KEY,\n  analysis_name VARCHAR(50) NOT NULL,\n  analysis_date DATE,\n  result_summary TEXT,\n  sample_id INT,\n  FOREIGN KEY (sample_id) REFERENCES sample_data(sample_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneExpressions (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(50) NOT NULL,\n    expression_level FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Species (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genomes (\n    genome_id INT PRIMARY KEY,\n    species_id INT NOT NULL,\n    genome_size BIGINT,\n    FOREIGN KEY (species_id) REFERENCES Species(species_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(50) NOT NULL,\n    species_id INT NOT NULL,\n    FOREIGN KEY (species_id) REFERENCES Species(species_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExpressionData (\n    data_id INT PRIMARY KEY,\n    gene_id INT NOT NULL,\n    experiment_id INT NOT NULL,\n    expression_value FLOAT NOT NULL,\n    FOREIGN KEY (gene_id) REFERENCES GeneExpressions(gene_id),\n    FOREIGN KEY (experiment_id) REFERENCES Experiments(experiment_id)\n);"
+      }
+    ]
+  }
+]

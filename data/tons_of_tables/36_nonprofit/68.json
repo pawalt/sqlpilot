@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE charitable_giving_trends (\n  year INT,\n  total_donations DECIMAL,\n  average_donation DECIMAL,\n  largest_donation DECIMAL,\n  num_donors INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CharityDonations (\n\tdonation_id INT PRIMARY KEY,\n\tcharity_name VARCHAR,\n\tdonation_amount DECIMAL,\n\tdonation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Donors (\n\tdonor_id INT PRIMARY KEY,\n\tdonor_name VARCHAR,\n\tdonor_email VARCHAR,\n\tdonation_id INT,\n\tFOREIGN KEY (donation_id) REFERENCES CharityDonations(donation_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE philanthropy_donors (\n    donor_id INT PRIMARY KEY,\n    donor_name VARCHAR(50),\n    donation_amount DECIMAL,\n    donation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE philanthropy_organizations (\n    org_id INT PRIMARY KEY,\n    org_name VARCHAR(50),\n    sector VARCHAR(50),\n    founding_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE philanthropy_donations (\n    donation_id INT PRIMARY KEY,\n    donor_id INT,\n    org_id INT,\n    donation_amount DECIMAL,\n    donation_date DATE,\n    FOREIGN KEY (donor_id) REFERENCES philanthropy_donors(donor_id),\n    FOREIGN KEY (org_id) REFERENCES philanthropy_organizations(org_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE charitable_organizations ( organization_id SERIAL PRIMARY KEY, organization_name VARCHAR(100) NOT NULL, sector VARCHAR(50) NOT NULL, team_size INT NOT NULL, location VARCHAR(100) NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE donation_records ( donation_id SERIAL PRIMARY KEY, organization_id INT NOT NULL, donor_id INT NOT NULL, donation_amount DECIMAL(10, 2) NOT NULL, donation_date DATE NOT NULL, FOREIGN KEY (organization_id) REFERENCES charitable_organizations(organization_id), FOREIGN KEY (donor_id) REFERENCES donors(donor_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE donors ( donor_id SERIAL PRIMARY KEY, donor_name VARCHAR(100) NOT NULL, donor_email VARCHAR(100) UNIQUE NOT NULL, donation_count INT DEFAULT 0 );"
+      },
+      {
+        "table_schema": "CREATE TABLE research_reports ( report_id SERIAL PRIMARY KEY, organization_id INT NOT NULL, report_date DATE NOT NULL, report_content TEXT NOT NULL, FOREIGN KEY (organization_id) REFERENCES charitable_organizations(organization_id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CharitableOrganizations (\n    org_id UUID PRIMARY KEY,\n    org_name VARCHAR(255),\n    founding_year INT,\n    headquarters_location VARCHAR(255),\n    focus_area VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Donors (\n    donor_id UUID PRIMARY KEY,\n    donor_name VARCHAR(255),\n    donor_type VARCHAR(255),\n    donation_total DECIMAL,\n    donation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Donations (\n    donation_id UUID PRIMARY KEY,\n    donor_id UUID,\n    org_id UUID,\n    donation_amount DECIMAL,\n    donation_date DATE,\n    FOREIGN KEY (donor_id) REFERENCES Donors(donor_id),\n    FOREIGN KEY (org_id) REFERENCES CharitableOrganizations(org_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FundingSources (\n    source_id UUID PRIMARY KEY,\n    source_name VARCHAR(255),\n    source_type VARCHAR(255),\n    contact_person VARCHAR(255),\n    contact_email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchProjects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    description TEXT,\n    funding_source_id UUID,\n    FOREIGN KEY (funding_source_id) REFERENCES FundingSources(source_id)\n);\n"
+      }
+    ]
+  }
+]

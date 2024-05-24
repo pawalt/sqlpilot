@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Vendor (\n    vendor_id UUID NOT NULL,\n    vendor_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15),\n    address TEXT,\n    PRIMARY KEY (vendor_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendors (\n vendor_id INT PRIMARY KEY,\n vendor_name VARCHAR(50) NOT NULL,\n vendor_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ingredients (\n ingredient_id INT PRIMARY KEY,\n ingredient_name VARCHAR(50) NOT NULL,\n vendor_id INT REFERENCES vendors(vendor_id) ON DELETE CASCADE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ingredient (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  category VARCHAR(255) NOT NULL,\n  vendor_id INT,\n  FOREIGN KEY (vendor_id) REFERENCES vendor(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE menu (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  price DECIMAL(10, 2) NOT NULL,\n  ingredient_id INT,\n  FOREIGN KEY (ingredient_id) REFERENCES ingredient(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendors (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    vendor_id INT NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id INT PRIMARY KEY,\n    product_id INT NOT NULL,\n    quantity INT NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    vendor_id INT NOT NULL,\n    product_id INT NOT NULL,\n    quantity INT NOT NULL,\n    order_date DATE NOT NULL,\n    FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id),\n    FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendors (vendor_id INT PRIMARY KEY,\nvendor_name VARCHAR(50),\ncontact_person VARCHAR(50),\nphone_number VARCHAR(15),\nemail_address VARCHAR(50));"
+      },
+      {
+        "table_schema": "CREATE TABLE ingredients (ingredient_id INT PRIMARY KEY,\ningredient_name VARCHAR(50),\nvendor_id INT,\nquantity DECIMAL,\nunit_of_measure VARCHAR(20),\nFOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE recipes (recipe_id INT PRIMARY KEY,\nrecipe_name VARCHAR(50),\ningredient_id INT,\nquantity DECIMAL,\nFOREIGN KEY (ingredient_id) REFERENCES ingredients(ingredient_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE menu_items (menu_item_id INT PRIMARY KEY,\nmenu_item_name VARCHAR(50),\nrecipe_id INT,\nprice DECIMAL,\nFOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (order_id INT PRIMARY KEY,\norder_date DATE,\nmenu_item_id INT,\nquantity INT,\nFOREIGN KEY (menu_item_id) REFERENCES menu_items(menu_item_id));"
+      }
+    ]
+  }
+]

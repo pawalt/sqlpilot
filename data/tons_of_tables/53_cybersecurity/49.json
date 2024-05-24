@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareEvents (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE,\n    correlation_score FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareEvents (\n    event_id INT PRIMARY KEY,\n    event_date TIMESTAMP,\n    malware_type TEXT,\n    threat_level TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ThreatIntelligence (\n    correlation_id INT PRIMARY KEY,\n    event_id INT,\n    related_malware_type TEXT,\n    threat_category TEXT,\n    FOREIGN KEY (event_id) REFERENCES MalwareEvents(event_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareEvents (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(50),\n    event_date DATE,\n    event_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ThreatIntelligence (\n    threat_id INT PRIMARY KEY,\n    threat_name VARCHAR(50),\n    threat_type VARCHAR(50),\n    threat_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Correlation (\n    correlation_id INT PRIMARY KEY,\n    event_id INT,\n    threat_id INT,\n    correlation_score FLOAT,\n    FOREIGN KEY (event_id) REFERENCES MalwareEvents(event_id),\n    FOREIGN KEY (threat_id) REFERENCES ThreatIntelligence(threat_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareEvent (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_description TEXT,\n    event_date TIMESTAMP,\n    malware_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Correlation (\n    correlation_id UUID PRIMARY KEY,\n    event_id UUID,\n    correlation_score FLOAT,\n    correlation_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ThreatIntelligence (\n    intel_id UUID PRIMARY KEY,\n    intel_source VARCHAR(255),\n    intel_description TEXT,\n    intel_date TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EventCorrelation (\n    correlation_id UUID,\n    intel_id UUID,\n    correlation_strength FLOAT,\n    is_matched BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_events (\n    event_id INT PRIMARY KEY,\n    event_type VARCHAR(50),\n    event_description TEXT,\n    event_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE correlations (\n    correlation_id INT PRIMARY KEY,\n    event_id INT,\n    correlated_event_id INT,\n    correlation_score FLOAT,\n    FOREIGN KEY (event_id) REFERENCES malware_events(event_id),\n    FOREIGN KEY (correlated_event_id) REFERENCES malware_events(event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE threat_actors (\n    threat_actor_id INT PRIMARY KEY,\n    threat_actor_name VARCHAR(100),\n    threat_actor_organization VARCHAR(100),\n    threat_actor_country VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_samples (\n    sample_id INT PRIMARY KEY,\n    sample_name VARCHAR(100),\n    sample_hash VARCHAR(50),\n    threat_actor_id INT,\n    FOREIGN KEY (threat_actor_id) REFERENCES threat_actors(threat_actor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_reports (\n    report_id INT PRIMARY KEY,\n    report_description TEXT,\n    report_date TIMESTAMP,\n    threat_actor_id INT,\n    FOREIGN KEY (threat_actor_id) REFERENCES threat_actors(threat_actor_id)\n);"
+      }
+    ]
+  }
+]

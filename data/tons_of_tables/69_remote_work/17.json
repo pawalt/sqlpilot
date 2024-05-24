@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE expenses (\n  expense_id INT,\n  expense_date DATE,\n  expense_description VARCHAR(255),\n  expense_amount DECIMAL(10,2),\n  team_member_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_team (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(255),\n    team_lead VARCHAR(255)\n);\nCREATE TABLE expenses (\n    expense_id INT PRIMARY KEY,\n    team_id INT,\n    expense_description TEXT,\n    amount DECIMAL(10, 2),\n    expense_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_team_members (\n    member_id INT PRIMARY KEY,\n    member_name TEXT NOT NULL,\n    team_name TEXT NOT NULL\n);\n\nCREATE TABLE expenses (\n    expense_id INT PRIMARY KEY,\n    member_id INT REFERENCES virtual_team_members(member_id),\n    expense_description TEXT,\n    expense_amount DECIMAL\n);\n\nCREATE TABLE budget (\n    budget_id INT PRIMARY KEY,\n    team_name TEXT REFERENCES virtual_team_members(team_name),\n    total_budget DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50),\n    role VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n    expense_id INT PRIMARY KEY,\n    member_id INT,\n    expense_date DATE,\n    amount DECIMAL(10,2),\n    description VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE budget (\n    budget_id INT PRIMARY KEY,\n    project_name VARCHAR(50),\n    budget_amount DECIMAL(10,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE team_expenses (\n    team_expense_id INT PRIMARY KEY,\n    project_name VARCHAR(50),\n    total_expenses DECIMAL(10,2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE expenses (\n    expense_id SERIAL PRIMARY KEY,\n    date DATE,\n    amount DECIMAL(10, 2) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE budget (\n    budget_id SERIAL PRIMARY KEY,\n    year INT NOT NULL,\n    total_budget DECIMAL(15, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE member_expenses (\n    id INT,\n    expense_id INT,\n    FOREIGN KEY (id) REFERENCES team_members (id),\n    FOREIGN KEY (expense_id) REFERENCES expenses (expense_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_budget (\n    team_id SERIAL PRIMARY KEY,\n    year INT NOT NULL,\n    total_assigned_budget DECIMAL(15, 2) NOT NULL\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE audit_trails (\n  id SERIAL PRIMARY KEY,\n  transaction_id UUID NOT NULL,\n  transaction_type VARCHAR(50) NOT NULL,\n  transaction_data JSONB NOT NULL,\n  timestamp TIMESTAMPTZ NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_transactions (\n    transaction_id INT PRIMARY KEY,\n    sender VARCHAR(255),\n    receiver VARCHAR(255),\n    amount DECIMAL,\n    transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_trail (\n    log_id INT PRIMARY KEY,\n    transaction_id INT,\n    log_message TEXT,\n    log_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_transactions (\n    transaction_id INT PRIMARY KEY,\n    transaction_type VARCHAR(50),\n    transaction_amount DECIMAL(10,2),\n    transaction_date TIMESTAMP,\n    user_id INT,\n    quantum_key VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    action_type VARCHAR(50),\n    action_description TEXT,\n    action_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(50),\n    key_value TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_communication_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    transaction_date TIMESTAMP NOT NULL,\n    sender VARCHAR(50) NOT NULL,\n    receiver VARCHAR(50) NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_transaction_log (\n    log_id SERIAL PRIMARY KEY,\n    transaction_id INT REFERENCES quantum_communication_transactions(transaction_id),\n    action VARCHAR(50) NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_transaction_errors (\n    error_id SERIAL PRIMARY KEY,\n    transaction_id INT REFERENCES quantum_communication_transactions(transaction_id),\n    error_message TEXT NOT NULL,\n    error_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_transaction_audit (\n    audit_id SERIAL PRIMARY KEY,\n    action VARCHAR(50) NOT NULL,\n    audit_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_communication_transactions (\n    transaction_id INT PRIMARY KEY,\n    transaction_date TIMESTAMP,\n    sender VARCHAR(50),\n    receiver VARCHAR(50),\n    amount DECIMAL(10,2),\n    status VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n    log_id INT PRIMARY KEY,\n    transaction_id INT,\n    log_date TIMESTAMP,\n    log_type VARCHAR(20),\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(100),\n    role VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    log_date TIMESTAMP,\n    action VARCHAR(20),\n    details TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE system_logs (\n    log_id INT PRIMARY KEY,\n    log_date TIMESTAMP,\n    log_type VARCHAR(20),\n    description TEXT,\n    user_id INT\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FacialRecognitionData (\n  person_id INT PRIMARY KEY,\n  face_encoding BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facial_recognition_data (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50) NOT NULL,\n    face_encoding BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE face_matches (\n    match_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    confidence_score FLOAT,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FaceImage (\n    face_id INT PRIMARY KEY,\n    image_data BYTEA,\n    image_name VARCHAR(255),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FaceFeature (\n    feature_id INT PRIMARY KEY,\n    face_id INT,\n    feature_data BYTEA,\n    feature_type VARCHAR(50),\n    FOREIGN KEY (face_id) REFERENCES FaceImage(face_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FaceMatch (\n    match_id INT PRIMARY KEY,\n    query_face_id INT,\n    match_face_id INT,\n    match_similarity FLOAT,\n    match_timestamp TIMESTAMP,\n    FOREIGN KEY (query_face_id) REFERENCES FaceImage(face_id),\n    FOREIGN KEY (match_face_id) REFERENCES FaceImage(face_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE face_templates (\n    template_id INT PRIMARY KEY,\n    image_url TEXT NOT NULL,\n    face_encoding BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE face_matches (\n    match_id INT PRIMARY KEY,\n    template_id INT REFERENCES face_templates(template_id),\n    match_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE face_users (\n    user_id INT PRIMARY KEY,\n    username TEXT NOT NULL,\n    password TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE face_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES face_users(user_id),\n    log_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facial_recognition_data (\n    id INT,\n    name VARCHAR(50),\n    image BLOB,\n    encoding VARCHAR(100),\n    PRIMARY KEY (id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE face_matches (\n    match_id INT,\n    image1_id INT,\n    image2_id INT,\n    match_score FLOAT,\n    timestamp TIMESTAMP,\n    PRIMARY KEY (match_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE face_embeddings (\n    embedding_id INT,\n    image_id INT,\n    embedding_data BLOB,\n    timestamp TIMESTAMP,\n    PRIMARY KEY (embedding_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    image_id INT,\n    filename VARCHAR(100),\n    capture_date DATE,\n    location VARCHAR(50),\n    PRIMARY KEY (image_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE face_labels (\n    label_id INT,\n    image_id INT,\n    label VARCHAR(50),\n    confidence FLOAT,\n    PRIMARY KEY (label_id)\n)"
+      }
+    ]
+  }
+]

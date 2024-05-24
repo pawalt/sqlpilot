@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RemoteWorkSchedules (\n    schedule_id SERIAL PRIMARY KEY,\n    employee_id INT NOT NULL,\n    work_date DATE NOT NULL,\n    start_time TIME NOT NULL,\n    end_time TIME NOT NULL,\n    task_description TEXT,\n    team_calendar_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RemoteWorkSchedule (\n    work_id INT PRIMARY KEY,\n    team_id INT,\n    work_date DATE,\n    start_time TIME,\n    end_time TIME\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamCalendar (\n    team_id INT PRIMARY KEY,\n    event_id INT,\n    event_date DATE,\n    event_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE schedule (\n    id INT PRIMARY KEY,\n    date DATE,\n    start_time TIME,\n    end_time TIME,\n    employee_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team (\n    id INT PRIMARY KEY,\n    team_name VARCHAR(50),\n    team_lead VARCHAR(50),\n    department VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event (\n    id INT PRIMARY KEY,\n    event_name VARCHAR(50),\n    event_date DATE,\n    location VARCHAR(100),\n    team_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RemoteWorkSchedule (\n    id INT PRIMARY KEY,\n    date DATE,\n    employee_name VARCHAR(255),\n    start_time TIME,\n    end_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamCalendar (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    event_date DATE,\n    event_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamMembers (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(255),\n    department VARCHAR(255),\n    role VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WorkShifts (\n    shift_id INT PRIMARY KEY,\n    shift_name VARCHAR(255),\n    start_time TIME,\n    end_time TIME,\n    assigned_employee_id INT,\n    FOREIGN KEY (assigned_employee_id) REFERENCES TeamMembers(member_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeamMembers (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    email_address VARCHAR(100) UNIQUE,\n    team_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Teams (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(50) NOT NULL,\n    team_lead_id INT,\n    CONSTRAINT fk_team_lead FOREIGN KEY (team_lead_id) REFERENCES TeamMembers(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WorkSchedules (\n    schedule_id INT PRIMARY KEY,\n    team_id INT,\n    start_date DATE,\n    end_date DATE,\n    CONSTRAINT fk_team_id FOREIGN KEY (team_id) REFERENCES Teams(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(50) NOT NULL,\n    event_date DATE,\n    team_id INT,\n    CONSTRAINT fk_event_team_id FOREIGN KEY (team_id) REFERENCES Teams(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Calendar (\n    event_id INT PRIMARY KEY,\n    schedule_id INT,\n    event_date DATE,\n    event_notes TEXT,\n    CONSTRAINT fk_schedule_id FOREIGN KEY (schedule_id) REFERENCES WorkSchedules(schedule_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_email_templates (\n    template_id UUID PRIMARY KEY,\n    template_name VARCHAR(100) NOT NULL,\n    template_content TEXT NOT NULL,\n    target_group VARCHAR(50) NOT NULL,\n    created_by_user VARCHAR(50) NOT NULL,\n    last_updated TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_templates (\n  template_id UUID PRIMARY KEY,\n  template_name STRING,\n  template_content STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_targets (\n  target_id UUID PRIMARY KEY,\n  target_email STRING,\n  target_name STRING,\n  template_id UUID REFERENCES phishing_templates(template_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_templates (\n  template_id UUID PRIMARY KEY,\n  template_name STRING,\n  template_content STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_email_templates (\n    id INT PRIMARY KEY,\n    template_name VARCHAR(255),\n    content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_targets (\n    id INT PRIMARY KEY,\n    email_address VARCHAR(255),\n    name VARCHAR(255),\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE template_targets (\n    id INT PRIMARY KEY,\n    template_id INT,\n    target_id INT,\n    FOREIGN KEY (template_id) REFERENCES phishing_email_templates(id),\n    FOREIGN KEY (target_id) REFERENCES email_targets(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_templates (\n    template_id UUID PRIMARY KEY,\n    template_name TEXT NOT NULL,\n    template_content TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE targets (\n    target_id UUID PRIMARY KEY,\n    email_address TEXT NOT NULL,\n    target_name TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE template_mapping (\n    mapping_id UUID PRIMARY KEY,\n    template_id UUID NOT NULL,\n    target_id UUID NOT NULL,\n    FOREIGN KEY (template_id) REFERENCES phishing_templates(template_id),\n    FOREIGN KEY (target_id) REFERENCES targets(target_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE distribution_logs (\n    log_id UUID PRIMARY KEY,\n    mapping_id UUID NOT NULL,\n    sent_timestamp TIMESTAMP NOT NULL,\n    delivery_status TEXT NOT NULL,\n    FOREIGN KEY (mapping_id) REFERENCES template_mapping(mapping_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_templates (\n    template_id INT PRIMARY KEY,\n    template_name VARCHAR(255),\n    content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE targets (\n    target_id INT PRIMARY KEY,\n    target_email VARCHAR(255),\n    target_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE template_targets (\n    id INT PRIMARY KEY,\n    template_id INT,\n    target_id INT,\n    FOREIGN KEY (template_id) REFERENCES phishing_templates(template_id),\n    FOREIGN KEY (target_id) REFERENCES targets(target_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_templates (\n    id INT PRIMARY KEY,\n    campaign_id INT,\n    template_id INT,\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id),\n    FOREIGN KEY (template_id) REFERENCES phishing_templates(template_id)\n);"
+      }
+    ]
+  }
+]

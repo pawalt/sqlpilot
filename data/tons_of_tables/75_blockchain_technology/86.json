@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_emissions (\n  emission_id INT PRIMARY KEY,\n  emission_date DATE NOT NULL,\n  emission_source VARCHAR(50) NOT NULL,\n  emission_amount DECIMAL(10, 2) NOT NULL,\n  emission_offset BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE carbon_emissions (\n   id INT PRIMARY KEY,\n   emission_type VARCHAR(255),\n   emission_amount FLOAT,\n   emission_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE carbon_offsets (\n   id INT PRIMARY KEY,\n   offset_type VARCHAR(255),\n   offset_amount FLOAT,\n   offset_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CarbonEmissions (\n    id INT PRIMARY KEY,\n    emission_type VARCHAR(255),\n    emission_amount DECIMAL(10,2),\n    timestamp TIMESTAMP,\n    blockchain_id UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Offsets (\n    id INT PRIMARY KEY,\n    offset_type VARCHAR(255),\n    offset_amount DECIMAL(10,2),\n    offset_source VARCHAR(255),\n    timestamp TIMESTAMP,\n    blockchain_id UUID\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EmissionsOffsetsLink (\n    id INT PRIMARY KEY,\n    emission_id INT,\n    offset_id INT,\n    timestamp TIMESTAMP,\n    blockchain_id UUID\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CarbonEmissions (\n    id INT PRIMARY KEY,\n    emission_source VARCHAR(255),\n    emission_date DATE,\n    emission_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmissionOffsets (\n    id INT PRIMARY KEY,\n    offset_type VARCHAR(255),\n    offset_date DATE,\n    offset_amount DECIMAL(10, 2),\n    related_emission_id INT REFERENCES CarbonEmissions(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BlockchainTransactions (\n    tx_id UUID PRIMARY KEY,\n    tx_timestamp TIMESTAMP,\n    tx_type VARCHAR(255),\n    related_offset_id INT REFERENCES EmissionOffsets(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SustainabilityReports (\n    report_id INT PRIMARY KEY,\n    report_date DATE,\n    report_content TEXT,\n    related_tx_id UUID REFERENCES BlockchainTransactions(tx_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "\nCREATE TABLE carbon_offsets (\n    id INT PRIMARY KEY,\n    emission_id INT,\n    offset_amount DECIMAL,\n    offset_date DATE\n);\n"
+      },
+      {
+        "table_schema": "\nCREATE TABLE carbon_emissions (\n    id INT PRIMARY KEY,\n    company_id INT,\n    emission_value DECIMAL,\n    emission_date DATE\n);\n"
+      },
+      {
+        "table_schema": "\nCREATE TABLE blockchain_transactions (\n    id INT PRIMARY KEY,\n    transaction_hash VARCHAR(255),\n    block_number INT\n);\n"
+      },
+      {
+        "table_schema": "\nCREATE TABLE companies (\n    id INT PRIMARY KEY,\n    company_name VARCHAR(255),\n    address VARCHAR(255),\n    industry VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "\nCREATE TABLE blockchain_info (\n    id INT PRIMARY KEY,\n    block_hash VARCHAR(255),\n    miner_id INT,\n    transaction_id INT\n);\n"
+      }
+    ]
+  }
+]

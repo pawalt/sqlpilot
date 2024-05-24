@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_identity (\n    id INT PRIMARY KEY,\n    username TEXT,\n    encrypted_password TEXT,\n    public_key TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_identities (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    encrypted_password VARCHAR(100),\n    public_key VARCHAR(150)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_authentication (\n    id INT PRIMARY KEY,\n    user_id INT REFERENCES user_identities(id),\n    authentication_token VARCHAR(200)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n\tid INT PRIMARY KEY,\n\tusername VARCHAR(50) NOT NULL,\n\temail VARCHAR(100) NOT NULL,\n\tpassword_hash BYTEA NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_keys (\n\tid INT PRIMARY KEY,\n\tuser_id INT NOT NULL,\n\tpublic_key BYTEA NOT NULL,\n\tprivate_key BYTEA NOT NULL,\n\tFOREIGN KEY (user_id) REFERENCES users(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_auth (\n\tid INT PRIMARY KEY,\n\tuser_id INT NOT NULL,\n\tauth_token BYTEA NOT NULL,\n\texpiration TIMESTAMP NOT NULL,\n\tFOREIGN KEY (user_id) REFERENCES users(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    role_name VARCHAR(50) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_tokens (\n    token_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    token_value VARCHAR(100) NOT NULL,\n    expiration_date TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_auth (\n    auth_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    auth_key VARCHAR(100) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash BYTEA NOT NULL,\n    public_key BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_tokens (\n    token_id SERIAL PRIMARY KEY,\n    user_id INTEGER REFERENCES users(user_id) NOT NULL,\n    token_value BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id SERIAL PRIMARY KEY,\n    user_id INTEGER REFERENCES users(user_id) NOT NULL,\n    session_key BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_authentication (\n    authentication_id SERIAL PRIMARY KEY,\n    user_id INTEGER REFERENCES users(user_id) NOT NULL,\n    blockchain_address VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  }
+]

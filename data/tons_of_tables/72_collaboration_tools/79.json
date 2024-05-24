@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE documents (id INT PRIMARY KEY,\n title VARCHAR(255),\n content TEXT,\n created_by VARCHAR(50),\n created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE documents (\n    document_id UUID PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    created_by VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE document_collaborators (\n    collaboration_id UUID PRIMARY KEY,\n    document_id UUID REFERENCES documents(document_id),\n    collaborator_name VARCHAR(100) NOT NULL,\n    joined_at TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE documents (\n  id UUID PRIMARY KEY,\n  title VARCHAR(255) NOT NULL,\n  content TEXT NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE document_permissions (\n  document_id UUID,\n  user_id UUID,\n  permission_type VARCHAR(20) NOT NULL,\n  PRIMARY KEY (document_id, user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE documents (\n  id SERIAL PRIMARY KEY,\n  title VARCHAR(100) NOT NULL,\n  content TEXT NOT NULL,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  password TEXT NOT NULL,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborations (\n  collab_id SERIAL PRIMARY KEY,\n  document_id INTEGER REFERENCES documents(id) ON DELETE CASCADE,\n  user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,\n  permission_level INTEGER NOT NULL,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n  comment_id SERIAL PRIMARY KEY,\n  document_id INTEGER REFERENCES documents(id) ON DELETE CASCADE,\n  user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,\n  comment TEXT NOT NULL,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE team_members (\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n  doc_id INT PRIMARY KEY,\n  doc_name VARCHAR(100) NOT NULL,\n  created_by INT,\n  created_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_collaborators (\n  doc_id INT,\n  member_id INT,\n  FOREIGN KEY (doc_id) REFERENCES documents(doc_id),\n  FOREIGN KEY (member_id) REFERENCES team_members(member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE edits (\n  edit_id INT PRIMARY KEY,\n  doc_id INT,\n  editor_id INT,\n  edit_content TEXT NOT NULL,\n  edit_time TIMESTAMP,\n  FOREIGN KEY (doc_id) REFERENCES documents(doc_id),\n  FOREIGN KEY (editor_id) REFERENCES team_members(member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n  notification_id INT PRIMARY KEY,\n  doc_id INT,\n  recipient_id INT,\n  message TEXT NOT NULL,\n  sent_time TIMESTAMP,\n  FOREIGN KEY (doc_id) REFERENCES documents(doc_id),\n  FOREIGN KEY (recipient_id) REFERENCES team_members(member_id)\n);"
+      }
+    ]
+  }
+]

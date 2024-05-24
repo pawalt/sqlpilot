@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_background_settings (\n    user_id INT PRIMARY KEY,\n    background_image_url VARCHAR(255),\n    blur_level INT,\n    brightness_level INT,\n    contrast_level INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_background_settings (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    background_color VARCHAR(50),\n    background_image_url TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customization_options (\n    option_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    option_name VARCHAR(50),\n    option_value TEXT,\n    FOREIGN KEY (user_id) REFERENCES virtual_background_settings(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_background_settings (\n  id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  background_url VARCHAR NOT NULL,\n  blur_level INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE background_customization_options (\n  option_id INT PRIMARY KEY,\n  option_name VARCHAR NOT NULL,\n  option_description TEXT,\n  is_default BOOLEAN DEFAULT FALSE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_background_preferences (\n  preference_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  selected_background_id INT NOT NULL,\n  selected_option_id INT,\n  FOREIGN KEY (user_id) REFERENCES virtual_background_settings(id),\n  FOREIGN KEY (selected_background_id) REFERENCES virtual_background_settings(id),\n  FOREIGN KEY (selected_option_id) REFERENCES background_customization_options(option_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_background_settings (\n\tsetting_id UUID PRIMARY KEY,\n\tuser_id UUID,\n\tbackground_image_url VARCHAR,\n\tdisplay_name VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customization_options (\n\toption_id UUID PRIMARY KEY,\n\tsetting_id UUID,\n\toption_name VARCHAR,\n\toption_value VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n\tpreference_id UUID PRIMARY KEY,\n\tuser_id UUID,\n\tpreference_name VARCHAR,\n\tpreference_value VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity_logs (\n\tlog_id UUID PRIMARY KEY,\n\tuser_id UUID,\n\taction_type VARCHAR,\n\ttimestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_background_settings (\n\tsetting_id INT PRIMARY KEY,\n\tssetting_name VARCHAR(50),\n\tbackground_image_url VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customization_options (\n\toption_id INT PRIMARY KEY,\n\toption_name VARCHAR(50),\n\toption_value VARCHAR(255),\n\tsetting_id INT,\n\tFOREIGN KEY (setting_id) REFERENCES virtual_background_settings(setting_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n\tuser_id INT PRIMARY KEY,\n\tpreferred_background_setting INT,\n\tFOREIGN KEY (preferred_background_setting) REFERENCES virtual_background_settings(setting_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n\tprofile_id INT PRIMARY KEY,\n\tuser_id INT,\n\tprofile_name VARCHAR(50),\n\tuser_bio TEXT,\n\tFOREIGN KEY (user_id) REFERENCES user_preferences(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_avatars (\n\tavatar_id INT PRIMARY KEY,\n\tuser_id INT,\n\tavatar_image_url VARCHAR(255),\n\tFOREIGN KEY (user_id) REFERENCES user_profiles(user_id)\n);"
+      }
+    ]
+  }
+]

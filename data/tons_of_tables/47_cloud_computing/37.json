@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE camera_footage (\ncamera_id INT PRIMARY KEY,\ncamera_name VARCHAR(50),\ntimestamp TIMESTAMP,\nfootage_url VARCHAR(255),\nresolution VARCHAR(20),\nduration INT,\nincident_flag BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE camera_footage (\n  camera_id UUID PRIMARY KEY,\n  footage_url TEXT,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE incidents (\n  incident_id UUID PRIMARY KEY,\n  camera_id UUID,\n  incident_type TEXT,\n  description TEXT,\n  timestamp TIMESTAMP,\n  FOREIGN KEY (camera_id) REFERENCES camera_footage(camera_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Cameras (\n    camera_id UUID PRIMARY KEY,\n    location_name STRING,\n    camera_type STRING,\n    resolution STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CameraFootage (\n    footage_id UUID PRIMARY KEY,\n    camera_id UUID REFERENCES Cameras(camera_id),\n    timestamp TIMESTAMP,\n    footage_data BYTES\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Incidents (\n    incident_id UUID PRIMARY KEY,\n    camera_id UUID REFERENCES Cameras(camera_id),\n    timestamp TIMESTAMP,\n    description STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityCamera (\n  camera_id INT PRIMARY KEY,\n  location TEXT,\n  resolution TEXT,\n  timestamp TIMESTAMP,\n  footage BYTEA\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveillanceFootage (\n  footage_id INT PRIMARY KEY,\n  camera_id INT,\n  timestamp TIMESTAMP,\n  duration INTERVAL,\n  footage BYTEA,\n  FOREIGN KEY(camera_id) REFERENCES SecurityCamera(camera_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentLog (\n  log_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE AlertNotification (\n  alert_id INT PRIMARY KEY,\n  log_id INT,\n  timestamp TIMESTAMP,\n  message TEXT,\n  FOREIGN KEY(log_id) REFERENCES IncidentLog(log_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityCameraFootage (\n    camera_id INT PRIMARY KEY,\n    footage_id INT,\n    timestamp TIMESTAMP,\n    footage BLOB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE IoTDevice (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    location VARCHAR(100),\n    status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Incident (\n    incident_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveillanceTeam (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(50),\n    leader_id INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentResolution (\n    resolution_id INT PRIMARY KEY,\n    incident_id INT,\n    resolution_details TEXT\n)"
+      }
+    ]
+  }
+]

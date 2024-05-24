@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cryptocurrency_data (\n    id INT PRIMARY KEY,\n    wallet_address VARCHAR,\n    balance DECIMAL,\n    encryption_key BYTEA\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cryptocurrency_wallets (\n\tid INT PRIMARY KEY,\n\twallet_name VARCHAR(255),\n\tencrypted_private_key VARCHAR(255),\n\tpublic_key VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_history (\n\ttransaction_id INT PRIMARY KEY,\n\tsender_wallet_id INT,\n\treceiver_wallet_id INT,\n\tamount DECIMAL(10, 2),\n\ttimestamp TIMESTAMP,\n\tFOREIGN KEY (sender_wallet_id) REFERENCES cryptocurrency_wallets (id),\n\tFOREIGN KEY (receiver_wallet_id) REFERENCES cryptocurrency_wallets (id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public.users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE public.wallets (\n    wallet_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES public.users(user_id),\n    balance DECIMAL(18, 2) DEFAULT 0.00\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE public.transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    wallet_id UUID REFERENCES public.wallets(wallet_id),\n    amount DECIMAL(18, 2) NOT NULL,\n    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crypto_wallets (\n\tid INT PRIMARY KEY,\n\twallet_address VARCHAR(255) NOT NULL,\n\tencrypted_private_key TEXT NOT NULL,\n\tpublic_key TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n\ttx_id INT PRIMARY KEY,\n\tsender_wallet_id INT NOT NULL,\n\treceiver_wallet_id INT NOT NULL,\n\tamount DECIMAL(18, 2) NOT NULL,\n\ttransaction_date TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_users (\n\tuser_id INT PRIMARY KEY,\n\tusername VARCHAR(50) NOT NULL,\n\tpassword_hash TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n\tlog_id INT PRIMARY KEY,\n\tuser_id INT NOT NULL,\n\taccess_time TIMESTAMP NOT NULL,\n\taccess_type VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_encryption_keys (\n    user_id INT PRIMARY KEY,\n    encryption_key VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_data (\n    wallet_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    wallet_address VARCHAR(255) NOT NULL,\n    balance DECIMAL(18,2) DEFAULT 0.00,\n    CONSTRAINT fk_user_wallet FOREIGN KEY (user_id) REFERENCES user_encryption_keys(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n    log_id INT PRIMARY KEY,\n    wallet_id INT NOT NULL,\n    sender_wallet VARCHAR(255) NOT NULL,\n    receiver_wallet VARCHAR(255) NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    CONSTRAINT fk_wallet_logs FOREIGN KEY (wallet_id) REFERENCES wallet_data(wallet_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_trail (\n    audit_id INT PRIMARY KEY,\n    action VARCHAR(50) NOT NULL,\n    description TEXT,\n    timestamp TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    access_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_time TIMESTAMP NOT NULL,\n    CONSTRAINT fk_access_user FOREIGN KEY (user_id) REFERENCES user_encryption_keys(user_id)\n)"
+      }
+    ]
+  }
+]

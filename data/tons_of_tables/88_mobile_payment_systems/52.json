@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_points(\n    user_id INT,\n    points_earned INT,\n    last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID,\n  user_name VARCHAR(50),\n  loyalty_points INT,\n  PRIMARY KEY (user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n  reward_id UUID,\n  reward_name VARCHAR(50),\n  points_required INT,\n  PRIMARY KEY (reward_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_points (\n    user_id INT,\n    points INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id INT PRIMARY KEY,\n    reward_name VARCHAR,\n    points_required INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR,\n    email VARCHAR,\n    total_points INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    loyalty_points INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n    reward_id INT PRIMARY KEY,\n    reward_name VARCHAR(100) NOT NULL,\n    points_required INT DEFAULT 0\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_rewards (\n    user_id INT,\n    reward_id INT,\n    redeem_date DATE,\n    PRIMARY KEY (user_id, reward_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (reward_id) REFERENCES rewards(reward_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT,\n    transaction_date DATE,\n    points_earned INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n user_id INT PRIMARY KEY,\n name VARCHAR(50) NOT NULL,\n email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE rewards (\n reward_id INT PRIMARY KEY,\n reward_name VARCHAR(50) NOT NULL,\n points_required INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_points (\n user_id INT,\n reward_id INT,\n points_earned INT NOT NULL,\n PRIMARY KEY (user_id, reward_id),\n FOREIGN KEY (user_id) REFERENCES users(user_id),\n FOREIGN KEY (reward_id) REFERENCES rewards(reward_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n transaction_id INT PRIMARY KEY,\n user_id INT,\n reward_id INT,\n points_spent INT NOT NULL,\n transaction_date DATE NOT NULL,\n FOREIGN KEY (user_id) REFERENCES users(user_id),\n FOREIGN KEY (reward_id) REFERENCES rewards(reward_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_history (\n history_id INT PRIMARY KEY,\n user_id INT,\n action VARCHAR(50) NOT NULL,\n date DATE NOT NULL,\n FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  }
+]

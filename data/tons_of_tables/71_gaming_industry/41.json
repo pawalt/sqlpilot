@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player_achievements (\n    player_id UUID,\n    achievement_name VARCHAR,\n    achievement_date DATE,\n    score INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE achievements (\n    achievement_id INT PRIMARY KEY,\n    player_id INT,\n    achievement_name VARCHAR(255),\n    achieved_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE high_scores (\n    score_id INT PRIMARY KEY,\n    player_id INT,\n    game_mode VARCHAR(50),\n    score INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PlayerAchievements (\n  player_id INT,\n  achievement_id INT,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PlayerScores (\n  player_id INT,\n  game_id INT,\n  score INT,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Leaderboard (\n  game_id INT,\n  player_id INT,\n  score INT,\n  rank INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE players (\n    player_id UUID PRIMARY KEY,\n    player_name STRING NOT NULL,\n    email STRING UNIQUE,\n    registration_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE achievements (\n    achievement_id SERIAL PRIMARY KEY,\n    player_id UUID REFERENCES players(player_id),\n    achievement_name STRING NOT NULL,\n    achievement_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE high_scores (\n    high_score_id SERIAL PRIMARY KEY,\n    player_id UUID REFERENCES players(player_id),\n    score INTEGER NOT NULL,\n    game_id STRING NOT NULL,\n    score_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboards (\n    leaderboard_id SERIAL PRIMARY KEY,\n    game_id STRING REFERENCES high_scores(game_id),\n    leaderboard_name STRING NOT NULL,\n    leaderboard_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE player (\n    player_id UUID PRIMARY KEY,\n    player_name VARCHAR(255) NOT NULL,\n    join_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE achievement (\n    achievement_id UUID PRIMARY KEY,\n    player_id UUID,\n    achievement_name VARCHAR(255) NOT NULL,\n    achieved_date TIMESTAMP,\n    FOREIGN KEY (player_id) REFERENCES player(player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE high_score (\n    score_id UUID PRIMARY KEY,\n    player_id UUID,\n    score INT NOT NULL,\n    score_date TIMESTAMP,\n    FOREIGN KEY (player_id) REFERENCES player(player_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboard (\n    leaderboard_id UUID PRIMARY KEY,\n    leaderboard_name VARCHAR(255) NOT NULL,\n    start_date TIMESTAMP,\n    end_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE leaderboard_entry (\n    entry_id UUID PRIMARY KEY,\n    leaderboard_id UUID,\n    player_id UUID,\n    score_id UUID,\n    entry_date TIMESTAMP,\n    FOREIGN KEY (leaderboard_id) REFERENCES leaderboard(leaderboard_id),\n    FOREIGN KEY (player_id) REFERENCES player(player_id),\n    FOREIGN KEY (score_id) REFERENCES high_score(score_id)\n);"
+      }
+    ]
+  }
+]

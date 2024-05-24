@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_feedback (\n  feedback_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  feedback_text TEXT,\n  rating INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feedback (\n  feedback_id SERIAL PRIMARY KEY,\n  customer_id INT NOT NULL,\n  rating INT NOT NULL,\n  comment TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE review (\n  review_id SERIAL PRIMARY KEY,\n  customer_id INT NOT NULL,\n  review_text TEXT,\n  timestamp TIMESTAMPTZ\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone_number VARCHAR(12) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    review_text TEXT NOT NULL,\n    rating INT NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback (\n    feedback_id INT PRIMARY KEY,\n    review_id INT NOT NULL,\n    feedback_text TEXT NOT NULL,\n    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (review_id) REFERENCES reviews(review_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers_feedback (\n    feedback_id UUID PRIMARY KEY,\n    customer_id UUID NOT NULL,\n    feedback_text TEXT NOT NULL,\n    feedback_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_ratings (\n    rating_id UUID PRIMARY KEY,\n    customer_id UUID NOT NULL,\n    rating_value INT NOT NULL,\n    rating_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE feedback_responses (\n    response_id UUID PRIMARY KEY,\n    feedback_id UUID NOT NULL,\n    responder_id UUID NOT NULL,\n    response_text TEXT NOT NULL,\n    response_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE review_replies (\n    reply_id UUID PRIMARY KEY,\n    review_id UUID NOT NULL,\n    replier_id UUID NOT NULL,\n    reply_text TEXT NOT NULL,\n    reply_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES customers(id),\n    rating INTEGER,\n    comment STRING,\n    created_at TIMESTAMP\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE connected_devices (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    device_ip_address VARCHAR(15) NOT NULL,\n    configuration JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n  device_id UUID PRIMARY KEY,\n  device_name VARCHAR(50) NOT NULL,\n  device_type VARCHAR(50) NOT NULL,\n  configuration JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE configurations (\n  config_id UUID PRIMARY KEY,\n  device_id UUID REFERENCES devices(device_id),\n  setting_name VARCHAR(50) NOT NULL,\n  setting_value VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE connected_devices (\n    device_id INT PRIMARY KEY,\n    device_name TEXT,\n    device_type TEXT,\n    location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_configurations (\n    config_id INT PRIMARY KEY,\n    device_id INT,\n    config_name TEXT,\n    config_value TEXT,\n    FOREIGN KEY (device_id) REFERENCES connected_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    log_message TEXT,\n    log_timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES connected_devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE connected_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    last_connection TIMESTAMP,\n    configuration JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_configurations (\n    config_id INT PRIMARY KEY,\n    device_id INT,\n    config_name VARCHAR(50),\n    config_value JSON,\n    FOREIGN KEY (device_id) REFERENCES connected_devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    log_message TEXT,\n    log_timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES connected_devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_statuses (\n    status_id INT PRIMARY KEY,\n    device_id INT,\n    status_code INT,\n    status_description TEXT,\n    status_timestamp TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES connected_devices(device_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE connected_devices (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    device_status BOOLEAN NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_configurations (\n    config_id SERIAL PRIMARY KEY,\n    device_id INT REFERENCES connected_devices(device_id),\n    config_name VARCHAR(50) NOT NULL,\n    config_value VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_locations (\n    location_id SERIAL PRIMARY KEY,\n    device_id INT REFERENCES connected_devices(device_id),\n    location_name VARCHAR(50) NOT NULL,\n    latitude DECIMAL(10, 8) NOT NULL,\n    longitude DECIMAL(11, 8) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n    log_id SERIAL PRIMARY KEY,\n    device_id INT REFERENCES connected_devices(device_id),\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_devices (\n    user_id SERIAL PRIMARY KEY,\n    device_id INT REFERENCES connected_devices(device_id),\n    user_name VARCHAR(50) NOT NULL,\n    user_role VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_Triggered_Actions (\n  event_id SERIAL PRIMARY KEY,\n  event_type VARCHAR(50) NOT NULL,\n  trigger_action VARCHAR(100) NOT NULL,\n  device_id INT NOT NULL,\n  executed_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoTDevices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(255),\n  device_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TriggerEvents (\n  trigger_id INT PRIMARY KEY,\n  event_type VARCHAR(100),\n  action_type VARCHAR(100),\n  device_id INT,\n  FOREIGN KEY (device_id) REFERENCES IoTDevices(device_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoTDevices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TriggerEvents (\n    event_id SERIAL PRIMARY KEY,\n    event_name VARCHAR(50) NOT NULL,\n    event_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TriggerActions (\n    action_id SERIAL PRIMARY KEY,\n    action_name VARCHAR(50) NOT NULL,\n    action_description TEXT,\n    device_id UUID REFERENCES IoTDevices(device_id),\n    event_id INT REFERENCES TriggerEvents(event_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoTDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TriggerEvents (\n    trigger_id INT PRIMARY KEY,\n    event_name VARCHAR(50),\n    event_description TEXT,\n    trigger_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TriggerActions (\n    action_id INT PRIMARY KEY,\n    action_name VARCHAR(50),\n    action_description TEXT,\n    action_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TriggerLogs (\n    log_id INT PRIMARY KEY,\n    trigger_id INT,\n    action_id INT,\n    log_timestamp TIMESTAMP,\n\n    FOREIGN KEY (trigger_id) REFERENCES TriggerEvents(trigger_id),\n    FOREIGN KEY (action_id) REFERENCES TriggerActions(action_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE triggers (\n    trigger_id INT PRIMARY KEY,\n    event_type VARCHAR(255),\n    action_type VARCHAR(255),\n    device_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255),\n    trigger_id INT,\n    time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE actions (\n    action_id INT PRIMARY KEY,\n    action_name VARCHAR(255),\n    action_description TEXT,\n    device_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(255),\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE logs (\n    log_id INT PRIMARY KEY,\n    event_id INT,\n    action_id INT,\n    log_time TIMESTAMP,\n    log_description TEXT\n);"
+      }
+    ]
+  }
+]

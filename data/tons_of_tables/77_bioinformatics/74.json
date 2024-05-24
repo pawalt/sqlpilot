@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE OmicsDataSets (\n  dataset_id INT PRIMARY KEY,\n  dataset_name VARCHAR(255),\n  dataset_description TEXT,\n  creation_date DATE,\n  last_updated TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE omics_data_sets (\n  data_set_id SERIAL PRIMARY KEY,\n  data_set_name VARCHAR(255) NOT NULL,\n  data_set_description TEXT,\n  data_set_owner VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE omics_data_analysis (\n  analysis_id SERIAL PRIMARY KEY,\n  data_set_id INT NOT NULL,\n  analysis_type VARCHAR(50) NOT NULL,\n  analysis_results JSONB,\n  FOREIGN KEY (data_set_id) REFERENCES omics_data_sets(data_set_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE omics_datasets (\n  id SERIAL PRIMARY KEY,\n  dataset_name VARCHAR(255) NOT NULL,\n  description TEXT,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE metadata_categories (\n  id SERIAL PRIMARY KEY,\n  category_name VARCHAR(100) NOT NULL,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_metadata (\n  id SERIAL PRIMARY KEY,\n  dataset_id INT REFERENCES omics_datasets(id),\n  category_id INT REFERENCES metadata_categories(id),\n  metadata_value TEXT,\n  created_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE omics_data ( \n    id INT PRIMARY KEY, \n    data_set_name VARCHAR(255), \n    data_type VARCHAR(50), \n    data_description TEXT, \n    data_size INT \n); "
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results ( \n    id INT PRIMARY KEY, \n    data_set_id INT, \n    analysis_date DATE, \n    analysis_method VARCHAR(100), \n    analysis_summary TEXT \n); "
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources ( \n    id INT PRIMARY KEY, \n    source_name VARCHAR(255), \n    source_type VARCHAR(50), \n    source_description TEXT \n); "
+      },
+      {
+        "table_schema": "CREATE TABLE data_relationships ( \n    id INT PRIMARY KEY, \n    data_set_id INT, \n    source_id INT, \n    relationship_type VARCHAR(50) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE omics_metadata (\n    study_id INT PRIMARY KEY,\n    study_name VARCHAR(255),\n    author VARCHAR(255),\n    publication_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_metadata (\n    sample_id INT PRIMARY KEY,\n    sample_name VARCHAR(255),\n    study_id INT,\n    sample_type VARCHAR(50),\n    FOREIGN KEY (study_id) REFERENCES omics_metadata(study_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_metadata (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    sample_id INT,\n    experimental_conditions VARCHAR(255),\n    FOREIGN KEY (sample_id) REFERENCES sample_metadata(sample_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    analysis_date DATE,\n    result_summary TEXT,\n    FOREIGN KEY (experiment_id) REFERENCES experiment_metadata(experiment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_type VARCHAR(50),\n    data_size BIGINT,\n    upload_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

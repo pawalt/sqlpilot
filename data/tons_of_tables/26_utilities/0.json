@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE water_usage (\n  customer_id INT,\n  customer_name VARCHAR(50),\n  usage_date DATE,\n  gallons_used INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (customer_id INT PRIMARY KEY, name VARCHAR(50), address VARCHAR(100));\nCREATE TABLE water_usage (usage_id INT PRIMARY KEY, customer_id INT, usage_date DATE, gallons_used INT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  address VARCHAR(100),\n  phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_meters (\n  meter_id INT PRIMARY KEY,\n  customer_id INT,\n  meter_type VARCHAR(20),\n  install_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n  usage_id INT PRIMARY KEY,\n  meter_id INT,\n  usage_date DATE,\n  gallons_used FLOAT,\n  FOREIGN KEY (meter_id) REFERENCES water_meters(meter_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WaterMeters (\n    meter_id INT PRIMARY KEY,\n    customer_id INT,\n    meter_reading INT,\n    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UsageLogs (\n    log_id INT PRIMARY KEY,\n    meter_id INT,\n    usage_date DATE,\n    usage_amount INT,\n    FOREIGN KEY (meter_id) REFERENCES WaterMeters(meter_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Billing (\n    bill_id INT PRIMARY KEY,\n    log_id INT,\n    amount_due DECIMAL(10,2),\n    paid_status BOOLEAN,\n    FOREIGN KEY (log_id) REFERENCES UsageLogs(log_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    address VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_meters (\n    meter_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    meter_type VARCHAR(50) NOT NULL,\n    meter_location VARCHAR(100) NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE water_usage (\n    usage_id INT PRIMARY KEY,\n    meter_id INT NOT NULL,\n    usage_date DATE NOT NULL,\n    usage_amount FLOAT NOT NULL,\n    FOREIGN KEY (meter_id) REFERENCES water_meters(meter_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE billing_records (\n    billing_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    billing_date DATE NOT NULL,\n    amount_due FLOAT NOT NULL,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_records (\n    payment_id INT PRIMARY KEY,\n    billing_id INT NOT NULL,\n    payment_date DATE NOT NULL,\n    payment_amount FLOAT NOT NULL,\n    FOREIGN KEY (billing_id) REFERENCES billing_records(billing_id)\n);\n"
+      }
+    ]
+  }
+]

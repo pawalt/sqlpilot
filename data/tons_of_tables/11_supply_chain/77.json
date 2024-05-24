@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SupplierInventory (\n  supplier_id INT PRIMARY KEY,\n  product_id INT,\n  product_name VARCHAR(255),\n  current_inventory INT,\n  reorder_threshold INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_inventory (\n  supplier_id INT PRIMARY KEY,\n  product_id INT,\n  current_quantity INT,\n  reorder_threshold INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reorder_alerts (\n  alert_id INT PRIMARY KEY,\n  supplier_id INT,\n  product_id INT,\n  alert_timestamp TIMESTAMP,\n  alert_message TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier ( \n\tsupplier_id INT PRIMARY KEY, \n\tsupplier_name VARCHAR(50) NOT NULL, \n\tcontact_person VARCHAR(50) NOT NULL, \n\temail VARCHAR(100) NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product ( \n\tproduct_id INT PRIMARY KEY, \n\tproduct_name VARCHAR(50) NOT NULL, \n\tunit_price DECIMAL(10, 2) NOT NULL, \n\tquantity INT NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory ( \n\tproduct_id INT, \n\tsupplier_id INT, \n\tquantity_in_stock INT NOT NULL, \n\tthreshold_quantity INT NOT NULL, \n\tFOREIGN KEY (product_id) REFERENCES product(product_id), \n\tFOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  supplier_id UUID PRIMARY KEY,\n  supplier_name VARCHAR(50) NOT NULL,\n  supplier_email VARCHAR(100) UNIQUE NOT NULL,\n  supplier_phone VARCHAR(20) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id UUID PRIMARY KEY,\n  product_name VARCHAR(100) NOT NULL,\n  product_price DECIMAL(10, 2) NOT NULL,\n  supplier_id UUID REFERENCES suppliers(supplier_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n  inventory_id UUID PRIMARY KEY,\n  product_id UUID REFERENCES products(product_id),\n  stock_quantity INT NOT NULL,\n  reorder_threshold INT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reorder_alerts (\n  alert_id UUID PRIMARY KEY,\n  inventory_id UUID REFERENCES inventory(inventory_id),\n  alert_message VARCHAR(255) NOT NULL,\n  alert_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier (\n    supplier_id UUID PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    supplier_email VARCHAR(255),\n    supplier_phone VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE product (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(255),\n    product_price DECIMAL(10, 2),\n    product_quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id UUID PRIMARY KEY,\n    product_id UUID REFERENCES product(product_id),\n    supplier_id UUID REFERENCES supplier(supplier_id),\n    stock_level DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reorder_threshold (\n    threshold_id UUID PRIMARY KEY,\n    product_id UUID REFERENCES product(product_id),\n    min_stock_level DECIMAL(10, 2),\n    reorder_quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reorder_alert (\n    alert_id UUID PRIMARY KEY,\n    threshold_id UUID REFERENCES reorder_threshold(threshold_id),\n    alert_message TEXT,\n    alert_datetime TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

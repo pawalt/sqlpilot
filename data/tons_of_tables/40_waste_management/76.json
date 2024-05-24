@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_lifecycle_assessment (\n    packaging_id UUID PRIMARY KEY,\n    material TEXT,\n    carbon_footprint DECIMAL,\n    recyclable BOOLEAN,\n    lifecycle_stage TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_solutions (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  material VARCHAR(255) NOT NULL,\n  weight DECIMAL(10,2) NOT NULL,\n  lifecycle_analysis TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_tracking (\n  tracking_id INT PRIMARY KEY,\n  packaging_id INT NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  status VARCHAR(50) NOT NULL,\n  last_update TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_materials (\n    id UUID PRIMARY KEY,\n    material_name STRING,\n    recycling_score INT,\n    environmental_impact STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_products (\n    id UUID PRIMARY KEY,\n    product_name STRING,\n    packaging_material_id UUID REFERENCES packaging_materials(id),\n    usage INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_lifecycle (\n    id UUID PRIMARY KEY,\n    product_id UUID REFERENCES packaging_products(id),\n    production_date DATE,\n    disposal_date DATE,\n    lifecycle_stage STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_solution (\n    id INT PRIMARY KEY,\n    solution_name VARCHAR(50) NOT NULL,\n    material_type VARCHAR(50) NOT NULL,\n    sustainability_rating INT\n);\n\nCREATE TABLE packaging_lifecycle (\n    id INT PRIMARY KEY,\n    package_id INT NOT NULL,\n    lifecycle_stage VARCHAR(50) NOT NULL,\n    duration_days INT\n);\n\nCREATE TABLE packaging_material (\n    id INT PRIMARY KEY,\n    material_id INT NOT NULL,\n    material_name VARCHAR(50) NOT NULL,\n    supplier VARCHAR(50) NOT NULL,\n    price DECIMAL\n);\n\nCREATE TABLE packaging_impact (\n    id INT PRIMARY KEY,\n    package_id INT NOT NULL,\n    impact_type VARCHAR(50) NOT NULL,\n    impact_value DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE packaging_solutions ( \n    id UUID PRIMARY KEY, \n    packaging_type VARCHAR(50), \n    material_type VARCHAR(50), \n    lifecycle_stage VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE lifecycle_assessment ( \n    assessment_id UUID PRIMARY KEY, \n    packaging_id UUID REFERENCES packaging_solutions(id), \n    assessment_date DATE, \n    environmental_impact VARCHAR(100), \n    conclusion TEXT \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_manufacturers ( \n    manufacturer_id UUID PRIMARY KEY, \n    manufacturer_name VARCHAR(100), \n    location VARCHAR(100), \n    contact_person VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recycling_centers ( \n    center_id UUID PRIMARY KEY, \n    center_name VARCHAR(100), \n    location VARCHAR(100), \n    contact_person VARCHAR(50) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging_history ( \n    history_id UUID PRIMARY KEY, \n    packaging_id UUID REFERENCES packaging_solutions(id), \n    action_date DATE, \n    action_description TEXT \n);"
+      }
+    ]
+  }
+]

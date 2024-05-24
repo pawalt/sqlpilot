@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailCampaignConversion (\n    campaign_id INT PRIMARY KEY,\n    email_campaign_name VARCHAR(255),\n    conversion_type VARCHAR(50),\n    conversion_value DECIMAL(10, 2),\n    conversion_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    campaign_id UUID PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date TIMESTAMP,\n    end_date TIMESTAMP\n);\n\nCREATE TABLE campaign_conversions (\n    conversion_id UUID PRIMARY KEY,\n    conversion_date TIMESTAMP,\n    campaign_id UUID REFERENCES email_campaigns(campaign_id),\n    conversion_type VARCHAR(50),\n    revenue DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaigns ( campaign_id INT PRIMARY KEY,\n campaign_name VARCHAR(255) NOT NULL,\n start_date DATE,\n end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions ( conversion_id INT PRIMARY KEY,\n campaign_id INT,\n conversion_date DATE,\n amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sales ( sale_id INT PRIMARY KEY,\n conversion_id INT,\n customer_id INT,\n sale_date DATE,\n product_id INT,\n quantity INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE conversion_rates (\n    id SERIAL PRIMARY KEY,\n    email_campaign_id INT,\n    conversion_type VARCHAR(50),\n    conversion_date DATE,\n    conversion_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(12, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sales_attributions (\n    id SERIAL PRIMARY KEY,\n    email_campaign_id INT,\n    sale_amount DECIMAL(10, 2),\n    attribution_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_roi (\n    id SERIAL PRIMARY KEY,\n    email_campaign_id INT,\n    roi DECIMAL(10, 2),\n    calculation_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE conversions (\n    conversion_id INT PRIMARY KEY,\n    campaign_id INT,\n    conversion_date DATE,\n    amount DECIMAL(10, 2),\n    FOREIGN KEY (campaign_id) REFERENCES email_campaigns(campaign_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (\n    sale_id INT PRIMARY KEY,\n    campaign_id INT,\n    sale_date DATE,\n    amount DECIMAL(10, 2),\n    FOREIGN KEY (campaign_id) REFERENCES email_campaigns(campaign_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email_address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_metrics (\n    metric_id INT PRIMARY KEY,\n    campaign_id INT,\n    open_rate DECIMAL(5, 2),\n    click_rate DECIMAL(5, 2),\n    FOREIGN KEY (campaign_id) REFERENCES email_campaigns(campaign_id)\n)"
+      }
+    ]
+  }
+]

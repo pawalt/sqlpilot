@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE luxury_travel_payments (\n    payment_id UUID PRIMARY KEY,\n    customer_name VARCHAR(50) NOT NULL,\n    card_number VARCHAR(16) NOT NULL,\n    expiry_date DATE NOT NULL,\n    security_code INT NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    booking_reference UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE luxury_travel_bookings (\n    booking_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    travel_destination VARCHAR(100),\n    payment_amount DECIMAL(10, 2),\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_transactions (\n    transaction_id INT PRIMARY KEY,\n    booking_id INT,\n    payment_method VARCHAR(50),\n    payment_status VARCHAR(20),\n    FOREIGN KEY (booking_id) REFERENCES luxury_travel_bookings(booking_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE luxury_travel_bookings (\n    booking_id INT PRIMARY KEY,\n    customer_name VARCHAR,\n    payment_method VARCHAR,\n    total_amount DECIMAL,\n    booking_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_transactions (\n    transaction_id INT PRIMARY KEY,\n    booking_id INT REFERENCES luxury_travel_bookings(booking_id),\n    transaction_date TIMESTAMP,\n    amount_paid DECIMAL,\n    payment_status VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_data (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR,\n    email_address VARCHAR,\n    phone_number VARCHAR,\n    address VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_information (\n    payment_id INT PRIMARY KEY,\n    customer_id INT,\n    payment_date DATE,\n    amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n    customer_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE booking (\n    booking_id INT PRIMARY KEY,\n    customer_id INT,\n    booking_date DATE,\n    total_amount DECIMAL,\n    status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT,\n    booking_id INT,\n    transaction_date DATE,\n    transaction_amount DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE luxury_clients (\n    client_id INT PRIMARY KEY,\n    full_name VARCHAR(50) NOT NULL,\n    email_address VARCHAR(100) NOT NULL UNIQUE,\n    phone_number VARCHAR(15),\n    address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE travel_bookings (\n    booking_id SERIAL PRIMARY KEY,\n    client_id INT REFERENCES luxury_clients(client_id),\n    booking_date TIMESTAMP NOT NULL,\n    departure_city VARCHAR(50) NOT NULL,\n    destination_city VARCHAR(50) NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    booking_id INT REFERENCES travel_bookings(booking_id),\n    transaction_date TIMESTAMP NOT NULL,\n    payment_method VARCHAR(20) NOT NULL,\n    amount_paid DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE credit_card_details (\n    card_id SERIAL PRIMARY KEY,\n    client_id INT REFERENCES luxury_clients(client_id),\n    card_number VARCHAR(16) NOT NULL,\n    card_holder_name VARCHAR(50) NOT NULL,\n    expiration_date DATE NOT NULL,\n    cvv VARCHAR(3) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n    log_id SERIAL PRIMARY KEY,\n    transaction_id INT REFERENCES payment_transactions(transaction_id),\n    log_timestamp TIMESTAMP NOT NULL,\n    log_details TEXT\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_control_policies (\n    id INT PRIMARY KEY,\n    device_id INT NOT NULL,\n    role_id INT NOT NULL,\n    permission VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT devices (id UUID PRIMARY KEY,\n device_name STRING,\n location STRING,\n owner_name STRING,\n access_level INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Access Control Policies (id UUID PRIMARY KEY,\n device_id UUID,\n role STRING,\n permission STRING,\n FOREIGN KEY (device_id) REFERENCES IoT_devices(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device (\n   device_id INT PRIMARY KEY,\n   device_name VARCHAR(50),\n   device_type VARCHAR(50),\n   owner_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n   role_id INT PRIMARY KEY,\n   role_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_control (\n   access_id INT PRIMARY KEY,\n   device_id INT,\n   role_id INT,\n   CONSTRAINT fk_device FOREIGN KEY (device_id) REFERENCES device(device_id),\n   CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES user_roles(role_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE access_control_policy (\n    id INT PRIMARY KEY,\n    device_id INT,\n    user_id INT,\n    role_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    manufacturer VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(255),\n    password VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    id INT PRIMARY KEY,\n    role_name VARCHAR(50),\n    description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device (id INT PRIMARY KEY,\nname VARCHAR(50) NOT NULL,\ndescription TEXT,\nstatus ENUM('online', 'offline') NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE user (id INT PRIMARY KEY,\nusername VARCHAR(50) NOT NULL,\npassword VARCHAR(100) NOT NULL,\nemail VARCHAR(100) UNIQUE)"
+      },
+      {
+        "table_schema": "CREATE TABLE role (id INT PRIMARY KEY,\nname VARCHAR(50) NOT NULL,\ndescription TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE permission (id INT PRIMARY KEY,\nname VARCHAR(50) NOT NULL,\ndescription TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_role (user_id INT,\nrole_id INT,\nPRIMARY KEY (user_id, role_id),\nFOREIGN KEY (user_id) REFERENCES user(id),\nFOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assistance_programs (\n    program_id UUID PRIMARY KEY,\n    program_name VARCHAR(100),\n    eligibility_criteria TEXT,\n    start_date DATE,\n    end_date DATE,\n    beneficiaries TEXT[]\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE eligibility_criteria (\n  program_id INT PRIMARY KEY,\n  age_requirement INT,\n  income_requirement DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE beneficiaries (\n  beneficiary_id INT PRIMARY KEY,\n  program_id INT,\n  beneficiary_name VARCHAR(255),\n  address VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE eligibility_criteria (\n  program_id INT PRIMARY KEY,\n  minimum_age INT,\n  required_income DECIMAL(10, 2),\n  residency_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE beneficiaries (\n  beneficiary_id INT PRIMARY KEY,\n  full_name VARCHAR(100),\n  gender VARCHAR(10),\n  date_of_birth DATE,\n  program_id INT,\n  FOREIGN KEY(program_id) REFERENCES eligibility_criteria(program_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE programs (\n  program_id INT PRIMARY KEY,\n  program_name VARCHAR(100),\n  description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE eligibility_criteria (\n    program_id INT,\n    age_criteria INT,\n    income_criteria DECIMAL,\n    has_dependents BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE beneficiaries (\n    beneficiary_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    address VARCHAR(100),\n    contact_number VARCHAR(15),\n    program_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(50),\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE program_beneficiaries (\n    program_id INT,\n    beneficiary_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assistance_programs (\n  program_id SERIAL PRIMARY KEY,\n  program_name VARCHAR(100) NOT NULL,\n  eligibility_criteria TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE beneficiaries (\n  beneficiary_id SERIAL PRIMARY KEY,\n  beneficiary_name VARCHAR(100) NOT NULL,\n  age INT,\n  address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE program_eligibility (\n  program_id INT REFERENCES assistance_programs(program_id),\n  income_range VARCHAR(50),\n  eligibility_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE beneficiary_programs (\n  beneficiary_id INT REFERENCES beneficiaries(beneficiary_id),\n  program_id INT REFERENCES assistance_programs(program_id),\n  registration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE program_statistics (\n  program_id INT REFERENCES assistance_programs(program_id),\n  total_beneficiaries INT,\n  success_rate FLOAT\n);\n"
+      }
+    ]
+  }
+]

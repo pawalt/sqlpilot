@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_timeline (\n    project_id INT PRIMARY KEY,\n    project_name TEXT,\n    start_date DATE,\n    end_date DATE,\n    milestones TEXT[],\n    allocated_resources JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_timeline (\n\tproject_id INT PRIMARY KEY,\n\tproject_name VARCHAR(255),\n\tstart_date DATE,\n\tend_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE milestone (\n\tmilestone_id INT PRIMARY KEY,\n\tproject_id INT,\n\tmilestone_name VARCHAR(255),\n\tmilestone_date DATE,\n\tFOREIGN KEY (project_id) REFERENCES project_timeline(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_timelines (\n    project_id SERIAL PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE milestones (\n    milestone_id SERIAL PRIMARY KEY,\n    milestone_name VARCHAR(255) NOT NULL,\n    due_date DATE NOT NULL,\n    project_id INT REFERENCES project_timelines(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (\n    allocation_id SERIAL PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    project_id INT REFERENCES project_timelines(project_id),\n    milestone_id INT REFERENCES milestones(milestone_id),\n    allocated_hours INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE timelines (\n    timeline_id INT PRIMARY KEY,\n    timeline_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE milestones (\n    milestone_id INT PRIMARY KEY,\n    milestone_name VARCHAR(255),\n    milestone_description TEXT,\n    timeline_id INT REFERENCES timelines(timeline_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resources (\n    resource_id INT PRIMARY KEY,\n    resource_name VARCHAR(255),\n    resource_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE allocation (\n    allocation_id INT PRIMARY KEY,\n    milestone_id INT REFERENCES milestones(milestone_id),\n    resource_id INT REFERENCES resources(resource_id),\n    allocation_percentage FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project (\n    project_id SERIAL PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);\n\nCREATE TABLE milestone (\n    milestone_id SERIAL PRIMARY KEY,\n    milestone_name VARCHAR(255) NOT NULL,\n    project_id INT NOT NULL,\n    milestone_date DATE NOT NULL,\n    description TEXT\n);\n\nCREATE TABLE timeline (\n    timeline_id SERIAL PRIMARY KEY,\n    project_id INT NOT NULL,\n    milestone_id INT NOT NULL,\n    start_date TIMESTAMP NOT NULL,\n    end_date TIMESTAMP NOT NULL\n);\n\nCREATE TABLE resource (\n    resource_id SERIAL PRIMARY KEY,\n    resource_name VARCHAR(255) NOT NULL,\n    resource_type VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE project_resource (\n    project_id INT NOT NULL,\n    resource_id INT NOT NULL,\n    PRIMARY KEY (project_id, resource_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cost_savings_energy_arbitrage_strategy (\n    id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    energy_consumed DECIMAL,\n    energy_saved DECIMAL,\n    cost_savings DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_costs (\n  timestamp TIMESTAMP,\n  energy_price DECIMAL,\n  energy_consumed DECIMAL,\n  energy_saved DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE arbitrage_strategies (\n  timestamp TIMESTAMP,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  strategy_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyRates (\n    rate_id INT PRIMARY KEY,\n    rate_name VARCHAR(50),\n    rate_per_kWh DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n    consumption_id INT PRIMARY KEY,\n    date DATE,\n    energy_consumed DECIMAL(10, 2),\n    rate_id INT,\n    FOREIGN KEY (rate_id) REFERENCES EnergyRates(rate_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CostSavings (\n    savings_id INT PRIMARY KEY,\n    date DATE,\n    cost_saved DECIMAL(10, 2),\n    consumption_id INT,\n    FOREIGN KEY (consumption_id) REFERENCES EnergyConsumption(consumption_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_data (\n    timestamp TIMESTAMP PRIMARY KEY,\n    energy_demand DECIMAL,\n    energy_price DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_market (\n    market_id INT PRIMARY KEY,\n    market_name VARCHAR(50),\n    market_region VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE strategy_data (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(50),\n    strategy_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cost_savings (\n    savings_id SERIAL PRIMARY KEY,\n    strategy_id INT,\n    savings_amount DECIMAL\n    FOREIGN KEY (strategy_id) REFERENCES strategy_data(strategy_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyPrices (\n    timestamp TIMESTAMPTZ PRIMARY KEY,\n    price NUMERIC\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n    timestamp TIMESTAMPTZ PRIMARY KEY,\n    consumption NUMERIC\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProduction (\n    timestamp TIMESTAMPTZ PRIMARY KEY,\n    production NUMERIC\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ArbitrageOpportunities (\n    timestamp TIMESTAMPTZ PRIMARY KEY,\n    opportunity_id UUID,\n    start_time TIMESTAMPTZ,\n    end_time TIMESTAMPTZ,\n    potential_profit NUMERIC\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ArbitrageTransactions (\n    transaction_id UUID PRIMARY KEY,\n    opportunity_id UUID,\n    timestamp TIMESTAMPTZ,\n    executed_volume NUMERIC,\n    profit NUMERIC\n)"
+      }
+    ]
+  }
+]

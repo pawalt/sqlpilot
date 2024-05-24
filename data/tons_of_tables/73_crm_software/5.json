@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_segments (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(255),\n    segment_description TEXT,\n    segment_criteria JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_segmentation (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    segmentation_category VARCHAR(50),\n    age INT,\n    gender VARCHAR(10),\n    email VARCHAR(255),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    target_audience VARCHAR(255),\n    budget DECIMAL(10,2),\n    status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_segments (\n  segment_id INT PRIMARY KEY,\n  segment_name VARCHAR(255) NOT NULL,\n  segment_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255) NOT NULL,\n  segment_id INT,\n  FOREIGN KEY (segment_id) REFERENCES customer_segments(segment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE promotions (\n  promotion_id INT PRIMARY KEY,\n  promotion_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  segment_id INT,\n  FOREIGN KEY (segment_id) REFERENCES customer_segments(segment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_segments (\n    segment_id UUID PRIMARY KEY,\n    segment_name VARCHAR(255) NOT NULL,\n    segment_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    customer_email VARCHAR(255) UNIQUE,\n    segment_id UUID REFERENCES customer_segments(segment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id UUID PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    product_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE promotions (\n    promotion_id UUID PRIMARY KEY,\n    promotion_name VARCHAR(255) NOT NULL,\n    promotion_description TEXT,\n    product_id UUID REFERENCES products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE segments (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(50),\n    description VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE promotions (\n    promotion_id INT PRIMARY KEY,\n    promotion_name VARCHAR(50),\n    discount DECIMAL(5, 2),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_segments (\n    customer_id INT,\n    segment_id INT,\n    PRIMARY KEY (customer_id, segment_id),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n    FOREIGN KEY (segment_id) REFERENCES segments(segment_id)\n);"
+      }
+    ]
+  }
+]

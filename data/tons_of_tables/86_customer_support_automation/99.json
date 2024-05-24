@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_agents (\n    agent_id INT PRIMARY KEY,\n    agent_name VARCHAR(255),\n    agent_type VARCHAR(50),\n    access_level INT,\n    last_interaction TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agents (\n  agent_id INT PRIMARY KEY,\n  agent_name VARCHAR(50) NOT NULL,\n  access_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE queries (\n  query_id INT PRIMARY KEY,\n  query_text TEXT,\n  response_text TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id INT PRIMARY KEY,\n    agent_name VARCHAR(255) NOT NULL,\n    agent_email VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE queries (\n    query_id INT PRIMARY KEY,\n    query_text TEXT NOT NULL,\n    query_response TEXT NOT NULL,\n    agent_id INT,\n    FOREIGN KEY (agent_id) REFERENCES agents(agent_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE log_history (\n    log_id INT PRIMARY KEY,\n    query_id INT,\n    log_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (query_id) REFERENCES queries(query_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE VirtualAgents (\n agent_id INT PRIMARY KEY,\n agent_name VARCHAR(255) NOT NULL,\n email VARCHAR(255) UNIQUE,\n phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Queries (\n query_id INT PRIMARY KEY,\n query_text TEXT,\n response_text TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Automations (\n automation_id INT PRIMARY KEY,\n automation_name VARCHAR(255) NOT NULL,\n script TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Logs (\n log_id INT PRIMARY KEY,\n timestamp TIMESTAMP NOT NULL,\n log_text TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE virtual_agents (\n    agent_id INT PRIMARY KEY,\n    agent_name VARCHAR(50) NOT NULL,\n    agent_status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE common_queries (\n    query_id INT PRIMARY KEY,\n    query_text TEXT NOT NULL,\n    response_text TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_logs (\n    log_id INT PRIMARY KEY,\n    agent_id INT REFERENCES virtual_agents(agent_id),\n    query_id INT REFERENCES common_queries(query_id),\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE automated_responses (\n    response_id INT PRIMARY KEY,\n    agent_id INT REFERENCES virtual_agents(agent_id),\n    query_id INT REFERENCES common_queries(query_id),\n    response_text TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_statistics (\n    stat_id INT PRIMARY KEY,\n    agent_id INT REFERENCES virtual_agents(agent_id),\n    queries_processed INT NOT NULL,\n    response_time_ms INT NOT NULL\n);"
+      }
+    ]
+  }
+]

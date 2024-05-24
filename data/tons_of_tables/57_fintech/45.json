@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LoanApprovalProcess (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(50),\n    credit_score INT,\n    income DECIMAL,\n    financial_history TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  credit_score INT,\n  income DECIMAL(10, 2),\n  financial_history TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n  loan_id INT PRIMARY KEY,\n  customer_id INT,\n  amount DECIMAL(10, 2),\n  interest_rate DECIMAL(4, 2),\n  approval_status VARCHAR(10) DEFAULT 'PENDING',\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CustomerCreditScores (\n  customer_id INT PRIMARY KEY,\n  credit_score INT\n) ENGINE=InnoDB;\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerIncome (\n  customer_id INT PRIMARY KEY,\n  income DECIMAL(10,2)\n) ENGINE=InnoDB;\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerFinancialHistory (\n  customer_id INT PRIMARY KEY,\n  financial_history TEXT\n) ENGINE=InnoDB;\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id SERIAL PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  credit_score INT NOT NULL,\n  income DECIMAL NOT NULL,\n  financial_history TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n  loan_id SERIAL PRIMARY KEY,\n  loan_amount DECIMAL NOT NULL,\n  customer_id INT NOT NULL,\n  approval_status VARCHAR(10) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id SERIAL PRIMARY KEY,\n  loan_id INT NOT NULL,\n  payment_amount DECIMAL NOT NULL,\n  payment_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE approvals (\n  approval_id SERIAL PRIMARY KEY,\n  loan_id INT NOT NULL,\n  customer_id INT NOT NULL,\n  approval_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  credit_score INT,\n  income DECIMAL(10, 2),\n  financial_history VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n  loan_id INT PRIMARY KEY,\n  customer_id INT REFERENCES customers(customer_id),\n  requested_amount DECIMAL(10, 2),\n  approved_amount DECIMAL(10, 2),\n  approval_status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id INT PRIMARY KEY,\n  loan_id INT REFERENCES loans(loan_id),\n  payment_amount DECIMAL(10, 2),\n  payment_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE employment (\n  employment_id INT PRIMARY KEY,\n  customer_id INT REFERENCES customers(customer_id),\n  employer VARCHAR(100),\n  job_title VARCHAR(50),\n  employment_status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n  address_id INT PRIMARY KEY,\n  customer_id INT REFERENCES customers(customer_id),\n  address_line VARCHAR(255),\n  city VARCHAR(50),\n  state VARCHAR(50),\n  zip_code VARCHAR(10)\n)"
+      }
+    ]
+  }
+]

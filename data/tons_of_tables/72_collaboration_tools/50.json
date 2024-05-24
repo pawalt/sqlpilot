@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    deadline TIMESTAMP,\n    priority INTEGER\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id UUID PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    deadline TIMESTAMP,\n    priority INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    category_id UUID PRIMARY KEY,\n    category_name VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE task_details (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    deadline DATE,\n    priority INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE task_assignees (\n    assignee_id INT PRIMARY KEY,\n    task_id INT,\n    assignee_name VARCHAR(100) NOT NULL,\n    assignee_email VARCHAR(255),\n    FOREIGN KEY (task_id) REFERENCES task_details(task_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE task_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id UUID PRIMARY KEY,\n    task_name TEXT NOT NULL,\n    description TEXT,\n    deadline TIMESTAMP,\n    priority INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE categories (\n    category_id UUID PRIMARY KEY,\n    category_name TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_categories (\n    task_id UUID REFERENCES tasks(task_id),\n    category_id UUID REFERENCES categories(category_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_assignees (\n    task_id UUID REFERENCES tasks(task_id),\n    assignee_id UUID\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    deadline TIMESTAMP,\n    priority VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(255) UNIQUE,\n    role VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_assignments (\n    assignment_id INT PRIMARY KEY,\n    task_id INT,\n    user_id INT,\n    assignment_date TIMESTAMP,\n    FOREIGN KEY (task_id) REFERENCES tasks(task_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_comments (\n    comment_id INT PRIMARY KEY,\n    task_id INT,\n    user_id INT,\n    comment TEXT,\n    comment_date TIMESTAMP,\n    FOREIGN KEY (task_id) REFERENCES tasks(task_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_history (\n    history_id INT PRIMARY KEY,\n    task_id INT,\n    action VARCHAR(50),\n    action_date TIMESTAMP,\n    FOREIGN KEY (task_id) REFERENCES tasks(task_id)\n);"
+      }
+    ]
+  }
+]

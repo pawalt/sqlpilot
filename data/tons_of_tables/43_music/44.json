@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE music_recommendations (\n    user_id INT,\n    genre VARCHAR,\n    artist VARCHAR,\n    song VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username TEXT,\n    preferred_genres TEXT[],\n    listening_history JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE music_recommendations (\n    recommendation_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    recommendation TEXT,\n    recommendation_score FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n\tuser_id INT PRIMARY KEY,\n\tusername VARCHAR(50) NOT NULL,\n\temail VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genres (\n\tgenre_id INT PRIMARY KEY,\n\tgenre_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ListeningHistory (\n\thistory_id INT PRIMARY KEY,\n\tuser_id INT NOT NULL,\n\ttrack_id INT NOT NULL,\n\tlisten_date DATE,\n\tFOREIGN KEY (user_id) REFERENCES Users(user_id),\n\tFOREIGN KEY (track_id) REFERENCES Tracks(track_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genres (\n    genre_id INT PRIMARY KEY,\n    genre_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE songs (\n    song_id INT PRIMARY KEY,\n    song_name VARCHAR(255),\n    genre_id INT,\n    FOREIGN KEY (genre_id) REFERENCES genres(genre_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_history (\n    user_id INT,\n    song_id INT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (song_id) REFERENCES songs(song_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE genres (\n  genre_id UUID PRIMARY KEY,\n  genre_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE songs (\n  song_id UUID PRIMARY KEY,\n  song_name VARCHAR(100) NOT NULL,\n  genre_id UUID REFERENCES genres(genre_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_listening_history (\n  user_id UUID REFERENCES users(user_id),\n  song_id UUID REFERENCES songs(song_id),\n  listening_date TIMESTAMP,\n  PRIMARY KEY (user_id, song_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recommendations (\n  recommendation_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  recommended_song_id UUID REFERENCES songs(song_id)\n);"
+      }
+    ]
+  }
+]

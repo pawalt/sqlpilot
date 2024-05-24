@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_tools (\n    tool_id INT PRIMARY KEY,\n    tool_name VARCHAR(50),\n    description TEXT,\n    researcher_id INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE software_tools (\n\ttool_id UUID PRIMARY KEY,\n\ttool_name VARCHAR(100),\n\ttool_description TEXT,\n\ttool_category VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_workflows (\n\tworkflow_id UUID PRIMARY KEY,\n\tworkflow_name VARCHAR(100),\n\tworkflow_description TEXT,\n\tworkflow_tool_id UUID,\n\tFOREIGN KEY (workflow_tool_id) REFERENCES software_tools (tool_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tools (\n    tool_id INT PRIMARY KEY,\n    tool_name VARCHAR(50) NOT NULL,\n    version FLOAT,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(50) NOT NULL,\n    institution VARCHAR(100) NOT NULL,\n    field_of_study VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE workflow (\n    workflow_id INT PRIMARY KEY,\n    workflow_name VARCHAR(50) NOT NULL,\n    researcher_id INT,\n    FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Researchers (\n\tresearcher_id INT PRIMARY KEY,\n\tresearcher_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SoftwareTools (\n\ttool_id INT PRIMARY KEY,\n\ttool_name VARCHAR(255),\n\ttool_description TEXT,\n\ttool_language VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumSimulationWorkflows (\n\tworkflow_id INT PRIMARY KEY,\n\tworkflow_name VARCHAR(255),\n\tworkflow_description TEXT,\n\tworkflow_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearcherTools (\n\tresearcher_id INT,\n\ttool_id INT,\n\tFOREIGN KEY (researcher_id) REFERENCES Researchers(researcher_id),\n\tFOREIGN KEY (tool_id) REFERENCES SoftwareTools(tool_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE researchers (\n researcher_id INT PRIMARY KEY,\n researcher_name VARCHAR(50) NOT NULL,\n institution VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE software_tools (\n tool_id INT PRIMARY KEY,\n tool_name VARCHAR(50) NOT NULL,\n description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE simulation_workflows (\n workflow_id INT PRIMARY KEY,\n workflow_name VARCHAR(50) NOT NULL,\n researcher_id INT REFERENCES researchers(researcher_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tool_workflow_mapping (\n mapping_id INT PRIMARY KEY,\n tool_id INT REFERENCES software_tools(tool_id),\n workflow_id INT REFERENCES simulation_workflows(workflow_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE tool_versions (\n version_id INT PRIMARY KEY,\n tool_id INT REFERENCES software_tools(tool_id),\n version_number VARCHAR(20)\n)"
+      }
+    ]
+  }
+]

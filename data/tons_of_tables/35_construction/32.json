@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property (\n  id UUID PRIMARY KEY,\n  address TEXT,\n  price MONEY,\n  sold BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Properties (\n    id INT PRIMARY KEY,\n    property_name STRING,\n    property_type STRING,\n    price DECIMAL,\n    sold BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sales (\n    sale_id INT PRIMARY KEY,\n    property_id INT,\n    sale_date TIMESTAMP,\n    buyer_name STRING,\n    sale_price DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Properties (id INT PRIMARY KEY,\nproperty_name VARCHAR(255),\naddress VARCHAR(255),\nprice DECIMAL(10, 2),\nis_sold BOOLEAN DEFAULT FALSE)"
+      },
+      {
+        "table_schema": "CREATE TABLE Sales (id INT PRIMARY KEY,\nproperty_id INT,\nsale_date DATE,\nsale_price DECIMAL(10, 2),\nFOREIGN KEY (property_id) REFERENCES Properties(id))"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (id INT PRIMARY KEY,\nsale_id INT,\ntransaction_date DATE,\nbuyer_name VARCHAR(255),\namount_paid DECIMAL(10, 2),\nFOREIGN KEY (sale_id) REFERENCES Sales(id))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Property (\n  property_id INT PRIMARY KEY,\n  address VARCHAR(255),\n  price DECIMAL(10, 2),\n  sold BOOLEAN DEFAULT FALSE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sale (\n  sale_id INT PRIMARY KEY,\n  property_id INT REFERENCES Property(property_id),\n  sale_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Buyer (\n  buyer_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Payment (\n  payment_id INT PRIMARY KEY,\n  sale_id INT REFERENCES Sale(sale_id),\n  amount DECIMAL(10, 2),\n  payment_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Properties (\n    property_id UUID PRIMARY KEY,\n    property_name VARCHAR(255) NOT NULL,\n    property_type VARCHAR(50),\n    property_price DECIMAL(10, 2) NOT NULL,\n    property_status VARCHAR(20) DEFAULT 'available'\n);\nCREATE TABLE Sales (\n    sale_id UUID PRIMARY KEY,\n    property_id UUID REFERENCES Properties(property_id),\n    sale_date DATE NOT NULL,\n    sale_price DECIMAL(10, 2) NOT NULL\n);\nCREATE TABLE Customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    customer_email VARCHAR(255) UNIQUE,\n    customer_phone VARCHAR(15)\n);\nCREATE TABLE Agents (\n    agent_id UUID PRIMARY KEY,\n    agent_name VARCHAR(255) NOT NULL,\n    agent_email VARCHAR(255) UNIQUE,\n    agent_phone VARCHAR(15)\n);\nCREATE TABLE PropertyTransactions (\n    transaction_id UUID PRIMARY KEY,\n    property_id UUID REFERENCES Properties(property_id),\n    transaction_date DATE NOT NULL,\n    transaction_type VARCHAR(20) NOT NULL,\n    transaction_status VARCHAR(20) DEFAULT 'pending'\n);"
+      }
+    ]
+  }
+]

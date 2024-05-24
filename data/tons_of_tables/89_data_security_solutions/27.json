@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_name VARCHAR(50),\n    key_value BYTEA,\n    created_at TIMESTAMP,\n    is_active BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value TEXT NOT NULL,\n    created_at TIMESTAMP DEFAULT now()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encrypted_data (\n    data_id UUID PRIMARY KEY,\n    encrypted_value TEXT NOT NULL,\n    key_id UUID REFERENCES encryption_keys(key_id),\n    created_at TIMESTAMP DEFAULT now()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  key_id INT PRIMARY KEY,\n  key_value VARCHAR(255) NOT NULL,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_users (\n  user_id INT PRIMARY KEY,\n  key_id INT,\n  user_name VARCHAR(100),\n  FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_permissions (\n  permission_id INT PRIMARY KEY,\n  key_id INT,\n  permission_type VARCHAR(50),\n  FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value VARCHAR(100) NOT NULL,\n    key_type VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(50) NOT NULL,\n    encryption_key_id INT NOT NULL,\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE encrypted_data (\n    data_id INT PRIMARY KEY,\n    data_content TEXT NOT NULL,\n    encryption_key_id INT NOT NULL,\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_management (\n    management_id INT PRIMARY KEY,\n    key_type VARCHAR(20) NOT NULL,\n    key_description TEXT,\n    key_owner VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    expiration_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_encryption (\n    data_id UUID PRIMARY KEY,\n    encrypted_data BYTEA NOT NULL,\n    encryption_key_ref UUID NOT NULL,\n    FOREIGN KEY (encryption_key_ref) REFERENCES encryption_keys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_management (\n    key_manager_id UUID PRIMARY KEY,\n    key_manager_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_permissions (\n    permission_id UUID PRIMARY KEY,\n    key_id UUID NOT NULL,\n    user_id UUID NOT NULL,\n    permission_type VARCHAR(50) NOT NULL,\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE key_history (\n    history_id UUID PRIMARY KEY,\n    key_id UUID NOT NULL,\n    action_type VARCHAR(50) NOT NULL,\n    action_timestamp TIMESTAMP NOT NULL,\n    action_description TEXT\n);"
+      }
+    ]
+  }
+]

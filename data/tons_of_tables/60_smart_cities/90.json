@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_training_data (\n    id UUID PRIMARY KEY,\n    feature_vector JSONB,\n    label VARCHAR(50),\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_data (\n    id SERIAL PRIMARY KEY,\n    feature1 VARCHAR(50),\n    label VARCHAR(20)\n);\n\nCREATE TABLE model_config (\n    id SERIAL PRIMARY KEY,\n    model_name VARCHAR(50),\n    hyperparameters JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_training_data (\n    id INT PRIMARY KEY,\n    feature_vector TEXT,\n    label TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_labels (\n    label_id INT PRIMARY KEY,\n    label TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metadata (\n    model_id INT PRIMARY KEY,\n    model_name TEXT,\n    description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_data (\n    id INT PRIMARY KEY,\n    data TEXT,\n    label TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model (\n    model_id INT PRIMARY KEY,\n    model_name TEXT,\n    accuracy FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    training_id INT PRIMARY KEY,\n    labeled_data_id INT,\n    model_id INT,\n    FOREIGN KEY (labeled_data_id) REFERENCES labeled_data(id),\n    FOREIGN KEY (model_id) REFERENCES model(model_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE evaluation (\n    evaluation_id INT PRIMARY KEY,\n    model_id INT,\n    accuracy FLOAT,\n    FOREIGN KEY (model_id) REFERENCES model(model_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_training_data (\n  id INT PRIMARY KEY,\n  data TEXT,\n  label TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data_labels (\n  label_id INT PRIMARY KEY,\n  label_name TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n  model_id INT PRIMARY KEY,\n  model_name TEXT,\n  model_type TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE model_training_data (\n  model_id INT,\n  label_id INT,\n  accuracy FLOAT,\n  FOREIGN KEY (model_id) REFERENCES models(model_id),\n  FOREIGN KEY (label_id) REFERENCES training_data_labels(label_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE model_performance_metrics (\n  model_id INT,\n  precision FLOAT,\n  recall FLOAT,\n  f1_score FLOAT,\n  FOREIGN KEY (model_id) REFERENCES models(model_id)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_regulatory_bodies (\n  id INT PRIMARY KEY,\n  organization_name VARCHAR(50),\n  audit_date DATE,\n  compliance_status BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_organizations (\n    media_id UUID PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE audit_logs (\n    log_id UUID PRIMARY KEY,\n    media_id UUID REFERENCES media_organizations(media_id),\n    audit_date TIMESTAMP NOT NULL,\n    compliance_status BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE media_organizations (\n    organization_id INT PRIMARY KEY,\n    organization_name TEXT,\n    location TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_bodies (\n    body_id INT PRIMARY KEY,\n    body_name TEXT,\n    location TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n    audit_id INT PRIMARY KEY,\n    organization_id INT,\n    body_id INT,\n    audit_date DATE,\n    compliance_status BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_bodies (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE media_organizations (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    regulatory_body_id INT,\n    FOREIGN KEY (regulatory_body_id) REFERENCES regulatory_bodies(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audits (\n    id INT PRIMARY KEY,\n    audit_date DATE NOT NULL,\n    media_organization_id INT,\n    auditor_id INT,\n    compliance_status BOOLEAN NOT NULL,\n    FOREIGN KEY (media_organization_id) REFERENCES media_organizations(id),\n    FOREIGN KEY (auditor_id) REFERENCES auditors(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE auditors (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MediaOrganization (\n    org_id INT PRIMARY KEY,\n    org_name VARCHAR(255),\n    registration_date DATE,\n    compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AuditTrail (\n    audit_id INT PRIMARY KEY,\n    org_id INT,\n    audit_date DATE,\n    auditor_name VARCHAR(255),\n    audit_result BOOLEAN,\n    FOREIGN KEY (org_id) REFERENCES MediaOrganization(org_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AuditFindings (\n    finding_id INT PRIMARY KEY,\n    audit_id INT,\n    finding_description TEXT,\n    finding_status VARCHAR(50),\n    FOREIGN KEY (audit_id) REFERENCES AuditTrail(audit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RegulatoryStandards (\n    standard_id INT PRIMARY KEY,\n    standard_name VARCHAR(255),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceHistory (\n    org_id INT,\n    standard_id INT,\n    audit_id INT,\n    compliance_status BOOLEAN,\n    FOREIGN KEY (org_id) REFERENCES MediaOrganization(org_id),\n    FOREIGN KEY (standard_id) REFERENCES RegulatoryStandards(standard_id),\n    FOREIGN KEY (audit_id) REFERENCES AuditTrail(audit_id)\n);"
+      }
+    ]
+  }
+]

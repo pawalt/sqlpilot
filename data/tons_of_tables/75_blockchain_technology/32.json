@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_claims (\n  claim_id INT PRIMARY KEY,\n  policy_holder_name VARCHAR(50),\n  claim_amount DECIMAL,\n  claim_status ENUM('pending', 'approved', 'rejected'),\n  blockchain_transaction_id VARCHAR(100),\n  payment_processed BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_claims (\n  claim_id INT PRIMARY KEY,\n  policy_holder VARCHAR(50),\n  policy_number VARCHAR(20),\n  claim_amount DECIMAL(10, 2),\n  claim_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_processing (\n  payment_id INT PRIMARY KEY,\n  claim_id INT,\n  payment_amount DECIMAL(10, 2),\n  payment_date DATE,\n  payment_status VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_claims (\n  claim_id INT PRIMARY KEY,\n  policy_holder VARCHAR(100),\n  accident_date DATE,\n  claim_amount DECIMAL(10, 2),\n  status ENUM('submitted', 'under review', 'approved', 'rejected')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id INT PRIMARY KEY,\n  claim_id INT REFERENCES insurance_claims(claim_id),\n  payment_amount DECIMAL(10, 2),\n  payment_date DATE,\n  payment_method ENUM('credit card', 'bank transfer', 'crypto')\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n  transaction_id SERIAL PRIMARY KEY,\n  claim_id INT REFERENCES insurance_claims(claim_id),\n  block_number BIGINT,\n  timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InsuranceClaims (\n    claim_id UUID PRIMARY KEY,\n    policy_number VARCHAR(50) NOT NULL,\n    claim_amount DECIMAL(10, 2) NOT NULL,\n    claim_date DATE NOT NULL,\n    blockchain_id UUID NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n    payment_id UUID PRIMARY KEY,\n    claim_id UUID NOT NULL,\n    payment_amount DECIMAL(10, 2) NOT NULL,\n    payment_date DATE NOT NULL,\n    blockchain_id UUID NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PolicyHolders (\n    policy_holder_id UUID PRIMARY KEY,\n    policy_holder_name VARCHAR(100) NOT NULL,\n    policy_number VARCHAR(50) NOT NULL,\n    blockchain_id UUID NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BlockchainTransactions (\n    transaction_id UUID PRIMARY KEY,\n    claim_id UUID NOT NULL,\n    payment_id UUID NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_claims (\n claim_id SERIAL PRIMARY KEY,\n policy_id VARCHAR(50) NOT NULL,\n claim_amount DECIMAL NOT NULL,\n claim_status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n payment_id SERIAL PRIMARY KEY,\n claim_id INT NOT NULL,\n payment_amount DECIMAL NOT NULL,\n payment_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n user_id SERIAL PRIMARY KEY,\n user_name VARCHAR(50) NOT NULL,\n user_email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_transactions (\n transaction_id SERIAL PRIMARY KEY,\n claim_id INT NOT NULL,\n blockchain_hash VARCHAR(100) NOT NULL,\n transaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n history_id SERIAL PRIMARY KEY,\n payment_id INT NOT NULL,\n user_id INT NOT NULL,\n payment_status VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  }
+]

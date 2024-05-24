@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    is_cyberbully BOOLEAN,\n    is_victim BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100),\n    role VARCHAR(20) DEFAULT 'user'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT,\n    post_content TEXT,\n    post_date TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_interactions (\n    interaction_id INT PRIMARY KEY,\n    user_id1 INT,\n    user_id2 INT,\n    interaction_type VARCHAR(20),\n    interaction_date TIMESTAMP,\n    FOREIGN KEY (user_id1) REFERENCES users(user_id),\n    FOREIGN KEY (user_id2) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cyberbullies (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    date_of_birth DATE,\n    bully_category VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE victims (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    date_of_birth DATE,\n    victim_category VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE messages (\n    id SERIAL PRIMARY KEY,\n    sender_id INTEGER NOT NULL,\n    receiver_id INTEGER NOT NULL,\n    message TEXT,\n    timestamp TIMESTAMPTZ NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id UUID PRIMARY KEY,\n    username TEXT NOT NULL,\n    email TEXT NOT NULL,\n    dob DATE,\n    role TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES user_data(user_id),\n    post_text TEXT,\n    post_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id UUID PRIMARY KEY,\n    post_id UUID REFERENCES posts(post_id),\n    user_id UUID REFERENCES user_data(user_id),\n    comment_text TEXT,\n    comment_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n    report_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES user_data(user_id),\n    post_id UUID REFERENCES posts(post_id),\n    report_text TEXT,\n    report_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE messages (\n  message_id INT PRIMARY KEY,\n  sender_id INT NOT NULL,\n  receiver_id INT NOT NULL,\n  message_text TEXT NOT NULL,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n  report_id INT PRIMARY KEY,\n  reporter_id INT NOT NULL,\n  reported_id INT NOT NULL,\n  report_text TEXT NOT NULL,\n  report_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bullies (\n  bully_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  bully_level INT NOT NULL,\n  report_count INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE victims (\n  victim_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  victim_level INT NOT NULL,\n  report_count INT NOT NULL\n);"
+      }
+    ]
+  }
+]

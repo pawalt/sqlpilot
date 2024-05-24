@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    label VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    image_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id INT PRIMARY KEY,\n    label_name VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data (\n    id SERIAL PRIMARY KEY,\n    image BYTEA NOT NULL,\n    label VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_labels (\n    label_id SERIAL PRIMARY KEY,\n    label_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_training (\n    training_id SERIAL PRIMARY KEY,\n    model_id INT NOT NULL,\n    training_data_id INT NOT NULL,\n    FOREIGN KEY (model_id) REFERENCES model_labels(label_id),\n    FOREIGN KEY (training_data_id) REFERENCES training_data(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_data (\n\timage_id UUID PRIMARY KEY,\n\timage_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_labels (\n\tlabel_id UUID PRIMARY KEY,\n\tlabel_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_data (\n\tmodel_id UUID PRIMARY KEY,\n\tmodel_name VARCHAR(50),\n\tmodel_version INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_training (\n\ttraining_id UUID PRIMARY KEY,\n\tmodel_id UUID,\n\ttraining_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    id SERIAL PRIMARY KEY,\n    image_data BYTEA,\n    label TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id SERIAL PRIMARY KEY,\n    model_name TEXT,\n    hyperparameters JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    training_id SERIAL PRIMARY KEY,\n    image_id INTEGER REFERENCES images(id),\n    model_id INTEGER REFERENCES models(model_id),\n    features JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    image_id INTEGER REFERENCES images(id),\n    label TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_performance (\n    result_id SERIAL PRIMARY KEY,\n    model_id INTEGER REFERENCES models(model_id),\n    accuracy FLOAT\n);"
+      }
+    ]
+  }
+]

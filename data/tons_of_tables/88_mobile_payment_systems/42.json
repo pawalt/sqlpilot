@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction_fees (\n    transaction_id INT PRIMARY KEY,\n    sender_user_id INT,\n    receiver_user_id INT,\n    transaction_amount DECIMAL,\n    fee_percentage DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction (\n    transaction_id SERIAL PRIMARY KEY,\n    sender_id INT NOT NULL,\n    receiver_id INT NOT NULL,\n    amount DECIMAL NOT NULL,\n    fee DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fee_calculation (\n    calculation_id SERIAL PRIMARY KEY,\n    transaction_id INT NOT NULL,\n    fee_percentage DECIMAL NOT NULL,\n    calculated_fee DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction_fees (\n  payment_id INT PRIMARY KEY,\n  amount DECIMAL,\n  currency VARCHAR(3),\n  fee DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  user_name VARCHAR(50),\n  email VARCHAR(100),\n  account_balance DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id INT PRIMARY KEY,\n  sender_id INT,\n  receiver_id INT,\n  payment_amount DECIMAL,\n  fee_amount DECIMAL,\n  FOREIGN KEY (sender_id) REFERENCES users(user_id),\n  FOREIGN KEY (receiver_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (user_id INT PRIMARY KEY,\nusername VARCHAR(50) NOT NULL,\nemail VARCHAR(100) UNIQUE NOT NULL,\nbalance DECIMAL(10, 2) DEFAULT 0.00)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (transaction_id SERIAL PRIMARY KEY,\nuser_id INT NOT NULL,\namount DECIMAL(10, 2) NOT NULL,\nfee DECIMAL(5, 2) DEFAULT 0.00,\ntimestamp TIMESTAMP DEFAULT NOW())"
+      },
+      {
+        "table_schema": "CREATE TABLE fees (fee_id SERIAL PRIMARY KEY,\nfee_type VARCHAR(50) NOT NULL,\nbase_fee DECIMAL(5, 2) NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (method_id SERIAL PRIMARY KEY,\nuser_id INT NOT NULL,\nmethod_name VARCHAR(50) NOT NULL,\nfee_rate DECIMAL(4, 2) NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id UUID PRIMARY KEY,\n  sender_id UUID,\n  receiver_id UUID,\n  amount DECIMAL(10, 2),\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50),\n  balance DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fees (\n  fee_id UUID PRIMARY KEY,\n  fee_percentage DECIMAL(5, 2),\n  min_fee DECIMAL(5, 2),\n  max_fee DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions_history (\n  history_id UUID PRIMARY KEY,\n  transaction_id UUID,\n  fee_id UUID,\n  fee_amount DECIMAL(10, 2),\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_fees (\n  transaction_id UUID,\n  fee_id UUID\n);"
+      }
+    ]
+  }
+]

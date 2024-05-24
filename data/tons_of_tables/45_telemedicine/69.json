@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeleoncologyMeetings (\n\tscheduled_date DATE,\n\tscheduled_time TIME,\n\tmeeting_type VARCHAR(50),\n\tparticipants TEXT,\n\tagenda TEXT,\n\tlocation VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE teleoncology_teams (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(50),\n  team_location VARCHAR(50) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cancer_meetings (\n  meeting_id INT PRIMARY KEY,\n  meeting_date DATE,\n  meeting_time TIME,\n  team_id INT,\n  meeting_agenda TEXT,\n  CONSTRAINT fk_team_id FOREIGN KEY (team_id) REFERENCES teleoncology_teams(team_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE multidisciplinary_meetings (\n  meeting_id INT PRIMARY KEY,\n  meeting_date DATE,\n  meeting_time TIME,\n  is_virtual BOOLEAN,\n  team_lead VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR,\n  member_role VARCHAR,\n  team_id INT REFERENCES multidisciplinary_meetings(meeting_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consultations (\n  consultation_id INT PRIMARY KEY,\n  patient_id INT,\n  consult_date DATE,\n  consult_time TIME,\n  team_id INT REFERENCES multidisciplinary_meetings(meeting_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE teams (\n team_id SERIAL PRIMARY KEY,\n team_name VARCHAR(50) NOT NULL,\n location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meetings (\n meeting_id SERIAL PRIMARY KEY,\n team_id INT NOT NULL,\n meeting_date DATE NOT NULL,\n duration TIME NOT NULL,\n location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE consultations (\n consultation_id SERIAL PRIMARY KEY,\n team_id INT NOT NULL,\n patient_id INT NOT NULL,\n consultation_date DATE NOT NULL,\n consultation_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n patient_id SERIAL PRIMARY KEY,\n patient_name VARCHAR(50) NOT NULL,\n diagnosis VARCHAR(100) NOT NULL,\n location VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TeleoncologyTeams (\n\team_id INT PRIMARY KEY,\n\team_name VARCHAR(255),\n\team_location VARCHAR(255),\n\team_specialty VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Meetings (\n\team_id INT,\n\room_id INT,\n\room_capacity INT,\nmeeting_date DATE,\nmeeting_time TIME,\nPRIMARY KEY (team_id, room_id),\nFOREIGN KEY (team_id) REFERENCES TeleoncologyTeams(team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Consultations (\n\team_id INT,\npatient_id INT,\nconsultation_date DATE,\nconsultation_time TIME,\nconsultation_type VARCHAR(255),\nPRIMARY KEY (team_id, patient_id),\nFOREIGN KEY (team_id) REFERENCES TeleoncologyTeams(team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Patients (\n\team_id INT,\npatient_id INT PRIMARY KEY,\npatient_name VARCHAR(255),\npatient_age INT,\npatient_diagnosis VARCHAR(255),\nFOREIGN KEY (team_id) REFERENCES TeleoncologyTeams(team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalRecords (\n\team_id INT,\npatient_id INT,\nrecord_id INT AUTO_INCREMENT PRIMARY KEY,\nrecord_date DATE,\nrecord_details TEXT,\nFOREIGN KEY (team_id, patient_id) REFERENCES Patients(team_id, patient_id)\n);"
+      }
+    ]
+  }
+]

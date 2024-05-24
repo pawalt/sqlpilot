@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotBlueprints (\n  blueprint_id INT PRIMARY KEY,\n  blueprint_name VARCHAR(255) NOT NULL,\n  robot_type VARCHAR(100) NOT NULL,\n  designer_name VARCHAR(100) NOT NULL,\n  created_date TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Robots (\n    robot_id SERIAL PRIMARY KEY,\n    robot_name VARCHAR(50) NOT NULL,\n    blueprint TEXT NOT NULL,\n    version INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RobotDesigns (\n    design_id SERIAL PRIMARY KEY,\n    robot_id INT REFERENCES Robots(robot_id),\n    design_specifications TEXT NOT NULL,\n    created_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RobotBlueprints (\n    id SERIAL PRIMARY KEY,\n    blueprint_name VARCHAR(50) NOT NULL,\n    robot_type VARCHAR(50) NOT NULL,\n    blueprint_data TEXT NOT NULL,\n    created_at TIMESTAMP DEFAULT now()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RobotVersions (\n    version_id SERIAL PRIMARY KEY,\n    blueprint_id INT REFERENCES RobotBlueprints(id),\n    version_number INT NOT NULL,\n    version_data TEXT NOT NULL,\n    created_at TIMESTAMP DEFAULT now()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RobotUsers (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password TEXT NOT NULL,\n    created_at TIMESTAMP DEFAULT now()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE robots (\n  robot_id INT PRIMARY KEY,\n  robot_name VARCHAR(255) NOT NULL,\n  blueprint TEXT NOT NULL,\n  date_created TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE robot_parts (\n  part_id INT PRIMARY KEY,\n  part_name VARCHAR(255) NOT NULL,\n  robot_id INT,\n  FOREIGN KEY(robot_id) REFERENCES robots(robot_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE robot_versions (\n  version_id INT PRIMARY KEY,\n  robot_id INT,\n  version_number VARCHAR(50) NOT NULL,\n  changes_description TEXT,\n  date_published DATE,\n  FOREIGN KEY(robot_id) REFERENCES robots(robot_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE designers (\n  designer_id INT PRIMARY KEY,\n  designer_name VARCHAR(255) NOT NULL,\n  robot_id INT,\n  FOREIGN KEY(robot_id) REFERENCES robots(robot_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Robots (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  design TEXT,\n  version INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Parts (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  quantity INT,\n  robot_id INT,\n  FOREIGN KEY (robot_id) REFERENCES Robots (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Blueprints (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  blueprint_data TEXT,\n  robot_id INT,\n  FOREIGN KEY (robot_id) REFERENCES Robots (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Versions (\n  id INT PRIMARY KEY,\n  version_number INT NOT NULL,\n  description TEXT,\n  blueprint_id INT,\n  FOREIGN KEY (blueprint_id) REFERENCES Blueprints (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  id INT PRIMARY KEY,\n  username VARCHAR(255) NOT NULL,\n  email VARCHAR(255) NOT NULL,\n  role VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

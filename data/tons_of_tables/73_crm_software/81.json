@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE progress_reports (\n  project_id UUID PRIMARY KEY,\n  team_id UUID,\n  report_date DATE,\n  completed_tasks INT,\n  pending_tasks INT,\n  resource_allocated DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_progress (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_productivity (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(255) NOT NULL,\n  team_lead VARCHAR(100),\n  productivity_score INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_progress (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_productivity (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(255) NOT NULL,\n  project_id INT,\n  productivity_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (\n  resource_id INT PRIMARY KEY,\n  resource_name VARCHAR(255) NOT NULL,\n  project_id INT,\n  allocation_percentage DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);\n\nCREATE TABLE teams (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(255),\n    project_id INT REFERENCES projects(project_id),\n    team_lead_id INT REFERENCES employees(employee_id)\n);\n\nCREATE TABLE employees (\n    employee_id INT PRIMARY KEY,\n    employee_name VARCHAR(255),\n    department VARCHAR(100),\n    position VARCHAR(100),\n    hire_date DATE\n);\n\nCREATE TABLE project_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    project_id INT REFERENCES projects(project_id),\n    team_id INT REFERENCES teams(team_id),\n    status VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProjectProgress (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  progress_status ENUM('completed', 'in-progress', 'delayed')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TeamProductivity (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(255),\n  project_id INT,\n  productivity_score INT,\n  productivity_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResourceAllocation (\n  resource_id INT PRIMARY KEY,\n  resource_name VARCHAR(255),\n  project_id INT,\n  allocation_date DATE,\n  allocation_hours INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectSummary (\n  summary_id INT PRIMARY KEY,\n  project_id INT,\n  total_resources_allocated INT,\n  total_productivity_score INT,\n  completion_percentage DECIMAL(5,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ProjectTeamMapping (\n  mapping_id INT PRIMARY KEY,\n  project_id INT,\n  team_id INT\n);"
+      }
+    ]
+  }
+]

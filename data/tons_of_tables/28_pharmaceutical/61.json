@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medications (\n  medication_id INT PRIMARY KEY,\n  medication_name VARCHAR(50),\n  expiration_date DATE,\n  packaging_lot_number VARCHAR(20),\n  storage_conditions TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medications (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    expiration_date DATE,\n    storage_temperature VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging (\n    id INT PRIMARY KEY,\n    medication_id INT,\n    packaging_id VARCHAR(20),\n    expiration_date DATE,\n    FOREIGN KEY (medication_id) REFERENCES medications(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medications (\n    id SERIAL PRIMARY KEY,\n    name TEXT NOT NULL,\n    expiration_date DATE NOT NULL,\n    packaging_details TEXT\n);\n\nCREATE TABLE patients (\n    id SERIAL PRIMARY KEY,\n    name TEXT NOT NULL,\n    age INT,\n    address TEXT\n);\n\nCREATE TABLE compliance_records (\n    id SERIAL PRIMARY KEY,\n    patient_id INT NOT NULL,\n    medication_id INT NOT NULL,\n    administration_date DATE NOT NULL,\n    compliance_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medications (\n  medication_id INT PRIMARY KEY,\n  medication_name VARCHAR(255) NOT NULL,\n  expiration_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging (\n  packaging_id INT PRIMARY KEY,\n  medication_id INT REFERENCES medications(medication_id),\n  packaging_date DATE NOT NULL,\n  expiration_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(255) NOT NULL,\n  date_of_birth DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_tracking (\n  tracking_id INT PRIMARY KEY,\n  medication_id INT REFERENCES medications(medication_id),\n  patient_id INT REFERENCES patients(patient_id),\n  check_in_time TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medications (\n    medication_id INT PRIMARY KEY,\n    medication_name VARCHAR(255),\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE packaging (\n    packaging_id INT PRIMARY KEY,\n    medication_id INT,\n    expiration_date DATE,\n    FOREIGN KEY (medication_id) REFERENCES medications(medication_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE pharmacy (\n    pharmacy_id INT PRIMARY KEY,\n    pharmacy_name VARCHAR(255),\n    location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE prescriptions (\n    prescription_id INT PRIMARY KEY,\n    medication_id INT,\n    pharmacy_id INT,\n    quantity INT,\n    FOREIGN KEY (medication_id) REFERENCES medications(medication_id),\n    FOREIGN KEY (pharmacy_id) REFERENCES pharmacy(pharmacy_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(255),\n    age INT,\n    prescriptions INT[],\n    FOREIGN KEY (prescriptions) REFERENCES prescriptions(prescription_id)\n);\n"
+      }
+    ]
+  }
+]

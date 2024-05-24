@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_topology (\n    node_id INT PRIMARY KEY,\n    node_name VARCHAR(255) NOT NULL,\n    node_type VARCHAR(50),\n    node_location VARCHAR(100),\n    node_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(20) NOT NULL,\n    location_id INT,\n    FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);\n\nCREATE TABLE connections (\n    connection_id INT PRIMARY KEY,\n    device_id1 INT,\n    device_id2 INT,\n    connection_type VARCHAR(20) NOT NULL,\n    connection_speed INT,\n    FOREIGN KEY (device_id1) REFERENCES network_devices(device_id),\n    FOREIGN KEY (device_id2) REFERENCES network_devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(255),\n    device_type VARCHAR(50),\n    device_ip INET\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_connections (\n    connection_id UUID PRIMARY KEY,\n    source_device_id UUID,\n    destination_device_id UUID,\n    connection_speed INT,\n    connection_type VARCHAR(50),\n    FOREIGN KEY (source_device_id) REFERENCES network_devices(device_id),\n    FOREIGN KEY (destination_device_id) REFERENCES network_devices(device_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_logs (\n    log_id UUID PRIMARY KEY,\n    device_id UUID,\n    log_timestamp TIMESTAMP,\n    log_type VARCHAR(50),\n    log_message TEXT,\n    FOREIGN KEY (device_id) REFERENCES network_devices(device_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    ip_address VARCHAR(15) NOT NULL,\n    device_type VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkConnections (\n    connection_id INT PRIMARY KEY,\n    source_device_id INT NOT NULL,\n    destination_device_id INT NOT NULL,\n    connection_type VARCHAR(20) NOT NULL,\n    connection_status VARCHAR(10) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkRouters (\n    router_id INT PRIMARY KEY,\n    router_name VARCHAR(50) NOT NULL,\n    router_ip_address VARCHAR(15) NOT NULL,\n    router_model VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkSegments (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(50) NOT NULL,\n    segment_type VARCHAR(30) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    ip_address VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkConnections (\n    connection_id INT PRIMARY KEY,\n    device_id_a INT,\n    device_id_b INT,\n    connection_type VARCHAR(50),\n    FOREIGN KEY (device_id_a) REFERENCES NetworkDevices(device_id),\n    FOREIGN KEY (device_id_b) REFERENCES NetworkDevices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkSegments (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(50),\n    subnet VARCHAR(15),\n    gateway_ip VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SegmentConnections (\n    segment_connection_id INT PRIMARY KEY,\n    segment_id INT,\n    device_id INT,\n    connection_type VARCHAR(50),\n    FOREIGN KEY (segment_id) REFERENCES NetworkSegments(segment_id),\n    FOREIGN KEY (device_id) REFERENCES NetworkDevices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkMap (\n    map_id INT PRIMARY KEY,\n    map_name VARCHAR(50),\n    created_date DATE\n);"
+      }
+    ]
+  }
+]

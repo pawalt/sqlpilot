@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SustainabilityDocuments (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(255),\n    certification_type VARCHAR(50),\n    issue_date DATE,\n    expiration_date DATE,\n    organization VARCHAR(100),\n    compliance_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certifications (\n    certification_id UUID PRIMARY KEY,\n    certification_name VARCHAR(255),\n    certification_authority VARCHAR(255),\n    certification_date DATE\n);\n\nCREATE TABLE compliance_documents (\n    document_id UUID PRIMARY KEY,\n    document_type VARCHAR(255),\n    document_title VARCHAR(255),\n    document_date DATE,\n    certification_id UUID,\n    CONSTRAINT fk_certification_id FOREIGN KEY (certification_id) REFERENCES certifications(certification_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certifications (\n    certification_id INT PRIMARY KEY,\n    certification_name TEXT,\n    issuing_organization TEXT,\n    issue_date DATE,\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents (\n    document_id INT PRIMARY KEY,\n    document_name TEXT,\n    document_type TEXT,\n    document_url TEXT,\n    upload_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE supply_chain_records (\n    record_id INT PRIMARY KEY,\n    product_name TEXT,\n    supplier_name TEXT,\n    certification_id INT,\n    document_id INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certifications (\n    cert_id INT PRIMARY KEY,\n    cert_name VARCHAR(50),\n    cert_organization VARCHAR(100),\n    cert_standard VARCHAR(50),\n    cert_issue_date DATE,\n    cert_expiry_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents (\n    doc_id INT PRIMARY KEY,\n    doc_name VARCHAR(50),\n    doc_type VARCHAR(50),\n    doc_description TEXT,\n    doc_upload_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(100),\n    supplier_location VARCHAR(100),\n    supplier_contact_person VARCHAR(100),\n    supplier_email VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE supply_chain (\n    chain_id INT PRIMARY KEY,\n    supplier_id INT,\n    cert_id INT,\n    doc_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id),\n    FOREIGN KEY (cert_id) REFERENCES certifications(cert_id),\n    FOREIGN KEY (doc_id) REFERENCES compliance_documents(doc_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certifications (\n    certification_id INT PRIMARY KEY,\n    certification_name VARCHAR(255),\n    certification_body VARCHAR(255),\n    issue_date DATE,\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(255),\n    document_type VARCHAR(50),\n    upload_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    country VARCHAR(100),\n    certification_id INT,\n    FOREIGN KEY (certification_id) REFERENCES certifications(certification_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    supplier_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id INT PRIMARY KEY,\n    action VARCHAR(50),\n    timestamp TIMESTAMP,\n    user_id INT\n);\n"
+      }
+    ]
+  }
+]

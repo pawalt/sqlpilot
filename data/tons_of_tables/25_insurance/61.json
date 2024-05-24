@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims_data (\n claim_id INT PRIMARY KEY,\n policy_id INT,\n claim_amount DECIMAL(10, 2),\n claim_date DATE,\n claim_status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims_data (\n    claim_id INT PRIMARY KEY,\n    claim_date DATE,\n    claimant_name VARCHAR(50),\n    claimed_amount DECIMAL(10, 2),\n    is_fraudulent BOOLEAN\n);\n\nCREATE TABLE investigation_notes (\n    note_id INT PRIMARY KEY,\n    claim_id INT REFERENCES claims_data(claim_id),\n    investigator_name VARCHAR(50),\n    note_date TIMESTAMP,\n    note_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Claims (\n\tclaim_id INT PRIMARY KEY,\n\tclaim_date DATE,\n\tclaim_amount DECIMAL(10, 2),\n\tpolicy_number VARCHAR(20),\n\tclaim_type VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims_data (\n    claim_id SERIAL PRIMARY KEY,\n    policy_number VARCHAR(50) NOT NULL,\n    claim_date DATE NOT NULL,\n    claim_amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE claimants (\n    claimant_id SERIAL PRIMARY KEY,\n    claim_id INT REFERENCES claims_data(claim_id),\n    claimant_name VARCHAR(100) NOT NULL,\n    claimant_address VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investigations (\n    investigation_id SERIAL PRIMARY KEY,\n    claim_id INT REFERENCES claims_data(claim_id),\n    investigator_name VARCHAR(100) NOT NULL,\n    investigation_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_patterns (\n    pattern_id SERIAL PRIMARY KEY,\n    investigation_id INT REFERENCES investigations(investigation_id),\n    fraudulent_activity_description TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE claims_data (\n    claim_id INT PRIMARY KEY,\n    policy_id INT NOT NULL,\n    claim_amount DECIMAL NOT NULL,\n    claim_date DATE,\n    is_fraudulent BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_information (\n    policy_id INT PRIMARY KEY,\n    policyholder_name VARCHAR(50) NOT NULL,\n    policy_start_date DATE,\n    policy_end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE claim_documents (\n    document_id INT PRIMARY KEY,\n    claim_id INT NOT NULL,\n    document_type VARCHAR(50),\n    is_validated BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE fraud_patterns (\n    pattern_id INT PRIMARY KEY,\n    pattern_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE suspicious_claims (\n    claim_id INT PRIMARY KEY,\n    pattern_id INT,\n    report_date DATE\n)"
+      }
+    ]
+  }
+]

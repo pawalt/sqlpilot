@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE electronic_waste_collection_events (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR(50),\n  event_date DATE,\n  location_name VARCHAR(100),\n  location_address VARCHAR(150),\n  collected_items JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE e_waste_collection_events (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR(255),\n  event_date DATE,\n  event_location VARCHAR(255),\n  event_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE e_waste_collection_locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255),\n  location_address VARCHAR(255),\n  location_city VARCHAR(100),\n  location_state VARCHAR(50),\n  location_zipcode VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE events (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR(255),\n  event_date DATE,\n  event_location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255),\n  location_address VARCHAR(255),\n  location_city VARCHAR(255),\n  location_country VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_locations (\n  event_id INT,\n  location_id INT,\n  PRIMARY KEY (event_id, location_id),\n  FOREIGN KEY (event_id) REFERENCES events(event_id),\n  FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE collection_events (\n\tevent_id INT PRIMARY KEY,\n\tevent_date DATE,\n\tevent_location VARCHAR(255),\n\tevent_type VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE event_participants (\n\tevent_participant_id INT PRIMARY KEY,\n\tevent_id INT,\n\tparticipant_name VARCHAR(255),\n\tparticipant_email VARCHAR(255),\n\tparticipant_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collection_locations (\n\tlocation_id INT PRIMARY KEY,\n\tlocation_name VARCHAR(255),\n\tlocation_address VARCHAR(255),\n\tlocation_contact_person VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_items (\n\titem_id INT PRIMARY KEY,\n\titem_name VARCHAR(100),\n\titem_category VARCHAR(50),\n\titem_weight DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE collection_events (\n    event_id UUID PRIMARY KEY,\n    event_name VARCHAR(100),\n    event_date DATE,\n    event_location VARCHAR(100),\n    event_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE event_participants (\n    participant_id UUID PRIMARY KEY,\n    participant_name VARCHAR(100),\n    event_id UUID REFERENCES collection_events(event_id),\n    participation_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collection_locations (\n    location_id UUID PRIMARY KEY,\n    location_name VARCHAR(100),\n    location_address TEXT,\n    location_capacity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collected_items (\n    item_id UUID PRIMARY KEY,\n    item_name VARCHAR(100),\n    item_weight DECIMAL(10,2),\n    event_id UUID REFERENCES collection_events(event_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE disposal_records (\n    record_id UUID PRIMARY KEY,\n    disposal_date DATE,\n    item_id UUID REFERENCES collected_items(item_id),\n    location_id UUID REFERENCES collection_locations(location_id)\n);\n"
+      }
+    ]
+  }
+]

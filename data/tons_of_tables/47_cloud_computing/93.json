@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_maps (\n    coverage_id INT PRIMARY KEY,\n    area_name TEXT,\n    signal_strength FLOAT,\n    coordinates GEOGRAPHY\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_maps (\n    id INT PRIMARY KEY,\n    area_name VARCHAR(255),\n    coverage_type VARCHAR(255),\n    signal_strength FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE signal_strength_data (\n    id INT PRIMARY KEY,\n    latitude FLOAT,\n    longitude FLOAT,\n    signal_strength FLOAT,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_maps (\n    id INT PRIMARY KEY,\n    location VARCHAR(255),\n    signal_strength INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE signal_strength_data (\n    id INT PRIMARY KEY,\n    location VARCHAR(255),\n    frequency_band VARCHAR(50),\n    strength_value FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE deployment_plans (\n    id INT PRIMARY KEY,\n    location VARCHAR(255),\n    equipment_required VARCHAR(100),\n    deployment_status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_maps (\n  map_id INT PRIMARY KEY,\n  location VARCHAR(100),\n  coverage_type ENUM('Indoor', 'Outdoor', 'Mixed'),\n  signal_strength DECIMAL(5,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE signal_strength_data (\n  data_id INT PRIMARY KEY,\n  map_id INT,\n  timestamp TIMESTAMP,\n  signal_strength DECIMAL(5,2),\n  FOREIGN KEY (map_id) REFERENCES coverage_maps(map_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE deployment_plans (\n  plan_id INT PRIMARY KEY,\n  plan_name VARCHAR(100),\n  deployment_date DATE,\n  location VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE network_devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(100),\n  model VARCHAR(50),\n  plan_id INT,\n  FOREIGN KEY (plan_id) REFERENCES deployment_plans(plan_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coverage_maps (\n\tid INT PRIMARY KEY,\n\tlocation VARCHAR(255),\n\tcoverage_range FLOAT,\n\tsignal_strength FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE signal_strength_data (\n\tsample_id INT,\n\tlocation VARCHAR(255),\n\tsignal_strength FLOAT,\n\tsignal_quality VARCHAR(50),\n\tFOREIGN KEY (sample_id) REFERENCES coverage_maps(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE network_planning (\n\tplan_id INT PRIMARY KEY,\n\tcoverage_area VARCHAR(255),\n\tnumber_of_towers INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tower_details (\n\ttower_id INT PRIMARY KEY,\n\tlocation VARCHAR(255),\n\tcapacity FLOAT,\n\tbandwidth FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE tower_usage (\n\tusage_id INT,\n\ttower_id INT,\n\tdate DATE,\n\tnumber_of_connections INT,\n\tPRIMARY KEY (usage_id, tower_id),\n\tFOREIGN KEY (tower_id) REFERENCES tower_details(tower_id)\n);\n"
+      }
+    ]
+  }
+]

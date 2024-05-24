@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  sequence_id INT PRIMARY KEY,\n  sequence VARCHAR(255) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  id SERIAL PRIMARY KEY,\n  sequence TEXT NOT NULL,\n  label TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_analysis (\n  analysis_id SERIAL PRIMARY KEY,\n  sequence_id INT REFERENCES dna_sequences(id),\n  analysis_result BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  id SERIAL PRIMARY KEY,\n  sequence_id INT NOT NULL,\n  dna_sequence TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_metadata (\n  id SERIAL PRIMARY KEY,\n  sequence_id INT NOT NULL,\n  description TEXT NOT NULL,\n  creator VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_analysis (\n  id SERIAL PRIMARY KEY,\n  sequence_id INT NOT NULL,\n  analysis_result JSONB\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  id INT PRIMARY KEY,\n  sequence VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE genes (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(50),\n  sequence_id INT,\n  FOREIGN KEY (sequence_id) REFERENCES dna_sequences(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mutations (\n  mutation_id INT PRIMARY KEY,\n  gene_id INT,\n  mutation_type VARCHAR(50),\n  FOREIGN KEY (gene_id) REFERENCES genes(gene_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mutations_info (\n  mutation_id INT,\n  mutation_date DATE,\n  mutation_details VARCHAR(255),\n  FOREIGN KEY (mutation_id) REFERENCES mutations(mutation_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  sequence_id INT PRIMARY KEY,\n  sequence VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_metadata (\n  sequence_id INT PRIMARY KEY,\n  organism VARCHAR(100),\n  length INT,\n  creation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_annotations (\n  annotation_id INT PRIMARY KEY,\n  sequence_id INT,\n  annotation VARCHAR(255),\n  annotation_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_similarity (\n  similarity_id INT PRIMARY KEY,\n  sequence_id INT,\n  similar_sequence_id INT,\n  similarity_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sequence_references (\n  reference_id INT PRIMARY KEY,\n  sequence_id INT,\n  reference_title VARCHAR(255),\n  authors VARCHAR(255),\n  publication_date DATE\n);"
+      }
+    ]
+  }
+]

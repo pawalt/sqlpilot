@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiodiversityData(\n  species_id INT,\n  species_name VARCHAR(50),\n  population INT,\n  conservation_status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species (\n    species_id SERIAL PRIMARY KEY,\n    species_name VARCHAR(50) NOT NULL,\n    population_size INT NOT NULL,\n    conservation_status VARCHAR(20) DEFAULT 'Not Evaluated'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Observations (\n    observation_id SERIAL PRIMARY KEY,\n    species_id INT NOT NULL,\n    observer_name VARCHAR(50) NOT NULL,\n    observation_date DATE NOT NULL,\n    observation_location VARCHAR(100) NOT NULL,\n    CONSTRAINT fk_species\n        FOREIGN KEY (species_id)\n        REFERENCES Species (species_id)\n        ON DELETE CASCADE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE species (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(255) NOT NULL,\n    population_size INT,\n    conservation_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    latitude DECIMAL(10, 8),\n    longitude DECIMAL(11, 8)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE observations (\n    observation_id INT PRIMARY KEY,\n    species_id INT,\n    location_id INT,\n    observation_date DATE,\n    observer_name VARCHAR(100),\n    FOREIGN KEY (species_id) REFERENCES species(species_id),\n    FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species (\n  species_id INT PRIMARY KEY,\n  scientific_name VARCHAR(255),\n  common_name VARCHAR(255),\n  population_size INT,\n  conservation_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Locations (\n  location_id INT PRIMARY KEY,\n  latitude DECIMAL(10, 8),\n  longitude DECIMAL(11, 8),\n  location_name VARCHAR(255),\n  habitat_type VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Observations (\n  observation_id INT PRIMARY KEY,\n  species_id INT,\n  location_id INT,\n  observer_name VARCHAR(255),\n  observation_date DATE,\n  FOREIGN KEY (species_id) REFERENCES Species(species_id),\n  FOREIGN KEY (location_id) REFERENCES Locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ConservationEfforts (\n  effort_id INT PRIMARY KEY,\n  location_id INT,\n  start_date DATE,\n  end_date DATE,\n  effort_description TEXT,\n  FOREIGN KEY (location_id) REFERENCES Locations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE species (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(50) NOT NULL,\n    population_size INT,\n    geographic_range VARCHAR(100),\n    conservation_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    latitude DECIMAL(10, 8) NOT NULL,\n    longitude DECIMAL(11, 8) NOT NULL,\n    habitat_type VARCHAR(50),\n    climate VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sightings (\n    sighting_id INT PRIMARY KEY,\n    species_id INT,\n    location_id INT,\n    sighting_date DATE,\n    observer_name VARCHAR(50),\n    CONSTRAINT fk_species FOREIGN KEY (species_id) REFERENCES species(species_id),\n    CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(50) NOT NULL,\n    research_area VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE conservation_efforts (\n    effort_id INT PRIMARY KEY,\n    researcher_id INT,\n    species_id INT,\n    location_id INT,\n    effort_description TEXT,\n    CONSTRAINT fk_researcher FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id),\n    CONSTRAINT fk_species FOREIGN KEY (species_id) REFERENCES species(species_id),\n    CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES locations(location_id)\n);\n"
+      }
+    ]
+  }
+]

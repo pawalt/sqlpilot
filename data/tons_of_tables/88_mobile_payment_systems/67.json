@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id INT PRIMARY KEY,\n  payment_gateway VARCHAR(255) NOT NULL,\n  card_number VARCHAR(16) NOT NULL,\n  card_expiry_date DATE NOT NULL,\n  transaction_amount DECIMAL(10, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payments (\n    id INT PRIMARY KEY,\n    amount DECIMAL,\n    currency VARCHAR(3),\n    card_number VARCHAR(16),\n    expiration_date DATE,\n    cvv VARCHAR(3)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    payment_id INT REFERENCES payments(id),\n    gateway_id INT,\n    status VARCHAR(10),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n    id UUID PRIMARY KEY,\n    gateway_name VARCHAR(50) NOT NULL,\n    gateway_url VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE credit_card_transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    card_number VARCHAR(16) NOT NULL,\n    card_holder_name VARCHAR(100) NOT NULL,\n    transaction_amount DECIMAL(10,2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL,\n    gateway_id UUID NOT NULL REFERENCES payment_gateways(id)\n);\n\nCREATE TABLE transaction_logs (\n    log_id SERIAL PRIMARY KEY,\n    transaction_id SERIAL NOT NULL REFERENCES credit_card_transactions(transaction_id),\n    log_message TEXT,\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n   transaction_id INT PRIMARY KEY,\n   amount DECIMAL(10, 2),\n   card_number VARCHAR(16),\n   card_expiry DATE,\n   card_cvv INT,\n   transaction_status VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n   customer_id INT PRIMARY KEY,\n   customer_name VARCHAR(50),\n   email VARCHAR(50),\n   phone_number VARCHAR(15),\n   address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n   gateway_id INT PRIMARY KEY,\n   gateway_name VARCHAR(50),\n   api_key VARCHAR(100),\n   endpoint_url VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n   payment_id INT PRIMARY KEY,\n   transaction_id INT,\n   customer_id INT,\n   gateway_id INT,\n   payment_date TIMESTAMP,\n   payment_status VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE payment_gateways (\n    gateway_id INT PRIMARY KEY,\n    gateway_name VARCHAR(255),\n    integration_key VARCHAR(255),\n    encryption_key VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    amount DECIMAL(10, 2),\n    customer_id INT,\n    gateway_id INT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email VARCHAR(255),\n    card_number VARCHAR(16),\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cards (\n    card_id INT PRIMARY KEY,\n    card_number VARCHAR(16),\n    customer_id INT,\n    is_default BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id INT PRIMARY KEY,\n    transaction_id INT,\n    card_id INT,\n    amount DECIMAL(10, 2),\n    status VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

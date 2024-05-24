@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IntellectualPropertyRights (\n    id INT PRIMARY KEY,\n    property_name VARCHAR(255),\n    owner_name VARCHAR(255),\n    expiration_date DATE,\n    reminder_sent BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE intellectual_property_rights (\n    id INT PRIMARY KEY,\n    property_name VARCHAR(255),\n    expiration_date DATE,\n    renewal_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reminders (\n    id INT PRIMARY KEY,\n    intellectual_property_id INT,\n    reminder_date DATE,\n    reminder_message VARCHAR(255),\n    FOREIGN KEY (intellectual_property_id) REFERENCES intellectual_property_rights(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IntellectualProperty (\n    id INT PRIMARY KEY,\n    name STRING NOT NULL,\n    expiration_date DATE,\n    renewal_status BOOL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reminder (\n    id INT PRIMARY KEY,\n    reminder_date DATE,\n    intellectual_property_id INT,\n    FOREIGN KEY (intellectual_property_id) REFERENCES IntellectualProperty(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NotificationLog (\n    id INT PRIMARY KEY,\n    notification_date DATE,\n    reminder_id INT,\n    FOREIGN KEY (reminder_id) REFERENCES Reminder(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IntellectualPropertyRights (\n    id INT PRIMARY KEY,\n    property_name VARCHAR(255),\n    renewal_due_date DATE,\n    reminder_sent BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExpiringRightsReminders (\n    id INT PRIMARY KEY,\n    intellectual_property_id INT,\n    reminder_date DATE,\n    reminder_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AuditTrail (\n    id INT PRIMARY KEY,\n    event_type VARCHAR(50),\n    event_timestamp TIMESTAMP,\n    user_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IntellectualPropertyRights (\n    ipr_id UUID PRIMARY KEY,\n    ipr_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    renewable BOOLEAN NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RightsRenewalReminders (\n    reminder_id UUID PRIMARY KEY,\n    ipr_id UUID REFERENCES IntellectualPropertyRights(ipr_id),\n    reminder_date DATE NOT NULL,\n    reminder_message TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserNotifications (\n    notification_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES Users(user_id),\n    notification_message TEXT NOT NULL,\n    notification_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RightsRenewalHistory (\n    history_id UUID PRIMARY KEY,\n    ipr_id UUID REFERENCES IntellectualPropertyRights(ipr_id),\n    renewal_date DATE NOT NULL,\n    renewed_by UUID REFERENCES Users(user_id)\n);\n"
+      }
+    ]
+  }
+]

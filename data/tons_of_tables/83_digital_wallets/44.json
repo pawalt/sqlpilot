@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BillingInformation (\n    billing_id INT PRIMARY KEY,\n    customer_id INT,\n    billing_date DATE,\n    billing_amount DECIMAL(10,2),\n    payment_method VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BillingInformation (\n  id INT PRIMARY KEY,\n  customer_name VARCHAR(50) NOT NULL,\n  billing_address VARCHAR(255) NOT NULL,\n  payment_method VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RecurringPayments (\n  payment_id INT PRIMARY KEY,\n  customer_id INT NOT NULL,\n  payment_amount DECIMAL(10,2) NOT NULL,\n  payment_frequency VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BillingInfo (\n\tid INT,\n\tcustomer_id INT,\n\tname VARCHAR(50),\n\tcredit_card_number VARCHAR(16),\n\temail VARCHAR(100),\n\tPRIMARY KEY (id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecurringPayments (\n\tid INT,\n\tbilling_info_id INT,\n\tstart_date DATE,\n\tpayment_amount DECIMAL,\n\tpayment_frequency VARCHAR(20),\n\tnext_payment_date DATE,\n\tPRIMARY KEY (id),\n\tFOREIGN KEY (billing_info_id) REFERENCES BillingInfo(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TransactionHistory (\n\tid INT,\n\tpayment_id INT,\n\ttransaction_date TIMESTAMP,\n\ttransaction_status VARCHAR(20),\n\tamount DECIMAL,\n\tPRIMARY KEY (id),\n\tFOREIGN KEY (payment_id) REFERENCES RecurringPayments(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_info (\n    billing_id INT PRIMARY KEY,\n    customer_id INT,\n    card_number VARCHAR(16),\n    payment_amount DECIMAL(10,2),\n    payment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(50),\n    address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recurring_payments (\n    payment_id SERIAL PRIMARY KEY,\n    customer_id INT,\n    start_date DATE,\n    frequency INT,\n    amount DECIMAL(10,2),\n    active BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id SERIAL PRIMARY KEY,\n    customer_id INT,\n    payment_date DATE,\n    amount DECIMAL(10,2),\n    status VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billing_info (\n    user_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100),\n    credit_card_number VARCHAR(16),\n    billing_address VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE recurring_payments (\n    payment_id INT PRIMARY KEY,\n    user_id INT,\n    payment_date DATE,\n    payment_amount DECIMAL(10,2),\n    recurring_interval INT,\n    FOREIGN KEY (user_id) REFERENCES billing_info(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    history_id INT PRIMARY KEY,\n    payment_id INT,\n    payment_status VARCHAR(20),\n    payment_date DATE,\n    FOREIGN KEY (payment_id) REFERENCES recurring_payments(payment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_methods (\n    method_id INT PRIMARY KEY,\n    user_id INT,\n    payment_type VARCHAR(50),\n    card_number VARCHAR(16),\n    expiration_date DATE,\n    FOREIGN KEY (user_id) REFERENCES billing_info(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscription_plans (\n    plan_id INT PRIMARY KEY,\n    plan_name VARCHAR(50),\n    plan_price DECIMAL(10,2),\n    plan_description TEXT\n);"
+      }
+    ]
+  }
+]

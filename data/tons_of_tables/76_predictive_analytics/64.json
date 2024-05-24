@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_experiments (\n  experiment_id INT NOT NULL,\n  experiment_name VARCHAR(255) NOT NULL,\n  experiment_description TEXT,\n  experiment_date TIMESTAMP NOT NULL,\n  accuracy FLOAT,\n  loss FLOAT,\n  PRIMARY KEY (experiment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    experiment_date DATE,\n    experiment_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id INT PRIMARY KEY,\n    experiment_id INT,\n    result_value FLOAT,\n    result_date TIMESTAMP,\n    result_description TEXT,\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_experiments (\n  experiment_id SERIAL PRIMARY KEY,\n  experiment_name VARCHAR(255) NOT NULL,\n  experiment_description TEXT,\n  experiment_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n  result_id SERIAL PRIMARY KEY,\n  experiment_id INT,\n  result_value FLOAT,\n  result_description TEXT,\n  result_date TIMESTAMP,\n  FOREIGN KEY (experiment_id) REFERENCES neural_network_experiments(experiment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_participants (\n  participant_id SERIAL PRIMARY KEY,\n  experiment_id INT,\n  participant_name VARCHAR(100) NOT NULL,\n  participant_role VARCHAR(50),\n  participation_date TIMESTAMP,\n  FOREIGN KEY (experiment_id) REFERENCES neural_network_experiments(experiment_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id UUID PRIMARY KEY,\n    experiment_name TEXT,\n    experiment_description TEXT,\n    start_date TIMESTAMP,\n    end_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id UUID PRIMARY KEY,\n    experiment_id UUID,\n    result_data JSONB,\n    result_date TIMESTAMP,\n    CONSTRAINT fk_experiment_id FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id UUID PRIMARY KEY,\n    model_name TEXT,\n    model_description TEXT,\n    created_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_results (\n    model_result_id UUID PRIMARY KEY,\n    model_id UUID,\n    result_id UUID,\n    CONSTRAINT fk_model_id FOREIGN KEY (model_id) REFERENCES models(model_id),\n    CONSTRAINT fk_result_id FOREIGN KEY (result_id) REFERENCES results(result_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE experiments (\n  experiment_id UUID PRIMARY KEY,\n  experiment_name VARCHAR(255) NOT NULL,\n  experiment_description TEXT,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE datasets (\n  dataset_id UUID PRIMARY KEY,\n  dataset_name VARCHAR(255) NOT NULL,\n  dataset_description TEXT,\n  dataset_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n  model_id UUID PRIMARY KEY,\n  model_name VARCHAR(255) NOT NULL,\n  model_description TEXT,\n  model_parameters JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trainings (\n  training_id UUID PRIMARY KEY,\n  experiment_id UUID REFERENCES experiments(experiment_id),\n  model_id UUID REFERENCES models(model_id),\n  dataset_id UUID REFERENCES datasets(dataset_id),\n  start_time TIMESTAMP NOT NULL,\n  end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n  result_id UUID PRIMARY KEY,\n  experiment_id UUID REFERENCES experiments(experiment_id),\n  model_id UUID REFERENCES models(model_id),\n  training_id UUID REFERENCES trainings(training_id),\n  result_data JSONB\n);"
+      }
+    ]
+  }
+]

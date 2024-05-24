@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE decentralized_identity_system (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    public_key TEXT NOT NULL,\n    private_key TEXT NOT NULL,\n    blockchain_address VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blockchain_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    public_key VARCHAR(256) NOT NULL,\n    is_verified BOOLEAN\n);\n\nCREATE TABLE identity_credentials (\n    credential_id INT PRIMARY KEY,\n    user_id INT REFERENCES blockchain_users(user_id),\n    credential_type VARCHAR(50) NOT NULL,\n    credential_data VARCHAR(256) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    public_key VARCHAR(200) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE identities (\n    identity_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    identity_type VARCHAR(50) NOT NULL,\n    identity_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verifications (\n    verification_id INT PRIMARY KEY,\n    identity_id INT REFERENCES identities(identity_id),\n    verification_type VARCHAR(50) NOT NULL,\n    verified BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    public_key VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE identities (\n    identity_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    identity_data JSONB,\n    verified BOOLEAN DEFAULT FALSE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE attestations (\n    attestation_id INT PRIMARY KEY,\n    identity_id INT REFERENCES identities(identity_id),\n    attester_id INT REFERENCES users(user_id),\n    attestation_data JSONB,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE revocations (\n    revocation_id INT PRIMARY KEY,\n    attestation_id INT REFERENCES attestations(attestation_id),\n    revoked BOOLEAN DEFAULT FALSE,\n    revocation_reason TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    public_key VARCHAR(200) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE documents (\n    doc_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    document_name VARCHAR(100),\n    document_hash VARCHAR(64) NOT NULL\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_requests (\n    request_id INT PRIMARY KEY,\n    document_id INT NOT NULL,\n    requester_id INT NOT NULL,\n    request_status VARCHAR(20) CHECK (request_status IN ('pending', 'approved', 'rejected')),\n    FOREIGN KEY (document_id) REFERENCES documents(doc_id),\n    FOREIGN KEY (requester_id) REFERENCES users(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verification (\n    verification_id INT PRIMARY KEY,\n    document_id INT NOT NULL,\n    verifier_id INT NOT NULL,\n    verified_at TIMESTAMP WITH TIME ZONE,\n    FOREIGN KEY (document_id) REFERENCES documents(doc_id),\n    FOREIGN KEY (verifier_id) REFERENCES users(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE revocation_list (\n    revocation_id INT PRIMARY KEY,\n    document_id INT NOT NULL,\n    revocation_reason TEXT,\n    revoked_at TIMESTAMP WITH TIME ZONE,\n    FOREIGN KEY (document_id) REFERENCES documents(doc_id)\n);"
+      }
+    ]
+  }
+]

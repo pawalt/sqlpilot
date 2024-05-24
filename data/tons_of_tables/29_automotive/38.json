@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE warranty_information (\n  part_id INT PRIMARY KEY,\n  part_name VARCHAR(255),\n  service_provider VARCHAR(255),\n  warranty_duration INT,\n  warranty_start_date DATE,\n  warranty_end_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parts_warranty (\n  part_id INT PRIMARY KEY,\n  part_name VARCHAR(255) NOT NULL,\n  warranty_start_date DATE NOT NULL,\n  warranty_end_date DATE NOT NULL,\n  service_provided TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE service_records (\n  record_id INT PRIMARY KEY,\n  part_id INT REFERENCES parts_warranty(part_id),\n  service_date DATE NOT NULL,\n  service_provider VARCHAR(255) NOT NULL,\n  service_description TEXT,\n  claim_status VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parts (\n    part_id INT PRIMARY KEY,\n    part_name VARCHAR(255),\n    warranty_duration INT,\n    serial_number VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id INT PRIMARY KEY,\n    service_type VARCHAR(255),\n    service_cost DECIMAL(10, 2),\n    service_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE warranty_claims (\n    claim_id INT PRIMARY KEY,\n    claim_date DATE,\n    part_id INT REFERENCES parts(part_id),\n    service_id INT REFERENCES services(service_id),\n    claim_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Parts (\n    part_id UUID PRIMARY KEY,\n    part_name STRING,\n    part_description STRING,\n    warranty_duration INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Services (\n    service_id UUID PRIMARY KEY,\n    service_name STRING,\n    service_description STRING,\n    service_cost DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WarrantyInfo (\n    warranty_id UUID PRIMARY KEY,\n    part_id UUID REFERENCES Parts(part_id),\n    service_id UUID REFERENCES Services(service_id),\n    warranty_start_date DATE,\n    warranty_end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Claims (\n    claim_id UUID PRIMARY KEY,\n    warranty_id UUID REFERENCES WarrantyInfo(warranty_id),\n    claim_date DATE,\n    claim_description STRING,\n    claim_resolved BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE parts (\n    part_id INT PRIMARY KEY,\n    part_name VARCHAR(255),\n    supplier_id INT,\n    warranty_info VARCHAR(500)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    supplier_address VARCHAR(255),\n    contact_person VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(255),\n    service_description VARCHAR(500),\n    cost DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE warranty_claims (\n    claim_id INT PRIMARY KEY,\n    part_id INT,\n    service_id INT,\n    claim_status VARCHAR(50),\n    claim_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE warranty_compliance (\n    compliance_id INT PRIMARY KEY,\n    supplier_id INT,\n    part_id INT,\n    compliance_status VARCHAR(50),\n    last_checked TIMESTAMP\n)"
+      }
+    ]
+  }
+]

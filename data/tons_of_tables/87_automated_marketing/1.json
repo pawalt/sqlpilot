@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_segmentation ( \n id SERIAL PRIMARY KEY, \n email_address VARCHAR(255) NOT NULL, \n behavior_score INT NOT NULL, \n engagement_level VARCHAR(50) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_lists (\n    email_id INT PRIMARY KEY,\n    email_address VARCHAR(255),\n    user_behavior VARCHAR(50),\n    engagement_level VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE segment_details (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(255),\n    segment_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_behavior (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(255),\n    behavior_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE engagement_levels (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(50),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_lists (\n    list_id INT PRIMARY KEY,\n    segment_name VARCHAR(50),\n    list_description TEXT,\n    user_id INT,\n    level_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EmailListSegmentation (\n    user_id INT,\n    email VARCHAR(255),\n    engagement_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE UserBehavior (\n    user_id INT,\n    behavior_category VARCHAR(50),\n    behavior_description TEXT,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SegmentationRules (\n    rule_id INT,\n    rule_name VARCHAR(50),\n    condition TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SegmentMembers (\n    segment_id INT,\n    user_id INT,\n    member_since TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    engagement_level VARCHAR(50) NOT NULL,\n    behavior_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_lists (\n    list_id INT PRIMARY KEY,\n    list_name VARCHAR(100) NOT NULL,\n    segment_criteria VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_engagement (\n    engagement_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    timestamp TIMESTAMP NOT NULL,\n    interaction_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_subscriptions (\n    subscription_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    list_id INT REFERENCES email_lists(list_id),\n    subscribe_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    log_id INT PRIMARY KEY,\n    email_id INT REFERENCES email_subscriptions(subscription_id),\n    sent_date TIMESTAMP NOT NULL,\n    open_status BOOLEAN,\n    click_status BOOLEAN\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE service_providers (\n  id UUID PRIMARY KEY,\n  name VARCHAR(255),\n  location GEOGRAPHY\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id SERIAL PRIMARY KEY,\n  customer_name VARCHAR(255) NOT NULL,\n  customer_location POINT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE service_providers (\n  provider_id SERIAL PRIMARY KEY,\n  provider_name VARCHAR(255) NOT NULL,\n  provider_location POINT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    customer_location GEOGRAPHY\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE service_providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(255),\n    provider_location GEOGRAPHY,\n    service_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE distance_matrix (\n    customer_id INT,\n    provider_id INT,\n    distance FLOAT,\n    CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n    CONSTRAINT fk_provider FOREIGN KEY (provider_id) REFERENCES service_providers(provider_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(50),\n  customer_location GEOMETRY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_providers (\n  provider_id INT PRIMARY KEY,\n  provider_name VARCHAR(50),\n  provider_location GEOMETRY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n  service_id INT PRIMARY KEY,\n  service_name VARCHAR(50),\n  service_provider_id INT REFERENCES service_providers(provider_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_availability (\n  availability_id INT PRIMARY KEY,\n  service_id INT REFERENCES services(service_id),\n  available BOOLEAN,\n  availability_location GEOMETRY\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    customer_location GEOMETRY\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE service_providers (\n    provider_id INT PRIMARY KEY,\n    provider_name VARCHAR(255),\n    provider_location GEOMETRY\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE provider_services (\n    provider_id INT,\n    service_id INT,\n    PRIMARY KEY (provider_id, service_id),\n    FOREIGN KEY (provider_id) REFERENCES service_providers(provider_id),\n    FOREIGN KEY (service_id) REFERENCES services(service_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE service_requests (\n    request_id INT PRIMARY KEY,\n    customer_id INT,\n    service_id INT,\n    request_location GEOMETRY,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n    FOREIGN KEY (service_id) REFERENCES services(service_id)\n);\n"
+      }
+    ]
+  }
+]

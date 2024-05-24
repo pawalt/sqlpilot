@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TenantData (\n    tenant_id INT,\n    data_id BIGINT,\n    data VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Tenant (\n    tenant_id UUID PRIMARY KEY,\n    tenant_name VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE Application (\n    application_id UUID PRIMARY KEY,\n    application_name VARCHAR(255) NOT NULL,\n    tenant_id UUID REFERENCES Tenant(tenant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Tenant (\n    tenant_id INT PRIMARY KEY,\n    tenant_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Application (\n    app_id INT PRIMARY KEY,\n    app_name VARCHAR(255) NOT NULL,\n    tenant_id INT NOT NULL,\n    FOREIGN KEY (tenant_id) REFERENCES Tenant(tenant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Data (\n    data_id INT PRIMARY KEY,\n    data_value TEXT NOT NULL,\n    app_id INT NOT NULL,\n    FOREIGN KEY (app_id) REFERENCES Application(app_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Tenant ( \n    tenant_id INT PRIMARY KEY, \n    tenant_name VARCHAR(50) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE User ( \n    user_id INT PRIMARY KEY, \n    user_name VARCHAR(50), \n    tenant_id INT REFERENCES Tenant(tenant_id) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Product ( \n    product_id INT PRIMARY KEY, \n    product_name VARCHAR(50), \n    tenant_id INT REFERENCES Tenant(tenant_id) \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Order ( \n    order_id INT PRIMARY KEY, \n    order_date DATE, \n    user_id INT REFERENCES User(user_id), \n    product_id INT REFERENCES Product(product_id) \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Tenant (id SERIAL PRIMARY KEY,\nname VARCHAR(50) NOT NULL,\ncreated_at TIMESTAMP NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE TenantUser (id SERIAL PRIMARY KEY,\ntenant_id INT NOT NULL,\nusername VARCHAR(50) NOT NULL,\nemail VARCHAR(100) NOT NULL,\ncreated_at TIMESTAMP NOT NULL,\nFOREIGN KEY (tenant_id) REFERENCES Tenant(id) ON DELETE CASCADE)"
+      },
+      {
+        "table_schema": "CREATE TABLE TenantSettings (id SERIAL PRIMARY KEY,\ntenant_id INT NOT NULL,\nsetting_key VARCHAR(50) NOT NULL,\nsetting_value JSONB,\ncreated_at TIMESTAMP NOT NULL,\nFOREIGN KEY (tenant_id) REFERENCES Tenant(id) ON DELETE CASCADE)"
+      },
+      {
+        "table_schema": "CREATE TABLE TenantData (id SERIAL PRIMARY KEY,\ntenant_id INT NOT NULL,\ndata_key VARCHAR(50) NOT NULL,\ndata_value JSONB,\ncreated_at TIMESTAMP NOT NULL,\nFOREIGN KEY (tenant_id) REFERENCES Tenant(id) ON DELETE CASCADE)"
+      },
+      {
+        "table_schema": "CREATE TABLE TenantLog (id SERIAL PRIMARY KEY,\ntenant_id INT NOT NULL,\nlog_message TEXT NOT NULL,\nlog_time TIMESTAMP NOT NULL,\nFOREIGN KEY (tenant_id) REFERENCES Tenant(id) ON DELETE CASCADE)"
+      }
+    ]
+  }
+]

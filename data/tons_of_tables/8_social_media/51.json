@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MessageContent ( \n  message_id INT PRIMARY KEY, \n  message_text TEXT NOT NULL, \n  is_abusive BOOLEAN NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE message_content (\n    message_id SERIAL PRIMARY KEY,\n    content TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE abusive_keywords (\n    keyword_id SERIAL PRIMARY KEY,\n    keyword TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE message_content_analysis (\n    id INT PRIMARY KEY,\n    message TEXT,\n    is_abusive BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE abusive_words (\n    word_id INT PRIMARY KEY,\n    word TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE message_word_mapping (\n    message_id INT,\n    word_id INT,\n    FOREIGN KEY (message_id) REFERENCES message_content_analysis(id),\n    FOREIGN KEY (word_id) REFERENCES abusive_words(word_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE message (id INT, content TEXT, user_id INT, created_at TIMESTAMP);"
+      },
+      {
+        "table_schema": "CREATE TABLE user (user_id INT, username TEXT, email TEXT);"
+      },
+      {
+        "table_schema": "CREATE TABLE abuse_reports (report_id INT, message_id INT, user_id INT, report_reason TEXT, report_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE blocked_users (block_id INT, user_id INT, blocked_user_id INT, block_date DATE);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Messages (\n    message_id INT PRIMARY KEY,\n    message_text TEXT NOT NULL,\n    sender_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AbuseReports (\n    report_id INT PRIMARY KEY,\n    message_id INT NOT NULL,\n    reporter_id INT NOT NULL,\n    report_text TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ReportedMessages (\n    report_id INT PRIMARY KEY,\n    message_id INT NOT NULL,\n    reporter_id INT NOT NULL,\n    report_text TEXT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BlacklistedWords (\n    word_id INT PRIMARY KEY,\n    word VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transport_vendors (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(50),\n    contact_person_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15),\n    transport_type VARCHAR(50),\n    average_rating DECIMAL(3,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE preferred_transport_vendors (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    contact_number VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE negotiation_rates (\n    rate_id INT PRIMARY KEY,\n    vendor_id INT NOT NULL,\n    negotiation_date DATE,\n    negotiation_amount DECIMAL(10, 2) NOT NULL,\n    CONSTRAINT fk_vendor_id FOREIGN KEY (vendor_id) REFERENCES preferred_transport_vendors(vendor_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transport_vendors (\n    vendor_id SERIAL PRIMARY KEY,\n    vendor_name VARCHAR(50) NOT NULL,\n    contact_person VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20) NOT NULL\n);\n\nCREATE TABLE transport_services (\n    service_id SERIAL PRIMARY KEY,\n    service_name VARCHAR(50) NOT NULL,\n    service_description TEXT,\n    vendor_id INT NOT NULL,\n    FOREIGN KEY (vendor_id) REFERENCES transport_vendors(vendor_id)\n);\n\nCREATE TABLE negotiated_rates (\n    rate_id SERIAL PRIMARY KEY,\n    transport_service_id INT NOT NULL,\n    negotiated_rate DECIMAL(10, 2) NOT NULL,\n    effective_date DATE NOT NULL,\n    expiration_date DATE\n    FOREIGN KEY (transport_service_id) REFERENCES transport_services(service_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendors (\n  vendor_id INT PRIMARY KEY,\n  vendor_name VARCHAR(50) NOT NULL,\n  contact_person VARCHAR(50),\n  email VARCHAR(50) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(50) NOT NULL,\n  description TEXT,\n  category VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE price_lists (\n  price_id INT PRIMARY KEY,\n  vendor_id INT,\n  product_id INT,\n  unit_price DECIMAL(10, 2) NOT NULL,\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE negotiations (\n  negotiation_id INT PRIMARY KEY,\n  price_id INT,\n  negotiated_price DECIMAL(10, 2) NOT NULL,\n  negotiation_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE preferred_transport_vendors (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_options (\n    option_id INT PRIMARY KEY,\n    option_name VARCHAR(255) NOT NULL,\n    option_description TEXT,\n    base_rate DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE negotiation_history (\n    negotiation_id INT PRIMARY KEY,\n    vendor_id INT,\n    negotiation_date DATE,\n    negotiated_amount DECIMAL(10, 2),\n    CONSTRAINT fk_vendor FOREIGN KEY (vendor_id) REFERENCES preferred_transport_vendors(vendor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_details (\n    contract_id INT PRIMARY KEY,\n    vendor_id INT,\n    contract_start_date DATE,\n    contract_end_date DATE,\n    contract_terms TEXT,\n    CONSTRAINT fk_vendor FOREIGN KEY (vendor_id) REFERENCES preferred_transport_vendors(vendor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id INT PRIMARY KEY,\n    vendor_id INT,\n    metric_date DATE,\n    on_time_delivery_rate DECIMAL(5, 2),\n    cost_savings DECIMAL(10, 2),\n    CONSTRAINT fk_vendor FOREIGN KEY (vendor_id) REFERENCES preferred_transport_vendors(vendor_id)\n);"
+      }
+    ]
+  }
+]

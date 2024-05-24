@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS user_behavior_patterns (\n  user_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP,\n  behavior_description TEXT,\n  threat_level INT,\n  location TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    last_login TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    activity_type VARCHAR(50) NOT NULL,\n    activity_time TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    last_login TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_profiles(user_id),\n    attempt_time TIMESTAMP,\n    success BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_profiles(user_id),\n    log_time TIMESTAMP,\n    log_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_accounts(user_id),\n    attempt_time TIMESTAMP NOT NULL,\n    success BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_accounts(user_id),\n    access_time TIMESTAMP NOT NULL,\n    action VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_events (\n    event_id INT PRIMARY KEY,\n    log_id INT REFERENCES access_logs(log_id),\n    event_time TIMESTAMP NOT NULL,\n    event_type VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    user_id INT,\n    attempt_time TIMESTAMP,\n    success BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    timestamp TIMESTAMP,\n    activity_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE threats (\n    threat_id INT PRIMARY KEY,\n    user_id INT,\n    threat_type VARCHAR(50),\n    threat_level INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    log_id INT PRIMARY KEY,\n    action_time TIMESTAMP,\n    action_type VARCHAR(50),\n    user_id INT\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE candidate_screening ( \n    candidate_id UUID PRIMARY KEY, \n    candidate_name VARCHAR(255), \n    screening_criteria JSONB, \n    screening_result BOOLEAN \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE candidate_criteria (\n    criteria_id INT PRIMARY KEY,\n    criteria_name VARCHAR(255) NOT NULL,\n    criteria_description TEXT\n);\nCREATE TABLE candidate_application (\n    candidate_id INT PRIMARY KEY,\n    candidate_name VARCHAR(255) NOT NULL,\n    candidate_email VARCHAR(255) NOT NULL,\n    criteria_id INT,\n    FOREIGN KEY (criteria_id) REFERENCES candidate_criteria(criteria_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE candidate_criteria (\n  id INT PRIMARY KEY,\n  candidate_name VARCHAR(255),\n  experience_years INT,\n  skills VARCHAR(255),\n  education_level VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE screening_criteria (\n  id INT PRIMARY KEY,\n  criteria_name VARCHAR(255),\n  criteria_description TEXT,\n  weight DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE candidate_screening_results (\n  id INT PRIMARY KEY,\n  candidate_id INT,\n  criteria_id INT,\n  passed BOOLEAN,\n  score DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Candidates (\n    candidate_id INT PRIMARY KEY,\n    candidate_name VARCHAR(50) NOT NULL,\n    candidate_email VARCHAR(100) UNIQUE,\n    candidate_phone VARCHAR(15),\n    candidate_experience INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ScreeningCriteria (\n    criteria_id INT PRIMARY KEY,\n    criteria_name VARCHAR(50) NOT NULL,\n    criteria_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CandidateFeedback (\n    feedback_id INT PRIMARY KEY,\n    candidate_id INT,\n    feedback TEXT,\n    feedback_rating INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ScreeningResults (\n    result_id INT PRIMARY KEY,\n    candidate_id INT,\n    criteria_id INT,\n    result_value DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Candidates (\n\tcandidate_id UUID PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\temail VARCHAR(255) NOT NULL,\n\tphone_number VARCHAR(20),\n\texperience_years INT,\n\tcurrent_job_title VARCHAR(255),\n\tresume_url VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ScreeningCriteria (\n\tcriteria_id SERIAL PRIMARY KEY,\n\tcriteria_description VARCHAR(255) NOT NULL,\n\tminimum_score INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CandidateAssessments (\n\tassessment_id SERIAL PRIMARY KEY,\n\tcandidate_id UUID REFERENCES Candidates(candidate_id),\n\tcriteria_id INT REFERENCES ScreeningCriteria(criteria_id),\n\tscore INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ScreeningReports (\n\treport_id SERIAL PRIMARY KEY,\n\tcandidate_id UUID REFERENCES Candidates(candidate_id),\n\tassessment_id INT REFERENCES CandidateAssessments(assessment_id),\n\tpass_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InterviewFeedback (\n\tfeedback_id SERIAL PRIMARY KEY,\n\tcandidate_id UUID REFERENCES Candidates(candidate_id),\n\tinterviewer_name VARCHAR(255) NOT NULL,\n\tfeedback_text TEXT NOT NULL,\n\toverall_rating INT\n);"
+      }
+    ]
+  }
+]

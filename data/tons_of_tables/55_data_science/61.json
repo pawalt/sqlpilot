@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE deep_learning_performance_metrics (\n    model_id UUID PRIMARY KEY,\n    model_name VARCHAR(255),\n    training_duration INTERVAL,\n    validation_loss DECIMAL,\n    validation_accuracy DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE deep_learning_models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    framework VARCHAR(100),\n    accuracy DECIMAL(5,2),\n    training_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metrics (\n    metric_id INT PRIMARY KEY,\n    model_id INT REFERENCES deep_learning_models(model_id),\n    loss DECIMAL(5,2),\n    precision DECIMAL(5,2),\n    recall DECIMAL(5,2),\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE deep_learning_model_metrics (\n    model_id UUID PRIMARY KEY,\n    model_name STRING,\n    training_loss FLOAT,\n    validation_loss FLOAT,\n    training_accuracy FLOAT,\n    validation_accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data_metrics (\n    data_id UUID PRIMARY KEY,\n    data_name STRING,\n    data_type STRING,\n    data_size INT,\n    training_time FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE optimization_metrics (\n    optimization_id UUID PRIMARY KEY,\n    model_id UUID REFERENCES deep_learning_model_metrics(model_id),\n    training_data_id UUID REFERENCES training_data_metrics(data_id),\n    optimization_time FLOAT,\n    optimization_iterations INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_metrics (\n    model_id INT PRIMARY KEY,\n    training_time FLOAT,\n    accuracy FLOAT,\n    loss FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_logs (\n    log_id INT PRIMARY KEY,\n    model_id INT,\n    log_timestamp TIMESTAMP,\n    training_epoch INT,\n    training_loss FLOAT,\n    training_accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE optimization_stats (\n    stat_id INT PRIMARY KEY,\n    model_id INT,\n    optimization_timestamp TIMESTAMP,\n    optimizer VARCHAR(50),\n    learning_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metadata (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(100),\n    framework VARCHAR(50),\n    dataset VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE deep_learning_models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50) NOT NULL,\n    framework VARCHAR(50) NOT NULL,\n    architecture VARCHAR(50) NOT NULL,\n    training_loss DOUBLE NOT NULL,\n    validation_loss DOUBLE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_metrics (\n    metric_id INT PRIMARY KEY,\n    model_id INT NOT NULL,\n    epoch_number INT NOT NULL,\n    training_accuracy DOUBLE NOT NULL,\n    training_loss DOUBLE NOT NULL,\n    learning_rate DOUBLE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE validation_metrics (\n    metric_id INT PRIMARY KEY,\n    model_id INT NOT NULL,\n    epoch_number INT NOT NULL,\n    validation_accuracy DOUBLE NOT NULL,\n    validation_loss DOUBLE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE hardware_resources (\n    resource_id INT PRIMARY KEY,\n    model_id INT NOT NULL,\n    gpu_count INT NOT NULL,\n    memory_capacity DOUBLE NOT NULL,\n    processor_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE execution_logs (\n    log_id INT PRIMARY KEY,\n    model_id INT NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    execution_status VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

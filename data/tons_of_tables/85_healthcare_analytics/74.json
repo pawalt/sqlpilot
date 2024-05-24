@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE glucose_levels (\n  patient_id INT,\n  glucose_level FLOAT,\n  recorded_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_glucose (\n    patient_id INT NOT NULL,\n    glucose_level DECIMAL NOT NULL,\n    record_time TIMESTAMP NOT NULL,\n    PRIMARY KEY (patient_id, record_time)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_info (\n    device_id INT NOT NULL,\n    device_name VARCHAR(50),\n    device_location VARCHAR(100),\n    PRIMARY KEY (device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(50) NOT NULL,\n    age INT,\n    gender VARCHAR(10)\n);\nCREATE TABLE glucose_levels (\n    glucose_record_id INT PRIMARY KEY,\n    patient_id INT REFERENCES patients(patient_id),\n    glucose_level DECIMAL,\n    record_timestamp TIMESTAMP\n);\nCREATE TABLE devices (\n    device_id INT PRIMARY KEY,\n    device_type VARCHAR(50),\n    manufacturer VARCHAR(50),\n    device_serial_number VARCHAR(20) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  age INT,\n  gender VARCHAR(10),\n  location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE glucose_readings (\n  reading_id INT PRIMARY KEY,\n  patient_id INT,\n  reading_time TIMESTAMP,\n  glucose_level INT,\n  FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(255),\n  manufacturer VARCHAR(255),\n  firmware_version VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alerts (\n  alert_id INT PRIMARY KEY,\n  reading_id INT,\n  alert_type VARCHAR(20),\n  description TEXT,\n  FOREIGN KEY (reading_id) REFERENCES glucose_readings(reading_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id UUID PRIMARY KEY,\n    patient_name TEXT,\n    age INT,\n    gender TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE glucose_readings (\n    reading_id UUID PRIMARY KEY,\n    patient_id UUID,\n    reading_timestamp TIMESTAMP,\n    glucose_level FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id UUID PRIMARY KEY,\n    device_name TEXT,\n    manufacturer TEXT,\n    location TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id UUID PRIMARY KEY,\n    location_name TEXT,\n    latitude FLOAT,\n    longitude FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE trends (\n    trend_id UUID PRIMARY KEY,\n    patient_id UUID,\n    trend_type TEXT,\n    trend_value TEXT\n)"
+      }
+    ]
+  }
+]

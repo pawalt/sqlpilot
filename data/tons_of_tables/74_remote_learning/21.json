@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Courses (\n    student_id INT,\n    course_id INT,\n    enrollment_status VARCHAR(10),\n    completion_status VARCHAR(10)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Courses (\n    course_id INT PRIMARY KEY,\n    course_name TEXT NOT NULL,\n    enrollment_status TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Students (\n    student_id INT PRIMARY KEY,\n    student_name TEXT NOT NULL,\n    course_id INT,\n    completion_status TEXT,\n    FOREIGN KEY (course_id) REFERENCES Courses(course_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(255) NOT NULL,\n    course_description TEXT,\n    course_enrollment_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(255) NOT NULL,\n    student_email VARCHAR(255) UNIQUE,\n    student_major VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Enrollments (\n    enrollment_id SERIAL PRIMARY KEY,\n    student_id INT REFERENCES Students(student_id),\n    course_id INT REFERENCES Courses(course_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Courses (\n  course_id INT PRIMARY KEY,\n  course_name VARCHAR(50) NOT NULL,\n  enrollment_status VARCHAR(20),\n  completion_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Students (\n  student_id INT PRIMARY KEY,\n  student_name VARCHAR(50) NOT NULL,\n  student_email VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Enrollment (\n  enrollment_id INT PRIMARY KEY,\n  student_id INT REFERENCES Students(student_id),\n  course_id INT REFERENCES Courses(course_id),\n  enrollment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Completion (\n  completion_id INT PRIMARY KEY,\n  enrollment_id INT REFERENCES Enrollment(enrollment_id),\n  completion_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Courses (\n    course_id INT PRIMARY KEY,\n    course_name VARCHAR(100) NOT NULL,\n    enrollment_status VARCHAR(20) DEFAULT 'Enrolled',\n    completion_status VARCHAR(20) DEFAULT 'Incomplete'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Students (\n    student_id INT PRIMARY KEY,\n    student_name VARCHAR(100) NOT NULL,\n    student_email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Enrollments (\n    enrollment_id INT PRIMARY KEY,\n    student_id INT,\n    course_id INT,\n    enrollment_date DATE,\n    FOREIGN KEY (student_id) REFERENCES Students(student_id),\n    FOREIGN KEY (course_id) REFERENCES Courses(course_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Progress (\n    progress_id INT PRIMARY KEY,\n    student_id INT,\n    course_id INT,\n    progress_percentage FLOAT,\n    completion_date DATE,\n    FOREIGN KEY (student_id) REFERENCES Students(student_id),\n    FOREIGN KEY (course_id) REFERENCES Courses(course_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Grades (\n    grade_id INT PRIMARY KEY,\n    student_id INT,\n    course_id INT,\n    grade VARCHAR(2),\n    FOREIGN KEY (student_id) REFERENCES Students(student_id),\n    FOREIGN KEY (course_id) REFERENCES Courses(course_id)\n);"
+      }
+    ]
+  }
+]

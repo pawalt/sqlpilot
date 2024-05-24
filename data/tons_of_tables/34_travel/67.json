@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_memberships (\n    id UUID PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    member_email VARCHAR(100) UNIQUE NOT NULL,\n    member_phone VARCHAR(15),\n    membership_level VARCHAR(20) NOT NULL,\n    points_balance INT DEFAULT 0\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LoyaltyMembers (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50),\n    loyalty_points INT,\n    membership_level VARCHAR(20)\n);\n\nCREATE TABLE BenefitsAndDiscounts (\n    benefit_id INT PRIMARY KEY,\n    benefit_description TEXT,\n    discount_amount DECIMAL(10,2),\n    eligibility_criteria VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE loyalty_program_memberships (\n    membership_id UUID PRIMARY KEY,\n    member_name VARCHAR(100),\n    email VARCHAR(100) UNIQUE,\n    join_date DATE,\n    loyalty_points INTEGER\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE member_rewards (\n    reward_id UUID PRIMARY KEY,\n    membership_id UUID,\n    reward_description TEXT,\n    reward_value DECIMAL(10, 2),\n    expiration_date DATE,\n    FOREIGN KEY (membership_id) REFERENCES loyalty_program_memberships(membership_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE member_activities (\n    activity_id UUID PRIMARY KEY,\n    membership_id UUID,\n    activity_type VARCHAR(50),\n    activity_date DATE,\n    activity_description TEXT,\n    FOREIGN KEY (membership_id) REFERENCES loyalty_program_memberships(membership_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE members (\n    member_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100) UNIQUE,\n    join_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE loyalty_programs (\n    program_id INT PRIMARY KEY,\n    program_name VARCHAR(50),\n    benefits TEXT,\n    discount_rate DECIMAL(5,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE member_points (\n    member_id INT,\n    total_points INT,\n    earned_date DATE,\n    FOREIGN KEY (member_id) REFERENCES members(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    member_id INT,\n    transaction_date DATE,\n    total_amount DECIMAL(10,2),\n    FOREIGN KEY (member_id) REFERENCES members(member_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LoyaltyProgramMembers (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50) NOT NULL,\n    email_address VARCHAR(100) UNIQUE,\n    join_date DATE NOT NULL,\n    total_points INT DEFAULT 0\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MemberBenefits (\n    benefit_id INT PRIMARY KEY,\n    benefit_name VARCHAR(50) NOT NULL,\n    description VARCHAR(255),\n    benefit_discount DECIMAL(5, 2) DEFAULT 0\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MemberTransactions (\n    transaction_id INT PRIMARY KEY,\n    member_id INT NOT NULL,\n    transaction_date DATE NOT NULL,\n    transaction_amount DECIMAL(10, 2) NOT NULL,\n    FOREIGN KEY (member_id) REFERENCES LoyaltyProgramMembers(member_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BenefitRedemptions (\n    redemption_id INT PRIMARY KEY,\n    member_id INT NOT NULL,\n    benefit_id INT NOT NULL,\n    redemption_date DATE NOT NULL,\n    redeemed_points INT NOT NULL,\n    FOREIGN KEY (member_id) REFERENCES LoyaltyProgramMembers(member_id),\n    FOREIGN KEY (benefit_id) REFERENCES MemberBenefits(benefit_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MemberLevel (\n    level_id INT PRIMARY KEY,\n    level_name VARCHAR(50) NOT NULL,\n    level_threshold INT NOT NULL\n);\n"
+      }
+    ]
+  }
+]

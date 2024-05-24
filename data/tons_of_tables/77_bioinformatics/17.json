@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetics_clinical_data (\n  patient_id SERIAL PRIMARY KEY,\n  genetic_info JSONB,\n  clinical_records JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(255),\n  age INT,\n  gender VARCHAR(50),\n  genetic_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE health_records (\n  record_id INT PRIMARY KEY,\n  patient_id INT REFERENCES patients(patient_id),\n  visit_date DATE,\n  diagnosis VARCHAR(255),\n  medication VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patient_data (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(50),\n  age INT,\n  gender VARCHAR(10),\n  genetic_data JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE clinical_records (\n  record_id INT PRIMARY KEY,\n  patient_id INT REFERENCES patient_data(patient_id),\n  diagnosis VARCHAR(100),\n  treatment_plan TEXT,\n  visit_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE genomic_data (\n  sample_id INT PRIMARY KEY,\n  patient_id INT REFERENCES patient_data(patient_id),\n  dna_sequence TEXT,\n  mutation_type VARCHAR(50),\n  genotype JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneticData (\n    id INT PRIMARY KEY,\n    patient_id INT,\n    gene_name VARCHAR(50),\n    dna_sequence TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ClinicalRecords (\n    id INT PRIMARY KEY,\n    patient_id INT,\n    record_type VARCHAR(50),\n    record_data TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PatientInfo (\n    id INT PRIMARY KEY,\n    patient_name VARCHAR(50),\n    age INT,\n    gender VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE PrecisionMedicine (\n    id INT PRIMARY KEY,\n    patient_id INT,\n    treatment_plan TEXT,\n    outcome TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(100),\n    age INT,\n    gender VARCHAR(10),\n    diagnosis VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE genetic_data (\n    data_id INT PRIMARY KEY,\n    patient_id INT,\n    gene_name VARCHAR(50),\n    gene_sequence TEXT,\n    CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE clinical_records (\n    record_id INT PRIMARY KEY,\n    patient_id INT,\n    visit_date DATE,\n    doctor_name VARCHAR(100),\n    condition VARCHAR(255),\n    CONSTRAINT fk_patient_records FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE treatments (\n    treatment_id INT PRIMARY KEY,\n    record_id INT,\n    treatment_name VARCHAR(100),\n    dosage VARCHAR(50),\n    CONSTRAINT fk_record_treatment FOREIGN KEY (record_id) REFERENCES clinical_records(record_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lab_results (\n    result_id INT PRIMARY KEY,\n    record_id INT,\n    test_name VARCHAR(100),\n    result_value FLOAT,\n    units VARCHAR(20),\n    CONSTRAINT fk_record_result FOREIGN KEY (record_id) REFERENCES clinical_records(record_id)\n);\n"
+      }
+    ]
+  }
+]

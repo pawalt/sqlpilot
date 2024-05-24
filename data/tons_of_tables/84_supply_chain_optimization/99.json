@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SupplierCompliance (\n    supplier_id UUID PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    sustainability_score INT NOT NULL,\n    last_audit_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_data (\n  supplier_id INT PRIMARY KEY,\n  supplier_name VARCHAR(255),\n  sustainability_score FLOAT,\n  last_audit_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_audit (\n  audit_id INT PRIMARY KEY,\n  supplier_id INT,\n  audit_date DATE,\n  audit_result VARCHAR(50),\n  FOREIGN KEY (supplier_id) REFERENCES supplier_data(supplier_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    sustainability_rating INT,\n    compliance_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    supplier_id INT,\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SustainabilityData (\n    data_id INT PRIMARY KEY,\n    supplier_id INT,\n    sustainability_metric VARCHAR(255) NOT NULL,\n    sustainability_value FLOAT,\n    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_compliance (\nid SERIAL PRIMARY KEY,\nname VARCHAR(100) NOT NULL,\nlocation VARCHAR(100) NOT NULL,\nsustainability_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_sustainability_data (\nid SERIAL PRIMARY KEY,\nsupplier_id INT,\nyear INT NOT NULL,\nenergy_consumption DECIMAL(10,2),\nwater_usage DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_compliance_history (\nid SERIAL PRIMARY KEY,\nsupplier_id INT NOT NULL,\ncompliance_status VARCHAR(50) NOT NULL,\ncompliance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sustainability_standards (\nid SERIAL PRIMARY KEY,\nstandard_name VARCHAR(100) NOT NULL,\nrequirement TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_compliance (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    sustainability_rating INT,\n    compliance_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_inventory (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    supplier_id INT,\n    stock_quantity INT,\n    CONSTRAINT fk_supplier_id FOREIGN KEY (supplier_id)\n        REFERENCES supplier_compliance(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sustainability_metrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_contacts (\n    contact_id INT PRIMARY KEY,\n    supplier_id INT,\n    contact_name VARCHAR(255),\n    contact_email VARCHAR(255),\n    CONSTRAINT fk_supplier_id FOREIGN KEY (supplier_id)\n        REFERENCES supplier_compliance(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_locations (\n    location_id INT PRIMARY KEY,\n    supplier_id INT,\n    location_name VARCHAR(255),\n    location_address TEXT,\n    CONSTRAINT fk_supplier_id FOREIGN KEY (supplier_id)\n        REFERENCES supplier_compliance(supplier_id)\n);"
+      }
+    ]
+  }
+]

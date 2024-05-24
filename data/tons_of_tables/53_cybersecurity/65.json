@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic_data (\n    device_id INT PRIMARY KEY,\n    ip_address VARCHAR(255) NOT NULL,\n    mac_address VARCHAR(255) NOT NULL,\n    threat_level INT,\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkTrafficData (\n    device_id INT,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR,\n    destination_ip VARCHAR,\n    protocol VARCHAR,\n    packet_size INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SecurityThreats (\n    threat_id INT,\n    timestamp TIMESTAMP,\n    threat_level VARCHAR,\n    description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    device_type VARCHAR(50),\n    ip_address VARCHAR(15),\n    mac_address VARCHAR(17),\n    last_seen TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkTraffic (\n    traffic_id INT PRIMARY KEY,\n    device_id INT,\n    source_ip VARCHAR(15),\n    destination_ip VARCHAR(15),\n    protocol VARCHAR(10),\n    traffic_type VARCHAR(20),\n    data_amount INT,\n    traffic_time TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES NetworkDevices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SecurityAlerts (\n    alert_id INT PRIMARY KEY,\n    device_id INT,\n    threat_level VARCHAR(10),\n    description TEXT,\n    alert_time TIMESTAMP,\n    FOREIGN KEY (device_id) REFERENCES NetworkDevices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_traffic (\n    device_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    source_ip VARCHAR(15) NOT NULL,\n    destination_ip VARCHAR(15) NOT NULL,\n    data_size INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_events (\n    event_id INT PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    event_type VARCHAR(50) NOT NULL,\n    event_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE threat_data (\n    threat_id INT PRIMARY KEY,\n    threat_name VARCHAR(50) NOT NULL,\n    threat_description TEXT,\n    threat_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mitigation_strategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(50) NOT NULL,\n    strategy_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE NetworkDevices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(255),\n    ip_address VARCHAR(15),\n    mac_address VARCHAR(17),\n    connection_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrafficLogs (\n    log_id INT PRIMARY KEY,\n    device_id INT,\n    timestamp TIMESTAMP,\n    source_ip VARCHAR(15),\n    destination_ip VARCHAR(15),\n    protocol VARCHAR(10),\n    action VARCHAR(10),\n    FOREIGN KEY (device_id) REFERENCES NetworkDevices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SecurityThreats (\n    threat_id INT PRIMARY KEY,\n    log_id INT,\n    threat_type VARCHAR(50),\n    threat_level VARCHAR(10),\n    description TEXT,\n    detected_at TIMESTAMP,\n    FOREIGN KEY (log_id) REFERENCES TrafficLogs(log_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MitigationActions (\n    action_id INT PRIMARY KEY,\n    threat_id INT,\n    action_type VARCHAR(20),\n    action_status VARCHAR(15),\n    action_description TEXT,\n    taken_at TIMESTAMP,\n    FOREIGN KEY (threat_id) REFERENCES SecurityThreats(threat_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(255),\n    email VARCHAR(100),\n    role VARCHAR(20)\n);"
+      }
+    ]
+  }
+]

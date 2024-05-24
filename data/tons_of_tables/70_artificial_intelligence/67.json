@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DiversityInclusivityAI (\n    id INT PRIMARY KEY,\n    dataset_name VARCHAR(255),\n    dataset_description TEXT,\n    creator VARCHAR(100),\n    date_created DATE,\n    inclusivity_score DECIMAL(5,2),\n    diversity_score DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE diversity_inclusivity_ai_training_datasets (\n  id UUID PRIMARY KEY,\n  dataset_name VARCHAR(255) NOT NULL,\n  publication_date DATE,\n  diversity_score FLOAT,\n  inclusivity_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_users (\n  user_id UUID PRIMARY KEY,\n  dataset_id UUID,\n  user_name VARCHAR(100) NOT NULL,\n  user_email VARCHAR(255) UNIQUE,\n  user_role ENUM('admin', 'researcher', 'contributor')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ai_training_datasets (\n  id INT PRIMARY KEY,\n  dataset_name TEXT NOT NULL,\n  dataset_description TEXT,\n  diversity_score FLOAT,\n  inclusivity_score FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_annotations (\n  id INT PRIMARY KEY,\n  dataset_id INT,\n  annotation_text TEXT,\n  annotation_author TEXT,\n  annotation_date DATE,\n  FOREIGN KEY (dataset_id) REFERENCES ai_training_datasets(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_contributors (\n  id INT PRIMARY KEY,\n  dataset_id INT,\n  contributor_name TEXT,\n  contributor_email TEXT,\n  contribution_date DATE,\n  FOREIGN KEY (dataset_id) REFERENCES ai_training_datasets(id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ai_training_datasets (\n    dataset_id INT PRIMARY KEY,\n    dataset_name VARCHAR(255),\n    dataset_description TEXT,\n    diversity_score FLOAT,\n    inclusivity_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_images (\n    image_id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    dataset_id INT,\n    FOREIGN KEY (dataset_id) REFERENCES ai_training_datasets(dataset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_labels (\n    label_id INT PRIMARY KEY,\n    label_name VARCHAR(50),\n    dataset_id INT,\n    FOREIGN KEY (dataset_id) REFERENCES ai_training_datasets(dataset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE dataset_users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50),\n    role VARCHAR(50),\n    dataset_id INT,\n    FOREIGN KEY (dataset_id) REFERENCES ai_training_datasets(dataset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dataset (\n  dataset_id INT PRIMARY KEY,\n  dataset_name VARCHAR(255) NOT NULL,\n  dataset_description TEXT,\n  dataset_size INT,\n  creation_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_contributor (\n  contributor_id INT PRIMARY KEY,\n  contributor_name VARCHAR(255) NOT NULL,\n  contributor_email VARCHAR(255) UNIQUE,\n  organization VARCHAR(255),\n  join_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_annotation (\n  annotation_id INT PRIMARY KEY,\n  dataset_id INT,\n  contributor_id INT,\n  annotation_type VARCHAR(50) NOT NULL,\n  annotation_details TEXT,\n  PRIMARY KEY (annotation_id, dataset_id, contributor_id),\n  FOREIGN KEY (dataset_id) REFERENCES dataset(dataset_id),\n  FOREIGN KEY (contributor_id) REFERENCES data_contributor(contributor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_quality (\n  quality_id INT PRIMARY KEY,\n  dataset_id INT,\n  contributor_id INT,\n  quality_score INT,\n  quality_comments TEXT,\n  PRIMARY KEY (quality_id, dataset_id, contributor_id),\n  FOREIGN KEY (dataset_id) REFERENCES dataset(dataset_id),\n  FOREIGN KEY (contributor_id) REFERENCES data_contributor(contributor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_access (\n  access_id INT PRIMARY KEY,\n  dataset_id INT,\n  access_date DATE,\n  user_id INT,\n  access_type VARCHAR(50),\n  FOREIGN KEY (dataset_id) REFERENCES dataset(dataset_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE comedy_podcast_data (\n    episode_id INT PRIMARY KEY,\n    episode_title VARCHAR(255),\n    release_date DATE,\n    downloads INT,\n    listener_demographic VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE episode_downloads (\n    episode_id INT PRIMARY KEY,\n    listener_id INT,\n    download_count INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE listener_demographics (\n    listener_id INT PRIMARY KEY,\n    age INT,\n    gender VARCHAR(10),\n    location VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE episode_downloads (\n  episode_id INT PRIMARY KEY,\n  download_count INT,\n  listener_id INT,\n  download_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE listener_demographics (\n  listener_id INT PRIMARY KEY,\n  age INT,\n  gender VARCHAR(10),\n  location VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE podcast_episodes (\n  episode_id INT PRIMARY KEY,\n  episode_title VARCHAR(50),\n  release_date DATE,\n  episode_duration INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE comedy_podcast_network (episode_id INT PRIMARY KEY,\nepisode_title VARCHAR(255),\ndownloads INT,\nlistener_demographics JSONB)"
+      },
+      {
+        "table_schema": "CREATE TABLE listener_demographics (listener_id INT PRIMARY KEY,\nage INT,\nlocation VARCHAR(255),\ninterests JSONB)"
+      },
+      {
+        "table_schema": "CREATE TABLE episode_stats (episode_id INT REFERENCES comedy_podcast_network(episode_id),\ntotal_downloads INT,\ntotal_listeners INT,\naverage_listen_duration INTERVAL)"
+      },
+      {
+        "table_schema": "CREATE TABLE podcast_hosts (host_id INT PRIMARY KEY,\nhost_name VARCHAR(255),\nhost_bio TEXT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE episodes (\n  episode_id INT PRIMARY KEY,\n  episode_title VARCHAR(255),\n  release_date DATE,\n  duration_minutes INT,\n  download_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE listeners (\n  listener_id INT PRIMARY KEY,\n  listener_name VARCHAR(255),\n  location VARCHAR(100),\n  age INT,\n  gender VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE listeners_episodes (\n  listener_id INT,\n  episode_id INT,\n  download_date DATE,\n  listening_duration_minutes INT,\n  FOREIGN KEY (listener_id) REFERENCES listeners(listener_id),\n  FOREIGN KEY (episode_id) REFERENCES episodes(episode_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE podcasts (\n  podcast_id INT PRIMARY KEY,\n  podcast_title VARCHAR(255),\n  host_name VARCHAR(100),\n  category VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE podcast_episodes (\n  episode_id INT,\n  podcast_id INT,\n  FOREIGN KEY (episode_id) REFERENCES episodes(episode_id),\n  FOREIGN KEY (podcast_id) REFERENCES podcasts(podcast_id)\n)"
+      }
+    ]
+  }
+]

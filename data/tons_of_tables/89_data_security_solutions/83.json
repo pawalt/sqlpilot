@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id UUID PRIMARY KEY,\n    contract_name VARCHAR(255),\n    contract_code TEXT,\n    metadata JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id INT PRIMARY KEY,\n    contract_code TEXT,\n    metadata JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deployed_contracts (\n    contract_id INT PRIMARY KEY,\n    deployed_by VARCHAR(255),\n    deployment_time TIMESTAMP,\n    execution_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id INT PRIMARY KEY,\n    contract_code TEXT,\n    contract_metadata JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_deployments (\n    deployment_id INT PRIMARY KEY,\n    contract_id INT REFERENCES smart_contracts(contract_id),\n    deployment_date TIMESTAMP,\n    deployment_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_executions (\n    execution_id INT PRIMARY KEY,\n    deployment_id INT REFERENCES contract_deployments(deployment_id),\n    execution_date TIMESTAMP,\n    execution_status VARCHAR(20),\n    execution_result JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id INT PRIMARY KEY,\n    contract_code TEXT,\n    metadata JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_owners (\n    owner_id INT PRIMARY KEY,\n    contract_id INT FOREIGN KEY REFERENCES smart_contracts(contract_id),\n    owner_name TEXT,\n    ownership_percentage FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_audit_logs (\n    log_id INT PRIMARY KEY,\n    contract_id INT FOREIGN KEY REFERENCES smart_contracts(contract_id),\n    action TEXT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_versions (\n    version_id INT PRIMARY KEY,\n    contract_id INT FOREIGN KEY REFERENCES smart_contracts(contract_id),\n    version_code TEXT,\n    created_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE smart_contracts (\n    contract_id INT PRIMARY KEY,\n    contract_code TEXT,\n    contract_metadata JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_owners (\n    owner_id INT PRIMARY KEY,\n    contract_id INT,\n    owner_name TEXT,\n    owner_address TEXT,\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE execution_logs (\n    log_id INT PRIMARY KEY,\n    contract_id INT,\n    execution_date TIMESTAMP,\n    execution_status TEXT,\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_events (\n    event_id INT PRIMARY KEY,\n    contract_id INT,\n    event_name TEXT,\n    event_date TIMESTAMP,\n    event_details JSONB,\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_storage (\n    storage_id INT PRIMARY KEY,\n    contract_id INT,\n    storage_key TEXT,\n    storage_value JSONB,\n    FOREIGN KEY (contract_id) REFERENCES smart_contracts(contract_id)\n);\n"
+      }
+    ]
+  }
+]

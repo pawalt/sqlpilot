@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_subscriptions (\n    subscription_id UUID PRIMARY KEY,\n    customer_id UUID NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    renewal_date DATE,\n    subscription_status VARCHAR(50) DEFAULT 'Active'\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    subscription_type VARCHAR(50),\n    subscription_start_date DATE,\n    subscription_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    customer_id INT,\n    subscription_type VARCHAR(50),\n    subscription_start_date DATE,\n    subscription_end_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    subscription_type VARCHAR(50),\n    subscription_start_date DATE,\n    subscription_end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id INT PRIMARY KEY,\n    customer_id INT,\n    subscription_type VARCHAR(50),\n    subscription_start_date DATE,\n    subscription_end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE renewals (\n    renewal_id INT PRIMARY KEY,\n    subscription_id INT,\n    renewal_date DATE,\n    renewal_amount DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customers (\n    customer_id UUID PRIMARY KEY,\n    customer_name TEXT,\n    email TEXT,\n    subscription_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Subscriptions (\n    subscription_id UUID PRIMARY KEY,\n    customer_id UUID REFERENCES Customers(customer_id),\n    subscription_type TEXT,\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Renewals (\n    renewal_id UUID PRIMARY KEY,\n    subscription_id UUID REFERENCES Subscriptions(subscription_id),\n    renewal_date DATE,\n    payment_amount DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Payments (\n    payment_id UUID PRIMARY KEY,\n    renewal_id UUID REFERENCES Renewals(renewal_id),\n    payment_date DATE,\n    payment_amount DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    subscription_id INT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriptions (\n    subscription_id SERIAL PRIMARY KEY,\n    plan_name VARCHAR(50) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE renewals (\n    renewal_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    subscription_id INT NOT NULL,\n    renewal_date DATE NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n    payment_id SERIAL PRIMARY KEY,\n    renewal_id INT NOT NULL,\n    payment_date DATE NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    address_id SERIAL PRIMARY KEY,\n    customer_id INT NOT NULL,\n    address_line VARCHAR(100) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    state VARCHAR(2) NOT NULL,\n    postal_code VARCHAR(10) NOT NULL\n);"
+      }
+    ]
+  }
+]

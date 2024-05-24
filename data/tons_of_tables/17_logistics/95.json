@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_forecast (\n    partner_id INT PRIMARY KEY,\n    partner_name VARCHAR(50),\n    forecast_date DATE,\n    forecast_value INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_forecast_data (\n   id UUID NOT NULL,\n   partner_id UUID NOT NULL,\n   forecast_date DATE NOT NULL,\n   demand_quantity INT NOT NULL,\n   PRIMARY KEY (id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_planning (\n   id UUID NOT NULL,\n   partner_id UUID NOT NULL,\n   product_id UUID NOT NULL,\n   planned_quantity INT NOT NULL,\n   planning_date DATE NOT NULL,\n   PRIMARY KEY (id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE partners (\n partner_id INT PRIMARY KEY,\n partner_name VARCHAR(255),\n partner_location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE demand_forecast (\n forecast_id INT PRIMARY KEY,\n partner_id INT,\n forecast_date DATE,\n forecast_qty INT,\n FOREIGN KEY (partner_id) REFERENCES partners(partner_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n inventory_id INT PRIMARY KEY,\n product_name VARCHAR(255),\n quantity INT,\n expiry_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE partners (\n    partner_id UUID PRIMARY KEY,\n    partner_name STRING,\n    partnership_start_date DATE,\n    contact_person STRING,\n    contact_email STRING\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE demand_forecast (\n    forecast_id UUID PRIMARY KEY,\n    partner_id UUID,\n    forecast_date DATE,\n    forecast_qty INTEGER,\n    CONSTRAINT fk_partner_id FOREIGN KEY (partner_id) REFERENCES partners(partner_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    inventory_id UUID PRIMARY KEY,\n    product_name STRING,\n    product_sku STRING,\n    in_stock_qty INTEGER,\n    last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborations (\n    collaboration_id UUID PRIMARY KEY,\n    partner_id UUID,\n    collaboration_start_date DATE,\n    collaboration_type STRING,\n    CONSTRAINT fk_collab_partner_id FOREIGN KEY (partner_id) REFERENCES partners(partner_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE demand_forecast_data (\n  product_id SERIAL PRIMARY KEY,\n  forecast_date DATE,\n  forecast_qty INT,\n  partner_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_planning (\n  inventory_id SERIAL PRIMARY KEY,\n  product_id INT,\n  location_id INT,\n  quantity INT,\n  last_updated TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE supply_chain_partners (\n  partner_id SERIAL PRIMARY KEY,\n  partner_name VARCHAR(50),\n  contact_email VARCHAR(100),\n  region VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE demand_forecast_approval (\n  approval_id SERIAL PRIMARY KEY,\n  forecast_id INT,\n  approver_id INT,\n  approval_status VARCHAR(20),\n  approval_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collaboration_logs (\n  log_id SERIAL PRIMARY KEY,\n  action VARCHAR(50),\n  action_timestamp TIMESTAMP,\n  user_id INT,\n  details TEXT\n);\n"
+      }
+    ]
+  }
+]

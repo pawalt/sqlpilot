@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE knowledge_assets ( \n  knowledge_asset_id UUID PRIMARY KEY,\n  title STRING,\n  description STRING,\n  parent_asset_id UUID,\n  FOREIGN KEY (parent_asset_id) REFERENCES knowledge_assets(knowledge_asset_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE KnowledgeAssets (\n    asset_id UUID PRIMARY KEY,\n    asset_name STRING,\n    asset_type STRING,\n    creation_date TIMESTAMP\n);\n\nCREATE TABLE AssetLinks (\n    link_id UUID PRIMARY KEY,\n    source_asset_id UUID,\n    target_asset_id UUID,\n    link_type STRING,\n    link_strength FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE KnowledgeAssets (\n    asset_id UUID PRIMARY KEY,\n    asset_title VARCHAR(255),\n    asset_type VARCHAR(50),\n    asset_description TEXT\n);\nCREATE TABLE Relationships (\n    relationship_id UUID PRIMARY KEY,\n    from_asset_id UUID,\n    to_asset_id UUID,\n    relationship_type VARCHAR(50)\n);\nCREATE TABLE SemanticNetwork (\n    network_id UUID PRIMARY KEY,\n    network_name VARCHAR(100),\n    creation_date TIMESTAMP,\n    last_updated TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE knowledge_assets (\n    asset_id INT,\n    asset_name TEXT,\n    asset_type TEXT,\n    PRIMARY KEY (asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE information_sources (\n    source_id INT,\n    source_name TEXT,\n    source_type TEXT,\n    PRIMARY KEY (source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_links (\n    link_id INT,\n    asset_id INT,\n    source_id INT,\n    link_type TEXT,\n    PRIMARY KEY (link_id),\n    FOREIGN KEY (asset_id) REFERENCES knowledge_assets(asset_id),\n    FOREIGN KEY (source_id) REFERENCES information_sources(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE knowledge_network (\n    network_id INT,\n    link_id INT,\n    PRIMARY KEY (network_id),\n    FOREIGN KEY (link_id) REFERENCES asset_links(link_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE KnowledgeAssets (\n   id INT PRIMARY KEY,\n   asset_name VARCHAR(255) NOT NULL,\n   description TEXT,\n   related_assets JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Links (\n   link_id INT PRIMARY KEY,\n   source_asset_id INT,\n   target_asset_id INT,\n   link_type VARCHAR(50) NOT NULL,\n   FOREIGN KEY (source_asset_id) REFERENCES KnowledgeAssets(id),\n   FOREIGN KEY (target_asset_id) REFERENCES KnowledgeAssets(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Concepts (\n   concept_id INT PRIMARY KEY,\n   concept_name VARCHAR(100) NOT NULL,\n   description TEXT,\n   related_assets JSON,\n   related_concepts JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Connections (\n   connection_id INT PRIMARY KEY,\n   asset_id INT,\n   concept_id INT,\n   connection_type VARCHAR(50) NOT NULL,\n   FOREIGN KEY (asset_id) REFERENCES KnowledgeAssets(id),\n   FOREIGN KEY (concept_id) REFERENCES Concepts(concept_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Tags (\n   tag_id INT PRIMARY KEY,\n   tag_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

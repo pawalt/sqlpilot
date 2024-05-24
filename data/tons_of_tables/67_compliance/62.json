@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ComplianceChecksAuditTrails (\n  check_id INT PRIMARY KEY,\n  check_type TEXT,\n  check_result BOOLEAN,\n  check_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_checks (\n    id SERIAL PRIMARY KEY,\n    check_name VARCHAR(50) NOT NULL,\n    check_description TEXT,\n    check_type VARCHAR(20),\n    check_status VARCHAR(10) DEFAULT 'PENDING',\n    created_at TIMESTAMP NOT NULL DEFAULT NOW()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_trails (\n    event_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    event_type VARCHAR(20) NOT NULL,\n    event_description TEXT,\n    event_timestamp TIMESTAMP NOT NULL DEFAULT NOW()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_checks (\n  id SERIAL PRIMARY KEY,\n  check_name VARCHAR(255) NOT NULL,\n  status VARCHAR(50) NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_trails (\n  id SERIAL PRIMARY KEY,\n  action VARCHAR(50) NOT NULL,\n  user_id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traceability (\n  id SERIAL PRIMARY KEY,\n  action_taken VARCHAR(255) NOT NULL,\n  user_id INT NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compliance_checks (\n    check_id INT PRIMARY KEY,\n    check_name VARCHAR(255) NOT NULL,\n    check_description TEXT,\n    check_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_trails (\n    trail_id INT PRIMARY KEY,\n    check_id INT,\n    action VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (check_id) REFERENCES compliance_checks(check_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    activity_description TEXT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    department VARCHAR(100),\n    role VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ComplianceCheck (\n    compliance_id INT PRIMARY KEY,\n    check_name VARCHAR(50),\n    check_description TEXT,\n    check_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AuditTrail (\n    audit_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    user_id INT,\n    action VARCHAR(50),\n    details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceRecord (\n    record_id INT PRIMARY KEY,\n    compliance_id INT,\n    user_id INT,\n    completion_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE User (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    full_name VARCHAR(100),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Department (\n    dept_id INT PRIMARY KEY,\n    dept_name VARCHAR(50),\n    manager_id INT,\n    location VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

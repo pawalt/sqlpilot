@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE zoning_regulations (\n  id INT PRIMARY KEY,\n  land_use_category VARCHAR(255),\n  zoning_code VARCHAR(50),\n  maximum_building_height INT,\n  setback_requirement INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE land_use_regulations (\n  id INT PRIMARY KEY,\n  zone_id INT,\n  land_use_type VARCHAR(50),\n  restrictions TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE zoning_districts (\n  zone_id INT PRIMARY KEY,\n  district_name VARCHAR(50),\n  total_area DECIMAL,\n  residential_density INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE land_use_zones (\n    zone_id INT PRIMARY KEY,\n    zone_name VARCHAR(255),\n    zone_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE zoning_restrictions (\n    restriction_id INT PRIMARY KEY,\n    restriction_type VARCHAR(50),\n    restriction_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE property_zoning (\n    property_id INT PRIMARY KEY,\n    zone_id INT,\n    restriction_id INT,\n    FOREIGN KEY (zone_id) REFERENCES land_use_zones(zone_id),\n    FOREIGN KEY (restriction_id) REFERENCES zoning_restrictions(restriction_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE zoning_regulations (\n    ID SERIAL PRIMARY KEY,\n    zone_name VARCHAR(50) NOT NULL,\n    building_height INTEGER,\n    setback_distance INTEGER\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE land_use_categories (\n    ID SERIAL PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permitted_uses (\n    ID SERIAL PRIMARY KEY,\n    land_use_category_id INTEGER NOT NULL,\n    zone_id INTEGER NOT NULL,\n    PRIMARY KEY (land_use_category_id, zone_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE zoning_map (\n    ID SERIAL PRIMARY KEY,\n    zone_id INTEGER NOT NULL,\n    parcel_id INTEGER NOT NULL,\n    FOREIGN KEY (zone_id) REFERENCES zoning_regulations(ID),\n    FOREIGN KEY (parcel_id) REFERENCES parcels(ID)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE zoning_regulations (\n    id INT PRIMARY KEY,\n    zone_name VARCHAR(100),\n    land_use_type VARCHAR(100),\n    height_limit DECIMAL(10,2),\n    setback_distance DECIMAL(10,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parcel_information (\n    parcel_id INT PRIMARY KEY,\n    parcel_size DECIMAL(10,2),\n    zone_id INT,\n    FOREIGN KEY (zone_id) REFERENCES zoning_regulations(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE building_permits (\n    permit_id INT PRIMARY KEY,\n    parcel_id INT,\n    permit_date DATE,\n    permit_type VARCHAR(100),\n    FOREIGN KEY (parcel_id) REFERENCES parcel_information(parcel_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE violation_records (\n    violation_id INT PRIMARY KEY,\n    permit_id INT,\n    violation_date DATE,\n    violation_description TEXT,\n    FOREIGN KEY (permit_id) REFERENCES building_permits(permit_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspector_records (\n    inspector_id INT PRIMARY KEY,\n    inspector_name VARCHAR(100),\n    inspection_date DATE,\n    violation_id INT,\n    FOREIGN KEY (violation_id) REFERENCES violation_records(violation_id)\n);"
+      }
+    ]
+  }
+]

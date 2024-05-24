@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE 3d_model_coordinates (\n  id INT NOT NULL PRIMARY KEY,\n  x_coordinate FLOAT NOT NULL,\n  y_coordinate FLOAT NOT NULL,\n  z_coordinate FLOAT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ModelCoordinates (\n    model_id INT PRIMARY KEY,\n    x_coordinate DECIMAL,\n    y_coordinate DECIMAL,\n    z_coordinate DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ARSimulations (\n    simulation_id INT PRIMARY KEY,\n    model_id INT,\n    simulation_name VARCHAR(50),\n    simulation_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_coordinates (\n    model_id INT PRIMARY KEY,\n    x_coordinate FLOAT,\n    y_coordinate FLOAT,\n    z_coordinate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    model_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE simulations (\n    simulation_id INT PRIMARY KEY,\n    model_id INT,\n    simulation_date DATE,\n    simulated_by VARCHAR(100)\n    FOREIGN KEY (model_id) REFERENCES models(model_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE 3d_model_coordinates (\n    model_id INT PRIMARY KEY,\n    x_coordinate FLOAT,\n    y_coordinate FLOAT,\n    z_coordinate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE texture_mapping (\n    texture_id INT PRIMARY KEY,\n    texture_name VARCHAR(50),\n    model_id INT,\n    FOREIGN KEY (model_id) REFERENCES 3d_model_coordinates(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE animation_metadata (\n    animation_id INT PRIMARY KEY,\n    animation_name VARCHAR(50),\n    duration_seconds FLOAT,\n    model_id INT,\n    FOREIGN KEY (model_id) REFERENCES 3d_model_coordinates(model_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_simulation_history (\n    simulation_id INT PRIMARY KEY,\n    simulation_timestamp TIMESTAMP,\n    model_id INT,\n    animation_id INT,\n    texture_id INT,\n    FOREIGN KEY (model_id) REFERENCES 3d_model_coordinates(model_id),\n    FOREIGN KEY (animation_id) REFERENCES animation_metadata(animation_id),\n    FOREIGN KEY (texture_id) REFERENCES texture_mapping(texture_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_coordinates (\n  id INT PRIMARY KEY,\n  x_coordinate FLOAT NOT NULL,\n  y_coordinate FLOAT NOT NULL,\n  z_coordinate FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE models (\n  model_id INT PRIMARY KEY,\n  model_name VARCHAR(255) NOT NULL,\n  num_vertices INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE simulations (\n  simulation_id INT PRIMARY KEY,\n  simulation_name VARCHAR(255) NOT NULL,\n  num_iterations INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(255) NOT NULL,\n  email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(255) NOT NULL,\n  device_type VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  }
+]

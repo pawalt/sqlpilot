@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE email_schedule (\n   user_id INT,\n   email_address VARCHAR(255),\n   scheduled_time TIMESTAMP,\n   time_zone VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  user_email VARCHAR(255) NOT NULL,\n  timezone_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_schedules (\n  schedule_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  send_time TIMESTAMP NOT NULL,\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_time_zones (\n  user_id INT PRIMARY KEY,\n  time_zone VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_schedule (\n  schedule_id INT PRIMARY KEY,\n  user_id INT,\n  send_time TIMESTAMP NOT NULL,\n  FOREIGN KEY (user_id) REFERENCES user_time_zones(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sent_emails (\n  email_id INT PRIMARY KEY,\n  schedule_id INT,\n  sent_time TIMESTAMP NOT NULL,\n  status VARCHAR(20) NOT NULL,\n  FOREIGN KEY (schedule_id) REFERENCES email_schedule(schedule_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(255),\n    timezone VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_templates (\n    template_id INT PRIMARY KEY,\n    subject VARCHAR(255),\n    body TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_schedules (\n    schedule_id INT PRIMARY KEY,\n    user_id INT,\n    template_id INT,\n    send_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users (user_id),\n    FOREIGN KEY (template_id) REFERENCES email_templates (template_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sent_emails (\n    email_id INT PRIMARY KEY,\n    schedule_id INT,\n    sent_time TIMESTAMP,\n    status VARCHAR(50),\n    FOREIGN KEY (schedule_id) REFERENCES email_schedules (schedule_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(255) UNIQUE,\n    time_zone VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_templates (\n    template_id INT PRIMARY KEY,\n    subject VARCHAR(255),\n    body TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_email_schedules (\n    schedule_id INT PRIMARY KEY,\n    user_id INT,\n    template_id INT,\n    send_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (template_id) REFERENCES email_templates(template_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    template_id INT,\n    send_time TIMESTAMP,\n    status VARCHAR(50),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (template_id) REFERENCES email_templates(template_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE time_zones (\n    time_zone_id INT PRIMARY KEY,\n    time_zone_name VARCHAR(50)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telecom_security_keys (\n  key_id INT PRIMARY KEY,\n  encryption_key TEXT,\n  digital_certificate TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_value TEXT NOT NULL,\n    key_type TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE digital_certificates (\n    cert_id INT PRIMARY KEY,\n    cert_name TEXT NOT NULL,\n    cert_expiry_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n   key_id INT PRIMARY KEY,\n   key_value VARCHAR(255) NOT NULL,\n   created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE digital_certificates (\n   cert_id INT PRIMARY KEY,\n   cert_name VARCHAR(255) NOT NULL,\n   issuer VARCHAR(255) NOT NULL,\n   valid_until DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_channels (\n   channel_id INT PRIMARY KEY,\n   channel_name VARCHAR(255) NOT NULL,\n   encryption_key_id INT,\n   cert_id INT,\n   FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(key_id),\n   FOREIGN KEY (cert_id) REFERENCES digital_certificates(cert_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id SERIAL PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    encryption_key BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE digital_certificates (\n    id SERIAL PRIMARY KEY,\n    certificate_name VARCHAR(50) NOT NULL,\n    certificate_data BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_channels (\n    id SERIAL PRIMARY KEY,\n    channel_name VARCHAR(50) NOT NULL,\n    channel_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE channel_security (\n    id SERIAL PRIMARY KEY,\n    channel_id INT NOT NULL,\n    key_id INT NOT NULL,\n    cert_id INT NOT NULL,\n    FOREIGN KEY (channel_id) REFERENCES communication_channels(id),\n    FOREIGN KEY (key_id) REFERENCES encryption_keys(id),\n    FOREIGN KEY (cert_id) REFERENCES digital_certificates(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id INT PRIMARY KEY,\n    key_name VARCHAR(255) NOT NULL,\n    key_value TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE digital_certificates (\n    certificate_id INT PRIMARY KEY,\n    certificate_name VARCHAR(255) NOT NULL,\n    certificate_value TEXT NOT NULL,\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_channels (\n    channel_id INT PRIMARY KEY,\n    channel_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE channel_encryption (\n    channel_id INT PRIMARY KEY,\n    encryption_key_id INT NOT NULL,\n    certificate_id INT NOT NULL,\n    FOREIGN KEY (channel_id) REFERENCES communication_channels(channel_id),\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(key_id),\n    FOREIGN KEY (certificate_id) REFERENCES digital_certificates(certificate_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE misinformation_sources (\n  id SERIAL PRIMARY KEY,\n  source_name VARCHAR(255) NOT NULL,\n  credibility_score FLOAT,\n  flagged BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE misinformation_sources (\n    id INT PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL,\n    is_verified BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flagged_entries (\n    id INT PRIMARY KEY,\n    entry_id INT NOT NULL,\n    source_id INT NOT NULL,\n    flag_reason TEXT,\n    FOREIGN KEY (source_id) REFERENCES misinformation_sources(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MisinformationSources (\n    source_id UUID PRIMARY KEY,\n    source_name TEXT NOT NULL,\n    country TEXT,\n    category TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Articles (\n    article_id UUID PRIMARY KEY,\n    article_title TEXT NOT NULL,\n    article_content TEXT,\n    source_id UUID REFERENCES MisinformationSources(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Flags (\n    flag_id UUID PRIMARY KEY,\n    article_id UUID REFERENCES Articles(article_id),\n    flag_reason TEXT,\n    flag_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE misinformation_sources (id INT PRIMARY KEY,\nsource_name VARCHAR(255) NOT NULL,\nsource_type ENUM('website', 'social media', 'news outlet') NOT NULL,\nflagged BOOLEAN NOT NULL)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE misinformation_sources (\n  id INT PRIMARY KEY,\n  source_name TEXT NOT NULL,\n  source_type TEXT NOT NULL,\n  flagged BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE articles (\n  article_id INT PRIMARY KEY,\n  article_title TEXT NOT NULL,\n  source_id INT,\n  publication_date DATE,\n  FOREIGN KEY (source_id) REFERENCES misinformation_sources(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n  comment_id INT PRIMARY KEY,\n  article_id INT,\n  user_id INT,\n  comment_text TEXT,\n  flag_reason TEXT,\n  FOREIGN KEY (article_id) REFERENCES articles(article_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username TEXT NOT NULL,\n  email TEXT UNIQUE NOT NULL,\n  registration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE flags (\n  flag_id INT PRIMARY KEY,\n  comment_id INT,\n  flag_type TEXT,\n  flag_date DATE,\n  FOREIGN KEY (comment_id) REFERENCES comments(comment_id)\n);"
+      }
+    ]
+  }
+]

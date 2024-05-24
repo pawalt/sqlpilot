@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255) NOT NULL,\n  warehouse_capacity INT,\n  inventory_count INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    inventory_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InventoryMovements (\n    movement_id INT PRIMARY KEY,\n    from_location_id INT,\n    to_location_id INT,\n    product_id INT,\n    quantity INT,\n    movement_date DATE,\n    FOREIGN KEY (from_location_id) REFERENCES Locations(location_id),\n    FOREIGN KEY (to_location_id) REFERENCES Locations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    location_address VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inventory (\n    inventory_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    quantity INT NOT NULL,\n    location_id INT NOT NULL,\n    FOREIGN KEY(location_id) REFERENCES Locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InventoryMovements (\n    movement_id INT PRIMARY KEY,\n    inventory_id INT NOT NULL,\n    from_location_id INT NOT NULL,\n    to_location_id INT NOT NULL,\n    quantity INT NOT NULL,\n    movement_date DATE NOT NULL,\n    FOREIGN KEY(inventory_id) REFERENCES Inventory(inventory_id),\n    FOREIGN KEY(from_location_id) REFERENCES Locations(location_id),\n    FOREIGN KEY(to_location_id) REFERENCES Locations(location_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(50) NOT NULL,\n  location_address VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inventory (\n  inventory_id INT PRIMARY KEY,\n  product_name VARCHAR(50) NOT NULL,\n  quantity INT NOT NULL,\n  location_id INT REFERENCES Locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Warehouse (\n  warehouse_id INT PRIMARY KEY,\n  warehouse_name VARCHAR(50) NOT NULL,\n  location_id INT REFERENCES Locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InventoryMovements (\n  movement_id INT PRIMARY KEY,\n  inventory_id INT REFERENCES Inventory(inventory_id),\n  from_location_id INT REFERENCES Locations(location_id),\n  to_location_id INT REFERENCES Locations(location_id),\n  movement_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Locations (\n location_id INT PRIMARY KEY,\n location_name VARCHAR(255) NOT NULL,\n location_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Inventory (\n inventory_id INT PRIMARY KEY,\n product_name VARCHAR(255) NOT NULL,\n quantity INT NOT NULL,\n location_id INT,\n FOREIGN KEY (location_id) REFERENCES Locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Warehouse (\n warehouse_id INT PRIMARY KEY,\n warehouse_name VARCHAR(255) NOT NULL,\n location_id INT,\n FOREIGN KEY (location_id) REFERENCES Locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Movement (\n movement_id INT PRIMARY KEY,\n product_name VARCHAR(255) NOT NULL,\n quantity INT NOT NULL,\n from_location_id INT,\n to_location_id INT,\n FOREIGN KEY (from_location_id) REFERENCES Locations(location_id),\n FOREIGN KEY (to_location_id) REFERENCES Locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n transaction_id INT PRIMARY KEY,\n transaction_type VARCHAR(50) NOT NULL,\n transaction_date DATE NOT NULL,\n product_name VARCHAR(255) NOT NULL,\n quantity INT NOT NULL,\n location_id INT,\n FOREIGN KEY (location_id) REFERENCES Locations(location_id)\n);"
+      }
+    ]
+  }
+]

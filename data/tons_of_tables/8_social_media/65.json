@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DataRetention_policies (\n\tpolicy_id INT PRIMARY KEY,\n\tdata_type VARCHAR(255) NOT NULL,\n\tduration INT NOT NULL,\n\tdelete_after DATE NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE personal_info (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    dob DATE,\n    address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_retention_policy (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(50),\n    retention_period INT,\n    description VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  birthdate DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n  id INT PRIMARY KEY,\n  user_id INT,\n  street VARCHAR(255),\n  city VARCHAR(100),\n  postal_code VARCHAR(10),\n  country VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE personal_data (\n  id INT PRIMARY KEY,\n  user_id INT,\n  phone_number VARCHAR(15),\n  credit_card_number VARCHAR(16),\n  ssn VARCHAR(11),\n  last_login TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100) UNIQUE,\n    date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE personal_details (\n    id INT PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    address VARCHAR(100),\n    phone_number VARCHAR(15),\n    social_security_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_retention_policy (\n    id INT PRIMARY KEY,\n    policy_name VARCHAR(50) UNIQUE,\n    retention_period INT,\n    policy_description VARCHAR(200)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE deletion_logs (\n    id INT PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    deleted_at TIMESTAMP,\n    deleted_by VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_personal_info (\n    id SERIAL PRIMARY KEY,\n    name TEXT,\n    email TEXT,\n    phone_number TEXT,\n    birthdate DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_addresses (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_personal_info(id),\n    address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_payments (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_personal_info(id),\n    card_number VARCHAR(16),\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    id SERIAL PRIMARY KEY,\n    action_type VARCHAR(50),\n    timestamp TIMESTAMP,\n    user_id INT REFERENCES user_personal_info(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE retention_policies (\n    id SERIAL PRIMARY KEY,\n    policy_name VARCHAR(50),\n    retention_period INTERVAL,\n    action VARCHAR(20)\n);\n"
+      }
+    ]
+  }
+]

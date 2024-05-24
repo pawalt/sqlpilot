@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RealEstateEscrowTransactions (\n    transaction_id UUID PRIMARY KEY,\n    buyer_name VARCHAR(100),\n    seller_name VARCHAR(100),\n    property_address VARCHAR(255),\n    escrow_amount DECIMAL(10,2),\n    transaction_date DATE,\n    encrypted_data BYTES\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE real_estate_agents (\n    agent_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    phone_number VARCHAR(20),\n    email VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    property_id INT,\n    buyer_id INT,\n    seller_id INT,\n    escrow_amount DECIMAL(10, 2),\n    escrow_status VARCHAR(10),\n    transaction_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE escrow_transactions (\n    transaction_id UUID PRIMARY KEY,\n    property_address VARCHAR(255) NOT NULL,\n    buyer_name VARCHAR(100) NOT NULL,\n    seller_name VARCHAR(100) NOT NULL,\n    transaction_amount DECIMAL(15,2) NOT NULL,\n    transaction_date DATE NOT NULL\n);\n\nCREATE TABLE escrow_accounts (\n    account_id UUID PRIMARY KEY,\n    account_holder_name VARCHAR(100) NOT NULL,\n    encrypted_balance BYTEA NOT NULL,\n    created_date DATE NOT NULL\n);\n\nCREATE TABLE escrow_logs (\n    log_id UUID PRIMARY KEY,\n    transaction_id UUID NOT NULL,\n    log_details TEXT NOT NULL,\n    log_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Escrow_Accounts (\n  account_id SERIAL PRIMARY KEY,\n  account_holder_name VARCHAR(255) NOT NULL,\n  property_address VARCHAR(255) NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL,\n  transaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n  transaction_id SERIAL PRIMARY KEY,\n  account_id INT NOT NULL,\n  transaction_type VARCHAR(50) NOT NULL,\n  transaction_amount DECIMAL(10, 2) NOT NULL,\n  transaction_date TIMESTAMP NOT NULL,\n  FOREIGN KEY (account_id) REFERENCES Escrow_Accounts(account_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  password VARCHAR(255) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Logs (\n  log_id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  action VARCHAR(100) NOT NULL,\n  log_timestamp TIMESTAMP NOT NULL,\n  FOREIGN KEY (user_id) REFERENCES Users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EscrowServices (\n\tid INT PRIMARY KEY,\n\tproperty_address VARCHAR(255),\n\tbuyer_name VARCHAR(255),\n\tseller_name VARCHAR(255),\n\tescrow_amount DECIMAL(10, 2),\n\tencrypted_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n\ttransaction_id INT PRIMARY KEY,\n\tescrow_id INT,\n\ttransaction_date DATE,\n\tamount DECIMAL(10, 2),\n\tpayment_method VARCHAR(50),\n\tFOREIGN KEY (escrow_id) REFERENCES EscrowServices(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Messages (\n\tmessage_id INT PRIMARY KEY,\n\tsender VARCHAR(255),\n\treceiver VARCHAR(255),\n\tmessage_text TEXT,\n\ttimestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Clients (\n\tclient_id INT PRIMARY KEY,\n\tclient_name VARCHAR(255),\n\temail VARCHAR(255),\n\tphone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Employees (\n\temp_id INT PRIMARY KEY,\n\temployee_name VARCHAR(255),\n\temployee_role VARCHAR(50),\n\temployee_email VARCHAR(255)\n);\n"
+      }
+    ]
+  }
+]

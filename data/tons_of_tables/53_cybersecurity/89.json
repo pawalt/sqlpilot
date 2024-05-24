@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_domains (\n    id INT PRIMARY KEY,\n    domain_name VARCHAR(255) NOT NULL,\n    creation_date DATE,\n    last_accessed DATETIME,\n    is_malicious BOOL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_domains (\n    id INT PRIMARY KEY,\n    domain_name VARCHAR(255) NOT NULL,\n    ip_address VARCHAR(50) NOT NULL,\n    country VARCHAR(50),\n    date_discovered DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_reports (\n    report_id INT PRIMARY KEY,\n    domain_id INT REFERENCES phishing_domains(id),\n    report_description TEXT,\n    report_date TIMESTAMP,\n    report_status VARCHAR(20) DEFAULT 'Pending'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_domains (\n    domain_id INT PRIMARY KEY,\n    domain_name VARCHAR(255) NOT NULL,\n    registration_date DATE,\n    detection_date DATE,\n    is_active BOOL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_reports (\n    report_id INT PRIMARY KEY,\n    domain_id INT,\n    report_date DATE,\n    reporter_name VARCHAR(100),\n    report_reason TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_checks (\n    check_id INT PRIMARY KEY,\n    domain_id INT,\n    check_date DATE,\n    check_result VARCHAR(50),\n    check_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_domains (\n    domain_id UUID,\n    domain_name VARCHAR(255),\n    registrar VARCHAR(255),\n    created_date DATE,\n    status VARCHAR(50)\n);\n\nCREATE TABLE phishing_attempts (\n    attempt_id UUID,\n    domain_id UUID,\n    source_ip VARCHAR(50),\n    timestamp TIMESTAMP,\n    success BOOLEAN\n);\n\nCREATE TABLE domain_blacklist (\n    blacklist_id UUID,\n    domain_id UUID,\n    reason VARCHAR(255),\n    blacklist_date DATE\n);\n\nCREATE TABLE phishing_reports (\n    report_id UUID,\n    domain_id UUID,\n    reporter_email VARCHAR(255),\n    report_date DATE,\n    severity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE phishing_domains (\n    id INT PRIMARY KEY,\n    domain_name VARCHAR(255) NOT NULL,\n    registrar VARCHAR(255),\n    registration_date DATE,\n    status ENUM('active', 'suspended', 'flagged')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_emails (\n    id INT PRIMARY KEY,\n    email_address VARCHAR(255) NOT NULL,\n    sender_ip VARCHAR(50),\n    received_date TIMESTAMP,\n    phishing_url VARCHAR(255),\n    status ENUM('reported', 'investigating', 'blocked')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_reports (\n    id INT PRIMARY KEY,\n    report_id VARCHAR(50) NOT NULL,\n    reporter_name VARCHAR(100),\n    report_date TIMESTAMP,\n    description TEXT,\n    status ENUM('pending', 'resolved', 'invalid')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_urls (\n    id INT PRIMARY KEY,\n    url VARCHAR(255) NOT NULL,\n    destination_ip VARCHAR(50),\n    classification VARCHAR(50),\n    created_date TIMESTAMP,\n    status ENUM('active', 'inactive', 'reported')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE phishing_victims (\n    id INT PRIMARY KEY,\n    victim_name VARCHAR(100) NOT NULL,\n    email_address VARCHAR(255),\n    phone_number VARCHAR(15),\n    reported_date TIMESTAMP,\n    status ENUM('active', 'resolved', 'pending')\n);"
+      }
+    ]
+  }
+]

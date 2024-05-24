@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dispute_resolution_cases (\n    case_id INT PRIMARY KEY,\n    case_description TEXT,\n    dispute_type VARCHAR(50),\n    resolution_date DATE,\n    outcome VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DisputeCases (\n case_id SERIAL PRIMARY KEY,\n case_name TEXT NOT NULL,\n case_description TEXT,\n case_status TEXT\n);\n\nCREATE TABLE CaseOutcomes (\n outcome_id SERIAL PRIMARY KEY,\n case_id INT NOT NULL,\n outcome_result TEXT NOT NULL,\n resolution_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DisputeCases ( \n case_id INT PRIMARY KEY, \n case_name VARCHAR(255) NOT NULL, \n case_description TEXT, \n case_status VARCHAR(50) DEFAULT 'pending' \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseOutcomes ( \n outcome_id INT PRIMARY KEY, \n case_id INT, \n outcome_description TEXT, \n outcome_date DATE, \n FOREIGN KEY (case_id) REFERENCES DisputeCases(case_id) \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseParticipants ( \n participant_id INT PRIMARY KEY, \n case_id INT, \n participant_name VARCHAR(100) NOT NULL, \n participant_role VARCHAR(50), \n FOREIGN KEY (case_id) REFERENCES DisputeCases(case_id) \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dispute_cases (\n  case_id INT PRIMARY KEY,\n  case_title VARCHAR(255),\n  case_description TEXT,\n  filed_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE parties_involved (\n  party_id INT PRIMARY KEY,\n  party_name VARCHAR(255),\n  party_type VARCHAR(100),\n  case_id INT REFERENCES dispute_cases(case_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE case_outcomes (\n  outcome_id INT PRIMARY KEY,\n  case_id INT REFERENCES dispute_cases(case_id),\n  resolution_status VARCHAR(50),\n  resolution_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE case_comments (\n  comment_id INT PRIMARY KEY,\n  case_id INT REFERENCES dispute_cases(case_id),\n  comment_text TEXT,\n  commenter_name VARCHAR(255),\n  comment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DisputeCases (\n\tcase_id INT PRIMARY KEY,\n\tcase_name VARCHAR(255) NOT NULL,\n\tcase_description TEXT NOT NULL,\n\tcase_status VARCHAR(50) DEFAULT 'Pending'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseParties (\n\tparty_id INT PRIMARY KEY,\n\tparty_name VARCHAR(100) NOT NULL,\n\tparty_role VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseDocuments (\n\tdocument_id INT PRIMARY KEY,\n\tdocument_name VARCHAR(255) NOT NULL,\n\tdocument_type VARCHAR(50) NOT NULL,\n\tdocument_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseActivities (\n\tactivity_id INT PRIMARY KEY,\n\tcase_id INT NOT NULL,\n\tactivity_description TEXT NOT NULL,\n\tactivity_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CaseOutcomes (\n\toutcome_id INT PRIMARY KEY,\n\tcase_id INT NOT NULL,\n\toutcome VARCHAR(50) NOT NULL,\n\toutcome_date TIMESTAMP\n);"
+      }
+    ]
+  }
+]

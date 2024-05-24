@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_authentication (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT REFERENCES users(id),\n    role VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE role_users (\n    role_id UUID NOT NULL,\n    user_id UUID NOT NULL,\n    PRIMARY KEY (role_id, user_id),\n    FOREIGN KEY (role_id) REFERENCES user_roles(role_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n  role_id INT PRIMARY KEY,\n  role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n  user_id INT REFERENCES users(id),\n  role_id INT REFERENCES roles(role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n  session_id UUID PRIMARY KEY,\n  user_id INT REFERENCES users(id),\n  expiration_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE passwords (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    password_salt VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    session_token VARCHAR(100) NOT NULL,\n    expiration_date TIMESTAMP NOT NULL,\n    UNIQUE(user_id, session_token)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_resets (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    reset_token VARCHAR(100) NOT NULL,\n    expiration_date TIMESTAMP NOT NULL,\n    used BOOLEAN DEFAULT FALSE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_logs (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    action VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

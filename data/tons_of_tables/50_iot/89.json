@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserBehavior (\n user_id INT PRIMARY KEY,\n device_id INT,\n behavior_type VARCHAR,\n timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserBehavior (\n    user_id INT PRIMARY KEY,\n    activity_type TEXT,\n    activity_duration INT,\n    heart_rate INT,\n    step_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WearableDevices (\n    device_id INT PRIMARY KEY,\n    user_id INT REFERENCES UserBehavior(user_id),\n    device_type TEXT,\n    battery_level INT,\n    firmware_version TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_behavior (\n    user_id UUID PRIMARY KEY,\n    activity_type VARCHAR,\n    activity_time TIMESTAMP,\n    device_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wearable_devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR,\n    device_type VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_usage (\n    usage_id SERIAL PRIMARY KEY,\n    device_id UUID,\n    user_id UUID,\n    usage_start TIMESTAMP,\n    usage_end TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n  user_id INT PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  age INT,\n  gender ENUM('Male', 'Female', 'Other'),\n  email VARCHAR(100) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE activity_logs (\n  log_id INT PRIMARY KEY,\n  user_id INT REFERENCES user_profiles(user_id),\n  activity_type VARCHAR(50) NOT NULL,\n  activity_duration INT,\n  activity_date DATE,\n  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES user_profiles(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE heart_rate_data (\n  data_id INT PRIMARY KEY,\n  user_id INT REFERENCES user_profiles(user_id),\n  heart_rate INT,\n  recorded_at TIMESTAMP,\n  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES user_profiles(user_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE device_usage (\n  device_id INT PRIMARY KEY,\n  user_id INT REFERENCES user_profiles(user_id),\n  device_name VARCHAR(50) NOT NULL,\n  usage_hours INT,\n  last_used TIMESTAMP,\n  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES user_profiles(user_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    age INT,\n    gender VARCHAR(10),\n    height FLOAT,\n    weight FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    activity_type VARCHAR(50),\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wearable_devices (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    user_id INT,\n    firmware_version VARCHAR(20),\n    battery_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE heart_rate_data (\n    data_id INT PRIMARY KEY,\n    user_id INT,\n    timestamp TIMESTAMP,\n    heart_rate INT,\n    activity_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_errors (\n    error_id INT PRIMARY KEY,\n    user_id INT,\n    device_id INT,\n    error_message TEXT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

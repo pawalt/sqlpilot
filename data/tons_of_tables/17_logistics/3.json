@@ -1,0 +1,73 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_management ( \n    supplier_id INT PRIMARY KEY, \n    supplier_name VARCHAR(100) NOT NULL, \n    contact_name VARCHAR(100) NOT NULL, \n    contact_email VARCHAR(100) NOT NULL, \n    contact_phone VARCHAR(20) NOT NULL, \n    performance_rating INT NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory_tracking ( \n    product_id INT PRIMARY KEY, \n    product_name VARCHAR(100) NOT NULL, \n    quantity INT NOT NULL, \n    price DECIMAL(10,2) NOT NULL, \n    supplier_id INT NOT NULL, \n    FOREIGN KEY (supplier_id) REFERENCES supplier_management(supplier_id) \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE order_management ( \n    order_id INT PRIMARY KEY, \n    product_id INT NOT NULL, \n    quantity INT NOT NULL, \n    order_date DATE NOT NULL, \n    status VARCHAR(20) NOT NULL, \n    FOREIGN KEY (product_id) REFERENCES inventory_tracking(product_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_contacts (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(50),\n    contact_person VARCHAR(50),\n    email VARCHAR(50),\n    phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_records (\n    record_id INT PRIMARY KEY,\n    supplier_id INT,\n    performance_rating INT,\n    date_recorded DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n\tsupplier_id INT PRIMARY KEY,\n\tsupplier_name VARCHAR(50) NOT NULL,\n\tcontact_person VARCHAR(50) NOT NULL,\n\tphone_number VARCHAR(15) NOT NULL,\n\temail VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n\tproduct_id INT PRIMARY KEY,\n\tproduct_name VARCHAR(50) NOT NULL,\n\tdescription TEXT,\n\tprice DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_performance (\n\tsupplier_id INT,\n\tproduct_id INT,\n\trating INT,\n\tcomment TEXT,\n\tPRIMARY KEY (supplier_id, product_id),\n\tFOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id),\n\tFOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    phone_number VARCHAR(15),\n    email VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_contacts (\n    contact_id INT PRIMARY KEY,\n    supplier_id INT NOT NULL,\n    contact_name VARCHAR(255),\n    contact_title VARCHAR(255),\n    contact_email VARCHAR(255),\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_performance (\n    performance_id INT PRIMARY KEY,\n    supplier_id INT NOT NULL,\n    performance_rating FLOAT,\n    performance_date DATE,\n    notes TEXT,\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE supplier_ratings (\n    rating_id INT PRIMARY KEY,\n    supplier_id INT NOT NULL,\n    rating_value INT,\n    rating_date DATE,\n    reviewer_name VARCHAR(255),\n    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  contact_person VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  price DECIMAL(10, 2),\n  supplier_id INT,\n  FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n  id INT PRIMARY KEY,\n  order_date DATE,\n  product_id INT,\n  quantity INT,\n  FOREIGN KEY (product_id) REFERENCES products (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ratings (\n  supplier_id INT,\n  performance_rating INT,\n  comment TEXT,\n  PRIMARY KEY (supplier_id),\n  FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  id INT PRIMARY KEY,\n  supplier_id INT,\n  amount DECIMAL(10, 2),\n  payment_date DATE,\n  FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);"
+      }
+    ]
+  }
+]

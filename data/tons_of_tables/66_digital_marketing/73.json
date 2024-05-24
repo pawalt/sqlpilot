@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mobile_app_usage_data (\n  user_id INT PRIMARY KEY,\n  app_id INT,\n  session_start_time TIMESTAMP,\n  session_end_time TIMESTAMP,\n  time_spent_in_app INT,\n  ads_clicked INT,\n  promotions_viewed INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50),\n    gender CHAR(1),\n    age INT,\n    location VARCHAR(100)\n);\n\nCREATE TABLE app_usage (\n    user_id UUID,\n    app_id UUID,\n    session_id UUID,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    duration INTERVAL,\n    event_type VARCHAR(50),\n    event_details VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserActivity (\n  user_id INT PRIMARY KEY,\n  app_id INT,\n  time_stamp TIMESTAMP,\n  duration_minutes INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AppDetails (\n  app_id INT PRIMARY KEY,\n  app_name VARCHAR(255),\n  category VARCHAR(50),\n  developer VARCHAR(100),\n  release_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AdImpressions (\n  impression_id INT PRIMARY KEY,\n  app_id INT,\n  user_id INT,\n  impression_time TIMESTAMP,\n  ad_id INT,\n  ad_revenue DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE app_users (\n   user_id SERIAL PRIMARY KEY,\n   username VARCHAR(50) NOT NULL,\n   email VARCHAR(100) NOT NULL,\n   age INT,\n   last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE app_sessions (\n   session_id SERIAL PRIMARY KEY,\n   user_id INT REFERENCES app_users(user_id),\n   session_duration INTERVAL,\n   session_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_impressions (\n   impression_id SERIAL PRIMARY KEY,\n   user_id INT REFERENCES app_users(user_id),\n   ad_id INT,\n   impression_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_clicks (\n   click_id SERIAL PRIMARY KEY,\n   impression_id INT REFERENCES ad_impressions(impression_id),\n   click_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE User (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    age INT NOT NULL,\n    gender VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE App (\n    app_id UUID PRIMARY KEY,\n    app_name VARCHAR(100) NOT NULL,\n    category VARCHAR(50) NOT NULL,\n    platform VARCHAR(20) NOT NULL,\n    release_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE User_App_Usage (\n    user_id UUID REFERENCES User(user_id),\n    app_id UUID REFERENCES App(app_id),\n    install_date DATE NOT NULL,\n    last_opened TIMESTAMP NOT NULL,\n    total_usage_minutes INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Advertisements (\n    ad_id UUID PRIMARY KEY,\n    ad_name VARCHAR(100) NOT NULL,\n    ad_type VARCHAR(20) NOT NULL,\n    ad_platform VARCHAR(20) NOT NULL,\n    ad_budget DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE User_Ad_Interactions (\n    user_id UUID REFERENCES User(user_id),\n    ad_id UUID REFERENCES Advertisements(ad_id),\n    interaction_type VARCHAR(20) NOT NULL,\n    interaction_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

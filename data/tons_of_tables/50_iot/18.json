@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE robotic_system_data (\n  id INT PRIMARY KEY,\n  system_name TEXT NOT NULL,\n  data_timestamp TIMESTAMP NOT NULL,\n  speed FLOAT,\n  efficiency FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE robotic_systems (\n    id SERIAL PRIMARY KEY,\n    robot_name VARCHAR(100) NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP,\n    status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_data (\n    id SERIAL PRIMARY KEY,\n    robot_id INT REFERENCES robotic_systems(id),\n    timestamp TIMESTAMP NOT NULL,\n   cpu_usage FLOAT,\n    memory_usage FLOAT,\n    temperature FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE robotic_systems_data (\n    id INT NOT NULL PRIMARY KEY,\n    system_name VARCHAR(50) NOT NULL,\n    capture_timestamp TIMESTAMP NOT NULL,\n    performance_metric FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE system_component_data (\n    component_id INT NOT NULL PRIMARY KEY,\n    system_id INT NOT NULL,\n    component_name VARCHAR(50) NOT NULL,\n    component_status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE workflow_optimization (\n    workflow_id INT NOT NULL PRIMARY KEY,\n    system_id INT NOT NULL,\n    optimization_status VARCHAR(20) NOT NULL,\n    optimization_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RoboticSystems (\n    robotic_system_id INT PRIMARY KEY,\n    system_name VARCHAR(50),\n    production_capacity INT,\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceMetrics (\n    metric_id INT PRIMARY KEY,\n    robotic_system_id INT,\n    timestamp TIMESTAMP,\n    error_code VARCHAR(10),\n    performance_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WorkflowOptimization (\n    optimization_id INT PRIMARY KEY,\n    metric_id INT,\n    optimization_strategy TEXT,\n    improvement_percentage FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n    log_id INT PRIMARY KEY,\n    robotic_system_id INT,\n    maintenance_date DATE,\n    maintenance_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Robot (\n    robot_id INT PRIMARY KEY,\n    robot_name VARCHAR(255),\n    robot_type VARCHAR(50),\n    manufacturing_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Workstation (\n    workstation_id INT PRIMARY KEY,\n    workstation_name VARCHAR(255),\n    location VARCHAR(100),\n    robot_id INT,\n    FOREIGN KEY (robot_id) REFERENCES Robot(robot_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ProductionLog (\n    log_id INT PRIMARY KEY,\n    robot_id INT,\n    workstation_id INT,\n    start_time DATETIME,\n    end_time DATETIME,\n    performance_score DECIMAL(5, 2),\n    FOREIGN KEY (robot_id) REFERENCES Robot(robot_id),\n    FOREIGN KEY (workstation_id) REFERENCES Workstation(workstation_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLog (\n    log_id INT PRIMARY KEY,\n    robot_id INT,\n    maintenance_date DATE,\n    issue_description TEXT,\n    resolution TEXT,\n    FOREIGN KEY (robot_id) REFERENCES Robot(robot_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorData (\n    data_id INT PRIMARY KEY,\n    robot_id INT,\n    timestamp DATETIME,\n    sensor_type VARCHAR(50),\n    value DECIMAL(10, 2),\n    FOREIGN KEY (robot_id) REFERENCES Robot(robot_id)\n);\n"
+      }
+    ]
+  }
+]

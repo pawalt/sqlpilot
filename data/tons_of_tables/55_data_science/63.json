@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_experiments (\n    experiment_id UUID PRIMARY KEY,\n    hyperparameters JSONB,\n    training_config JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n\thyperparameter_id INT PRIMARY KEY,\n\thyperparameter_name STRING,\n\thyperparameter_value STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_configs (\n\tconfig_id INT PRIMARY KEY,\n\thyperparameter_id INT,\n\tlearning_rate FLOAT,\n\tepochs INT,\n\tbatch_size INT\n\tFOREIGN KEY (hyperparameter_id) REFERENCES hyperparameters(hyperparameter_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n    experiment_id UUID PRIMARY KEY,\n    learning_rate FLOAT,\n    batch_size INT,\n    epochs INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE configuration (\n    config_id UUID PRIMARY KEY,\n    experiment_id UUID REFERENCES hyperparameters(experiment_id),\n    model_type VARCHAR,\n    optimizer VARCHAR,\n    loss_function VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE metrics (\n    metric_id UUID PRIMARY KEY,\n    experiment_id UUID REFERENCES hyperparameters(experiment_id),\n    accuracy FLOAT,\n    precision FLOAT,\n    recall FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hyperparameters (\n\thyperparam_id UUID PRIMARY KEY,\n\thparam_name STRING,\n\thparam_type STRING,\n\thparam_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_configurations (\n\tconfig_id UUID PRIMARY KEY,\n\tconfig_name STRING,\n\thparams_id UUID REFERENCES hyperparameters(hyperparam_id),\n\tepoch_count INT,\n\tlearning_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n\texp_id UUID PRIMARY KEY,\n\texp_name STRING,\n\tconfig_id UUID REFERENCES training_configurations(config_id),\n\tstart_time TIMESTAMP,\n\tend_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_performance (\n\tmodel_id UUID PRIMARY KEY,\n\texp_id UUID REFERENCES experiments(exp_id),\n\tvalidation_accuracy FLOAT,\n\ttraining_time INTERVAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Hyperparameter (\n\thyperparameter_id INT PRIMARY KEY,\n\thyperparameter_name VARCHAR(50),\n\thyperparameter_value FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Model (\n\tmodel_id INT PRIMARY KEY,\n\tmodel_name VARCHAR(50),\n\tmodel_type ENUM('CNN', 'RNN', 'DNN')\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiment (\n\texperiment_id INT PRIMARY KEY,\n\texperiment_name VARCHAR(50),\n\tmodel_id INT,\n\thyperparameter_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Training (\n\ttraining_id INT PRIMARY KEY,\n\texperiment_id INT,\n\tloss FLOAT,\n\tepochs INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Evaluation (\n\tevaluation_id INT PRIMARY KEY,\n\texperiment_id INT,\n\taccuracy FLOAT,\n\tloss FLOAT\n);"
+      }
+    ]
+  }
+]

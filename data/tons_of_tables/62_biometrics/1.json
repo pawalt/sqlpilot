@@ -1,0 +1,52 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE face_recognition ( \n    face_id UUID PRIMARY KEY, \n    full_name VARCHAR(100), \n    age INT, \n    gender VARCHAR(10), \n    photo_url TEXT, \n    known_face BOOLEAN \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE persons_of_interest (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    age INT,\n    face_encoding BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE known_faces (\n    face_id INT PRIMARY KEY,\n    face_encoding BYTEA\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE persons_of_interest (\n    person_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    face_image BYTEA,\n    description TEXT\n);\n\nCREATE TABLE known_faces (\n    face_id INT PRIMARY KEY,\n    face_image BYTEA,\n    person_id INT,\n    FOREIGN KEY (person_id) REFERENCES persons_of_interest(person_id)\n);\n\nCREATE TABLE queries (\n    query_id INT PRIMARY KEY,\n    query_image BYTEA,\n    result_person_id INT,\n    FOREIGN KEY (result_person_id) REFERENCES persons_of_interest(person_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Person(id INT PRIMARY KEY, name VARCHAR(100), age INT, occupation VARCHAR(100));\nCREATE TABLE KnownFaces(id INT PRIMARY KEY, name VARCHAR(100), image_url TEXT);\nCREATE TABLE FaceRecognitionResults(id INT PRIMARY KEY, face_id INT, person_id INT, confidence FLOAT);\nCREATE TABLE FaceFeatures(face_id INT PRIMARY KEY, feature_vector ARRAY<DOUBLE>);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Persons (person_id INT PRIMARY KEY, person_name VARCHAR(50) NOT NULL, person_age INT, person_gender VARCHAR(10) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE Faces (face_id INT PRIMARY KEY, face_image BYTEA NOT NULL, face_encoding TEXT NOT NULL, person_id INT REFERENCES Persons(person_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Interactions (interaction_id INT PRIMARY KEY, timestamp TIMESTAMP NOT NULL, location VARCHAR(100), person_id INT REFERENCES Persons(person_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (alert_id INT PRIMARY KEY, alert_message VARCHAR(200) NOT NULL, alert_timestamp TIMESTAMP NOT NULL, person_id INT REFERENCES Persons(person_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE KnownFaces (known_face_id INT PRIMARY KEY, face_encoding TEXT NOT NULL, person_id INT REFERENCES Persons(person_id));"
+      }
+    ]
+  }
+]

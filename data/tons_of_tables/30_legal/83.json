@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_document_versions ( \n  document_id INT PRIMARY KEY, \n  document_name VARCHAR(255), \n  revision_number INT, \n  revision_date TIMESTAMP, \n  reviewer_name VARCHAR(255), \n  is_compliant BOOLEAN \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LegalDocuments (\n    document_id INT PRIMARY KEY,\n    document_name TEXT NOT NULL,\n    version_number INT NOT NULL,\n    revision_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DocumentRevisions (\n    revision_id INT PRIMARY KEY,\n    document_id INT REFERENCES LegalDocuments(document_id),\n    revised_by TEXT NOT NULL,\n    revisions_notes TEXT,\n    revision_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_documents( \n id UUID PRIMARY KEY, \n document_name STRING, \n version INT, \n revision_date DATE \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE document_owners( \n owner_id UUID PRIMARY KEY, \n document_id UUID REFERENCES legal_documents(id), \n owner_name STRING \n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE revisions( \n revision_id UUID PRIMARY KEY, \n document_id UUID REFERENCES legal_documents(id), \n revision_number INT, \n revision_description TEXT \n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_documents (\n  id UUID PRIMARY KEY,\n  document_name VARCHAR(255),\n  version INT,\n  revision_date DATE,\n  compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_versions (\n  version_id UUID PRIMARY KEY,\n  document_id UUID REFERENCES legal_documents(id),\n  file_url VARCHAR(255),\n  version_number INT,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_revisions (\n  revision_id UUID PRIMARY KEY,\n  version_id UUID REFERENCES document_versions(version_id),\n  revision_number INT,\n  revised_by VARCHAR(255),\n  revised_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE revision_history (\n  history_id UUID PRIMARY KEY,\n  revision_id UUID REFERENCES document_revisions(revision_id),\n  revision_notes TEXT,\n  approved_by VARCHAR(255),\n  approved_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE legal_documents (\n    document_id UUID PRIMARY KEY,\n    document_title VARCHAR(100) NOT NULL,\n    document_content TEXT NOT NULL,\n    version_number INT NOT NULL,\n    revision_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_categories (\n    category_id SERIAL PRIMARY KEY,\n    category_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_versions (\n    version_id UUID PRIMARY KEY,\n    document_id UUID NOT NULL,\n    version_number INT NOT NULL,\n    version_date DATE NOT NULL,\n    editor_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_revisions (\n    revision_id UUID PRIMARY KEY,\n    version_id UUID NOT NULL,\n    revised_content TEXT NOT NULL,\n    revised_by VARCHAR(50) NOT NULL,\n    revision_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE revision_log (\n    log_id SERIAL PRIMARY KEY,\n    revision_id UUID NOT NULL,\n    action_type VARCHAR(20) NOT NULL,\n    action_detail TEXT,\n    action_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

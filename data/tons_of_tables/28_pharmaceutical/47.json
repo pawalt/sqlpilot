@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE temperature_storage (\n    id UUID PRIMARY KEY,\n    medication_name STRING,\n    temperature FLOAT,\n    humidity FLOAT,\n    location VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Medication (\n    medication_id UUID PRIMARY KEY,\n    medication_name STRING,\n    storage_temperature FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Temperature_Log (\n    log_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    temperature FLOAT,\n    medication_id UUID REFERENCES Medication(medication_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE temperature_logs (\n    log_id INT PRIMARY KEY,\n    temperature FLOAT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_inventory (\n    inventory_id INT PRIMARY KEY,\n    medication_name VARCHAR(255),\n    quantity INT,\n    storage_location VARCHAR(255),\n    expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE temperature_thresholds (\n    threshold_id INT PRIMARY KEY,\n    medication_name VARCHAR(255),\n    min_temperature FLOAT,\n    max_temperature FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medication_storage (\n  id INT PRIMARY KEY,\n  medication_name VARCHAR(255),\n  temperature_celsius DECIMAL,\n  expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE storage_location (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255),\n  temperature_min DECIMAL,\n  temperature_max DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shipment (\n  shipment_id INT PRIMARY KEY,\n  shipment_date DATE,\n  temperature_celsius DECIMAL,\n  location_id INT,\n  FOREIGN KEY (location_id) REFERENCES storage_location(location_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_tracking (\n  tracking_id INT PRIMARY KEY,\n  medication_id INT,\n  shipment_id INT,\n  location_id INT,\n  entry_time TIMESTAMP,\n  exit_time TIMESTAMP,\n  FOREIGN KEY (medication_id) REFERENCES medication_storage(id),\n  FOREIGN KEY (shipment_id) REFERENCES shipment(shipment_id),\n  FOREIGN KEY (location_id) REFERENCES storage_location(location_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TemperatureSensor (\n  sensor_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  status BOOL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Medication (\n  medication_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  storage_temperature FLOAT,\n  expiration_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE StorageUnit (\n  unit_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TemperatureLog (\n  log_id INT PRIMARY KEY,\n  sensor_id INT,\n  temperature FLOAT,\n  timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Alert (\n  alert_id INT PRIMARY KEY,\n  log_id INT,\n  message TEXT,\n  alert_time TIMESTAMP\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE habitats (\n    habitat_id INT PRIMARY KEY,\n    habitat_name VARCHAR(50) NOT NULL,\n    habitat_type VARCHAR(50) NOT NULL,\n    area DOUBLE NOT NULL,\n    region VARCHAR(50) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WildlifeHabitats (\n\thabitat_id INT PRIMARY KEY,\n\thabitat_name VARCHAR(50) NOT NULL,\n\thabitat_location GEOGRAPHY(POINT) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EcosystemConnectivity (\n\tconnectivity_id INT PRIMARY KEY,\n\thabitat_source_id INT REFERENCES WildlifeHabitats(habitat_id) NOT NULL,\n\thabitat_destination_id INT REFERENCES WildlifeHabitats(habitat_id) NOT NULL,\n\tconnectivity_score FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Wildlife_Habitats (\n    habitat_id INT PRIMARY KEY,\n    habitat_name VARCHAR(255),\n    habitat_location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Ecosystems (\n    ecosystem_id INT PRIMARY KEY,\n    ecosystem_name VARCHAR(255),\n    ecosystem_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Connectivity (\n    connectivity_id INT PRIMARY KEY,\n    habitat_id INT,\n    ecosystem_id INT,\n    connection_strength FLOAT,\n    FOREIGN KEY (habitat_id) REFERENCES Wildlife_Habitats(habitat_id),\n    FOREIGN KEY (ecosystem_id) REFERENCES Ecosystems(ecosystem_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE habitats (\nid INT PRIMARY KEY,\nname VARCHAR(255) NOT NULL,\narea DECIMAL(10, 2) NOT NULL\n);\n\nCREATE TABLE ecosystems (\nid INT PRIMARY KEY,\nname VARCHAR(255) NOT NULL,\nregion VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE wildlife (\nid INT PRIMARY KEY,\nname VARCHAR(255) NOT NULL,\nhabitat_id INT,\nFOREIGN KEY (habitat_id) REFERENCES habitats(id)\n);\n\nCREATE TABLE connectivity (\nid INT PRIMARY KEY,\nwildlife_id INT,\necosystem_id INT,\nFOREIGN KEY (wildlife_id) REFERENCES wildlife(id),\nFOREIGN KEY (ecosystem_id) REFERENCES ecosystems(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE habitats (\n  habitat_id INT PRIMARY KEY,\n  habitat_name VARCHAR(255),\n  habitat_type VARCHAR(100),\n  habitat_location GEOMETRY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE species (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(255),\n  species_type VARCHAR(100),\n  species_habitat_id INT,\n  FOREIGN KEY (species_habitat_id) REFERENCES habitats(habitat_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ecosystems (\n  ecosystem_id INT PRIMARY KEY,\n  ecosystem_name VARCHAR(255),\n  ecosystem_type VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE connectivity (\n  connectivity_id INT PRIMARY KEY,\n  source_ecosystem_id INT,\n  destination_ecosystem_id INT,\n  FOREIGN KEY (source_ecosystem_id) REFERENCES ecosystems(ecosystem_id),\n  FOREIGN KEY (destination_ecosystem_id) REFERENCES ecosystems(ecosystem_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE population (\n  population_id INT PRIMARY KEY,\n  species_id INT,\n  population_size INT,\n  observation_date DATE,\n  FOREIGN KEY (species_id) REFERENCES species(species_id)\n);"
+      }
+    ]
+  }
+]

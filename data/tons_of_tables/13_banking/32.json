@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id UUID PRIMARY KEY,\n    username VARCHAR(100) UNIQUE,\n    password VARCHAR(100),\n    email VARCHAR(255) UNIQUE,\n    phone_number VARCHAR(20),\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(50),\n    email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    token VARCHAR(100) UNIQUE NOT NULL,\n    expiration_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    action VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    session_token VARCHAR(100) NOT NULL,\n    login_time TIMESTAMPTZ NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account_details (\n    account_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    account_balance DECIMAL(10,2) NOT NULL,\n    last_transaction TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    attempt_time TIMESTAMPTZ NOT NULL,\n    success BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    balance DECIMAL(10, 2) DEFAULT 0.00\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    attempt_time TIMESTAMP NOT NULL,\n    success BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    session_start TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_resets (\n    reset_id INT PRIMARY KEY,\n    customer_id INT REFERENCES customers(customer_id),\n    reset_time TIMESTAMP NOT NULL,\n    reset_code VARCHAR(10) NOT NULL\n);"
+      }
+    ]
+  }
+]

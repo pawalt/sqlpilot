@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_activity_audit (\n    user_id INT,\n    activity VARCHAR(255),\n    action_timestamp TIMESTAMP,\n    action_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    user_id INT,\n    activity_date TIMESTAMP,\n    activity_description TEXT,\n    CONSTRAINT user_activity_pkey PRIMARY KEY (user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n    log_id SERIAL,\n    user_id INT,\n    action_taken TEXT,\n    audit_date TIMESTAMP,\n    CONSTRAINT audit_logs_pkey PRIMARY KEY (log_id),\n    CONSTRAINT audit_logs_fk_user FOREIGN KEY (user_id) REFERENCES user_activity(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    user_id INT,\n    activity_timestamp TIMESTAMP,\n    activity_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_audit (\n    audit_id SERIAL,\n    user_id INT,\n    audit_action TEXT,\n    audit_timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_logs (\n    log_id SERIAL,\n    user_id INT,\n    log_timestamp TIMESTAMP,\n    log_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  full_name VARCHAR(100) NOT NULL,\n  role VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_activity (\n  activity_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(user_id),\n  login_time TIMESTAMP NOT NULL,\n  ip_address VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_log (\n  log_id SERIAL PRIMARY KEY,\n  activity_id INT REFERENCES login_activity(activity_id),\n  action VARCHAR(50) NOT NULL,\n  timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_requirements (\n  requirement_id SERIAL PRIMARY KEY,\n  requirement_text TEXT NOT NULL,\n  status VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID,\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP,\n    location VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id UUID PRIMARY KEY,\n    user_id UUID,\n    activity_type VARCHAR,\n    activity_time TIMESTAMP,\n    activity_details TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID,\n    action VARCHAR,\n    action_time TIMESTAMP,\n    compliance_score INT,\n    notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_trail (\n    trail_id UUID PRIMARY KEY,\n    user_id UUID,\n    action VARCHAR,\n    action_time TIMESTAMP,\n    session_id UUID,\n    details JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE regulatory_compliance (\n    compliance_id UUID PRIMARY KEY,\n    user_id UUID,\n    compliance_type VARCHAR,\n    compliance_date DATE,\n    compliance_details JSONB\n);\n"
+      }
+    ]
+  }
+]

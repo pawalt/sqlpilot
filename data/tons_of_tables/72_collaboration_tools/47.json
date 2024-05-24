@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Files (\n    file_id INT PRIMARY KEY,\n    file_name TEXT NOT NULL,\n    file_size INT NOT NULL,\n    keywords TEXT[]\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE file_search_files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_path TEXT,\n    file_keywords TEXT\n);\n\nCREATE TABLE file_search_keywords (\n    keyword_id INT PRIMARY KEY,\n    keyword_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id UUID PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_path VARCHAR(255) NOT NULL,\n    keywords VARCHAR(255)[]\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (\n    keyword_id UUID PRIMARY KEY,\n    keyword VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_keywords (\n    file_id UUID REFERENCES files(file_id),\n    keyword_id UUID REFERENCES keywords(keyword_id),\n    PRIMARY KEY (file_id, keyword_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FileMetadata (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_path VARCHAR(255),\n    keywords VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FileTags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FileTagMappings (\n    file_id INT,\n    tag_id INT,\n    PRIMARY KEY (file_id, tag_id),\n    FOREIGN KEY (file_id) REFERENCES FileMetadata(file_id),\n    FOREIGN KEY (tag_id) REFERENCES FileTags(tag_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FileSearchHistory (\n    search_id INT PRIMARY KEY,\n    search_keyword VARCHAR(255),\n    search_timestamp TIMESTAMP,\n    search_result_count INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_path VARCHAR(255),\n    file_content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (\n    keyword_id INT PRIMARY KEY,\n    keyword_text VARCHAR(100) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE file_keywords (\n    file_keyword_id INT PRIMARY KEY,\n    file_id INT REFERENCES files(file_id),\n    keyword_id INT REFERENCES keywords(keyword_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE file_metadata (\n    metadata_id INT PRIMARY KEY,\n    file_id INT REFERENCES files(file_id),\n    file_size INT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE file_tags (\n    tag_id INT PRIMARY KEY,\n    file_id INT REFERENCES files(file_id),\n    tag_name VARCHAR(50)\n);\n"
+      }
+    ]
+  }
+]

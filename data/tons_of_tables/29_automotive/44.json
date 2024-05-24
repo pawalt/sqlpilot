@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE restoration_progress (\n  restoration_id INT PRIMARY KEY,\n  progress_date DATE,\n  milestone VARCHAR(255),\n  photo_path VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE restoration_log (\n    log_id SERIAL PRIMARY KEY,\n    log_date DATE NOT NULL,\n    milestone TEXT NOT NULL,\n    photo_url TEXT\n);\n\nCREATE TABLE restoration_photos (\n    photo_id SERIAL PRIMARY KEY,\n    photo_url TEXT NOT NULL,\n    log_id INTEGER REFERENCES restoration_log(log_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE restoration_progress_log (\n    id INT PRIMARY KEY,\n    date DATE,\n    milestone TEXT,\n    photo BYTEA\n);\n\nCREATE TABLE milestones (\n    milestone_id INT PRIMARY KEY,\n    milestone_name VARCHAR(255)\n);\n\nCREATE TABLE photos (\n    photo_id INT PRIMARY KEY,\n    photo_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE progress_log (\n  log_id UUID PRIMARY KEY,\n  date DATE,\n  milestone VARCHAR(255),\n  photo BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE restoration_dates (\n  date_id UUID PRIMARY KEY,\n  date DATE,\n  description VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE milestones (\n  milestone_id UUID PRIMARY KEY,\n  milestone VARCHAR(255),\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE restoration_photos (\n  photo_id UUID PRIMARY KEY,\n  log_id UUID,\n  photo BYTEA\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE restoration_progress (\n    restoration_id INT PRIMARY KEY,\n    restoration_date DATE,\n    milestone TEXT,\n    photo BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE restoration_logs (\n    log_id INT PRIMARY KEY,\n    restoration_id INT,\n    log_date TIMESTAMP,\n    log_message TEXT,\n    FOREIGN KEY (restoration_id) REFERENCES restoration_progress (restoration_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE restoration_photos (\n    photo_id INT PRIMARY KEY,\n    restoration_id INT,\n    photo BYTEA,\n    photo_description TEXT,\n    FOREIGN KEY (restoration_id) REFERENCES restoration_progress (restoration_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE restoration_milestones (\n    milestone_id INT PRIMARY KEY,\n    milestone_description TEXT,\n    completion_date DATE,\n    restoration_id INT,\n    FOREIGN KEY (restoration_id) REFERENCES restoration_progress (restoration_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE restoration_comments (\n    comment_id INT PRIMARY KEY,\n    restoration_id INT,\n    comment_date TIMESTAMP,\n    comment TEXT,\n    FOREIGN KEY (restoration_id) REFERENCES restoration_progress (restoration_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FossilRecords (\n  fossil_id INT PRIMARY KEY,\n  fossil_name VARCHAR(255),\n  fossil_location VARCHAR(255),\n  fossil_age INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fossil_records (\n    fossil_id INT PRIMARY KEY,\n    fossil_name STRING,\n    fossil_type STRING,\n    fossil_age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_records (\n    research_id INT PRIMARY KEY,\n    researcher_name STRING,\n    research_date DATE,\n    research_topic STRING\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FossilRecords (\n  id UUID PRIMARY KEY,\n  fossil_name STRING,\n  fossil_type STRING,\n  fossil_age INT,\n  discovery_location STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearcherInfo (\n  researcher_id UUID PRIMARY KEY,\n  researcher_name STRING,\n  researcher_email STRING,\n  researcher_affiliation STRING,\n  researcher_field STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchPublications (\n  publication_id UUID PRIMARY KEY,\n  publication_title STRING,\n  publication_date DATE,\n  researcher_id UUID REFERENCES ResearcherInfo(researcher_id),\n  fossil_id UUID REFERENCES FossilRecords(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FossilLocation (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255) NOT NULL,\n  latitude DECIMAL(10, 8) NOT NULL,\n  longitude DECIMAL(11, 8) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FossilSpecimen (\n  specimen_id INT PRIMARY KEY,\n  location_id INT NOT NULL,\n  specimen_type VARCHAR(50) NOT NULL,\n  specimen_age INT NOT NULL,\n  specimen_description TEXT,\n  FOREIGN KEY (location_id) REFERENCES FossilLocation(location_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Researcher (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(100) NOT NULL,\n  researcher_email VARCHAR(255) UNIQUE,\n  researcher_affiliation VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearchPublication (\n  publication_id INT PRIMARY KEY,\n  researcher_id INT NOT NULL,\n  publication_title VARCHAR(200) NOT NULL,\n  publication_date DATE NOT NULL,\n  publication_abstract TEXT,\n  FOREIGN KEY (researcher_id) REFERENCES Researcher(researcher_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fossils (\n  fossil_id INT PRIMARY KEY,\n  fossil_name VARCHAR(255),\n  fossil_type VARCHAR(100),\n  discovery_date DATE,\n  discovery_location VARCHAR(255),\n  researcher_id INT\n)"
+      }
+    ]
+  }
+]

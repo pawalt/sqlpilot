@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE automatic_bill_payments (\n  bill_id INT PRIMARY KEY,\n  bill_name VARCHAR(255) NOT NULL,\n  bill_amount DECIMAL(10, 2) NOT NULL,\n  payment_date DATE NOT NULL,\n  payment_method VARCHAR(50) NOT NULL,\n  reminder_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE automatic_bill_payments (\n    user_id UUID NOT NULL,\n    bill_name VARCHAR(100) NOT NULL,\n    bill_amount DECIMAL NOT NULL,\n    payment_date DATE NOT NULL,\n    PRIMARY KEY (user_id, bill_name)\n);\nCREATE TABLE payment_reminders (\n    reminder_id UUID NOT NULL,\n    user_id UUID NOT NULL,\n    bill_name VARCHAR(100) NOT NULL,\n    reminder_date DATE NOT NULL,\n    reminder_message TEXT,\n    PRIMARY KEY (reminder_id),\n    FOREIGN KEY (user_id, bill_name) REFERENCES automatic_bill_payments(user_id, bill_name)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bills (\n    bill_id INT PRIMARY KEY,\n    user_id INT,\n    bill_name VARCHAR(100) NOT NULL,\n    amount DECIMAL(10,2) NOT NULL,\n    due_date DATE NOT NULL,\n    reminder_sent BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id INT PRIMARY KEY,\n    bill_id INT,\n    payment_date DATE NOT NULL,\n    amount_paid DECIMAL(10,2) NOT NULL,\n    payment_method VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE automatic_payments (\n    payment_id INT PRIMARY KEY,\n    payment_date DATE,\n    amount DECIMAL,\n    account_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bill_reminders (\n    reminder_id INT PRIMARY KEY,\n    bill_date DATE,\n    amount DECIMAL,\n    account_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR,\n    account_type VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR,\n    email VARCHAR\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE billers (\n    id INT PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone VARCHAR(20),\n    payment_method VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE bills (\n    bill_id INT PRIMARY KEY,\n    biller_id INT NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    due_date DATE NOT NULL,\n    paid BOOLEAN DEFAULT false,\n    FOREIGN KEY (biller_id) REFERENCES billers(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id INT PRIMARY KEY,\n    bill_id INT NOT NULL,\n    payment_date DATE NOT NULL,\n    amount_paid DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(20) NOT NULL,\n    FOREIGN KEY (bill_id) REFERENCES bills(bill_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reminders (\n    reminder_id INT PRIMARY KEY,\n    bill_id INT NOT NULL,\n    reminder_date DATE NOT NULL,\n    reminder_message TEXT NOT NULL,\n    status VARCHAR(20) DEFAULT 'active',\n    FOREIGN KEY (bill_id) REFERENCES bills(bill_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone VARCHAR(20),\n    address TEXT\n);\n"
+      }
+    ]
+  }
+]

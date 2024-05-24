@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM debt_management_agency;",
+      "SELECT client_id, client_name, total_debt FROM debt_management_agency WHERE total_debt > 5000;",
+      "SELECT client_id, client_name, payment_due_date FROM debt_management_agency ORDER BY payment_due_date DESC;",
+      "SELECT client_name, total_debt FROM debt_management_agency WHERE client_name LIKE 'A%';",
+      "SELECT client_id, case_manager_email FROM debt_management_agency WHERE payment_due_date <= '2022-12-31';",
+      "SELECT client_id, client_name, total_debt FROM debt_management_agency WHERE total_debt > 5000 ORDER BY total_debt DESC, client_name ASC;",
+      "SELECT * FROM debt_management_agency WHERE payment_due_date < CURDATE() ORDER BY payment_due_date ASC;",
+      "SELECT client_name, payment_due_date FROM debt_management_agency WHERE client_name LIKE 'A%' AND total_debt BETWEEN 2000 AND 5000 ORDER BY payment_due_date DESC;",
+      "SELECT client_id, client_name, total_debt, case_manager_email FROM debt_management_agency WHERE total_debt < 1000 OR case_manager_email = 'example@email.com' ORDER BY client_id ASC;",
+      "SELECT client_id, client_name, total_debt, payment_due_date FROM debt_management_agency WHERE payment_due_date BETWEEN '2022-08-01' AND '2022-09-01' ORDER BY payment_due_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM customers;",
+      "SELECT customer_name, address FROM customers WHERE customer_id = 1;",
+      "SELECT customer_name, debt_amount FROM customers WHERE debt_amount > 1000;",
+      "SELECT customer_name, address, transaction_date, transaction_amount FROM customers JOIN transactions ON customers.customer_id = transactions.customer_id;",
+      "SELECT customer_name, address, SUM(transaction_amount) AS total_spent FROM customers JOIN transactions ON customers.customer_id = transactions.customer_id GROUP BY customers.customer_id;",
+      "SELECT customer_name, address FROM customers WHERE debt_amount > 1000 ORDER BY customer_name ASC;",
+      "SELECT customer_name, address, debt_amount FROM customers WHERE customer_id = 5;",
+      "SELECT transaction_date, transaction_amount FROM transactions WHERE customer_id = 10 ORDER BY transaction_date DESC;",
+      "SELECT customer_name, transaction_date, transaction_amount FROM customers JOIN transactions ON customers.customer_id = transactions.customer_id WHERE transaction_amount > 500 ORDER BY transaction_amount DESC;",
+      "SELECT customer_name, SUM(transaction_amount) AS total_spent FROM customers JOIN transactions ON customers.customer_id = transactions.customer_id GROUP BY customer_name HAVING total_spent > 2000;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM debt_management_agencies;",
+      "SELECT agency_name, address FROM debt_management_agencies;",
+      "SELECT client_id, client_name, email FROM clients ORDER BY client_name DESC;",
+      "SELECT client_id, debt_amount FROM clients WHERE debt_amount > 10000;",
+      "SELECT client_id, credit_score, income FROM financial_information WHERE income > expenses;",
+      "SELECT * FROM debt_management_agencies ORDER BY agency_id DESC LIMIT 3;",
+      "SELECT client_name, email, debt_amount FROM clients WHERE debt_amount > 5000 ORDER BY debt_amount ASC;",
+      "SELECT agency_name, address, phone_number FROM debt_management_agencies WHERE address IS NOT NULL AND phone_number IS NOT NULL;",
+      "SELECT c.client_name, fi.credit_score FROM clients c JOIN financial_information fi ON c.client_id = fi.client_id WHERE fi.income > 50000 ORDER BY fi.credit_score DESC;",
+      "SELECT c.client_name, fi.income, fi.expenses FROM clients c JOIN financial_information fi ON c.client_id = fi.client_id WHERE fi.income - fi.expenses > 2000;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM debitors;",
+      "SELECT name, total_debt FROM debitors ORDER BY total_debt DESC;",
+      "SELECT * FROM debts WHERE status='pending';",
+      "SELECT debtor_id, amount, due_date FROM debts ORDER BY due_date;",
+      "SELECT id, username, role FROM users WHERE role='admin';",
+      "SELECT * FROM debitors WHERE total_debt > 1000 ORDER BY name ASC;",
+      "SELECT id, name, phone_number FROM debitors WHERE address LIKE '%Street%' AND total_debt BETWEEN 500 AND 1000 ORDER BY name DESC;",
+      "SELECT d.name AS debtor_name, dt.amount AS debt_amount, p.payment_amount AS payment_amount FROM debitors d JOIN debts dt ON d.id = dt.debtor_id JOIN payments p ON dt.id = p.debt_id WHERE p.payment_date >= '2022-01-01' AND p.payment_method = 'Credit Card' ORDER BY debt_amount DESC;",
+      "SELECT u.username, u.role, d.name AS debtor_name, dt.amount AS debt_amount FROM users u JOIN debts dt ON u.id = dt.debtor_id JOIN debitors d ON dt.debtor_id = d.id WHERE u.role = 'Admin' ORDER BY u.username ASC;",
+      "SELECT d.name AS debtor_name, SUM(dt.amount) AS total_debt, COUNT(p.id) AS num_payments FROM debitors d LEFT JOIN debts dt ON d.id = dt.debtor_id LEFT JOIN payments p ON dt.id = p.debt_id GROUP BY d.name HAVING total_debt > 10000 ORDER BY num_payments DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM debtors;",
+      "SELECT name, debt_amount FROM debtors WHERE debt_amount > 5000;",
+      "SELECT id, name, address FROM debtors ORDER BY name ASC;",
+      "SELECT * FROM debts WHERE due_date <= '2022-12-31';",
+      "SELECT debtor_id, SUM(amount) AS total_debt FROM debts GROUP BY debtor_id;",
+      "SELECT * FROM debtors WHERE debt_amount > 5000 ORDER BY name ASC;",
+      "SELECT debtor_id, SUM(amount) AS total_debt FROM debts GROUP BY debtor_id HAVING total_debt > 10000 ORDER BY total_debt DESC;",
+      "SELECT d.name, d.address, SUM(p.amount) AS total_payment FROM debtors d INNER JOIN debts db ON d.id = db.debtor_id INNER JOIN payments p ON db.debt_id = p.debt_id GROUP BY d.name, d.address ORDER BY total_payment ASC;",
+      "SELECT u.username, l.action, l.log_timestamp FROM users u INNER JOIN logs l ON u.user_id = l.user_id WHERE l.log_timestamp BETWEEN '2022-01-01' AND '2022-06-30' ORDER BY l.log_timestamp DESC;",
+      "SELECT debtor_id, COUNT(debt_id) AS total_debts FROM debts GROUP BY debtor_id ORDER BY total_debts DESC, debtor_id ASC;"
+    ]
+  }
+]

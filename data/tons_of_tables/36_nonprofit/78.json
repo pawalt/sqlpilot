@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GrantNotifications (\n  grant_id INT PRIMARY KEY,\n  grant_name VARCHAR(255),\n  deadline_date DATE,\n  notification_date TIMESTAMP,\n  is_notified BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grants (\n    grant_id SERIAL PRIMARY KEY,\n    grant_name VARCHAR(100) NOT NULL,\n    deadline_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_recipients (\n    recipient_id SERIAL PRIMARY KEY,\n    grant_id INT NOT NULL,\n    recipient_name VARCHAR(100) NOT NULL,\n    email_address VARCHAR(100) NOT NULL,\n    notification_sent BOOLEAN NOT NULL,\n    FOREIGN KEY (grant_id) REFERENCES grants(grant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grants (\n  grant_id SERIAL PRIMARY KEY,\n  grant_name VARCHAR(255) NOT NULL,\n  grant_deadline DATE NOT NULL,\n  grant_amount DECIMAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE organizations (\n  org_id SERIAL PRIMARY KEY,\n  org_name VARCHAR(255) NOT NULL,\n  org_email VARCHAR(255) NOT NULL,\n  org_phone VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE grant_notifications (\n  notification_id SERIAL PRIMARY KEY,\n  grant_id INT NOT NULL,\n  org_id INT NOT NULL,\n  notification_date DATE NOT NULL,\n  notification_sent BOOLEAN NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grants (\n    grant_id SERIAL PRIMARY KEY,\n    grant_name TEXT NOT NULL,\n    deadline_date DATE NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE applicants (\n    applicant_id SERIAL PRIMARY KEY,\n    applicant_name TEXT NOT NULL,\n    applicant_email TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE applications (\n    application_id SERIAL PRIMARY KEY,\n    grant_id INT NOT NULL,\n    applicant_id INT NOT NULL,\n    submission_date DATE NOT NULL,\n    status TEXT,\n    FOREIGN KEY (grant_id) REFERENCES grants(grant_id),\n    FOREIGN KEY (applicant_id) REFERENCES applicants(applicant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id SERIAL PRIMARY KEY,\n    applicant_id INT NOT NULL,\n    notification_date DATE NOT NULL,\n    notification_message TEXT,\n    read_status BOOLEAN DEFAULT FALSE,\n    FOREIGN KEY (applicant_id) REFERENCES applicants(applicant_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE grants (\n  grant_id INT PRIMARY KEY,\n  grant_name VARCHAR(255),\n  application_deadline TIMESTAMP,\n  grant_amount DECIMAL(10, 2),\n  organization_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE organizations (\n  organization_id INT PRIMARY KEY,\n  organization_name VARCHAR(255),\n  contact_email VARCHAR(255),\n  contact_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(255),\n  phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE grants_applicants (\n  grant_id INT,\n  user_id INT,\n  application_status VARCHAR(50),\n  application_date TIMESTAMP,\n  PRIMARY KEY (grant_id, user_id),\n  FOREIGN KEY (grant_id) REFERENCES grants(grant_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n  notification_id INT PRIMARY KEY,\n  grant_id INT,\n  user_id INT,\n  notification_message TEXT,\n  notification_date TIMESTAMP,\n  FOREIGN KEY (grant_id) REFERENCES grants(grant_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      }
+    ]
+  }
+]

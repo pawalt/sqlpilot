@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_images (\n    id INT PRIMARY KEY,\n    image_url VARCHAR(255),\n    label VARCHAR(50),\n    created_at TIMESTAMPTZ\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_images (\n    id INT PRIMARY KEY,\n    image_data BYTEA,\n    label VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE neural_networks (\n    id INT PRIMARY KEY,\n    network_name VARCHAR(50),\n    layers INT,\n    optimizer VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id SERIAL PRIMARY KEY,\n    image_data BYTEA,\n    label TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id SERIAL PRIMARY KEY,\n    label_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    image_id INT REFERENCES images(image_id),\n    label_id INT REFERENCES labels(label_id),\n    PRIMARY KEY (image_id, label_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_images (\n    image_id UUID PRIMARY KEY,\n    image_data BYTEA,\n    label TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    label_id UUID PRIMARY KEY,\n    label_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_tags (\n    tag_id UUID PRIMARY KEY,\n    tag_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_relationships (\n    relationship_id UUID PRIMARY KEY,\n    image_id UUID,\n    label_id UUID,\n    tag_id UUID,\n    FOREIGN KEY (image_id) REFERENCES labeled_images(image_id),\n    FOREIGN KEY (label_id) REFERENCES image_labels(label_id),\n    FOREIGN KEY (tag_id) REFERENCES image_tags(tag_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE labeled_images (\n    image_id UUID PRIMARY KEY,\n    image_data BYTES,\n    label VARCHAR(50),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    label_id UUID PRIMARY KEY,\n    label_name VARCHAR(50) UNIQUE,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    metadata_id UUID PRIMARY KEY,\n    image_id UUID REFERENCES labeled_images(image_id),\n    label_id UUID REFERENCES image_labels(label_id),\n    width INT,\n    height INT,\n    format VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    data_id UUID PRIMARY KEY,\n    image_id UUID REFERENCES labeled_images(image_id),\n    label_id UUID REFERENCES image_labels(label_id),\n    training_type VARCHAR(20),\n    accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE neural_networks (\n    network_id UUID PRIMARY KEY,\n    network_name VARCHAR(50) UNIQUE,\n    architecture TEXT,\n    num_layers INT,\n    training_data_id UUID REFERENCES training_data(data_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SustainabilityInitiative (\n\tinitiative_id INT PRIMARY KEY,\n\tinitiative_name VARCHAR(255),\n\tstrategy VARCHAR(255),\n\tstart_date DATE,\n\tend_date DATE,\n\timpact_reduction DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE strategy (\n    strategy_id INT PRIMARY KEY,\n    strategy_name TEXT,\n    start_date DATE,\n    end_date DATE,\n    focus_area TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE impact_measurement (\n    measurement_id INT PRIMARY KEY,\n    strategy_id INT,\n    metric_name TEXT,\n    value FLOAT,\n    measurement_date DATE,\n    FOREIGN KEY (strategy_id) REFERENCES strategy(strategy_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sustainability_initiative (\n    initiative_id UUID PRIMARY KEY,\n    initiative_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    total_cost DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact (\n    impact_id UUID PRIMARY KEY,\n    initiative_id UUID REFERENCES sustainability_initiative(initiative_id) NOT NULL,\n    impact_type VARCHAR(50) NOT NULL,\n    impact_score INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reduction_strategies (\n    strategy_id UUID PRIMARY KEY,\n    initiative_id UUID REFERENCES sustainability_initiative(initiative_id) NOT NULL,\n    strategy_name VARCHAR(100) NOT NULL,\n    implementation_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Initiative (\n id INT NOT NULL,\n name VARCHAR(50) NOT NULL,\n description TEXT,\n start_date DATE,\n end_date DATE,\n PRIMARY KEY (id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImpactMeasurement (\n id INT NOT NULL,\n initiative_id INT NOT NULL,\n metric_name VARCHAR(50) NOT NULL,\n metric_value FLOAT NOT NULL,\n measurement_date DATE,\n PRIMARY KEY (id),\n FOREIGN KEY (initiative_id) REFERENCES Initiative(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Strategy (\n id INT NOT NULL,\n name VARCHAR(50) NOT NULL,\n description TEXT,\n PRIMARY KEY (id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE StrategyImplementation (\n strategy_id INT NOT NULL,\n initiative_id INT NOT NULL,\n implementation_date DATE,\n success BOOLEAN,\n FOREIGN KEY (strategy_id) REFERENCES Strategy(id),\n FOREIGN KEY (initiative_id) REFERENCES Initiative(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sustainability_initiative (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    description TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE environmental_impact_metrics (\n    id INT PRIMARY KEY,\n    initiative_id INT,\n    metric_name VARCHAR(255),\n    metric_value FLOAT,\n    FOREIGN KEY (initiative_id) REFERENCES sustainability_initiative(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reduction_strategies (\n    id INT PRIMARY KEY,\n    initiative_id INT,\n    strategy_name VARCHAR(255),\n    strategy_description TEXT,\n    FOREIGN KEY (initiative_id) REFERENCES sustainability_initiative(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n    id INT PRIMARY KEY,\n    initiative_id INT,\n    member_name VARCHAR(255),\n    role VARCHAR(100),\n    FOREIGN KEY (initiative_id) REFERENCES sustainability_initiative(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n    id INT PRIMARY KEY,\n    initiative_id INT,\n    report_date DATE,\n    report_content TEXT,\n    FOREIGN KEY (initiative_id) REFERENCES sustainability_initiative(id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProductSales (\n    product_id INT PRIMARY KEY,\n    product_name STRING,\n    sales_date DATE,\n    units_sold INT,\n    revenue DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_demand_reports (\n    report_id INT PRIMARY KEY,\n    product_id INT,\n    report_date DATE,\n    demand_quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sales_trends_reports (\n    report_id INT PRIMARY KEY,\n    product_id INT,\n    report_date DATE,\n    total_sales DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_demand (\n    product_id INT PRIMARY KEY,\n    demand_quantity INT,\n    demand_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sales_trends (\n    sale_id SERIAL PRIMARY KEY,\n    product_id INT REFERENCES product_demand(product_id),\n    sale_date DATE,\n    sale_amount DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE report_data (\n    report_id SERIAL PRIMARY KEY,\n    report_date DATE,\n    product_id INT REFERENCES product_demand(product_id),\n    demand_quantity INT,\n    sale_amount DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  category VARCHAR(50),\n  price DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (\n  sale_id INT PRIMARY KEY,\n  product_id INT,\n  quantity INT,\n  sale_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  first_name VARCHAR(50),\n  last_name VARCHAR(50),\n  email VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n  report_id INT PRIMARY KEY,\n  report_name VARCHAR(100),\n  report_data JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  category VARCHAR(50),\n  price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sales (\n  sale_id INT PRIMARY KEY,\n  product_id INT,\n  quantity INT,\n  sale_date DATE,\n  FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255),\n  email VARCHAR(100),\n  phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n  order_id INT PRIMARY KEY,\n  customer_id INT,\n  sale_id INT,\n  order_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES customers(customer_id),\n  FOREIGN KEY (sale_id) REFERENCES sales(sale_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trends (\n  trend_id INT PRIMARY KEY,\n  description TEXT,\n  start_date DATE,\n  end_date DATE\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_communication_logs (\n  log_id SERIAL PRIMARY KEY,\n  satellite_id INT,\n  message TEXT,\n  timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_logs (\n  log_id SERIAL PRIMARY KEY,\n  satellite_id INT,\n  timestamp TIMESTAMP,\n  message TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE satellite_status (\n  status_id SERIAL PRIMARY KEY,\n  satellite_id INT,\n  status TEXT,\n  last_check TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n    satellite_id INT PRIMARY KEY,\n    satellite_name VARCHAR(255),\n    launch_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n    log_id INT PRIMARY KEY,\n    satellite_id INT,\n    log_time TIMESTAMP,\n    message TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE troubleshooting_issues (\n    issue_id INT PRIMARY KEY,\n    log_id INT,\n    issue_description TEXT,\n    resolution TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n    satellite_id INT PRIMARY KEY,\n    satellite_name VARCHAR(255),\n    launch_date DATE,\n    orbit_altitude_km FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n    log_id INT PRIMARY KEY,\n    satellite_id INT,\n    timestamp TIMESTAMP,\n    communication_status VARCHAR(50),\n    message_text TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_errors (\n    error_id INT PRIMARY KEY,\n    log_id INT,\n    error_type VARCHAR(50),\n    error_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE troubleshooting_notes (\n    note_id INT PRIMARY KEY,\n    log_id INT,\n    note_text TEXT,\n    engineer_name VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellites (\n    id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    location TEXT,\n    last_communication TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE communication_logs (\n    log_id INT PRIMARY KEY,\n    satellite_id INT REFERENCES satellites(id),\n    timestamp TIMESTAMP,\n    message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE errors (\n    error_id INT PRIMARY KEY,\n    log_id INT REFERENCES communication_logs(log_id),\n    error_type TEXT,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE technicians (\n    technician_id INT PRIMARY KEY,\n    name TEXT NOT NULL,\n    specialization TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE troubleshooting_tasks (\n    task_id INT PRIMARY KEY,\n    error_id INT REFERENCES errors(error_id),\n    assigned_technician INT REFERENCES technicians(technician_id),\n    status TEXT\n);"
+      }
+    ]
+  }
+]

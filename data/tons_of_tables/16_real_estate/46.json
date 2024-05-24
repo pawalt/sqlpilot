@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_information (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255),\n    vendor_email VARCHAR(255),\n    vendor_phone VARCHAR(15)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_information (\n    vendor_id UUID PRIMARY KEY,\n    vendor_name VARCHAR(50),\n    vendor_contact VARCHAR(20),\n    vendor_email VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_details (\n    contract_id UUID PRIMARY KEY,\n    vendor_id UUID,\n    contract_date DATE,\n    contract_details TEXT\n    FOREIGN KEY (vendor_id) REFERENCES vendor_information(vendor_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255),\n    vendor_email VARCHAR(255),\n    vendor_contact VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contract (\n    contract_id INT PRIMARY KEY,\n    vendor_id INT,\n    start_date DATE,\n    end_date DATE,\n    total_amount DECIMAL(10,2),\n    CONSTRAINT fk_vendor_id FOREIGN KEY (vendor_id) REFERENCES vendor(vendor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE property_maintenance (\n    maintenance_id INT PRIMARY KEY,\n    contract_id INT,\n    maintenance_date DATE,\n    details TEXT,\n    CONSTRAINT fk_contract_id FOREIGN KEY (contract_id) REFERENCES contract(contract_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendors (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    phone_number VARCHAR(15) NOT NULL,\n    email VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contracts (\n    contract_id INT PRIMARY KEY,\n    vendor_id INT REFERENCES vendors(vendor_id),\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    cost DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vendor_services (\n    vendor_id INT REFERENCES vendors(vendor_id),\n    service_id INT REFERENCES services(service_id),\n    PRIMARY KEY (vendor_id, service_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vendor_information (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255),\n    vendor_email VARCHAR(255),\n    vendor_phone VARCHAR(15)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE contract_details (\n    contract_id INT PRIMARY KEY,\n    vendor_id INT,\n    contract_start_date DATE,\n    contract_end_date DATE,\n    contract_amount DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE property (\n    property_id INT PRIMARY KEY,\n    property_name VARCHAR(255),\n    property_address VARCHAR(255),\n    property_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n    schedule_id INT PRIMARY KEY,\n    property_id INT,\n    vendor_id INT,\n    schedule_date DATE,\n    maintenance_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE payment_history (\n    payment_id INT PRIMARY KEY,\n    contract_id INT,\n    payment_date DATE,\n    payment_amount DECIMAL\n)"
+      }
+    ]
+  }
+]

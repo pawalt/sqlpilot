@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_ownership (\n    asset_id VARCHAR(50) PRIMARY KEY,\n    token_id VARCHAR(50),\n    owner_name VARCHAR(100),\n    owner_address VARCHAR(200)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n    asset_id INT PRIMARY KEY,\n    asset_name TEXT,\n    token_id INT,\n    owner_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ownership (\n    ownership_id INT PRIMARY KEY,\n    asset_id INT,\n    owner_id INT,\n    token_id INT,\n    ownership_start_date DATE,\n    ownership_end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_ownership (\n    asset_id UUID PRIMARY KEY,\n    owner_id UUID,\n    token_id TEXT,\n    ownership_start TIMESTAMP,\n    ownership_end TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokenization_records (\n    token_id TEXT PRIMARY KEY,\n    asset_id UUID,\n    tokenization_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id UUID PRIMARY KEY,\n    username TEXT,\n    email TEXT,\n    registration_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    owner_id UUID NOT NULL,\n    token_id UUID NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE owners (\n    owner_id UUID PRIMARY KEY,\n    owner_name VARCHAR(255) NOT NULL,\n    contact_info VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tokens (\n    token_id UUID PRIMARY KEY,\n    token_symbol VARCHAR(10) NOT NULL,\n    token_type VARCHAR(20),\n    token_value DECIMAL(18, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ownership (\n    ownership_id UUID PRIMARY KEY,\n    asset_id UUID NOT NULL,\n    owner_id UUID NOT NULL,\n    token_id UUID NOT NULL,\n    ownership_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_tokens (\n    token_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    token_value DECIMAL(18, 2) NOT NULL,\n    token_owner VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ownership (\n    ownership_id UUID PRIMARY KEY,\n    token_id UUID REFERENCES asset_tokens(token_id),\n    owner_name VARCHAR(255) NOT NULL,\n    owner_address VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    token_id UUID REFERENCES asset_tokens(token_id),\n    transaction_type VARCHAR(50) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_trail (\n    audit_id UUID PRIMARY KEY,\n    transaction_id UUID REFERENCES transactions(transaction_id),\n    description TEXT NOT NULL,\n    audit_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    role VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

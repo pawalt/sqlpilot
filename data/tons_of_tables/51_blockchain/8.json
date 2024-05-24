@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE blocks (\n  block_id UUID PRIMARY KEY,\n  timestamp TIMESTAMP NOT NULL,\n  transactions JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE block_transactions (\n    block_id INT PRIMARY KEY,\n    transaction_id INT,\n    sender_address VARCHAR(255),\n    receiver_address VARCHAR(255),\n    amount DECIMAL(18, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_details (\n    transaction_id INT PRIMARY KEY,\n    transaction_date TIMESTAMP,\n    transaction_type VARCHAR(50),\n    public_key VARCHAR(255),\n    signature VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cryptocurrency_transactions (\n  transaction_id SERIAL PRIMARY KEY,\n  sender_address VARCHAR(255) NOT NULL,\n  receiver_address VARCHAR(255) NOT NULL,\n  amount DECIMAL NOT NULL,\n  timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE block_chain (\n  block_id SERIAL PRIMARY KEY,\n  prev_block_id INT,\n  transaction_id INT,\n  timestamp TIMESTAMP,\n  FOREIGN KEY (transaction_id) REFERENCES cryptocurrency_transactions(transaction_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallets (\n  wallet_address VARCHAR(255) PRIMARY KEY,\n  balance DECIMAL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction_blocks (\n    block_id INT PRIMARY KEY,\n    block_hash VARCHAR(255),\n    time_stamp TIMESTAMP,\n    transactions TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id INT PRIMARY KEY,\n    account_address VARCHAR(255),\n    balance DECIMAL(18, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE block_transactions (\n    tx_id INT PRIMARY KEY,\n    block_id INT,\n    transaction_id INT,\n    FOREIGN KEY (block_id) REFERENCES transaction_blocks(block_id),\n    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    sender_address VARCHAR(255),\n    receiver_address VARCHAR(255),\n    amount DECIMAL(18, 2),\n    time_stamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transaction_blocks (\n    block_id UUID PRIMARY KEY,\n    block_hash VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    transactions JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE accounts (\n    account_id UUID PRIMARY KEY,\n    account_balance DECIMAL(18, 9) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account_transactions (\n    account_id UUID NOT NULL,\n    transaction_id UUID NOT NULL,\n    amount DECIMAL(18, 9) NOT NULL,\n    PRIMARY KEY (account_id, transaction_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_nodes (\n    node_id UUID PRIMARY KEY,\n    node_address VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  }
+]

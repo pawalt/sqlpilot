@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FingerprintScanData (\n  id INT PRIMARY KEY,\n  fingerprint_data BYTEA,\n  scan_timestamp TIMESTAMP,\n  user_id INT,\n  location_id INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fingerprint_scans (\n    id INT PRIMARY KEY,\n    fingerprint_data VARCHAR(255),\n    scan_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scan_analysis (\n    analysis_id INT PRIMARY KEY,\n    scan_id INT,\n    analysis_result VARCHAR(50),\n    analysis_date TIMESTAMP,\n    FOREIGN KEY (scan_id) REFERENCES fingerprint_scans(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fingerprint_scans (\n    scan_id SERIAL PRIMARY KEY,\n    scan_data BYTEA NOT NULL,\n    scan_time TIMESTAMP NOT NULL\n);\nCREATE TABLE scan_anomalies (\n    anomaly_id SERIAL PRIMARY KEY,\n    scan_id INTEGER REFERENCES fingerprint_scans(scan_id),\n    anomaly_type VARCHAR(50) NOT NULL,\n    anomaly_description TEXT\n);\nCREATE TABLE scan_patterns (\n    pattern_id SERIAL PRIMARY KEY,\n    scan_id INTEGER REFERENCES fingerprint_scans(scan_id),\n    pattern_name VARCHAR(50) NOT NULL,\n    pattern_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fingerprint_scans (\n   id SERIAL PRIMARY KEY,\n   fingerprint_data BYTEA NOT NULL,\n   scan_time TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n   user_id SERIAL PRIMARY KEY,\n   username VARCHAR(50) UNIQUE NOT NULL,\n   last_login TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE anomaly_patterns (\n   pattern_id SERIAL PRIMARY KEY,\n   pattern_description TEXT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies_detected (\n   anomaly_id SERIAL PRIMARY KEY,\n   scan_id INT REFERENCES fingerprint_scans(id),\n   pattern_id INT REFERENCES anomaly_patterns(pattern_id),\n   detection_time TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fingerprint_scans (\n    id SERIAL PRIMARY KEY,\n    fingerprint_data TEXT NOT NULL,\n    scan_date TIMESTAMP NOT NULL,\n    user_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    full_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomalies (\n    id SERIAL PRIMARY KEY,\n    anomaly_type VARCHAR(50) NOT NULL,\n    detected_at TIMESTAMP NOT NULL,\n    details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patterns (\n    id SERIAL PRIMARY KEY,\n    pattern_name VARCHAR(50) NOT NULL,\n    identified_at TIMESTAMP NOT NULL,\n    details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    access_time TIMESTAMP NOT NULL,\n    action VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  }
+]

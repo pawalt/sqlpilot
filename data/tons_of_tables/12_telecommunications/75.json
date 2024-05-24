@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_outage_incidents (\n  incident_id INT PRIMARY KEY,\n  incident_date DATE,\n  root_cause VARCHAR(255),\n  location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_outage_incidents (\n    incident_id INT PRIMARY KEY,\n    incident_date TIMESTAMP,\n    incident_description TEXT,\n    incident_severity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE root_causes (\n    root_cause_id INT PRIMARY KEY,\n    cause_description TEXT,\n    incident_id INT,\n    FOREIGN KEY (incident_id) REFERENCES network_outage_incidents(incident_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_outage_incidents (\n  incident_id INT PRIMARY KEY,\n  incident_description TEXT,\n  outage_start TIMESTAMP,\n  outage_end TIMESTAMP,\n  outage_duration INTERVAL,\n  affected_nodes TEXT[]\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE network_root_causes (\n  cause_id INT PRIMARY KEY,\n  cause_description TEXT,\n  incident_id INT,\n  FOREIGN KEY (incident_id) REFERENCES network_outage_incidents(incident_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE proactive_measures (\n  measure_id INT PRIMARY KEY,\n  measure_description TEXT,\n  cause_id INT,\n  FOREIGN KEY (cause_id) REFERENCES network_root_causes(cause_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_outage_incidents (\n    incident_id INT PRIMARY KEY,\n    incident_date DATE,\n    outage_duration INT,\n    incident_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE root_causes (\n    root_cause_id INT PRIMARY KEY,\n    cause_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incident_root_cause_mapping (\n    incident_id INT,\n    root_cause_id INT,\n    FOREIGN KEY (incident_id) REFERENCES network_outage_incidents(incident_id),\n    FOREIGN KEY (root_cause_id) REFERENCES root_causes(root_cause_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE proactive_measures (\n    measure_id INT PRIMARY KEY,\n    measure_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Incident (\n    id SERIAL PRIMARY KEY,\n    incident_name VARCHAR(100),\n    incident_date DATE,\n    outage_duration INT,\n    resolution_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RootCause (\n    id SERIAL PRIMARY KEY,\n    cause_name VARCHAR(100),\n    impact_level VARCHAR(50),\n    mitigation_strategy TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE NetworkDevice (\n    id SERIAL PRIMARY KEY,\n    device_name VARCHAR(100),\n    device_type VARCHAR(50),\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentRootCause (\n    incident_id INT REFERENCES Incident(id),\n    root_cause_id INT REFERENCES RootCause(id),\n    PRIMARY KEY (incident_id, root_cause_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentDevice (\n    incident_id INT REFERENCES Incident(id),\n    device_id INT REFERENCES NetworkDevice(id),\n    PRIMARY KEY (incident_id, device_id)\n);\n"
+      }
+    ]
+  }
+]

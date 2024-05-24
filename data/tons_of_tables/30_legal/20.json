@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_permits (\n    permit_id INT PRIMARY KEY,\n    applicant_name VARCHAR(100),\n    application_date DATE,\n    approval_status VARCHAR(50),\n    permit_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_permit_applications (\n  application_id UUID PRIMARY KEY,\n  applicant_name TEXT,\n  permit_type TEXT,\n  application_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permit_approvals (\n  approval_id UUID PRIMARY KEY,\n  application_id UUID REFERENCES environmental_permit_applications(application_id),\n  approval_date DATE,\n  approved_by TEXT,\n  approval_status TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE environmental_permit_applications (\n    application_id INT PRIMARY KEY,\n    applicant_name VARCHAR(100),\n    application_date DATE,\n    application_type VARCHAR(50),\n    approval_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permit_approval (\n    approval_id INT PRIMARY KEY,\n    application_id INT REFERENCES environmental_permit_applications(application_id),\n    approval_date DATE,\n    issued_by VARCHAR(100),\n    approval_notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permit_conditions (\n    condition_id INT PRIMARY KEY,\n    approval_id INT REFERENCES permit_approval(approval_id),\n    condition_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permit_applications (\n   permit_id INT PRIMARY KEY,\n   applicant_name VARCHAR(255),\n   application_date DATE,\n   application_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permit_approvals (\n   approval_id INT PRIMARY KEY,\n   permit_id INT,\n   approval_date DATE,\n   approval_status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permit_documents (\n   document_id INT PRIMARY KEY,\n   permit_id INT,\n   document_type VARCHAR(50),\n   document_content BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE permit_locations (\n   location_id INT PRIMARY KEY,\n   permit_id INT,\n   location_name VARCHAR(100),\n   location_address VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE permit_applications (\n    application_id INT PRIMARY KEY,\n    applicant_name VARCHAR(50),\n    application_date DATE,\n    permit_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permit_approvals (\n    approval_id INT PRIMARY KEY,\n    application_id INT,\n    approval_date DATE,\n    approved_by VARCHAR(50),\n    CONSTRAINT fk_application_id FOREIGN KEY (application_id) REFERENCES permit_applications(application_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permit_details (\n    detail_id INT PRIMARY KEY,\n    application_id INT,\n    detail_description TEXT,\n    CONSTRAINT fk_application_id FOREIGN KEY (application_id) REFERENCES permit_applications(application_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permit_locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50),\n    region VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE permit_status (\n    status_id INT PRIMARY KEY,\n    application_id INT,\n    approval_id INT,\n    status VARCHAR(50),\n    CONSTRAINT fk_application_id FOREIGN KEY (application_id) REFERENCES permit_applications(application_id),\n    CONSTRAINT fk_approval_id FOREIGN KEY (approval_id) REFERENCES permit_approvals(approval_id)\n);"
+      }
+    ]
+  }
+]

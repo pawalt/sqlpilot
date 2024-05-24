@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_overlay_information (\n  id SERIAL PRIMARY KEY,\n  object_name VARCHAR(50) NOT NULL,\n  object_type VARCHAR(50) NOT NULL,\n  overlay_image_url TEXT NOT NULL,\n  object_coordinates GEOMETRY NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AR_Overlay_Info (\n    id SERIAL PRIMARY KEY,\n    overlay_name VARCHAR(50) NOT NULL,\n    overlay_description TEXT,\n    overlay_image_url TEXT,\n    ar_object_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Real_World_Object (\n    id SERIAL PRIMARY KEY,\n    object_name VARCHAR(50) NOT NULL,\n    object_description TEXT,\n    object_location POINT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE AR_Overlay (id INT PRIMARY KEY,\n overlay_name VARCHAR(255),\n overlay_data TEXT,\n overlay_location POINT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Real_World_Object (id INT PRIMARY KEY,\n object_name VARCHAR(255),\n object_description TEXT,\n object_location POINT);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Spatial_Mapping (id INT PRIMARY KEY,\n mapping_name VARCHAR(255),\n mapping_description TEXT,\n mapping_data JSON);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_overlay_info (\n    overlay_id UUID PRIMARY KEY,\n    object_id UUID NOT NULL,\n    overlay_name VARCHAR(255) NOT NULL,\n    overlay_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE object_data (\n    object_id UUID PRIMARY KEY,\n    object_name VARCHAR(255) NOT NULL,\n    object_type VARCHAR(50) NOT NULL,\n    creation_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE spatial_mapping (\n    mapping_id UUID PRIMARY KEY,\n    overlay_id UUID NOT NULL,\n    object_id UUID NOT NULL,\n    mapping_description TEXT,\n    mapping_data JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ar_applications (\n    app_id UUID PRIMARY KEY,\n    app_name VARCHAR(255) NOT NULL,\n    app_version VARCHAR(20) NOT NULL,\n    app_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ar_overlay_info (\n    overlay_id SERIAL PRIMARY KEY,\n    overlay_name VARCHAR(255) NOT NULL,\n    overlay_type VARCHAR(50),\n    overlay_description TEXT,\n    object_id INT REFERENCES real_world_objects(object_id)\n);\n\nCREATE TABLE real_world_objects (\n    object_id SERIAL PRIMARY KEY,\n    object_name VARCHAR(255) NOT NULL,\n    object_category VARCHAR(50),\n    object_description TEXT,\n    object_location POINT\n);\n\nCREATE TABLE ar_mappings (\n    mapping_id SERIAL PRIMARY KEY,\n    overlay_id INT REFERENCES ar_overlay_info(overlay_id),\n    object_id INT REFERENCES real_world_objects(object_id),\n    map_description TEXT,\n    map_image BYTEA\n);\n\nCREATE TABLE ar_settings (\n    setting_id SERIAL PRIMARY KEY,\n    setting_name VARCHAR(100) NOT NULL,\n    setting_value TEXT\n);\n\nCREATE TABLE ar_users (\n    user_id SERIAL PRIMARY KEY,\n    user_name VARCHAR(100) NOT NULL,\n    user_email VARCHAR(255) UNIQUE\n);"
+      }
+    ]
+  }
+]

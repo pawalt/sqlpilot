@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProjectProgress (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  milestone INT,\n  progress_percentage DECIMAL(5,2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Projects (\n    project_id serial PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Specifications (\n    spec_id serial PRIMARY KEY,\n    project_id INT REFERENCES Projects(project_id),\n    spec_name VARCHAR(255),\n    spec_details TEXT,\n    created_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id UUID PRIMARY KEY,\n  project_name STRING,\n  start_date DATE,\n  status STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n  member_id UUID PRIMARY KEY,\n  member_name STRING,\n  member_email STRING,\n  team_id UUID REFERENCES teams(team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE teams (\n  team_id UUID PRIMARY KEY,\n  team_name STRING,\n  project_id UUID REFERENCES projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(255),\n  project_description TEXT,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n  task_id UUID PRIMARY KEY,\n  task_name VARCHAR(255),\n  task_description TEXT,\n  task_status VARCHAR(50),\n  project_id UUID,\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n  member_id UUID PRIMARY KEY,\n  member_name VARCHAR(100),\n  member_role VARCHAR(50),\n  project_id UUID,\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE technical_specs (\n  spec_id UUID PRIMARY KEY,\n  spec_name VARCHAR(255),\n  spec_description TEXT,\n  spec_owner VARCHAR(100),\n  project_id UUID,\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Project (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Team (\n    team_id UUID PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    lead_engineer VARCHAR(255),\n    project_id UUID REFERENCES Project(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Task (\n    task_id UUID PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    team_id UUID REFERENCES Team(team_id),\n    status VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Engineer (\n    engineer_id UUID PRIMARY KEY,\n    engineer_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    team_id UUID REFERENCES Team(team_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Specification (\n    specification_id UUID PRIMARY KEY,\n    specification_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    project_id UUID REFERENCES Project(project_id)\n);\n"
+      }
+    ]
+  }
+]

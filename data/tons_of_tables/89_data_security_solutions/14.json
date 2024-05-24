@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_backups (\n    backup_id SERIAL PRIMARY KEY,\n    backup_name VARCHAR(255) NOT NULL,\n    backup_type VARCHAR(50) NOT NULL,\n    backup_status VARCHAR(50) NOT NULL,\n    backup_time TIMESTAMP NOT NULL,\n    backup_location VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n    backup_id INT PRIMARY KEY,\n    backup_name VARCHAR(50) NOT NULL,\n    backup_schedule TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id INT PRIMARY KEY,\n    backup_id INT REFERENCES backups(backup_id),\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n  id INT PRIMARY KEY,\n  backup_name VARCHAR(255),\n  backup_path VARCHAR(255),\n  backup_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_schedule (\n  schedule_id INT PRIMARY KEY,\n  backup_id INT,\n  schedule_time TIMESTAMP,\n  is_active BOOL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n  log_id INT PRIMARY KEY,\n  backup_id INT,\n  log_message TEXT,\n  log_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backups (\n    backup_id SERIAL PRIMARY KEY,\n    backup_name VARCHAR(50) NOT NULL,\n    backup_schedule TIMESTAMP NOT NULL,\n    backup_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id SERIAL PRIMARY KEY,\n    backup_id INT REFERENCES backups(backup_id),\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_jobs (\n    job_id SERIAL PRIMARY KEY,\n    backup_id INT REFERENCES backups(backup_id),\n    job_status VARCHAR(20) NOT NULL,\n    job_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_history (\n    history_id SERIAL PRIMARY KEY,\n    backup_id INT REFERENCES backups(backup_id),\n    history_timestamp TIMESTAMP NOT NULL,\n    history_status VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE backup_config (\n    id SERIAL PRIMARY KEY,\n    backup_name VARCHAR(100) NOT NULL,\n    backup_frequency INTERVAL NOT NULL,\n    backup_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_job (\n    job_id SERIAL PRIMARY KEY,\n    backup_id INT REFERENCES backup_config(id),\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP,\n    status VARCHAR(50) DEFAULT 'Scheduled'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_history (\n    backup_id INT REFERENCES backup_config(id),\n    backup_time TIMESTAMP NOT NULL,\n    backup_size DOUBLE PRECISION NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_logs (\n    log_id SERIAL PRIMARY KEY,\n    backup_id INT REFERENCES backup_config(id),\n    log_message TEXT,\n    log_time TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE backup_users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  }
+]

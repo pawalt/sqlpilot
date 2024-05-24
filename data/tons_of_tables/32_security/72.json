@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE passwords (\n  id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  encrypted_password VARCHAR(100) NOT NULL,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Passwords (\n    password_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    encrypted_password VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE passwords (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    full_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    user_id INT NOT NULL,\n    action VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash TEXT NOT NULL,\n    salt TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_policies (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    min_length INT NOT NULL,\n    min_special_chars INT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_history (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    password_hash TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_resets (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    reset_code TEXT NOT NULL,\n    reset_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash BYTEA NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE passwords (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id) ON DELETE CASCADE,\n    password_description TEXT,\n    password_encrypted BYTEA NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_policies (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id) ON DELETE CASCADE,\n    password_policy_name VARCHAR(50) NOT NULL,\n    password_length INT,\n    password_special_characters BOOL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_history (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id) ON DELETE CASCADE,\n    password_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    password_hash BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_reset_tokens (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id) ON DELETE CASCADE,\n    reset_token VARCHAR(100) UNIQUE NOT NULL,\n    reset_token_expiration TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

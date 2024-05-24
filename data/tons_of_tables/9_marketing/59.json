@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscription_lists (\n    list_id INT PRIMARY KEY,\n    list_name VARCHAR(255),\n    list_description TEXT,\n    created_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscription_lists (\n    list_id INT PRIMARY KEY,\n    list_name VARCHAR(255) NOT NULL,\n    list_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE newsletters (\n    newsletter_id INT PRIMARY KEY,\n    list_id INT,\n    subject VARCHAR(255) NOT NULL,\n    content TEXT,\n    sent_date TIMESTAMP,\n    FOREIGN KEY (list_id) REFERENCES subscription_lists(list_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE newsletter_subscriptions (\n    subscription_id INT PRIMARY KEY,\n    email VARCHAR(255) NOT NULL,\n    customer_id INT NOT NULL,\n    subscription_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_segments (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(100) NOT NULL,\n    criteria JSONB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE newsletter_content (\n    content_id INT PRIMARY KEY,\n    segment_id INT NOT NULL,\n    content TEXT NOT NULL,\n    send_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscription_list (\n    list_id INT PRIMARY KEY,\n    list_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n    customer_id INT PRIMARY KEY,\n    first_name TEXT,\n    last_name TEXT,\n    email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE newsletter (\n    newsletter_id INT PRIMARY KEY,\n    subject TEXT,\n    content TEXT,\n    created_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE segment (\n    segment_id INT PRIMARY KEY,\n    segment_name TEXT,\n    criteria TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE subscribers (\n    subscriber_id INT PRIMARY KEY,\n    email VARCHAR(255) UNIQUE NOT NULL,\n    name VARCHAR(100) NOT NULL,\n    subscription_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE newsletters (\n    newsletter_id INT PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    content TEXT NOT NULL,\n    sent_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE segments (\n    segment_id INT PRIMARY KEY,\n    segment_name VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE subscriber_segment (\n    subscriber_id INT REFERENCES subscribers(subscriber_id),\n    segment_id INT REFERENCES segments(segment_id),\n    PRIMARY KEY (subscriber_id, segment_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE segment_newsletter (\n    segment_id INT REFERENCES segments(segment_id),\n    newsletter_id INT REFERENCES newsletters(newsletter_id),\n    PRIMARY KEY (segment_id, newsletter_id)\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE financial_data ( \n\tid INT, \n\taccount_number STRING, \n\tssn STRING, \n\tcredit_card_number STRING, \n\tencrypted_data BYTES, \n\tPRIMARY KEY (id) \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_financial_data (\n  id INT PRIMARY KEY,\n  account_id INT,\n  encrypted_credit_card_number VARCHAR,\n  encrypted_ssn VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n  log_id INT PRIMARY KEY,\n  user_id INT,\n  action_performed VARCHAR,\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sensitive_financial_data (\n  id INT PRIMARY KEY,\n  encrypted_card_number TEXT,\n  encrypted_cvv TEXT,\n  encrypted_expiry_date TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n  user_id INT PRIMARY KEY,\n  username TEXT,\n  password_hash TEXT,\n  security_question TEXT,\n  security_answer TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_logs (\n  log_id INT PRIMARY KEY,\n  timestamp TIMESTAMP,\n  user_id INT,\n  transaction_details TEXT,\n  amount DECIMAL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customer (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    address VARCHAR(100),\n    account_number VARCHAR(20),\n    encrypted_ssn VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Account (\n    account_id INT PRIMARY KEY,\n    customer_id INT REFERENCES Customer(customer_id),\n    account_type VARCHAR(20),\n    balance DECIMAL(12,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Transaction (\n    transaction_id INT PRIMARY KEY,\n    account_id INT REFERENCES Account(account_id),\n    transaction_date DATE,\n    amount DECIMAL(12,2),\n    description VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CreditCard (\n    card_number VARCHAR(16) PRIMARY KEY,\n    customer_id INT REFERENCES Customer(customer_id),\n    expiration_date DATE,\n    cvv VARCHAR(3),\n    encrypted_cardholder_name VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer (\n    customer_id SERIAL PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    credit_card_number VARCHAR(16),\n    encrypted_ssn VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction (\n    transaction_id SERIAL PRIMARY KEY,\n    date DATE,\n    amount DECIMAL,\n    customer_id INT REFERENCES customer(customer_id),\n    encrypted_payment_info BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE account (\n    account_id SERIAL PRIMARY KEY,\n    account_number VARCHAR(20),\n    customer_id INT REFERENCES customer(customer_id),\n    balance DECIMAL,\n    encrypted_financial_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee (\n    employee_id SERIAL PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    position VARCHAR(50),\n    encrypted_salary BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(100),\n    last_login TIMESTAMP,\n    login_attempts INT\n);"
+      }
+    ]
+  }
+]

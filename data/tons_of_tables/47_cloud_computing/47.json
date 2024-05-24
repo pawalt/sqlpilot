@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityBreachForensics (\n  breach_id INT,\n  breach_date DATE,\n  affected_records INT,\n  breach_type VARCHAR(50),\n  investigation_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityBreachForensics (\n  id INT PRIMARY KEY,\n  breach_date TIMESTAMP,\n  breach_type VARCHAR(255),\n  affected_systems ARRAY,\n  breach_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BreachInvestigation (\n  investigation_id INT PRIMARY KEY,\n  breach_id INT REFERENCES SecurityBreachForensics(id),\n  investigator_name VARCHAR(255),\n  investigation_notes TEXT,\n  investigation_status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityBreachRecords (id INT PRIMARY KEY, date TIMESTAMP, event_type VARCHAR(50), description TEXT)"
+      },
+      {
+        "table_schema": "CREATE TABLE UserActivityLogs (id INT PRIMARY KEY, user_id INT, username VARCHAR(50), action VARCHAR(50), timestamp TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE ForensicReports (id INT PRIMARY KEY, case_id INT, report TEXT, investigator VARCHAR(50), date_generated DATE)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE breaching_events (\n    event_id INT PRIMARY KEY,\n    event_date DATE,\n    event_type VARCHAR(50),\n    summary TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE evidence_collection (\n    evidence_id INT PRIMARY KEY,\n    event_id INT REFERENCES breaching_events(event_id),\n    evidence_type VARCHAR(50),\n    evidence_details TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE suspects (\n    suspect_id INT PRIMARY KEY,\n    evidence_id INT REFERENCES evidence_collection(evidence_id),\n    suspect_name VARCHAR(50),\n    alias VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE investigation_reports (\n    report_id INT PRIMARY KEY,\n    event_id INT REFERENCES breaching_events(event_id),\n    report_date DATE,\n    findings TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE breaches (\n  id INT PRIMARY KEY,\n  date TIMESTAMP,\n  affected_entity TEXT,\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE attackers (\n  id INT PRIMARY KEY,\n  name TEXT,\n  organization TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE hacking_methods (\n  id INT PRIMARY KEY,\n  method_name TEXT,\n  complexity INT,\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_details (\n  id INT PRIMARY KEY,\n  breach_id INT,\n  attacker_id INT,\n  method_id INT,\n  severity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE investigations (\n  id INT PRIMARY KEY,\n  start_date TIMESTAMP,\n  end_date TIMESTAMP,\n  result TEXT\n);\n"
+      }
+    ]
+  }
+]

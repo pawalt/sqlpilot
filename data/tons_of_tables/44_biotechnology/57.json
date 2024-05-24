@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    title VARCHAR(255),\n    authors VARCHAR(255),\n    abstract TEXT,\n    publication_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE peer_reviewed_articles (\n  article_id INT PRIMARY KEY,\n  title VARCHAR(255) NOT NULL,\n  authors VARCHAR(255) NOT NULL,\n  published_date DATE,\n  doi VARCHAR(50),\n  abstract TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_collaborations (\n  collaboration_id INT PRIMARY KEY,\n  project_title VARCHAR(255) NOT NULL,\n  funding_source VARCHAR(100),\n  start_date DATE,\n  end_date DATE,\n  collaborators VARCHAR(255),\n  description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n  article_id SERIAL PRIMARY KEY,\n  title TEXT NOT NULL,\n  authors TEXT[],\n  abstract TEXT,\n  publication_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE authors (\n  author_id SERIAL PRIMARY KEY,\n  full_name TEXT NOT NULL,\n  affiliation TEXT,\n  email TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborations (\n  collaboration_id SERIAL PRIMARY KEY,\n  article_id INT REFERENCES articles (article_id),\n  author_id INT REFERENCES authors (author_id),\n  collaboration_type TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n  article_id INT PRIMARY KEY,\n  title TEXT,\n  authors TEXT[],\n  publication_date DATE,\n  abstract TEXT,\n  keywords TEXT[]\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE authors (\n  author_id INT PRIMARY KEY,\n  full_name TEXT,\n  affiliation TEXT,\n  email TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborations (\n  collaboration_id INT PRIMARY KEY,\n  article_id INT,\n  author_id INT,\n  FOREIGN KEY (article_id) REFERENCES articles(article_id),\n  FOREIGN KEY (author_id) REFERENCES authors(author_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (\n  keyword_id INT PRIMARY KEY,\n  keyword TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    author VARCHAR(255) NOT NULL,\n    publish_date DATE,\n    abstract TEXT,\n    keywords VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authors (\n    author_id INT PRIMARY KEY,\n    author_name VARCHAR(255) NOT NULL,\n    affiliation VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collaborations (\n    collaboration_id INT PRIMARY KEY,\n    article_id INT,\n    author_id INT,\n    FOREIGN KEY (article_id) REFERENCES articles(article_id),\n    FOREIGN KEY (author_id) REFERENCES authors(author_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE keywords (\n    keyword_id INT PRIMARY KEY,\n    keyword VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id INT PRIMARY KEY,\n    article_id INT,\n    reviewer_id INT,\n    comments TEXT,\n    rating INT,\n    FOREIGN KEY (article_id) REFERENCES articles(article_id),\n    FOREIGN KEY (reviewer_id) REFERENCES authors(author_id)\n);"
+      }
+    ]
+  }
+]

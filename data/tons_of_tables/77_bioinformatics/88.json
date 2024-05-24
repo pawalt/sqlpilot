@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cell_imaging_data (\n  image_id UUID PRIMARY KEY,\n  image_data BYTEA,\n  cell_type VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cell_images (\n    id INT PRIMARY KEY,\n    image_path VARCHAR(255),\n    cell_type VARCHAR(50),\n    image_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE cell_types (\n    cell_type VARCHAR(50) PRIMARY KEY,\n    description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CellImages (\n    image_id INT PRIMARY KEY,\n    image_data BYTEA NOT NULL,\n    cell_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CellLabels (\n    label_id INT PRIMARY KEY,\n    image_id INT REFERENCES CellImages(image_id),\n    label TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingData (\n    training_id INT PRIMARY KEY,\n    image_id INT REFERENCES CellImages(image_id),\n    label_id INT REFERENCES CellLabels(label_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CellImages (\n image_id INT PRIMARY KEY,\n image_path VARCHAR(255),\n cell_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CellFeatures (\n feature_id INT PRIMARY KEY,\n image_id INT,\n feature_value FLOAT,\n FOREIGN KEY (image_id) REFERENCES CellImages(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MLModel (\n model_id INT PRIMARY KEY,\n model_name VARCHAR(50),\n model_accuracy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingData (\n data_id INT PRIMARY KEY,\n image_id INT,\n true_label VARCHAR(50),\n predicted_label VARCHAR(50),\n FOREIGN KEY (image_id) REFERENCES CellImages(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CellImages (\n    image_id INT PRIMARY KEY,\n    image_data BYTEA,\n    cell_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CellTypes (\n    type_id INT PRIMARY KEY,\n    type_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MachineLearningModels (\n    model_id INT PRIMARY KEY,\n    model_name VARCHAR(50) UNIQUE,\n    model_path VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageLabels (\n    image_id INT REFERENCES CellImages(image_id),\n    type_id INT REFERENCES CellTypes(type_id),\n    PRIMARY KEY (image_id, type_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelTrainingData (\n    model_id INT REFERENCES MachineLearningModels(model_id),\n    image_id INT REFERENCES CellImages(image_id),\n    type_id INT REFERENCES CellTypes(type_id),\n    PRIMARY KEY (model_id, image_id)\n);"
+      }
+    ]
+  }
+]

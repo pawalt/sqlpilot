@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_metadata (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    last_modified TIMESTAMP NOT NULL,\n    version INT NOT NULL,\n    author VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_metadata (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    asset_description TEXT,\n    created_at TIMESTAMP,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE version_control (\n    version_id SERIAL PRIMARY KEY,\n    asset_id UUID REFERENCES asset_metadata(asset_id),\n    version_number INT,\n    version_notes TEXT,\n    version_creator VARCHAR(100),\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    asset_size INT,\n    created_date TIMESTAMP,\n    modified_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE versions (\n    version_id UUID PRIMARY KEY,\n    asset_id UUID,\n    version_number INT,\n    version_date TIMESTAMP,\n    version_description TEXT,\n    FOREIGN KEY (asset_id) REFERENCES assets(asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    project_manager VARCHAR(100),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE asset_metadata (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255),\n    asset_type VARCHAR(50),\n    created_on TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_versions (\n    version_id INT PRIMARY KEY,\n    asset_id INT,\n    version_number INT,\n    version_description TEXT,\n    created_on TIMESTAMP,\n    FOREIGN KEY (asset_id) REFERENCES asset_metadata(asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_metadata (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    created_on TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_assets (\n    project_id INT,\n    asset_id INT,\n    version_id INT,\n    PRIMARY KEY (project_id, asset_id, version_id),\n    FOREIGN KEY (project_id) REFERENCES project_metadata(project_id),\n    FOREIGN KEY (asset_id) REFERENCES asset_metadata(asset_id),\n    FOREIGN KEY (version_id) REFERENCES asset_versions(version_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n  asset_id UUID PRIMARY KEY,\n  asset_name VARCHAR(255) NOT NULL,\n  asset_type VARCHAR(50) NOT NULL,\n  asset_size INT NOT NULL,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE versions (\n  version_id UUID PRIMARY KEY,\n  asset_id UUID REFERENCES assets(asset_id),\n  version_number INT NOT NULL,\n  version_description TEXT,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  project_description TEXT,\n  created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_assets (\n  project_id UUID REFERENCES projects(project_id),\n  asset_id UUID REFERENCES assets(asset_id),\n  version_id UUID REFERENCES versions(version_id),\n  PRIMARY KEY (project_id, asset_id, version_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_tags (\n  asset_id UUID REFERENCES assets(asset_id),\n  tag VARCHAR(50) NOT NULL,\n  PRIMARY KEY (asset_id, tag)\n);"
+      }
+    ]
+  }
+]

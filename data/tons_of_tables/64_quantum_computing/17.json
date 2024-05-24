@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumErrorCorrection (\n    code_id INT PRIMARY KEY,\n    code_name VARCHAR(255),\n    code_description TEXT,\n    syndrome_type VARCHAR(50),\n    syndrome_report TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE error_correction_codes (\n    code_id INT PRIMARY KEY,\n    code_name VARCHAR(50) NOT NULL,\n    code_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE syndromes (\n    syndrome_id INT PRIMARY KEY,\n    syndrome_code_id INT,\n    syndrome_description TEXT,\n    FOREIGN KEY (syndrome_code_id) REFERENCES error_correction_codes(code_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE error_correction_codes (\n    code_id INT PRIMARY KEY,\n    code_name TEXT,\n    properties JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE syndromes (\n    syndrome_id INT PRIMARY KEY,\n    syndrome_name TEXT,\n    properties JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE codes_syndromes (\n    code_id INT REFERENCES error_correction_codes(code_id),\n    syndrome_id INT REFERENCES syndromes(syndrome_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Quantum_Error_Correction_Codes (\n    code_id SERIAL PRIMARY KEY,\n    code_name VARCHAR(50) NOT NULL,\n    code_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Code_Syndromes (\n    syndrome_id SERIAL PRIMARY KEY,\n    syndrome_code_id INT NOT NULL,\n    syndrome_name VARCHAR(50) NOT NULL,\n    FOREIGN KEY (syndrome_code_id) REFERENCES Quantum_Error_Correction_Codes(code_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Syndrome_Errors (\n    error_id SERIAL PRIMARY KEY,\n    error_syndrome_id INT NOT NULL,\n    error_description TEXT,\n    FOREIGN KEY (error_syndrome_id) REFERENCES Code_Syndromes(syndrome_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Error_Logs (\n    log_id SERIAL PRIMARY KEY,\n    log_timestamp TIMESTAMP NOT NULL,\n    log_error_id INT NOT NULL,\n    log_message TEXT,\n    FOREIGN KEY (log_error_id) REFERENCES Syndrome_Errors(error_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumErrorCorrectionCodes (\n    code_id INT PRIMARY KEY,\n    code_name VARCHAR(255),\n    code_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumSyndromes (\n    syndrome_id INT PRIMARY KEY,\n    syndrome_name VARCHAR(255),\n    syndrome_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CodeSyndromeMapping (\n    mapping_id INT PRIMARY KEY,\n    code_id INT,\n    syndrome_id INT,\n    FOREIGN KEY (code_id) REFERENCES QuantumErrorCorrectionCodes(code_id),\n    FOREIGN KEY (syndrome_id) REFERENCES QuantumSyndromes(syndrome_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SyndromeHistory (\n    history_id INT PRIMARY KEY,\n    syndrome_id INT,\n    history_date DATE,\n    history_description TEXT,\n    FOREIGN KEY (syndrome_id) REFERENCES QuantumSyndromes(syndrome_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CodeStatistics (\n    stats_id INT PRIMARY KEY,\n    code_id INT,\n    stats_value INT,\n    stats_date DATE,\n    FOREIGN KEY (code_id) REFERENCES QuantumErrorCorrectionCodes(code_id)\n);\n"
+      }
+    ]
+  }
+]

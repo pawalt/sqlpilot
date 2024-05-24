@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeospatialData (\n    survey_id UUID PRIMARY KEY,\n    survey_date DATE,\n    drone_id UUID,\n    latitude DECIMAL,\n    longitude DECIMAL,\n    altitude DECIMAL,\n    crop_type TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE drones_surveys (\n    survey_id INT PRIMARY KEY,\n    drone_id INT NOT NULL,\n    survey_date DATE NOT NULL,\n    captured_area DECIMAL(10,2) NOT NULL,\n    survey_image BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE crop_monitoring (\n    monitoring_id INT PRIMARY KEY,\n    survey_id INT NOT NULL,\n    crop_type VARCHAR(50) NOT NULL,\n    growth_status VARCHAR(20) NOT NULL,\n    health_status VARCHAR(20),\n    crop_location POINT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DroneSurvey (\n    id INT PRIMARY KEY,\n    survey_name VARCHAR(255),\n    survey_date DATE,\n    drone_model VARCHAR(50),\n    survey_area_km2 DECIMAL(10, 2),\n    survey_duration_minutes INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyImage (\n    image_id INT PRIMARY KEY,\n    survey_id INT,\n    image_url VARCHAR(255),\n    image_resolution_dpi INT,\n    image_timestamp TIMESTAMP,\n    PRIMARY KEY (image_id, survey_id),\n    FOREIGN KEY (survey_id) REFERENCES DroneSurvey(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CropField (\n    field_id INT PRIMARY KEY,\n    field_name VARCHAR(100),\n    field_area_km2 DECIMAL(10, 2),\n    crop_type VARCHAR(50),\n    planting_date DATE,\n    cultivation_status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DroneSurveys (\n    survey_id UUID PRIMARY KEY,\n    survey_date DATE,\n    drone_model VARCHAR(50),\n    area_covered FLOAT,\n    survey_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SurveyImages (\n    image_id UUID PRIMARY KEY,\n    survey_id UUID,\n    image_data BYTEA,\n    image_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CropTypes (\n    crop_id UUID PRIMARY KEY,\n    crop_name VARCHAR(50),\n    growth_duration INTEGER,\n    optimum_temperature_range VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldMappings (\n    mapping_id UUID PRIMARY KEY,\n    survey_id UUID,\n    crop_id UUID,\n    mapped_area FLOAT,\n    mapping_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE `survey_area` (\n  `id` SERIAL PRIMARY KEY,\n  `name` VARCHAR(50) NOT NULL,\n  `area_size` DECIMAL NOT NULL,\n  `location` GEOGRAPHY NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE `drone_data` (\n  `id` SERIAL PRIMARY KEY,\n  `timestamp` TIMESTAMP NOT NULL,\n  `altitude` DECIMAL NOT NULL,\n  `latitude` DECIMAL NOT NULL,\n  `longitude` DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE `map_tile` (\n  `id` SERIAL PRIMARY KEY,\n  `tile_name` VARCHAR(50) NOT NULL,\n  `image_url` TEXT NOT NULL,\n  `map_area` GEOGRAPHY NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE `crop_data` (\n  `id` SERIAL PRIMARY KEY,\n  `crop_name` VARCHAR(50) NOT NULL,\n  `yield_per_area` DECIMAL NOT NULL,\n  `harvest_timestamp` TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE `flight_path` (\n  `id` SERIAL PRIMARY KEY,\n  `start_timestamp` TIMESTAMP NOT NULL,\n  `end_timestamp` TIMESTAMP NOT NULL,\n  `drone_id` INT NOT NULL,\n  `path_coordinates` GEOGRAPHY NOT NULL\n);"
+      }
+    ]
+  }
+]

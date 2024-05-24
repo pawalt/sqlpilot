@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_weights (\n    layer_name VARCHAR(255),\n    weight_matrix FLOAT[],\n    bias_vector FLOAT[],\n    PRIMARY KEY (layer_name)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_layers (\n    layer_id SERIAL PRIMARY KEY,\n    layer_name VARCHAR(255) NOT NULL,\n    weights JSONB NOT NULL,\n    biases JSONB NOT NULL\n);\n\nCREATE TABLE network_training_data (\n    data_id SERIAL PRIMARY KEY,\n    layer_id INT NOT NULL,\n    input_data JSONB NOT NULL,\n    output_data JSONB NOT NULL,\n    FOREIGN KEY (layer_id) REFERENCES neural_network_layers(layer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE neural_network_layers (\n    layer_id INT PRIMARY KEY,\n    layer_name VARCHAR(50),\n    weights BLOB,\n    biases BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE training_data (\n    training_id INT PRIMARY KEY,\n    layer_id INT,\n    input_data BLOB,\n    output_data BLOB,\n    FOREIGN KEY (layer_id) REFERENCES neural_network_layers(layer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fine_tuning_logs (\n    log_id INT PRIMARY KEY,\n    training_id INT,\n    loss FLOAT,\n    accuracy FLOAT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (training_id) REFERENCES training_data(training_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE layer_weights (\n    layer_id INT PRIMARY KEY,\n    weights BLOB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE layer_biases (\n    layer_id INT PRIMARY KEY,\n    biases BLOB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE neuron_activations (\n    activation_id INT PRIMARY KEY,\n    activation_value FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fine_tuning_settings (\n    setting_id INT PRIMARY KEY,\n    learning_rate FLOAT,\n    regularization_factor FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE layer_weights (\n\tlayer_id INT PRIMARY KEY,\n\tweight_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE layer_biases (\n\tlayer_id INT PRIMARY KEY,\n\tbias_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE neural_network (\n\tnetwork_id INT PRIMARY KEY,\n\tnetwork_name VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE fine_tuning_info (\n\tfine_tuning_id INT PRIMARY KEY,\n\tlayer_id INT,\n\tlearning_rate FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_metrics (\n\tmetric_id INT PRIMARY KEY,\n\tnetwork_id INT,\n\taccuracy FLOAT,\n\tloss FLOAT\n);\n"
+      }
+    ]
+  }
+]

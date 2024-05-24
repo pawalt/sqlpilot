@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    complexity VARCHAR(50),\n    security_level VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(50) NOT NULL,\n    algorithm_description TEXT,\n    algorithm_code TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_parameters (\n    parameter_id INT PRIMARY KEY,\n    algorithm_id INT,\n    parameter_name VARCHAR(50) NOT NULL,\n    parameter_description TEXT,\n    param_type VARCHAR(20) NOT NULL,\n    FOREIGN KEY (algorithm_id) REFERENCES quantum_algorithms(algorithm_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255) NOT NULL,\n    encryption_key VARCHAR(512) NOT NULL,\n    description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_parameters (\n    parameter_id INT PRIMARY KEY,\n    algorithm_id INT NOT NULL,\n    parameter_name VARCHAR(255) NOT NULL,\n    parameter_type VARCHAR(50) NOT NULL,\n    parameter_value TEXT,\n    FOREIGN KEY (algorithm_id) REFERENCES quantum_algorithms (algorithm_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_users (\n    user_id INT PRIMARY KEY,\n    algorithm_id INT NOT NULL,\n    username VARCHAR(100) NOT NULL,\n    user_role VARCHAR(50) NOT NULL,\n    user_email VARCHAR(255),\n    FOREIGN KEY (algorithm_id) REFERENCES quantum_algorithms (algorithm_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumAlgorithms (\n    algorithm_id UUID PRIMARY KEY,\n    algorithm_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    author VARCHAR(100),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumKeys (\n    key_id UUID PRIMARY KEY,\n    key_name VARCHAR(255) NOT NULL,\n    key_value TEXT,\n    algorithm_id UUID,\n    FOREIGN KEY (algorithm_id) REFERENCES QuantumAlgorithms (algorithm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumUsers (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(100) NOT NULL,\n    email VARCHAR(255),\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumAccess (\n    access_id UUID PRIMARY KEY,\n    user_id UUID,\n    key_id UUID,\n    access_level VARCHAR(50),\n    FOREIGN KEY (user_id) REFERENCES QuantumUsers (user_id),\n    FOREIGN KEY (key_id) REFERENCES QuantumKeys (key_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumAlgorithms (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlgorithmParameters (\n    parameter_id INT PRIMARY KEY,\n    algorithm_id INT,\n    parameter_name VARCHAR(255) NOT NULL,\n    parameter_value VARCHAR(255),\n    FOREIGN KEY (algorithm_id) REFERENCES QuantumAlgorithms(algorithm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlgorithmAuthors (\n    author_id INT PRIMARY KEY,\n    author_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlgorithmCategories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlgorithmCategoryMapping (\n    id INT PRIMARY KEY,\n    algorithm_id INT,\n    category_id INT,\n    FOREIGN KEY (algorithm_id) REFERENCES QuantumAlgorithms(algorithm_id),\n    FOREIGN KEY (category_id) REFERENCES AlgorithmCategories(category_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_asset_ownership (\n    asset_id INT PRIMARY KEY,\n    owner_id INT,\n    asset_name VARCHAR(255),\n    token_amount DECIMAL(18,2),\n    token_type ENUM('fungible', 'non-fungible'),\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    owner_address VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_ownership (\n    ownership_id UUID PRIMARY KEY,\n    asset_id UUID NOT NULL,\n    owner_address VARCHAR(255) NOT NULL,\n    owner_name VARCHAR(100),\n    ownership_status VARCHAR(50) DEFAULT 'Active',\n    timestamp TIMESTAMP NOT NULL,\n    FOREIGN KEY (asset_id) REFERENCES digital_assets(asset_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_asset_owners (\n    id SERIAL PRIMARY KEY,\n    owner_address VARCHAR(255) NOT NULL,\n    asset_id UUID NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE digital_asset_metadata (\n    id SERIAL PRIMARY KEY,\n    asset_id UUID NOT NULL,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type VARCHAR(50),\n    asset_description TEXT,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_transactions (\n    id SERIAL PRIMARY KEY,\n    transaction_id UUID NOT NULL,\n    asset_id UUID NOT NULL,\n    transaction_type VARCHAR(50) NOT NULL,\n    transaction_amount DECIMAL(18, 2) NOT NULL,\n    transaction_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n    id SERIAL PRIMARY KEY,\n    asset_name VARCHAR(100) NOT NULL,\n    owner_address VARCHAR(100) NOT NULL,\n    token_type VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_owners (\n    id SERIAL PRIMARY KEY,\n    owner_id INT NOT NULL,\n    owner_name VARCHAR(100) NOT NULL,\n    total_assets_owned INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE asset_transactions (\n    id SERIAL PRIMARY KEY,\n    asset_id INT NOT NULL,\n    buyer_id INT NOT NULL,\n    seller_id INT NOT NULL,\n    transaction_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE token_platform_users (\n    id SERIAL PRIMARY KEY,\n    user_name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE digital_assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type VARCHAR(100),\n    owner_id INT REFERENCES owners(owner_id),\n    token_id VARCHAR(50) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE owners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(255) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    asset_id INT REFERENCES digital_assets(asset_id),\n    sender_id INT REFERENCES owners(owner_id),\n    receiver_id INT REFERENCES owners(owner_id),\n    amount DECIMAL(18, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain (\n    block_id SERIAL PRIMARY KEY,\n    previous_block_id INT,\n    timestamp TIMESTAMP NOT NULL,\n    hash VARCHAR(255) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE token_metadata (\n    token_id VARCHAR(50) PRIMARY KEY,\n    token_name VARCHAR(255) NOT NULL,\n    total_supply INT NOT NULL,\n    decimal_places TINYINT NOT NULL\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumErrorTracking (\n    quantum_circuit_id INT NOT NULL,\n    error_type VARCHAR(50) NOT NULL,\n    correction_strategy VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ErrorTypes (\n   error_id SERIAL PRIMARY KEY,\n   error_name VARCHAR(50) NOT NULL,\n   error_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CorrectionStrategies (\n   strategy_id SERIAL PRIMARY KEY,\n   strategy_name VARCHAR(50) NOT NULL,\n   strategy_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Errors (\n    error_id INT PRIMARY KEY,\n    error_type VARCHAR(255),\n    error_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CorrectionStrategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255),\n    strategy_details TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ErrorCorrectionMapping (\n    mapping_id INT PRIMARY KEY,\n    error_id INT,\n    strategy_id INT,\n    FOREIGN KEY (error_id) REFERENCES Errors(error_id),\n    FOREIGN KEY (strategy_id) REFERENCES CorrectionStrategies(strategy_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Errors (\n  error_id SERIAL PRIMARY KEY,\n  error_type VARCHAR(50) NOT NULL,\n  error_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Correction_Strategies (\n  strategy_id SERIAL PRIMARY KEY,\n  strategy_name VARCHAR(50) NOT NULL,\n  strategy_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Error_Corrections (\n  correction_id SERIAL PRIMARY KEY,\n  error_id INT NOT NULL,\n  strategy_id INT NOT NULL,\n  FOREIGN KEY (error_id) REFERENCES Errors(error_id),\n  FOREIGN KEY (strategy_id) REFERENCES Correction_Strategies(strategy_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Circuit_Errors (\n  circuit_id SERIAL PRIMARY KEY,\n  error_id INT NOT NULL,\n  circuit_name VARCHAR(50) NOT NULL,\n  circuit_description TEXT,\n  FOREIGN KEY (error_id) REFERENCES Errors(error_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ErrorTypes (\n    error_id INT PRIMARY KEY,\n    error_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CorrectionStrategies (\n    strategy_id INT PRIMARY KEY,\n    strategy_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE QuantumCircuits (\n    circuit_id INT PRIMARY KEY,\n    circuit_name VARCHAR(255) NOT NULL,\n    error_id INT,\n    strategy_id INT,\n    FOREIGN KEY (error_id) REFERENCES ErrorTypes(error_id),\n    FOREIGN KEY (strategy_id) REFERENCES CorrectionStrategies(strategy_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CircuitErrors (\n    circuit_error_id INT PRIMARY KEY,\n    circuit_id INT,\n    error_id INT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (circuit_id) REFERENCES QuantumCircuits(circuit_id),\n    FOREIGN KEY (error_id) REFERENCES ErrorTypes(error_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ErrorLogs (\n    log_id INT PRIMARY KEY,\n    circuit_error_id INT,\n    log_message TEXT,\n    FOREIGN KEY (circuit_error_id) REFERENCES CircuitErrors(circuit_error_id)\n);"
+      }
+    ]
+  }
+]

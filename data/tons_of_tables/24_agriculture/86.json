@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EquipmentMaintenanceSchedule (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(255),\n  maintenance_type VARCHAR(50),\n  maintenance_date DATE,\n  estimated_cost DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE equipment (\n  equipment_id INT PRIMARY KEY,\n  equipment_name VARCHAR(50),\n  serial_number VARCHAR(20),\n  last_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n  schedule_id INT PRIMARY KEY,\n  equipment_id INT,\n  maintenance_date DATE,\n  maintenance_type VARCHAR(50),\n  technician_name VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Equipment (\n  equipment_id UUID PRIMARY KEY,\n  equipment_name STRING,\n  last_maintenance_date DATE,\n  next_maintenance_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceSchedule (\n  schedule_id UUID PRIMARY KEY,\n  equipment_id UUID REFERENCES Equipment(equipment_id),\n  maintenance_type STRING,\n  due_date DATE,\n  status STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLog (\n  log_id UUID PRIMARY KEY,\n  schedule_id UUID REFERENCES MaintenanceSchedule(schedule_id),\n  log_date DATE,\n  technician_name STRING,\n  notes STRING\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE equipment (\n    equipment_id INT PRIMARY KEY,\n    equipment_name VARCHAR(255),\n    maintenance_interval INT,\n    last_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_tasks (\n    task_id INT PRIMARY KEY,\n    equipment_id INT,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    task_due_date DATE,\n    FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n    log_id INT PRIMARY KEY,\n    task_id INT,\n    maintenance_date DATE,\n    maintenance_duration INT,\n    maintenance_cost DECIMAL(10, 2),\n    FOREIGN KEY (task_id) REFERENCES maintenance_tasks(task_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule (\n    schedule_id INT PRIMARY KEY,\n    equipment_id INT,\n    next_maintenance_date DATE,\n    last_maintenance_task_id INT,\n    FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id),\n    FOREIGN KEY (last_maintenance_task_id) REFERENCES maintenance_tasks(task_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE equipment ( equipment_id INT PRIMARY KEY, equipment_name STRING, manufacturer STRING, purchase_date DATE, maintenance_interval INT );"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_schedule ( schedule_id INT PRIMARY KEY, equipment_id INT REFERENCES equipment(equipment_id), scheduled_maintenance_date DATE, completed BOOLEAN );"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_records ( record_id INT PRIMARY KEY, schedule_id INT REFERENCES maintenance_schedule(schedule_id), maintenance_details STRING, technician_name STRING, maintenance_date DATE );"
+      },
+      {
+        "table_schema": "CREATE TABLE downtime_logs ( log_id INT PRIMARY KEY, equipment_id INT REFERENCES equipment(equipment_id), downtime_start DATETIME, downtime_end DATETIME, reason STRING );"
+      },
+      {
+        "table_schema": "CREATE TABLE operational_costs ( cost_id INT PRIMARY KEY, equipment_id INT REFERENCES equipment(equipment_id), maintenance_cost DECIMAL, downtime_cost DECIMAL, total_cost DECIMAL );"
+      }
+    ]
+  }
+]

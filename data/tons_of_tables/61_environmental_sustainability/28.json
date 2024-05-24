@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_treatment_facilities (\n facility_id INT PRIMARY KEY,\n facility_name TEXT NOT NULL,\n facility_type TEXT NOT NULL,\n capacity_kg INT NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_treatment_facilities (facility_id INT PRIMARY KEY,\nfacility_name VARCHAR(50) NOT NULL,\ncapacity DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_management_plan (plan_id INT PRIMARY KEY,\nfacility_id INT NOT NULL,\nplan_date DATE NOT NULL,\nplan_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facilities (\n    facility_id SERIAL PRIMARY KEY,\n    facility_name VARCHAR(50) NOT NULL,\n    capacity DECIMAL NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_types (\n    waste_type_id SERIAL PRIMARY KEY,\n    waste_type_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE facility_waste_capacity (\n    facility_id INT REFERENCES facilities(facility_id),\n    waste_type_id INT REFERENCES waste_types(waste_type_id),\n    capacity DECIMAL NOT NULL,\n    PRIMARY KEY (facility_id, waste_type_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_facilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    capacity INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_types (\n    type_id INT PRIMARY KEY,\n    waste_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE facility_types (\n    facility_id INT,\n    type_id INT,\n    FOREIGN KEY (facility_id) REFERENCES waste_facilities(facility_id),\n    FOREIGN KEY (type_id) REFERENCES waste_types(type_id),\n    PRIMARY KEY (facility_id, type_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection (\n    collection_id INT PRIMARY KEY,\n    facility_id INT,\n    collection_date DATE NOT NULL,\n    collected_amount INT NOT NULL,\n    FOREIGN KEY (facility_id) REFERENCES waste_facilities(facility_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteFacilities (\n    facility_id INT PRIMARY KEY,\n    facility_name TEXT,\n    location TEXT,\n    capacity DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteMaterials (\n    material_id INT PRIMARY KEY,\n    material_type TEXT,\n    material_source TEXT,\n    disposal_method TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteInventory (\n    inventory_id INT PRIMARY KEY,\n    facility_id INT,\n    material_id INT,\n    quantity DECIMAL,\n    FOREIGN KEY (facility_id) REFERENCES WasteFacilities(facility_id),\n    FOREIGN KEY (material_id) REFERENCES WasteMaterials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteCollection (\n    collection_id INT PRIMARY KEY,\n    collection_date DATE,\n    facility_id INT,\n    material_id INT,\n    quantity_collected DECIMAL,\n    FOREIGN KEY (facility_id) REFERENCES WasteFacilities(facility_id),\n    FOREIGN KEY (material_id) REFERENCES WasteMaterials(material_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteManagementPlans (\n    plan_id INT PRIMARY KEY,\n    plan_name TEXT,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL\n);\n"
+      }
+    ]
+  }
+]

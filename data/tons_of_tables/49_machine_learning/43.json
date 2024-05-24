@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_cleanup_tasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    task_status BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_cleaning_tasks (\n    task_id SERIAL PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    task_status BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preprocessing_tasks (\n    preprocess_id SERIAL PRIMARY KEY,\n    preprocess_name VARCHAR(255) NOT NULL,\n    preprocess_description TEXT,\n    preprocess_status BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_cleaning_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    task_description TEXT,\n    task_status ENUM('pending', 'completed'),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_preprocessing_steps (\n    step_id INT PRIMARY KEY,\n    step_name VARCHAR(255),\n    step_description TEXT,\n    step_status ENUM('active', 'inactive'),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE preprocessing_logs (\n    log_id INT PRIMARY KEY,\n    step_id INT,\n    log_message TEXT,\n    log_timestamp TIMESTAMP,\n    FOREIGN KEY (step_id) REFERENCES data_preprocessing_steps(step_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_cleaning_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE process_steps (\n    step_id INT PRIMARY KEY,\n    step_name VARCHAR(255) NOT NULL,\n    step_description TEXT,\n    task_id INT,\n    FOREIGN KEY (task_id) REFERENCES data_cleaning_tasks(task_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cleaning_logs (\n    log_id INT PRIMARY KEY,\n    step_id INT,\n    log_message TEXT,\n    log_time TIMESTAMP,\n    FOREIGN KEY (step_id) REFERENCES process_steps(step_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (\n    result_id INT PRIMARY KEY,\n    result_name VARCHAR(255) NOT NULL,\n    result_description TEXT,\n    step_id INT,\n    FOREIGN KEY (step_id) REFERENCES process_steps(step_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_cleaning_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(50) NOT NULL,\n    task_description TEXT,\n    task_status VARCHAR(20) DEFAULT 'Pending'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_preprocessing_steps (\n    step_id INT PRIMARY KEY,\n    step_name VARCHAR(50) NOT NULL,\n    step_description TEXT,\n    step_order INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_cleaning_logs (\n    log_id INT PRIMARY KEY,\n    task_id INT,\n    log_timestamp TIMESTAMP,\n    log_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE preprocessing_logs (\n    log_id INT PRIMARY KEY,\n    step_id INT,\n    log_timestamp TIMESTAMP,\n    log_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cleaning_step_mapping (\n    task_id INT,\n    step_id INT,\n    FOREIGN KEY (task_id) REFERENCES data_cleaning_tasks(task_id),\n    FOREIGN KEY (step_id) REFERENCES data_preprocessing_steps(step_id)\n);"
+      }
+    ]
+  }
+]

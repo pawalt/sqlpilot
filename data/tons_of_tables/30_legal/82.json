@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ClientInformation ( \n  id INT PRIMARY KEY, \n  client_name TEXT, \n  email TEXT, \n  phone_number TEXT, \n  address TEXT, \n  date_of_birth DATE \n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE client_info (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(255) NOT NULL,\n  client_email VARCHAR(255) UNIQUE,\n  client_phone VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE client_notes (\n  note_id SERIAL PRIMARY KEY,\n  client_id INT REFERENCES client_info(client_id),\n  note_text TEXT NOT NULL,\n  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n  id SERIAL PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  phone_number VARCHAR(20),\n  address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE passwords (\n  id SERIAL PRIMARY KEY,\n  client_id INT REFERENCES clients(id),\n  password_hash VARCHAR(255) NOT NULL,\n  password_salt VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n  id SERIAL PRIMARY KEY,\n  client_id INT REFERENCES clients(id),\n  login_time TIMESTAMP NOT NULL,\n  logout_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id UUID PRIMARY KEY,\n  client_name VARCHAR(50),\n  client_email VARCHAR(100),\n  client_phone VARCHAR(15),\n  client_address VARCHAR(150)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE client_contacts (\n  contact_id UUID PRIMARY KEY,\n  client_id UUID REFERENCES clients(client_id),\n  contact_name VARCHAR(50),\n  contact_email VARCHAR(100),\n  contact_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE client_notes (\n  note_id UUID PRIMARY KEY,\n  client_id UUID REFERENCES clients(client_id),\n  note TEXT,\n  note_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE client_files (\n  file_id UUID PRIMARY KEY,\n  client_id UUID REFERENCES clients(client_id),\n  file_name VARCHAR(50),\n  file_type VARCHAR(20),\n  file_size INT,\n  file_path VARCHAR(200)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id UUID PRIMARY KEY,\n  client_name VARCHAR(50) NOT NULL,\n  client_email VARCHAR(100) UNIQUE,\n  client_phone VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n  address_id UUID PRIMARY KEY,\n  client_id UUID REFERENCES clients(client_id),\n  street_address VARCHAR(255) NOT NULL,\n  city VARCHAR(50) NOT NULL,\n  state VARCHAR(2) NOT NULL,\n  postal_code VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contracts (\n  contract_id UUID PRIMARY KEY,\n  client_id UUID REFERENCES clients(client_id),\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id UUID PRIMARY KEY,\n  contract_id UUID REFERENCES contracts(contract_id),\n  payment_date DATE NOT NULL,\n  amount DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notes (\n  note_id UUID PRIMARY KEY,\n  client_id UUID REFERENCES clients(client_id),\n  note_text TEXT NOT NULL,\n  created_at TIMESTAMP NOT NULL DEFAULT NOW()\n);"
+      }
+    ]
+  }
+]

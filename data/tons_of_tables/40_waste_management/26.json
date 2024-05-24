@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MoistureContentOfCompostHeaps (\n  compost_heap_id UUID PRIMARY KEY,\n  moisture_level DECIMAL,\n  timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_heaps ( \n    id UUID PRIMARY KEY, \n    heap_name VARCHAR(255) NOT NULL, \n    moisture_content DECIMAL NOT NULL, \n    last_updated TIMESTAMP NOT NULL \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE moisture_logs ( \n    log_id UUID PRIMARY KEY, \n    heap_id UUID REFERENCES compost_heaps(id), \n    measured_at TIMESTAMP NOT NULL, \n    moisture_level DECIMAL NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CompostHeaps (\n  compost_id INT PRIMARY KEY,\n  location VARCHAR(255),\n  temperature DECIMAL,\n  moisture_content DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MoistureRecords (\n  record_id INT PRIMARY KEY,\n  compost_id INT,\n  recorded_at TIMESTAMP,\n  moisture DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50),\n  email VARCHAR(255)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_heaps (\n  id INT PRIMARY KEY,\n  heap_name VARCHAR(50) NOT NULL,\n  moisture_level DECIMAL(5, 2) NOT NULL,\n  last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE temperature_logs (\n  id INT PRIMARY KEY,\n  heap_id INT NOT NULL,\n  temperature DECIMAL(5, 2) NOT NULL,\n  log_time TIMESTAMP,\n  FOREIGN KEY (heap_id) REFERENCES compost_heaps(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE moisture_history (\n  id INT PRIMARY KEY,\n  heap_id INT NOT NULL,\n  moisture_level DECIMAL(5, 2) NOT NULL,\n  recorded_time TIMESTAMP,\n  FOREIGN KEY (heap_id) REFERENCES compost_heaps(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE heap_locations (\n  id INT PRIMARY KEY,\n  heap_id INT NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  setup_time TIMESTAMP,\n  FOREIGN KEY (heap_id) REFERENCES compost_heaps(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE compost_heap (id INT PRIMARY KEY, heap_name VARCHAR(255), moisture_content DECIMAL(5,2), updated_at TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE heap_location (id INT PRIMARY KEY, heap_id INT, location VARCHAR(255), FOREIGN KEY (heap_id) REFERENCES compost_heap(id))"
+      },
+      {
+        "table_schema": "CREATE TABLE moisture_log (id INT PRIMARY KEY, heap_id INT, moisture_level DECIMAL(5,2), log_time TIMESTAMP, FOREIGN KEY (heap_id) REFERENCES compost_heap(id))"
+      },
+      {
+        "table_schema": "CREATE TABLE user (id INT PRIMARY KEY, username VARCHAR(50), email VARCHAR(100), created_at TIMESTAMP)"
+      },
+      {
+        "table_schema": "CREATE TABLE compost_manager (user_id INT, heap_id INT, role VARCHAR(50), PRIMARY KEY (user_id, heap_id), FOREIGN KEY (user_id) REFERENCES user(id), FOREIGN KEY (heap_id) REFERENCES compost_heap(id))"
+      }
+    ]
+  }
+]

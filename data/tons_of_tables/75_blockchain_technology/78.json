@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE peer_to_peer_lending_assets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(255),\n  borrower_id INT,\n  lender_id INT,\n  tokenized_value DECIMAL(10, 2),\n  date_borrowed DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE assets (\n  asset_id INT PRIMARY KEY,\n  asset_name TEXT,\n  token_amount INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n  loan_id INT PRIMARY KEY,\n  lender_id INT,\n  borrower_id INT,\n  asset_id INT,\n  amount INT,\n  status TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tokens (\n    token_id UUID PRIMARY KEY,\n    token_name VARCHAR(100) NOT NULL,\n    token_value DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    user_name VARCHAR(100) NOT NULL,\n    user_email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    sender_id UUID NOT NULL,\n    receiver_id UUID NOT NULL,\n    token_id UUID NOT NULL,\n    transaction_amount DECIMAL NOT NULL,\n    transaction_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TokenizedAssets (\n  asset_id INT PRIMARY KEY,\n  asset_name VARCHAR(50),\n  asset_type VARCHAR(50),\n  asset_value DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Lenders (\n  lender_id INT PRIMARY KEY,\n  lender_name VARCHAR(50),\n  lender_contact VARCHAR(100),\n  lender_balance DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Borrowers (\n  borrower_id INT PRIMARY KEY,\n  borrower_name VARCHAR(50),\n  borrower_contact VARCHAR(100),\n  loan_amount DECIMAL(10, 2),\n  loan_duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LoanTransactions (\n  transaction_id INT PRIMARY KEY,\n  lender_id INT,\n  borrower_id INT,\n  asset_id INT,\n  transaction_amount DECIMAL(10, 2),\n  transaction_date DATE,\n  FOREIGN KEY (lender_id) REFERENCES Lenders(lender_id),\n  FOREIGN KEY (borrower_id) REFERENCES Borrowers(borrower_id),\n  FOREIGN KEY (asset_id) REFERENCES TokenizedAssets(asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n user_id INT PRIMARY KEY,\n user_name VARCHAR(50) NOT NULL,\n user_email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Loans (\n loan_id INT PRIMARY KEY,\n loan_amount DECIMAL(10,2) NOT NULL,\n loan_duration INT,\n borrower_id INT,\n lender_id INT,\n FOREIGN KEY (borrower_id) REFERENCES Users(user_id),\n FOREIGN KEY (lender_id) REFERENCES Users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Assets (\n asset_id INT PRIMARY KEY,\n asset_name VARCHAR(50) NOT NULL,\n asset_value DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Transactions (\n transaction_id INT PRIMARY KEY,\n transaction_date TIMESTAMP NOT NULL,\n amount DECIMAL(10,2) NOT NULL,\n asset_id INT,\n user_id INT,\n FOREIGN KEY (asset_id) REFERENCES Assets(asset_id),\n FOREIGN KEY (user_id) REFERENCES Users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TokenizedAssets (\n asset_id INT PRIMARY KEY,\n token_name VARCHAR(50) NOT NULL,\n total_tokens INT NOT NULL,\n asset_id INT,\n FOREIGN KEY (asset_id) REFERENCES Assets(asset_id)\n);"
+      }
+    ]
+  }
+]

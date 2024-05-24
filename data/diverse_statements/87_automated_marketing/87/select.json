@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM usage_rights WHERE permission = 'read';",
+      "SELECT user_id, content_id, permission FROM usage_rights ORDER BY user_id DESC;",
+      "SELECT user_id, permission FROM usage_rights WHERE content_id = 10;",
+      "SELECT content_id, permission FROM usage_rights WHERE user_id = 5;",
+      "SELECT * FROM usage_rights WHERE user_id BETWEEN 3 AND 7;",
+      "SELECT * FROM usage_rights WHERE id = 1;",
+      "SELECT permission, user_id FROM usage_rights WHERE content_id = 100 ORDER BY user_id DESC;",
+      "SELECT * FROM usage_rights WHERE id IN (1, 2, 3) AND permission = 'read';",
+      "SELECT content_id, permission FROM usage_rights WHERE user_id = 10 OR user_id = 20 ORDER BY permission ASC, content_id DESC;",
+      "SELECT MAX(user_id) AS max_user_id, COUNT(*) AS total_records FROM usage_rights;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM content_usage_rights;",
+      "SELECT content_id, user_id FROM content_usage_rights WHERE permission_level > 1;",
+      "SELECT permission_name, content_id FROM content_permissions WHERE id = 3;",
+      "SELECT id, user_id, permission_level FROM content_usage_rights ORDER BY permission_level DESC;",
+      "SELECT * FROM content_usage_rights WHERE user_id = 10;",
+      "SELECT id, content_id, user_id, permission_level FROM content_usage_rights WHERE user_id = 123",
+      "SELECT permission_name, content_id FROM content_permissions WHERE permission_name = 'view' ORDER BY content_id DESC",
+      "SELECT id, content_id, user_id, permission_level FROM content_usage_rights WHERE content_id = 456 AND permission_level > 1 ORDER BY permission_level ASC",
+      "SELECT permission_name, content_id FROM content_permissions WHERE permission_name IN ('edit', 'delete')",
+      "SELECT id, user_id, permission_level FROM content_usage_rights WHERE user_id = 789 AND permission_level < 3"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM content_usage_rights;",
+      "SELECT permission_name FROM permissions ORDER BY permission_id DESC;",
+      "SELECT content_id, user_id, access_level FROM content_usage_rights WHERE access_level > 2;",
+      "SELECT * FROM content_permissions WHERE permission_id = 3;",
+      "SELECT content_id, user_id, permission_name FROM content_usage_rights JOIN content_permissions ON content_usage_rights.content_id = content_permissions.content_id JOIN permissions ON content_permissions.permission_id = permissions.permission_id;",
+      "SELECT * FROM content_usage_rights WHERE user_id = 1;",
+      "SELECT user_id, access_level FROM content_usage_rights WHERE content_id = 100 ORDER BY access_level ASC;",
+      "SELECT content_id, permission_name FROM content_usage_rights cu INNER JOIN content_permissions cp ON cu.content_id = cp.content_id INNER JOIN permissions p ON cp.permission_id = p.permission_id WHERE cu.user_id = 1 AND p.permission_name = 'Read';",
+      "SELECT cu.user_id, p.permission_name FROM content_usage_rights cu INNER JOIN content_permissions cp ON cu.content_id = cp.content_id INNER JOIN permissions p ON cp.permission_id = p.permission_id WHERE cp.content_id IN (1, 2, 3) ORDER BY cu.user_id DESC;",
+      "SELECT cu.user_id, COUNT(cp.permission_id) AS num_permissions FROM content_usage_rights cu LEFT JOIN content_permissions cp ON cu.content_id = cp.content_id GROUP BY cu.user_id HAVING num_permissions > 1;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT viewer_id, content_name FROM content_rights WHERE permission_level = 1;",
+      "SELECT * FROM user_roles;",
+      "SELECT permission_name, description FROM content_permissions WHERE permission_id = 2;",
+      "SELECT * FROM role_permissions ORDER BY role_id DESC;",
+      "SELECT COUNT(content_id) FROM content_rights WHERE viewer_id = 3;",
+      "SELECT content_id, content_name, permission_level FROM content_rights WHERE permission_level >= 1 ORDER BY content_id DESC;",
+      "SELECT viewer_id, content_name, permission_level FROM content_rights WHERE content_id = 1;",
+      "SELECT * FROM user_roles WHERE role_name = 'admin';",
+      "SELECT description, permission_name FROM content_permissions WHERE permission_id IN (1, 2, 3);",
+      "SELECT role_name, role_description, permission_name FROM user_roles JOIN role_permissions ON user_roles.user_id = role_permissions.role_id JOIN content_permissions ON role_permissions.permission_id = content_permissions.permission_id;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM users WHERE role = 'admin';",
+      "SELECT id, username, email FROM users WHERE registration_date > '2022-01-01';",
+      "SELECT content_id, user_id, permission FROM content_usage_rights ORDER BY expiry_date DESC;",
+      "SELECT id, role_name FROM roles WHERE id IN (1, 3, 5);",
+      "SELECT id, asset_url, asset_type FROM content_assets LIMIT 10;",
+      "SELECT * FROM content_usage_rights WHERE id = 1;",
+      "SELECT user_id, permission FROM content_usage_rights WHERE permission = 'read' ORDER BY user_id DESC;",
+      "SELECT cu.id, cu.content_id, cu.user_id, ua.asset_url FROM content_usage_rights cu JOIN content_assets ua ON cu.content_id = ua.content_id;",
+      "SELECT u.username, r.role_name FROM users u JOIN roles r ON u.role = r.role_name WHERE u.registration_date > '2022-01-01';",
+      "SELECT cc.category_name, count(ca.id) AS total_assets FROM content_categories cc LEFT JOIN content_assets ca ON cc.id = ca.content_id GROUP BY cc.category_name ORDER BY total_assets DESC;"
+    ]
+  }
+]

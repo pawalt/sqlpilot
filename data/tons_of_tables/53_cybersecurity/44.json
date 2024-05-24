@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareBehavior (\n    malware_id INT PRIMARY KEY,\n    malware_name VARCHAR(255),\n    behavior_pattern TEXT,\n    detection_date DATE,\n    analyst_name VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_behavior_patterns (\n    malware_id UUID PRIMARY KEY,\n    behavioral_pattern TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_researchers (\n    researcher_id UUID PRIMARY KEY,\n    researcher_name TEXT,\n    researcher_affiliation TEXT,\n    researcher_email TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_samples (\n    sample_id INT PRIMARY KEY,\n    sample_name TEXT,\n    behavior_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_patterns (\n    behavior_id INT PRIMARY KEY,\n    pattern_name TEXT,\n    pattern_description TEXT,\n    sample_id INT,\n    FOREIGN KEY (sample_id) REFERENCES malware_samples(sample_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name TEXT,\n    research_area TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE malware_files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_type VARCHAR(50),\n    analysis_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_behaviors (\n    behavior_id INT PRIMARY KEY,\n    behavior_name VARCHAR(255) UNIQUE,\n    behavior_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_patterns (\n    pattern_id INT PRIMARY KEY,\n    pattern_name VARCHAR(255),\n    detection_rate FLOAT,\n    behavior_id INT,\n    FOREIGN KEY (behavior_id) REFERENCES malware_behaviors(behavior_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE malware_analysis_results (\n    result_id INT PRIMARY KEY,\n    file_id INT,\n    pattern_id INT,\n    result_score FLOAT,\n    analysis_date TIMESTAMP,\n    FOREIGN KEY (file_id) REFERENCES malware_files(file_id),\n    FOREIGN KEY (pattern_id) REFERENCES malware_patterns(pattern_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MalwareBehavior (\n    malware_id INT PRIMARY KEY,\n    behavior_description TEXT,\n    timestamp TIMESTAMP,\n    severity_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BehavioralPatterns (\n    pattern_id INT PRIMARY KEY,\n    pattern_description TEXT,\n    related_malware_id INT,\n    timestamp TIMESTAMP,\n    pattern_score INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MalwareTypes (\n    type_id INT PRIMARY KEY,\n    malware_name VARCHAR(255),\n    malware_family VARCHAR(255),\n    first_appearance DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResearcherInfo (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255),\n    researcher_email VARCHAR(255),\n    affiliation VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MalwareAnalysis (\n    analysis_id INT PRIMARY KEY,\n    malware_id INT,\n    analysis_report TEXT,\n    analysis_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

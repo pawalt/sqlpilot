@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE lighting_schedule (\n    schedule_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    light_intensity INT NOT NULL,\n    repeat_weekdays TEXT[] NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  user_name VARCHAR(50),\n  timezone VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE lighting_schedule (\n  schedule_id INT PRIMARY KEY,\n  user_id INT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  intensity INT,\n  days_active VARCHAR(50),\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LightingSchedule (\n  schedule_id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  start_time TIME NOT NULL,\n  end_time TIME NOT NULL,\n  days_of_week VARCHAR[] NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserPreferences (\n  user_id SERIAL PRIMARY KEY,\n  preferred_start_time TIME NOT NULL,\n  preferred_end_time TIME NOT NULL,\n  preferred_brightness INT NOT NULL,\n  notification_enabled BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LightSensors (\n  sensor_id SERIAL PRIMARY KEY,\n  location VARCHAR NOT NULL,\n  sensor_type VARCHAR NOT NULL,\n  status BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE LightingSchedule (\n  id INT PRIMARY KEY,\n  user_id INT,\n  start_time TIMESTAMP,\n  end_time TIMESTAMP,\n  light_intensity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Preferences (\n  id INT PRIMARY KEY,\n  user_id INT,\n  bright_level INT,\n  schedule_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Locations (\n  id INT PRIMARY KEY,\n  location_name VARCHAR(255),\n  timezone VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserPreferences (\n    user_id INT PRIMARY KEY,\n    preferred_lighting_mode STRING,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LightingSchedule (\n    schedule_id INT PRIMARY KEY,\n    user_id INT REFERENCES UserPreferences(user_id),\n    day_of_week STRING,\n    lighting_mode STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RoomLayout (\n    room_id INT PRIMARY KEY,\n    room_name STRING,\n    number_of_lights INT,\n    light_location STRING,\n    light_intensity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LightingLogs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES UserPreferences(user_id),\n    room_id INT REFERENCES RoomLayout(room_id),\n    event_timestamp TIMESTAMP,\n    log_details STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AutomationSettings (\n    settings_id INT PRIMARY KEY,\n    user_id INT REFERENCES UserPreferences(user_id),\n    automation_mode STRING\n);"
+      }
+    ]
+  }
+]

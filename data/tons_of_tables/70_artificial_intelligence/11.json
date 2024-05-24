@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_vectors (\n  id UUID PRIMARY KEY,\n  vector FLOAT[] NOT NULL,\n  label VARCHAR NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_vectors (\n    id INT PRIMARY KEY,\n    vector BYTEA,\n    label VARCHAR\n);\n\nCREATE TABLE labels (\n    label_id SERIAL PRIMARY KEY,\n    label_name VARCHAR UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FeatureVectors (\n    id INT PRIMARY KEY,\n    feature_vector VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE Labels (\n    id INT PRIMARY KEY,\n    label VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE ClassificationTasks (\n    task_id INT PRIMARY KEY,\n    feature_vector_id INT,\n    label_id INT,\n    FOREIGN KEY (feature_vector_id) REFERENCES FeatureVectors(id),\n    FOREIGN KEY (label_id) REFERENCES Labels(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_vectors (\n    id SERIAL PRIMARY KEY,\n    vector FLOAT[],\n    label VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id SERIAL PRIMARY KEY,\n    class_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE classification_task (\n    task_id SERIAL PRIMARY KEY,\n    feature_vector_id INT REFERENCES feature_vectors (id),\n    label_id INT REFERENCES labels (label_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE feature_vectors (\n    id INT PRIMARY KEY,\n    vector BLOB,\n    label VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    label_id INT PRIMARY KEY,\n    label_name VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_data (\n    image_id INT PRIMARY KEY,\n    image_path VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE image_labels (\n    image_id INT,\n    label_id INT,\n    FOREIGN KEY (image_id) REFERENCES image_data(image_id),\n    FOREIGN KEY (label_id) REFERENCES labels(label_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE model_results (\n    result_id INT PRIMARY KEY,\n    image_id INT,\n    predicted_label VARCHAR,\n    confidence DOUBLE,\n    FOREIGN KEY (image_id) REFERENCES image_data(image_id)\n);\n"
+      }
+    ]
+  }
+]

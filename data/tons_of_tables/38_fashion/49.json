@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE pos_transactions (\n  transaction_id INT PRIMARY KEY,\n  transaction_date DATE,\n  amount DECIMAL,\n  customer_id INT,\n  terminal_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    transaction_amount DECIMAL,\n    transaction_date TIMESTAMP,\n    pos_terminal_id UUID,\n    FOREIGN KEY (pos_terminal_id) REFERENCES pos_terminals(pos_terminal_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE pos_terminals (\n    pos_terminal_id UUID PRIMARY KEY,\n    terminal_location VARCHAR(255),\n    terminal_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id SERIAL PRIMARY KEY,\n    transaction_date TIMESTAMP,\n    amount DECIMAL(10, 2),\n    terminal_id INT,\n    customer_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE terminals (\n    terminal_id SERIAL PRIMARY KEY,\n    terminal_name VARCHAR(50),\n    location VARCHAR(100),\n    software_version VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id SERIAL PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(50),\n    phone_number VARCHAR(15)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE pos_terminal (\n    id SERIAL PRIMARY KEY,\n    terminal_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction (\n    transaction_id SERIAL PRIMARY KEY,\n    terminal_id INT NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE synchronization (\n    sync_id SERIAL PRIMARY KEY,\n    last_sync_date TIMESTAMP NOT NULL,\n    status VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE pos_terminal (\n    id INT PRIMARY KEY,\n    terminal_name VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    amount DECIMAL(10,2),\n    timestamp TIMESTAMP,\n    terminal_id INT,\n    FOREIGN KEY (terminal_id) REFERENCES pos_terminal(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(50),\n    price DECIMAL(10,2),\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE product_transactions (\n    product_id INT,\n    transaction_id INT,\n    quantity INT,\n    PRIMARY KEY (product_id, transaction_id),\n    FOREIGN KEY (product_id) REFERENCES inventory(product_id),\n    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id)\n);"
+      }
+    ]
+  }
+]

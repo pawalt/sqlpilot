@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE route_planning (\n    route_id INT PRIMARY KEY,\n    vehicle_id INT,\n    route_name VARCHAR(50),\n    start_location VARCHAR(100),\n    end_location VARCHAR(100),\n    traffic_condition ENUM('light', 'moderate', 'heavy'),\n    estimated_time DECIMAL(5,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(255),\n  start_location VARCHAR(255),\n  end_location VARCHAR(255),\n  traffic_condition VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_updates (\n  update_id INT PRIMARY KEY,\n  route_id INT,\n  timestamp TIMESTAMP,\n  traffic_status VARCHAR(50),\n  CONSTRAINT fk_route_id FOREIGN KEY (route_id) REFERENCES delivery_routes(route_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE delivery_routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(255),\n  start_location VARCHAR(255),\n  end_location VARCHAR(255),\n  traffic_conditions VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_details (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_type VARCHAR(255),\n  max_capacity INT,\n  current_location VARCHAR(255),\n  next_destination VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_updates (\n  route_id INT,\n  timestamp TIMESTAMP,\n  traffic_info VARCHAR(255),\n  CONSTRAINT fk_route_id FOREIGN KEY (route_id) REFERENCES delivery_routes(route_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Route (\n    route_id INT PRIMARY KEY,\n    start_location VARCHAR(255),\n    end_location VARCHAR(255),\n    distance DECIMAL(10,2),\n    traffic_conditions VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Vehicle (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type VARCHAR(50),\n    max_capacity DECIMAL(10,2),\n    current_capacity DECIMAL(10,2),\n    availability BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrafficData (\n    traffic_id INT PRIMARY KEY,\n    route_id INT,\n    timestamp TIMESTAMP,\n    speed INT,\n    congestion_level VARCHAR(50),\n    CONSTRAINT fk_route FOREIGN KEY (route_id) REFERENCES Route(route_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Delivery (\n    delivery_id INT PRIMARY KEY,\n    route_id INT,\n    vehicle_id INT,\n    delivery_time TIMESTAMP,\n    delivery_status VARCHAR(50),\n    CONSTRAINT fk_route FOREIGN KEY (route_id) REFERENCES Route(route_id),\n    CONSTRAINT fk_vehicle FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE routes (\n  route_id INT PRIMARY KEY,\n  start_location VARCHAR(50),\n  end_location VARCHAR(50),\n  distance FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE traffic_conditions (\n  condition_id INT PRIMARY KEY,\n  condition_description VARCHAR(100),\n  road_closure BOOLEAN,\n  traffic_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicles (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_name VARCHAR(50),\n  vehicle_type VARCHAR(50),\n  driver_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assignments (\n  assignment_id INT PRIMARY KEY,\n  route_id INT,\n  vehicle_id INT,\n  assignment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE efficiency_data (\n  efficiency_id INT PRIMARY KEY,\n  vehicle_id INT,\n  route_id INT,\n  traffic_time INT\n);"
+      }
+    ]
+  }
+]

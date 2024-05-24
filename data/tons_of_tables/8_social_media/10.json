@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    username VARCHAR(255),\n    email VARCHAR(255),\n    profile_picture TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    username VARCHAR(255),\n    email VARCHAR(255),\n    profile_picture BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_friends (\n    user_id INT,\n    friend_id INT,\n    status BOOLEAN\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    username VARCHAR(255),\n    email VARCHAR(255),\n    profile_picture TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_friends (\n    user_id INT, \n    friend_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n    activity_id INT,\n    user_id INT,\n    activity_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    profile_picture BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT,\n    post_content TEXT,\n    created_at TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES user_profiles(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    post_id INT,\n    user_id INT,\n    comment_content TEXT,\n    created_at TIMESTAMP,\n    FOREIGN KEY (post_id) REFERENCES posts(post_id),\n    FOREIGN KEY (user_id) REFERENCES user_profiles(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE likes (\n    like_id INT PRIMARY KEY,\n    post_id INT,\n    user_id INT,\n    created_at TIMESTAMP,\n    FOREIGN KEY (post_id) REFERENCES posts(post_id),\n    FOREIGN KEY (user_id) REFERENCES user_profiles(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    profile_picture BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    post_text TEXT NOT NULL,\n    post_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE likes (\n    like_id INT PRIMARY KEY,\n    post_id INT REFERENCES posts(post_id),\n    user_id INT REFERENCES users(user_id),\n    like_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id INT PRIMARY KEY,\n    post_id INT REFERENCES posts(post_id),\n    user_id INT REFERENCES users(user_id),\n    comment_text TEXT NOT NULL,\n    comment_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE friendships (\n    friendship_id INT PRIMARY KEY,\n    user_id1 INT REFERENCES users(user_id),\n    user_id2 INT REFERENCES users(user_id),\n    friend_since DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

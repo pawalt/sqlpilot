@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ManufacturingFacilities (\n\tfacility_id INT PRIMARY KEY,\n\tfacility_name VARCHAR(255),\n\tlocation VARCHAR(255),\n\tinspection_date DATE,\n\tcompliance_status BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_facilities (\n    facility_id UUID PRIMARY KEY,\n    facility_name STRING NOT NULL,\n    location STRING,\n    inspection_date DATE\n);\n\nCREATE TABLE inspection_reports (\n    report_id UUID PRIMARY KEY,\n    facility_id UUID REFERENCES manufacturing_facilities(facility_id),\n    inspector_name STRING NOT NULL,\n    report_date DATE,\n    compliance_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PharmaceuticalInspectors (\n\thospital_id INT PRIMARY KEY,\n\tinspector_name VARCHAR(50) NOT NULL,\n\thospital_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ManufacturingFacilities (\n\tfacility_id INT PRIMARY KEY,\n\tfacility_name VARCHAR(100) NOT NULL,\n\tlocation VARCHAR(50) NOT NULL,\n\tinspection_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceReports (\n\treport_id INT PRIMARY KEY,\n\tfacility_id INT NOT NULL,\n\tinspection_date DATE,\n\tcompliance_score FLOAT\n\tFOREIGN KEY (facility_id) REFERENCES ManufacturingFacilities(facility_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ManufacturingFacilities (\n    facility_id INT PRIMARY KEY,\n    facility_name VARCHAR(255),\n    location VARCHAR(255),\n    inspection_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspectors (\n    inspector_id INT PRIMARY KEY,\n    inspector_name VARCHAR(255),\n    specialization VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspections (\n    inspection_id INT PRIMARY KEY,\n    facility_id INT,\n    inspector_id INT,\n    inspection_date DATE,\n    result VARCHAR(255),\n    FOREIGN KEY (facility_id) REFERENCES ManufacturingFacilities(facility_id),\n    FOREIGN KEY (inspector_id) REFERENCES Inspectors(inspector_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Violations (\n    violation_id INT PRIMARY KEY,\n    inspection_id INT,\n    violation_description TEXT,\n    FOREIGN KEY (inspection_id) REFERENCES Inspections(inspection_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ManufacturingFacilities (\n  facility_id INT PRIMARY KEY,\n  facility_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  inspection_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspectors (\n  inspector_id INT PRIMARY KEY,\n  inspector_name VARCHAR(255) NOT NULL,\n  certification_date DATE NOT NULL,\n  contact_number VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Inspections (\n  inspection_id INT PRIMARY KEY,\n  inspector_id INT NOT NULL,\n  facility_id INT NOT NULL,\n  inspection_date DATE,\n  compliance_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Violations (\n  violation_id INT PRIMARY KEY,\n  inspection_id INT NOT NULL,\n  violation_description TEXT,\n  penalty_amount DECIMAL(10,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceHistory (\n  history_id INT PRIMARY KEY,\n  facility_id INT NOT NULL,\n  inspection_id INT NOT NULL,\n  compliance_status VARCHAR(50)\n)"
+      }
+    ]
+  }
+]

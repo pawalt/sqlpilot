@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE soil_contamination_levels (\n    id UUID PRIMARY KEY,\n    location GEOMETRY(POINT),\n    contamination_level FLOAT,\n    sample_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SoilSamples (\n    sample_id UUID PRIMARY KEY,\n    location POINT,\n    contamination_level FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE soil_samples (\n   sample_id INT PRIMARY KEY,\n   sample_location VARCHAR(100),\n   contamination_level DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE soil_analysis (\n   analysis_id INT PRIMARY KEY,\n   sample_id INT,\n   analysis_date DATE,\n   analysis_result VARCHAR(50),\n   FOREIGN KEY (sample_id) REFERENCES soil_samples(sample_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE soil_mapping (\n   mapping_id INT PRIMARY KEY,\n   analysis_id INT,\n   mapping_date DATE,\n   mapping_result VARCHAR(50),\n   FOREIGN KEY (analysis_id) REFERENCES soil_analysis(analysis_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SoilSamples (\n  sample_id UUID PRIMARY KEY,\n  location GEOMETRY(POINT),\n  contamination_level FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SamplingLocations (\n  location_id UUID PRIMARY KEY,\n  location_name VARCHAR(255),\n  latitude DECIMAL,\n  longitude DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Contaminants (\n  contaminant_id UUID PRIMARY KEY,\n  contaminant_name VARCHAR(255),\n  safe_limit FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE AnalysisResults (\n  analysis_id UUID PRIMARY KEY,\n  sample_id UUID REFERENCES SoilSamples(sample_id),\n  contaminant_id UUID REFERENCES Contaminants(contaminant_id),\n  analysis_date DATE,\n  analysis_result FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SoilSamples (\n  sample_id INT PRIMARY KEY,\n  location_geometry GEOMETRY,\n  contamination_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SamplingSites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(50),\n  site_location GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Contaminants (\n  contaminant_id INT PRIMARY KEY,\n  contaminant_name VARCHAR(50),\n  health_effect VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AnalysisResults (\n  result_id INT PRIMARY KEY,\n  sample_id INT REFERENCES SoilSamples(sample_id),\n  contaminant_id INT REFERENCES Contaminants(contaminant_id),\n  concentration FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Maps (\n  map_id INT PRIMARY KEY,\n  map_name VARCHAR(50),\n  map_image BYTEA,\n  coverage_area GEOMETRY\n);"
+      }
+    ]
+  }
+]

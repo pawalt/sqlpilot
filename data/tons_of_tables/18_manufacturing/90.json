@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ManufacturingEmissions(\n   id SERIAL PRIMARY KEY,\n   process_name VARCHAR(50) NOT NULL,\n   emission_type VARCHAR(50) NOT NULL,\n   emission_amount DECIMAL NOT NULL,\n   emission_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n  process_id INT PRIMARY KEY,\n  process_name VARCHAR(50) NOT NULL,\n  emission_factor FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE emissions_data (\n  data_id INT PRIMARY KEY,\n  process_id INT NOT NULL,\n  date DATE NOT NULL,\n  emission_quantity FLOAT NOT NULL,\n  FOREIGN KEY (process_id) REFERENCES manufacturing_processes(process_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE manufacturing_processes (\n  process_id INT PRIMARY KEY,\n  process_name VARCHAR(255) NOT NULL,\n  emission_rate DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  carbon_footprint DECIMAL NOT NULL,\n  process_id INT,\n  FOREIGN KEY (process_id) REFERENCES manufacturing_processes(process_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emissions_tracking (\n  tracking_id INT PRIMARY KEY,\n  date DATE NOT NULL,\n  product_id INT,\n  emission_amount DECIMAL NOT NULL,\n  FOREIGN KEY (product_id) REFERENCES products(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Manufacturing_Companies (\n    company_id INT PRIMARY KEY,\n    company_name VARCHAR(255) NOT NULL,\n    industry_type VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Manufacturing_Plants (\n    plant_id INT PRIMARY KEY,\n    company_id INT NOT NULL,\n    plant_location VARCHAR(255) NOT NULL,\n    carbon_emission FLOAT NOT NULL,\n    FOREIGN KEY (company_id) REFERENCES Manufacturing_Companies(company_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Process_Records (\n    record_id INT PRIMARY KEY,\n    plant_id INT NOT NULL,\n    process_name VARCHAR(100) NOT NULL,\n    emission_amount FLOAT NOT NULL,\n    emission_date DATE NOT NULL,\n    FOREIGN KEY (plant_id) REFERENCES Manufacturing_Plants(plant_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Emission_Reduction_Plans (\n    plan_id INT PRIMARY KEY,\n    company_id INT NOT NULL,\n    reduction_goal FLOAT NOT NULL,\n    reduction_deadline DATE NOT NULL,\n    FOREIGN KEY (company_id) REFERENCES Manufacturing_Companies(company_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Manufacturing_Company (\n    ID INT,\n    Name VARCHAR(255),\n    Location VARCHAR(255),\n    PRIMARY KEY (ID)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Product (\n    Product_ID INT,\n    Name VARCHAR(255),\n    Type VARCHAR(50),\n    Manufacturing_Company_ID INT,\n    PRIMARY KEY (Product_ID),\n    FOREIGN KEY (Manufacturing_Company_ID) REFERENCES Manufacturing_Company(ID)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Emissions (\n    Emission_ID INT,\n    Product_ID INT,\n    CO2_Emissions DECIMAL(10, 2),\n    Date_Recorded DATE,\n    PRIMARY KEY (Emission_ID),\n    FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Manufacturing_Process (\n    Process_ID INT,\n    Product_ID INT,\n    Process_Name VARCHAR(100),\n    Energy_Consumption DECIMAL(10, 2),\n    PRIMARY KEY (Process_ID),\n    FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Employee (\n    Employee_ID INT,\n    Name VARCHAR(255),\n    Department VARCHAR(100),\n    Manufacturing_Company_ID INT,\n    PRIMARY KEY (Employee_ID),\n    FOREIGN KEY (Manufacturing_Company_ID) REFERENCES Manufacturing_Company(ID)\n)"
+      }
+    ]
+  }
+]

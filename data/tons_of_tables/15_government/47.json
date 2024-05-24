@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_procurement_processes (\n    process_id SERIAL PRIMARY KEY,\n    process_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    bidder_count INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE procurement_processes (\n    process_id INT PRIMARY KEY,\n    process_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contracts (\n    contract_id INT PRIMARY KEY,\n    contract_name VARCHAR(255) NOT NULL,\n    vendor_name VARCHAR(255) NOT NULL,\n    contract_amount DECIMAL(10, 2),\n    start_date DATE,\n    end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE procurement_processes (\n  process_id INT PRIMARY KEY,\n  process_name TEXT NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  department_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE contracts (\n  contract_id INT PRIMARY KEY,\n  procurement_process_id INT,\n  vendor_name TEXT NOT NULL,\n  contract_amount DECIMAL(10,2) NOT NULL,\n  signing_date DATE,\n  expiration_date DATE,\n  CONSTRAINT fk_procurement_process FOREIGN KEY (procurement_process_id) REFERENCES procurement_processes(process_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n  department_id INT PRIMARY KEY,\n  department_name TEXT NOT NULL,\n  location TEXT,\n  budget DECIMAL(12,2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_procurement_processes (\n  id UUID PRIMARY KEY,\n  process_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contracts (\n  contract_id UUID PRIMARY KEY,\n  contractor_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  total_amount DECIMAL,\n  status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE procurement_documentation (\n  doc_id UUID PRIMARY KEY,\n  doc_name VARCHAR(255),\n  doc_type VARCHAR(50),\n  created_date DATE,\n  uploaded_by VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE procurement_officers (\n  officer_id UUID PRIMARY KEY,\n  officer_name VARCHAR(255),\n  department VARCHAR(100),\n  email VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE bids (\n  bid_id INT PRIMARY KEY,\n  contract_id INT REFERENCES contracts(contract_id),\n  company_name VARCHAR(255),\n  bid_amount DECIMAL(10, 2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE contracts (\n  contract_id INT PRIMARY KEY,\n  department_id INT REFERENCES departments(department_id),\n  vendor_id INT REFERENCES vendors(vendor_id),\n  start_date DATE,\n  end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE departments (\n  department_id INT PRIMARY KEY,\n  department_name VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vendors (\n  vendor_id INT PRIMARY KEY,\n  vendor_name VARCHAR(255),\n  address VARCHAR(255),\n  contact_person VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE procurement_processes (\n  process_id INT PRIMARY KEY,\n  department_id INT REFERENCES departments(department_id),\n  status VARCHAR(50),\n  start_date DATE,\n  end_date DATE\n)"
+      }
+    ]
+  }
+]

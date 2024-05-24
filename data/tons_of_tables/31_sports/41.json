@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE swim_meet_schedule (\n    meet_id INT PRIMARY KEY,\n    meet_date DATE,\n    location VARCHAR(255),\n    event_name VARCHAR(255),\n    event_time TIME\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meet_schedule (\n  meet_id INT PRIMARY KEY,\n  meet_date DATE,\n  meet_location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meet_results (\n  result_id INT PRIMARY KEY,\n  meet_id INT,\n  event_type VARCHAR(50),\n  result_time TIME\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SwimMeetSchedule (\n    meet_id SERIAL PRIMARY KEY,\n    meet_name TEXT NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);\n\nCREATE TABLE MeetResults (\n    result_id SERIAL PRIMARY KEY,\n    meet_id INTEGER REFERENCES SwimMeetSchedule(meet_id) ON DELETE CASCADE,\n    swimmer_name TEXT NOT NULL,\n    event_name TEXT NOT NULL,\n    swim_time INTERVAL NOT NULL\n);\n\nCREATE TABLE Swimmers (\n    swimmer_id SERIAL PRIMARY KEY,\n    swimmer_name TEXT NOT NULL,\n    age INTEGER,\n    team_name TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE swim_meets (\n    meet_id INT PRIMARY KEY,\n    meet_date DATE,\n    meet_location VARCHAR(255),\n    meet_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(100),\n    event_distance INT,\n    event_stroke VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE swimmers (\n    swimmer_id INT PRIMARY KEY,\n    swimmer_name VARCHAR(100),\n    swimmer_age INT,\n    swimmer_team VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE results (\n    result_id INT PRIMARY KEY,\n    meet_id INT,\n    event_id INT,\n    swimmer_id INT,\n    result_time DECIMAL(10, 2),\n    result_place INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE swim_meets (\n  meet_id INT PRIMARY KEY,\n  meet_name VARCHAR(50) NOT NULL,\n  meet_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE swim_events (\n  event_id INT PRIMARY KEY,\n  event_name VARCHAR(50) NOT NULL,\n  distance INT,\n  stroke_type VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE swimmers (\n  swimmer_id INT PRIMARY KEY,\n  first_name VARCHAR(50) NOT NULL,\n  last_name VARCHAR(50) NOT NULL,\n  team_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meet_entries (\n  entry_id INT PRIMARY KEY,\n  meet_id INT,\n  swimmer_id INT,\n  event_id INT,\n  FOREIGN KEY (meet_id) REFERENCES swim_meets(meet_id),\n  FOREIGN KEY (swimmer_id) REFERENCES swimmers(swimmer_id),\n  FOREIGN KEY (event_id) REFERENCES swim_events(event_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meet_results (\n  result_id INT PRIMARY KEY,\n  meet_id INT,\n  swimmer_id INT,\n  event_id INT,\n  time_seconds FLOAT,\n  place INT,\n  FOREIGN KEY (meet_id) REFERENCES swim_meets(meet_id),\n  FOREIGN KEY (swimmer_id) REFERENCES swimmers(swimmer_id),\n  FOREIGN KEY (event_id) REFERENCES swim_events(event_id)\n);\n"
+      }
+    ]
+  }
+]

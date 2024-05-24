@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_details (\n  policy_id INT PRIMARY KEY,\n  property_owner_id INT,\n  coverage_type TEXT,\n  coverage_amount DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_details (\n    policy_id INT PRIMARY KEY,\n    owner_name VARCHAR(50),\n    coverage_amount DECIMAL(10,2),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE coverage_info (\n    coverage_id INT PRIMARY KEY,\n    property_owner_id INT,\n    coverage_type VARCHAR(50),\n    premium_amount DECIMAL(10,2),\n    expiration_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_details (\n    policy_id SERIAL PRIMARY KEY,\n    property_owner_id INT NOT NULL,\n    property_address VARCHAR(255) NOT NULL,\n    policy_type VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE coverage_details (\n    coverage_id SERIAL PRIMARY KEY,\n    policy_id INT NOT NULL,\n    coverage_type VARCHAR(50) NOT NULL,\n    coverage_amount DECIMAL(10,2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE property_owners (\n    owner_id SERIAL PRIMARY KEY,\n    owner_name VARCHAR(100) NOT NULL,\n    owner_email VARCHAR(255) NOT NULL,\n    owner_phone VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_details (\n    policy_id INT PRIMARY KEY,\n    policy_number VARCHAR(50),\n    property_id INT,\n    insured_owner_id INT\n);\n\nCREATE TABLE coverage_details (\n    coverage_id INT PRIMARY KEY,\n    policy_id INT,\n    coverage_type VARCHAR(50),\n    amount_covered DECIMAL(10,2)\n);\n\nCREATE TABLE property_details (\n    property_id INT PRIMARY KEY,\n    property_type VARCHAR(50),\n    address VARCHAR(100),\n    city VARCHAR(50),\n    state VARCHAR(2),\n    zipcode VARCHAR(10)\n);\n\nCREATE TABLE owner_details (\n    owner_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insured_property_owners (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  address VARCHAR(255) NOT NULL,\n  phone_number VARCHAR(15) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n  policy_id INT PRIMARY KEY,\n  policy_type VARCHAR(50) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  coverage_amount DECIMAL(10, 2) NOT NULL,\n  owner_id INT REFERENCES insured_property_owners(id) ON DELETE CASCADE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_details (\n  detail_id INT PRIMARY KEY,\n  policy_id INT REFERENCES policies(policy_id) ON DELETE CASCADE,\n  property_address VARCHAR(255) NOT NULL,\n  property_value DECIMAL(12, 2) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE coverage_types (\n  type_id INT PRIMARY KEY,\n  type_name VARCHAR(50) NOT NULL,\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE coverage_info (\n  coverage_id INT PRIMARY KEY,\n  policy_id INT REFERENCES policies(policy_id) ON DELETE CASCADE,\n  type_id INT REFERENCES coverage_types(type_id) ON DELETE CASCADE,\n  premium DECIMAL(8, 2) NOT NULL\n)"
+      }
+    ]
+  }
+]

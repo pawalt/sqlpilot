@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FingerprintImages (\n id SERIAL PRIMARY KEY,\n image_name VARCHAR(100),\n image_data BYTEA,\n metadata JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fingerprint_metadata (\n  fingerprint_id UUID PRIMARY KEY,\n  image_location VARCHAR(255) NOT NULL,\n  capture_date TIMESTAMP NOT NULL,\n  resolution VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE forensic_analysis (\n  analysis_id SERIAL PRIMARY KEY,\n  fingerprint_id UUID NOT NULL,\n  analysis_date TIMESTAMP NOT NULL,\n  analyst_name VARCHAR(50) NOT NULL,\n  result TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fingerprint_images (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(255),\n    image_data BYTEA,\n    capture_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE image_metadata (\n    metadata_id INT PRIMARY KEY,\n    image_id INT,\n    metadata_key VARCHAR(50),\n    metadata_value VARCHAR(255),\n    FOREIGN KEY (image_id) REFERENCES fingerprint_images(image_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE forensic_analysis (\n    analysis_id INT PRIMARY KEY,\n    image_id INT,\n    analysis_date TIMESTAMP,\n    analyst_name VARCHAR(100),\n    results_text TEXT,\n    FOREIGN KEY (image_id) REFERENCES fingerprint_images(image_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FingerprintImages (\n id INT PRIMARY KEY,\n image_data BYTEA,\n captured_date TIMESTAMP,\n analyzed BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FingerprintFeatures (\n id INT PRIMARY KEY,\n fingerprint_id INT,\n feature_data JSON,\n extracted_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ForensicAnalysis (\n id INT PRIMARY KEY,\n fingerprint_id INT,\n analysis_result TEXT,\n analyzed_by VARCHAR(50),\n analysis_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n id INT PRIMARY KEY,\n image_id INT,\n metadata_key VARCHAR(50),\n metadata_value VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FingerprintImages (\n  image_id UUID PRIMARY KEY,\n  image_path VARCHAR(255) NOT NULL,\n  creation_date TIMESTAMP NOT NULL,\n  captured_by_user VARCHAR(50),\n  image_data BYTEA\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FingerprintMetadata (\n  metadata_id SERIAL PRIMARY KEY,\n  image_id UUID NOT NULL,\n  fingerprint_quality VARCHAR(10),\n  minutiae_count INT,\n  ridge_direction VARCHAR(50),\n  ridge_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ForensicAnalysis (\n  analysis_id SERIAL PRIMARY KEY,\n  image_id UUID NOT NULL,\n  analysis_date TIMESTAMP,\n  examiner_name VARCHAR(100),\n  analysis_result VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageTags (\n  tag_id SERIAL PRIMARY KEY,\n  image_id UUID NOT NULL,\n  tag_name VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) UNIQUE NOT NULL,\n  password_hash VARCHAR(255) NOT NULL\n)"
+      }
+    ]
+  }
+]

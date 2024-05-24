@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_documents (\n  document_id INT PRIMARY KEY,\n  document_name VARCHAR(255),\n  document_content TEXT,\n  document_owner VARCHAR(100),\n  document_access_level ENUM('public', 'private')\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    project_description TEXT,\n    project_deadline TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_files (\n    file_id INT PRIMARY KEY,\n    project_id INT,\n    file_name VARCHAR(255),\n    file_type VARCHAR(50),\n    file_size INT,\n    file_path VARCHAR(255),\n    file_uploaded_at TIMESTAMP,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Projects (\n  project_id UUID PRIMARY KEY,\n  project_name VARCHAR(255) NOT NULL,\n  project_description TEXT,\n  start_date DATE,\n  end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Documents (\n  document_id UUID PRIMARY KEY,\n  project_id UUID REFERENCES Projects(project_id),\n  document_title VARCHAR(255) NOT NULL,\n  document_content TEXT,\n  created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Files (\n  file_id UUID PRIMARY KEY,\n  document_id UUID REFERENCES Documents(document_id),\n  file_name VARCHAR(255) NOT NULL,\n  file_size INT,\n  file_path VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_documents (\n    document_id INT PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    document_content TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(100) NOT NULL,\n    email VARCHAR(255) UNIQUE,\n    role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_comments (\n    comment_id INT PRIMARY KEY,\n    document_id INT,\n    commenter_id INT,\n    comment_text TEXT,\n    created_at TIMESTAMP,\n    FOREIGN KEY (document_id) REFERENCES project_documents(document_id),\n    FOREIGN KEY (commenter_id) REFERENCES team_members(member_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE file_attachments (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255) NOT NULL,\n    file_type VARCHAR(50),\n    document_id INT,\n    uploaded_by INT,\n    uploaded_at TIMESTAMP,\n    FOREIGN KEY (document_id) REFERENCES project_documents(document_id),\n    FOREIGN KEY (uploaded_by) REFERENCES team_members(member_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "create table projects (\n  id INT PRIMARY KEY,\n  project_name STRING,\n  description STRING,\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "create table documents (\n  doc_id INT PRIMARY KEY,\n  project_id INT REFERENCES projects(id),\n  document_name STRING,\n  document_type STRING,\n  created_by STRING,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "create table teams (\n  team_id INT PRIMARY KEY,\n  team_name STRING,\n  leader STRING,\n  description STRING\n);"
+      },
+      {
+        "table_schema": "create table team_members (\n  team_id INT REFERENCES teams(team_id),\n  member_id INT,\n  join_date DATE,\n  CONSTRAINT pk_team_member PRIMARY KEY (team_id, member_id)\n);"
+      },
+      {
+        "table_schema": "create table file_storage (\n  file_id INT PRIMARY KEY,\n  project_id INT REFERENCES projects(id),\n  file_name STRING,\n  file_path STRING,\n  uploaded_by STRING,\n  uploaded_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]

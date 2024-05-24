@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS survey_data (\n    survey_id INT PRIMARY KEY,\n    participant_name VARCHAR(50),\n    survey_questions JSONB,\n    submission_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE survey_data (\n    survey_id INT PRIMARY KEY,\n    participant_id INT,\n    survey_question TEXT,\n    survey_answer TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participant_data (\n    participant_id INT PRIMARY KEY,\n    participant_name TEXT,\n    participant_email TEXT,\n    participant_role TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE survey_data (\n  survey_id INT PRIMARY KEY,\n  survey_name VARCHAR(255) NOT NULL,\n  survey_date DATE,\n  respondent_name VARCHAR(255) NOT NULL,\n  respondent_email VARCHAR(255) UNIQUE\n);\n\nCREATE TABLE question_data (\n  question_id INT PRIMARY KEY,\n  question_text TEXT NOT NULL,\n  survey_id INT REFERENCES survey_data(survey_id),\n  question_type VARCHAR(50)\n);\n\nCREATE TABLE answer_data (\n  answer_id INT PRIMARY KEY,\n  answer_text TEXT NOT NULL,\n  question_id INT REFERENCES question_data(question_id),\n  respondent_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE surveys (\n  id INT PRIMARY KEY,\n  survey_name TEXT NOT NULL,\n  survey_data JSONB,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE respondents (\n  id INT PRIMARY KEY,\n  respondent_name TEXT NOT NULL,\n  respondent_email TEXT UNIQUE,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE questions (\n  id INT PRIMARY KEY,\n  question_text TEXT NOT NULL,\n  question_type TEXT,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE responses (\n  id INT PRIMARY KEY,\n  survey_id INT,\n  respondent_id INT,\n  question_id INT,\n  response_text TEXT,\n  created_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE surveys (\n\tid INT PRIMARY KEY,\n\tname VARCHAR(255) NOT NULL,\n\temail VARCHAR(255) NOT NULL,\n\tsurvey_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE responses (\n\tresponse_id INT PRIMARY KEY,\n\tsurvey_id INT REFERENCES surveys(id),\n\temail VARCHAR(255) NOT NULL,\n\tresponse_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE survey_questions (\n\tquestion_id INT PRIMARY KEY,\n\tsurvey_id INT REFERENCES surveys(id),\n\tquestion_text TEXT NOT NULL,\n\tquestion_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n\tuser_id INT PRIMARY KEY,\n\tusername VARCHAR(100) UNIQUE NOT NULL,\n\tpassword VARCHAR(255) NOT NULL,\n\trole VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n\trole_id INT PRIMARY KEY,\n\trole_name VARCHAR(50) UNIQUE NOT NULL\n);"
+      }
+    ]
+  }
+]

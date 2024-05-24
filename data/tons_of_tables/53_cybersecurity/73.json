@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE behavior_patterns (\n    id INT PRIMARY KEY,\n    target_name VARCHAR(50),\n    behavior_type VARCHAR(50),\n    pattern_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE targets (\n    target_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    age INT,\n    location VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE behaviors (\n    behavior_id INT PRIMARY KEY,\n    target_id INT REFERENCES targets(target_id),\n    behavior_type VARCHAR(50),\n    behavior_description TEXT,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE behavior_patterns (\n    target_id INT PRIMARY KEY,\n    pattern_type VARCHAR(255),\n    behavior_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE persuasive_messages (\n    message_id INT PRIMARY KEY,\n    message_text TEXT,\n    target_id INT,\n    FOREIGN KEY (target_id) REFERENCES behavior_patterns(target_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE social_engineering_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    target_id INT,\n    FOREIGN KEY (target_id) REFERENCES behavior_patterns(target_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE target_profiles (\n    target_id UUID PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone_number VARCHAR(20),\n    birthday DATE,\n    last_login TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE message_history (\n    message_id UUID PRIMARY KEY,\n    target_id UUID,\n    sent_at TIMESTAMP,\n    message TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE behavior_patterns (\n    pattern_id UUID PRIMARY KEY,\n    target_id UUID,\n    pattern_name VARCHAR(50) NOT NULL,\n    pattern_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_activity (\n    activity_id UUID PRIMARY KEY,\n    target_id UUID,\n    campaign_id UUID,\n    activity_type VARCHAR(50) NOT NULL,\n    activity_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE targets (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    phone_number VARCHAR(20),\n    location VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE behaviors (\n    id SERIAL PRIMARY KEY,\n    target_id INTEGER REFERENCES targets(id),\n    behavior_type VARCHAR(50) NOT NULL,\n    behavior_description TEXT,\n    behavior_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    id SERIAL PRIMARY KEY,\n    target_id INTEGER REFERENCES targets(id),\n    preference_type VARCHAR(50) NOT NULL,\n    preference_value VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE messages (\n    id SERIAL PRIMARY KEY,\n    sender_id INTEGER REFERENCES targets(id),\n    receiver_id INTEGER REFERENCES targets(id),\n    message_text TEXT,\n    message_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(100) NOT NULL,\n    start_date TIMESTAMP,\n    end_date TIMESTAMP,\n    target_id INTEGER REFERENCES targets(id)\n);"
+      }
+    ]
+  }
+]

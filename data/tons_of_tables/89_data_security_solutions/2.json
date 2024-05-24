@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityIncidents (\n    incident_id SERIAL PRIMARY KEY,\n    incident_date DATE,\n    incident_type VARCHAR(50),\n    description TEXT,\n    location VARCHAR(100),\n    reporter_name VARCHAR(50),\n    reporter_contact VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incidents (\n    incident_id UUID PRIMARY KEY,\n    incident_date DATE,\n    incident_type VARCHAR(255),\n    description TEXT,\n    investigator_id UUID\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE security_breaches (\n    breach_id UUID PRIMARY KEY,\n    incident_id UUID REFERENCES incidents(incident_id),\n    breach_date TIMESTAMP,\n    breach_type VARCHAR(255),\n    impact VARCHAR(255),\n    affected_systems JSON\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityIncidents (\n    IncidentID SERIAL PRIMARY KEY,\n    IncidentType VARCHAR(255) NOT NULL,\n    IncidentDate DATE NOT NULL,\n    IncidentDetails TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SecurityBreachDetails (\n    BreachID SERIAL PRIMARY KEY,\n    BreachType VARCHAR(255) NOT NULL,\n    BreachDate DATE NOT NULL,\n    BreachDetails TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InvestigationTeam (\n    TeamID SERIAL PRIMARY KEY,\n    TeamName VARCHAR(255) NOT NULL,\n    TeamLead VARCHAR(255) NOT NULL,\n    TeamMembers TEXT[]\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n    incident_id UUID PRIMARY KEY,\n    incident_date DATE,\n    location TEXT,\n    incident_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_details (\n    breach_id UUID PRIMARY KEY,\n    incident_id UUID REFERENCES security_incidents(incident_id),\n    breach_date DATE,\n    breach_type TEXT,\n    breach_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE involved_parties (\n    party_id UUID PRIMARY KEY,\n    party_name TEXT,\n    party_type TEXT,\n    incident_id UUID REFERENCES security_incidents(incident_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE evidence (\n    evidence_id UUID PRIMARY KEY,\n    incident_id UUID REFERENCES security_incidents(incident_id),\n    evidence_description TEXT,\n    evidence_type TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_incidents (\n    incident_id INT PRIMARY KEY,\n    incident_date DATE,\n    location VARCHAR(255),\n    description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE breach_details (\n    breach_id INT PRIMARY KEY,\n    incident_id INT,\n    breach_type VARCHAR(50),\n    breach_date TIMESTAMP,\n    breach_description TEXT,\n    FOREIGN KEY (incident_id) REFERENCES security_incidents(incident_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE affected_entities (\n    entity_id INT PRIMARY KEY,\n    entity_name VARCHAR(255),\n    incident_id INT,\n    breach_id INT,\n    FOREIGN KEY (incident_id) REFERENCES security_incidents(incident_id),\n    FOREIGN KEY (breach_id) REFERENCES breach_details(breach_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE investigation_team (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(255),\n    lead_investigator VARCHAR(100),\n    assigned_incident_id INT,\n    FOREIGN KEY (assigned_incident_id) REFERENCES security_incidents(incident_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE evidence (\n    evidence_id INT PRIMARY KEY,\n    incident_id INT,\n    evidence_type VARCHAR(50),\n    evidence_details TEXT,\n    FOREIGN KEY (incident_id) REFERENCES security_incidents(incident_id)\n)"
+      }
+    ]
+  }
+]

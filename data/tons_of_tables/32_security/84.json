@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_authentication (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash CHAR(64) NOT NULL,\n    password_salt CHAR(10) NOT NULL,\n    multi_factor_enabled BOOLEAN DEFAULT false\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    mfa_enabled BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    login_time TIMESTAMP NOT NULL,\n    ip_address VARCHAR(20) NOT NULL,\n    successful_login BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password_hash VARCHAR(255) NOT NULL,\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_history (\n  history_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  password_hash VARCHAR(255) NOT NULL,\n  change_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE multi_factor_auth (\n  auth_id INT PRIMARY KEY,\n  user_id INT NOT NULL,\n  otp_secret VARCHAR(50) NOT NULL,\n  is_enabled BOOLEAN,\n  last_used TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id INT REFERENCES users(id),\n    role_id INT REFERENCES roles(role_id),\n    PRIMARY KEY (user_id, role_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    login_time TIMESTAMP NOT NULL,\n    success BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    username VARCHAR(50) PRIMARY KEY,\n    password VARCHAR(100) NOT NULL,\n    multi_factor_auth BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_policy (\n    policy_id SERIAL PRIMARY KEY,\n    min_length INTEGER NOT NULL,\n    max_length INTEGER NOT NULL,\n    special_characters BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE login_attempts (\n    attempt_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE access_log (\n    log_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE failed_logins (\n    login_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    num_attempts INTEGER NOT NULL\n);"
+      }
+    ]
+  }
+]

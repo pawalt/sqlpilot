@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facial_recognition_data (\n    id UUID PRIMARY KEY,\n    image_url STRING,\n    detected_faces INT,\n    face_identification_result JSON\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE facial_recognition_users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    full_name VARCHAR(100) NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    face_encoding BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE facial_recognition_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES facial_recognition_users(user_id),\n    timestamp TIMESTAMPTZ NOT NULL,\n    action VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE FaceRecognitionUsers (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FaceRecognitionLogs (\n    log_id SERIAL PRIMARY KEY,\n    user_id UUID REFERENCES FaceRecognitionUsers(user_id),\n    timestamp TIMESTAMP NOT NULL,\n    action VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE FaceRecognitionData (\n    data_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES FaceRecognitionUsers(user_id),\n    image_url VARCHAR(255) NOT NULL,\n    data_type VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  face_encoding BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_faces (\n  face_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  face_data BYTEA NOT NULL,\n  created_at TIMESTAMP DEFAULT now()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE face_recognition_logs (\n  log_id UUID PRIMARY KEY,\n  user_id UUID REFERENCES users(user_id),\n  recognized_at TIMESTAMP DEFAULT now()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE face_recognition_events (\n  event_id UUID PRIMARY KEY,\n  event_type VARCHAR(50) NOT NULL,\n  event_data JSONB,\n  event_timestamp TIMESTAMP DEFAULT now()\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE User (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Image (\n    image_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES User(user_id),\n    image_data BYTEA NOT NULL,\n    timestamp TIMESTAMP DEFAULT NOW()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE RecognitionData (\n    recognition_id UUID PRIMARY KEY,\n    image_id UUID REFERENCES Image(image_id),\n    recognition_result JSONB NOT NULL,\n    timestamp TIMESTAMP DEFAULT NOW()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Log (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES User(user_id),\n    action_description TEXT NOT NULL,\n    timestamp TIMESTAMP DEFAULT NOW()\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Report (\n    report_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES User(user_id),\n    report_data TEXT NOT NULL,\n    creation_date DATE DEFAULT CURRENT_DATE\n);\n"
+      }
+    ]
+  }
+]

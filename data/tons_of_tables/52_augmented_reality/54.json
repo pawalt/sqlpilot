@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE augmented_reality_content_creators (\n    creator_id UUID PRIMARY KEY,\n    creator_name VARCHAR(100),\n    creator_email VARCHAR(100),\n    project_id UUID,\n    project_name VARCHAR(100),\n    project_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE augmented_reality_creators (\n    creator_id UUID PRIMARY KEY,\n    creator_name VARCHAR(255) NOT NULL,\n    creator_email VARCHAR(255) NOT NULL,\n    creator_join_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    project_creator_id UUID REFERENCES augmented_reality_creators(creator_id),\n    project_description TEXT,\n    project_creation_date DATE NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE creators (\n    creator_id INT PRIMARY KEY,\n    creator_name VARCHAR(50) NOT NULL,\n    specialty VARCHAR(50),\n    join_date DATE\n);\n\nCREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL,\n    creator_id INT REFERENCES creators(creator_id),\n    project_description TEXT,\n    project_start_date DATE,\n    project_end_date DATE\n);\n\nCREATE TABLE tags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE creators (    creator_id UUID PRIMARY KEY,    creator_name VARCHAR(100) NOT NULL,    email VARCHAR(100) UNIQUE,    created_at TIMESTAMP DEFAULT NOW(),    timezone VARCHAR(50) )"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (    project_id UUID PRIMARY KEY,    project_name VARCHAR(150) NOT NULL,    creator_id UUID REFERENCES creators(creator_id),    project_description TEXT,    created_at TIMESTAMP DEFAULT NOW() )"
+      },
+      {
+        "table_schema": "CREATE TABLE content (    content_id UUID PRIMARY KEY,    creator_id UUID REFERENCES creators(creator_id),    project_id UUID REFERENCES projects(project_id),    content_type VARCHAR(50),    content_url TEXT,    created_at TIMESTAMP DEFAULT NOW() )"
+      },
+      {
+        "table_schema": "CREATE TABLE tags (    tag_id UUID PRIMARY KEY,    tag_name VARCHAR(50) UNIQUE )"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ARCreators (\n    creator_id UUID PRIMARY KEY,\n    creator_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    country VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ARProjects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL,\n    creator_id UUID REFERENCES ARCreators(creator_id),\n    project_description VARCHAR(255),\n    project_status VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ARAssets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(100) NOT NULL,\n    project_id UUID REFERENCES ARProjects(project_id),\n    asset_type VARCHAR(50) NOT NULL,\n    asset_url TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ARFeedback (\n    feedback_id UUID PRIMARY KEY,\n    project_id UUID REFERENCES ARProjects(project_id),\n    feedback_text TEXT NOT NULL,\n    rating INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ARTags (\n    tag_id UUID PRIMARY KEY,\n    tag_name VARCHAR(50) NOT NULL\n);\n"
+      }
+    ]
+  }
+]

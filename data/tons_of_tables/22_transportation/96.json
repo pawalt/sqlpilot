@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ev_components_warranty (\n  component_id INT PRIMARY KEY,\n  component_name VARCHAR(255) NOT NULL,\n  warranty_start_date DATE NOT NULL,\n  warranty_end_date DATE NOT NULL,\n  warranty_period_in_months INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE electric_vehicle_components (component_id INT PRIMARY KEY,\ncomponent_name VARCHAR(255) NOT NULL,\ncomponent_type VARCHAR(50) NOT NULL,\nwarranty_start_date DATE,\nwarranty_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE component_warranty (warranty_id INT PRIMARY KEY,\ncomponent_id INT,\nwarranty_type VARCHAR(50) NOT NULL,\nwarranty_duration INT,\nFOREIGN KEY (component_id) REFERENCES electric_vehicle_components(component_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE electric_vehicle_components (\n    component_id INT PRIMARY KEY,\n    component_name VARCHAR(50),\n    warranty_period INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vehicle_warranty (\n    vehicle_id INT PRIMARY KEY,\n    warranty_start_date DATE,\n    warranty_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE component_warranty (\n    component_id INT,\n    vehicle_id INT,\n    warranty_status VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ElectricVehicles (\n    id UUID PRIMARY KEY,\n    vehicle_model VARCHAR(255) NOT NULL,\n    manufacturer VARCHAR(255) NOT NULL,\n    production_year INT NOT NULL,\n    warranty_expiry_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Components (\n    id UUID PRIMARY KEY,\n    component_name VARCHAR(255) NOT NULL,\n    component_type VARCHAR(50) NOT NULL,\n    vehicle_model VARCHAR(255) NOT NULL,\n    warranty_expiry_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE WarrantyProviders (\n    id UUID PRIMARY KEY,\n    provider_name VARCHAR(255) NOT NULL,\n    contact_email VARCHAR(255) NOT NULL,\n    contact_number VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ComponentWarranty (\n    component_id UUID PRIMARY KEY,\n    warranty_provider_id UUID NOT NULL,\n    warranty_start_date DATE NOT NULL,\n    warranty_expiry_date DATE NOT NULL,\n    FOREIGN KEY (component_id) REFERENCES Components(id),\n    FOREIGN KEY (warranty_provider_id) REFERENCES WarrantyProviders(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ComponentWarranty (\n    component_id INT PRIMARY KEY,\n    component_name VARCHAR(255) NOT NULL,\n    warranty_period INT NOT NULL,\n    warranty_start_date DATE,\n    warranty_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VehicleWarranty (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_model VARCHAR(255) NOT NULL,\n    warranty_period INT NOT NULL,\n    warranty_start_date DATE,\n    warranty_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Manufacturer (\n    manufacturer_id INT PRIMARY KEY,\n    manufacturer_name VARCHAR(255) NOT NULL,\n    contact_number VARCHAR(15) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComponentInventory (\n    component_id INT PRIMARY KEY,\n    manufacturer_id INT NOT NULL,\n    available_quantity INT NOT NULL,\n    price DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VehicleOwnership (\n    vehicle_id INT PRIMARY KEY,\n    owner_name VARCHAR(255) NOT NULL,\n    owner_contact VARCHAR(15) NOT NULL,\n    purchase_date DATE\n);"
+      }
+    ]
+  }
+]

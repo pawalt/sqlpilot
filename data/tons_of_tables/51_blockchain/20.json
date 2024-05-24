@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    account_balance DECIMAL(15, 2) NOT NULL,\n    creation_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loan_applications (\n    application_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_accounts(user_id),\n    loan_amount DECIMAL(10,2) NOT NULL,\n    status VARCHAR(50) DEFAULT 'pending'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    creation_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n    loan_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    amount DECIMAL(15, 2) NOT NULL,\n    interest_rate DECIMAL(5, 2) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    loan_id UUID NOT NULL,\n    amount DECIMAL(15, 2) NOT NULL,\n    transaction_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100) UNIQUE,\n    password_hash VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n    loan_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    loan_amount DECIMAL(10,2),\n    payment_due_date DATE,\n    status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    transaction_date TIMESTAMP,\n    amount DECIMAL(10,2),\n    type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE collateral (\n    collateral_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    collateral_name VARCHAR(50),\n    value DECIMAL(10,2),\n    status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE loans (\n  loan_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(user_id) ON DELETE CASCADE,\n  amount DECIMAL(10, 2) NOT NULL,\n  interest_rate DECIMAL(5, 2) NOT NULL,\n  status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n  transaction_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(user_id) ON DELETE CASCADE,\n  loan_id INT REFERENCES loans(loan_id) ON DELETE CASCADE,\n  amount DECIMAL(10, 2) NOT NULL,\n  transaction_type VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE collateral (\n  collateral_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(user_id) ON DELETE CASCADE,\n  collateral_type VARCHAR(50) NOT NULL,\n  value DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id SERIAL PRIMARY KEY,\n  loan_id INT REFERENCES loans(loan_id) ON DELETE CASCADE,\n  user_id INT REFERENCES users(user_id) ON DELETE CASCADE,\n  amount DECIMAL(10, 2) NOT NULL,\n  payment_date DATE NOT NULL\n);"
+      }
+    ]
+  }
+]

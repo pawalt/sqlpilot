@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n  image_id INT PRIMARY KEY,\n  image_data BYTEA,\n  geographic_coordinates VARCHAR(50),\n  capture_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n    image_id SERIAL PRIMARY KEY,\n    image_name TEXT NOT NULL,\n    coordinates JSONB NOT NULL,\n    capture_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE LandCoverAnalysis (\n    analysis_id SERIAL PRIMARY KEY,\n    image_id INTEGER REFERENCES SatelliteImages(image_id),\n    land_cover_type TEXT NOT NULL,\n    analysis_result JSONB NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    id UUID PRIMARY KEY,\n    image_url TEXT NOT NULL,\n    acquisition_date DATE NOT NULL,\n    geographic_coordinates GEOGRAPHY NOT NULL,\n    image_data BYTES\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE land_cover_analysis (\n    id UUID PRIMARY KEY,\n    analysis_date DATE NOT NULL,\n    analysis_result TEXT,\n    satellite_image_id UUID REFERENCES satellite_images(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE geographic_coordinates (\n    id UUID PRIMARY KEY,\n    latitude DECIMAL NOT NULL,\n    longitude DECIMAL NOT NULL,\n    location_name TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n    image_id UUID PRIMARY KEY,\n    image_location GEOMETRY,\n    capture_date TIMESTAMP,\n    satellite_provider VARCHAR,\n    image_resolution INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageAnalysis (\n    analysis_id UUID PRIMARY KEY,\n    image_id UUID REFERENCES SatelliteImages(image_id),\n    analysis_date TIMESTAMP,\n    analysis_result JSON\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Coordinates (\n    coordinate_id UUID PRIMARY KEY,\n    latitude FLOAT,\n    longitude FLOAT,\n    location_description VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LandCoverChange (\n    change_id UUID PRIMARY KEY,\n    coordinate_id UUID REFERENCES Coordinates(coordinate_id),\n    change_date TIMESTAMP,\n    land_cover_type VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    image_id UUID PRIMARY KEY,\n    coordinates GEOMETRY NOT NULL,\n    image_data BYTEA,\n    acquisition_date DATE\n);\n\nCREATE TABLE land_cover_classes (\n    class_id SERIAL PRIMARY KEY,\n    class_name VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE image_analysis_results (\n    analysis_id SERIAL PRIMARY KEY,\n    image_id UUID,\n    analysis_date TIMESTAMP,\n    land_cover_class_id INT,\n    analysis_result TEXT\n);\n\nCREATE TABLE geographic_coordinates (\n    coordinate_id SERIAL PRIMARY KEY,\n    latitude FLOAT NOT NULL,\n    longitude FLOAT NOT NULL\n);\n\nCREATE TABLE land_cover_changes (\n    change_id SERIAL PRIMARY KEY,\n    image_id UUID,\n    analysis_id INT,\n    change_date DATE,\n    change_type VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

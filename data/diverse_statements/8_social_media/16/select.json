@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM shared_files;",
+      "SELECT file_id, file_name FROM shared_files ORDER BY file_name ASC;",
+      "SELECT file_name, file_size FROM shared_files WHERE file_size > 1000;",
+      "SELECT * FROM shared_files WHERE upload_date > '2022-01-01';",
+      "SELECT file_id, file_name, upload_date FROM shared_files ORDER BY upload_date DESC;",
+      "SELECT file_name, file_size FROM shared_files WHERE file_size > 1000 ORDER BY file_name DESC;",
+      "SELECT * FROM shared_files WHERE upload_date BETWEEN '2021-01-01' AND '2021-12-31' ORDER BY upload_date ASC;",
+      "SELECT file_name, file_size, upload_date FROM shared_files WHERE file_size > 5000 AND upload_date >= '2022-01-01' ORDER BY upload_date DESC, file_size ASC;",
+      "SELECT DISTINCT file_size FROM shared_files WHERE file_name LIKE 'report%' ORDER BY file_size DESC;",
+      "SELECT file_id, file_name, file_size, upload_date FROM shared_files WHERE file_size BETWEEN 2000 AND 5000 ORDER BY file_size DESC, upload_date ASC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM file_metadata;",
+      "SELECT file_name, file_size FROM file_metadata WHERE file_id = 2;",
+      "SELECT file_id, file_name, upload_date FROM file_metadata WHERE upload_date > '2022-01-01';",
+      "SELECT f.file_name, f.upload_date, fs.shared_by_user_id FROM file_metadata f INNER JOIN file_shares fs ON f.file_id = fs.file_id;",
+      "SELECT * FROM file_shares WHERE shared_with_user_id = 10 ORDER BY share_date DESC;",
+      "SELECT file_name, file_size FROM file_metadata WHERE file_id = 10;",
+      "SELECT file_name, upload_date FROM file_metadata WHERE file_id = 20 ORDER BY upload_date DESC;",
+      "SELECT * FROM file_metadata WHERE file_size > 10000 AND upload_date > '2022-01-01';",
+      "SELECT file_name, file_size, share_date FROM file_metadata JOIN file_shares ON file_metadata.file_id = file_shares.file_id WHERE file_shares.shared_by_user_id = 100;",
+      "SELECT COUNT(share_id) AS shared_files_count, shared_with_user_id FROM file_shares GROUP BY shared_with_user_id HAVING COUNT(share_id) > 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM file_metadata WHERE file_name='example.txt';",
+      "SELECT user_id, username FROM user_metadata WHERE email='john.doe@example.com';",
+      "SELECT file_id, file_size, upload_date FROM file_metadata ORDER BY upload_date DESC;",
+      "SELECT username, email FROM user_metadata WHERE user_id = 12345;",
+      "SELECT * FROM file_share WHERE shared_date >= '2022-01-01' AND shared_date < '2022-02-01';",
+      "SELECT * FROM file_metadata;",
+      "SELECT file_name, file_size FROM file_metadata WHERE file_size > 1000;",
+      "SELECT file_id, file_name, upload_date FROM file_metadata ORDER BY upload_date DESC;",
+      "SELECT u.username, f.file_name, fs.shared_date FROM user_metadata u JOIN file_share fs ON u.user_id = fs.user_id JOIN file_metadata f ON fs.file_id = f.file_id;",
+      "SELECT u.username AS user, COUNT(fs.share_id) AS share_count FROM user_metadata u LEFT JOIN file_share fs ON u.user_id = fs.user_id GROUP BY u.user_id HAVING share_count > 0;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM files;",
+      "SELECT file_name, file_size FROM files ORDER BY file_size DESC;",
+      "SELECT file_name, upload_date FROM files WHERE file_size > 1000;",
+      "SELECT user_id, username FROM users;",
+      "SELECT * FROM file_comments WHERE comment_date > '2022-01-01' ORDER BY comment_date DESC;",
+      "SELECT * FROM files WHERE file_id = 1;",
+      "SELECT file_name, file_size FROM files WHERE file_size > 1000 ORDER BY upload_date DESC;",
+      "SELECT users.username, files.file_name, file_comments.comment_text FROM users JOIN file_owners ON users.user_id = file_owners.owner_id JOIN files ON files.file_id = file_owners.file_id JOIN file_comments ON files.file_id = file_comments.file_id;",
+      "SELECT file_name, file_size, upload_date FROM files WHERE file_name LIKE 'report%' AND upload_date BETWEEN '2022-01-01' AND '2022-12-31';",
+      "SELECT users.username, COUNT(file_owners.file_id) AS num_files FROM users LEFT JOIN file_owners ON users.user_id = file_owners.owner_id GROUP BY users.username HAVING num_files > 3 ORDER BY num_files DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM files WHERE file_id = 1;",
+      "SELECT file_name, file_size FROM files WHERE file_size > 1000;",
+      "SELECT file_id, upload_date FROM files WHERE upload_date > '2022-01-01';",
+      "SELECT user_id, username, email FROM users WHERE username LIKE 'A%';",
+      "SELECT folder_name FROM folders ORDER BY folder_id DESC LIMIT 3;",
+      "SELECT * FROM users WHERE user_id = 1;",
+      "SELECT file_name, file_size, upload_date FROM files WHERE upload_date >= '2022-01-01';",
+      "SELECT u.username, f.file_name FROM users u JOIN user_files uf ON u.user_id = uf.user_id JOIN files f ON uf.file_id = f.file_id;",
+      "SELECT folder_name, COUNT(ff.file_id) AS num_files FROM folders LEFT JOIN folder_files ff ON folders.folder_id = ff.folder_id GROUP BY folders.folder_id;",
+      "SELECT u.username, f.file_name, ff.folder_id FROM users u JOIN user_files uf ON u.user_id = uf.user_id JOIN files f ON uf.file_id = f.file_id JOIN folder_files ff ON uf.file_id = ff.file_id;"
+    ]
+  }
+]

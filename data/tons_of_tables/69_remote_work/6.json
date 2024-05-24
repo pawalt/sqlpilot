@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MeetingSchedule (\n  meeting_id INT PRIMARY KEY,\n  meeting_date DATE,\n  start_time TIME,\n  end_time TIME,\n  organizer_name VARCHAR(50),\n  agenda TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meeting_schedule (\n    meeting_id INT PRIMARY KEY,\n    meeting_topic VARCHAR(255) NOT NULL,\n    meeting_date DATE,\n    start_time TIME,\n    end_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE agenda (\n    agenda_id INT PRIMARY KEY,\n    meeting_id INT,\n    agenda_item VARCHAR(255) NOT NULL,\n    presenter VARCHAR(100),\n    duration_minutes INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meeting_schedule (\n    meeting_id UUID PRIMARY KEY,\n    meeting_date DATE,\n    start_time TIME,\n    end_time TIME,\n    topic VARCHAR(255),\n    description TEXT,\n    organizer VARCHAR(100),\n    attendees JSON\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_agenda (\n    agenda_id UUID PRIMARY KEY,\n    meeting_id UUID REFERENCES meeting_schedule(meeting_id),\n    item_number INTEGER,\n    topic VARCHAR(255),\n    description TEXT,\n    presenter VARCHAR(100),\n    time_allocated INTERVAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_notes (\n    note_id UUID PRIMARY KEY,\n    meeting_id UUID REFERENCES meeting_schedule(meeting_id),\n    agenda_id UUID REFERENCES meeting_agenda(agenda_id),\n    note_timestamp TIMESTAMP,\n    note_content TEXT,\n    note_taker VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meetings (\n    meeting_id INT PRIMARY KEY,\n    meeting_title VARCHAR(255),\n    meeting_date DATE,\n    meeting_time TIME,\n    organizer_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    participant_name VARCHAR(255),\n    participant_email VARCHAR(255),\n    participant_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agendas (\n    agenda_id INT PRIMARY KEY,\n    meeting_id INT,\n    agenda_topic VARCHAR(255),\n    agenda_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE schedule (\n    schedule_id INT PRIMARY KEY,\n    meeting_id INT,\n    start_time TIME,\n    end_time TIME,\n    participant_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE meetings (\n    meeting_id INT PRIMARY KEY,\n    meeting_name TEXT,\n    meeting_date DATE,\n    start_time TIME,\n    end_time TIME\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE participants (\n    participant_id INT PRIMARY KEY,\n    participant_name TEXT,\n    participant_email TEXT,\n    participant_role TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE agendas (\n    agenda_id INT PRIMARY KEY,\n    agenda_topic TEXT,\n    agenda_description TEXT,\n    meeting_id INT,\n    FOREIGN KEY (meeting_id) REFERENCES meetings(meeting_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE discussions (\n    discussion_id INT PRIMARY KEY,\n    discussion_topic TEXT,\n    discussion_details TEXT,\n    agenda_id INT,\n    FOREIGN KEY (agenda_id) REFERENCES agendas(agenda_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE notes (\n    note_id INT PRIMARY KEY,\n    note_content TEXT,\n    discussion_id INT,\n    FOREIGN KEY (discussion_id) REFERENCES discussions(discussion_id)\n);\n"
+      }
+    ]
+  }
+]

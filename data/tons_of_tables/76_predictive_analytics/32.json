@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_lake (\n    id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_type VARCHAR(50),\n    upload_date TIMESTAMP,\n    data_size INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DataLake (\n    data_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_type VARCHAR(50),\n    data_content TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DataTags (\n    tag_id INT PRIMARY KEY,\n    data_id INT,\n    tag_name VARCHAR(50),\n    FOREIGN KEY (data_id) REFERENCES DataLake(data_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE DataLake (\n    id INT PRIMARY KEY,\n    file_name TEXT,\n    file_size INT,\n    upload_time TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Tags (\n    tag_id INT PRIMARY KEY,\n    tag_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DataTags (\n    id INT,\n    tag_id INT,\n    PRIMARY KEY (id, tag_id),\n    FOREIGN KEY (id) REFERENCES DataLake(id),\n    FOREIGN KEY (tag_id) REFERENCES Tags(tag_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_sources (\n    id INT PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL,\n    source_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_records (\n    record_id INT PRIMARY KEY,\n    source_id INT NOT NULL,\n    record_data JSONB NOT NULL,\n    record_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_connections (\n    connection_id INT PRIMARY KEY,\n    source_id INT NOT NULL,\n    destination_id INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_lake_files (\n    file_id INT PRIMARY KEY,\n    file_name VARCHAR(255),\n    file_size INT,\n    file_type VARCHAR(50),\n    upload_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_lake_metadata (\n    metadata_id INT PRIMARY KEY,\n    file_id INT REFERENCES data_lake_files(file_id),\n    metadata_key VARCHAR(50),\n    metadata_value TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_lake_tags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_lake_file_tags (\n    file_tag_id INT PRIMARY KEY,\n    file_id INT REFERENCES data_lake_files(file_id),\n    tag_id INT REFERENCES data_lake_tags(tag_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_lake_logs (\n    log_id INT PRIMARY KEY,\n    action VARCHAR(50),\n    timestamp TIMESTAMP,\n    user_id INT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_authentication (\n  biometric_id INT NOT NULL PRIMARY KEY,\n  biometric_data JSONB NOT NULL,\n  authentication_status BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data ( \n  id INT PRIMARY KEY, \n  biometric_type VARCHAR(50), \n  biometric_feature TEXT \n);\n\nCREATE TABLE authentication_logs ( \n  log_id SERIAL PRIMARY KEY, \n  user_id INT, \n  authenticated_at TIMESTAMP,\n  success BOOLEAN, \n  FOREIGN KEY (user_id) REFERENCES biometric_data(id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    id INT PRIMARY KEY,\n    user_id INT,\n    biometric_type VARCHAR(50),\n    biometric_data BLOB,\n    timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(50),\n    email VARCHAR(100),\n    last_login TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    device_id INT,\n    biometric_type VARCHAR(50),\n    match_score FLOAT,\n    authentication_result BOOLEAN,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    biometric_id INT PRIMARY KEY,\n    biometric_type VARCHAR(50),\n    biometric_data BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_data (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    user_bio_id INT,\n    FOREIGN KEY (user_bio_id) REFERENCES biometric_data(biometric_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE real_time_biometric (\n    real_bio_id INT PRIMARY KEY,\n    biometric_type VARCHAR(50),\n    real_time_data BLOB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_log (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    real_bio_id INT,\n    authentication_time TIMESTAMP,\n    authentication_result BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    full_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    data_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    fingerprint_data BYTEA NOT NULL,\n    face_data BYTEA NOT NULL,\n    voice_data BYTEA NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE real_time_inputs (\n    input_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    fingerprint_input BYTEA NOT NULL,\n    face_input BYTEA NOT NULL,\n    voice_input BYTEA NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    authentication_result BOOLEAN NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comparison_results (\n    result_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    comparison_result BOOLEAN NOT NULL,\n    timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

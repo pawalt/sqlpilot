@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Itinerary (\n    itinerary_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    timing TIMESTAMPTZ\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Itinerary (\n itinerary_id INT PRIMARY KEY,\n start_date DATE NOT NULL,\n end_date DATE NOT NULL\n );"
+      },
+      {
+        "table_schema": "CREATE TABLE Sightseeing (\n sightseeing_id INT PRIMARY KEY,\n itinerary_id INT REFERENCES Itinerary(itinerary_id),\n location_name TEXT NOT NULL,\n time_of_visit TIME NOT NULL\n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ItineraryDetails (\n    id INT PRIMARY KEY,\n    itinerary_name TEXT,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SightseeingLocations (\n    id INT PRIMARY KEY,\n    location_name TEXT,\n    location_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ItineraryTimings (\n    id INT PRIMARY KEY,\n    itinerary_id INT,\n    location_id INT,\n    start_time TIME,\n    end_time TIME\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SightseeingLocations (sightseeing_id INT PRIMARY KEY, location_name VARCHAR(255), address VARCHAR(255), opening_hours VARCHAR(255));"
+      },
+      {
+        "table_schema": "CREATE TABLE ItineraryDetails (itinerary_id INT PRIMARY KEY, itinerary_name VARCHAR(255), start_date DATE, end_date DATE);"
+      },
+      {
+        "table_schema": "CREATE TABLE ItinerarySightseeingMap (map_id INT PRIMARY KEY, itinerary_id INT, sightseeing_id INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE SightseeingTimings (timing_id INT PRIMARY KEY, sightseeing_id INT, time_schedule TIMESTAMP);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Itinerary (\n    itinerary_id UUID PRIMARY KEY,\n    itinerary_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE\n);\n\nCREATE TABLE SightseeingLocations (\n    location_id SERIAL PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    city VARCHAR(100),\n    country VARCHAR(100)\n);\n\nCREATE TABLE Timings (\n    timing_id SERIAL PRIMARY KEY,\n    location_id SERIAL REFERENCES SightseeingLocations(location_id),\n    start_time TIME,\n    end_time TIME\n);\n\nCREATE TABLE ItinerarySightseeing (\n    itinerary_id UUID REFERENCES Itinerary(itinerary_id),\n    location_id SERIAL REFERENCES SightseeingLocations(location_id),\n    timing_id SERIAL REFERENCES Timings(timing_id)\n);\n\nCREATE TABLE Users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(100) NOT NULL,\n    email VARCHAR(255) UNIQUE\n);\n"
+      }
+    ]
+  }
+]

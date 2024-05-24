@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE abandoned_carts (\n    cart_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    cart_contents JSONB NOT NULL,\n    abandoned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    notification_sent BOOLEAN DEFAULT FALSE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email VARCHAR(255),\n    shopping_cart_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE abandoned_carts (\n    cart_id INT PRIMARY KEY,\n    customer_id INT,\n    items_count INT,\n    total_price DECIMAL(10, 2),\n    abandoned_at TIMESTAMP,\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Customers (\n  customer_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ShoppingCarts (\n  cart_id INT PRIMARY KEY,\n  customer_id INT,\n  total_amount DECIMAL(10, 2),\n  cart_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailNotifications (\n  notification_id INT PRIMARY KEY,\n  customer_id INT,\n  notification_text TEXT,\n  sent_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  email_address VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shopping_carts (\n  cart_id INT PRIMARY KEY,\n  customer_id INT REFERENCES customers(customer_id),\n  total_price DECIMAL(10, 2) NOT NULL,\n  is_abandoned BOOLEAN DEFAULT FALSE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE abandoned_carts (\n  cart_id INT REFERENCES shopping_carts(cart_id),\n  abandoned_timestamp TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_notifications (\n  notification_id INT PRIMARY KEY,\n  customer_id INT REFERENCES customers(customer_id),\n  notification_text TEXT NOT NULL,\n  sent_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255) NOT NULL,\n  email VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE shopping_carts (\n  cart_id INT PRIMARY KEY,\n  customer_id INT REFERENCES customers(customer_id),\n  total_price DECIMAL(10, 2) NOT NULL,\n  items TEXT[] NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE abandoned_carts (\n  abandoned_cart_id INT PRIMARY KEY,\n  cart_id INT REFERENCES shopping_carts(cart_id),\n  abandoned_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_templates (\n  template_id INT PRIMARY KEY,\n  template_name VARCHAR(255) NOT NULL,\n  template_content TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n  log_id INT PRIMARY KEY,\n  template_id INT REFERENCES email_templates(template_id),\n  recipient_email VARCHAR(255) NOT NULL,\n  send_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

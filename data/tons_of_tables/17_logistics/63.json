@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE goods_tracking (\n  shipment_id UUID PRIMARY KEY,\n  product_id UUID,\n  inbound_time TIMESTAMP,\n  outbound_time TIMESTAMP,\n  RFID_tag VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IncomingGoods (\n  id INT PRIMARY KEY,\n  rfid_tag VARCHAR(255),\n  product_name VARCHAR(255),\n  quantity INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OutgoingGoods (\n  id INT PRIMARY KEY,\n  rjson\rfid_tag VARCHAR(255),\n  product_name VARCHAR(255),\n  quantity INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Goods (\n    goods_id UUID PRIMARY KEY,\n    goods_name VARCHAR(255),\n    goods_category VARCHAR(255),\n    RFID_tag VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IncomingGoods (\n    incoming_id UUID PRIMARY KEY,\n    goods_id UUID REFERENCES Goods(goods_id),\n    received_date TIMESTAMP,\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OutgoingGoods (\n    outgoing_id UUID PRIMARY KEY,\n    goods_id UUID REFERENCES Goods(goods_id),\n    dispatched_date TIMESTAMP,\n    destination VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE incoming_goods (\n    id UUID PRIMARY KEY,\n    item_name TEXT NOT NULL,\n    item_code TEXT NOT NULL,\n    quantity INT NOT NULL,\n    rfid_tag TEXT UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outgoing_goods (\n    id UUID PRIMARY KEY,\n    item_name TEXT NOT NULL,\n    item_code TEXT NOT NULL,\n    quantity INT NOT NULL,\n    rfid_tag TEXT UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cross_docking (\n    id UUID PRIMARY KEY,\n    incoming_goods_id UUID REFERENCES incoming_goods (id),\n    outgoing_goods_id UUID REFERENCES outgoing_goods (id),\n    dock_number INT NOT NULL,\n    time_stamp TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE employee (\n    id UUID PRIMARY KEY,\n    name TEXT NOT NULL,\n    role TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE goods (\n  id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  rfid_tag VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE incoming_goods (\n  id INT PRIMARY KEY,\n  goods_id INT,\n  arrival_time TIMESTAMP,\n  rfid_tag VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE outgoing_goods (\n  id INT PRIMARY KEY,\n  goods_id INT,\n  departure_time TIMESTAMP,\n  rfid_tag VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cross_docking_center (\n  id INT PRIMARY KEY,\n  location VARCHAR(255),\n  capacity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE cross_docking_logs (\n  id INT PRIMARY KEY,\n  goods_id INT,\n  action_type VARCHAR(50),\n  action_time TIMESTAMP\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_response_center_inventory (\n    id INT PRIMARY KEY,\n    item_name VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL,\n    location VARCHAR(100) NOT NULL,\n    expiration_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_response_center (\n  center_id INT PRIMARY KEY,\n  center_name VARCHAR(255) NOT NULL,\n  location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inventory (\n  item_id INT PRIMARY KEY,\n  item_name VARCHAR(255) NOT NULL,\n  quantity INT NOT NULL,\n  center_id INT REFERENCES emergency_response_center(center_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_centers_inventory(\n   id INT,\n   center_name VARCHAR,\n   location VARCHAR,\n   contact_person VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_supplies(\n   supply_id INT,\n   supply_name VARCHAR,\n   quantity INT,\n   supplier VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE equipment_inventory(\n   equipment_id INT,\n   equipment_name VARCHAR,\n   available_quantity INT,\n   last_maintenance_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_response_centers (\n    id INT PRIMARY KEY,\n    center_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255),\n    contact_person VARCHAR(255),\n    contact_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_supplies (\n    id INT PRIMARY KEY,\n    supply_name VARCHAR(255) NOT NULL,\n    quantity INT,\n    expiration_date DATE,\n    center_id INT,\n    FOREIGN KEY (center_id) REFERENCES emergency_response_centers(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE equipment (\n    id INT PRIMARY KEY,\n    equipment_name VARCHAR(255) NOT NULL,\n    quantity INT,\n    condition VARCHAR(50),\n    center_id INT,\n    FOREIGN KEY (center_id) REFERENCES emergency_response_centers(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE supply_requests (\n    id INT PRIMARY KEY,\n    request_date DATE,\n    supply_id INT,\n    quantity INT,\n    center_id INT,\n    status VARCHAR(50),\n    FOREIGN KEY (supply_id) REFERENCES medical_supplies(id),\n    FOREIGN KEY (center_id) REFERENCES emergency_response_centers(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_centers_inventory (\n    center_id UUID PRIMARY KEY,\n    center_name STRING,\n    location STRING,\n    contact_person STRING\n)"
+      }
+    ]
+  }
+]

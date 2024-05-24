@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_policy (\n  policy_id INT PRIMARY KEY,\n  policy_holder_name VARCHAR(50),\n  policy_start_date DATE,\n  policy_end_date DATE,\n  premium_amount DECIMAL(10,2),\n  risk_assessment_score INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_policies (\n    policy_id INT PRIMARY KEY,\n    policy_holder VARCHAR(50),\n    policy_type VARCHAR(20),\n    policy_start_date DATE,\n    policy_end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessment (\n    assessment_id INT PRIMARY KEY,\n    policy_id INT,\n    assessed_by VARCHAR(50),\n    assessment_date DATE,\n    risk_score INT,\n    conclusion TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_policies (\n\tpolicy_id UUID PRIMARY KEY,\n\tpolicy_holder_name VARCHAR(50),\n\tstart_date DATE,\n\tend_date DATE,\n\tpremium_amount DECIMAL(10, 2),\n\tcoverage_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_applicants (\n\tapplicant_id UUID PRIMARY KEY,\n\tapplicant_name VARCHAR(50),\n\tage INT,\n\tdob DATE,\n\toccupation VARCHAR(50),\n\taddress VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_assessments (\n\trisk_id UUID PRIMARY KEY,\n\tpolicy_id UUID REFERENCES insurance_policies(policy_id),\n\tapplicant_id UUID REFERENCES policy_applicants(applicant_id),\n\trisk_score INT,\n\trisk_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policyholders (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    age INT NOT NULL,\n    gender CHAR(1) NOT NULL,\n    address VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id SERIAL PRIMARY KEY,\n    policy_number VARCHAR(20) NOT NULL,\n    policy_type VARCHAR(50) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    premium_amount DECIMAL(10, 2) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE risk_factors (\n    factor_id SERIAL PRIMARY KEY,\n    factor_name VARCHAR(50) NOT NULL,\n    factor_description TEXT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_risks (\n    policy_id INT REFERENCES policies(policy_id),\n    factor_id INT REFERENCES risk_factors(factor_id),\n    risk_score INT NOT NULL,\n    PRIMARY KEY (policy_id, factor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PolicyHolders (\n    policy_holder_id INT PRIMARY KEY,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    date_of_birth DATE,\n    address VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n    policy_id INT PRIMARY KEY,\n    policy_holder_id INT REFERENCES PolicyHolders(policy_holder_id),\n    coverage_type VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Vehicles (\n    vehicle_id INT PRIMARY KEY,\n    policy_id INT REFERENCES Policies(policy_id),\n    vehicle_make VARCHAR(50),\n    vehicle_model VARCHAR(50),\n    vehicle_year INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Claims (\n    claim_id INT PRIMARY KEY,\n    policy_id INT REFERENCES Policies(policy_id),\n    claim_date DATE,\n    claim_amount DECIMAL(10, 2),\n    claim_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE RiskAssessments (\n    assessment_id INT PRIMARY KEY,\n    policy_id INT REFERENCES Policies(policy_id),\n    assessment_date DATE,\n    risk_score DECIMAL(5, 2),\n    assessment_notes TEXT\n)"
+      }
+    ]
+  }
+]

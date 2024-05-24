@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CRM_Marketing_Data (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255),\n    email_address VARCHAR(255),\n    phone_number VARCHAR(20),\n    company_name VARCHAR(255),\n    marketing_campaign_id INT,\n    last_interaction_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crm_data (\n    customer_id INT PRIMARY KEY,\n    customer_name TEXT,\n    email TEXT,\n    phone_number TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_automation (\n    campaign_id INT PRIMARY KEY,\n    campaign_name TEXT,\n    start_date DATE,\n    end_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crm_data (id INT PRIMARY KEY,\n\tname VARCHAR(50),\n\temail VARCHAR(100),\n\tphone VARCHAR(20),\n\taddress VARCHAR(255));"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_automation (id INT PRIMARY KEY,\n\tcontact_id INT,\n\tsent_date DATE,\n\topened BOOLEAN,\n\tclicked BOOLEAN,\n\tconverted BOOLEAN,\n\tFOREIGN KEY (contact_id) REFERENCES crm_data(id));"
+      },
+      {
+        "table_schema": "CREATE TABLE synchronization_log (id INT PRIMARY KEY,\n\texecution_date DATETIME,\n\tsync_result VARCHAR(50),\n\terror_message TEXT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CRM_Customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(15),\n  address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Marketing_Leads (\n  lead_id INT PRIMARY KEY,\n  lead_name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(15),\n  company_name VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CRM_Orders (\n  order_id INT PRIMARY KEY,\n  customer_id INT,\n  order_date DATE,\n  total_amount DECIMAL(10, 2),\n  FOREIGN KEY (customer_id) REFERENCES CRM_Customers(customer_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Marketing_Campaigns (\n  campaign_id INT PRIMARY KEY,\n  campaign_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  budget DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CRMContacts (\n    contact_id INT PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MarketingLeads (\n    lead_id INT PRIMARY KEY,\n    lead_name VARCHAR(100) NOT NULL,\n    lead_source VARCHAR(50),\n    lead_status VARCHAR(20),\n    contact_id INT REFERENCES CRMContacts(contact_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(100) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignResults (\n    result_id INT PRIMARY KEY,\n    campaign_id INT REFERENCES Campaigns(campaign_id),\n    lead_id INT REFERENCES MarketingLeads(lead_id),\n    conversion_rate DECIMAL(5, 2),\n    revenue DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MarketingInteractions (\n    interaction_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    lead_id INT REFERENCES MarketingLeads(lead_id),\n    interaction_type VARCHAR(50),\n    interaction_data TEXT\n);"
+      }
+    ]
+  }
+]

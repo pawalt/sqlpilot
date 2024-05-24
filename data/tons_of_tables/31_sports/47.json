@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SwimmingEventRankings (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    swimmer_name VARCHAR(255) NOT NULL,\n    swim_time TIME NOT NULL,\n    ranking INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SwimmingEvents (\n  EventID INT PRIMARY KEY,\n  EventName VARCHAR(255) NOT NULL,\n  EventDate DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EventRankings (\n  RankingID INT PRIMARY KEY,\n  EventID INT NOT NULL,\n  SwimmerID INT NOT NULL,\n  Rank INT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EventRankings (\n    event_id INT NOT NULL,\n    event_name VARCHAR(255),\n    ranking INT,\n    athlete_name VARCHAR(255),\n    country VARCHAR(50),\n    PRIMARY KEY (event_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Standings (\n    standing_id INT NOT NULL,\n    event_id INT,\n    athlete_name VARCHAR(255),\n    country VARCHAR(50),\n    total_points INT,\n    PRIMARY KEY (standing_id),\n    FOREIGN KEY (event_id) REFERENCES EventRankings(event_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Updates (\n    update_id INT NOT NULL,\n    event_id INT,\n    update_text TEXT,\n    update_time TIMESTAMP,\n    PRIMARY KEY (update_id),\n    FOREIGN KEY (event_id) REFERENCES EventRankings(event_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Event (\n  Event_ID INT PRIMARY KEY,\n  Event_Name VARCHAR(255) NOT NULL,\n  Event_Date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Participant (\n  Participant_ID INT PRIMARY KEY,\n  Participant_Name VARCHAR(255) NOT NULL,\n  Participant_Country VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Ranking (\n  Ranking_ID INT PRIMARY KEY,\n  Event_ID INT,\n  Participant_ID INT,\n  Event_Rank INT,\n  FOREIGN KEY (Event_ID) REFERENCES Event(Event_ID),\n  FOREIGN KEY (Participant_ID) REFERENCES Participant(Participant_ID)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Standings (\n  Standings_ID INT PRIMARY KEY,\n  Event_ID INT,\n  Participant_ID INT,\n  Standings_Position INT,\n  Standings_Time TIME,\n  FOREIGN KEY (Event_ID) REFERENCES Event(Event_ID),\n  FOREIGN KEY (Participant_ID) REFERENCES Participant(Participant_ID)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE event (\n    event_id INT PRIMARY KEY,\n    event_name VARCHAR(255) NOT NULL,\n    event_date DATE NOT NULL,\n    event_location VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE swimmer (\n    swimmer_id INT PRIMARY KEY,\n    swimmer_name VARCHAR(255) NOT NULL,\n    swimmer_country VARCHAR(100) NOT NULL,\n    swimmer_birthdate DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    team_country VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE competition (\n    competition_id INT PRIMARY KEY,\n    event_id INT NOT NULL,\n    team_id INT NOT NULL,\n    swimmer_id INT NOT NULL,\n    time FLOAT NOT NULL,\n    rank INT NOT NULL,\n    FOREIGN KEY (event_id) REFERENCES event(event_id),\n    FOREIGN KEY (swimmer_id) REFERENCES swimmer(swimmer_id),\n    FOREIGN KEY (team_id) REFERENCES team(team_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE standing (\n    standing_id INT PRIMARY KEY,\n    competition_id INT NOT NULL,\n    rank INT NOT NULL,\n    points INT,\n    FOREIGN KEY (competition_id) REFERENCES competition(competition_id)\n);"
+      }
+    ]
+  }
+]

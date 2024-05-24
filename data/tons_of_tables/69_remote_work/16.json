@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProjectSchedule (\n  project_id UUID PRIMARY KEY,\n  project_name STRING,\n  start_date DATE,\n  end_date DATE,\n  team_members ARRAY<STRING>\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_managers (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_schedules (\n    schedule_id INT PRIMARY KEY,\n    project_id INT,\n    team_member VARCHAR(255),\n    task_description TEXT,\n    start_time TIME,\n    end_time TIME,\n    FOREIGN KEY (project_id) REFERENCES project_managers(project_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    project_id INT REFERENCES project(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    task_description TEXT,\n    team_id INT REFERENCES team(team_id),\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_managers (\n    manager_id INT PRIMARY KEY,\n    manager_name TEXT,\n    email TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name TEXT,\n    start_date DATE,\n    end_date DATE,\n    manager_id INT,\n    FOREIGN KEY (manager_id) REFERENCES project_managers(manager_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    member_name TEXT,\n    email TEXT,\n    role TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project_team (\n    project_id INT,\n    member_id INT,\n    PRIMARY KEY (project_id, member_id),\n    FOREIGN KEY (project_id) REFERENCES projects(project_id),\n    FOREIGN KEY (member_id) REFERENCES team_members(member_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Projects (\n    project_id UUID PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    project_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Teams (\n    team_id UUID PRIMARY KEY,\n    team_name VARCHAR(255) NOT NULL,\n    team_lead UUID,\n    team_members JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Tasks (\n    task_id UUID PRIMARY KEY,\n    task_name VARCHAR(255) NOT NULL,\n    project_id UUID,\n    task_description TEXT,\n    deadline DATE,\n    status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Assignments (\n    assignment_id UUID PRIMARY KEY,\n    task_id UUID,\n    team_id UUID,\n    assigned_to UUID,\n    assigned_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Schedule (\n    schedule_id UUID PRIMARY KEY,\n    project_id UUID,\n    team_id UUID,\n    task_id UUID,\n    schedule_date DATE\n)"
+      }
+    ]
+  }
+]

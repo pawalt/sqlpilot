@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE camera_calibration_parameters (\n    id INT PRIMARY KEY,\n    focal_length FLOAT,\n    sensor_width FLOAT,\n    sensor_height FLOAT,\n    radial_distortion_coefficient1 FLOAT,\n    radial_distortion_coefficient2 FLOAT,\n    tangential_distortion_coefficient1 FLOAT,\n    tangential_distortion_coefficient2 FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE camera_calibration_parameters (\n    id SERIAL PRIMARY KEY,\n    focal_length REAL,\n    distortion_coefficients VARCHAR(255)\n);\nCREATE TABLE image_samples (\n    sample_id SERIAL PRIMARY KEY,\n    image_path VARCHAR(255),\n    calibration_id INT,\n    FOREIGN KEY (calibration_id) REFERENCES camera_calibration_params(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CameraCalibrationParameters (\n    id INT PRIMARY KEY,\n    camera_model VARCHAR(255),\n    focal_length FLOAT,\n    sensor_size FLOAT,\n    distortion_coefficients TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageDistortionCorrection (\n    id INT PRIMARY KEY,\n    image_id INT,\n    distortion_correction_matrix TEXT,\n    distortion_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CalibratedImages (\n    id INT PRIMARY KEY,\n    image_id INT,\n    calibration_date DATE,\n    calibration_quality VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE camera_calibrations (\n    calibration_id INT PRIMARY KEY,\n    camera_model VARCHAR(50),\n    focal_length FLOAT,\n    principal_point_x FLOAT,\n    principal_point_y FLOAT,\n    distortion_coefficients JSON\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE images (\n    image_id INT PRIMARY KEY,\n    image_name VARCHAR(100),\n    capture_date TIMESTAMP,\n    resolution_width INT,\n    resolution_height INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE calibration_data (\n    calib_data_id INT PRIMARY KEY,\n    calibration_id INT,\n    image_id INT,\n    distortion_parameters JSON,\n    FOREIGN KEY (calibration_id) REFERENCES camera_calibrations(calibration_id),\n    FOREIGN KEY (image_id) REFERENCES images(image_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE distortion_correction (\n    correction_id INT PRIMARY KEY,\n    image_id INT,\n    corrected_image BLOB,\n    FOREIGN KEY (image_id) REFERENCES images(image_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CameraCalibrationParameters (\n    id INT PRIMARY KEY,\n    fx FLOAT,\n    fy FLOAT,\n    cx FLOAT,\n    cy FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DistortionModel (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(50),\n    k1 FLOAT,\n    k2 FLOAT,\n    k3 FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n    id INT PRIMARY KEY,\n    image_id INT,\n    resolution VARCHAR(20),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CameraCalibrationData (\n    id INT PRIMARY KEY,\n    camera_id INT,\n    calibration_date DATE,\n    calibration_notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageDistortionCorrection (\n    id INT PRIMARY KEY,\n    image_id INT,\n    corrected_image BLOB,\n    correction_timestamp TIMESTAMP\n);"
+      }
+    ]
+  }
+]

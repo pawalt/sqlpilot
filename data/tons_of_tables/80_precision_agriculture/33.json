@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n    crop_id SERIAL PRIMARY KEY,\n    crop_name VARCHAR(50) NOT NULL,\n    planting_date DATE NOT NULL,\n    growth_stage VARCHAR(20) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_types (\n  crop_id INT PRIMARY KEY,\n  crop_name VARCHAR,\n  crop_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE growth_stages (\n  stage_id INT PRIMARY KEY,\n  stage_name VARCHAR,\n  stage_description TEXT,\n  duration_days INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_types (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(255) NOT NULL,\n    crop_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE planting_dates (\n    date_id INT PRIMARY KEY,\n    crop_id INT REFERENCES crop_types(crop_id),\n    planting_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE growth_stages (\n    stage_id INT PRIMARY KEY,\n    crop_id INT REFERENCES crop_types(crop_id),\n    stage_name VARCHAR(50) NOT NULL,\n    stage_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crop_types ( \n    crop_id INT PRIMARY KEY, \n    crop_name VARCHAR(50) NOT NULL, \n    crop_description TEXT \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE planting_dates ( \n    date_id INT PRIMARY KEY, \n    crop_id INT, \n    planting_date DATE, \n    FOREIGN KEY (crop_id) REFERENCES crop_types (crop_id) \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE growth_stages ( \n    stage_id INT PRIMARY KEY, \n    crop_id INT, \n    stage_name VARCHAR(50) NOT NULL, \n    days_to_complete INT, \n    FOREIGN KEY (crop_id) REFERENCES crop_types (crop_id) \n );"
+      },
+      {
+        "table_schema": "CREATE TABLE irrigation_planning ( \n    planning_id INT PRIMARY KEY, \n    crop_id INT, \n    date_id INT, \n    stage_id INT, \n    irrigation_notes TEXT, \n    FOREIGN KEY (crop_id) REFERENCES crop_types (crop_id), \n    FOREIGN KEY (date_id) REFERENCES planting_dates (date_id), \n    FOREIGN KEY (stage_id) REFERENCES growth_stages (stage_id) \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CropTypes (\n  crop_id INT PRIMARY KEY,\n  crop_name VARCHAR(255) NOT NULL,\n  crop_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PlantingDates (\n  date_id INT PRIMARY KEY,\n  crop_id INT,\n  planting_date DATE,\n  planting_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GrowthStages (\n  stage_id INT PRIMARY KEY,\n  stage_name VARCHAR(50) NOT NULL,\n  growth_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CropPlanting (\n  planting_id INT PRIMARY KEY,\n  crop_id INT,\n  date_id INT,\n  stage_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IrrigationPlan (\n  plan_id INT PRIMARY KEY,\n  date_id INT,\n  irrigation_method VARCHAR(100),\n  recommended_watering_time TIME\n);"
+      }
+    ]
+  }
+]

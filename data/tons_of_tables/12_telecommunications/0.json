@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_slicing (\n\tservice_id INT PRIMARY KEY,\n\tservice_name VARCHAR(255),\n\tslice_type VARCHAR(50),\n\tresource_allocation INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_slices (\n  slice_id UUID PRIMARY KEY,\n  slice_name TEXT,\n  service_type TEXT,\n  resource_limit INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_resources (\n  resource_id UUID PRIMARY KEY,\n  slice_id UUID REFERENCES network_slices(slice_id),\n  resource_type TEXT,\n  allocated_resource INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_slicing_resources (\n    resource_id INT PRIMARY KEY,\n    service_name VARCHAR(50),\n    resource_type VARCHAR(50),\n    resource_capacity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_requirements (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(50),\n    required_resources INT,\n    priority_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (\n    allocation_id INT PRIMARY KEY,\n    resource_id INT,\n    service_id INT,\n    allocated_capacity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_slice (\n    slice_id INT PRIMARY KEY,\n    slice_name VARCHAR(255) NOT NULL,\n    service_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_allocation (\n    allocation_id INT PRIMARY KEY,\n    slice_id INT,\n    resource_type VARCHAR(100) NOT NULL,\n    allocated_amount INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE service_mapping (\n    service_id INT PRIMARY KEY,\n    slice_id INT,\n    service_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_subscription (\n    user_id INT PRIMARY KEY,\n    slice_id INT,\n    subscription_date DATE NOT NULL,\n    expiration_date DATE NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE network_slicing_services (\n    service_id UUID PRIMARY KEY,\n    service_name VARCHAR(255),\n    resource_allocation INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE 5g_subscribers (\n    subscriber_id UUID PRIMARY KEY,\n    subscriber_name VARCHAR(255),\n    service_id UUID\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE network_slices (\n    slice_id UUID PRIMARY KEY,\n    slice_name VARCHAR(255),\n    service_id UUID\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE resource_usage (\n    usage_id UUID PRIMARY KEY,\n    slice_id UUID,\n    resource_type VARCHAR(255),\n    resource_amount INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE slice_policies (\n    policy_id UUID PRIMARY KEY,\n    slice_id UUID,\n    policy_name VARCHAR(255),\n    policy_description TEXT\n)"
+      }
+    ]
+  }
+]

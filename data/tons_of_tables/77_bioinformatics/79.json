@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MetabolomicsData (\n    id UUID PRIMARY KEY,\n    metabolite_name STRING,\n    pathway_name STRING,\n    metabolite_concentration FLOAT,\n    sample_type STRING,\n    study_id UUID,\n    patient_id UUID,\n    timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MetabolomicsData (\n  SampleID INT,\n  MetaboliteName VARCHAR(255),\n  MetaboliteConcentration FLOAT,\n  PRIMARY KEY (SampleID)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MetabolicPathways (\n  PathwayID INT,\n  PathwayName VARCHAR(255),\n  PathwayDescription TEXT,\n  PRIMARY KEY (PathwayID)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE metabolomics_samples (\n\tsample_id INT PRIMARY KEY,\n\tsample_name VARCHAR(255) NOT NULL,\n\tmetabolite_name VARCHAR(255) NOT NULL,\n\tconcentration FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE metabolic_pathways (\n\tpathway_id INT PRIMARY KEY,\n\tpathway_name VARCHAR(255) NOT NULL,\n\trelated_metabolites TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE disease_mechanisms (\n\tdisease_id INT PRIMARY KEY,\n\tdisease_name VARCHAR(255) NOT NULL,\n\tdisease_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Metabolites (\n  metabolite_id SERIAL PRIMARY KEY,\n  metabolite_name VARCHAR(255),\n  molecular_weight DECIMAL,\n  chemical_formula VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Pathways (\n  pathway_id SERIAL PRIMARY KEY,\n  pathway_name VARCHAR(255),\n  description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Samples (\n  sample_id SERIAL PRIMARY KEY,\n  sample_name VARCHAR(255),\n  collection_date DATE,\n  collection_location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Analysis (\n  analysis_id SERIAL PRIMARY KEY,\n  sample_id INT REFERENCES Samples(sample_id),\n  metabolite_id INT REFERENCES Metabolites(metabolite_id),\n  pathway_id INT REFERENCES Pathways(pathway_id),\n  abundance DECIMAL,\n  analysis_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Metabolites (\n  metabolite_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  molecular_formula VARCHAR(50),\n  mass FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Pathways (\n  pathway_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Diseases (\n  disease_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MetabolitePathwayRelation (\n  relation_id INT PRIMARY KEY,\n  metabolite_id INT,\n  pathway_id INT,\n  FOREIGN KEY (metabolite_id) REFERENCES Metabolites(metabolite_id),\n  FOREIGN KEY (pathway_id) REFERENCES Pathways(pathway_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE DiseasePathwayRelation (\n  relation_id INT PRIMARY KEY,\n  disease_id INT,\n  pathway_id INT,\n  FOREIGN KEY (disease_id) REFERENCES Diseases(disease_id),\n  FOREIGN KEY (pathway_id) REFERENCES Pathways(pathway_id)\n)"
+      }
+    ]
+  }
+]

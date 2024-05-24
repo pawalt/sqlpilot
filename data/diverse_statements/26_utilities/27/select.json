@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM waste_collection_hotspots;",
+      "SELECT hotspot_id, location FROM waste_collection_hotspots WHERE waste_type = 'Plastic';",
+      "SELECT * FROM waste_collection_hotspots ORDER BY collection_date DESC;",
+      "SELECT hotspot_id, waste_type FROM waste_collection_hotspots WHERE collection_date > '2022-01-01';",
+      "SELECT location, collection_date FROM waste_collection_hotspots WHERE waste_type = 'Paper' ORDER BY location DESC;",
+      "SELECT * FROM waste_collection_hotspots WHERE waste_type = 'Plastic' ORDER BY collection_date DESC",
+      "SELECT waste_type, COUNT(*) FROM waste_collection_hotspots GROUP BY waste_type HAVING COUNT(*) > 10",
+      "SELECT DISTINCT waste_type FROM waste_collection_hotspots",
+      "SELECT * FROM waste_collection_hotspots WHERE collection_date BETWEEN '2021-01-01' AND '2021-06-30' ORDER BY hotspot_id",
+      "SELECT AVG(ST_Area(location)) FROM waste_collection_hotspots WHERE waste_type = 'Glass'"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM waste_collection_hotspots;",
+      "SELECT address, collection_frequency FROM waste_collection_hotspots ORDER BY location DESC;",
+      "SELECT DISTINCT collection_frequency FROM waste_collection_hotspots WHERE address = '123 Main St';",
+      "SELECT intervention_type, intervention_cost FROM interventions WHERE intervention_cost > 500 ORDER BY intervention_date ASC;",
+      "SELECT * FROM interventions WHERE ST_Intersects(location, ST_Point(-73.985130, 40.748817));",
+      "SELECT * FROM waste_collection_hotspots WHERE collection_frequency > 3 ORDER BY address DESC",
+      "SELECT location, address FROM waste_collection_hotspots WHERE ST_DWithin(location, ST_GeogPoint(-73.9857, 40.7484), 1000)",
+      "SELECT address, collection_frequency FROM waste_collection_hotspots WHERE collection_frequency = 1 OR collection_frequency = 5",
+      "SELECT * FROM interventions WHERE intervention_date BETWEEN '2022-01-01' AND '2022-06-30' ORDER BY intervention_cost ASC",
+      "SELECT location, intervention_type FROM interventions WHERE intervention_cost > 5000"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM waste_collection_sites;",
+      "SELECT site_name, collection_frequency FROM waste_collection_sites ORDER BY site_name ASC;",
+      "SELECT site_name, location FROM waste_collection_sites WHERE collection_frequency > 3;",
+      "SELECT site_id, site_name, location FROM waste_collection_sites ORDER BY site_id DESC;",
+      "SELECT * FROM waste_collection_history WHERE collection_date >= '2022-01-01';",
+      "SELECT * FROM waste_collection_sites ORDER BY site_name DESC;",
+      "SELECT site_name, location FROM waste_collection_sites WHERE collection_frequency > 2;",
+      "SELECT site_name, collection_frequency, collection_date FROM waste_collection_sites AS wcs JOIN waste_collection_history AS wch ON wcs.site_id = wch.site_id WHERE wch.collection_date > '2022-01-01';",
+      "SELECT site_name, SUM(waste_weight) AS total_weight FROM waste_collection_sites AS wcs JOIN waste_collection_history AS wch ON wcs.site_id = wch.site_id GROUP BY site_name;",
+      "SELECT wcs.site_name, ir.recommendation_text FROM waste_collection_sites AS wcs LEFT JOIN intervention_recommendations AS ir ON wcs.site_id = ir.site_id WHERE ir.recommendation_text IS NOT NULL;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT hotspot_id, location, collection_date, collected_by FROM WasteCollectionHotspots;",
+      "SELECT intervention_id, hotspot_id, intervention_date, intervention_type, intervention_description FROM Interventions;",
+      "SELECT history_id, intervention_id, completion_date, completion_status FROM InterventionsHistory;",
+      "SELECT analysis_id, hotspot_id, analysis_date, analysis_results FROM HotspotsAnalysis;",
+      "SELECT * FROM WasteCollectionHotspots ORDER BY hotspot_id DESC;",
+      "SELECT * FROM WasteCollectionHotspots WHERE location IS NOT NULL ORDER BY collection_date DESC LIMIT 5",
+      "SELECT hotspot_id, collected_by FROM WasteCollectionHotspots WHERE location.STContains('POLYGON((0 0, 0 90, 90 90, 90 0, 0 0))') ORDER BY hotspot_id ASC LIMIT 5",
+      "SELECT WH.hotspot_id, WH.location, I.intervention_type, IH.completion_status FROM WasteCollectionHotspots WH JOIN Interventions I ON WH.hotspot_id = I.hotspot_id JOIN InterventionsHistory IH ON I.intervention_id = IH.intervention_id WHERE I.intervention_type = 'Cleanup' AND IH.completion_status = 'Completed'",
+      "SELECT IA.analysis_id, WA.hotspot_id, WA.location, IA.analysis_results FROM HotspotsAnalysis IA JOIN WasteCollectionHotspots WA ON IA.hotspot_id = WA.hotspot_id WHERE IA.analysis_date BETWEEN '2022-01-01' AND '2022-12-31'",
+      "SELECT WH.hotspot_id, I.intervention_date, IH.completion_date FROM WasteCollectionHotspots WH LEFT JOIN Interventions I ON WH.hotspot_id = I.hotspot_id LEFT JOIN InterventionsHistory IH ON I.intervention_id = IH.intervention_id WHERE I.intervention_date IS NOT NULL AND IH.completion_date IS NOT NULL ORDER BY IH.completion_date ASC LIMIT 5"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM WasteCollectionHotspots;",
+      "SELECT hotspot_id, location FROM WasteCollectionHotspots ORDER BY hotspot_id DESC;",
+      "SELECT waste_type, collection_schedule FROM WasteCollectionHotspots WHERE waste_type = 'Plastic';",
+      "SELECT * FROM CollectionInterventions WHERE intervention_type = 'Cleanup' ORDER BY intervention_date ASC;",
+      "SELECT hotspot_id, collection_amount FROM CollectionStats WHERE collection_amount > 100 ORDER BY collection_date DESC;",
+      "SELECT * FROM WasteCollectionHotspots WHERE waste_type = 'Plastic' ORDER BY collection_schedule DESC LIMIT 10",
+      "SELECT hotspot_id, waste_type FROM WasteCollectionHotspots WHERE collection_schedule BETWEEN '2022-01-01' AND '2022-01-31' ORDER BY hotspot_id ASC",
+      "SELECT intervention_id, intervention_type FROM CollectionInterventions WHERE intervention_date < '2022-06-15' AND intervention_type LIKE '%Emergency%'",
+      "SELECT * FROM CollectionStats WHERE collection_amount > 500 ORDER BY collection_date ASC LIMIT 5",
+      "SELECT log_id, log_message FROM InterventionLogs JOIN CollectionInterventions ON InterventionLogs.intervention_id = CollectionInterventions.intervention_id WHERE log_date BETWEEN '2022-01-01' AND '2022-12-31' ORDER BY log_date DESC"
+    ]
+  }
+]

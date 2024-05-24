@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_engagement_metrics (\n    post_id INT PRIMARY KEY,\n    post_date DATE,\n    likes_count INT,\n    comments_count INT,\n    shares_count INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_engagement_metrics (\n    id SERIAL PRIMARY KEY,\n    post_id INT,\n    user_id INT,\n    likes INT,\n    comments INT,\n    shares INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE digital_marketing_campaigns (\n    id SERIAL PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10,2),\n    engagement_metrics_id INT REFERENCES social_media_engagement_metrics(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_engagement_metrics (\n    user_id INT PRIMARY KEY,\n    engagement_score FLOAT,\n    likes_count INT,\n    comments_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    total_budget DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_performance (\n    ad_id INT PRIMARY KEY,\n    campaign_id INT,\n    impressions_count INT,\n    clicks_count INT,\n    spend DECIMAL(10, 2),\n    FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE engagement_metrics (\n    post_id INT PRIMARY KEY,\n    likes INT,\n    comments INT,\n    shares INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_demographics (\n    user_id INT PRIMARY KEY,\n    age INT,\n    gender VARCHAR(10),\n    location VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE campaign_performance (\n    campaign_id INT PRIMARY KEY,\n    clicks INT,\n    conversions INT,\n    cost DECIMAL(10,2),\n    roi DECIMAL(10,2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    post_id INT,\n    timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    join_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE posts (\n    post_id SERIAL PRIMARY KEY,\n    user_id SERIAL REFERENCES users(user_id),\n    post_text TEXT,\n    post_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE likes (\n    like_id SERIAL PRIMARY KEY,\n    post_id SERIAL REFERENCES posts(post_id),\n    user_id SERIAL REFERENCES users(user_id),\n    like_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comments (\n    comment_id SERIAL PRIMARY KEY,\n    post_id SERIAL REFERENCES posts(post_id),\n    user_id SERIAL REFERENCES users(user_id),\n    comment_text TEXT,\n    comment_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE engagements (\n    engagement_id SERIAL PRIMARY KEY,\n    post_id SERIAL REFERENCES posts(post_id),\n    user_id SERIAL REFERENCES users(user_id),\n    like_id SERIAL REFERENCES likes(like_id),\n    comment_id SERIAL REFERENCES comments(comment_id),\n    engagement_date DATE\n);"
+      }
+    ]
+  }
+]

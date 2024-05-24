@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithm_performance_metrics (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    execution_time FLOAT,\n    success_rate FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumAlgorithmPerformanceMetrics (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name TEXT,\n    execution_time FLOAT,\n    success_rate FLOAT\n);\n\nCREATE TABLE QuantumAlgorithmUsers (\n    user_id INT PRIMARY KEY,\n    user_name TEXT,\n    user_email TEXT,\n    algorithm_id INT REFERENCES QuantumAlgorithmPerformanceMetrics(algorithm_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Quantum_Algorithms (\n    algorithm_id UUID PRIMARY KEY,\n    algorithm_name VARCHAR(255) NOT NULL,\n    execution_time DECIMAL NOT NULL,\n    success_rate FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Execution_Log (\n    log_id UUID PRIMARY KEY,\n    algorithm_id UUID NOT NULL,\n    execution_date TIMESTAMP NOT NULL,\n    execution_status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Algorithm_Tags (\n    tag_id UUID PRIMARY KEY,\n    tag_name VARCHAR(50) NOT NULL,\n    algorithm_id UUID NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_algorithm_performance_metrics (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    execution_time FLOAT,\n    success_rate DECIMAL(5,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_runs (\n    run_id INT PRIMARY KEY,\n    algorithm_id INT,\n    start_timestamp TIMESTAMP,\n    end_timestamp TIMESTAMP,\n    FOREIGN KEY (algorithm_id) REFERENCES quantum_algorithm_performance_metrics(algorithm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_results (\n    result_id INT PRIMARY KEY,\n    run_id INT,\n    result_value VARCHAR(255),\n    FOREIGN KEY (run_id) REFERENCES algorithm_runs(run_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE algorithm_errors (\n    error_id INT PRIMARY KEY,\n    run_id INT,\n    error_message TEXT,\n    FOREIGN KEY (run_id) REFERENCES algorithm_runs(run_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE QuantumAlgorithmMetrics (\n    algorithm_id INT PRIMARY KEY,\n    algorithm_name VARCHAR(255),\n    execution_time_ms INT,\n    qubit_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlgorithmResults (\n    result_id INT PRIMARY KEY,\n    algorithm_id INT,\n    success BOOLEAN,\n    result_data TEXT,\n    FOREIGN KEY (algorithm_id) REFERENCES QuantumAlgorithmMetrics(algorithm_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlgorithmAuthors (\n    author_id INT PRIMARY KEY,\n    author_name VARCHAR(255),\n    email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlgorithmTags (\n    tag_id INT PRIMARY KEY,\n    tag_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AlgorithmTagRelations (\n    relation_id INT PRIMARY KEY,\n    algorithm_id INT,\n    tag_id INT,\n    FOREIGN KEY (algorithm_id) REFERENCES QuantumAlgorithmMetrics(algorithm_id),\n    FOREIGN KEY (tag_id) REFERENCES AlgorithmTags(tag_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password VARCHAR(100) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  registration_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_authentication (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password_hash VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE account_details (\n    account_id INT PRIMARY KEY,\n    user_id INT REFERENCES user_authentication(user_id) ON DELETE CASCADE,\n    email VARCHAR(100),\n    date_joined DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    account_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    account_type VARCHAR(50) NOT NULL,\n    last_login TIMESTAMP,\n    wallet_balance DECIMAL(10, 2) DEFAULT 0.00\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    login_time TIMESTAMP NOT NULL,\n    logout_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE profiles (\n    profile_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    full_name VARCHAR(100),\n    age INT,\n    country VARCHAR(50),\n    bio TEXT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE characters (\n    character_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    name VARCHAR(50) NOT NULL,\n    level INT,\n    class VARCHAR(50),\n    health INT,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE items (\n    item_id INT PRIMARY KEY,\n    character_id INT NOT NULL,\n    name VARCHAR(50) NOT NULL,\n    type VARCHAR(50),\n    quantity INT,\n    FOREIGN KEY (character_id) REFERENCES characters(character_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE User_Authentication (\n   user_id INT PRIMARY KEY,\n   username VARCHAR(50) NOT NULL,\n   password VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Account_Details (\n   account_id INT PRIMARY KEY,\n   user_id INT,\n   account_type VARCHAR(50),\n   email VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Game_Profiles (\n   profile_id INT PRIMARY KEY,\n   user_id INT,\n   game_name VARCHAR(50),\n   level INT,\n   experience INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Purchases (\n   purchase_id INT PRIMARY KEY,\n   user_id INT,\n   item_name VARCHAR(50),\n   price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Login_Attempts (\n   attempt_id INT PRIMARY KEY,\n   user_id INT,\n   login_timestamp TIMESTAMP,\n   success BOOLEAN\n);"
+      }
+    ]
+  }
+]

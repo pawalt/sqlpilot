@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n  article_id INT NOT NULL PRIMARY KEY,\n  title TEXT NOT NULL,\n  content TEXT NOT NULL,\n  bias_category TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n    article_id INT PRIMARY KEY,\n    title VARCHAR(255),\n    content TEXT,\n    political_affiliation VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE bias_categories (\n    category_id INT PRIMARY KEY,\n    category_name VARCHAR(50),\n    category_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n  article_id INT PRIMARY KEY,\n  title VARCHAR(255),\n  content TEXT,\n  author VARCHAR(100),\n  bias_category VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE political_parties (\n  party_id INT PRIMARY KEY,\n  party_name VARCHAR(100),\n  ideology VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE article_bias (\n  article_id INT,\n  party_id INT,\n  FOREIGN KEY (article_id) REFERENCES articles(article_id),\n  FOREIGN KEY (party_id) REFERENCES political_parties(party_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE BiasCategories (\n    id SERIAL PRIMARY KEY,\n    category_name TEXT\n);\n\nCREATE TABLE Articles (\n    id SERIAL PRIMARY KEY,\n    title TEXT,\n    content TEXT,\n    bias_category_id INT,\n    FOREIGN KEY (bias_category_id) REFERENCES BiasCategories(id)\n);\n\nCREATE TABLE Users (\n    id SERIAL PRIMARY KEY,\n    username TEXT,\n    email TEXT\n);\n\nCREATE TABLE UserPreferences (\n    id SERIAL PRIMARY KEY,\n    user_id INT,\n    bias_category_id INT,\n    FOREIGN KEY (user_id) REFERENCES Users(id),\n    FOREIGN KEY (bias_category_id) REFERENCES BiasCategories(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE articles (\n article_id INT PRIMARY KEY,\n title VARCHAR(255),\n author VARCHAR(100),\n content TEXT,\n bias_category VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE political_bias (\n bias_id INT PRIMARY KEY,\n bias_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE article_bias (\n article_id INT,\n bias_id INT,\n PRIMARY KEY (article_id, bias_id),\n FOREIGN KEY (article_id) REFERENCES articles(article_id),\n FOREIGN KEY (bias_id) REFERENCES political_bias(bias_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n user_id INT PRIMARY KEY,\n username VARCHAR(50),\n email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n user_id INT,\n bias_id INT,\n PRIMARY KEY (user_id, bias_id),\n FOREIGN KEY (user_id) REFERENCES users(user_id),\n FOREIGN KEY (bias_id) REFERENCES political_bias(bias_id)\n);"
+      }
+    ]
+  }
+]

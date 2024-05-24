@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_disposal (\n  record_id INT PRIMARY KEY,\n  document_title VARCHAR,\n  disposal_date DATE,\n  compliance_level VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HazardousWasteDocumentation (\n    waste_id INT PRIMARY KEY,\n    waste_type VARCHAR(50),\n    disposal_date DATE,\n    disposal_location VARCHAR(100),\n    disposal_method VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceRecords (\n    record_id INT PRIMARY KEY,\n    waste_id INT,\n    disposal_date DATE,\n    regulatory_agency VARCHAR(100),\n    compliance_status VARCHAR(50),\n    FOREIGN KEY (waste_id) REFERENCES HazardousWasteDocumentation(waste_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_disposal_regulations (\n  document_id INT PRIMARY KEY,\n  document_name VARCHAR(255),\n  document_type VARCHAR(50),\n  disposal_date DATE,\n  compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_generator (\n  generator_id INT PRIMARY KEY,\n  generator_name VARCHAR(255),\n  location VARCHAR(100),\n  contact_person VARCHAR(150),\n  contact_email VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_tracking (\n  tracking_id INT PRIMARY KEY,\n  disposal_site VARCHAR(100),\n  disposal_date DATE,\n  disposal_method VARCHAR(50),\n  disposal_cost DECIMAL(10,2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE hazardous_waste_disposal_regulations (\n  id INT PRIMARY KEY,\n  document_name VARCHAR(255),\n  document_type VARCHAR(50),\n  disposal_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_sites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(100),\n  location VARCHAR(255),\n  contact_person VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_disposal_records (\n  record_id INT PRIMARY KEY,\n  waste_type VARCHAR(50),\n  disposal_date DATE,\n  disposal_site_id INT,\n  FOREIGN KEY (disposal_site_id) REFERENCES waste_disposal_sites(site_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_certificates (\n  certificate_id INT PRIMARY KEY,\n  company_name VARCHAR(100),\n  valid_until DATE,\n  issued_by VARCHAR(100),\n  UNIQUE (company_name)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE HazardousWasteDisposalRegulations (\n    id INT PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    document_type VARCHAR(50) NOT NULL,\n    disposal_date DATE,\n    disposal_location VARCHAR(100),\n    compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteDisposalFacilities (\n    id INT PRIMARY KEY,\n    facility_name VARCHAR(100) NOT NULL,\n    facility_location VARCHAR(100) NOT NULL,\n    facility_type VARCHAR(50),\n    capacity DOUBLE,\n    compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteDisposalManifests (\n    id INT PRIMARY KEY,\n    manifest_number VARCHAR(20) NOT NULL,\n    disposal_date DATE,\n    facility_id INT,\n    FOREIGN KEY (facility_id) REFERENCES WasteDisposalFacilities(id),\n    compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteDisposalRecords (\n    id INT PRIMARY KEY,\n    record_type VARCHAR(50) NOT NULL,\n    document_id INT NOT NULL,\n    disposal_date DATE,\n    facility_id INT,\n    FOREIGN KEY (document_id) REFERENCES HazardousWasteDisposalRegulations(id),\n    FOREIGN KEY (facility_id) REFERENCES WasteDisposalFacilities(id),\n    compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ComplianceOfficers (\n    id INT PRIMARY KEY,\n    officer_name VARCHAR(100) NOT NULL,\n    officer_email VARCHAR(100) NOT NULL,\n    officer_phone VARCHAR(15),\n    certification_status BOOLEAN\n);"
+      }
+    ]
+  }
+]

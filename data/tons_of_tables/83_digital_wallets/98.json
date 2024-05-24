@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_aliases (\n  alias_id UUID PRIMARY KEY,\n  wallet_address TEXT UNIQUE,\n  alias_label TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_address_aliases (\n    alias_id UUID PRIMARY KEY,\n    wallet_address VARCHAR(255) NOT NULL,\n    alias_label VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_history (\n    transaction_id UUID PRIMARY KEY,\n    sender_wallet_address VARCHAR(255) NOT NULL,\n    receiver_wallet_address VARCHAR(255) NOT NULL,\n    transaction_amount DECIMAL(12, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_address_aliases (\n    alias_id UUID PRIMARY KEY,\n    address VARCHAR(255) NOT NULL,\n    alias_label VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_history (\n    transaction_id UUID PRIMARY KEY,\n    alias_id UUID NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alias_labels (\n    label_id UUID PRIMARY KEY,\n    alias_label VARCHAR(50) NOT NULL,\n    label_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_address_aliases (\n    id INT PRIMARY KEY,\n    alias_name VARCHAR(50),\n    wallet_address VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_address_labels (\n    id INT PRIMARY KEY,\n    label_name VARCHAR(50),\n    wallet_address VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_history (\n    id INT PRIMARY KEY,\n    transaction_id VARCHAR(50),\n    timestamp TIMESTAMP,\n    sender_address VARCHAR(100),\n    receiver_address VARCHAR(100),\n    amount DECIMAL(18, 2),\n    status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_labels (\n    id INT PRIMARY KEY,\n    transaction_id VARCHAR(50),\n    label_name VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_addresses (\n    id UUID PRIMARY KEY,\n    alias TEXT NOT NULL,\n    label TEXT,\n    address TEXT UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    id UUID PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    sender_id UUID REFERENCES wallet_addresses(id),\n    receiver_id UUID REFERENCES wallet_addresses(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE aliases (\n    id UUID PRIMARY KEY,\n    alias TEXT NOT NULL UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE labels (\n    id UUID PRIMARY KEY,\n    label TEXT NOT NULL UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transaction_labels (\n    transaction_id UUID REFERENCES transactions(id),\n    label_id UUID REFERENCES labels(id),\n    PRIMARY KEY (transaction_id, label_id)\n);"
+      }
+    ]
+  }
+]

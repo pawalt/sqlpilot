@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE leed_certification_progress (\n    project_id UUID,\n    project_name VARCHAR(255),\n    certification_status VARCHAR(50),\n    certification_date DATE,\n    documentation_path VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    location VARCHAR(255),\n    status VARCHAR(50)\n);\n\nCREATE TABLE documentation (\n    doc_id INT PRIMARY KEY,\n    project_id INT,\n    document_type VARCHAR(50),\n    document_path VARCHAR(255),\n    uploaded_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Project(id INT PRIMARY KEY, name VARCHAR(255), status VARCHAR(50), certification_level VARCHAR(50));\nCREATE TABLE Documentation(id INT PRIMARY KEY, project_id INT, document_type VARCHAR(50), document_description TEXT, document_date DATE);\nCREATE TABLE Certification(id INT PRIMARY KEY, project_id INT, certification_date DATE, certification_agent VARCHAR(100));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE green_building_projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    location VARCHAR(255),\n    certification_status VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_documents (\n    document_id INT PRIMARY KEY,\n    project_id INT REFERENCES green_building_projects(project_id),\n    document_name VARCHAR(255),\n    document_type VARCHAR(50),\n    created_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE certification_criteria (\n    criteria_id INT PRIMARY KEY,\n    criteria_name VARCHAR(255),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_criteria_mapping (\n    project_id INT REFERENCES green_building_projects(project_id),\n    criteria_id INT REFERENCES certification_criteria(criteria_id),\n    completion_status VARCHAR(20),\n    PRIMARY KEY (project_id, criteria_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255) NOT NULL,\n    certification_level VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_documents (\n    document_id INT PRIMARY KEY,\n    project_id INT, \n    document_type VARCHAR(50) NOT NULL,\n    document_path VARCHAR(255) NOT NULL,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE certification_agencies (\n    agency_id INT PRIMARY KEY,\n    agency_name VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_certifications (\n    project_id INT,\n    agency_id INT, \n    certification_date DATE NOT NULL,\n    PRIMARY KEY (project_id, agency_id),\n    FOREIGN KEY (project_id) REFERENCES projects(project_id),\n    FOREIGN KEY (agency_id) REFERENCES certification_agencies(agency_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_audit_logs (\n    log_id INT PRIMARY KEY,\n    project_id INT,\n    log_date TIMESTAMP NOT NULL,\n    changes VARCHAR(255) NOT NULL,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM embeddings ORDER BY embedding_id DESC;",
+      "SELECT * FROM embeddings WHERE embedding_id = 5;",
+      "SELECT COUNT(*) FROM embeddings;",
+      "SELECT embedding_id, LENGTH(embedding_vector) AS vector_length FROM embeddings;",
+      "SELECT AVG(embedding_id) AS avg_id FROM embeddings;",
+      "SELECT * FROM embeddings WHERE embedding_id = 10",
+      "SELECT embedding_id, embedding_vector FROM embeddings WHERE embedding_id IN (1, 2, 3)",
+      "SELECT embedding_id, encoding_vector FROM embeddings WHERE embedding_id > 5 AND embedding_id < 10 ORDER BY embedding_id DESC",
+      "SELECT * FROM embeddings WHERE embedding_id = 3 OR embedding_id = 7 OR embedding_id = 9",
+      "SELECT COUNT(embedding_id) AS total_embeddings FROM embeddings"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM embeddings;",
+      "SELECT embedding_vector FROM embeddings WHERE embedding_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT sentence_text, embedding_vector FROM embeddings ORDER BY sentence_text DESC;",
+      "SELECT * FROM embeddings JOIN embeddings_metadata ON embeddings.embedding_id = embeddings_metadata.embedding_id;",
+      "SELECT sentence_text AS sentence, word_embedding AS word FROM embeddings_metadata WHERE language = 'english';",
+      "SELECT * FROM embeddings;",
+      "SELECT sentence_text FROM embeddings WHERE embedding_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT embedding_vector FROM embeddings WHERE embedding_id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT * FROM embeddings_metadata WHERE language='english' ORDER BY word_embedding ASC;",
+      "SELECT embedding_vector, sentence_text FROM embeddings WHERE sentence_text LIKE '%example%' ORDER BY embedding_id DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM embeddings;",
+      "SELECT id, word FROM metadata WHERE language = 'English';",
+      "SELECT id, timestamp FROM metadata ORDER BY timestamp DESC;",
+      "SELECT id, language FROM metadata WHERE id = 3;",
+      "SELECT mappings.word_id, embeddings.word FROM mappings JOIN embeddings ON mappings.embedding_id = embeddings.id;",
+      "SELECT * FROM embeddings WHERE id = 1;",
+      "SELECT id, word FROM metadata WHERE language = 'english' ORDER BY timestamp DESC;",
+      "SELECT mappings.id, embeddings.word FROM mappings JOIN embeddings ON mappings.embedding_id = embeddings.id WHERE mappings.word_id = 2;",
+      "SELECT metadata.word_id, MAX(embeddings.id) FROM metadata LEFT JOIN mappings ON metadata.word_id = mappings.word_id JOIN embeddings ON mappings.embedding_id = embeddings.id GROUP BY metadata.word_id;",
+      "SELECT metadata.language, COUNT(embeddings.id) FROM metadata INNER JOIN mappings ON metadata.word_id = mappings.word_id JOIN embeddings ON mappings.embedding_id = embeddings.id GROUP BY metadata.language ORDER BY COUNT(embeddings.id) DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM embeddings_mapping;",
+      "SELECT id, sentence_id, word_id FROM embeddings_mapping WHERE embedding_id = 10;",
+      "SELECT sentence_id, COUNT(*) FROM embeddings_mapping GROUP BY sentence_id;",
+      "SELECT word_id, sentence_id, embedding_id FROM embeddings_mapping WHERE word_id = 5 ORDER BY embedding_id DESC;",
+      "SELECT sentence_id, AVG(word_id) AS avg_word_id FROM embeddings_mapping GROUP BY sentence_id HAVING avg_word_id > 3;",
+      "SELECT * FROM embeddings_mapping LIMIT 10;",
+      "SELECT id, embedding_id, sentence_id, word_id FROM embeddings_mapping WHERE embedding_id = 5 AND word_id = 10;",
+      "SELECT sentence_id, COUNT(word_id) AS 'Word Count' FROM embeddings_mapping GROUP BY sentence_id HAVING COUNT(word_id) > 5;",
+      "SELECT e.id AS embedding_id, s.sentence AS sentence_text, w.word AS word_text FROM embeddings_mapping em JOIN embeddings e ON em.embedding_id = e.id JOIN sentences s ON em.sentence_id = s.id JOIN words w ON em.word_id = w.id WHERE e.id = 3 AND s.id = 2 AND w.id = 1;",
+      "SELECT e.id AS embedding_id, s.sentence AS sentence_text, w.word AS word_text FROM embeddings_mapping em JOIN embeddings e ON em.embedding_id = e.id JOIN sentences s ON em.sentence_id = s.id JOIN words w ON em.word_id = w.id ORDER BY e.id DESC, s.id ASC, w.id ASC LIMIT 5;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM embeddings LIMIT 5;",
+      "SELECT id, word FROM vocabulary WHERE id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT * FROM similarities WHERE similarity > 0.8 ORDER BY created_at DESC;",
+      "SELECT word1, word2, similarity FROM similarities WHERE created_at >= '2022-01-01' ORDER BY similarity DESC;",
+      "SELECT description FROM metadata WHERE id = '123e4567-e89b-12d3-a456-426614174001';",
+      "SELECT * FROM embeddings ORDER BY created_at DESC LIMIT 10;",
+      "SELECT word, embedding[1] FROM embeddings WHERE id = '123e4567-e89b-12d3-a456-426614174000';",
+      "SELECT word1, word2, similarity FROM similarities WHERE similarity >= 0.8 ORDER BY similarity DESC LIMIT 5;",
+      "SELECT word, embedding FROM embeddings WHERE word LIKE 'c%' AND array_length(embedding, 1) = 300;",
+      "SELECT td.id, td.sentence, td.label, emb.word FROM training_data td INNER JOIN embeddings emb ON td.embedding_id = emb.id ORDER BY td.created_at ASC LIMIT 5;"
+    ]
+  }
+]

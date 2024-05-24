@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sas_geospatial_data (\n    id INT PRIMARY KEY,\n    location_name TEXT,\n    latitude FLOAT,\n    longitude FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE geospatial_data (\n    id SERIAL PRIMARY KEY,\n    location_name VARCHAR(100) NOT NULL,\n    latitude DECIMAL(10, 8) NOT NULL,\n    longitude DECIMAL(11, 8) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE analytics_data (\n    id SERIAL PRIMARY KEY,\n    location_id INTEGER REFERENCES geospatial_data(id),\n    data_type VARCHAR(50) NOT NULL,\n    value DECIMAL(10, 2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(50),\n    latitude DECIMAL(9,6),\n    longitude DECIMAL(9,6)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(50),\n    email VARCHAR(100),\n    location_id INT REFERENCES locations(location_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    order_date DATE,\n    order_total DECIMAL(10,2),\n    customer_id INT REFERENCES customers(customer_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n\tlocation_id INT PRIMARY KEY,\n\tlocation_name TEXT,\n\tlatitude DECIMAL,\n\tlongitude DECIMAL,\n\tgeography GEOGRAPHY\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE clients (\n\tclient_id INT PRIMARY KEY,\n\tclient_name TEXT,\n\tindustry TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE analytics_data (\n\tdata_id INT PRIMARY KEY,\n\tlocation_id INT REFERENCES locations(location_id),\n\tclient_id INT REFERENCES clients(client_id),\n\tdata_type TEXT,\n\tdate DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE mapping_data (\n\tmapping_id INT PRIMARY KEY,\n\tlocation_id INT REFERENCES locations(location_id),\n\tmap_image BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (id INT PRIMARY KEY, name VARCHAR(50), address VARCHAR(100), latitude DECIMAL, longitude DECIMAL);"
+      },
+      {
+        "table_schema": "CREATE TABLE regions (region_id INT PRIMARY KEY, region_name VARCHAR(50), area DECIMAL, population INT);"
+      },
+      {
+        "table_schema": "CREATE TABLE territories (territory_id INT PRIMARY KEY, territory_name VARCHAR(50), region_id INT REFERENCES regions(region_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (customer_id INT PRIMARY KEY, customer_name VARCHAR(50), email VARCHAR(50), phone_number VARCHAR(15));"
+      },
+      {
+        "table_schema": "CREATE TABLE sales_data (sale_id INT PRIMARY KEY, customer_id INT REFERENCES customers(customer_id), location_id INT REFERENCES locations(id), sale_date DATE, amount DECIMAL);"
+      }
+    ]
+  }
+]

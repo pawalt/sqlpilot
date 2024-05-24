@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_telemetry_data (\n    vehicle_id UUID PRIMARY KEY,\n    timestamp TIMESTAMP,\n    location VARCHAR,\n    speed FLOAT,\n    temperature FLOAT,\n    fuel_level FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_data (\n    vehicle_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    location VARCHAR,\n    speed FLOAT,\n    mileage FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    sensor_id INT PRIMARY KEY,\n    vehicle_id INT,\n    timestamp TIMESTAMP,\n    sensor_type VARCHAR,\n    sensor_value FLOAT,\n    FOREIGN KEY (vehicle_id) REFERENCES vehicle_data(vehicle_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicle_data (\n    vehicle_id INT PRIMARY KEY,\n    timestamp TIMESTAMP,\n    speed FLOAT,\n    location VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE driver_data (\n    driver_id INT PRIMARY KEY,\n    name VARCHAR,\n    license_plate VARCHAR,\n    contact_number VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE journey_data (\n    journey_id INT PRIMARY KEY,\n    vehicle_id INT,\n    driver_id INT,\n    start_location VARCHAR,\n    end_location VARCHAR\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n   vehicle_id INT PRIMARY KEY,\n   make VARCHAR(50),\n   model VARCHAR(50),\n   year INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE telemetry_data (\n   telemetry_id INT PRIMARY KEY,\n   vehicle_id INT,\n   timestamp TIMESTAMP,\n   latitude FLOAT,\n   longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_logs (\n   log_id INT PRIMARY KEY,\n   vehicle_id INT,\n   maintenance_date DATE,\n   description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trip_data (\n   trip_id INT PRIMARY KEY,\n   vehicle_id INT,\n   start_time TIMESTAMP,\n   end_time TIMESTAMP,\n   distance FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_name VARCHAR(255),\n    vehicle_type VARCHAR(50),\n    manufacture_year INT,\n    last_telemetry_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE telemetry_data (\n    telemetry_id INT PRIMARY KEY,\n    vehicle_id INT REFERENCES vehicles(vehicle_id),\n    telemetry_timestamp TIMESTAMP,\n    speed FLOAT,\n    location_lat FLOAT,\n    location_long FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maintenance_records (\n    record_id INT PRIMARY KEY,\n    vehicle_id INT REFERENCES vehicles(vehicle_id),\n    maintenance_description VARCHAR(255),\n    maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE drivers (\n    driver_id INT PRIMARY KEY,\n    driver_name VARCHAR(255),\n    driver_license VARCHAR(20),\n    driver_contact VARCHAR(15)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE assignments (\n    assignment_id INT PRIMARY KEY,\n    vehicle_id INT REFERENCES vehicles(vehicle_id),\n    driver_id INT REFERENCES drivers(driver_id),\n    assignment_date DATE,\n    completion_status BOOLEAN\n);"
+      }
+    ]
+  }
+]

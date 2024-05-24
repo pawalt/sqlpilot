@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Genes (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255),\n    gene_sequence TEXT,\n    expression_level FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneExpressions (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255) NOT NULL,\n    expression_level FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneRegulationPatterns (\n    pattern_id INT PRIMARY KEY,\n    gene_id INT NOT NULL,\n    pattern_description TEXT,\n    regulatory_factor VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genes (\n    gene_id UUID PRIMARY KEY,\n    gene_name VARCHAR(255),\n    expression_level FLOAT,\n    regulation_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiments (\n    experiment_id UUID PRIMARY KEY,\n    experiment_date DATE,\n    tissue_type VARCHAR(100),\n    technique VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE gene_expressions (\n    gene_id UUID,\n    experiment_id UUID,\n    expression_level FLOAT,\n    FOREIGN KEY (gene_id) REFERENCES genes(gene_id),\n    FOREIGN KEY (experiment_id) REFERENCES experiments(experiment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE gene_data (\n  gene_id INT PRIMARY KEY,\n  gene_name VARCHAR(255),\n  expression_level FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sample_data (\n  sample_id INT PRIMARY KEY,\n  sample_name VARCHAR(255),\n  tissue_type VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulation_data (\n  regulation_id INT PRIMARY KEY,\n  gene_id INT,\n  regulation_type VARCHAR(50),\n  regulator_gene_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_data (\n  experiment_id INT PRIMARY KEY,\n  sample_id INT,\n  regulation_id INT,\n  experiment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GeneList (\n    gene_id INT PRIMARY KEY,\n    gene_name VARCHAR(255) NOT NULL,\n    gene_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExpressionLevels (\n    sample_id INT PRIMARY KEY,\n    gene_id INT REFERENCES GeneList(gene_id),\n    expression_level FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SampleAnnotations (\n    sample_id INT PRIMARY KEY,\n    sample_name VARCHAR(255) NOT NULL,\n    tissue_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneRegulationPatterns (\n    pattern_id INT PRIMARY KEY,\n    gene_id INT REFERENCES GeneList(gene_id),\n    regulation_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RegulatoryNetwork (\n    regulator_id INT REFERENCES GeneList(gene_id),\n    target_id INT REFERENCES GeneList(gene_id),\n    regulation_strength FLOAT NOT NULL\n);"
+      }
+    ]
+  }
+]

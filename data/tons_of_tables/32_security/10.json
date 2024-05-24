@@ -1,0 +1,46 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(100),\n    encrypted_password VARCHAR(255),\n    email VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50),\n    password VARCHAR(100),\n    encryption_key VARCHAR(200)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    login_time TIMESTAMP,\n    logout_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  id UUID PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password BYTEA NOT NULL,\n  email VARCHAR(100) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_sessions (\n  session_id UUID PRIMARY KEY,\n  user_id UUID NOT NULL,\n  session_token BYTEA NOT NULL,\n  expiration_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE password_reset (\n  reset_id UUID PRIMARY KEY,\n  user_id UUID NOT NULL,\n  reset_token BYTEA NOT NULL,\n  expiration_date TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password BYTEA NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n\n-- Table to store user roles\nCREATE TABLE user_roles (\n    id SERIAL PRIMARY KEY,\n    role_name VARCHAR(50) UNIQUE NOT NULL\n);\n\n-- Table to map users to roles\nCREATE TABLE user_role_mapping (\n    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,\n    role_id INTEGER REFERENCES user_roles(id) ON DELETE CASCADE,\n    PRIMARY KEY (user_id, role_id)\n);\n\n-- Table to store password reset requests\nCREATE TABLE password_reset_requests (\n    id SERIAL PRIMARY KEY,\n    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,\n    request_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n\nCREATE TABLE roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE user_roles (\n    user_id INT,\n    role_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n);\n\nCREATE TABLE sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    session_token VARCHAR(150) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);\n\nCREATE TABLE passwords (\n    user_id INT,\n    password_hash VARCHAR(150) NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);"
+      }
+    ]
+  }
+]

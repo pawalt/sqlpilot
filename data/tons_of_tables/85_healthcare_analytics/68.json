@@ -1,0 +1,70 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TelehealthServiceData (\n\trecord_id UUID PRIMARY KEY,\n\tpatient_id UUID,\n\tservice_date DATE,\n\tservice_type VARCHAR(50),\n\tdoctor_name VARCHAR(100),\n\thospital_name VARCHAR(100),\n\tbilling_amount DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telehealth_services (\n    service_id INT PRIMARY KEY,\n    service_name VARCHAR(100) NOT NULL,\n    provider_name VARCHAR(100) NOT NULL,\n    service_date DATE,\n    service_cost DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_records (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(100) NOT NULL,\n    patient_age INT,\n    patient_gender CHAR(1),\n    service_id INT,\n    FOREIGN KEY (service_id) REFERENCES telehealth_services(service_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE telehealth_data_source (\n    source_id INT PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL,\n    source_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE patient_data (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(100) NOT NULL,\n    patient_age INT NOT NULL,\n    patient_gender VARCHAR(10) NOT NULL,\n    patient_address VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE appointment_data (\n    appointment_id INT PRIMARY KEY,\n    patient_id INT NOT NULL,\n    appointment_date DATE NOT NULL,\n    appointment_notes TEXT,\n    FOREIGN KEY (patient_id) REFERENCES patient_data(patient_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_records (\n    record_id INT PRIMARY KEY,\n    patient_id INT NOT NULL,\n    medical_condition TEXT,\n    prescription VARCHAR(100),\n    FOREIGN KEY (patient_id) REFERENCES patient_data(patient_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id SERIAL PRIMARY KEY,\n  patient_name VARCHAR(100) NOT NULL,\n  patient_age INT,\n  patient_gender VARCHAR(10),\n  appointment_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE doctors (\n  doctor_id SERIAL PRIMARY KEY,\n  doctor_name VARCHAR(100) NOT NULL,\n  specialty VARCHAR(50),\n  experience_years INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n  appointment_id SERIAL PRIMARY KEY,\n  patient_id INT REFERENCES patients(patient_id),\n  doctor_id INT REFERENCES doctors(doctor_id),\n  appointment_date DATE,\n  reason_for_visit TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medical_records (\n  record_id SERIAL PRIMARY KEY,\n  patient_id INT REFERENCES patients(patient_id),\n  doctor_id INT REFERENCES doctors(doctor_id),\n  diagnosis TEXT,\n  prescription TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Telehealth_Appointments(\n    appointment_id UUID PRIMARY KEY,\n    patient_id UUID,\n    appointment_date DATE,\n    appointment_time TIME,\n    appointment_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Telehealth_Patients(\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR(100),\n    patient_age INT,\n    patient_gender VARCHAR(10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Telehealth_Providers(\n    provider_id UUID PRIMARY KEY,\n    provider_name VARCHAR(100),\n    provider_specialty VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Telehealth_Reports(\n    report_id UUID PRIMARY KEY,\n    appointment_id UUID,\n    report_date DATE,\n    report_text TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Telehealth_Billing(\n    billing_id UUID PRIMARY KEY,\n    appointment_id UUID,\n    billing_amount DECIMAL(10,2),\n    billing_status VARCHAR(20)\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n   client_id SERIAL PRIMARY KEY,\n   client_name VARCHAR(50) NOT NULL,\n   email VARCHAR(50) NOT NULL,\n   phone_number VARCHAR(15),\n   address TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n   project_id SERIAL PRIMARY KEY,\n   project_name VARCHAR(50) NOT NULL,\n   client_id INT REFERENCES clients(client_id),\n   start_date DATE,\n   end_date DATE,\n   budget DECIMAL(10,2),\n   status VARCHAR(20)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(15)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100),\n    start_date DATE,\n    end_date DATE,\n    client_id INT,\n    FOREIGN KEY (client_id) REFERENCES clients(client_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE design_preferences (\n    design_preference_id INT PRIMARY KEY,\n    project_id INT,\n    style VARCHAR(50),\n    color_scheme VARCHAR(50),\n    furniture_pref TEXT,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE client (\n    client_id INT NOT NULL,\n    client_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) NOT NULL,\n    phone_number VARCHAR(15),\n    PRIMARY KEY (client_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE project (\n    project_id INT NOT NULL,\n    project_name VARCHAR(100) NOT NULL,\n    project_description TEXT,\n    client_id INT NOT NULL,\n    PRIMARY KEY (project_id),\n    FOREIGN KEY (client_id) REFERENCES client(client_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE design_preference (\n    preference_id INT NOT NULL,\n    style VARCHAR(50) NOT NULL,\n    color_scheme VARCHAR(50),\n    budget DECIMAL(10, 2),\n    project_id INT NOT NULL,\n    PRIMARY KEY (preference_id),\n    FOREIGN KEY (project_id) REFERENCES project(project_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE address (\n    address_id INT NOT NULL,\n    street_address VARCHAR(100) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    state VARCHAR(2) NOT NULL,\n    zip_code VARCHAR(10) NOT NULL,\n    client_id INT NOT NULL,\n    PRIMARY KEY (address_id),\n    FOREIGN KEY (client_id) REFERENCES client(client_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(100) NOT NULL,\n    client_id INT REFERENCES clients(client_id),\n    start_date DATE,\n    estimated_completion DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE designs (\n    design_id INT PRIMARY KEY,\n    design_name VARCHAR(100) NOT NULL,\n    project_id INT REFERENCES projects(project_id),\n    designer_name VARCHAR(50),\n    budget DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE preferences (\n    preference_id INT PRIMARY KEY,\n    client_id INT REFERENCES clients(client_id),\n    design_id INT REFERENCES designs(design_id),\n    preference_text TEXT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE addresses (\n    address_id INT PRIMARY KEY,\n    client_id INT REFERENCES clients(client_id),\n    address_line1 VARCHAR(100),\n    city VARCHAR(50),\n    state VARCHAR(50),\n    postal_code VARCHAR(20)\n);\n"
+      }
+    ]
+  }
+]

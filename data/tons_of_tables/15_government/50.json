@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voter_registration_information (\n    voter_id UUID PRIMARY KEY,\n    full_name TEXT,\n    date_of_birth DATE,\n    address TEXT,\n    voter_status BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voter_registration (\n    voter_id UUID PRIMARY KEY,\n    voter_name TEXT NOT NULL,\n    voter_address TEXT,\n    voter_age INT,\n    registration_date DATE\n);\n\nCREATE TABLE voter_history (\n    history_id SERIAL PRIMARY KEY,\n    voter_id UUID,\n    registration_status VARCHAR(10),\n    registration_date DATE,\n    last_updated TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voter_records (\n  voter_id INT PRIMARY KEY,\n  voter_name VARCHAR(50),\n  date_of_birth DATE,\n  registration_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_addresses (\n  address_id INT PRIMARY KEY,\n  voter_id INT REFERENCES voter_records(voter_id),\n  street_address VARCHAR(100),\n  city VARCHAR(50),\n  state VARCHAR(50),\n  postal_code VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_history (\n  history_id INT PRIMARY KEY,\n  voter_id INT REFERENCES voter_records(voter_id),\n  registration_date DATE,\n  voting_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voters (\n    voter_id INT PRIMARY KEY,\n    voter_name VARCHAR(255),\n    voter_address VARCHAR(255),\n    voter_age INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_districts (\n    district_id INT PRIMARY KEY,\n    district_name VARCHAR(255),\n    district_location VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_centers (\n    center_id INT PRIMARY KEY,\n    center_name VARCHAR(255),\n    center_location VARCHAR(255),\n    district_id INT,\n    FOREIGN KEY (district_id) REFERENCES voting_districts(district_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_history (\n    history_id INT PRIMARY KEY,\n    voter_id INT,\n    election_year INT,\n    vote_status VARCHAR(50),\n    FOREIGN KEY (voter_id) REFERENCES voters(voter_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE voters (\n    voter_id SERIAL PRIMARY KEY,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    address VARCHAR(100) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    state VARCHAR(2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_addresses (\n    address_id SERIAL PRIMARY KEY,\n    voter_id INT REFERENCES voters(voter_id) ON DELETE CASCADE,\n    address_line1 VARCHAR(100) NOT NULL,\n    address_line2 VARCHAR(100),\n    city VARCHAR(50) NOT NULL,\n    state VARCHAR(2) NOT NULL,\n    postal_code VARCHAR(10) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_history (\n    history_id SERIAL PRIMARY KEY,\n    voter_id INT REFERENCES voters(voter_id) ON DELETE CASCADE,\n    registration_date DATE NOT NULL,\n    last_voted_date DATE,\n    party_affiliation VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_contact (\n    contact_id SERIAL PRIMARY KEY,\n    voter_id INT REFERENCES voters(voter_id) ON DELETE CASCADE,\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voter_preferences (\n    preference_id SERIAL PRIMARY KEY,\n    voter_id INT REFERENCES voters(voter_id) ON DELETE CASCADE,\n    prefer_sms BOOLEAN,\n    prefer_email BOOLEAN,\n    prefer_mail BOOLEAN\n);"
+      }
+    ]
+  }
+]

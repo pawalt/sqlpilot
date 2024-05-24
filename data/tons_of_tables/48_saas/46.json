@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SecurityScans (\n    scan_id INT PRIMARY KEY,\n    scan_name VARCHAR(50),\n    scan_timestamp TIMESTAMP,\n    vulnerabilities_found INT,\n    scan_status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_scans (\n    scan_id UUID PRIMARY KEY,\n    scan_name VARCHAR(255) NOT NULL,\n    scan_date DATE,\n    scan_results JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerability_recommendations (\n    recommendation_id UUID PRIMARY KEY,\n    scan_id UUID,\n    recommendation TEXT,\n    recommendation_date DATE,\n    FOREIGN KEY (scan_id) REFERENCES vulnerability_scans(scan_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE security_scans (\n  scan_id INT PRIMARY KEY,\n  scan_name TEXT,\n  scan_date TIMESTAMP,\n  vulnerabilities_found INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n  vulnerability_id INT PRIMARY KEY,\n  vulnerability_name TEXT,\n  vulnerability_description TEXT,\n  vulnerability_severity INT,\n  scan_id INT,\n  FOREIGN KEY (scan_id) REFERENCES security_scans(scan_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE scan_results (\n  result_id INT PRIMARY KEY,\n  scan_id INT,\n  vulnerability_id INT,\n  result_description TEXT,\n  result_date TIMESTAMP,\n  FOREIGN KEY (scan_id) REFERENCES security_scans(scan_id),\n  FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(vulnerability_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerability_scans (\n    scan_id INT PRIMARY KEY,\n    scan_date DATE,\n    scan_type VARCHAR(50),\n    scan_result TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    vulnerability_id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(100),\n    risk_level VARCHAR(20),\n    exploitability VARCHAR(20),\n    remediation TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE scan_results (\n    result_id INT PRIMARY KEY,\n    scan_id INT,\n    vulnerability_id INT,\n    result_status VARCHAR(20),\n    result_description TEXT,\n    FOREIGN KEY (scan_id) REFERENCES vulnerability_scans(scan_id),\n    FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(vulnerability_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    user_name VARCHAR(50),\n    user_role VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE vulnerabilities (\n    id INT PRIMARY KEY,\n    vulnerability_name VARCHAR(50),\n    severity VARCHAR(20),\n    scan_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE scans (\n    scan_id INT PRIMARY KEY,\n    scan_name VARCHAR(100),\n    scan_type VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE findings (\n    finding_id INT PRIMARY KEY,\n    finding_name VARCHAR(100),\n    vulnerability_id INT,\n    scan_id INT,\n    FOREIGN KEY (vulnerability_id) REFERENCES vulnerabilities(id),\n    FOREIGN KEY (scan_id) REFERENCES scans(scan_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    email VARCHAR(100),\n    username VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n    report_id INT PRIMARY KEY,\n    report_name VARCHAR(100),\n    findings_count INT,\n    create_date TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

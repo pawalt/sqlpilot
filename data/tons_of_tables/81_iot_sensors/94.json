@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyManagementSystem (\n    device_id INT,\n    timestamp TIMESTAMP,\n    energy_usage DECIMAL,\n    threshold DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_thresholds (\n    device_id INT PRIMARY KEY,\n    energy_threshold DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    device_id INT,\n    energy_usage DECIMAL,\n    timestamp TIMESTAMP,\n    PRIMARY KEY (device_id, timestamp),\n    FOREIGN KEY (device_id) REFERENCES energy_thresholds(device_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyConsumption (\n    device_id INT PRIMARY KEY,\n    energy_usage DECIMAL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Thresholds (\n    threshold_id INT PRIMARY KEY,\n    energy_threshold DECIMAL,\n    alert_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Alerts (\n    alert_id INT PRIMARY KEY,\n    device_id INT,\n    timestamp TIMESTAMP,\n    alert_message TEXT,\n    FOREIGN KEY (device_id) REFERENCES EnergyConsumption(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE energy_thresholds (\n    device_id INT PRIMARY KEY,\n    threshold_value FLOAT,\n    threshold_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE energy_consumption (\n    device_id INT PRIMARY KEY,\n    consumption_value FLOAT,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_log (\n    alert_id SERIAL PRIMARY KEY,\n    device_id INT,\n    alert_message TEXT,\n    alert_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_info (\n    device_id INT PRIMARY KEY,\n    device_name VARCHAR(50),\n    location VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threshold_settings (\n    id UUID PRIMARY KEY,\n    sensor_id UUID,\n    threshold_value FLOAT,\n    alert_recipients JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_data (\n    id UUID PRIMARY KEY,\n    sensor_id UUID,\n    timestamp TIMESTAMP,\n    energy_consumption FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE alert_history (\n    id UUID PRIMARY KEY,\n    sensor_id UUID,\n    timestamp TIMESTAMP,\n    alert_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sensor_metadata (\n    id UUID PRIMARY KEY,\n    sensor_id UUID,\n    location TEXT,\n    installation_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_settings (\n    id UUID PRIMARY KEY,\n    user_id UUID,\n    email TEXT,\n    alert_threshold FLOAT\n);"
+      }
+    ]
+  }
+]

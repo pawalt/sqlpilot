@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE heatmap_satellite_images (\n    image_id INT PRIMARY KEY,\n    image_name TEXT,\n    image_url TEXT,\n    region_name TEXT,\n    coordinates GEOGRAPHY,\n    temperature DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE satellite_images (\n    id SERIAL PRIMARY KEY,\n    image_url VARCHAR(255) NOT NULL,\n    region_name VARCHAR(100) NOT NULL,\n    temperature FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE temperature_readings (\n    id SERIAL PRIMARY KEY,\n    image_id INT REFERENCES satellite_images(id),\n    latitude FLOAT NOT NULL,\n    longitude FLOAT NOT NULL,\n    temperature FLOAT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE heat_maps (\n    image_id UUID PRIMARY KEY,\n    image_data BYTEA,\n    region_id INT,\n    temperature FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regions (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE temperature_data (\n    data_id SERIAL PRIMARY KEY,\n    image_id UUID,\n    region_id INT,\n    temperature_reading FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Temperature_Data (\n  satellite_id INT,\n  latitude DOUBLE PRECISION,\n  longitude DOUBLE PRECISION,\n  temperature FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Regions (\n  region_id INT PRIMARY KEY,\n  region_name VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Satellite_Images (\n  satellite_id INT PRIMARY KEY,\n  image_url VARCHAR(255),\n  capture_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Heat_Map (\n  heat_map_id INT PRIMARY KEY,\n  region_id INT,\n  satellite_id INT,\n  heat_image_url VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SatelliteImages (\n    image_id INT PRIMARY KEY,\n    image_data BYTES\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ImageMetadata (\n    image_id INT,\n    location VARCHAR,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (image_id) REFERENCES SatelliteImages(image_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TemperatureData (\n    temperature_id INT PRIMARY KEY,\n    image_id INT,\n    temperature FLOAT,\n    FOREIGN KEY (image_id) REFERENCES SatelliteImages(image_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Regions (\n    region_id INT PRIMARY KEY,\n    region_name VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE HeatMap (\n    heatmap_id INT PRIMARY KEY,\n    image_id INT,\n    region_id INT,\n    heat_intensity FLOAT,\n    FOREIGN KEY (image_id) REFERENCES SatelliteImages(image_id),\n    FOREIGN KEY (region_id) REFERENCES Regions(region_id)\n);\n"
+      }
+    ]
+  }
+]

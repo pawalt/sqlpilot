@@ -1,0 +1,61 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tokenized_assets (\n    asset_id INT PRIMARY KEY,\n    asset_name TEXT,\n    shareholder_id INT,\n    voting_rights BOOLEAN,\n    token_balance DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tokenized_assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_type VARCHAR(50) NOT NULL,\n    token_type VARCHAR(50) NOT NULL\n);\n\nCREATE TABLE shareholder_votes (\n    vote_id SERIAL PRIMARY KEY,\n    asset_id INT NOT NULL,\n    shareholder_id INT NOT NULL,\n    vote_choice BOOLEAN NOT NULL,\n    vote_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tokenized_assets (\n  asset_id UUID PRIMARY KEY,\n  asset_name TEXT,\n  token_price DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shareholders (\n  shareholder_id UUID PRIMARY KEY,\n  shareholder_name TEXT,\n  token_balance INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE votes (\n  vote_id UUID PRIMARY KEY,\n  shareholder_id UUID,\n  asset_id UUID,\n  decision TEXT,\n  FOREIGN KEY (shareholder_id) REFERENCES shareholders(shareholder_id),\n  FOREIGN KEY (asset_id) REFERENCES tokenized_assets(asset_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tokenized_assets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    total_tokens INTEGER NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shareholders (\n    shareholder_id UUID PRIMARY KEY,\n    shareholder_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_rights (\n    voting_id UUID PRIMARY KEY,\n    shareholder_id UUID NOT NULL,\n    asset_id UUID NOT NULL,\n    voting_power INTEGER NOT NULL,\n    FOREIGN KEY (shareholder_id) REFERENCES shareholders(shareholder_id),\n    FOREIGN KEY (asset_id) REFERENCES tokenized_assets(asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shareholder_votes (\n    vote_id UUID PRIMARY KEY,\n    voting_id UUID NOT NULL,\n    vote_choice BOOLEAN NOT NULL,\n    FOREIGN KEY (voting_id) REFERENCES voting_rights(voting_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tokenized_assets (\n    asset_id UUID PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    total_tokens INTEGER NOT NULL,\n    token_price DECIMAL(10,2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shareholders (\n    shareholder_id UUID PRIMARY KEY,\n    shareholder_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voting_rights (\n    shareholder_id UUID REFERENCES shareholders(shareholder_id),\n    asset_id UUID REFERENCES tokenized_assets(asset_id),\n    voting_power INTEGER NOT NULL DEFAULT 1\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE votes (\n    vote_id UUID PRIMARY KEY,\n    shareholder_id UUID REFERENCES shareholders(shareholder_id),\n    asset_id UUID REFERENCES tokenized_assets(asset_id),\n    vote_decision BOOLEAN NOT NULL\n);"
+      }
+    ]
+  }
+]

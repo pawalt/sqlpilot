@@ -1,0 +1,72 @@
+[
+  {
+    "statements": [
+      "SELECT * FROM satellite_imagery_data;",
+      "SELECT satellite_id, capture_date FROM satellite_imagery_data WHERE capture_date > '2022-01-01';",
+      "SELECT * FROM satellite_imagery_data WHERE location IS NOT NULL;",
+      "SELECT capture_date, location FROM satellite_imagery_data ORDER BY capture_date DESC;",
+      "SELECT satellite_id, ST_AsText(location) AS location_text FROM satellite_imagery_data WHERE capture_date BETWEEN '2022-01-01' AND '2022-01-31';",
+      "SELECT * FROM satellite_imagery_data WHERE capture_date >= '2022-01-01' ORDER BY capture_date DESC LIMIT 5",
+      "SELECT satellite_id, ST_AsText(location) FROM satellite_imagery_data ORDER BY satellite_id",
+      "SELECT ST_X(location) AS longitude, ST_Y(location) AS latitude FROM satellite_imagery_data WHERE ST_Distance(location, ST_GeomFromText('POINT(0 0)', 4326)) < 1000",
+      "SELECT satellite_id, capture_date FROM satellite_imagery_data WHERE ST_Contains(ST_SetSRID(ST_MakeBox2D(ST_Point(0, 0), ST_Point(10, 10)), 4326), location)",
+      "SELECT * FROM satellite_imagery_data WHERE capture_date BETWEEN '2022-01-01' AND '2022-02-01' ORDER BY satellite_id ASC"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT id, image_url FROM satellite_images;",
+      "SELECT * FROM satellite_images ORDER BY image_timestamp DESC;",
+      "SELECT image_id, acquisition_date FROM image_metadata WHERE satellite_id = 3;",
+      "SELECT satellite_name, acquisition_date FROM image_metadata WHERE acquisition_date > '2022-01-01';",
+      "SELECT image_id, satellite_name FROM image_metadata ORDER BY acquisition_date ASC;",
+      "SELECT * FROM satellite_images WHERE id = 1;",
+      "SELECT image_url, image_timestamp FROM satellite_images ORDER BY image_timestamp DESC;",
+      "SELECT * FROM image_metadata WHERE satellite_id = 3 AND acquisition_date >= '2022-01-01' ORDER BY acquisition_date ASC;",
+      "SELECT satellite_name, COUNT(*) AS total_images FROM image_metadata GROUP BY satellite_name;",
+      "SELECT s.id, s.image_url, m.satellite_name, m.acquisition_date FROM satellite_images s JOIN image_metadata m ON s.id = m.image_id WHERE m.acquisition_date BETWEEN '2022-01-01' AND '2022-06-30';"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM satellite_images",
+      "SELECT image_name, image_date FROM satellite_images WHERE image_id = 1",
+      "SELECT image_name, image_location FROM satellite_images ORDER BY image_date DESC",
+      "SELECT metadata_key, metadata_value FROM satellite_metadata WHERE image_id = 2",
+      "SELECT result_type, result_value FROM satellite_analysis_results WHERE result_status = 'approved'",
+      "SELECT * FROM satellite_images WHERE image_id = 1;",
+      "SELECT image_name, image_date FROM satellite_images WHERE image_name LIKE 'A%';",
+      "SELECT * FROM satellite_metadata JOIN satellite_images ON satellite_metadata.image_id = satellite_images.image_id WHERE metadata_value = 'cloudy';",
+      "SELECT image_id, result_type, result_value FROM satellite_analysis_results WHERE result_value > 0.5 ORDER BY image_id DESC;",
+      "SELECT MAX(result_value) AS max_value, MIN(result_value) AS min_value FROM satellite_analysis_results;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM satellite_images;",
+      "SELECT image_name, image_size FROM satellite_images WHERE id = 1;",
+      "SELECT * FROM image_metadata ORDER BY capture_date DESC;",
+      "SELECT image_name, image_tags.tag_name FROM satellite_images JOIN image_tags ON satellite_images.id = image_tags.image_id;",
+      "SELECT * FROM image_analysis_results WHERE analysis_date >= '2021-01-01' ORDER BY result_id ASC;",
+      "SELECT * FROM satellite_images;",
+      "SELECT image_name, image_size FROM satellite_images ORDER BY image_size DESC;",
+      "SELECT capture_date, resolution FROM image_metadata WHERE satellite_name = 'Satellite A';",
+      "SELECT image_name, tag_name FROM satellite_images JOIN image_tags ON satellite_images.id = image_tags.image_id;",
+      "SELECT * FROM satellite_images WHERE image_size > 1000 AND image_size < 5000 ORDER BY image_name DESC;"
+    ]
+  },
+  {
+    "statements": [
+      "SELECT * FROM satellite_images;",
+      "SELECT image_name, capture_date FROM satellite_images WHERE id = 1;",
+      "SELECT satellite_name, launch_date FROM satellites ORDER BY launch_date DESC;",
+      "SELECT analysis_id, analyst_name FROM image_analysis WHERE analysis_result->>'status' = 'completed';",
+      "SELECT log_details, log_timestamp FROM analysis_logs WHERE log_timestamp > '2022-01-01';",
+      "SELECT * FROM satellite_images ORDER BY capture_date DESC LIMIT 10;",
+      "SELECT image_name, capture_date FROM satellite_images WHERE capture_date > '2022-01-01' ORDER BY image_name ASC;",
+      "SELECT sat.satellite_id, sat.satellite_name, img.image_name FROM satellites sat INNER JOIN satellite_images img ON sat.satellite_id = img.id;",
+      "SELECT DISTINCT analyst_name FROM image_analysis WHERE analysis_result ->> 'category' = 'important';",
+      "SELECT sl.log_id, al.log_details, al.log_timestamp FROM analysis_logs al JOIN spatial_data sd ON al.analysis_id = sd.data_id JOIN image_analysis ia ON ia.image_id = sd.satellite_id JOIN satellites s ON s.satellite_id = ia.image_id JOIN analysis_logs sl ON sl.analysis_id = ia.analysis_id;"
+    ]
+  }
+]

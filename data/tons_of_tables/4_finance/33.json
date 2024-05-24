@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolio_managers (\n    manager_id INT,\n    manager_name VARCHAR(255),\n    investment_date DATE,\n    investment_amount DECIMAL(10, 2)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PortfolioManagers (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100) UNIQUE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE InvestmentPerformance (\n    id INT PRIMARY KEY,\n    manager_id INT,\n    investment_name VARCHAR(50),\n    investment_date DATE,\n    investment_return FLOAT,\n    FOREIGN KEY (manager_id) REFERENCES PortfolioManagers(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolio_managers (\n    manager_id INT PRIMARY KEY,\n    manager_name VARCHAR(50) NOT NULL,\n    manager_email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investments (\n    investment_id INT PRIMARY KEY,\n    investment_name VARCHAR(50) NOT NULL,\n    manager_id INT,\n    investment_date DATE,\n    investment_amount DECIMAL(10, 2),\n    FOREIGN KEY (manager_id) REFERENCES portfolio_managers(manager_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_data (\n    data_id INT PRIMARY KEY,\n    investment_id INT,\n    data_date DATE,\n    data_value DECIMAL(10, 2),\n    FOREIGN KEY (investment_id) REFERENCES investments(investment_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PortfolioManagers (\n    manager_id INT PRIMARY KEY,\n    manager_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE,\n    phone_number VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Investments (\n    investment_id INT PRIMARY KEY,\n    investment_name VARCHAR(100) NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    manager_id INT NOT NULL,\n    FOREIGN KEY (manager_id) REFERENCES PortfolioManagers(manager_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE InvestmentPerformance (\n    performance_id INT PRIMARY KEY,\n    investment_id INT NOT NULL,\n    performance_date DATE NOT NULL,\n    return_rate DECIMAL(5, 2) NOT NULL,\n    FOREIGN KEY (investment_id) REFERENCES Investments(investment_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(100) NOT NULL,\n    value DECIMAL(10, 2) NOT NULL,\n    investment_id INT NOT NULL,\n    FOREIGN KEY (investment_id) REFERENCES Investments(investment_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE portfolio_managers (\n    manager_id INT PRIMARY KEY,\n    manager_name VARCHAR(255) NOT NULL,\n    manager_email VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_funds (\n    fund_id INT PRIMARY KEY,\n    fund_name VARCHAR(255) NOT NULL,\n    fund_manager_id INT,\n    FOREIGN KEY (fund_manager_id) REFERENCES portfolio_managers(manager_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investment_assets (\n    asset_id INT PRIMARY KEY,\n    asset_name VARCHAR(255) NOT NULL,\n    asset_value DECIMAL(10, 2) NOT NULL,\n    fund_id INT,\n    FOREIGN KEY (fund_id) REFERENCES investment_funds(fund_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(255) NOT NULL,\n    metric_value DECIMAL(10, 2) NOT NULL,\n    asset_id INT,\n    FOREIGN KEY (asset_id) REFERENCES investment_assets(asset_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE client_accounts (\n    account_id INT PRIMARY KEY,\n    account_name VARCHAR(255) NOT NULL,\n    account_manager_id INT,\n    FOREIGN KEY (account_manager_id) REFERENCES portfolio_managers(manager_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255) NOT NULL,\n  inventory_count INT CHECK (inventory_count >= 0)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE inventory (\n    id INT PRIMARY KEY,\n    product_name VARCHAR(50) NOT NULL,\n    quantity INT NOT NULL CHECK (quantity >= 0),\n    CONSTRAINT min_inventory_threshold CHECK (quantity >= 10)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    product_id INT REFERENCES inventory(id),\n    order_quantity INT NOT NULL,\n    CONSTRAINT valid_order_quantity CHECK (order_quantity >= 1)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(100) NOT NULL,\n  inventory_count INT CHECK (inventory_count >= 0),\n  CONSTRAINT min_inventory_threshold CHECK (inventory_count >= 10)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n  order_id INT PRIMARY KEY,\n  product_id INT NOT NULL,\n  order_date DATE,\n  quantity INT CHECK (quantity > 0),\n  CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES products(product_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n  customer_id INT PRIMARY KEY,\n  customer_name VARCHAR(100) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  phone_number VARCHAR(20) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (id INT PRIMARY KEY, name VARCHAR(255) NOT NULL, quantity INT NOT NULL CHECK (quantity >= 0));\n\nCREATE TABLE suppliers (id INT PRIMARY KEY, name VARCHAR(255) NOT NULL);\n\nCREATE TABLE inventory (product_id INT REFERENCES products (id), supplier_id INT REFERENCES suppliers (id), quantity INT NOT NULL CHECK (quantity >= 10));\n\nCREATE TABLE sales (id INT PRIMARY KEY, product_id INT REFERENCES products (id), quantity INT NOT NULL CHECK (quantity > 0));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    inventory_count INT CHECK (inventory_count >= 10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE manufacturers (\n    manufacturer_id INT PRIMARY KEY,\n    manufacturer_name VARCHAR(255) NOT NULL,\n    country VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n    order_id INT PRIMARY KEY,\n    product_id INT REFERENCES products(product_id),\n    quantity INT NOT NULL CHECK (quantity > 0),\n    order_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customers (\n    customer_id INT PRIMARY KEY,\n    customer_name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE shipments (\n    shipment_id INT PRIMARY KEY,\n    order_id INT REFERENCES orders(order_id),\n    customer_id INT REFERENCES customers(customer_id),\n    shipment_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

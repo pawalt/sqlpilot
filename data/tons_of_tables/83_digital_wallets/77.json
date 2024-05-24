@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_templates (\n    id INT PRIMARY KEY,\n    modality VARCHAR(50) NOT NULL,\n    template_data BYTEA\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_templates (\n    id UUID PRIMARY KEY,\n    modality VARCHAR(50) NOT NULL,\n    template BYTEA NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    modality VARCHAR(50) NOT NULL REFERENCES biometric_templates(modality)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_templates (\n    template_id INT PRIMARY KEY,\n    modality VARCHAR(50),\n    template_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE iris_scans (\n    iris_scan_id INT PRIMARY KEY,\n    template_id INT,\n    iris_data BYTEA,\n    FOREIGN KEY (template_id) REFERENCES biometric_templates (template_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voice_recognition (\n    voice_id INT PRIMARY KEY,\n    template_id INT,\n    voice_data BYTEA,\n    FOREIGN KEY (template_id) REFERENCES biometric_templates (template_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE biometric_templates_iris (\n    id INT NOT NULL,\n    iris_data BYTEA,\n    PRIMARY KEY (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_templates_voice (\n    id INT NOT NULL,\n    voice_sample BYTEA,\n    PRIMARY KEY (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_templates_hand_geometry (\n    id INT NOT NULL,\n    hand_geometry_data BYTEA,\n    PRIMARY KEY (id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_types (\n    type_id INT NOT NULL,\n    modality_name VARCHAR(50) NOT NULL,\n    PRIMARY KEY (type_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iris_scans (\n  iris_id UUID PRIMARY KEY,\n  iris_template BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE voice_recognition (\n  voice_id UUID PRIMARY KEY,\n  voice_template BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE hand_geometry (\n  hand_id UUID PRIMARY KEY,\n  hand_template BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fingerprints (\n  fingerprint_id UUID PRIMARY KEY,\n  fingerprint_template BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE face_recognition (\n  face_id UUID PRIMARY KEY,\n  face_template BYTEA\n);"
+      }
+    ]
+  }
+]

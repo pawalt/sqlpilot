@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SLA_Management (\n    SLA_ID SERIAL PRIMARY KEY,\n    Client_ID INT NOT NULL,\n    Vendor_ID INT NOT NULL,\n    SLA_Type VARCHAR(50) NOT NULL,\n    SLA_Description TEXT,\n    Start_Date DATE,\n    End_Date DATE,\n    Compliance_Status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(255),\n    client_address VARCHAR(255),\n    client_phone VARCHAR(20),\n    client_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Vendors (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255),\n    vendor_type VARCHAR(50),\n    vendor_address VARCHAR(255),\n    vendor_phone VARCHAR(20),\n    vendor_email VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id INT NOT NULL,\n  client_name VARCHAR(50) NOT NULL,\n  client_contact VARCHAR(50),\n  PRIMARY KEY (client_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vendors (\n  vendor_id INT NOT NULL,\n  vendor_name VARCHAR(50) NOT NULL,\n  vendor_contact VARCHAR(50),\n  PRIMARY KEY (vendor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE service_level_agreements (\n  sla_id INT NOT NULL,\n  client_id INT NOT NULL,\n  vendor_id INT NOT NULL,\n  service_type VARCHAR(50) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  status VARCHAR(20) DEFAULT 'Active',\n  PRIMARY KEY (sla_id),\n  FOREIGN KEY (client_id) REFERENCES clients(client_id),\n  FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Clients (\n    client_id INT PRIMARY KEY,\n    client_name VARCHAR(255) NOT NULL,\n    client_address VARCHAR(255),\n    contact_person VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Vendors (\n    vendor_id INT PRIMARY KEY,\n    vendor_name VARCHAR(255) NOT NULL,\n    vendor_address VARCHAR(255),\n    contact_person VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SLAs (\n    sla_id INT PRIMARY KEY,\n    client_id INT,\n    vendor_id INT,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    agreed_service VARCHAR(255) NOT NULL,\n    penalty_clause VARCHAR(255),\n    FOREIGN KEY (client_id) REFERENCES Clients(client_id),\n    FOREIGN KEY (vendor_id) REFERENCES Vendors(vendor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance (\n    compliance_id INT PRIMARY KEY,\n    sla_id INT,\n    compliance_date DATE NOT NULL,\n    status VARCHAR(50) NOT NULL,\n    remarks TEXT,\n    FOREIGN KEY (sla_id) REFERENCES SLAs(sla_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Clients (\n  client_id INT PRIMARY KEY,\n  client_name VARCHAR(50) NOT NULL,\n  address VARCHAR(255),\n  contact_person VARCHAR(50),\n  email VARCHAR(50) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Vendors (\n  vendor_id INT PRIMARY KEY,\n  vendor_name VARCHAR(50) NOT NULL,\n  address VARCHAR(255),\n  contact_person VARCHAR(50),\n  email VARCHAR(50) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SLAs (\n  sla_id INT PRIMARY KEY,\n  client_id INT,\n  vendor_id INT,\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(20) CHECK (status IN ('Active', 'Inactive')),\n  CONSTRAINT fk_sla_client FOREIGN KEY (client_id) REFERENCES Clients(client_id),\n  CONSTRAINT fk_sla_vendor FOREIGN KEY (vendor_id) REFERENCES Vendors(vendor_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SLARequirements (\n  requirement_id INT PRIMARY KEY,\n  sla_id INT,\n  description TEXT,\n  priority INT,\n  CONSTRAINT fk_requirement_sla FOREIGN KEY (sla_id) REFERENCES SLAs(sla_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SLACompliance (\n  compliance_id INT PRIMARY KEY,\n  requirement_id INT,\n  compliance_status VARCHAR(20) CHECK (compliance_status IN ('Met', 'Not Met')),\n  compliance_date DATE,\n  CONSTRAINT fk_compliance_requirement FOREIGN KEY (requirement_id) REFERENCES SLARequirements(requirement_id)\n)"
+      }
+    ]
+  }
+]

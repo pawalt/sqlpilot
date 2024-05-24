@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_management (\n    device_id SERIAL PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    device_location VARCHAR(100) NOT NULL,\n    device_status BOOLEAN NOT NULL,\n    last_checkin TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n   device_id INT PRIMARY KEY,\n   device_name VARCHAR(50),\n   device_type VARCHAR(50),\n   last_checked_in TIMESTAMP,\n   operational_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE commands (\n   command_id INT PRIMARY KEY,\n   device_id INT,\n   command_type VARCHAR(50),\n   command_status VARCHAR(50),\n   command_result TEXT,\n   created_at TIMESTAMP,\n   FOREIGN KEY (device_id) REFERENCES devices(device_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n  device_id INT PRIMARY KEY,\n  device_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  status VARCHAR(10) DEFAULT 'active'\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n  log_id SERIAL PRIMARY KEY,\n  device_id INT REFERENCES devices(device_id),\n  log_timestamp TIMESTAMP NOT NULL,\n  log_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_commands (\n  command_id SERIAL PRIMARY KEY,\n  device_id INT REFERENCES devices(device_id),\n  command_name VARCHAR(50) NOT NULL,\n  command_status VARCHAR(10) DEFAULT 'pending'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE remote_devices (\n   device_id INT PRIMARY KEY,\n   device_name VARCHAR(255),\n   device_type VARCHAR(50),\n   device_location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_status (\n   status_id INT PRIMARY KEY,\n   device_id INT,\n   status_code INT,\n   last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n   log_id INT PRIMARY KEY,\n   device_id INT,\n   log_message TEXT,\n   log_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_commands (\n   command_id INT PRIMARY KEY,\n   device_id INT,\n   command_type VARCHAR(50),\n   command_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE devices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    device_type VARCHAR(50) NOT NULL,\n    location VARCHAR(100),\n    status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE device_logs (\n    log_id UUID PRIMARY KEY,\n    device_id UUID NOT NULL,\n    log_description TEXT,\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE commands (\n    command_id UUID PRIMARY KEY,\n    command_name VARCHAR(50) NOT NULL,\n    command_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id UUID,\n    device_id UUID,\n    permission_type VARCHAR(20) NOT NULL,\n    PRIMARY KEY (user_id, device_id)\n);"
+      }
+    ]
+  }
+]

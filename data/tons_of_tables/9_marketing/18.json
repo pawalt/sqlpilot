@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ab_tests (\n  test_id UUID PRIMARY KEY,\n  test_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  content_element TEXT,\n  variant_a TEXT,\n  variant_b TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE A/B_test_results (\n    test_id INT PRIMARY KEY,\n    test_name VARCHAR(255) NOT NULL,\n    test_variant VARCHAR(50) NOT NULL,\n    test_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE A/B_test_sessions (\n    session_id INT PRIMARY KEY,\n    test_id INT REFERENCES A/B_test_results(test_id),\n    user_id INT NOT NULL,\n    session_start TIMESTAMP,\n    session_end TIMESTAMP,\n    conversion_event BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ab_tests (\n    test_id INT PRIMARY KEY,\n    test_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE test_results (\n    result_id INT PRIMARY KEY,\n    test_id INT,\n    variation_id INT,\n    conversion_rate DECIMAL(5, 2),\n    confidence_level DECIMAL(5, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE test_variations (\n    variation_id INT PRIMARY KEY,\n    test_id INT,\n    variation_name VARCHAR(255),\n    is_winner BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ContentElements (\n  content_id INT PRIMARY KEY,\n  element_name VARCHAR(255),\n  element_type VARCHAR(50),\n  element_value TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ABTests (\n  test_id INT PRIMARY KEY,\n  test_name VARCHAR(255),\n  start_date DATE,\n  end_date DATE,\n  status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TestResults (\n  result_id INT PRIMARY KEY,\n  test_id INT,\n  content_id INT,\n  conversion_rate FLOAT,\n  engagement_score FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TestParticipants (\n  participant_id INT PRIMARY KEY,\n  test_id INT,\n  content_id INT,\n  group_name VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE A/B_Tests (\n  test_id SERIAL PRIMARY KEY,\n  test_name VARCHAR(255) NOT NULL,\n  start_date DATE NOT NULL,\n  end_date DATE NOT NULL,\n  status VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Test_Variants (\n  variant_id SERIAL PRIMARY KEY,\n  test_id INT REFERENCES A/B_Tests(test_id),\n  variant_name VARCHAR(255) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Test_Results (\n  result_id SERIAL PRIMARY KEY,\n  test_id INT REFERENCES A/B_Tests(test_id),\n  variant_id INT REFERENCES Test_Variants(variant_id),\n  user_id INT NOT NULL,\n  conversion BOOLEAN NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Content_Elements (\n  element_id SERIAL PRIMARY KEY,\n  element_name VARCHAR(255) NOT NULL,\n  element_type VARCHAR(100) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Test_Element_Map (\n  map_id SERIAL PRIMARY KEY,\n  test_id INT REFERENCES A/B_Tests(test_id),\n  element_id INT REFERENCES Content_Elements(element_id)\n)"
+      }
+    ]
+  }
+]

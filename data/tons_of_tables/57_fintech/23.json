@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_verification (\n    id INT PRIMARY KEY,\n    full_name VARCHAR(255),\n    dob DATE,\n    address VARCHAR(255),\n    phone_number VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_verification (\n    id INT PRIMARY KEY,\n    customer_id INT UNIQUE NOT NULL,\n    full_name VARCHAR(100) NOT NULL,\n    date_of_birth DATE NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    verification_status BOOLEAN NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_documents (\n    id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    document_type VARCHAR(50) NOT NULL,\n    document_number VARCHAR(50) NOT NULL,\n    document_expiry_date DATE,\n    FOREIGN KEY (customer_id) REFERENCES customer_verification(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_information (\n\tcustomer_id UUID PRIMARY KEY,\n\tcustomer_name VARCHAR(255) NOT NULL,\n\tcustomer_address VARCHAR(255) NOT NULL,\n\tidentification_type VARCHAR(50) NOT NULL,\n\tidentification_number VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE identification_documents (\n\tdocument_id UUID PRIMARY KEY,\n\tcustomer_id UUID REFERENCES customer_information(customer_id),\n\tdocument_type VARCHAR(50) NOT NULL,\n\tissue_date DATE NOT NULL,\n\texpiry_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_history (\n\thistory_id UUID PRIMARY KEY,\n\tcustomer_id UUID REFERENCES customer_information(customer_id),\n\tverification_date DATE NOT NULL,\n\tverification_status VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_info (\n    customer_id INT PRIMARY KEY,\n    full_name VARCHAR(100) NOT NULL,\n    government_id VARCHAR(20) UNIQUE NOT NULL,\n    address VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE identity_documents (\n    document_id SERIAL PRIMARY KEY,\n    customer_id INT REFERENCES customer_info(customer_id) ON DELETE CASCADE,\n    document_type VARCHAR(50) NOT NULL,\n    document_number VARCHAR(50) NOT NULL,\n    issue_date DATE,\n    expiry_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_status (\n    verification_id SERIAL PRIMARY KEY,\n    customer_id INT REFERENCES customer_info(customer_id) ON DELETE CASCADE,\n    verification_date DATE NOT NULL,\n    status VARCHAR(20) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_logs (\n    log_id SERIAL PRIMARY KEY,\n    verification_id INT REFERENCES verification_status(verification_id) ON DELETE CASCADE,\n    log_details TEXT NOT NULL,\n    log_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customer_information (\n  customer_id INT PRIMARY KEY,\n  full_name VARCHAR(255),\n  date_of_birth DATE,\n  address VARCHAR(255),\n  verification_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_information (\n  document_id INT PRIMARY KEY,\n  customer_id INT,\n  document_type VARCHAR(50),\n  document_number VARCHAR(50),\n  expiration_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES customer_information(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_history (\n  verification_id INT PRIMARY KEY,\n  customer_id INT,\n  verification_date TIMESTAMP,\n  verification_result VARCHAR(50),\n  FOREIGN KEY (customer_id) REFERENCES customer_information(customer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_errors (\n  error_id INT PRIMARY KEY,\n  verification_id INT,\n  error_message TEXT,\n  FOREIGN KEY (verification_id) REFERENCES verification_history(verification_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE verification_logs (\n  log_id INT PRIMARY KEY,\n  verification_id INT,\n  log_text TEXT,\n  log_timestamp TIMESTAMP,\n  FOREIGN KEY (verification_id) REFERENCES verification_history(verification_id)\n);"
+      }
+    ]
+  }
+]

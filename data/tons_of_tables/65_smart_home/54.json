@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n\tuser_id INT PRIMARY KEY,\n\tuser_name VARCHAR(50) NOT NULL,\n\tplaylist_name VARCHAR(50) NOT NULL,\n\tplaylist_songs JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id serial PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE playlists (\n    playlist_id serial PRIMARY KEY,\n    playlist_name VARCHAR(100) NOT NULL,\n    user_id INT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    display_name VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE,\n    voice_command_enabled BOOL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE playlists (\n    playlist_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    playlist_name VARCHAR(50) NOT NULL,\n    playlist_description TEXT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE songs (\n    song_id INT PRIMARY KEY,\n    playlist_id INT REFERENCES playlists(playlist_id),\n    song_title VARCHAR(100) NOT NULL,\n    artist_name VARCHAR(50) NOT NULL,\n    duration INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    name VARCHAR(255),\n    age INT,\n    location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE playlists (\n    playlist_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    playlist_name VARCHAR(255),\n    created_at TIMESTAMPTZ\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE songs (\n    song_id UUID PRIMARY KEY,\n    song_title VARCHAR(255),\n    artist VARCHAR(255),\n    duration INTERVAL,\n    genre VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE playlist_songs (\n    playlist_id UUID REFERENCES playlists(playlist_id),\n    song_id UUID REFERENCES songs(song_id),\n    added_at TIMESTAMPTZ,\n    PRIMARY KEY (playlist_id, song_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Playlists (\n    playlist_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    playlist_name VARCHAR(50) NOT NULL,\n    description VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Songs (\n    song_id INT PRIMARY KEY,\n    title VARCHAR(100) NOT NULL,\n    artist VARCHAR(100) NOT NULL,\n    duration INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PlaylistSongs (\n    playlist_id INT NOT NULL,\n    song_id INT NOT NULL,\n    song_order INT NOT NULL,\n    PRIMARY KEY (playlist_id, song_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE VoiceCommands (\n    command_id INT PRIMARY KEY,\n    command_text VARCHAR(100) NOT NULL,\n    user_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  }
+]

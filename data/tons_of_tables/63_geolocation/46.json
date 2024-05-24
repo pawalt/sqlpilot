@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE weather_forecast (\n    location_id SERIAL PRIMARY KEY,\n    location_name VARCHAR(255) NOT NULL,\n    current_condition VARCHAR(100),\n    temperature DECIMAL,\n    humidity DECIMAL,\n    wind_speed DECIMAL,\n    prediction_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE location_weather (\n  id INT PRIMARY KEY,\n  location_name VARCHAR(50),\n  current_condition VARCHAR(50),\n  current_temperature INT,\n  forecast DATE,\n  forecasted_condition VARCHAR(50),\n  forecasted_temperature INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE map_data (\n  location_id INT,\n  map_image_url VARCHAR(255),\n  map_coordinates VARCHAR(50),\n  map_zoom_level INT,\n  PRIMARY KEY (location_id),\n  FOREIGN KEY (location_id) REFERENCES location_weather(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE weather_forecast (\n  location_id INT,\n  location_name VARCHAR(50),\n  current_condition VARCHAR(100),\n  temperature FLOAT,\n  humidity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE map_locations (\n  location_id INT,\n  location_name VARCHAR(50),\n  latitude FLOAT,\n  longitude FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE predictions (\n  prediction_id INT,\n  location_id INT,\n  prediction_date DATE,\n  temperature_predicted FLOAT,\n  humidity_predicted FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id SERIAL PRIMARY KEY,\n    location_name VARCHAR(100) NOT NULL,\n    latitude DECIMAL,\n    longitude DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_conditions (\n    condition_id SERIAL PRIMARY KEY,\n    location_id INT REFERENCES locations(location_id),\n    condition VARCHAR(50) NOT NULL,\n    temperature DECIMAL,\n    humidity DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE forecasts (\n    forecast_id SERIAL PRIMARY KEY,\n    location_id INT REFERENCES locations(location_id),\n    forecast_date DATE,\n    forecast_description VARCHAR(100),\n    high_temperature DECIMAL,\n    low_temperature DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE maps (\n    map_id SERIAL PRIMARY KEY,\n    map_name VARCHAR(50) NOT NULL,\n    location_id INT REFERENCES locations(location_id),\n    map_image BYTEA\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE forecast_locations (\n   location_id UUID PRIMARY KEY,\n   location_name STRING,\n   latitude DECIMAL,\n   longitude DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE current_conditions (\n   location_id UUID,\n   temperature DECIMAL,\n   humidity DECIMAL,\n   wind_speed DECIMAL,\n   weather_description STRING,\n   FOREIGN KEY (location_id) REFERENCES forecast_locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE weather_predictions (\n   location_id UUID,\n   prediction_date DATE,\n   max_temperature DECIMAL,\n   min_temperature DECIMAL,\n   precipitation DECIMAL,\n   FOREIGN KEY (location_id) REFERENCES forecast_locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE map_layers (\n   layer_id UUID PRIMARY KEY,\n   layer_name STRING,\n   layer_description STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE maps (\n   map_id UUID PRIMARY KEY,\n   map_name STRING,\n   layer_id UUID,\n   FOREIGN KEY (layer_id) REFERENCES map_layers(layer_id)\n);"
+      }
+    ]
+  }
+]

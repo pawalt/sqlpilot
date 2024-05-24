@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThirdPartyIntegration (\n  id INT PRIMARY KEY,\n  app_name VARCHAR(255),\n  api_key VARCHAR(100),\n  data_exchange_mode ENUM('push', 'pull'),\n  last_updated TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE third_party_apps (\n  app_id INT PRIMARY KEY,\n  app_name VARCHAR(255) NOT NULL,\n  app_description TEXT,\n  app_integration_key VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE app_data (\n  data_id INT PRIMARY KEY,\n  app_id INT REFERENCES third_party_apps(app_id),\n  data_type VARCHAR(50) NOT NULL,\n  data_value TEXT,\n  data_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE third_party_applications (\n    id INT PRIMARY KEY,\n    app_name STRING,\n    app_type STRING,\n    integration_key STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_exchanges (\n    exchange_id INT PRIMARY KEY,\n    exchange_type STRING,\n    exchange_date DATE,\n    app_id INT REFERENCES third_party_applications(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE app_functionalities (\n    function_id INT PRIMARY KEY,\n    function_name STRING,\n    function_description STRING,\n    app_id INT REFERENCES third_party_applications(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE third_party_applications (\n    id INT PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    integration_type VARCHAR(50) NOT NULL,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_exchange_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    event_type VARCHAR(50) NOT NULL,\n    status VARCHAR(20) NOT NULL,\n    detail TEXT\n)\n;"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL,\n    email VARCHAR(50) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE functionality_logs (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP NOT NULL,\n    event_type VARCHAR(50) NOT NULL,\n    status VARCHAR(20) NOT NULL,\n    user_id INT REFERENCES user_credentials(user_id),\n    detail TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE third_party_applications (\n  id UUID PRIMARY KEY,\n  app_name VARCHAR(50) NOT NULL,\n  app_version VARCHAR(20) NOT NULL,\n  app_description TEXT,\n  integration_status BOOLEAN NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources (\n  id UUID PRIMARY KEY,\n  source_name VARCHAR(50) NOT NULL,\n  source_type VARCHAR(20) NOT NULL,\n  connection_string TEXT,\n  api_key VARCHAR(100),\n  is_active BOOLEAN NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_mappings (\n  id UUID PRIMARY KEY,\n  mapping_name VARCHAR(50) NOT NULL,\n  source_table VARCHAR(50) NOT NULL,\n  destination_table VARCHAR(50) NOT NULL,\n  mapping_details JSONB,\n  last_updated TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE data_logs (\n  id UUID PRIMARY KEY,\n  log_timestamp TIMESTAMP NOT NULL,\n  log_message TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_access (\n  id UUID PRIMARY KEY,\n  user_id UUID NOT NULL,\n  data_source_id UUID NOT NULL,\n  access_level VARCHAR(20) NOT NULL\n)"
+      }
+    ]
+  }
+]

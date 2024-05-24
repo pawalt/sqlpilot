@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wind_turbine_performance (\n    id INT PRIMARY KEY,\n    turbine_id INT,\n    production_data FLOAT,\n    maintenance_status VARCHAR(50),\n    operating_hours INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WindTurbinePerformanceData (\n  turbine_id SERIAL PRIMARY KEY,\n  turbine_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  last_inspection_date DATE,\n  last_maintenance_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceSchedule (\n  maintenance_id SERIAL PRIMARY KEY,\n  turbine_id INT REFERENCES WindTurbinePerformanceData(turbine_id),\n  maintenance_date DATE NOT NULL,\n  maintenance_type VARCHAR(50) NOT NULL,\n  maintenance_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WindTurbine (\n    turbine_id INT PRIMARY KEY,\n    location VARCHAR,\n    production_data JSONB,\n    maintenance_schedule JSONB\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TurbinePerformance (\n    performance_id INT PRIMARY KEY,\n    turbine_id INT REFERENCES WindTurbine(turbine_id),\n    efficiency DECIMAL,\n    power_output FLOAT,\n    temperature FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceHistory (\n    maintenance_id INT PRIMARY KEY,\n    turbine_id INT REFERENCES WindTurbine(turbine_id),\n    maintenance_date DATE,\n    maintenance_type VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WindTurbine (id INT,\n model_name VARCHAR(255),\n location VARCHAR(255),\n commission_date DATE,\n PRIMARY KEY (id))"
+      },
+      {
+        "table_schema": "CREATE TABLE TurbineSensorData (sensor_id INT,\n turbine_id INT,\n timestamp TIMESTAMP,\n wind_speed FLOAT,\n power_output FLOAT,\n PRIMARY KEY (sensor_id, timestamp),\n FOREIGN KEY (turbine_id) REFERENCES WindTurbine(id))"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceSchedule (schedule_id INT,\n turbine_id INT,\n start_date DATE,\n end_date DATE,\n task VARCHAR(255),\n PRIMARY KEY (schedule_id),\n FOREIGN KEY (turbine_id) REFERENCES WindTurbine(id))"
+      },
+      {
+        "table_schema": "CREATE TABLE PerformanceMetrics (metric_id INT,\n turbine_id INT,\n timestamp TIMESTAMP,\n efficiency FLOAT,\n availability FLOAT,\n PRIMARY KEY (metric_id),\n FOREIGN KEY (turbine_id) REFERENCES WindTurbine(id))"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WindTurbines (\n    turbine_id INT PRIMARY KEY,\n    location VARCHAR(100),\n    date_installed DATE,\n    manufacturer VARCHAR(50),\n    capacity DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TurbineMetrics (\n    metric_id INT PRIMARY KEY,\n    turbine_id INT,\n    metric_name VARCHAR(50),\n    metric_value DECIMAL,\n    timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE MaintenanceLogs (\n    log_id INT PRIMARY KEY,\n    turbine_id INT,\n    maintenance_type VARCHAR(50),\n    maintenance_date DATE,\n    technician VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyProduction (\n    production_id INT PRIMARY KEY,\n    turbine_id INT,\n    production_date DATE,\n    production_value DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE WeatherData (\n    weather_id INT PRIMARY KEY,\n    location VARCHAR(100),\n    timestamp TIMESTAMP,\n    temperature DECIMAL,\n    wind_speed DECIMAL\n)"
+      }
+    ]
+  }
+]

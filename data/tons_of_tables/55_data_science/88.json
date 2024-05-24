@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE word_frequency (\n    id INT PRIMARY KEY,\n    word VARCHAR(255),\n    frequency INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE word_frequencies (\n  word VARCHAR(255),\n  frequency INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE word_analysis (\n  analysis_id UUID PRIMARY KEY,\n  word VARCHAR(255),\n  analysis_result TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WordFrequencyCounts (\n   word VARCHAR(255) NOT NULL,\n   frequency INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DocumentInformation (\n   document_id INT PRIMARY KEY,\n   title VARCHAR(255) NOT NULL,\n   author VARCHAR(255),\n   date_published DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AnalysisResults (\n   document_id INT,\n   word VARCHAR(255),\n   frequency INT,\n   FOREIGN KEY (document_id) REFERENCES DocumentInformation(document_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE word_frequency (\n    word_id SERIAL PRIMARY KEY,\n    word TEXT NOT NULL,\n    frequency INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document (\n    document_id SERIAL PRIMARY KEY,\n    document_name TEXT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_word (\n    document_id INT REFERENCES document(document_id),\n    word_id INT REFERENCES word_frequency(word_id),\n    count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE visualization (\n    visualization_id SERIAL PRIMARY KEY,\n    document_id INT REFERENCES document(document_id),\n    visualization_type TEXT NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE word_freq ( word_id SERIAL PRIMARY KEY, word TEXT NOT NULL, frequency INT NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE document ( doc_id SERIAL PRIMARY KEY, doc_name TEXT NOT NULL, upload_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP );"
+      },
+      {
+        "table_schema": "CREATE TABLE doc_word ( doc_id INT NOT NULL, word_id INT NOT NULL, PRIMARY KEY(doc_id, word_id), FOREIGN KEY (doc_id) REFERENCES document (doc_id), FOREIGN KEY (word_id) REFERENCES word_freq (word_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis ( analysis_id SERIAL PRIMARY KEY, doc_id INT NOT NULL, analysis_result JSONB NOT NULL, FOREIGN KEY (doc_id) REFERENCES document (doc_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE visualization ( vis_id SERIAL PRIMARY KEY, analysis_id INT NOT NULL, vis_type TEXT NOT NULL, vis_data JSONB NOT NULL, FOREIGN KEY (analysis_id) REFERENCES analysis (analysis_id) );"
+      }
+    ]
+  }
+]

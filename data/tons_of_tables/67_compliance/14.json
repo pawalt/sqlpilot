@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE RegulatoryRequirements (\n    id INT PRIMARY KEY,\n    user_id INT,\n    data_entry_permission BOOLEAN,\n    data_update_permission BOOLEAN,\n    CONSTRAINT enforce_regulatory_requirements CHECK (data_entry_permission OR data_update_permission)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_data (\n    id SERIAL PRIMARY KEY,\n    data_entry TEXT NOT NULL,\n    regulatory_trigger BOOLEAN\n);\n\nCREATE TABLE regulatory_logs (\n    log_id SERIAL PRIMARY KEY,\n    data_id INT REFERENCES regulatory_data(id),\n    log_time TIMESTAMPTZ DEFAULT NOW()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE regulatory_requirements (\n    id INT PRIMARY KEY,\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE triggers (\n    id INT PRIMARY KEY,\n    trigger_name TEXT,\n    operation_type TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_updates (\n    id INT PRIMARY KEY,\n    data_type TEXT,\n    update_time TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE table1 (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    age INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE table2 (\n    id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE table3 (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    action VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE table4 (\n    id INT PRIMARY KEY,\n    account_number VARCHAR(20) NOT NULL,\n    balance DECIMAL(12, 2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE customers (\n  id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  address VARCHAR(100),\n  created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE orders (\n  order_id INT PRIMARY KEY,\n  customer_id INT,\n  total_amount DECIMAL(10,2),\n  order_date DATE,\n  FOREIGN KEY (customer_id) REFERENCES customers(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  name VARCHAR(50) NOT NULL,\n  price DECIMAL(10,2) NOT NULL,\n  stock_quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE payments (\n  payment_id INT PRIMARY KEY,\n  order_id INT,\n  amount DECIMAL(10,2) NOT NULL,\n  payment_date DATE,\n  FOREIGN KEY (order_id) REFERENCES orders(order_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE audit_logs (\n  log_id INT PRIMARY KEY,\n  event_type VARCHAR(50) NOT NULL,\n  event_date TIMESTAMP,\n  table_name VARCHAR(50),\n  user_id INT\n);"
+      }
+    ]
+  }
+]

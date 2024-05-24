@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE metadata_visualization (\n    visualization_id INT PRIMARY KEY,\n    visualization_name VARCHAR(255) NOT NULL,\n    data_source_id INT NOT NULL,\n    created_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE visualizations (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  data_source VARCHAR(255) NOT NULL,\n  created_at TIMESTAMP,\n  updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources (\n  id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  description TEXT,\n  url VARCHAR(255) NOT NULL,\n  created_at TIMESTAMP,\n  updated_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE data_sources (\n    id INT PRIMARY KEY,\n    source_name VARCHAR(50) NOT NULL,\n    source_type VARCHAR(50) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE visualizations (\n    id INT PRIMARY KEY,\n    viz_name VARCHAR(50) NOT NULL,\n    viz_type VARCHAR(50) NOT NULL,\n    data_source_id INT,\n    created_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (data_source_id) REFERENCES data_sources(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_integrity (\n    id INT PRIMARY KEY,\n    visualization_id INT,\n    foreign_key_check BOOLEAN NOT NULL,\n    data_source_check BOOLEAN NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    FOREIGN KEY (visualization_id) REFERENCES visualizations(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE metadata_visualizations (\n    id INT PRIMARY KEY,\n    visualization_name VARCHAR(255),\n    data_source VARCHAR(255),\n    created_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources (\n    id INT PRIMARY KEY,\n    source_name VARCHAR(255),\n    connection_string TEXT,\n    last_updated TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n    id INT PRIMARY KEY,\n    user_id INT,\n    activity_description VARCHAR(255),\n    activity_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_integrity (\n    id INT PRIMARY KEY,\n    data_source_id INT,\n    integrity_check VARCHAR(255),\n    check_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE visualization_sources (\n    source_id UUID PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL,\n    source_type VARCHAR(50) NOT NULL,\n    date_created TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE visualization_data (\n    data_id UUID PRIMARY KEY,\n    source_id UUID NOT NULL,\n    data_value TEXT NOT NULL,\n    data_date DATE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    user_id UUID NOT NULL,\n    source_id UUID NOT NULL,\n    permission_type VARCHAR(20) NOT NULL,\n    PRIMARY KEY (user_id, source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources (\n    source_id UUID PRIMARY KEY,\n    source_name VARCHAR(255) NOT NULL,\n    source_type VARCHAR(50) NOT NULL,\n    data_format VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_integrity_log (\n    log_id UUID PRIMARY KEY,\n    data_id UUID NOT NULL,\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT NOT NULL\n);"
+      }
+    ]
+  }
+]

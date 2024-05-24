@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE landfill_inspection_reports (\n  report_id UUID PRIMARY KEY,\n  location VARCHAR(255),\n  date DATE,\n  inspector_name VARCHAR(100),\n  compliance_status BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE landfill_inspection_reports (\n  report_id INT PRIMARY KEY,\n  report_date DATE,\n  inspector_name VARCHAR(50),\n  compliance_status VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_details (\n  detail_id INT PRIMARY KEY,\n  report_id INT REFERENCES landfill_inspection_reports(report_id),\n  inspection_date DATE,\n  inspector_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE landfill_inspection_reports (\n    report_id INT PRIMARY KEY,\n    inspection_date DATE,\n    inspector_name VARCHAR(50),\n    landfill_location VARCHAR(100),\n    compliance_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_findings (\n    finding_id INT PRIMARY KEY,\n    report_id INT,\n    finding_description TEXT,\n    severity_level VARCHAR(10),\n    CONSTRAINT fk_report_id FOREIGN KEY (report_id) REFERENCES landfill_inspection_reports(report_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_photos (\n    photo_id INT PRIMARY KEY,\n    finding_id INT,\n    photo_url VARCHAR(255),\n    CONSTRAINT fk_finding_id FOREIGN KEY (finding_id) REFERENCES inspection_findings(finding_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE landfill_inspection_reports (\n  report_id INT PRIMARY KEY,\n  inspection_date DATE,\n  inspector_name VARCHAR(50),\n  compliance_status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE landfill_locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(50),\n  city VARCHAR(50),\n  state VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_findings (\n  finding_id INT PRIMARY KEY,\n  report_id INT REFERENCES landfill_inspection_reports(report_id),\n  finding_description TEXT,\n  severity_level VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_photos (\n  photo_id INT PRIMARY KEY,\n  report_id INT REFERENCES landfill_inspection_reports(report_id),\n  photo_url VARCHAR(255),\n  photo_description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE landfill_inspection_reports (\n   id SERIAL PRIMARY KEY,\n   report_date DATE,\n   inspector_name VARCHAR(50),\n   inspection_type VARCHAR(50),\n   compliance_score FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE landfill_sites (\n   site_id SERIAL PRIMARY KEY,\n   site_name VARCHAR(100),\n   site_location VARCHAR(100),\n   site_capacity DECIMAL(10,2),\n   site_owner VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE violations (\n   violation_id SERIAL PRIMARY KEY,\n   violation_description TEXT,\n   violation_date DATE,\n   inspector_name VARCHAR(50),\n   inspection_id INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inspection_photos (\n   photo_id SERIAL PRIMARY KEY,\n   inspection_id INT,\n   photo_url TEXT,\n   photo_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE inspectors (\n   inspector_id SERIAL PRIMARY KEY,\n   inspector_name VARCHAR(50),\n   inspector_email VARCHAR(100),\n   inspector_phone VARCHAR(15),\n   inspector_department VARCHAR(50)\n);\n"
+      }
+    ]
+  }
+]

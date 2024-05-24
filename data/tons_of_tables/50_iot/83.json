@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password VARCHAR(100) NOT NULL,\n    date_joined TIMESTAMP NOT NULL,\n    settings JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE settings (\n    setting_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    theme VARCHAR(20) DEFAULT 'light',\n    unit_system VARCHAR(10) DEFAULT 'imperial'\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_settings (\n    user_id INT PRIMARY KEY,\n    display_name VARCHAR(50) NOT NULL,\n    timezone VARCHAR(50) NOT NULL,\n    theme VARCHAR(20) NOT NULL,\n    notification_enabled BOOL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE fitness_data (\n    data_id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES user_accounts(user_id),\n    date DATE NOT NULL,\n    steps INT NOT NULL,\n    calories_burned INT NOT NULL,\n    distance_km DECIMAL(5,2) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    email VARCHAR(100),\n    age INT,\n    gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_settings (\n    setting_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    theme VARCHAR(20),\n    notification_enable BOOLEAN,\n    units_system VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE workouts (\n    workout_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    workout_name VARCHAR(50),\n    duration INT,\n    calories_burned INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE goals (\n    goal_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(user_id),\n    goal_name VARCHAR(50),\n    target_value INT,\n    progress INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR,\n    email VARCHAR,\n    password VARCHAR,\n    age INT,\n    height FLOAT,\n    weight FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_settings (\n    setting_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    units VARCHAR,\n    timezone VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE workouts (\n    workout_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    date DATE,\n    duration INT,\n    calories_burned FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE exercises (\n    exercise_id UUID PRIMARY KEY,\n    exercise_name VARCHAR,\n    muscle_group VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_workouts (\n    user_workout_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    workout_id UUID REFERENCES workouts(workout_id),\n    exercise_id UUID REFERENCES exercises(exercise_id),\n    sets INT,\n    reps INT\n);"
+      }
+    ]
+  }
+]

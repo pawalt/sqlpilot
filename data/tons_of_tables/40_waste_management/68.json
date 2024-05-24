@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InvasiveSpecies (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(50),\n    origin_country VARCHAR(50),\n    invasive_country VARCHAR(50),\n    introduction_date DATE,\n    spread_rate DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InvasiveSpecies (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50),\n  threat_level INT,\n  geographic_origin VARCHAR(50),\n  introduction_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ObservationRecord (\n  record_id INT PRIMARY KEY,\n  species_id INT REFERENCES InvasiveSpecies(species_id),\n  location VARCHAR(50),\n  observation_date DATE,\n  observer_name VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species (species_id INT PRIMARY KEY, scientific_name VARCHAR(100) NOT NULL, common_name VARCHAR(100) NOT NULL, origin_country VARCHAR(50) NOT NULL);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Sightings (sighting_id INT PRIMARY KEY, species_id INT NOT NULL, location VARCHAR(100) NOT NULL, sighting_date DATE NOT NULL, FOREIGN KEY (species_id) REFERENCES Species(species_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Monitoring (monitoring_id INT PRIMARY KEY, location VARCHAR(100) NOT NULL, monitoring_date DATE NOT NULL);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MaritimeAuthorities (\n    authority_id INT PRIMARY KEY,\n    authority_name VARCHAR(100),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InvasiveSpecies (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(100),\n    threat_level VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MarineEcosystems (\n    ecosystem_id INT PRIMARY KEY,\n    ecosystem_name VARCHAR(100),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SpeciesObservations (\n    observation_id INT PRIMARY KEY,\n    species_id INT,\n    ecosystem_id INT,\n    observation_date DATE,\n    observer_name VARCHAR(100),\n    FOREIGN KEY (species_id) REFERENCES InvasiveSpecies(species_id),\n    FOREIGN KEY (ecosystem_id) REFERENCES MarineEcosystems(ecosystem_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MaritimeAuthorities (\n    authority_id INT PRIMARY KEY,\n    authority_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MarineEcosystems (\n    ecosystem_id INT PRIMARY KEY,\n    ecosystem_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InvasiveSpecies (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(50) NOT NULL,\n    threat_level INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Sightings (\n    sighting_id INT PRIMARY KEY,\n    species_id INT,\n    ecosystem_id INT,\n    authority_id INT,\n    sighting_date DATE NOT NULL,\n    FOREIGN KEY (species_id) REFERENCES InvasiveSpecies(species_id),\n    FOREIGN KEY (ecosystem_id) REFERENCES MarineEcosystems(ecosystem_id),\n    FOREIGN KEY (authority_id) REFERENCES MaritimeAuthorities(authority_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MonitoringData (\n    data_id INT PRIMARY KEY,\n    sighting_id INT,\n    quantity INT NOT NULL,\n    status VARCHAR(20) NOT NULL,\n    FOREIGN KEY (sighting_id) REFERENCES Sightings(sighting_id)\n);"
+      }
+    ]
+  }
+]

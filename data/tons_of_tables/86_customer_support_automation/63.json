@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE social_media_influencers (\n    influencer_id INT PRIMARY KEY,\n    influencer_name VARCHAR(50),\n    followers_count INT,\n    engagement_rate FLOAT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Influential_Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    social_media_platform VARCHAR(50),\n    followers_count INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Brand_Promotions (\n    promotion_id INT PRIMARY KEY,\n    user_id INT,\n    promotion_type VARCHAR(50),\n    promotion_content TEXT,\n    promotion_date DATE,\n\n    FOREIGN KEY (user_id) REFERENCES Influential_Users(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE influential_users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    followers_count INT,\n    engagement_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE brand_promoters (\n    promoter_id INT PRIMARY KEY,\n    user_id INT REFERENCES influential_users(user_id),\n    brand_id INT NOT NULL,\n    promotion_type VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_support_agents (\n    agent_id INT PRIMARY KEY,\n    user_id INT REFERENCES influential_users(user_id),\n    expertise_area VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE influencers (\n    influencer_id INT PRIMARY KEY,\n    influencer_name VARCHAR(255) NOT NULL,\n    social_media_platform VARCHAR(50) NOT NULL,\n    followers_count INT,\n    engagement_rate DECIMAL(5,2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE brands (\n    brand_id INT PRIMARY KEY,\n    brand_name VARCHAR(255) NOT NULL,\n    industry VARCHAR(100) NOT NULL,\n    reputation_score DECIMAL(5,2),\n    website_url VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE brand_influencers (\n    brand_influencer_id INT PRIMARY KEY,\n    brand_id INT,\n    influencer_id INT,\n    PRIMARY KEY (brand_id, influencer_id),\n    FOREIGN KEY (brand_id) REFERENCES brands(brand_id),\n    FOREIGN KEY (influencer_id) REFERENCES influencers(influencer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE customer_issues (\n    issue_id INT PRIMARY KEY,\n    brand_id INT,\n    issue_description TEXT,\n    issue_status VARCHAR(50),\n    customer_id INT,\n    FOREIGN KEY (brand_id) REFERENCES brands(brand_id),\n    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InfluentialUsers (\n user_id UUID PRIMARY KEY,\n user_name VARCHAR(255) NOT NULL,\n followers_count INT NOT NULL,\n reputation_score FLOAT NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Brands (\n brand_id UUID PRIMARY KEY,\n brand_name VARCHAR(255) NOT NULL,\n industry VARCHAR(50) NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SocialMediaPosts (\n post_id UUID PRIMARY KEY,\n user_id UUID REFERENCES InfluentialUsers(user_id),\n post_content TEXT NOT NULL,\n post_date TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE BrandPromotions (\n promotion_id UUID PRIMARY KEY,\n brand_id UUID REFERENCES Brands(brand_id),\n user_id UUID REFERENCES InfluentialUsers(user_id),\n promotion_type VARCHAR(50) NOT NULL,\n promotion_date TIMESTAMP NOT NULL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CustomerIssues (\n issue_id UUID PRIMARY KEY,\n user_id UUID REFERENCES InfluentialUsers(user_id),\n issue_description TEXT NOT NULL,\n issue_date TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  }
+]

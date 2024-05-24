@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id UUID PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    key_id UUID PRIMARY KEY,\n    key_value BYTEA NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);\nCREATE TABLE quantum_messages (\n    message_id UUID PRIMARY KEY,\n    encrypted_message BYTEA NOT NULL,\n    decryption_status BOOLEAN NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n    id INT PRIMARY KEY,\n    key_name VARCHAR(50) NOT NULL,\n    key_value BLOB NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_messages (\n    message_id INT PRIMARY KEY,\n    message_text TEXT NOT NULL,\n    encryption_key_id INT,\n    FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(100) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EncryptionKeys (\n    key_id INT PRIMARY KEY,\n    key_value VARCHAR(255) NOT NULL,\n    encryption_algorithm VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CommunicationMessages (\n    message_id INT PRIMARY KEY,\n    message_content TEXT NOT NULL,\n    encryption_key_id INT REFERENCES EncryptionKeys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserPermissions (\n    permission_id INT PRIMARY KEY,\n    user_id INT REFERENCES Users(user_id),\n    encryption_key_id INT REFERENCES EncryptionKeys(key_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE encryption_keys (\n  key_id INT PRIMARY KEY,\n  encryption_key TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_messages (\n  message_id INT PRIMARY KEY,\n  message_text TEXT,\n  encryption_key_id INT,\n  FOREIGN KEY (encryption_key_id) REFERENCES encryption_keys(key_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id INT PRIMARY KEY,\n  username TEXT,\n  password TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n  permission_id INT PRIMARY KEY,\n  permission_name TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions_mapping (\n  mapping_id INT PRIMARY KEY,\n  user_id INT,\n  permission_id INT,\n  FOREIGN KEY (user_id) REFERENCES users(user_id),\n  FOREIGN KEY (permission_id) REFERENCES user_permissions(permission_id)\n);"
+      }
+    ]
+  }
+]

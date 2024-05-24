@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_documents (\n    document_id UUID PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    document_content TEXT NOT NULL,\n    revision_number INT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policies (\n    policy_id UUID PRIMARY KEY,\n    policy_name TEXT NOT NULL,\n    policy_content TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_revisions (\n    revision_id UUID PRIMARY KEY,\n    policy_id UUID REFERENCES policies(policy_id),\n    revision_number INT NOT NULL,\n    revision_content TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_documents (\n    id SERIAL PRIMARY KEY,\n    title VARCHAR(255) NOT NULL,\n    content TEXT NOT NULL,\n    version INT NOT NULL,\n    created_at TIMESTAMP DEFAULT current_timestamp\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_revisions (\n    id SERIAL PRIMARY KEY,\n    document_id INT NOT NULL,\n    revision_number INT NOT NULL,\n    content TEXT NOT NULL,\n    created_at TIMESTAMP DEFAULT current_timestamp,\n    FOREIGN KEY (document_id) REFERENCES policy_documents(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE document_authors (\n    id SERIAL PRIMARY KEY,\n    document_id INT NOT NULL,\n    author_name VARCHAR(255) NOT NULL,\n    author_email VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP DEFAULT current_timestamp,\n    FOREIGN KEY (document_id) REFERENCES policy_documents(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_documents (id INT PRIMARY KEY, title VARCHAR(255) NOT NULL, content TEXT NOT NULL, created_at TIMESTAMP NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE revisions (id INT PRIMARY KEY, document_id INT NOT NULL, revision_num INT NOT NULL, content TEXT NOT NULL, created_at TIMESTAMP NOT NULL, FOREIGN KEY (document_id) REFERENCES policy_documents(id) ON DELETE CASCADE);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (id INT PRIMARY KEY, username VARCHAR(50) UNIQUE NOT NULL, email VARCHAR(100) UNIQUE NOT NULL, password VARCHAR(255) NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (user_id INT, document_id INT, can_view BOOLEAN DEFAULT FALSE, can_edit BOOLEAN DEFAULT FALSE, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY (document_id) REFERENCES policy_documents(id) ON DELETE CASCADE, PRIMARY KEY (user_id, document_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_documents (\n    document_id UUID PRIMARY KEY,\n    document_name VARCHAR(255) NOT NULL,\n    document_content TEXT,\n    created_by VARCHAR(100),\n    created_at TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE policy_revisions (\n    revision_id UUID PRIMARY KEY,\n    document_id UUID,\n    revision_number INT,\n    revision_content TEXT,\n    revised_by VARCHAR(100),\n    revised_at TIMESTAMP,\n    FOREIGN KEY (document_id) REFERENCES policy_documents(document_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    email VARCHAR(100) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE roles (\n    role_id UUID PRIMARY KEY,\n    role_name VARCHAR(50) UNIQUE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    user_id UUID,\n    role_id UUID,\n    PRIMARY KEY (user_id, role_id),\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (role_id) REFERENCES roles(role_id)\n)"
+      }
+    ]
+  }
+]

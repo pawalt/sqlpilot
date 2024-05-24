@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investor_sentiment (\n  investor_id INT PRIMARY KEY,\n  social_media_handle VARCHAR(255),\n  sentiment_score DECIMAL(5,2),\n  sentiment_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investor_sentiment (\n    id SERIAL PRIMARY KEY,\n    investor_name VARCHAR(255),\n    social_media_platform VARCHAR(100),\n    sentiment_score INT,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_posts (\n    post_id SERIAL PRIMARY KEY,\n    investor_id INT,\n    post_text TEXT,\n    post_date DATE,\n    post_likes INT,\n    post_comments INT,\n    FOREIGN KEY (investor_id) REFERENCES investor_sentiment(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investor_sentiment (\n    id INT PRIMARY KEY,\n    investor_name VARCHAR(255),\n    social_media_handle VARCHAR(255),\n    sentiment_score FLOAT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_posts (\n    post_id INT PRIMARY KEY,\n    investor_id INT,\n    post_content TEXT,\n    post_date TIMESTAMP,\n    likes_count INT,\n    shares_count INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_history (\n    history_id INT PRIMARY KEY,\n    post_id INT,\n    sentiment_score FLOAT,\n    analysis_date TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE investor_sentiment_data (\n    id SERIAL PRIMARY KEY,\n    social_media_platform VARCHAR(100),\n    post_text TEXT,\n    sentiment_score FLOAT,\n    date_posted DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE social_media_users (\n    user_id SERIAL PRIMARY KEY,\n    username VARCHAR(100) UNIQUE,\n    followers_count INT,\n    join_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_categories (\n    category_id SERIAL PRIMARY KEY,\n    category_name VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sentiment_mapping (\n    map_id SERIAL PRIMARY KEY,\n    post_id INT REFERENCES investor_sentiment_data(id),\n    category_id INT REFERENCES sentiment_categories(category_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InvestorsSentiment (\n    id INT PRIMARY KEY,\n    investor_name VARCHAR(255),\n    social_media_platform VARCHAR(255),\n    sentiment_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE InvestorsPosts (\n    post_id INT PRIMARY KEY,\n    investor_id INT,\n    post_text TEXT,\n    post_date DATETIME,\n    FOREIGN KEY (investor_id) REFERENCES InvestorsSentiment(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Hashtags (\n    hashtag_id INT PRIMARY KEY,\n    hashtag_name VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PostHashtags (\n    post_id INT,\n    hashtag_id INT,\n    FOREIGN KEY (post_id) REFERENCES InvestorsPosts(post_id),\n    FOREIGN KEY (hashtag_id) REFERENCES Hashtags(hashtag_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SentimentAnalysis (\n    post_id INT,\n    sentiment_score FLOAT,\n    FOREIGN KEY (post_id) REFERENCES InvestorsPosts(post_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n  product_id INT PRIMARY KEY,\n  product_name VARCHAR(255),\n  product_description TEXT,\n  specification_version INT,\n  quality_control_passed BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_specifications (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    product_description TEXT,\n    product_category VARCHAR(50)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quality_control_parameters (\n    qc_id INT PRIMARY KEY,\n    product_id INT,\n    parameter_name VARCHAR(100),\n    parameter_value VARCHAR(50),\n    qc_date DATE,\n    FOREIGN KEY (product_id) REFERENCES product_specifications(product_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    product_description TEXT,\n    manufacturer VARCHAR(255),\n    production_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE specifications (\n    spec_id INT PRIMARY KEY,\n    product_id INT REFERENCES products(product_id),\n    spec_name VARCHAR(255),\n    spec_value VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quality_control (\n    qc_id INT PRIMARY KEY,\n    product_id INT REFERENCES products(product_id),\n    qc_date DATE,\n    qc_passed BOOLEAN,\n    qc_notes TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE product_specifications (\n    id INT PRIMARY KEY,\n    product_name VARCHAR(255),\n    brand VARCHAR(255),\n    category VARCHAR(50),\n    specification TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE quality_control_parameters (\n    id INT PRIMARY KEY,\n    parameter_name VARCHAR(255),\n    allowable_range VARCHAR(100),\n    threshold DECIMAL(10,2)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE product_quality (\n    id INT PRIMARY KEY,\n    product_id INT,\n    parameter_id INT,\n    actual_value DECIMAL(10,2),\n    FOREIGN KEY (product_id) REFERENCES product_specifications(id),\n    FOREIGN KEY (parameter_id) REFERENCES quality_control_parameters(id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE product_category (\n    id INT PRIMARY KEY,\n    category_name VARCHAR(50),\n    description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE products (\n    product_id SERIAL PRIMARY KEY,\n    product_name VARCHAR(50) NOT NULL,\n    product_description TEXT,\n    manufacturer VARCHAR(50),\n    quantity_in_stock INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE specifications (\n    spec_id SERIAL PRIMARY KEY,\n    product_id INT REFERENCES products(product_id),\n    spec_name VARCHAR(50) NOT NULL,\n    spec_value VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE quality_control (\n    qc_id SERIAL PRIMARY KEY,\n    product_id INT REFERENCES products(product_id),\n    qc_parameter VARCHAR(50) NOT NULL,\n    qc_value VARCHAR(50) NOT NULL,\n    qc_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE production_lines (\n    line_id SERIAL PRIMARY KEY,\n    line_name VARCHAR(50) NOT NULL,\n    supervisor_name VARCHAR(50),\n    location VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE inspections (\n    inspection_id SERIAL PRIMARY KEY,\n    line_id INT REFERENCES production_lines(line_id),\n    product_id INT REFERENCES products(product_id),\n    inspection_date DATE,\n    inspection_result BOOLEAN\n);"
+      }
+    ]
+  }
+]

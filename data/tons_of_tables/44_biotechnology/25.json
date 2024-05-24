@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE pollutants (\n  id INT PRIMARY KEY,\n  source VARCHAR(255),\n  pollutant_type VARCHAR(255),\n  concentration DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Sources (\n  id INT PRIMARY KEY,\n  name TEXT,\n  location TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Pollutants (\n  id INT PRIMARY KEY,\n  name TEXT,\n  type TEXT,\n  source_id INT,\n  FOREIGN KEY (source_id) REFERENCES Sources(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PollutantSources (\n source_id INT PRIMARY KEY,\n source_name VARCHAR(50),\n source_location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PollutantTypes (\n type_id INT PRIMARY KEY,\n type_name VARCHAR(50),\n type_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE SiteRemediation (\n remediation_id INT PRIMARY KEY,\n site_name VARCHAR(50),\n start_date DATE,\n end_date DATE\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE sources_of_pollutants (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(50),\n  source_type VARCHAR(50),\n  pollutant_type VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE pollutant_types (\n  pollutant_type_id INT PRIMARY KEY,\n  pollutant_name VARCHAR(50),\n  units VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE contaminated_sites (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(50),\n  location VARCHAR(100),\n  remediation_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE remediation_plan (\n  plan_id INT PRIMARY KEY,\n  site_id INT REFERENCES contaminated_sites(site_id),\n  plan_description TEXT,\n  plan_status VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE pollutants (\n  pollutant_id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  type VARCHAR(100) NOT NULL,\n  source_id INT,\n  FOREIGN KEY (source_id) REFERENCES sources(source_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE sources (\n  source_id INT PRIMARY KEY,\n  source_name VARCHAR(255) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contaminants (\n  contaminant_id INT PRIMARY KEY,\n  name VARCHAR(255) NOT NULL,\n  type VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE site_info (\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR(255) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  remediation_plan TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE samples (\n  sample_id INT PRIMARY KEY,\n  site_id INT,\n  pollutant_id INT,\n  contaminant_id INT,\n  quantity INT,\n  FOREIGN KEY (site_id) REFERENCES site_info(site_id),\n  FOREIGN KEY (pollutant_id) REFERENCES pollutants(pollutant_id),\n  FOREIGN KEY (contaminant_id) REFERENCES contaminants(contaminant_id)\n);"
+      }
+    ]
+  }
+]

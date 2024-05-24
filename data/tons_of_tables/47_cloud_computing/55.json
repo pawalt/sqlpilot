@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cross_chain_swaps (\n    swap_id INT PRIMARY KEY,\n    sender_address VARCHAR(50) NOT NULL,\n    receiver_address VARCHAR(50) NOT NULL,\n    amount DECIMAL(18, 6) NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cross_chain_swap_info (\n    swap_id UUID PRIMARY KEY,\n    from_chain_id UUID NOT NULL,\n    to_chain_id UUID NOT NULL,\n    from_asset VARCHAR(50) NOT NULL,\n    to_asset VARCHAR(50) NOT NULL,\n    amount DECIMAL NOT NULL,\n    timestamp TIMESTAMPTZ NOT NULL\n);\n\nCREATE TABLE blockchain_networks (\n    chain_id UUID PRIMARY KEY,\n    chain_name VARCHAR(50) NOT NULL,\n    network_url VARCHAR(255) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CrossChainSwaps (\n    swap_id UUID PRIMARY KEY,\n    sender_address VARCHAR(255) NOT NULL,\n    receiver_address VARCHAR(255) NOT NULL,\n    amount DECIMAL(18, 2) NOT NULL,\n    status VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EthereumSwaps (\n    eth_swap_id UUID PRIMARY KEY,\n    swap_id UUID NOT NULL,\n    eth_address VARCHAR(255) NOT NULL,\n    received_amount DECIMAL(18, 2) NOT NULL,\n    CONSTRAINT fk_swap FOREIGN KEY (swap_id) REFERENCES CrossChainSwaps(swap_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BitcoinSwaps (\n    btc_swap_id UUID PRIMARY KEY,\n    swap_id UUID NOT NULL,\n    btc_address VARCHAR(255) NOT NULL,\n    received_amount DECIMAL(18, 2) NOT NULL,\n    CONSTRAINT fk_swap FOREIGN KEY (swap_id) REFERENCES CrossChainSwaps(swap_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE cross_chain_swaps (\n    id SERIAL PRIMARY KEY,\n    from_chain VARCHAR(50) NOT NULL,\n    to_chain VARCHAR(50) NOT NULL,\n    from_asset VARCHAR(50) NOT NULL,\n    to_asset VARCHAR(50) NOT NULL,\n    amount NUMERIC NOT NULL,\n    status VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain_networks (\n    id SERIAL PRIMARY KEY,\n    network_name VARCHAR(50) UNIQUE NOT NULL,\n    chain_id INTEGER NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE swap_participants (\n    id SERIAL PRIMARY KEY,\n    participant_address VARCHAR(50) NOT NULL,\n    swap_id INTEGER NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE swap_history (\n    id SERIAL PRIMARY KEY,\n    swap_id INTEGER NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    action VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CrossChainSwaps (\n swap_id UUID PRIMARY KEY,\n sender_address VARCHAR(255),\n receiver_address VARCHAR(255),\n sender_chain VARCHAR(50),\n receiver_chain VARCHAR(50),\n amount DECIMAL,\n timestamp TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE SwapTransactions (\n transaction_id UUID PRIMARY KEY,\n swap_id UUID,\n from_address VARCHAR(255),\n to_address VARCHAR(255),\n amount DECIMAL,\n status VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ChainAssets (\n asset_id UUID PRIMARY KEY,\n chain_name VARCHAR(50),\n asset_name VARCHAR(50),\n token_address VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ChainValidators (\n validator_id UUID PRIMARY KEY,\n chain_name VARCHAR(50),\n validator_address VARCHAR(255),\n stake_amount DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ChainBlocks (\n block_id UUID PRIMARY KEY,\n chain_name VARCHAR(50),\n block_number INT,\n timestamp TIMESTAMP\n)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE dna_sequences (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50),\n  dna_sequence TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE species_dna_sequences (\n    species_id INT PRIMARY KEY,\n    species_name VARCHAR(100),\n    dna_sequence TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE evolution_analysis (\n    analysis_id INT PRIMARY KEY,\n    species_id INT,\n    comparison_species_id INT,\n    analysis_result TEXT,\n    FOREIGN KEY (species_id) REFERENCES species_dna_sequences(species_id),\n    FOREIGN KEY (comparison_species_id) REFERENCES species_dna_sequences(species_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species ( species_id INT PRIMARY KEY, species_name STRING, species_description STRING );"
+      },
+      {
+        "table_schema": "CREATE TABLE DNA_Sequence ( sequence_id INT PRIMARY KEY, sequence_data STRING, species_id INT REFERENCES Species(species_id) );"
+      },
+      {
+        "table_schema": "CREATE TABLE Evolution_Study ( study_id INT PRIMARY KEY, study_name STRING, species_id INT REFERENCES Species(species_id), sequence_id INT REFERENCES DNA_Sequence(sequence_id) );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species (species_id UUID PRIMARY KEY, species_name STRING, common_name STRING, scientific_name STRING);"
+      },
+      {
+        "table_schema": "CREATE TABLE DNA_Sequence (sequence_id UUID PRIMARY KEY, species_id UUID, sequence_data STRING, FOREIGN KEY (species_id) REFERENCES Species(species_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Evolutionary_Tree (tree_id UUID PRIMARY KEY, species_id UUID, ancestor_species_id UUID, ancestor_distance FLOAT, FOREIGN KEY (species_id) REFERENCES Species(species_id), FOREIGN KEY (ancestor_species_id) REFERENCES Species(species_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE Mutation (mutation_id UUID PRIMARY KEY, sequence_id UUID, mutation_position INT, nucleotide_before CHAR, nucleotide_after CHAR, FOREIGN KEY (sequence_id) REFERENCES DNA_Sequence(sequence_id));"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Species (\n  species_id INT PRIMARY KEY,\n  species_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE DNASequence (\n  sequence_id INT PRIMARY KEY,\n  sequence_data TEXT NOT NULL,\n  species_id INT NOT NULL,\n  FOREIGN KEY (species_id) REFERENCES Species(species_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EvolutionAnalysis (\n  analysis_id INT PRIMARY KEY,\n  analysis_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AnalysisResult (\n  result_id INT PRIMARY KEY,\n  analysis_id INT NOT NULL,\n  sequence_id INT NOT NULL,\n  similarity_score FLOAT NOT NULL,\n  FOREIGN KEY (analysis_id) REFERENCES EvolutionAnalysis(analysis_id),\n  FOREIGN KEY (sequence_id) REFERENCES DNASequence(sequence_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EvolutionaryTree (\n  tree_id INT PRIMARY KEY,\n  tree_structure JSON NOT NULL,\n  analysis_id INT NOT NULL,\n  FOREIGN KEY (analysis_id) REFERENCES EvolutionAnalysis(analysis_id)\n);\n"
+      }
+    ]
+  }
+]

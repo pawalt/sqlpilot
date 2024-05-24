@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE MedicationInventory (\n    medication_id UUID PRIMARY KEY,\n    medication_name STRING,\n    expiration_date TIMESTAMP,\n    inventory_level INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medications ( \n    medication_id INT PRIMARY KEY, \n    medication_name VARCHAR(255) NOT NULL, \n    inventory_level INT NOT NULL, \n    expiration_date DATE NOT NULL \n); \n"
+      },
+      {
+        "table_schema": "CREATE TABLE restocking_logs ( \n    log_id INT PRIMARY KEY, \n    medication_id INT NOT NULL, \n    restocking_date DATE NOT NULL, \n    quantity_restocked INT NOT NULL \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Medications (\n  id SERIAL PRIMARY KEY,\n  name VARCHAR(100) NOT NULL,\n  quantity INTEGER NOT NULL,\n  expiration_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Inventory (\n  id SERIAL PRIMARY KEY,\n  medication_id INTEGER REFERENCES Medications(id),\n  location VARCHAR(50) NOT NULL,\n  stock_quantity INTEGER NOT NULL,\n  last_stocked DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Expirations (\n  id SERIAL PRIMARY KEY,\n  medication_id INTEGER REFERENCES Medications(id),\n  expiration_date DATE NOT NULL,\n  days_left_until_expired INTEGER\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Medications (\n  id UUID PRIMARY KEY,\n  name STRING,\n  quantity INT,\n  expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Suppliers (\n  id UUID PRIMARY KEY,\n  name STRING,\n  contact_person STRING,\n  email STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Orders (\n  id UUID PRIMARY KEY,\n  medication_id UUID REFERENCES Medications(id),\n  order_date DATE,\n  quantity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE RestockingLogs (\n  id UUID PRIMARY KEY,\n  order_id UUID REFERENCES Orders(id),\n  restock_date DATE,\n  restock_quantity INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE medication_inventory (\n    id UUID PRIMARY KEY,\n    medication_name STRING,\n    quantity INT,\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_locations (\n    location_id UUID PRIMARY KEY,\n    location_name STRING,\n    address STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_suppliers (\n    supplier_id UUID PRIMARY KEY,\n    supplier_name STRING,\n    contact_email STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_stock_history (\n    history_id UUID PRIMARY KEY,\n    medication_id UUID,\n    quantity_before INT,\n    quantity_after INT,\n    history_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE medication_audit_log (\n    log_id UUID PRIMARY KEY,\n    action_type STRING,\n    user_id UUID,\n    action_timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  }
+]

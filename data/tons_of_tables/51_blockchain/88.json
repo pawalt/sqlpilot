@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE GovernanceLogs ( \n    log_id SERIAL PRIMARY KEY, \n    meeting_date DATE NOT NULL, \n    meeting_type VARCHAR(50) NOT NULL, \n    topic VARCHAR(255) NOT NULL, \n    action_taken TEXT, \n    member_name VARCHAR(100) NOT NULL \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE logs_of_meetings (\n    meeting_id INT PRIMARY KEY,\n    meeting_date DATE,\n    meeting_description TEXT,\n    actions_taken TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE governance_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(50),\n    member_role VARCHAR(50),\n    member_email VARCHAR(100)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE governance_meetings (\n    meeting_id UUID PRIMARY KEY,\n    meeting_date DATE NOT NULL,\n    meeting_theme VARCHAR(255) NOT NULL,\n    meeting_description TEXT,\n    attendees_ids JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_notes (\n    note_id UUID PRIMARY KEY,\n    meeting_id UUID REFERENCES governance_meetings(meeting_id),\n    note_content TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL DEFAULT now()\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE action_items (\n    item_id UUID PRIMARY KEY,\n    meeting_id UUID REFERENCES governance_meetings(meeting_id),\n    item_description TEXT NOT NULL,\n    assigned_to VARCHAR(255),\n    due_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE governance_meetings (\n  meeting_id INT PRIMARY KEY,\n  meeting_date DATE,\n  meeting_topic VARCHAR(255),\n  meeting_notes TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE governance_members (\n  member_id INT PRIMARY KEY,\n  member_name VARCHAR(255),\n  member_email VARCHAR(255),\n  member_role VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_attendance (\n  attendance_id INT PRIMARY KEY,\n  meeting_id INT,\n  member_id INT,\n  attendance_status BOOLEAN\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_actions (\n  action_id INT PRIMARY KEY,\n  meeting_id INT,\n  action_description TEXT,\n  action_status BOOLEAN\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE governance_meetings (\n    meeting_id INT PRIMARY KEY,\n    meeting_date DATE,\n    meeting_topic VARCHAR(255),\n    meeting_notes TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_attendees (\n    attendee_id INT PRIMARY KEY,\n    attendee_name VARCHAR(255),\n    meeting_id INT,\n    FOREIGN KEY (meeting_id) REFERENCES governance_meetings(meeting_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_actions (\n    action_id INT PRIMARY KEY,\n    action_description TEXT,\n    action_status VARCHAR(50),\n    meeting_id INT,\n    FOREIGN KEY (meeting_id) REFERENCES governance_meetings(meeting_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_discussions (\n    discussion_id INT PRIMARY KEY,\n    discussion_topic VARCHAR(255),\n    discussion_notes TEXT,\n    meeting_id INT,\n    FOREIGN KEY (meeting_id) REFERENCES governance_meetings(meeting_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE meeting_logs (\n    log_id INT PRIMARY KEY,\n    log_timestamp TIMESTAMP,\n    log_message TEXT,\n    meeting_id INT,\n    FOREIGN KEY (meeting_id) REFERENCES governance_meetings(meeting_id)\n);\n"
+      }
+    ]
+  }
+]

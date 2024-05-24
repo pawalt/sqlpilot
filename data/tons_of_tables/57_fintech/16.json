@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE InsuranceAgents (\n  agent_id INT PRIMARY KEY,\n  agent_name VARCHAR(50),\n  supervisor_id INT,\n  hire_date DATE,\n  performance_score FLOAT,\n  incentive_scheme VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE insurance_agents (\n    agent_id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    region VARCHAR(50) NOT NULL,\n    performance_score FLOAT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE incentive_schemes (\n    scheme_id SERIAL PRIMARY KEY,\n    agent_id INT REFERENCES insurance_agents(agent_id),\n    bonus_amount DECIMAL(10, 2) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id INT PRIMARY KEY,\n    agent_name VARCHAR(50),\n    agent_location VARCHAR(50),\n    agent_performance_rating FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incentives (\n    incentive_id INT PRIMARY KEY,\n    incentive_name VARCHAR(50),\n    incentive_description TEXT,\n    incentive_type VARCHAR(50),\n    incentive_amount DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_performance (\n    agent_id INT,\n    performance_date DATE,\n    performance_score FLOAT,\n    PRIMARY KEY (agent_id, performance_date),\n    FOREIGN KEY (agent_id) REFERENCES agents(agent_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agents (\n    agent_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(50),\n    phone_number VARCHAR(15),\n    address VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id INT PRIMARY KEY,\n    agent_id INT,\n    metric_name VARCHAR(50),\n    metric_value FLOAT,\n    metric_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incentive_schemes (\n    scheme_id INT PRIMARY KEY,\n    scheme_name VARCHAR(50),\n    scheme_description TEXT,\n    incentive_amount FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_performance_mapping (\n    mapping_id INT PRIMARY KEY,\n    agent_id INT,\n    metric_id INT,\n    FOREIGN KEY (agent_id) REFERENCES agents(agent_id),\n    FOREIGN KEY (metric_id) REFERENCES performance_metrics(metric_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE agents (\n  agent_id INT PRIMARY KEY,\n  agent_name VARCHAR(50),\n  hire_date DATE,\n  territory VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n  policy_id INT PRIMARY KEY,\n  policy_type VARCHAR(50),\n  policy_amount DECIMAL(10, 2),\n  policy_start_date DATE,\n  agent_id INT,\n  FOREIGN KEY (agent_id) REFERENCES agents(agent_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE performance (\n  performance_id INT PRIMARY KEY,\n  agent_id INT,\n  policy_id INT,\n  policy_issued_date DATE,\n  sales_amount DECIMAL(10, 2),\n  FOREIGN KEY (agent_id) REFERENCES agents(agent_id),\n  FOREIGN KEY (policy_id) REFERENCES policies(policy_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE incentives (\n  incentive_id INT PRIMARY KEY,\n  incentive_type VARCHAR(50),\n  incentive_amount DECIMAL(10, 2),\n  incentive_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE agent_incentives (\n  agent_id INT,\n  incentive_id INT,\n  incentive_paid DECIMAL(10, 2),\n  PRIMARY KEY (agent_id, incentive_id),\n  FOREIGN KEY (agent_id) REFERENCES agents(agent_id),\n  FOREIGN KEY (incentive_id) REFERENCES incentives(incentive_id)\n);"
+      }
+    ]
+  }
+]

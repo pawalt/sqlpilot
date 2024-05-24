@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_behavior (\n    transaction_id UUID PRIMARY KEY,\n    user_id UUID,\n    transaction_timestamp TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trades (\n    trade_id INT PRIMARY KEY,\n    transaction_timestamp TIMESTAMP,\n    stock_symbol VARCHAR,\n    quantity INT,\n    price DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR,\n    email VARCHAR,\n    registration_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE trading_transactions (\n    transaction_id UUID PRIMARY KEY,\n    user_id UUID,\n    transaction_amount DECIMAL,\n    transaction_timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_accounts (\n    user_id UUID PRIMARY KEY,\n    account_balance DECIMAL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id UUID PRIMARY KEY,\n    first_name TEXT,\n    last_name TEXT,\n    email TEXT,\n    registration_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_transactions(\n  user_id UUID,\n  transaction_id UUID,\n  symbol VARCHAR,\n  amount DECIMAL,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_histories(\n  user_id UUID,\n  action VARCHAR,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE stock_prices(\n  symbol VARCHAR,\n  price DECIMAL,\n  timestamp TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE trade_analysis(\n  trade_id UUID,\n  user_id UUID,\n  symbol VARCHAR,\n  action VARCHAR,\n  timestamp TIMESTAMP\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE traders ( trader_id UUID PRIMARY KEY, trader_name VARCHAR(255) NOT NULL, trader_location VARCHAR(255) NOT NULL, registration_date TIMESTAMP NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE trades ( trade_id UUID PRIMARY KEY, trader_id UUID REFERENCES traders(trader_id), stock_symbol VARCHAR(10) NOT NULL, trade_type VARCHAR(10) NOT NULL, trade_quantity INTEGER NOT NULL, trade_price DECIMAL(10, 2) NOT NULL, trade_timestamp TIMESTAMP NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE market_data ( symbol VARCHAR(10) PRIMARY KEY, stock_name VARCHAR(255) NOT NULL, exchange VARCHAR(50) NOT NULL, market_cap DECIMAL(20, 2) NOT NULL, industry VARCHAR(255) NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions ( transaction_id UUID PRIMARY KEY, trade_id UUID REFERENCES trades(trade_id), trader_id UUID REFERENCES traders(trader_id), transaction_type VARCHAR(10) NOT NULL, transaction_amount DECIMAL(20, 2) NOT NULL, transaction_timestamp TIMESTAMP NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE analytics ( analysis_id UUID PRIMARY KEY, transaction_id UUID REFERENCES transactions(transaction_id), trader_id UUID REFERENCES traders(trader_id), trade_id UUID REFERENCES trades(trade_id), analysis_type VARCHAR(20) NOT NULL, analysis_result JSONB NOT NULL, analysis_timestamp TIMESTAMP NOT NULL );"
+      }
+    ]
+  }
+]

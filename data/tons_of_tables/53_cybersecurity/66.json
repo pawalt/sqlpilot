@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_Device_Data (\n    device_id UUID,\n    timestamp TIMESTAMP,\n    temperature FLOAT,\n    humidity FLOAT,\n    sensor_type VARCHAR(50),\n    anomaly_score FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoT_Device_Data (\n    device_id INT,\n    data_timestamp TIMESTAMP,\n    sensor_value FLOAT,\n    anomaly_status BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Cybersecurity_Issues (\n    issue_id INT,\n    device_id INT,\n    issue_type VARCHAR(50),\n    issue_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IoTDevices (\n    device_id UUID PRIMARY KEY,\n    device_name VARCHAR(50) NOT NULL,\n    location VARCHAR(100),\n    firmware_version VARCHAR(20) NOT NULL,\n    last_reported_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE SensorData (\n    sensor_id UUID PRIMARY KEY,\n    device_id UUID REFERENCES IoTDevices(device_id),\n    sensor_type VARCHAR(20) NOT NULL,\n    data_value DOUBLE PRECISION NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AnomalyEvents (\n    event_id UUID PRIMARY KEY,\n    sensor_id UUID REFERENCES SensorData(sensor_id),\n    anomaly_type VARCHAR(50) NOT NULL,\n    event_timestamp TIMESTAMP NOT NULL,\n    details VARCHAR(200)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE iot_devices (\n    device_id INT PRIMARY KEY,\n    device_name TEXT,\n    device_type TEXT,\n    location TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE data_records (\n    record_id INT PRIMARY KEY,\n    device_id INT,\n    timestamp TIMESTAMP,\n    data_value FLOAT,\n    FOREIGN KEY (device_id) REFERENCES iot_devices(device_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomaly_detection (\n    detection_id INT PRIMARY KEY,\n    record_id INT,\n    anomaly_type TEXT,\n    anomaly_score FLOAT,\n    detected_at TIMESTAMP,\n    FOREIGN KEY (record_id) REFERENCES data_records(record_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cybersecurity_issues (\n    issue_id INT PRIMARY KEY,\n    detection_id INT,\n    issue_description TEXT,\n    issue_severity TEXT,\n    reported_at TIMESTAMP,\n    FOREIGN KEY (detection_id) REFERENCES anomaly_detection(detection_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE device_data (\n    id INT PRIMARY KEY,\n    device_id INT,\n    timestamp TIMESTAMP,\n    temperature FLOAT,\n    humidity FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE anomaly_detection (\n    id INT PRIMARY KEY,\n    detection_id INT,\n    device_id INT,\n    detected_at TIMESTAMP,\n    anomaly_type TEXT,\n    anomaly_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE cybersecurity_issues (\n    id INT PRIMARY KEY,\n    issue_id INT,\n    detection_id INT,\n    issue_description TEXT,\n    severity INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    user_id INT,\n    username TEXT,\n    email TEXT,\n    role TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE devices (\n    id INT PRIMARY KEY,\n    device_id INT,\n    device_name TEXT,\n    firmware_version TEXT,\n    is_active BOOLEAN\n);"
+      }
+    ]
+  }
+]

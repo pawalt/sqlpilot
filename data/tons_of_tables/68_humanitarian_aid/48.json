@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_contacts (\n    contact_id SERIAL PRIMARY KEY,\n    contact_name VARCHAR(50) NOT NULL,\n    contact_phone VARCHAR(20) NOT NULL,\n    contact_email VARCHAR(50) NOT NULL,\n    relationship VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_contacts (\n    contact_id INT PRIMARY KEY,\n    contact_name VARCHAR(255),\n    contact_phone VARCHAR(15),\n    contact_email VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emergency_notifications (\n    notification_id INT PRIMARY KEY,\n    emergency_type VARCHAR(50),\n    emergency_message TEXT,\n    contact_id INT,\n    FOREIGN KEY (contact_id) REFERENCES emergency_contacts(contact_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_contacts (\n  contact_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  phone_number VARCHAR(20),\n  relationship VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emergencies (\n  emergency_id INT PRIMARY KEY,\n  emergency_type VARCHAR(50),\n  timestamp TIMESTAMP,\n  location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notification_logs (\n  log_id INT PRIMARY KEY,\n  contact_id INT,\n  emergency_id INT,\n  notification_sent BOOLEAN,\n  notification_timestamp TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE contacts (\n    contact_id UUID PRIMARY KEY,\n    contact_name VARCHAR(50) NOT NULL,\n    contact_phone VARCHAR(15) NOT NULL,\n    contact_email VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emergencies (\n    emergency_id UUID PRIMARY KEY,\n    emergency_type VARCHAR(50) NOT NULL,\n    emergency_description TEXT,\n    emergency_location VARCHAR(100) NOT NULL,\n    emergency_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notifications (\n    notification_id UUID PRIMARY KEY,\n    notification_message TEXT NOT NULL,\n    notification_timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contact_emergency (\n    contact_id UUID REFERENCES contacts(contact_id),\n    emergency_id UUID REFERENCES emergencies(emergency_id),\n    PRIMARY KEY (contact_id, emergency_id),\n    notification_id UUID REFERENCES notifications(notification_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE emergency_contacts (\n\tcontact_id UUID PRIMARY KEY,\n\tname STRING NOT NULL,\n\temail STRING NOT NULL,\n\tphone_number STRING NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n\tuser_id UUID PRIMARY KEY,\n\tusername STRING NOT NULL,\n\temail STRING NOT NULL,\n\tpin INTEGER NOT NULL,\n\temergency_contact_id UUID NOT NULL,\n\tFOREIGN KEY (emergency_contact_id) REFERENCES emergency_contacts (contact_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE events (\n\tevent_id UUID PRIMARY KEY,\n\tevent_name STRING NOT NULL,\n\tevent_date DATE NOT NULL,\n\tevent_location STRING NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_events (\n\tid UUID PRIMARY KEY,\n\tuser_id UUID NOT NULL,\n\tevent_id UUID NOT NULL,\n\tFOREIGN KEY (user_id) REFERENCES users (user_id),\n\tFOREIGN KEY (event_id) REFERENCES events (event_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE notification_logs (\n\tlog_id UUID PRIMARY KEY,\n\tuser_id UUID NOT NULL,\n\tnotification_message STRING NOT NULL,\n\tnotification_time TIMESTAMP NOT NULL,\n\tFOREIGN KEY (user_id) REFERENCES users (user_id)\n);"
+      }
+    ]
+  }
+]

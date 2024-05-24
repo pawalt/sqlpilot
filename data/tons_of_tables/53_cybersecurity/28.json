@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_intelligence_data (\n    id INT PRIMARY KEY,\n    source VARCHAR(255),\n    indicator_type VARCHAR(50),\n    indicator_value TEXT,\n    description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_intelligence (\n    threat_id UUID PRIMARY KEY,\n    threat_name VARCHAR(100) NOT NULL,\n    threat_description TEXT,\n    timestamp TIMESTAMP\n);\n\nCREATE TABLE sharing_data (\n    share_id UUID PRIMARY KEY,\n    threat_id UUID REFERENCES threat_intelligence(threat_id),\n    share_date DATE,\n    shared_by VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Threat_Information (\n  threat_id INT PRIMARY KEY,\n  threat_description TEXT,\n  threat_source TEXT,\n  threat_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Verified_Threats (\n  verified_threat_id INT PRIMARY KEY,\n  threat_id INT,\n  verification_status BOOL,\n  verification_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Threat_Sharing_Partners (\n  partner_id INT PRIMARY KEY,\n  partner_name TEXT,\n  partner_location TEXT,\n  partner_contact_info TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE threat_intelligence (\n    id INT PRIMARY KEY,\n    threat_name VARCHAR(100),\n    threat_type VARCHAR(50),\n    description TEXT,\n    severity INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE security_team (\n    team_id INT PRIMARY KEY,\n    team_name VARCHAR(100),\n    team_lead VARCHAR(100),\n    team_size INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE sharing_platform (\n    platform_id INT PRIMARY KEY,\n    platform_name VARCHAR(100),\n    platform_type VARCHAR(50),\n    access_level VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE shared_data (\n    data_id INT PRIMARY KEY,\n    shared_by VARCHAR(100),\n    shared_with VARCHAR(100),\n    shared_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ThreatActors (\n    actor_id SERIAL PRIMARY KEY,\n    actor_name TEXT NOT NULL,\n    description TEXT,\n    country TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Indicators (\n    indicator_id SERIAL PRIMARY KEY,\n    indicator_value TEXT NOT NULL,\n    type TEXT,\n    actor_id INT,\n    FOREIGN KEY (actor_id) REFERENCES ThreatActors(actor_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Incidents (\n    incident_id SERIAL PRIMARY KEY,\n    incident_name TEXT NOT NULL,\n    description TEXT,\n    incident_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Organizations (\n    org_id SERIAL PRIMARY KEY,\n    org_name TEXT NOT NULL,\n    industry TEXT,\n    country TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE IncidentReports (\n    report_id SERIAL PRIMARY KEY,\n    report_title TEXT NOT NULL,\n    incident_id INT,\n    org_id INT,\n    FOREIGN KEY (incident_id) REFERENCES Incidents(incident_id),\n    FOREIGN KEY (org_id) REFERENCES Organizations(org_id)\n);\n"
+      }
+    ]
+  }
+]

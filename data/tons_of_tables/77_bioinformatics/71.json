@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Biological_Pathways (\n    pathway_id SERIAL PRIMARY KEY,\n    pathway_name VARCHAR(50) NOT NULL,\n    description TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Pathways (\n  pathway_id INT PRIMARY KEY,\n  pathway_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Interactions (\n  interaction_id INT PRIMARY KEY,\n  pathway_id INT,\n  FOREIGN KEY (pathway_id) REFERENCES Pathways(pathway_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Pathways (\n    pathway_id UUID PRIMARY KEY,\n    pathway_name STRING,\n    description STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Genes (\n    gene_id UUID PRIMARY KEY,\n    gene_name STRING,\n    description STRING\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Interactions (\n    interaction_id UUID PRIMARY KEY,\n    gene_id UUID,\n    pathway_id UUID,\n    interaction_type STRING\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Pathways (\n  pathway_id UUID PRIMARY KEY,\n  pathway_name STRING\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Genes (\n  gene_id UUID PRIMARY KEY,\n  gene_name STRING,\n  pathway_id UUID,\n  FOREIGN KEY (pathway_id) REFERENCES Pathways(pathway_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Interactions (\n  interaction_id UUID PRIMARY KEY,\n  gene_id1 UUID,\n  gene_id2 UUID,\n  interaction_type STRING,\n  FOREIGN KEY (gene_id1) REFERENCES Genes(gene_id),\n  FOREIGN KEY (gene_id2) REFERENCES Genes(gene_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Proteins (\n  protein_id UUID PRIMARY KEY,\n  protein_name STRING,\n  gene_id UUID,\n  FOREIGN KEY (gene_id) REFERENCES Genes(gene_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE pathway (pathway_id INT PRIMARY KEY, pathway_name VARCHAR(255) NOT NULL); \nCREATE TABLE gene (gene_id INT PRIMARY KEY, gene_name VARCHAR(255) NOT NULL, pathway_id INT REFERENCES pathway(pathway_id)); \nCREATE TABLE protein (protein_id INT PRIMARY KEY, protein_name VARCHAR(255) NOT NULL, gene_id INT REFERENCES gene(gene_id)); \nCREATE TABLE interaction (interaction_id INT PRIMARY KEY, interaction_desc VARCHAR(255) NOT NULL, protein1_id INT REFERENCES protein(protein_id), protein2_id INT REFERENCES protein(protein_id)); \nCREATE TABLE pathway_gene_mapping (id INT PRIMARY KEY, pathway_id INT REFERENCES pathway(pathway_id), gene_id INT REFERENCES gene(gene_id)); "
+      }
+    ]
+  }
+]

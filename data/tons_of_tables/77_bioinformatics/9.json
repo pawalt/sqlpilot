@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ProteinStructures (\n  structure_id INT PRIMARY KEY,\n  structure_name VARCHAR(255),\n  resolution FLOAT,\n  ligand_id INT,\n  ligand_name VARCHAR(255),\n  interaction_type VARCHAR(50)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE proteins (\n    protein_id INT PRIMARY KEY,\n    protein_name VARCHAR(255),\n    protein_sequence TEXT\n);\n\nCREATE TABLE ligands (\n    ligand_id INT PRIMARY KEY,\n    ligand_name VARCHAR(255),\n    ligand_structure TEXT,\n    ligand_interaction_details TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protein_structures (\n    protein_id INT PRIMARY KEY,\n    protein_name VARCHAR(255),\n    structure_file BLOB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ligands (\n    ligand_id INT PRIMARY KEY,\n    ligand_name VARCHAR(255),\n    ligand_structure BLOB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE interactions (\n    interaction_id INT PRIMARY KEY,\n    protein_id INT,\n    ligand_id INT,\n    interaction_type VARCHAR(50),\n    FOREIGN KEY (protein_id) REFERENCES protein_structures(protein_id),\n    FOREIGN KEY (ligand_id) REFERENCES ligands(ligand_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Protein_Structures (\n    structure_id INT PRIMARY KEY,\n    protein_name VARCHAR(255),\n    structure_file BLOB,\n    resolution FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Ligand_Interactions (\n    interaction_id INT PRIMARY KEY,\n    structure_id INT,\n    ligand_name VARCHAR(255),\n    affinity FLOAT,\n    FOREIGN KEY (structure_id) REFERENCES Protein_Structures(structure_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Experimental_Data (\n    experiment_id INT PRIMARY KEY,\n    structure_id INT,\n    measurement_type VARCHAR(100),\n    value FLOAT,\n    FOREIGN KEY (structure_id) REFERENCES Protein_Structures(structure_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Researcher (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(255),\n    affiliation VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE protein_structures (\n    protein_id INT PRIMARY KEY,\n    protein_name TEXT,\n    structure_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ligand_interactions (\n    interaction_id INT PRIMARY KEY,\n    ligand_name TEXT,\n    interaction_data JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE protein_ligand_binding (\n    binding_id INT PRIMARY KEY,\n    protein_id INT REFERENCES protein_structures(protein_id),\n    ligand_id INT REFERENCES ligand_interactions(interaction_id),\n    binding_score FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ligand_properties (\n    ligand_id INT PRIMARY KEY REFERENCES ligand_interactions(interaction_id),\n    molecular_weight FLOAT,\n    chemical_formula TEXT,\n    solubility TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE structural_biology_research (\n    research_id INT PRIMARY KEY,\n    researcher_name TEXT,\n    research_topic TEXT\n);"
+      }
+    ]
+  }
+]

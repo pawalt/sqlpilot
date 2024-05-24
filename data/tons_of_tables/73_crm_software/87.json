@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_metrics (\n    project_id UUID PRIMARY KEY,\n    start_date DATE,\n    end_date DATE,\n    success_metric VARCHAR,\n    performance_metric FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n  project_id INT PRIMARY KEY,\n  project_name VARCHAR(50),\n  start_date DATE,\n  end_date DATE,\n  project_manager VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE kpis (\n  kpi_id INT PRIMARY KEY,\n  project_id INT,\n  kpi_name VARCHAR(50),\n  kpi_description TEXT,\n  kpi_value FLOAT,\n  kpi_date DATE,\n  FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE kpis (\n    kpi_id INT PRIMARY KEY,\n    kpi_name VARCHAR(255),\n    kpi_value DECIMAL,\n    project_id INT,\n    FOREIGN KEY (project_id) REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE metrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_type VARCHAR(50),\n    kpi_id INT,\n    FOREIGN KEY (kpi_id) REFERENCES kpis(kpi_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE project_metrics (\n    project_id INT NOT NULL,\n    project_name VARCHAR(255) NOT NULL,\n    completion_date DATE,\n    budget DECIMAL(10, 2),\n    team_size INT,\n    PRIMARY KEY (project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE kpi_metrics (\n    kpi_id INT NOT NULL,\n    kpi_name VARCHAR(255) NOT NULL,\n    kpi_description TEXT,\n    target_value DECIMAL(10, 2),\n    achieved_value DECIMAL(10, 2),\n    PRIMARY KEY (kpi_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_team (\n    team_id INT NOT NULL,\n    project_id INT NOT NULL,\n    team_member_name VARCHAR(255) NOT NULL,\n    role VARCHAR(50),\n    PRIMARY KEY (team_id),\n    FOREIGN KEY (project_id) REFERENCES project_metrics(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_results (\n    result_id INT NOT NULL,\n    project_id INT NOT NULL,\n    kpi_id INT NOT NULL,\n    result_value DECIMAL(10, 2),\n    result_date DATE,\n    PRIMARY KEY (result_id),\n    FOREIGN KEY (project_id) REFERENCES project_metrics(project_id),\n    FOREIGN KEY (kpi_id) REFERENCES kpi_metrics(kpi_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE projects (\n    project_id INT PRIMARY KEY,\n    project_name VARCHAR(255),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_kpis (\n    kpi_id INT PRIMARY KEY,\n    kpi_name VARCHAR(255),\n    goal DECIMAL,\n    actual DECIMAL,\n    project_id INT REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE team_members (\n    member_id INT PRIMARY KEY,\n    member_name VARCHAR(255),\n    role VARCHAR(100),\n    project_id INT REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE project_tasks (\n    task_id INT PRIMARY KEY,\n    task_name VARCHAR(255),\n    deadline DATE,\n    project_id INT REFERENCES projects(project_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE task_progress (\n    progress_id INT PRIMARY KEY,\n    task_id INT REFERENCES project_tasks(task_id),\n    completion_date DATE,\n    status VARCHAR(50)\n);"
+      }
+    ]
+  }
+]

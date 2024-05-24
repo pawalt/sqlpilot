@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE EnergyDistribution (\n  zone_id INT PRIMARY KEY,\n  zone_name VARCHAR(255),\n  power_schedule TEXT,\n  demand_forecast DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PowerSchedule (\n  schedule_id INT PRIMARY KEY,\n  zone_id INT,\n  power_demand FLOAT,\n  forecast_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Zone (\n  zone_id INT PRIMARY KEY,\n  zone_name VARCHAR(50),\n  capacity FLOAT,\n  demand_forecast FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PowerZones (\n  zone_id INT PRIMARY KEY,\n  zone_name VARCHAR(50),\n  demand_forecast DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE PowerSchedules (\n  schedule_id INT PRIMARY KEY,\n  schedule_name VARCHAR(50),\n  start_time TIMESTAMP,\n  end_time TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ZoneSchedules (\n  zone_schedule_id INT PRIMARY KEY,\n  zone_id INT,\n  schedule_id INT,\n  FOREIGN KEY (zone_id) REFERENCES PowerZones(zone_id),\n  FOREIGN KEY (schedule_id) REFERENCES PowerSchedules(schedule_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Zone (\n    zone_id INT PRIMARY KEY,\n    zone_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PowerSchedule (\n    schedule_id INT PRIMARY KEY,\n    schedule_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE DemandForecast (\n    forecast_id INT PRIMARY KEY,\n    forecast_date DATE NOT NULL,\n    demand_value FLOAT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE AssignedSchedule (\n    assignment_id INT PRIMARY KEY,\n    zone_id INT NOT NULL,\n    schedule_id INT NOT NULL,\n    forecast_id INT NOT NULL,\n    FOREIGN KEY (zone_id) REFERENCES Zone(zone_id),\n    FOREIGN KEY (schedule_id) REFERENCES PowerSchedule(schedule_id),\n    FOREIGN KEY (forecast_id) REFERENCES DemandForecast(forecast_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Zone (zone_id INT PRIMARY KEY, zone_name VARCHAR(50) NOT NULL, demand_forecast INT NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE PowerSchedule (schedule_id INT PRIMARY KEY, schedule_name VARCHAR(50) NOT NULL, start_time TIMESTAMP NOT NULL, end_time TIMESTAMP NOT NULL);"
+      },
+      {
+        "table_schema": "CREATE TABLE ZonePowerSchedule (zone_id INT, schedule_id INT, FOREIGN KEY (zone_id) REFERENCES Zone(zone_id), FOREIGN KEY (schedule_id) REFERENCES PowerSchedule(schedule_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE EnergyUsage (usage_id INT PRIMARY KEY, zone_id INT, usage_amount DECIMAL NOT NULL, usage_date DATE NOT NULL, FOREIGN KEY (zone_id) REFERENCES Zone(zone_id));"
+      },
+      {
+        "table_schema": "CREATE TABLE DemandHistory (history_id INT PRIMARY KEY, zone_id INT, demand_forecast INT NOT NULL, forecast_date DATE NOT NULL, FOREIGN KEY (zone_id) REFERENCES Zone(zone_id));"
+      }
+    ]
+  }
+]

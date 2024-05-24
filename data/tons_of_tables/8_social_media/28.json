@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE behavior_data ( \n  lead_id INT PRIMARY KEY, \n  lead_name VARCHAR(255), \n  behavior_type VARCHAR(50), \n  behavior_description TEXT, \n  behavior_timestamp TIMESTAMP \n );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Segment (segment_id INT, segment_name VARCHAR(255), description TEXT);\n\nCREATE TABLE Lead (lead_id INT, lead_name VARCHAR(255), behavior_data JSONB, segment_id INT);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Segment (segment_id INT PRIMARY KEY,\nsegment_name VARCHAR(255) NOT NULL,\nsegment_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Lead (lead_id INT PRIMARY KEY,\nlead_name VARCHAR(255) NOT NULL,\nlead_email VARCHAR(255) UNIQUE,\nlead_behavior TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Campaign (campaign_id INT PRIMARY KEY,\ncampaign_name VARCHAR(255) NOT NULL,\ncampaign_type VARCHAR(50),\ncampaign_status VARCHAR(50)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE segments (\n  segment_id INT PRIMARY KEY,\n  segment_name TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE leads (\n  lead_id INT PRIMARY KEY,\n  lead_name TEXT,\n  segment_id INT REFERENCES segments(segment_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE behaviors (\n  behavior_id INT PRIMARY KEY,\n  behavior_name TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE lead_behaviors (\n  lead_id INT REFERENCES leads(lead_id),\n  behavior_id INT REFERENCES behaviors(behavior_id),\n  PRIMARY KEY(lead_id, behavior_id)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Segment (segment_id INT, segment_name VARCHAR(255), segment_criteria TEXT, PRIMARY KEY (segment_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Lead (lead_id INT, lead_name VARCHAR(255), email VARCHAR(255), segment_id INT, PRIMARY KEY (lead_id), FOREIGN KEY (segment_id) REFERENCES Segment(segment_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE LeadBehavior (behavior_id INT, lead_id INT, behavior_name VARCHAR(255), behavior_data TEXT, PRIMARY KEY (behavior_id), FOREIGN KEY (lead_id) REFERENCES Lead(lead_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Campaign (campaign_id INT, campaign_name VARCHAR(255), start_date DATE, end_date DATE, PRIMARY KEY (campaign_id));\n"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignTarget (target_id INT, campaign_id INT, segment_id INT, target_criteria TEXT, PRIMARY KEY (target_id), FOREIGN KEY (campaign_id) REFERENCES Campaign(campaign_id), FOREIGN KEY (segment_id) REFERENCES Segment(segment_id));\n"
+      }
+    ]
+  }
+]

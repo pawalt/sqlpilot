@@ -1,0 +1,55 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE genetic_modifications (\n    id INT PRIMARY KEY,\n    crop_name VARCHAR(255) NOT NULL,\n    modification_type VARCHAR(255) NOT NULL,\n    pest_resistance BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE crops (\n    crop_id INT PRIMARY KEY,\n    crop_name VARCHAR(255),\n    pest_resistance BOOLEAN\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE modifications (\n    modification_id INT PRIMARY KEY,\n    crop_id INT,\n    modification_type VARCHAR(255),\n    modification_date DATE,\n    FOREIGN KEY (crop_id) REFERENCES crops(crop_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CropGeneticModifications (\n  CropID UUID PRIMARY KEY,\n  ModificationType VARCHAR(255),\n  ModificationDate DATE,\n  PestResistance BOOL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PestInfo (\n  PestID UUID PRIMARY KEY,\n  PestName VARCHAR(255),\n  PestType VARCHAR(255),\n  PestDescription TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CropPestResistance (\n  CropID UUID,\n  PestID UUID,\n  ResistanceLevel INT,\n  FOREIGN KEY (CropID) REFERENCES CropGeneticModifications(CropID),\n  FOREIGN KEY (PestID) REFERENCES PestInfo(PestID)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE CropGenes (\n  gene_id UUID PRIMARY KEY,\n  gene_name TEXT,\n  crop_name TEXT,\n  resistance_trait TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Pesticides (\n  pesticide_id UUID PRIMARY KEY,\n  pesticide_name TEXT,\n  target_crop TEXT,\n  target_pest TEXT,\n  application_method TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE GeneSequence (\n  sequence_id UUID PRIMARY KEY,\n  gene_id UUID REFERENCES CropGenes(gene_id),\n  sequence_data TEXT,\n  sequence_length INT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE FieldTrials (\n  trial_id UUID PRIMARY KEY,\n  crop_id UUID REFERENCES CropGenes(gene_id),\n  pesticide_id UUID REFERENCES Pesticides(pesticide_id),\n  trial_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Crop {id INT PRIMARY KEY, name STRING NOT NULL, modification_type STRING, pest_resistance_level STRING, modification_date DATE"
+      }
+    ]
+  }
+]

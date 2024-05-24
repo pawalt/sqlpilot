@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_features (\n    user_id INT PRIMARY KEY,\n    signature_feature1 VARCHAR(255),\n    signature_feature2 VARCHAR(255),\n    signature_feature3 VARCHAR(255),\n    created_at TIMESTAMP\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_features (\n\tuser_id INT PRIMARY KEY,\n\tsignature_data BYTEA\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n\tuser_id INT PRIMARY KEY,\n\tusername VARCHAR(50),\n\tpassword VARCHAR(50),\n\tsignature_id INT,\n\tFOREIGN KEY (signature_id) REFERENCES signature_features(user_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_features (\n    feature_id INT PRIMARY KEY,\n    feature_name VARCHAR(255) NOT NULL,\n    user_id INT NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signatures (\n    signature_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    signature_data BYTEA NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    signature_features JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signatures (\n    signature_id INT PRIMARY KEY,\n    user_id INT,\n    signature_data BYTEA,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT,\n    authentication_time TIMESTAMPTZ,\n    authentication_result BOOLEAN,\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signature_features (\n    feature_id INT PRIMARY KEY,\n    feature_name VARCHAR(255) NOT NULL,\n    feature_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE signatures (\n    signature_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    signature_data BYTEA NOT NULL,\n    timestamp TIMESTAMPTZ\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE signature_features (\n    feature_id UUID PRIMARY KEY,\n    signature_id UUID REFERENCES signatures(signature_id),\n    feature_data JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE authentication_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    timestamp TIMESTAMPTZ,\n    status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE signature_history (\n    history_id UUID PRIMARY KEY,\n    user_id UUID REFERENCES users(user_id),\n    signature_id UUID REFERENCES signatures(signature_id),\n    action VARCHAR(20),\n    timestamp TIMESTAMPTZ\n);\n"
+      }
+    ]
+  }
+]

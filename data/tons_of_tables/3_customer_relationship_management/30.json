@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id UUID,\n    username TEXT,\n    email TEXT,\n    age INT,\n    gender TEXT,\n    interests TEXT[],\n    last_login TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    name VARCHAR(50),\n    age INT,\n    gender VARCHAR(10),\n    location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ads (\n    ad_id UUID PRIMARY KEY,\n    product VARCHAR(50),\n    category VARCHAR(50),\n    price DECIMAL,\n    user_id UUID REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    age INT,\n    gender VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_interests (\n    user_id INT,\n    interest_id INT,\n    interest_name VARCHAR(50),\n    FOREIGN KEY (user_id) REFERENCES users(user_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ads (\n    ad_id INT PRIMARY KEY,\n    ad_content TEXT NOT NULL,\n    ad_target VARCHAR(50) NOT NULL,\n    ad_cost DECIMAL(10, 2)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE NOT NULL,\n  age INT,\n  gender VARCHAR(10),\n  interests TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n  preference_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES user_profiles(user_id),\n  category VARCHAR(50) NOT NULL,\n  preference_value VARCHAR(100) NOT NULL,\n  CONSTRAINT unique_user_category UNIQUE (user_id, category)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activities (\n  activity_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES user_profiles(user_id),\n  activity_type VARCHAR(50) NOT NULL,\n  timestamp TIMESTAMP NOT NULL,\n  location VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_clicks (\n  click_id SERIAL PRIMARY KEY,\n  user_id INT REFERENCES user_profiles(user_id),\n  ad_id INT NOT NULL,\n  click_timestamp TIMESTAMP NOT NULL,\n  CONSTRAINT fk_ad_id FOREIGN KEY (ad_id) REFERENCES ads(ad_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50),\n    age INT,\n    address VARCHAR(100),\n    email VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_preferences (\n    user_id INT PRIMARY KEY,\n    preference_1 VARCHAR(50),\n    preference_2 VARCHAR(50),\n    preference_3 VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_activity (\n    activity_id INT PRIMARY KEY,\n    user_id INT,\n    activity_type VARCHAR(50),\n    activity_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE user_interactions (\n    interaction_id INT PRIMARY KEY,\n    user_id INT,\n    interaction_type VARCHAR(50),\n    interaction_date DATE\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE ad_campaigns (\n    campaign_id INT PRIMARY KEY,\n    campaign_name VARCHAR(50),\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(10, 2)\n)"
+      }
+    ]
+  }
+]

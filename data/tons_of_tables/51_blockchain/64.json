@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_ownership (\n\tproperty_id INT PRIMARY KEY,\n\towner_id INT NOT NULL,\n\towner_name VARCHAR(50) NOT NULL,\n\townership_date TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_ownership (\n    property_id INT PRIMARY KEY,\n    owner_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ownership_history (\n    history_id SERIAL PRIMARY KEY,\n    property_id INT NOT NULL,\n    previous_owner_id INT NOT NULL,\n    new_owner_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_ownership (\n    id SERIAL PRIMARY KEY,\n    property_id INT NOT NULL,\n    owner_id INT NOT NULL,\n    timestamp TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE owner (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    address VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ownership_history (\n    id SERIAL PRIMARY KEY,\n    property_id INT NOT NULL,\n    previous_owner_id INT NOT NULL,\n    new_owner_id INT NOT NULL,\n    change_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Property (\n    property_id UUID PRIMARY KEY,\n    property_name VARCHAR NOT NULL,\n    property_value DECIMAL NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Owner (\n    owner_id UUID PRIMARY KEY,\n    owner_name VARCHAR NOT NULL,\n    owner_address VARCHAR NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE OwnershipHistory (\n    history_id UUID PRIMARY KEY,\n    property_id UUID REFERENCES Property(property_id),\n    previous_owner_uuid UUID REFERENCES Owner(owner_id),\n    new_owner_uuid UUID REFERENCES Owner(owner_id),\n    transaction_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE BlockchainNetwork (\n    network_id UUID PRIMARY KEY,\n    network_name VARCHAR NOT NULL,\n    network_location VARCHAR NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE property_owners (\n    owner_id INT PRIMARY KEY,\n    owner_name VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE properties (\n    property_id INT PRIMARY KEY,\n    property_address VARCHAR(255) NOT NULL,\n    owner_id INT,\n    FOREIGN KEY (owner_id) REFERENCES property_owners(owner_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ownership_history (\n    history_id INT PRIMARY KEY,\n    property_id INT,\n    previous_owner_id INT,\n    new_owner_id INT,\n    timestamp TIMESTAMP,\n    FOREIGN KEY (property_id) REFERENCES properties(property_id),\n    FOREIGN KEY (previous_owner_id) REFERENCES property_owners(owner_id),\n    FOREIGN KEY (new_owner_id) REFERENCES property_owners(owner_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE transactions (\n    transaction_id INT PRIMARY KEY,\n    property_id INT,\n    seller_id INT,\n    buyer_id INT,\n    transaction_amount DECIMAL(10, 2),\n    transaction_date DATE,\n    FOREIGN KEY (property_id) REFERENCES properties(property_id),\n    FOREIGN KEY (seller_id) REFERENCES property_owners(owner_id),\n    FOREIGN KEY (buyer_id) REFERENCES property_owners(owner_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE blockchain (\n    block_id INT PRIMARY KEY,\n    transaction_id INT,\n    block_hash VARCHAR(255) NOT NULL,\n    block_timestamp TIMESTAMP,\n    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id)\n);"
+      }
+    ]
+  }
+]

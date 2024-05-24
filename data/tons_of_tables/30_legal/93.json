@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_sessions (\n\tmediation_id INT PRIMARY KEY,\n\tmediator_id INT,\n\tparticipant_name VARCHAR(50),\n\tstart_datetime TIMESTAMP,\n\tend_datetime TIMESTAMP,\n\tlocation VARCHAR(100),\n\tdescription TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE mediation_sessions (\n    session_id BIGSERIAL PRIMARY KEY,\n    start_datetime TIMESTAMP NOT NULL,\n    end_datetime TIMESTAMP NOT NULL,\n    mediator_name VARCHAR(255) NOT NULL,\n    participants  VARCHAR(255)[]\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n    appointment_id BIGSERIAL PRIMARY KEY,\n    session_id BIGINT REFERENCES mediation_sessions(session_id),\n    appointment_datetime TIMESTAMP NOT NULL,\n    participant_name VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Mediators (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Clients (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(20),\n  mediator_id INT,\n  FOREIGN KEY (mediator_id) REFERENCES Mediators(id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Appointments (\n  id INT PRIMARY KEY,\n  date DATETIME,\n  start_time TIME,\n  end_time TIME,\n  client_id INT,\n  mediator_id INT,\n  status VARCHAR(20),\n  FOREIGN KEY (client_id) REFERENCES Clients(id),\n  FOREIGN KEY (mediator_id) REFERENCES Mediators(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE appointments (\n  appointment_id SERIAL PRIMARY KEY,\n  client_name VARCHAR(50) NOT NULL,\n  date_time timestamp NOT NULL,\n  mediator_id INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE mediators (\n  mediator_id SERIAL PRIMARY KEY,\n  mediator_name VARCHAR(50) NOT NULL,\n  specialty VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE clients (\n  client_id SERIAL PRIMARY KEY,\n  client_name VARCHAR(50) NOT NULL,\n  email VARCHAR(50) NOT NULL,\n  phone_number VARCHAR(15) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE sessions (\n  session_id SERIAL PRIMARY KEY,\n  appointment_id INT NOT NULL,\n  mediator_id INT NOT NULL,\n  date_time timestamp NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE schedule (\n  id UUID PRIMARY KEY,\n  date DATE,\n  start_time TIME,\n  end_time TIME,\n  location VARCHAR(255),\n  description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE appointment (\n  id UUID PRIMARY KEY,\n  schedule_id UUID,\n  client_id UUID,\n  mediator_id UUID,\n  appointment_date DATE,\n  appointment_time TIME\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE client (\n  id UUID PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  phone VARCHAR(20),\n  address TEXT,\n  notes TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE mediator (\n  id UUID PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  phone VARCHAR(20),\n  practice_area TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE calendar (\n  schedule_id UUID,\n  appointment_id UUID,\n  event_date DATE,\n  event_time TIME,\n  event_description TEXT\n)"
+      }
+    ]
+  }
+]

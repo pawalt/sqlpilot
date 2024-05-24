@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    created_on TIMESTAMP NOT NULL DEFAULT now()\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password_hash VARCHAR(256) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n  user_id SERIAL PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  password_hash VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE email (\n  email_id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  email_address VARCHAR(100) NOT NULL,\n  verified BOOLEAN DEFAULT FALSE,\n  PRIMARY KEY (email_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE phone (\n  phone_id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  phone_number VARCHAR(15) NOT NULL,\n  PRIMARY KEY (phone_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE session (\n  session_id SERIAL PRIMARY KEY,\n  user_id INT NOT NULL,\n  token VARCHAR(100) NOT NULL,\n  expiration TIMESTAMP,\n  PRIMARY KEY (session_id),\n  FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password_hash VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    created_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    id INT PRIMARY KEY,\n    role_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    id INT PRIMARY KEY,\n    permission_name VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE role_permissions (\n    id INT PRIMARY KEY,\n    role_id INT NOT NULL,\n    permission_id INT NOT NULL,\n    FOREIGN KEY (role_id) REFERENCES user_roles (id),\n    FOREIGN KEY (permission_id) REFERENCES user_permissions (id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_role_mapping (\n    user_id INT NOT NULL,\n    role_id INT NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users (id),\n    FOREIGN KEY (role_id) REFERENCES user_roles (id)\n);\n"
+      }
+    ]
+  }
+]

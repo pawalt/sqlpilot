@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id UUID PRIMARY KEY,\n    circuit_name TEXT,\n    design TEXT,\n    optimization_strategy TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id SERIAL PRIMARY KEY,\n    circuit_name VARCHAR(50),\n    qubits_used INT,\n    operations TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE optimization_strategies (\n    strategy_id SERIAL PRIMARY KEY,\n    strategy_name VARCHAR(50),\n    optimization_steps INT,\n    optimization_details JSON\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id UUID PRIMARY KEY,\n    circuit_name TEXT,\n    circuit_description TEXT,\n    circuit_design JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE optimization_strategies (\n    strategy_id UUID PRIMARY KEY,\n    strategy_name TEXT,\n    strategy_description TEXT,\n    optimization_steps JSONB\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE hardware_devices (\n    device_id UUID PRIMARY KEY,\n    device_name TEXT,\n    device_description TEXT,\n    device_type TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id SERIAL PRIMARY KEY,\n    circuit_name TEXT NOT NULL,\n    circuit_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE optimization_strategies (\n    strategy_id SERIAL PRIMARY KEY,\n    strategy_name TEXT NOT NULL,\n    strategy_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE circuit_optimization_mapping (\n    mapping_id SERIAL PRIMARY KEY,\n    circuit_id INT NOT NULL,\n    strategy_id INT NOT NULL,\n    FOREIGN KEY (circuit_id) REFERENCES quantum_circuits(circuit_id),\n    FOREIGN KEY (strategy_id) REFERENCES optimization_strategies(strategy_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_hardware (\n    hardware_id SERIAL PRIMARY KEY,\n    hardware_name TEXT NOT NULL,\n    hardware_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE quantum_circuits (\n    circuit_id SERIAL PRIMARY KEY,\n    circuit_name VARCHAR(100) NOT NULL,\n    instructions TEXT[] NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    modified_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE optimization_strategies (\n    strategy_id SERIAL PRIMARY KEY,\n    strategy_name VARCHAR(100) NOT NULL,\n    optimization_steps JSONB NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    modified_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE hardware_configurations (\n    configuration_id SERIAL PRIMARY KEY,\n    configuration_name VARCHAR(100) NOT NULL,\n    qubit_count INT NOT NULL,\n    connection_matrix JSONB NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    modified_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE quantum_registers (\n    register_id SERIAL PRIMARY KEY,\n    register_name VARCHAR(100) NOT NULL,\n    qubits_allocated INT[] NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    modified_at TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE circuit_optimization (\n    circuit_id INT REFERENCES quantum_circuits(circuit_id),\n    strategy_id INT REFERENCES optimization_strategies(strategy_id),\n    optimization_start TIMESTAMP,\n    optimization_end TIMESTAMP,\n    optimization_status VARCHAR(50),\n    PRIMARY KEY (circuit_id, strategy_id)\n);\n"
+      }
+    ]
+  }
+]

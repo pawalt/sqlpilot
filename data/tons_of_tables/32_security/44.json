@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE password_policies (\n    user_id INT PRIMARY KEY,\n    password VARCHAR(255) NOT NULL,\n    password_expiry DATE,\n    password_complexity VARCHAR(50) CHECK (password_complexity IN ('Strong', 'Medium', 'Weak'))\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE password_policies (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    min_length INT NOT NULL,\n    min_lowercase INT NOT NULL,\n    min_uppercase INT NOT NULL,\n    min_digits INT NOT NULL,\n    min_special_chars INT NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_passwords (\n    id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    password_hash VARCHAR(255) NOT NULL,\n    last_changed TIMESTAMP NOT NULL DEFAULT now(),\n    FOREIGN KEY (user_id) REFERENCES users(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE password_policies (\n    policy_id INT PRIMARY KEY,\n    policy_name VARCHAR(50) NOT NULL,\n    min_length INT NOT NULL,\n    special_chars_required BOOL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_policy_mapping (\n    user_id INT,\n    policy_id INT,\n    FOREIGN KEY (user_id) REFERENCES users(id),\n    FOREIGN KEY (policy_id) REFERENCES password_policies(policy_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT password_policy CHECK (LENGTH(password) >= 8)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE password_rules (\n    rule_id SERIAL PRIMARY KEY,\n    rule_name VARCHAR(50) NOT NULL,\n    rule_description TEXT,\n    min_length INT NOT NULL,\n    require_lowercase BOOLEAN NOT NULL,\n    require_uppercase BOOLEAN NOT NULL,\n    require_numeric BOOLEAN NOT NULL,\n    require_special_chars BOOLEAN NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE password_history (\n    history_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    change_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE password_reset_requests (\n    request_id SERIAL PRIMARY KEY,\n    user_id INT NOT NULL,\n    request_date TIMESTAMP NOT NULL,\n    expiry_date TIMESTAMP NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) UNIQUE,\n    password_hash VARCHAR(100),\n    last_login TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PasswordHistory (\n    password_id INT PRIMARY KEY,\n    user_id INT REFERENCES Users(user_id),\n    password_hash VARCHAR(100),\n    change_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PasswordRules (\n    rule_id INT PRIMARY KEY,\n    rule_name VARCHAR(50) UNIQUE,\n    rule_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserRoles (\n    role_id INT PRIMARY KEY,\n    role_name VARCHAR(50) UNIQUE,\n    privileges TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE UserRolesMapping (\n    mapping_id INT PRIMARY KEY,\n    user_id INT REFERENCES Users(user_id),\n    role_id INT REFERENCES UserRoles(role_id)\n);"
+      }
+    ]
+  }
+]

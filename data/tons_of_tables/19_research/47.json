@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PeerReviewData (\n  id SERIAL PRIMARY KEY,\n  reviewer_id INT NOT NULL,\n  paper_id INT NOT NULL,\n  review_date DATE,\n  decision VARCHAR(255)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE peer_reviews (\n  review_id UUID PRIMARY KEY,\n  reviewer_id UUID,\n  submission_id UUID,\n  review_date TIMESTAMP,\n  decision VARCHAR(50),\n  comments TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE submissions (\n  submission_id UUID PRIMARY KEY,\n  submission_date TIMESTAMP,\n  author_id UUID,\n  title VARCHAR(100),\n  abstract TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reviews (\n  review_id UUID PRIMARY KEY,\n  submission_id UUID,\n  reviewer_id UUID,\n  review_date DATE,\n  decision VARCHAR\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE submissions (\n  submission_id UUID PRIMARY KEY,\n  author_id UUID,\n  submission_date DATE,\n  title VARCHAR,\n  abstract TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE decisions (\n  decision_id UUID PRIMARY KEY,\n  review_id UUID,\n  reviewer_id UUID,\n  decision_date DATE,\n  final_decision VARCHAR\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS review_decisions (\n    id UUID PRIMARY KEY,\n    reviewer_id UUID,\n    submission_id UUID,\n    decision TEXT,\n    review_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS reviews (\n    id UUID PRIMARY KEY,\n    reviewer_id UUID,\n    submission_id UUID,\n    review_text TEXT,\n    review_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS reviewers (\n    id UUID PRIMARY KEY,\n    name TEXT,\n    organization TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE IF NOT EXISTS submissions (\n    id UUID PRIMARY KEY,\n    title TEXT,\n    author TEXT,\n    submission_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE reviews (\n    review_id INT PRIMARY KEY,\n    reviewer_name VARCHAR(50),\n    reviewed_paper VARCHAR(100),\n    review_date DATE,\n    decision VARCHAR(20)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE reviewers (\n    reviewer_id INT PRIMARY KEY,\n    reviewer_name VARCHAR(50),\n    department VARCHAR(50),\n    email VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE papers (\n    paper_id INT PRIMARY KEY,\n    title VARCHAR(100),\n    abstract TEXT,\n    author VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE decisions (\n    decision_id INT PRIMARY KEY,\n    decision VARCHAR(20),\n    review_id INT REFERENCES reviews(review_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE benchmarking_data (\n    benchmark_id INT PRIMARY KEY,\n    review_id INT REFERENCES reviews(review_id),\n    benchmark_score FLOAT,\n    benchmark_date DATE\n)"
+      }
+    ]
+  }
+]

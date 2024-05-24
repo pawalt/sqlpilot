@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE volunteer_training (\n    id INT PRIMARY KEY,\n    volunteer_name VARCHAR(255),\n    training_name VARCHAR(255),\n    certification_date DATE,\n    expiration_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE certifications (\n    certification_id INT PRIMARY KEY,\n    certification_name VARCHAR(50),\n    expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE volunteers (\n    volunteer_id INT PRIMARY KEY,\n    volunteer_name VARCHAR(50),\n    certification_id INT,\n    certification_expiry_date DATE\n    FOREIGN KEY (certification_id) REFERENCES certifications(certification_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE volunteer_training_certifications (\n  certification_id INT PRIMARY KEY,\n  volunteer_id INT,\n  certification_name TEXT,\n  expiration_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE volunteers (\n  volunteer_id INT PRIMARY KEY,\n  first_name TEXT,\n  last_name TEXT,\n  email TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE certification_categories (\n  category_id INT PRIMARY KEY,\n  category_name TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Volunteer (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    phone VARCHAR(15),\n    address TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Training (\n    training_id SERIAL PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    description TEXT,\n    instructor VARCHAR(50),\n    duration INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Certification (\n    cert_id SERIAL PRIMARY KEY,\n    volunteer_id INT,\n    training_id INT,\n    certification_date DATE,\n    expiration_date DATE,\n    FOREIGN KEY (volunteer_id) REFERENCES Volunteer(id),\n    FOREIGN KEY (training_id) REFERENCES Training(training_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Compliance (\n    compliance_id SERIAL PRIMARY KEY,\n    certification_id INT,\n    status VARCHAR(20) NOT NULL,\n    review_date DATE,\n    notes TEXT,\n    FOREIGN KEY (certification_id) REFERENCES Certification(cert_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE training_certifications (\n  certification_id INT PRIMARY KEY,\n  certification_name VARCHAR(255) NOT NULL,\n  expiration_date DATE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE volunteers (\n  volunteer_id INT PRIMARY KEY,\n  volunteer_name VARCHAR(255) NOT NULL,\n  contact_number VARCHAR(20),\n  email_address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE volunteer_training (\n  training_id INT PRIMARY KEY,\n  volunteer_id INT,\n  certification_id INT,\n  training_date DATE,\n  FOREIGN KEY (volunteer_id) REFERENCES volunteers(volunteer_id),\n  FOREIGN KEY (certification_id) REFERENCES training_certifications(certification_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_instructors (\n  instructor_id INT PRIMARY KEY,\n  instructor_name VARCHAR(255) NOT NULL,\n  contact_number VARCHAR(20),\n  email_address VARCHAR(255)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE training_sessions (\n  session_id INT PRIMARY KEY,\n  training_id INT,\n  instructor_id INT,\n  session_date DATE,\n  start_time TIME,\n  end_time TIME,\n  location VARCHAR(255),\n  FOREIGN KEY (training_id) REFERENCES volunteer_training(training_id),\n  FOREIGN KEY (instructor_id) REFERENCES training_instructors(instructor_id)\n);\n"
+      }
+    ]
+  }
+]

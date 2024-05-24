@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_collection_hotspots (\n  hotspot_id INT PRIMARY KEY,\n  location GEOMETRY,\n  waste_type VARCHAR,\n  collection_date DATE\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_collection_hotspots (\n  location GEOGRAPHY(POINT),\n  address VARCHAR(255),\n  collection_frequency INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE interventions (\n  location GEOGRAPHY(POLYGON),\n  intervention_type VARCHAR(50),\n  intervention_cost DECIMAL(10, 2),\n  intervention_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_collection_sites (\n    site_id INT PRIMARY KEY,\n    site_name VARCHAR(100),\n    location GEOGRAPHY,\n    collection_frequency INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection_history (\n    record_id SERIAL PRIMARY KEY,\n    site_id INT REFERENCES waste_collection_sites(site_id),\n    collection_date DATE,\n    waste_weight DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE intervention_recommendations (\n    recommendation_id SERIAL PRIMARY KEY,\n    site_id INT REFERENCES waste_collection_sites(site_id),\n    recommendation_text TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionHotspots (\n    hotspot_id INT PRIMARY KEY,\n    location GEOGRAPHY,\n    collection_date TIMESTAMP,\n    collected_by VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE Interventions (\n    intervention_id INT PRIMARY KEY,\n    hotspot_id INT REFERENCES WasteCollectionHotspots(hotspot_id),\n    intervention_date TIMESTAMP,\n    intervention_type VARCHAR(50),\n    intervention_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE InterventionsHistory (\n    history_id INT PRIMARY KEY,\n    intervention_id INT REFERENCES Interventions(intervention_id),\n    completion_date TIMESTAMP,\n    completion_status VARCHAR(50)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE HotspotsAnalysis (\n    analysis_id INT PRIMARY KEY,\n    hotspot_id INT REFERENCES WasteCollectionHotspots(hotspot_id),\n    analysis_date TIMESTAMP,\n    analysis_results TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollectionHotspots (\n  hotspot_id INT PRIMARY KEY,\n  location GEOMETRY,\n  waste_type VARCHAR(100),\n  collection_schedule TIMESTAMP\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionInterventions (\n  intervention_id INT PRIMARY KEY,\n  hotspot_id INT,\n  intervention_date DATE,\n  intervention_type VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionStats (\n  stats_id INT PRIMARY KEY,\n  hotspot_id INT,\n  collection_date DATE,\n  collection_amount DECIMAL\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE CollectionConstraints (\n  constraint_id INT PRIMARY KEY,\n  hotspot_id INT,\n  constraint_type VARCHAR(100),\n  constraint_details TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE InterventionLogs (\n  log_id INT PRIMARY KEY,\n  intervention_id INT,\n  log_date TIMESTAMP,\n  log_message TEXT\n)"
+      }
+    ]
+  }
+]

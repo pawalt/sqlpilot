@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE governance_audit_trail (\n    id SERIAL PRIMARY KEY,\n    action_type VARCHAR(50) NOT NULL,\n    decision_made TEXT NOT NULL,\n    decision_date TIMESTAMP NOT NULL,\n    decision_maker VARCHAR(100) NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE governance_decisions (\n  decision_id INT PRIMARY KEY,\n  decision_description VARCHAR(255),\n  decision_date DATE,\n  decision_owner VARCHAR(50),\n  decision_status VARCHAR(20)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE governance_actions (\n  action_id INT PRIMARY KEY,\n  action_description VARCHAR(255),\n  action_date DATE,\n  action_owner VARCHAR(50),\n  decision_id INT,\n  FOREIGN KEY (decision_id) REFERENCES governance_decisions(decision_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE decision_audit_trail (\n    id INT PRIMARY KEY,\n    decision_text TEXT,\n    decision_maker TEXT,\n    decision_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE action_audit_trail (\n    id INT PRIMARY KEY,\n    action_description TEXT,\n    action_taker TEXT,\n    action_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE decision_action_link (\n    id INT PRIMARY KEY,\n    decision_id INT,\n    action_id INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE decision_audit_trail (\n    decision_id INT PRIMARY KEY,\n    decision_name VARCHAR(255),\n    decision_date DATE,\n    decision_maker VARCHAR(255),\n    decision_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE action_audit_trail (\n    action_id INT PRIMARY KEY,\n    decision_id INT,\n    action_name VARCHAR(255),\n    action_date DATE,\n    action_executor VARCHAR(255),\n    action_description TEXT\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE decision_participants (\n    participant_id INT PRIMARY KEY,\n    decision_id INT,\n    participant_name VARCHAR(255),\n    participant_role VARCHAR(255)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE decision_outcomes (\n    outcome_id INT PRIMARY KEY,\n    decision_id INT,\n    outcome_name VARCHAR(255),\n    outcome_description TEXT,\n    outcome_evaluation TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE governance_decisions (\n   decision_id UUID PRIMARY KEY,\n   decision_type VARCHAR(50),\n   decision_date DATE,\n   decision_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE governance_actions (\n   action_id UUID PRIMARY KEY,\n   action_type VARCHAR(50),\n   action_date DATE,\n   action_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE decision_makers (\n   maker_id SERIAL PRIMARY KEY,\n   maker_name VARCHAR(100),\n   maker_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE action_participants (\n   participant_id SERIAL PRIMARY KEY,\n   participant_name VARCHAR(100),\n   participant_role VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE decision_actions (\n   decision_id UUID,\n   action_id UUID,\n   PRIMARY KEY (decision_id, action_id),\n   FOREIGN KEY (decision_id) REFERENCES governance_decisions(decision_id),\n   FOREIGN KEY (action_id) REFERENCES governance_actions(action_id)\n);"
+      }
+    ]
+  }
+]

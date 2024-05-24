@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policy_renewal_reminders (\n    reminder_id INT PRIMARY KEY,\n    policyholder_name VARCHAR(50),\n    policy_number VARCHAR(20),\n    renewal_date DATE,\n    reminder_sent BOOLEAN\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policyholders (\n    id UUID PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    email VARCHAR(100) NOT NULL,\n    policy_number VARCHAR(20) UNIQUE NOT NULL,\n    renewal_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE reminders (\n    id UUID PRIMARY KEY,\n    policyholder_id UUID REFERENCES policyholders(id),\n    reminder_date DATE NOT NULL,\n    reminder_message TEXT NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policyholders (\n  policyholder_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE policies (\n  policy_id INT PRIMARY KEY,\n  policy_number VARCHAR(50),\n  policyholder_id INT REFERENCES policyholders(policyholder_id),\n  coverage VARCHAR(255),\n  start_date DATE,\n  end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reminders (\n  reminder_id INT PRIMARY KEY,\n  policy_id INT REFERENCES policies(policy_id),\n  reminder_date DATE,\n  reminder_message TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE policyholders (\n    policyholder_id UUID PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    policy_number VARCHAR(20),\n    renewal_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reminders (\n    reminder_id UUID PRIMARY KEY,\n    policyholder_id UUID,\n    reminder_date DATE,\n    reminder_message TEXT,\n    sent BOOLEAN\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE email_logs (\n    log_id UUID PRIMARY KEY,\n    policyholder_id UUID,\n    email_sent_date TIMESTAMP,\n    email_subject VARCHAR(255),\n    email_body TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE renewal_history (\n    history_id UUID PRIMARY KEY,\n    policyholder_id UUID,\n    renewal_date DATE,\n    renewal_amount DECIMAL(10, 2),\n    payment_status VARCHAR(20)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Policyholders (\n    policyholder_id INT PRIMARY KEY,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    phone_number VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Policies (\n    policy_id INT PRIMARY KEY,\n    policyholder_id INT REFERENCES Policyholders(policyholder_id),\n    policy_type VARCHAR(50),\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Reminders (\n    reminder_id INT PRIMARY KEY,\n    policy_id INT REFERENCES Policies(policy_id),\n    reminder_date DATE,\n    reminder_method VARCHAR(20)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Templates (\n    template_id INT PRIMARY KEY,\n    template_name VARCHAR(50),\n    template_content TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Logs (\n    log_id INT PRIMARY KEY,\n    reminder_id INT REFERENCES Reminders(reminder_id),\n    log_date DATE,\n    log_description TEXT\n);"
+      }
+    ]
+  }
+]

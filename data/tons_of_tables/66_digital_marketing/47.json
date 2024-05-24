@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE influencer_outreach (\n    influencer_id INT PRIMARY KEY,\n    influencer_name VARCHAR(255),\n    email_address VARCHAR(255),\n    outreach_date DATE,\n    response_rate FLOAT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE influencers (\n    id INT PRIMARY KEY,\n    name VARCHAR(255),\n    email VARCHAR(255),\n    followers_count INT,\n    engagement_rate FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outreach_data (\n    id INT PRIMARY KEY,\n    influencer_id INT,\n    email_date TIMESTAMP,\n    email_subject VARCHAR(255),\n    response_rate FLOAT,\n    response_status VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Influencers (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    followers INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailCommunications (\n    id INT PRIMARY KEY,\n    influencer_id INT,\n    subject VARCHAR(255) NOT NULL,\n    body TEXT NOT NULL,\n    sent_date TIMESTAMP,\n    FOREIGN KEY (influencer_id) REFERENCES Influencers(id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ResponseRates (\n    id INT PRIMARY KEY,\n    communication_id INT,\n    response_rate DECIMAL(5,2),\n    response_date TIMESTAMP,\n    FOREIGN KEY (communication_id) REFERENCES EmailCommunications(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Influencers (\n  influencer_id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email VARCHAR(255),\n  followers_count INT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE EmailCommunications (\n  email_id INT PRIMARY KEY,\n  influencer_id INT,\n  subject VARCHAR(255),\n  body TEXT,\n  sent_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Responses (\n  response_id INT PRIMARY KEY,\n  email_id INT,\n  response_status VARCHAR(50),\n  response_date TIMESTAMP\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE OutreachStats (\n  stats_id INT PRIMARY KEY,\n  influencer_id INT,\n  email_sent_count INT,\n  response_rate FLOAT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE influencer_outreach (\n  influencer_id UUID,\n  email_address VARCHAR(255),\n  communication_date DATE,\n  response_rate DECIMAL(5,2),\n  PRIMARY KEY (influencer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outreach_content (\n  content_id UUID,\n  influencer_id UUID,\n  content_title VARCHAR(255),\n  content_type VARCHAR(50),\n  PRIMARY KEY (content_id),\n  FOREIGN KEY (influencer_id) REFERENCES influencer_outreach(influencer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE emails (\n  email_id UUID,\n  influencer_id UUID,\n  email_subject VARCHAR(255),\n  email_body TEXT,\n  email_date TIMESTAMP,\n  PRIMARY KEY (email_id),\n  FOREIGN KEY (influencer_id) REFERENCES influencer_outreach(influencer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE response_rates (\n  influencer_id UUID,\n  response_id UUID,\n  response_date DATE,\n  response_rating DECIMAL(3,1),\n  PRIMARY KEY (response_id),\n  FOREIGN KEY (influencer_id) REFERENCES influencer_outreach(influencer_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE outreach_performance (\n  influencer_id UUID,\n  outreach_date DATE,\n  outreach_success BOOLEAN,\n  outreach_notes TEXT,\n  PRIMARY KEY (influencer_id, outreach_date),\n  FOREIGN KEY (influencer_id) REFERENCES influencer_outreach(influencer_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE,\n  password VARCHAR(100) NOT NULL,\n  full_name VARCHAR(100),\n  date_of_birth DATE,\n  address VARCHAR(150),\n  biometric_data BYTEA\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n  user_id INT PRIMARY KEY,\n  username VARCHAR(50) NOT NULL,\n  full_name VARCHAR(100),\n  email VARCHAR(100) UNIQUE,\n  biometric_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE account_information (\n  account_id INT PRIMARY KEY,\n  user_id INT REFERENCES user_profiles(user_id),\n  account_type VARCHAR(50) NOT NULL,\n  account_status VARCHAR(20) DEFAULT 'active',\n  balance DECIMAL(10, 2) DEFAULT 0.00\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE UserProfiles (\n    user_id UUID PRIMARY KEY,\n    username TEXT,\n    email TEXT,\n    password TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE AccountInformation (\n    account_id UUID PRIMARY KEY,\n    user_id UUID,\n    account_type TEXT,\n    balance DECIMAL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE BiometricData (\n    user_id UUID,\n    fingerprint_data BYTEA,\n    face_data BYTEA\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users ( user_id SERIAL PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) UNIQUE NOT NULL, password VARCHAR(100) NOT NULL, created_at TIMESTAMP NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE profiles ( profile_id SERIAL PRIMARY KEY, user_id INT REFERENCES users(user_id), full_name VARCHAR(100) NOT NULL, dob DATE NOT NULL, gender VARCHAR(10), address VARCHAR(255) );"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_data ( biometric_id SERIAL PRIMARY KEY, user_id INT REFERENCES users(user_id), fingerprint_data BYTEA NOT NULL, face_data BYTEA NOT NULL, voice_data BYTEA NOT NULL );"
+      },
+      {
+        "table_schema": "CREATE TABLE account_info ( account_id SERIAL PRIMARY KEY, user_id INT REFERENCES users(user_id), account_number VARCHAR(20) UNIQUE NOT NULL, balance DECIMAL(10,2) NOT NULL, last_transaction TIMESTAMP );"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    bio_data BYTEA\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_profiles (\n    profile_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    full_name VARCHAR(100) NOT NULL,\n    birthdate DATE,\n    address VARCHAR(255),\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE account_info (\n    account_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    account_type VARCHAR(50) NOT NULL,\n    balance DECIMAL(10, 2) DEFAULT 0.00,\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE biometric_data (\n    data_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    fingerprint_data BYTEA,\n    eye_scan_data BYTEA,\n    face_recognition_data BYTEA,\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE access_logs (\n    log_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    logout_time TIMESTAMP,\n    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)\n);\n"
+      }
+    ]
+  }
+]

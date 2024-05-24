@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteDisposalActivities (\n  activity_id SERIAL PRIMARY KEY,\n  location VARCHAR(255) NOT NULL,\n  waste_type VARCHAR(50) NOT NULL,\n  disposal_time TIMESTAMP NOT NULL,\n  quantity DECIMAL NOT NULL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_disposal_sites(\n  site_id INT PRIMARY KEY,\n  site_name VARCHAR,\n  location VARCHAR,\n  status VARCHAR\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE disposal_records(\n  record_id INT PRIMARY KEY,\n  site_id INT,\n  disposal_date DATE,\n  disposal_time TIME,\n  waste_type VARCHAR,\n  weight FLOAT,\n  FOREIGN KEY (site_id) REFERENCES waste_disposal_sites(site_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteCollection (\n  collection_id INT NOT NULL,\n  collection_date DATE NOT NULL,\n  truck_id INT NOT NULL,\n  waste_type ENUM('Plastic', 'Organic', 'Paper') NOT NULL,\n  quantity FLOAT NOT NULL,\n  PRIMARY KEY (collection_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteTreatment (\n  treatment_id INT NOT NULL,\n  treatment_date DATE NOT NULL,\n  facility_id INT NOT NULL,\n  treatment_type ENUM('Incineration', 'Composting', 'Recycling') NOT NULL,\n  waste_quantity FLOAT NOT NULL,\n  PRIMARY KEY (treatment_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteDisposal (\n  disposal_id INT NOT NULL,\n  disposal_date DATE NOT NULL,\n  location VARCHAR(255) NOT NULL,\n  disposal_method ENUM('Landfill', 'Dumping', 'Waste-to-Energy') NOT NULL,\n  waste_quantity FLOAT NOT NULL,\n  PRIMARY KEY (disposal_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE waste_collection_sites (\n    site_id SERIAL PRIMARY KEY,\n    site_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    waste_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection_logs (\n    log_id SERIAL PRIMARY KEY,\n    site_id INT NOT NULL,\n    collection_date TIMESTAMP NOT NULL,\n    collected_weight DECIMAL(10,2) NOT NULL,\n    CONSTRAINT fk_site_id FOREIGN KEY (site_id) REFERENCES waste_collection_sites(site_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection_vehicles (\n    vehicle_id SERIAL PRIMARY KEY,\n    vehicle_number VARCHAR(20) NOT NULL,\n    vehicle_type VARCHAR(50) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE waste_collection_teams (\n    team_id SERIAL PRIMARY KEY,\n    team_name VARCHAR(50) NOT NULL,\n    team_leader VARCHAR(50) NOT NULL,\n    vehicle_id INT NOT NULL,\n    CONSTRAINT fk_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES waste_collection_vehicles(vehicle_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE WasteBins (\n    bin_id INT PRIMARY KEY,\n    location VARCHAR(255),\n    capacity INT,\n    current_level INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteTypes (\n    waste_type_id INT PRIMARY KEY,\n    waste_name VARCHAR(255),\n    description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteCollection (\n    collection_id INT PRIMARY KEY,\n    bin_id INT,\n    waste_type_id INT,\n    collection_date TIMESTAMP,\n    collected_amount INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WasteDisposalRoute (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(255),\n    start_location VARCHAR(255),\n    end_location VARCHAR(255)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MonitoringLogs (\n    log_id INT PRIMARY KEY,\n    collection_id INT,\n    route_id INT,\n    log_timestamp TIMESTAMP,\n    log_message TEXT\n);"
+      }
+    ]
+  }
+]

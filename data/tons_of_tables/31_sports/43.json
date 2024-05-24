@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Coaches (\n coach_id INT PRIMARY KEY,\n coach_name VARCHAR(50),\n training_plan TEXT,\n workout_log TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Coaches (\n  coach_id INT PRIMARY KEY,\n  coach_name VARCHAR(255) NOT NULL,\n  coaching_specialty VARCHAR(100) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingPlans (\n  plan_id INT PRIMARY KEY,\n  coach_id INT,\n  plan_name VARCHAR(255) NOT NULL,\n  start_date DATE,\n  end_date DATE,\n  FOREIGN KEY (coach_id) REFERENCES Coaches(coach_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE coach (coach_id INT PRIMARY KEY,\ncoach_name VARCHAR(50) NOT NULL,\ncreation_date TIMESTAMP NOT NULL)"
+      },
+      {
+        "table_schema": "CREATE TABLE training_plan (plan_id INT PRIMARY KEY,\ncoach_id INT REFERENCES coach(coach_id),\nplan_name VARCHAR(50) NOT NULL,\nstart_date DATE,\nend_date DATE)"
+      },
+      {
+        "table_schema": "CREATE TABLE workout_log (log_id INT PRIMARY KEY,\nplan_id INT REFERENCES training_plan(plan_id),\nlog_date DATE NOT NULL,\nworkout_description TEXT)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Coaches (\n    coach_id UUID PRIMARY KEY,\n    coach_name VARCHAR(255) NOT NULL,\n    coaching_specialty VARCHAR(255) NOT NULL\n);\n\nCREATE TABLE TrainingPlans (\n    plan_id UUID PRIMARY KEY,\n    plan_name VARCHAR(255) NOT NULL,\n    coach_id UUID REFERENCES Coaches(coach_id),\n    plan_description TEXT\n);\n\nCREATE TABLE WorkoutLogs (\n    log_id UUID PRIMARY KEY,\n    log_date DATE NOT NULL,\n    coach_id UUID REFERENCES Coaches(coach_id),\n    plan_id UUID REFERENCES TrainingPlans(plan_id),\n    log_details TEXT\n);\n\nCREATE TABLE Clients (\n    client_id UUID PRIMARY KEY,\n    client_name VARCHAR(255) NOT NULL,\n    coach_id UUID REFERENCES Coaches(coach_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Coaches (\n  coach_id INT PRIMARY KEY,\n  coach_name VARCHAR(50)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TrainingPlans (\n  plan_id INT PRIMARY KEY,\n  plan_name VARCHAR(50),\n  coach_id INT REFERENCES Coaches(coach_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WorkoutLogs (\n  log_id INT PRIMARY KEY,\n  log_datetime TIMESTAMP,\n  coach_id INT REFERENCES Coaches(coach_id),\n  plan_id INT REFERENCES TrainingPlans(plan_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Exercises (\n  exercise_id INT PRIMARY KEY,\n  exercise_name VARCHAR(50),\n  coach_id INT REFERENCES Coaches(coach_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE WorkoutDetails (\n  detail_id INT PRIMARY KEY,\n  log_id INT REFERENCES WorkoutLogs(log_id),\n  exercise_id INT REFERENCES Exercises(exercise_id),\n  sets INT,\n  reps INT\n);"
+      }
+    ]
+  }
+]

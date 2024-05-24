@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PatientData (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(255),\n  age INT,\n  gender VARCHAR(10),\n  disease VARCHAR(50),\n  treatment_plan TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    patient_name VARCHAR(50) NOT NULL,\n    age INT,\n    gender VARCHAR(10),\n    diagnosis VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE treatments (\n    treatment_id INT PRIMARY KEY,\n    patient_id INT,\n    treatment_name VARCHAR(50) NOT NULL,\n    treatment_date DATE,\n    duration_hours INT,\n    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PatientDemographics (\n  patient_id UUID PRIMARY KEY,\n  full_name VARCHAR(255),\n  age INT,\n  gender VARCHAR(10),\n  date_of_birth DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE PatientHealthRecords (\n  record_id UUID PRIMARY KEY,\n  patient_id UUID,\n  record_date DATE,\n  diagnosis VARCHAR(100),\n  treatment VARCHAR(100),\n  doctor_id UUID,\n  FOREIGN KEY (patient_id) REFERENCES PatientDemographics(patient_id),\n  FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Doctors (\n  doctor_id UUID PRIMARY KEY,\n  doctor_name VARCHAR(255),\n  specialization VARCHAR(100),\n  location VARCHAR(100)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE patients (\n  patient_id INT PRIMARY KEY,\n  patient_name VARCHAR(100),\n  age INT,\n  gender VARCHAR(10),\n  diagnosis VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE appointments (\n  appointment_id INT PRIMARY KEY,\n  patient_id INT REFERENCES patients(patient_id),\n  appointment_date DATE,\n  doctor_name VARCHAR(100),\n  diagnosis VARCHAR(100)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE treatments (\n  treatment_id INT PRIMARY KEY,\n  patient_id INT REFERENCES patients(patient_id),\n  treatment_date DATE,\n  treatment_type VARCHAR(100),\n  treatment_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE test_results (\n  result_id INT PRIMARY KEY,\n  patient_id INT REFERENCES patients(patient_id),\n  test_date DATE,\n  test_type VARCHAR(100),\n  test_result TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Patient (\n    patient_id UUID PRIMARY KEY,\n    patient_name VARCHAR,\n    age INT,\n    gender VARCHAR,\n    diagnosis VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MedicalHistory (\n    history_id UUID PRIMARY KEY,\n    patient_id UUID REFERENCES Patient(patient_id),\n    diagnosis_date DATE,\n    condition VARCHAR,\n    treatment VARCHAR,\n    physician VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE VitalSigns (\n    vital_id UUID PRIMARY KEY,\n    patient_id UUID REFERENCES Patient(patient_id),\n    record_date DATE,\n    heart_rate INT,\n    blood_pressure VARCHAR,\n    temperature FLOAT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE LabResults (\n    result_id UUID PRIMARY KEY,\n    patient_id UUID REFERENCES Patient(patient_id),\n    test_date DATE,\n    test_name VARCHAR,\n    value Numeric,\n    unit VARCHAR\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE TreatmentPlan (\n    plan_id UUID PRIMARY KEY,\n    patient_id UUID REFERENCES Patient(patient_id),\n    start_date DATE,\n    end_date DATE,\n    treatment_details VARCHAR\n);"
+      }
+    ]
+  }
+]

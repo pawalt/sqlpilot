@@ -1,0 +1,64 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    time_period_start TIMESTAMP,\n    time_period_end TIMESTAMP,\n    value DECIMAL(10, 2)\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_value DECIMAL,\n    time_period TIMESTAMP\n);\n\nCREATE TABLE benchmark_results (\n    result_id INT PRIMARY KEY,\n    benchmark_name VARCHAR(255),\n    execution_time DECIMAL,\n    time_started TIMESTAMP,\n    time_completed TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE performance_metrics ( \n    metric_id INT PRIMARY KEY, \n    metric_name VARCHAR(255), \n    metric_value DECIMAL(10,2), \n    time_period DATE \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE time_periods ( \n    period_id INT PRIMARY KEY, \n    period_name VARCHAR(255), \n    start_date DATE, \n    end_date DATE \n);"
+      },
+      {
+        "table_schema": "CREATE TABLE benchmark_results ( \n    result_id INT PRIMARY KEY, \n    metric_id INT, \n    period_id INT, \n    result_value DECIMAL(10,2), \n    FOREIGN KEY (metric_id) REFERENCES performance_metrics(metric_id), \n    FOREIGN KEY (period_id) REFERENCES time_periods(period_id) \n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_value INT,\n    time_period TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE time_periods (\n    time_period_id INT PRIMARY KEY,\n    start_date DATE,\n    end_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE benchmarking_results (\n    result_id INT PRIMARY KEY,\n    metric_id INT,\n    time_period_id INT,\n    execution_time DECIMAL,\n    CONSTRAINT fk_metric FOREIGN KEY (metric_id) REFERENCES performance_metrics(id),\n    CONSTRAINT fk_time_period FOREIGN KEY (time_period_id) REFERENCES time_periods(time_period_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE comparisons (\n    comparison_id INT PRIMARY KEY,\n    metric_id_1 INT,\n    metric_id_2 INT,\n    time_period_id INT,\n    comparison_result VARCHAR(255),\n    CONSTRAINT fk_metric_1 FOREIGN KEY (metric_id_1) REFERENCES performance_metrics(id),\n    CONSTRAINT fk_metric_2 FOREIGN KEY (metric_id_2) REFERENCES performance_metrics(id),\n    CONSTRAINT fk_time_period_comp FOREIGN KEY (time_period_id) REFERENCES time_periods(time_period_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE performance_metrics (\n    metric_id SERIAL PRIMARY KEY,\n    metric_name VARCHAR(50) NOT NULL,\n    metric_value FLOAT NOT NULL,\n    time_period TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE time_periods (\n    time_period_id SERIAL PRIMARY KEY,\n    time_start TIMESTAMP NOT NULL,\n    time_end TIMESTAMP NOT NULL,\n    time_description TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE benchmark_results (\n    result_id SERIAL PRIMARY KEY,\n    benchmark_name VARCHAR(50) NOT NULL,\n    benchmark_score FLOAT NOT NULL,\n    time_period_id INT NOT NULL,\n    FOREIGN KEY (time_period_id) REFERENCES time_periods(time_period_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE comparison_metrics (\n    comparison_id SERIAL PRIMARY KEY,\n    metric_id INT NOT NULL,\n    result_id INT NOT NULL,\n    FOREIGN KEY (metric_id) REFERENCES performance_metrics(metric_id),\n    FOREIGN KEY (result_id) REFERENCES benchmark_results(result_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE data_sources (\n    data_source_id SERIAL PRIMARY KEY,\n    data_source_name VARCHAR(50) NOT NULL,\n    data_source_type VARCHAR(50) NOT NULL,\n    data_source_description TEXT\n);\n"
+      }
+    ]
+  }
+]

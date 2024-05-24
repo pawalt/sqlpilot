@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE targeted_locations (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(100),\n    target_audience VARCHAR(50),\n    campaign_budget DECIMAL(10,2),\n    campaign_start_date DATE,\n    campaign_end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE targeted_locations (\n    location_id SERIAL PRIMARY KEY,\n    location_name VARCHAR(100) NOT NULL,\n    city VARCHAR(50) NOT NULL,\n    country VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_stunts (\n    stunt_id SERIAL PRIMARY KEY,\n    stunt_name VARCHAR(100) NOT NULL,\n    location_id INT REFERENCES targeted_locations(location_id),\n    stunt_date DATE,\n    stunt_description TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE targeted_locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(255) NOT NULL,\n  target_audience VARCHAR(100) NOT NULL,\n  budget DECIMAL(10, 2) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_stunts (\n  stunt_id INT PRIMARY KEY,\n  stunt_name VARCHAR(255) NOT NULL,\n  location_id INT,\n  stunt_date DATE NOT NULL,\n  FOREIGN KEY (location_id) REFERENCES targeted_locations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stunt_participants (\n  participant_id INT PRIMARY KEY,\n  stunt_id INT,\n  participant_name VARCHAR(100) NOT NULL,\n  participant_email VARCHAR(255) NOT NULL,\n  FOREIGN KEY (stunt_id) REFERENCES marketing_stunts(stunt_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE guerrilla_marketing_locations (\n  location_id INT PRIMARY KEY,\n  location_name VARCHAR(50),\n  target_audience VARCHAR(50),\n  stunt_description TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_teams (\n  team_id INT PRIMARY KEY,\n  team_name VARCHAR(50),\n  team_lead VARCHAR(50),\n  team_size INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE marketing_stunts (\n  stunt_id INT PRIMARY KEY,\n  stunt_name VARCHAR(50),\n  location_id INT,\n  team_id INT,\n  stunt_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE stunt_feedback (\n  feedback_id INT PRIMARY KEY,\n  stunt_id INT,\n  feedback_text TEXT,\n  feedback_rating INT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE TargetedLocations (\n location_id INT PRIMARY KEY,\n location_name VARCHAR(255),\n city VARCHAR(100),\n country VARCHAR(100)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MarketingStunts (\n stunt_id INT PRIMARY KEY,\n stunt_name VARCHAR(255),\n description TEXT,\n cost DECIMAL(10, 2),\n location_id INT,\n FOREIGN KEY (location_id) REFERENCES TargetedLocations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MarketingTeam (\n team_id INT PRIMARY KEY,\n team_name VARCHAR(255),\n team_lead VARCHAR(100),\n location_id INT,\n FOREIGN KEY (location_id) REFERENCES TargetedLocations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE MarketingCampaigns (\n campaign_id INT PRIMARY KEY,\n campaign_name VARCHAR(255),\n start_date DATE,\n end_date DATE,\n location_id INT,\n FOREIGN KEY (location_id) REFERENCES TargetedLocations(location_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE CampaignResults (\n result_id INT PRIMARY KEY,\n campaign_id INT,\n success_rate DECIMAL(5, 2),\n feedback TEXT,\n FOREIGN KEY (campaign_id) REFERENCES MarketingCampaigns(campaign_id)\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL DEFAULT now()\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(50) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT,\n    start_time TIMESTAMP,\n    end_time TIMESTAMP,\n    FOREIGN KEY (user_id) REFERENCES user_credentials(id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_logs (\n    log_id SERIAL PRIMARY KEY,\n    user_id INT,\n    log_timestamp TIMESTAMP NOT NULL,\n    log_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE user_roles (\n    role_id SERIAL PRIMARY KEY,\n    user_id INT,\n    role_name VARCHAR(50) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    user_id UUID PRIMARY KEY,\n    username VARCHAR(255) NOT NULL,\n    password VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_groups (\n    group_id UUID PRIMARY KEY,\n    group_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_permissions (\n    permission_id UUID PRIMARY KEY,\n    permission_name VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE user_credentials (\n    credential_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    group_id UUID NOT NULL,\n    permission_id UUID NOT NULL,\n    FOREIGN KEY (user_id) REFERENCES users(user_id),\n    FOREIGN KEY (group_id) REFERENCES user_groups(group_id),\n    FOREIGN KEY (permission_id) REFERENCES user_permissions(permission_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE users (\n    id INT PRIMARY KEY,\n    username VARCHAR(50) NOT NULL,\n    password VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_connections (\n    connection_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    connection_start TIMESTAMP,\n    connection_end TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_sessions (\n    session_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    session_start TIMESTAMP,\n    session_end TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_logs (\n    log_id INT PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    log_timestamp TIMESTAMP,\n    log_message TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE vpn_servers (\n    server_id INT PRIMARY KEY,\n    server_name VARCHAR(50) UNIQUE,\n    server_location VARCHAR(100),\n    server_status BOOLEAN\n);"
+      }
+    ]
+  }
+]

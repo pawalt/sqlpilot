@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_data (\n    signature_id INT PRIMARY KEY,\n    signature_name VARCHAR(255),\n    signature_date TIMESTAMP,\n    signature_description TEXT\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signatures (\n    signature_id INT PRIMARY KEY,\n    signature_text VARCHAR(255),\n    signature_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n    report_id INT PRIMARY KEY,\n    report_text VARCHAR(255),\n    report_date DATE,\n    signature_id INT,\n    FOREIGN KEY (signature_id) REFERENCES signatures(signature_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signatures (\n   id UUID PRIMARY KEY,\n   signature_data TEXT,\n   signature_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE investigations (\n   investigation_id UUID PRIMARY KEY,\n   investigator_name TEXT,\n   case_id UUID,\n   investigation_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE reports (\n   report_id UUID PRIMARY KEY,\n   investigation_id UUID,\n   report_data TEXT,\n   report_date TIMESTAMP\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signature_data (\n    signature_id INT PRIMARY KEY,\n    signature VARCHAR(255),\n    data_source VARCHAR(100),\n    timestamp TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE forensics_reports (\n    report_id INT PRIMARY KEY,\n    case_number VARCHAR(50),\n    analyst_name VARCHAR(100),\n    analyzed_data JSON,\n    report_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE trends_analysis (\n    analysis_id INT PRIMARY KEY,\n    report_id INT REFERENCES forensics_reports(report_id),\n    signature_id INT REFERENCES signature_data(signature_id),\n    trend_score FLOAT,\n    analysis_date DATE\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE signature_trends (\n    trend_id INT PRIMARY KEY,\n    signature_id INT REFERENCES signature_data(signature_id),\n    trend_description TEXT,\n    trend_start_date DATE,\n    trend_end_date DATE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE signatures (\n    signature_id SERIAL PRIMARY KEY,\n    signature_text TEXT NOT NULL,\n    signature_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE signers (\n    signer_id SERIAL PRIMARY KEY,\n    signer_name TEXT NOT NULL,\n    signing_date DATE NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE locations (\n    location_id SERIAL PRIMARY KEY,\n    location_name TEXT NOT NULL,\n    location_latitude FLOAT,\n    location_longitude FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_reports (\n    report_id SERIAL PRIMARY KEY,\n    signature_id INT NOT NULL,\n    signer_id INT NOT NULL,\n    location_id INT NOT NULL,\n    analysis_date TIMESTAMP NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE investigation_logs (\n    log_id SERIAL PRIMARY KEY,\n    report_id INT NOT NULL,\n    investigator_name TEXT NOT NULL,\n    investigation_notes TEXT\n);\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_transport_routes (\n  route_id INT PRIMARY KEY,\n  route_name TEXT,\n  start_location TEXT,\n  end_location TEXT,\n  distance_km DECIMAL\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE public_transportation_routes (\n  route_id INT PRIMARY KEY,\n  route_name TEXT,\n  starting_point TEXT,\n  ending_point TEXT,\n  distance_miles FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE transportation_schedule (\n  schedule_id INT PRIMARY KEY,\n  route_id INT REFERENCES public_transportation_routes(route_id),\n  start_time TIME,\n  end_time TIME,\n  frequency_per_day INT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE PublicTransportationRoutes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(100),\n  route_type VARCHAR(50),\n  route_distance FLOAT,\n  start_point VARCHAR(100),\n  end_point VARCHAR(100)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TransportationSchedule (\n  schedule_id INT PRIMARY KEY,\n  route_id INT,\n  day_of_week VARCHAR(20),\n  departure_time TIME,\n  arrival_time TIME,\n  FOREIGN KEY (route_id) REFERENCES PublicTransportationRoutes(route_id)\n)"
+      },
+      {
+        "table_schema": "CREATE TABLE TransitStations (\n  station_id INT PRIMARY KEY,\n  station_name VARCHAR(100),\n  station_location VARCHAR(100),\n  platform_count INT,\n  capacity INT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Routes (\n    route_id INT PRIMARY KEY,\n    route_name VARCHAR(255) NOT NULL,\n    start_location VARCHAR(255) NOT NULL,\n    end_location VARCHAR(255) NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Stops (\n    stop_id INT PRIMARY KEY,\n    stop_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    time_estimated TIME NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Schedules (\n    schedule_id INT PRIMARY KEY,\n    route_id INT NOT NULL,\n    stop_id INT NOT NULL,\n    departure_time TIME NOT NULL,\n    arrival_time TIME NOT NULL\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Vehicles (\n    vehicle_id INT PRIMARY KEY,\n    vehicle_type VARCHAR(255) NOT NULL,\n    capacity INT NOT NULL,\n    current_location VARCHAR(255) NOT NULL\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Routes (\n  route_id INT PRIMARY KEY,\n  route_name VARCHAR(50) NOT NULL,\n  start_location VARCHAR(100) NOT NULL,\n  end_location VARCHAR(100) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Stops (\n  stop_id INT PRIMARY KEY,\n  stop_name VARCHAR(50) NOT NULL,\n  location VARCHAR(100) NOT NULL,\n  route_id INT,\n  FOREIGN KEY (route_id) REFERENCES Routes(route_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Schedules (\n  schedule_id INT PRIMARY KEY,\n  route_id INT,\n  stop_id INT,\n  departure_time TIME NOT NULL,\n  FOREIGN KEY (route_id) REFERENCES Routes(route_id),\n  FOREIGN KEY (stop_id) REFERENCES Stops(stop_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Vehicles (\n  vehicle_id INT PRIMARY KEY,\n  vehicle_type VARCHAR(50) NOT NULL,\n  route_id INT,\n  FOREIGN KEY (route_id) REFERENCES Routes(route_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Passengers (\n  passenger_id INT PRIMARY KEY,\n  passenger_name VARCHAR(50) NOT NULL,\n  email VARCHAR(100) UNIQUE\n);"
+      }
+    ]
+  }
+]

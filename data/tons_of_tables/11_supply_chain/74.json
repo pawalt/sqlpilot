@@ -1,0 +1,58 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_contracts (\n contract_id INT PRIMARY KEY,\n supplier_name VARCHAR(50) NOT NULL,\n contract_start_date DATE NOT NULL,\n contract_end_date DATE NOT NULL,\n renewal_terms TEXT,\n compliance_documents TEXT\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_contracts (\n    id UUID PRIMARY KEY,\n    supplier_name VARCHAR(255),\n    contract_start_date DATE,\n    contract_end_date DATE,\n    contract_amount DECIMAL(10, 2)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents (\n    document_id UUID PRIMARY KEY,\n    contract_id UUID,\n    document_type VARCHAR(50),\n    document_date DATE,\n    document_path VARCHAR(255)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_contracts (\n    contract_id INT PRIMARY KEY,\n    supplier_name VARCHAR(50),\n    contract_start_date DATE,\n    contract_end_date DATE,\n    total_value DECIMAL(10, 2)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE renewals (\n    renewal_id INT PRIMARY KEY,\n    contract_id INT,\n    renewal_date DATE,\n    renewal_value DECIMAL(10, 2),\n    FOREIGN KEY (contract_id) REFERENCES supplier_contracts(contract_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents (\n    document_id INT PRIMARY KEY,\n    contract_id INT,\n    document_type VARCHAR(50),\n    document_status VARCHAR(20),\n    document_expiry_date DATE,\n    FOREIGN KEY (contract_id) REFERENCES supplier_contracts(contract_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE supplier_contracts (\n    contract_id SERIAL PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    contract_start DATE NOT NULL,\n    contract_end DATE NOT NULL,\n    compliance_document TEXT,\n    \n);\n\nCREATE TABLE contract_renewals (\n    renewal_id SERIAL PRIMARY KEY,\n    contract_id INT NOT NULL,\n    renewal_date DATE NOT NULL,\n    renewal_terms TEXT,\n    \n);\n\nCREATE TABLE contract_compliance (\n    compliance_id SERIAL PRIMARY KEY,\n    contract_id INT NOT NULL,\n    compliance_type VARCHAR(50) NOT NULL,\n    compliance_status BOOLEAN,\n    compliance_expiration DATE,\n    \n);\n\nCREATE TABLE contract_documents (\n    document_id SERIAL PRIMARY KEY,\n    contract_id INT NOT NULL,\n    document_name VARCHAR(100) NOT NULL,\n    document_type VARCHAR(50),\n    document_link TEXT\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE suppliers (\n    supplier_id INT PRIMARY KEY,\n    supplier_name VARCHAR(255) NOT NULL,\n    supplier_contact VARCHAR(255) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE contracts (\n    contract_id INT PRIMARY KEY,\n    supplier_id INT NOT NULL,\n    contract_start_date DATE,\n    contract_end_date DATE,\n    CONSTRAINT fk_supplier_contract FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE renewals (\n    renewal_id INT PRIMARY KEY,\n    contract_id INT NOT NULL,\n    renewal_date DATE,\n    CONSTRAINT fk_contract_renewal FOREIGN KEY (contract_id) REFERENCES contracts(contract_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE compliance_documents (\n    doc_id INT PRIMARY KEY,\n    renewal_id INT NOT NULL,\n    doc_type VARCHAR(255),\n    doc_content TEXT,\n    CONSTRAINT fk_renewal_doc FOREIGN KEY (renewal_id) REFERENCES renewals(renewal_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE regulations (\n    regulation_id INT PRIMARY KEY,\n    regulation_name VARCHAR(255) NOT NULL,\n    regulation_description TEXT\n);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_address (\n  id UUID PRIMARY KEY,\n  address VARCHAR(50) NOT NULL,\n  owner_id UUID NOT NULL,\n  created_at TIMESTAMP DEFAULT NOW()\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_address (\n    id UUID PRIMARY KEY,\n    address VARCHAR(255) NOT NULL,\n    owner_id UUID NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_owner (\n    id UUID PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_addresses (\n    id INT PRIMARY KEY,\n    address VARCHAR(255) NOT NULL,\n    owner_id INT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_owners (\n    id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) UNIQUE,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE address_ownership (\n    address_id INT,\n    owner_id INT,\n    PRIMARY KEY (address_id, owner_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_address (\n    address_id SERIAL PRIMARY KEY,\n    owner_name TEXT NOT NULL,\n    address TEXT UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE address_ownership (\n    ownership_id SERIAL PRIMARY KEY,\n    address_id INT REFERENCES wallet_address(address_id),\n    owner_id INT REFERENCES owner(owner_id)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE owner (\n    owner_id SERIAL PRIMARY KEY,\n    owner_name TEXT UNIQUE NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_transaction (\n    transaction_id SERIAL PRIMARY KEY,\n    transaction_date DATE NOT NULL,\n    amount DECIMAL(10, 2) NOT NULL,\n    sender_id INT REFERENCES owner(owner_id),\n    receiver_id INT REFERENCES owner(owner_id),\n    transaction_type VARCHAR(20) NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE wallet_addresses (\n    wallet_id UUID PRIMARY KEY,\n    address VARCHAR(255) NOT NULL,\n    owner_name VARCHAR(100) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_owners (\n    owner_id UUID PRIMARY KEY,\n    full_name VARCHAR(150) NOT NULL,\n    email VARCHAR(255) NOT NULL UNIQUE,\n    phone_number VARCHAR(20) NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_transactions (\n    transaction_id UUID PRIMARY KEY,\n    wallet_id UUID REFERENCES wallet_addresses(wallet_id),\n    amount DECIMAL(15, 2) NOT NULL,\n    transaction_type VARCHAR(50) NOT NULL,\n    transaction_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_logs (\n    log_id UUID PRIMARY KEY,\n    transaction_id UUID REFERENCES wallet_transactions(transaction_id),\n    log_message TEXT NOT NULL,\n    log_date TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE wallet_balances (\n    wallet_id UUID PRIMARY KEY,\n    balance DECIMAL(15, 2) NOT NULL,\n    last_updated TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  }
+]

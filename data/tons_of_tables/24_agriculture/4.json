@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE SoilSamples (\n  SampleID UUID PRIMARY KEY,\n  FieldID UUID NOT NULL,\n  SampleDate DATE NOT NULL,\n  pH FLOAT NOT NULL,\n  MoistureLevel FLOAT NOT NULL,\n  NutrientLevels JSONB\n)"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE field_data (\n  id INT PRIMARY KEY,\n  field_name VARCHAR(50),\n  sample_date TIMESTAMP,\n  pH_level FLOAT,\n  nutrient_levels JSONB\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE research_team (\n  researcher_id INT PRIMARY KEY,\n  researcher_name VARCHAR(50),\n  field_of_study VARCHAR(50),\n  contact_email VARCHAR(50)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE Field_Samples (\n    sample_id INT PRIMARY KEY,\n    field_id INT,\n    sample_date DATE,\n    pH_level FLOAT,\n    organic_matter FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Fields (\n    field_id INT PRIMARY KEY,\n    field_name VARCHAR(50) NOT NULL,\n    field_location VARCHAR(100),\n    field_size FLOAT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE Researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name VARCHAR(50) NOT NULL,\n    researcher_email VARCHAR(100),\n    researcher_affiliation VARCHAR(100)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fields (\n    field_id INT PRIMARY KEY,\n    field_name TEXT NOT NULL,\n    soil_type TEXT,\n    soil_ph DOUBLE\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE soil_samples (\n    sample_id INT PRIMARY KEY,\n    field_id INT,\n    sample_date DATE,\n    ph_level DOUBLE,\n    FOREIGN KEY (field_id) REFERENCES fields(field_id)\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (\n    researcher_id INT PRIMARY KEY,\n    researcher_name TEXT NOT NULL,\n    research_area TEXT\n);\n"
+      },
+      {
+        "table_schema": "CREATE TABLE research_results (\n    result_id INT PRIMARY KEY,\n    researcher_id INT,\n    field_id INT,\n    sample_id INT,\n    result_description TEXT,\n    FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id),\n    FOREIGN KEY (field_id) REFERENCES fields(field_id),\n    FOREIGN KEY (sample_id) REFERENCES soil_samples(sample_id)\n);\n"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE fields (field_id INT PRIMARY KEY, field_name STRING, location STRING)"
+      },
+      {
+        "table_schema": "CREATE TABLE soil_samples (sample_id INT PRIMARY KEY, field_id INT, sample_date DATE, ph_level FLOAT, moisture_percentage FLOAT, FOREIGN KEY (field_id) REFERENCES fields(field_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE researchers (researcher_id INT PRIMARY KEY, researcher_name STRING, specialization STRING)"
+      },
+      {
+        "table_schema": "CREATE TABLE research_projects (project_id INT PRIMARY KEY, project_name STRING, start_date DATE, end_date DATE, researcher_id INT, FOREIGN KEY (researcher_id) REFERENCES researchers(researcher_id))"
+      },
+      {
+        "table_schema": "CREATE TABLE analysis_results (result_id INT PRIMARY KEY, sample_id INT, analysis_date DATE, nutrient_level FLOAT, FOREIGN KEY (sample_id) REFERENCES soil_samples(sample_id))"
+      }
+    ]
+  }
+]

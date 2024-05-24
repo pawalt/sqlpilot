@@ -1,0 +1,67 @@
+[
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE tracking_model_versioning (\n    experiment_id INT PRIMARY KEY,\n    model_version INT NOT NULL,\n    experiment_result JSONB\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE version_tracking (\n    version_id INT PRIMARY KEY,\n    model_name VARCHAR(50),\n    model_version VARCHAR(20),\n    status VARCHAR(10)\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    experiment_id INT PRIMARY KEY,\n    version_id INT,\n    experiment_date DATE,\n    result VARCHAR(100),\n    FOREIGN KEY (version_id) REFERENCES version_tracking(version_id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_versions (\n    id SERIAL PRIMARY KEY,\n    version_number INT NOT NULL,\n    model_name VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    id SERIAL PRIMARY KEY,\n    experiment_id INT NOT NULL,\n    model_id INT NOT NULL,\n    result_value FLOAT NOT NULL,\n    created_at TIMESTAMP NOT NULL\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_logs (\n    id SERIAL PRIMARY KEY,\n    experiment_id INT NOT NULL,\n    log_message TEXT,\n    log_timestamp TIMESTAMP NOT NULL\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE ModelVersions (\n    id INT PRIMARY KEY,\n    version_number INT NOT NULL,\n    model_name VARCHAR(255) NOT NULL,\n    updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ExperimentResults (\n    id INT PRIMARY KEY,\n    experiment_id INT NOT NULL,\n    result FLOAT NOT NULL,\n    experiment_date DATE,\n    notes TEXT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE Experiments (\n    id INT PRIMARY KEY,\n    experiment_name VARCHAR(255) NOT NULL,\n    experiment_type VARCHAR(50) NOT NULL,\n    started_at TIMESTAMP,\n    ended_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE ModelVersionExperiments (\n    id INT PRIMARY KEY,\n    model_version_id INT NOT NULL,\n    experiment_id INT NOT NULL,\n    FOREIGN KEY (model_version_id) REFERENCES ModelVersions(id),\n    FOREIGN KEY (experiment_id) REFERENCES Experiments(id)\n);"
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table_schema": "CREATE TABLE model_versioning (\n    id INT PRIMARY KEY,\n    model_name VARCHAR(255),\n    version_number INT,\n    created_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_results (\n    id INT PRIMARY KEY,\n    experiment_name VARCHAR(255),\n    result_value FLOAT,\n    experiment_date DATE,\n    model_id INT\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE model_history (\n    id INT PRIMARY KEY,\n    model_id INT,\n    version_number INT,\n    created_at TIMESTAMP,\n    last_updated_at TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE experiment_logs (\n    id INT PRIMARY KEY,\n    experiment_id INT,\n    log_message TEXT,\n    log_date TIMESTAMP\n);"
+      },
+      {
+        "table_schema": "CREATE TABLE monitoring_data (\n    id INT PRIMARY KEY,\n    metric_name VARCHAR(255),\n    metric_value FLOAT,\n    recorded_at TIMESTAMP\n);"
+      }
+    ]
+  }
+]
