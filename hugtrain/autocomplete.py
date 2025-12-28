@@ -13,9 +13,7 @@ def get_tokenizer():
     )
     return tokenizer
 
-def get_model():
-    # checkpoint_loc = "tosave/embd_15M/checkpoint-7500"
-    checkpoint_loc = "output/checkpoint-29500"
+def get_model(checkpoint_loc: str = "../downloaded_model"):
     model = LlamaForCausalLM.from_pretrained(checkpoint_loc)
     model.eval()
     return model
