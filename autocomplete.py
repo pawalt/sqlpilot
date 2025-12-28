@@ -20,6 +20,7 @@ Usage:
 import sys
 import curses
 import threading
+import time
 import torch
 from transformers import LlamaForCausalLM, LlamaTokenizerFast
 
@@ -210,6 +211,81 @@ class CachedCompleter:
         return prefix_allowed_tokens
 
 
+class DebouncedCompleter:
+    """
+    Wraps a completer with debouncing and background generation.
+    
+    - Debouncing: waits for user to stop typing before generating
+    - Background: generation runs in a thread, UI stays responsive
+    - Staleness: ignores results if input changed while generating
+    """
+    
+    def __init__(self, completer, debounce_ms: int = 150):
+        self.completer = completer
+        self.debounce_ms = debounce_ms
+        
+        # Current state
+        self.current_input = ""
+        self.current_suggestions = []
+        self.lock = threading.Lock()
+        
+        # Generation tracking
+        self.generation_id = 0  # Incremented on each input change
+        self.generating = False
+        
+        # Debounce timer
+        self.timer = None
+    
+    def update_input(self, text: str):
+        """Called when user types. Debounces and triggers background generation."""
+        with self.lock:
+            self.current_input = text
+            self.generation_id += 1
+            gen_id = self.generation_id
+        
+        # Cancel pending timer
+        if self.timer:
+            self.timer.cancel()
+        
+        # Start new debounce timer
+        self.timer = threading.Timer(
+            self.debounce_ms / 1000.0,
+            self._start_generation,
+            args=(text, gen_id)
+        )
+        self.timer.start()
+    
+    def _start_generation(self, text: str, gen_id: int):
+        """Start generation in background thread."""
+        # Check if still current
+        with self.lock:
+            if gen_id != self.generation_id:
+                return  # Input changed, don't generate
+            self.generating = True
+        
+        # Run generation (this is the slow part)
+        try:
+            suggestions = self.completer.get_predictions(text)
+        except Exception:
+            suggestions = []
+        
+        # Only update if still current
+        with self.lock:
+            if gen_id == self.generation_id:
+                self.current_suggestions = suggestions
+            self.generating = False
+    
+    def get_suggestions(self) -> list[str]:
+        """Get current suggestions (non-blocking)."""
+        with self.lock:
+            return list(self.current_suggestions)
+    
+    def is_generating(self) -> bool:
+        """Check if generation is in progress."""
+        with self.lock:
+            return self.generating
+
+
 def get_multiline_input(prompt):
     print(prompt)
     print("(Enter an empty line when done)")
@@ -222,46 +298,54 @@ def get_multiline_input(prompt):
     return '\n'.join(lines).strip()
 
 
-def update_suggestions_thread(completer, text_box, stdscr, height, table_data):
-    try:
-        suggestions = completer.get_predictions(text_box)
-        stdscr.clear()
-        stdscr.addstr(0, 0, "Query: " + text_box)
-        for i, suggestion in enumerate(suggestions[:height - 3]):
-            if i == 0:
-                stdscr.addstr(i + 2, 0, suggestion, curses.color_pair(2))
-            else:
-                stdscr.addstr(i + 2, 0, suggestion)
-
-        # Show the table schema below
-        START_BOX = 7
-        stdscr.addstr(START_BOX, 0, "----------------------------------")
-        stdscr.addstr(START_BOX + 1, 0, "Table Schema:")
-        for i, line in enumerate(table_data.split('\n')[:height - START_BOX - 3]):
-            stdscr.addstr(START_BOX + i + 2, 0, line)
-
-        stdscr.refresh()
-    except Exception:
-        pass  # Ignore errors in background thread
-
-
 def main_curses(stdscr, completer, table_data):
     curses.curs_set(1)
-    stdscr.nodelay(0)
+    stdscr.nodelay(1)  # Non-blocking input
+    stdscr.timeout(50)  # Poll every 50ms for UI updates
 
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_WHITE)
+    curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)  # For "generating..." indicator
 
     height, width = stdscr.getmaxyx()
     text_box = ""
+    
+    # Wrap completer with debouncing
+    debounced = DebouncedCompleter(completer, debounce_ms=150)
+    last_suggestions = []
+
+    def redraw():
+        """Redraw the entire screen."""
+        try:
+            stdscr.clear()
+            
+            # Query line
+            query_line = "Query: " + text_box
+            if debounced.is_generating():
+                query_line += " (generating...)"
+            stdscr.addstr(0, 0, query_line[:width-1])
+            
+            # Suggestions
+            suggestions = debounced.get_suggestions()
+            for i, suggestion in enumerate(suggestions[:5]):
+                if i == 0:
+                    stdscr.addstr(i + 2, 0, suggestion[:width-1], curses.color_pair(2))
+                else:
+                    stdscr.addstr(i + 2, 0, suggestion[:width-1])
+            
+            # Table schema
+            START_BOX = 8
+            stdscr.addstr(START_BOX, 0, "-" * min(34, width-1))
+            stdscr.addstr(START_BOX + 1, 0, "Table Schema:")
+            for i, line in enumerate(table_data.split('\n')[:height - START_BOX - 3]):
+                stdscr.addstr(START_BOX + i + 2, 0, line[:width-1])
+            
+            stdscr.refresh()
+        except curses.error:
+            pass  # Ignore curses errors (e.g., writing past screen edge)
 
     # Initial display
-    stdscr.addstr(0, 0, "Query: ")
-    stdscr.addstr(7, 0, "----------------------------------")
-    stdscr.addstr(8, 0, "Table Schema:")
-    for i, line in enumerate(table_data.split('\n')[:height - 10]):
-        stdscr.addstr(9 + i, 0, line)
-    stdscr.refresh()
+    redraw()
 
     while True:
         key = stdscr.getch()
@@ -270,14 +354,13 @@ def main_curses(stdscr, completer, table_data):
             break
         elif key == curses.KEY_BACKSPACE or key == 127:
             text_box = text_box[:-1]
-        elif key != -1 and chr(key).isprintable():
+            debounced.update_input(text_box)
+        elif key != -1 and 32 <= key <= 126:  # Printable ASCII
             text_box += chr(key)
-
-        threading.Thread(
-            target=update_suggestions_thread,
-            args=(completer, text_box, stdscr, height, table_data),
-            daemon=True,
-        ).start()
+            debounced.update_input(text_box)
+        
+        # Always redraw to show updated suggestions and generating status
+        redraw()
 
 
 def run_tests(model_path: str = "downloaded_model"):
