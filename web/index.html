@@ -338,8 +338,8 @@ CREATE TABLE orders (
         // Configuration
         const MODEL_PATH = './model/';
         const DEBOUNCE_MS = 200;
-        const MAX_NEW_TOKENS = 30;
-        const TOP_K = 50;
+        const MAX_NEW_TOKENS = 20;  // Reduced for faster generation
+        const TOP_K = 40;
 
         // DOM Elements
         const statusDot = document.getElementById('status-dot');
@@ -548,6 +548,46 @@ ${statement}`;
             return { partialWord: '', statementForModel: statement };
         }
 
+        // Extract completion from model output
+        function extractCompletion(outputs, promptLength, partialWord) {
+            let outputIds;
+            if (outputs.dims && outputs.dims.length === 2) {
+                outputIds = Array.from(outputs.data).map(x => Number(x));
+            } else if (outputs.data) {
+                outputIds = Array.from(outputs.data).map(x => Number(x));
+            } else {
+                return null;
+            }
+            
+            const generatedIds = outputIds.slice(promptLength);
+            const generated = tokenizer.decode(generatedIds, { skip_special_tokens: true });
+            
+            // Clean up: take first line, trim
+            let completion = generated.split('\n')[0].trim();
+            const completionClean = completion.replace(/\s+/g, ' ');
+            
+            // Strip the partial word from the beginning if present
+            if (partialWord) {
+                const partialLower = partialWord.toLowerCase();
+                const partialNoSpace = partialLower.replace(/\s+/g, '');
+                const completionNoSpace = completionClean.toLowerCase().replace(/\s+/g, '');
+                
+                if (completionNoSpace.startsWith(partialNoSpace)) {
+                    let charCount = 0;
+                    let endIndex = 0;
+                    for (let j = 0; j < completionClean.length && charCount < partialWord.length; j++) {
+                        if (completionClean[j] !== ' ') charCount++;
+                        endIndex = j + 1;
+                    }
+                    completion = completionClean.slice(endIndex).trim();
+                } else {
+                    completion = completionClean;
+                }
+            }
+            
+            return completion || null;
+        }
+
         async function generateSuggestions(schema, statement, generationId) {
             if (!model || !tokenizer) return;
             
@@ -573,8 +613,7 @@ ${statement}`;
                     logitsProcessorList.push(processor);
                 }
                 
-                // Run multiple generations in parallel for diverse outputs
-                // (ONNX models in transformers.js don't support num_return_sequences > 1)
+                // Helper to generate with a specific temperature
                 const generateOne = async (temp) => {
                     const params = {
                         ...inputs,
@@ -583,7 +622,6 @@ ${statement}`;
                     };
                     
                     if (temp === 0) {
-                        // Greedy decoding for temp=0
                         params.do_sample = false;
                     } else {
                         params.do_sample = true;
@@ -594,78 +632,38 @@ ${statement}`;
                     return await model.generate(params);
                 };
                 
-                // Use temperatures from 0 (greedy/deterministic) to higher for diversity
-                const temperatures = [0, 0.5, 0.8, 1.0, 1.2];
-                const allOutputs = await Promise.all(
-                    temperatures.map(t => generateOne(t))
-                );
+                // PROGRESSIVE GENERATION: Show greedy result first, then add more
+                // This makes the UI feel much faster
                 
-                // Check if this generation is still current
-                if (generationId !== currentGenerationId) {
-                    return; // Stale result, discard
+                // Step 1: Greedy generation (fastest, most likely)
+                const greedyOutput = await generateOne(0);
+                
+                if (generationId !== currentGenerationId) return;
+                
+                const greedyCompletion = extractCompletion(greedyOutput, promptLength, partialWord);
+                if (greedyCompletion) {
+                    suggestions = [greedyCompletion];
+                    selectedSuggestionIndex = 0;
+                    renderSuggestions();
                 }
                 
-                // Convert each output to a sequence
-                let outputSequences = [];
-                for (const outputs of allOutputs) {
-                    if (outputs.dims && outputs.dims.length === 2) {
-                        const data = Array.from(outputs.data).map(x => Number(x));
-                        outputSequences.push(data);
-                    } else if (outputs.data) {
-                        outputSequences.push(Array.from(outputs.data).map(x => Number(x)));
+                // Step 2: Generate more diverse options in background
+                // Only generate 2 more to keep it fast
+                const moreTemps = [0.7, 1.0];
+                const moreOutputs = await Promise.all(moreTemps.map(t => generateOne(t)));
+                
+                if (generationId !== currentGenerationId) return;
+                
+                // Add new completions
+                const allCompletions = greedyCompletion ? [greedyCompletion] : [];
+                for (const output of moreOutputs) {
+                    const completion = extractCompletion(output, promptLength, partialWord);
+                    if (completion && !allCompletions.includes(completion)) {
+                        allCompletions.push(completion);
                     }
                 }
                 
-                // Extract completions
-                let completions = [];
-                for (let i = 0; i < outputSequences.length; i++) {
-                    const outputIds = outputSequences[i].map(x => Number(x));
-                    const generatedIds = outputIds.slice(promptLength);
-                    const generated = tokenizer.decode(generatedIds, { skip_special_tokens: true });
-                    
-                    // Clean up: take first line, trim
-                    let completion = generated.split('\n')[0].trim();
-                    
-                    // Remove spaces inserted by tokenizer between characters
-                    // This handles cases where "email" becomes "e m a i l"
-                    const completionClean = completion.replace(/\s+/g, ' ');
-                    
-                    // Strip the partial word from the beginning if present
-                    // Need to handle both with and without spaces
-                    if (partialWord) {
-                        const partialLower = partialWord.toLowerCase();
-                        const completionLower = completionClean.toLowerCase();
-                        
-                        // Check if completion starts with partial (possibly with spaces)
-                        // e.g., partial="email", completion="e m a i l something" -> "something"
-                        const partialNoSpace = partialLower.replace(/\s+/g, '');
-                        const completionNoSpace = completionLower.replace(/\s+/g, '');
-                        
-                        if (completionNoSpace.startsWith(partialNoSpace)) {
-                            // Find where the partial word ends in the original completion
-                            let charCount = 0;
-                            let endIndex = 0;
-                            for (let j = 0; j < completionClean.length && charCount < partialWord.length; j++) {
-                                if (completionClean[j] !== ' ') {
-                                    charCount++;
-                                }
-                                endIndex = j + 1;
-                            }
-                            completion = completionClean.slice(endIndex).trim();
-                        } else {
-                            completion = completionClean;
-                        }
-                    }
-                    
-                    if (completion) {
-                        completions.push(completion);
-                    }
-                }
-                
-                // Dedupe and filter empty
-                const uniqueCompletions = [...new Set(completions)].filter(c => c.length > 0);
-                
-                suggestions = uniqueCompletions.slice(0, 5);
+                suggestions = allCompletions.slice(0, 5);
                 selectedSuggestionIndex = 0;
                 renderSuggestions();
                 
