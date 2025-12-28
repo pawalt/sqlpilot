@@ -339,8 +339,7 @@ CREATE TABLE orders (
         const MODEL_PATH = './model/';
         const DEBOUNCE_MS = 200;
         const MAX_NEW_TOKENS = 30;
-        const NUM_BEAMS = 1;  // Disable beam search for debugging
-        const NUM_RETURN_SEQUENCES = 1;
+        const TOP_K = 50;
 
         // DOM Elements
         const statusDot = document.getElementById('status-dot');
@@ -394,11 +393,6 @@ CREATE TABLE orders (
                 
                 // Precompute allowed IDs for first step
                 this.firstStepAllowed = this._computeAllowedIds(this.partial);
-                console.log('First step allowed for "' + this.partial + '":', this.firstStepAllowed.length, 'tokens');
-                
-                // Show what tokens are allowed
-                const sampleTokens = this.firstStepAllowed.slice(0, 5).map(id => [id, this.vocabArray[id]]);
-                console.log('Sample allowed tokens:', sampleTokens);
             }
 
             _computeAllowedIds(remainingLower) {
@@ -461,7 +455,6 @@ CREATE TABLE orders (
                 if (generatedCount === 0) {
                     // First token: use precomputed allowed set
                     if (this.firstStepAllowed.length > 0) {
-                        console.log('Step 0: Masking except', this.firstStepAllowed.length, 'tokens for "' + this.partial + '"');
                         this._maskExcept(logits, this.firstStepAllowed);
                     }
                     return logits;
@@ -472,8 +465,6 @@ CREATE TABLE orders (
                 const generated = this.tokenizer.decode(genIds, { skip_special_tokens: true });
                 const generatedClean = generated.replace(/\s+/g, '').toLowerCase();
 
-                console.log('Step', generatedCount, '- Generated:', JSON.stringify(generated), 'Clean:', generatedClean, 'Want:', this.partial);
-
                 // If we've satisfied the partial word, stop constraining
                 if (generatedClean.length >= this.partial.length) {
                     return logits;
@@ -482,8 +473,6 @@ CREATE TABLE orders (
                 // Still building: constrain based on remaining suffix
                 const remaining = this.partial.slice(generatedClean.length);
                 const allowed = this._computeAllowedIds(remaining);
-                
-                console.log('Remaining:', remaining, 'Allowed:', allowed.length);
                 
                 if (allowed.length > 0) {
                     this._maskExcept(logits, allowed);
@@ -498,33 +487,8 @@ CREATE TABLE orders (
             try {
                 updateStatus('Loading model...', 'loading');
                 
-                console.log('Loading model from:', MODEL_PATH);
                 model = await AutoModelForCausalLM.from_pretrained(MODEL_PATH);
-                console.log('Model loaded:', model);
-                
                 tokenizer = await AutoTokenizer.from_pretrained(MODEL_PATH);
-                console.log('Tokenizer loaded:', tokenizer);
-                
-                // Check vocab access - try different paths
-                let vocabMap = tokenizer.model?.vocab;
-                console.log('tokenizer.model:', tokenizer.model);
-                console.log('tokenizer.model.vocab:', vocabMap);
-                
-                // If vocab is not a Map, try to find it elsewhere
-                if (!vocabMap || typeof vocabMap.entries !== 'function') {
-                    // Try other common locations
-                    vocabMap = tokenizer.vocab || tokenizer._vocab || null;
-                    console.log('Trying alternative vocab locations:', vocabMap);
-                }
-                
-                if (vocabMap) {
-                    // Check the structure
-                    const entries = vocabMap.entries ? [...vocabMap.entries()].slice(0, 5) : Object.entries(vocabMap).slice(0, 5);
-                    console.log('Sample vocab entries:', entries);
-                    console.log('First entry types:', entries[0] ? [typeof entries[0][0], typeof entries[0][1]] : 'empty');
-                } else {
-                    console.warn('Could not access tokenizer vocab - will build manually');
-                }
                 
                 updateStatus('Ready', 'ready');
             } catch (error) {
@@ -585,10 +549,7 @@ ${statement}`;
         }
 
         async function generateSuggestions(schema, statement, generationId) {
-            if (!model || !tokenizer) {
-                console.log('Model or tokenizer not ready');
-                return;
-            }
+            if (!model || !tokenizer) return;
             
             // Show generating indicator
             showGeneratingIndicator();
@@ -596,68 +557,64 @@ ${statement}`;
             try {
                 // Handle partial word at end of statement
                 const { partialWord, statementForModel } = findPartialWord(statement);
-                console.log('Partial word:', partialWord, 'Statement for model:', statementForModel);
                 
                 // Build prompt WITHOUT the partial word
                 const prompt = buildPrompt(schema, statementForModel);
-                console.log('Prompt length:', prompt.length);
                 
                 // Tokenize prompt
                 const inputs = tokenizer(prompt, { return_tensors: 'pt' });
-                console.log('Inputs:', inputs);
                 const promptLength = inputs.input_ids.dims ? inputs.input_ids.dims[1] : inputs.input_ids.size;
                 
                 // Create constraint processor if we have a partial word
                 let logitsProcessorList = null;
                 if (partialWord) {
-                    console.log('Creating prefix constraint for:', partialWord);
                     const processor = new PrefixConstraintProcessor(tokenizer, partialWord, promptLength);
                     logitsProcessorList = new LogitsProcessorList();
                     logitsProcessorList.push(processor);
                 }
                 
-                console.log('Generating with prompt length:', promptLength);
+                // Run multiple generations in parallel for diverse outputs
+                // (ONNX models in transformers.js don't support num_return_sequences > 1)
+                const generateOne = async (temp) => {
+                    const params = {
+                        ...inputs,
+                        max_new_tokens: MAX_NEW_TOKENS,
+                        logits_processor: logitsProcessorList,
+                    };
+                    
+                    if (temp === 0) {
+                        // Greedy decoding for temp=0
+                        params.do_sample = false;
+                    } else {
+                        params.do_sample = true;
+                        params.temperature = temp;
+                        params.top_k = TOP_K;
+                    }
+                    
+                    return await model.generate(params);
+                };
                 
-                // Generate with constraints
-                const outputs = await model.generate({
-                    ...inputs,
-                    max_new_tokens: MAX_NEW_TOKENS,
-                    num_return_sequences: NUM_RETURN_SEQUENCES,
-                    num_beams: NUM_BEAMS,
-                    do_sample: false,
-                    logits_processor: logitsProcessorList,
-                });
-                
-                console.log('Generation outputs:', outputs);
+                // Use temperatures from 0 (greedy/deterministic) to higher for diversity
+                const temperatures = [0, 0.5, 0.8, 1.0, 1.2];
+                const allOutputs = await Promise.all(
+                    temperatures.map(t => generateOne(t))
+                );
                 
                 // Check if this generation is still current
                 if (generationId !== currentGenerationId) {
                     return; // Stale result, discard
                 }
                 
-                // Convert outputs to array - handle different formats
+                // Convert each output to a sequence
                 let outputSequences = [];
-                if (outputs.tolist) {
-                    // It's a Tensor with tolist method
-                    outputSequences = outputs.tolist();
-                } else if (outputs.data) {
-                    // It's a Tensor - reshape based on dims
-                    const data = Array.from(outputs.data).map(x => Number(x));
+                for (const outputs of allOutputs) {
                     if (outputs.dims && outputs.dims.length === 2) {
-                        const [numSeqs, seqLen] = outputs.dims;
-                        for (let i = 0; i < numSeqs; i++) {
-                            outputSequences.push(data.slice(i * seqLen, (i + 1) * seqLen));
-                        }
-                    } else {
-                        outputSequences = [data];
+                        const data = Array.from(outputs.data).map(x => Number(x));
+                        outputSequences.push(data);
+                    } else if (outputs.data) {
+                        outputSequences.push(Array.from(outputs.data).map(x => Number(x)));
                     }
-                } else if (Array.isArray(outputs)) {
-                    outputSequences = outputs;
-                } else {
-                    outputSequences = [Array.from(outputs)];
                 }
-                
-                console.log('Output sequences:', outputSequences.length, 'First seq length:', outputSequences[0]?.length);
                 
                 // Extract completions
                 let completions = [];
@@ -700,8 +657,6 @@ ${statement}`;
                         }
                     }
                     
-                    console.log('Completion:', completion);
-                    
                     if (completion) {
                         completions.push(completion);
                     }
@@ -710,12 +665,8 @@ ${statement}`;
                 // Dedupe and filter empty
                 const uniqueCompletions = [...new Set(completions)].filter(c => c.length > 0);
                 
-                console.log('Unique completions:', uniqueCompletions);
-                
                 suggestions = uniqueCompletions.slice(0, 5);
                 selectedSuggestionIndex = 0;
-                
-                console.log('Final suggestions:', suggestions);
                 renderSuggestions();
                 
             } catch (error) {
