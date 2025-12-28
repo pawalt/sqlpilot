@@ -57,10 +57,13 @@ Interactive curses-based demo that shows real-time SQL completions as you type. 
 sqlpilot/
 ├── modal_train.py           # Modal training driver (main entry point)
 ├── create_tokenizer.py      # Modal tokenizer training
-├── autocomplete.py          # Interactive demo (uv script)
+├── autocomplete.py          # Interactive terminal demo (uv script)
 ├── requirements.txt         # Local dependencies (just modal)
 ├── tokenizer/
 │   └── tokenizer.json       # Trained tokenizer
+├── web/
+│   ├── index.html           # Static web UI (Transformers.js)
+│   └── README.md            # Web deployment instructions
 ├── datagen/
 │   └── main.py              # Data generation pipeline (legacy)
 └── data/
@@ -125,7 +128,7 @@ modal run create_tokenizer.py::download_tokenizer_local
 modal run create_tokenizer.py::test_tokenizer
 ```
 
-### Interactive Demo
+### Interactive Demo (Terminal)
 
 ```bash
 # Run with uv (handles dependencies automatically)
@@ -136,6 +139,25 @@ uv run autocomplete.py ./downloaded_model
 ```
 
 Enter table schemas, then type SQL to see completions.
+
+### Web UI
+
+A static HTML/JS interface using [Transformers.js](https://huggingface.co/docs/transformers.js) for in-browser inference:
+
+```bash
+# Serve locally
+cd web
+python -m http.server 8080
+# Open http://localhost:8080
+```
+
+To use with your trained model:
+
+1. Export to ONNX: `optimum-cli export onnx --model ./downloaded_model --task text-generation ./onnx_model`
+2. Upload to HuggingFace Hub
+3. Update `MODEL_ID` in `web/index.html`
+
+See `web/README.md` for full instructions.
 
 ## Dependencies
 

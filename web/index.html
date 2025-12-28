@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQLPilot - AI SQL Autocomplete</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79b8ff;
+            --success: #3fb950;
+            --warning: #d29922;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--warning);
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.ready {
+            background: var(--success);
+            animation: none;
+        }
+
+        .status-dot.error {
+            background: #f85149;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .hint {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        textarea {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea::placeholder {
+            color: var(--text-secondary);
+        }
+
+        #schema-input {
+            min-height: 120px;
+        }
+
+        #sql-input {
+            min-height: 80px;
+        }
+
+        .sql-editor {
+            position: relative;
+        }
+
+        .suggestions-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+
+        .suggestions-container.visible {
+            display: block;
+        }
+
+        .suggestion {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.15s;
+        }
+
+        .suggestion:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion:hover,
+        .suggestion.selected {
+            background: var(--bg-secondary);
+        }
+
+        .suggestion-text {
+            color: var(--text-primary);
+        }
+
+        .suggestion-preview {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .generating-indicator {
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .instructions {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        .instructions h3 {
+            font-size: 0.875rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .instructions code {
+            background: var(--bg-tertiary);
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        /* Keyboard shortcuts hint */
+        .shortcuts {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .shortcuts kbd {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SQLPilot</h1>
+            <p class="subtitle">AI-powered SQL autocomplete in your browser</p>
+        </header>
+
+        <div class="status-bar">
+            <div class="status-dot" id="status-dot"></div>
+            <span id="status-text">Loading model...</span>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <label for="schema-input">Table Schema</label>
+                <span class="hint">Define your tables here</span>
+            </div>
+            <textarea id="schema-input" placeholder="CREATE TABLE ...">CREATE TABLE users (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(255)
+);
+
+CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    total DECIMAL(10,2),
+    created_at TIMESTAMP
+);</textarea>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <label for="sql-input">SQL Query</label>
+                <span class="hint">Type to see suggestions</span>
+            </div>
+            <div class="sql-editor">
+                <textarea id="sql-input" placeholder="SELECT ...">SELECT </textarea>
+                <div class="suggestions-container" id="suggestions">
+                    <!-- Suggestions will be inserted here -->
+                </div>
+            </div>
+            <div class="shortcuts">
+                <span><kbd>Tab</kbd> Accept suggestion</span>
+                <span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span>
+                <span><kbd>Esc</kbd> Dismiss</span>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>How it works</h3>
+            <p>
+                This demo runs a small LLaMA-based model entirely in your browser using 
+                <a href="https://huggingface.co/docs/transformers.js" target="_blank" style="color: var(--accent);">Transformers.js</a>.
+                The model was trained on SQL statements and understands table schemas to provide context-aware completions.
+                No data is sent to any server — everything runs locally in your browser.
+            </p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3';
+
+        // Configuration
+        // To use a local model, set MODEL_PATH to './model/' and place ONNX files there
+        // To use HuggingFace Hub, set MODEL_PATH to 'username/model-name'
+        const MODEL_PATH = './model/';  // Local model directory
+        const DEBOUNCE_MS = 200;
+        const MAX_NEW_TOKENS = 30;
+        const NUM_RETURN_SEQUENCES = 5;
+
+        // DOM Elements
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+        const schemaInput = document.getElementById('schema-input');
+        const sqlInput = document.getElementById('sql-input');
+        const suggestionsContainer = document.getElementById('suggestions');
+
+        // State
+        let generator = null;
+        let debounceTimer = null;
+        let currentGenerationId = 0;
+        let selectedSuggestionIndex = 0;
+        let suggestions = [];
+
+        // Configure for local models only
+        env.allowLocalModels = true;
+        env.allowRemoteModels = false;
+        env.localModelPath = './model/';
+
+        // Initialize the model
+        async function initModel() {
+            try {
+                updateStatus('Loading model...', 'loading');
+                
+                generator = await pipeline('text-generation', MODEL_PATH);
+                updateStatus('Ready', 'ready');
+            } catch (error) {
+                console.error('Failed to load model:', error);
+                updateStatus('Failed to load model: ' + error.message, 'error');
+            }
+        }
+
+        function updateStatus(text, state) {
+            statusText.textContent = text;
+            statusDot.className = 'status-dot';
+            if (state === 'ready') {
+                statusDot.classList.add('ready');
+            } else if (state === 'error') {
+                statusDot.classList.add('error');
+            }
+        }
+
+        function buildPrompt(schema, statement) {
+            return `### TABLEDATA
+
+${schema}
+
+### STATEMENT
+
+${statement}`;
+        }
+
+        async function generateSuggestions(schema, statement, generationId) {
+            if (!generator) return;
+            
+            // Show generating indicator
+            showGeneratingIndicator();
+            
+            try {
+                const prompt = buildPrompt(schema, statement);
+                
+                const outputs = await generator(prompt, {
+                    max_new_tokens: MAX_NEW_TOKENS,
+                    num_return_sequences: NUM_RETURN_SEQUENCES,
+                    num_beams: NUM_RETURN_SEQUENCES,
+                    do_sample: false,
+                    temperature: 1.0,
+                });
+                
+                // Check if this generation is still current
+                if (generationId !== currentGenerationId) {
+                    return; // Stale result, discard
+                }
+                
+                // Extract completions (remove the prompt part)
+                const completions = outputs.map(output => {
+                    const generated = output.generated_text;
+                    const completion = generated.slice(prompt.length).trim();
+                    // Clean up: take first line or up to semicolon
+                    const cleaned = completion.split('\n')[0].trim();
+                    return cleaned;
+                });
+                
+                // Dedupe and filter empty
+                const uniqueCompletions = [...new Set(completions)].filter(c => c.length > 0);
+                
+                suggestions = uniqueCompletions.slice(0, 5);
+                selectedSuggestionIndex = 0;
+                renderSuggestions();
+                
+            } catch (error) {
+                console.error('Generation error:', error);
+                hideSuggestions();
+            }
+        }
+
+        function showGeneratingIndicator() {
+            suggestionsContainer.innerHTML = `
+                <div class="generating-indicator">
+                    <div class="spinner"></div>
+                    <span>Generating suggestions...</span>
+                </div>
+            `;
+            suggestionsContainer.classList.add('visible');
+        }
+
+        function renderSuggestions() {
+            if (suggestions.length === 0) {
+                hideSuggestions();
+                return;
+            }
+            
+            suggestionsContainer.innerHTML = suggestions.map((suggestion, index) => `
+                <div class="suggestion ${index === selectedSuggestionIndex ? 'selected' : ''}" 
+                     data-index="${index}">
+                    <div class="suggestion-text">${escapeHtml(suggestion)}</div>
+                </div>
+            `).join('');
+            
+            suggestionsContainer.classList.add('visible');
+            
+            // Add click handlers
+            suggestionsContainer.querySelectorAll('.suggestion').forEach(el => {
+                el.addEventListener('click', () => {
+                    acceptSuggestion(parseInt(el.dataset.index));
+                });
+            });
+        }
+
+        function hideSuggestions() {
+            suggestionsContainer.classList.remove('visible');
+            suggestions = [];
+        }
+
+        function acceptSuggestion(index) {
+            if (index >= 0 && index < suggestions.length) {
+                sqlInput.value += suggestions[index];
+                hideSuggestions();
+                sqlInput.focus();
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Debounced input handler
+        function handleInput() {
+            currentGenerationId++;
+            const genId = currentGenerationId;
+            
+            // Clear existing timer
+            if (debounceTimer) {
+                clearTimeout(debounceTimer);
+            }
+            
+            // Start new debounce timer
+            debounceTimer = setTimeout(() => {
+                const schema = schemaInput.value.trim();
+                const statement = sqlInput.value;
+                
+                if (statement.length > 0 && generator) {
+                    generateSuggestions(schema, statement, genId);
+                } else {
+                    hideSuggestions();
+                }
+            }, DEBOUNCE_MS);
+        }
+
+        // Keyboard navigation
+        function handleKeydown(event) {
+            if (!suggestionsContainer.classList.contains('visible')) {
+                return;
+            }
+            
+            switch (event.key) {
+                case 'ArrowDown':
+                    event.preventDefault();
+                    selectedSuggestionIndex = Math.min(selectedSuggestionIndex + 1, suggestions.length - 1);
+                    renderSuggestions();
+                    break;
+                    
+                case 'ArrowUp':
+                    event.preventDefault();
+                    selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, 0);
+                    renderSuggestions();
+                    break;
+                    
+                case 'Tab':
+                case 'Enter':
+                    if (suggestions.length > 0) {
+                        event.preventDefault();
+                        acceptSuggestion(selectedSuggestionIndex);
+                    }
+                    break;
+                    
+                case 'Escape':
+                    hideSuggestions();
+                    break;
+            }
+        }
+
+        // Event listeners
+        sqlInput.addEventListener('input', handleInput);
+        sqlInput.addEventListener('keydown', handleKeydown);
+        
+        // Also regenerate if schema changes
+        schemaInput.addEventListener('input', () => {
+            if (sqlInput.value.length > 0) {
+                handleInput();
+            }
+        });
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!suggestionsContainer.contains(event.target) && event.target !== sqlInput) {
+                hideSuggestions();
+            }
+        });
+
+        // Initialize
+        initModel();
+    </script>
+</body>
+</html>
+

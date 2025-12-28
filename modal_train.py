@@ -4,6 +4,7 @@ Modal training script for SQLPilot.
 Volumes:
 - sqlpilot-checkpoints: Stores training checkpoints (persistent)
 - sqlpilot-data: Stores training data and tokenized datasets
+- sqlpilot-onnx: Stores ONNX exports for web deployment
 
 Usage:
     # First time: upload training data to the volume
@@ -21,11 +22,17 @@ Usage:
     # List available checkpoints
     modal run modal_train.py::list_checkpoints
 
-    # Download checkpoint locally
+    # Download checkpoint locally (PyTorch format)
     modal run modal_train.py::download_checkpoint_local --model-size 15M --checkpoint final
 
     # Evaluate a trained model
     modal run modal_train.py::evaluate --model-size 15M
+
+    # Export to ONNX for web deployment
+    modal run modal_train.py::export_onnx --model-size 15M
+
+    # Download ONNX model to web/model/ for static serving
+    modal run modal_train.py::download_onnx_local --model-size 15M
 """
 
 import modal
@@ -493,6 +500,181 @@ INSERT INTO orders""",
         for j, seq in enumerate(output):
             completion = tokenizer.decode(seq, skip_special_tokens=True)[len(prompt):]
             print(f"  {j+1}: {completion.strip()}")
+
+
+# Image with ONNX export dependencies
+onnx_image = (
+    modal.Image.debian_slim(python_version="3.11")
+    .uv_pip_install(
+        "torch",
+        "transformers>=4.39.0",
+        "optimum[onnxruntime]",
+        "onnx",
+        "tokenizers",
+        "sentencepiece",
+    )
+    .add_local_file(
+        "tokenizer/tokenizer.json",
+        "/tokenizer/tokenizer.json",
+    )
+)
+
+# Volume for ONNX exports
+onnx_volume = modal.Volume.from_name("sqlpilot-onnx", create_if_missing=True)
+ONNX_DIR = "/onnx"
+
+
+@app.function(
+    image=onnx_image,
+    volumes={
+        CHECKPOINT_DIR: checkpoint_volume,
+        ONNX_DIR: onnx_volume,
+    },
+    timeout=30 * 60,  # 30 minutes
+    cpu=4,
+    memory=16384,  # 16GB RAM for export
+)
+def export_onnx(model_size: str = "15M", checkpoint: str = "final"):
+    """Export a trained model to ONNX format for Transformers.js."""
+    import os
+    import shutil
+    from transformers import LlamaForCausalLM
+    from optimum.onnxruntime import ORTModelForCausalLM
+    
+    checkpoint_path = os.path.join(CHECKPOINT_DIR, model_size, checkpoint)
+    
+    if not os.path.exists(checkpoint_path):
+        raise ValueError(f"Checkpoint not found: {checkpoint_path}")
+    
+    output_path = os.path.join(ONNX_DIR, model_size)
+    
+    # Clean existing export
+    if os.path.exists(output_path):
+        shutil.rmtree(output_path)
+    os.makedirs(output_path, exist_ok=True)
+    
+    print(f"Exporting {checkpoint_path} to ONNX...")
+    
+    # Load the PyTorch model and export to ONNX using optimum
+    model = ORTModelForCausalLM.from_pretrained(
+        checkpoint_path,
+        export=True,  # This triggers ONNX export
+    )
+    
+    # Save the ONNX model
+    model.save_pretrained(output_path)
+    print(f"ONNX model saved to {output_path}")
+    
+    # Copy tokenizer files
+    tokenizer_src = "/tokenizer/tokenizer.json"
+    if os.path.exists(tokenizer_src):
+        shutil.copy(tokenizer_src, os.path.join(output_path, "tokenizer.json"))
+        print("Copied tokenizer.json")
+    
+    # Create tokenizer_config.json for Transformers.js
+    import json
+    tokenizer_config = {
+        "tokenizer_class": "LlamaTokenizerFast",
+        "unk_token": "<unk>",
+        "pad_token": "<pad>",
+        "bos_token": "<s>",
+        "eos_token": "</s>",
+        "padding_side": "right",
+        "model_max_length": 512,
+    }
+    with open(os.path.join(output_path, "tokenizer_config.json"), "w") as f:
+        json.dump(tokenizer_config, f, indent=2)
+    print("Created tokenizer_config.json")
+    
+    # Create special_tokens_map.json
+    special_tokens_map = {
+        "unk_token": "<unk>",
+        "pad_token": "<pad>",
+        "bos_token": "<s>",
+        "eos_token": "</s>",
+    }
+    with open(os.path.join(output_path, "special_tokens_map.json"), "w") as f:
+        json.dump(special_tokens_map, f, indent=2)
+    print("Created special_tokens_map.json")
+    
+    # List exported files
+    print(f"\nExported files in {output_path}:")
+    total_size = 0
+    for f in sorted(os.listdir(output_path)):
+        fpath = os.path.join(output_path, f)
+        if os.path.isfile(fpath):
+            size = os.path.getsize(fpath)
+            total_size += size
+            print(f"  {f}: {size / (1024*1024):.2f} MB")
+    print(f"Total: {total_size / (1024*1024):.2f} MB")
+    
+    # Commit volume
+    onnx_volume.commit()
+    print("\nONNX export committed to volume!")
+    print(f"Download with: modal run modal_train.py::download_onnx_local --model-size {model_size}")
+
+
+@app.function(
+    image=image,
+    volumes={ONNX_DIR: onnx_volume},
+    timeout=300,
+)
+def get_onnx_files(model_size: str = "15M") -> dict:
+    """Get ONNX model files as bytes dict."""
+    import os
+    
+    onnx_path = os.path.join(ONNX_DIR, model_size)
+    
+    if not os.path.exists(onnx_path):
+        raise ValueError(
+            f"ONNX export not found: {onnx_path}. "
+            f"Run 'modal run modal_train.py::export_onnx --model-size {model_size}' first"
+        )
+    
+    files = {}
+    for filename in os.listdir(onnx_path):
+        filepath = os.path.join(onnx_path, filename)
+        if os.path.isfile(filepath):
+            with open(filepath, 'rb') as f:
+                files[filename] = f.read()
+    
+    return files
+
+
+@app.local_entrypoint()
+def download_onnx_local(model_size: str = "15M", output_dir: str = "web/model"):
+    """Download ONNX model to local directory for serving with the web UI."""
+    import os
+    
+    print(f"Downloading ONNX model ({model_size}) to {output_dir}...")
+    
+    files = get_onnx_files.remote(model_size)
+    
+    os.makedirs(output_dir, exist_ok=True)
+    onnx_dir = os.path.join(output_dir, "onnx")
+    os.makedirs(onnx_dir, exist_ok=True)
+    
+    total_size = 0
+    for filename, content in files.items():
+        # Transformers.js expects ONNX files in onnx/ subdirectory with specific names
+        if filename.endswith('.onnx'):
+            # Rename model.onnx to model_quantized.onnx (what Transformers.js looks for)
+            target_name = "model_quantized.onnx"
+            filepath = os.path.join(onnx_dir, target_name)
+            print(f"  {filename} -> onnx/{target_name}")
+        else:
+            filepath = os.path.join(output_dir, filename)
+            print(f"  {filename}")
+        
+        with open(filepath, 'wb') as f:
+            f.write(content)
+        size = len(content)
+        total_size += size
+    
+    print(f"\nTotal: {total_size / (1024*1024):.2f} MB")
+    print(f"Model saved to: {output_dir}/")
+    print(f"\nTo serve the web UI:")
+    print(f"  cd web && python -m http.server 8080")
 
 
 if __name__ == "__main__":
