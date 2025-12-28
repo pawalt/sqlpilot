@@ -25,7 +25,7 @@ from transformers import LlamaForCausalLM, LlamaTokenizerFast
 
 def get_tokenizer():
     tokenizer = LlamaTokenizerFast(
-        tokenizer_file="hugtrain/smol_tokenizer/tokenizer.json",
+        tokenizer_file="tokenizer/tokenizer.json",
         unk_token="<unk>",
         pad_token="<pad>",
         bos_token="<s>",

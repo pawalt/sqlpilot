@@ -58,7 +58,7 @@ image = (
         "sentencepiece",
     )
     .add_local_file(
-        "hugtrain/smol_tokenizer/tokenizer.json",
+        "tokenizer/tokenizer.json",
         "/tokenizer/tokenizer.json",
     )
 )

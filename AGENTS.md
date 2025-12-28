@@ -31,7 +31,7 @@ CREATE TABLE users (
 SELECT * FROM users WHERE
 ```
 
-### Custom Tokenizer (`hugtrain/create_tokenizer.py`)
+### Custom Tokenizer (`create_tokenizer.py`)
 
 Creates a tiny 512-token SentencePiece BPE tokenizer specialized for SQL syntax. Small vocabulary enables smaller embedding tables and faster inference.
 
@@ -47,25 +47,22 @@ Trains LLaMA-architecture models on Modal using HuggingFace Transformers. Model 
 
 Uses Weights & Biases for experiment tracking (optional).
 
-### Inference (`hugtrain/autocomplete.py`, `hugtrain/test_eval.py`)
+### Inference (`autocomplete.py`)
 
-- `autocomplete.py`: Interactive curses-based demo that shows real-time SQL completions as you type
-- `test_eval.py`: Evaluation script that runs the model on test prompts
+Interactive curses-based demo that shows real-time SQL completions as you type. Uses uv for dependency management.
 
 ## Directory Structure
 
 ```
 sqlpilot/
 ├── modal_train.py           # Modal training driver (main entry point)
+├── create_tokenizer.py      # Modal tokenizer training
+├── autocomplete.py          # Interactive demo (uv script)
 ├── requirements.txt         # Local dependencies (just modal)
+├── tokenizer/
+│   └── tokenizer.json       # Trained tokenizer
 ├── datagen/
 │   └── main.py              # Data generation pipeline (legacy)
-├── hugtrain/
-│   ├── main.py              # Local training script (legacy)
-│   ├── create_tokenizer.py  # Custom tokenizer training
-│   ├── autocomplete.py      # Interactive demo
-│   ├── test_eval.py         # Evaluation script
-│   └── smol_tokenizer/      # Trained tokenizer files
 └── data/
     ├── topics.json          # Generated topics
     ├── topic_detail.json    # Expanded topic details
@@ -96,6 +93,9 @@ modal setup  # Authenticate with Modal
 # First time: upload training data to Modal volume
 modal run modal_train.py::upload_data_local
 
+# Tokenize the data (run once after uploading)
+modal run modal_train.py::tokenize
+
 # Train (auto-resumes from latest checkpoint)
 modal run modal_train.py::train
 
@@ -112,21 +112,39 @@ modal run modal_train.py::download_checkpoint_local --model-size 15M --checkpoin
 modal run modal_train.py::evaluate --model-size 15M
 ```
 
-Modal volumes used:
-- `sqlpilot-checkpoints`: Persistent checkpoint storage (survives container restarts)
-- `sqlpilot-data`: Training data storage
+### Tokenizer (Modal)
 
-To use Weights & Biases for tracking, create a Modal secret named `wandb-secret` with your `WANDB_API_KEY`.
+```bash
+# Train a new tokenizer from the data
+modal run create_tokenizer.py::train_tokenizer
+
+# Download the tokenizer locally
+modal run create_tokenizer.py::download_tokenizer_local
+
+# Test the tokenizer
+modal run create_tokenizer.py::test_tokenizer
+```
 
 ### Interactive Demo
+
 ```bash
-cd hugtrain
-python autocomplete.py
+# Run with uv (handles dependencies automatically)
+uv run autocomplete.py
+
+# Or specify a model path
+uv run autocomplete.py ./downloaded_model
 ```
+
 Enter table schemas, then type SQL to see completions.
 
 ## Dependencies
 
-Locally: just `modal` (see `requirements.txt`)
+Locally: just `modal` and `uv` (see `requirements.txt`)
 
 Remote dependencies are handled via Modal's image definition in `modal_train.py`.
+
+Modal volumes used:
+- `sqlpilot-checkpoints`: Persistent checkpoint storage (survives container restarts)
+- `sqlpilot-data`: Training data, tokenized datasets, and tokenizer storage
+
+To use Weights & Biases for tracking, create a Modal secret named `wandb-secret` with your `WANDB_API_KEY`.
