@@ -8,14 +8,21 @@ Train tiny language models (260K to 42M parameters) that can autocomplete SQL st
 
 ## Architecture Overview
 
-### Data Generation Pipeline (`datagen/main.py`)
+### Data Generation Pipeline (Modal)
 
-Generates synthetic training data using OpenAI's GPT-3.5/GPT-4:
+Generates synthetic training data using a self-hosted Qwen3-235B model on Modal:
 
+**Files:**
+- `datagen/vllm_server.py` - vLLM inference server serving Qwen3-235B-A22B-Instruct-2507-FP8
+- `datagen/modal_datagen.py` - Data generation functions using instructor for structured outputs
+- `datagen/main.py` - Legacy local generation script (uses OpenAI API)
+
+**Pipeline Steps:**
 1. **Topic Generation**: Creates ~75 database application topics (e-commerce, healthcare, etc.)
-2. **Schema Generation**: For each topic, generates CockroachDB CREATE TABLE schemas with 1-5 tables
-3. **Statement Generation**: Generates SQL statements (SELECT, INSERT, UPDATE, DELETE, TRUNCATE, etc.) for each schema
-4. **Data Augmentation**: Randomizes table/column names to prevent memorization and improve generalization
+2. **Topic Details**: Expands each topic into 100+ specific use case examples
+3. **Schema Generation**: For each example, generates CockroachDB CREATE TABLE schemas with 1-5 tables
+4. **Statement Generation**: Generates SQL statements (SELECT, INSERT, UPDATE, DELETE, TRUNCATE) for each schema
+5. **Data Augmentation**: Randomizes table/column names to prevent memorization and improve generalization
 
 Training data format:
 ```
@@ -63,15 +70,18 @@ sqlpilot/
 │   └── tokenizer.json       # Trained tokenizer
 ├── web/
 │   ├── index.html           # Static web UI (Transformers.js)
+│   ├── model/               # ONNX model for web inference
 │   └── README.md            # Web deployment instructions
 ├── datagen/
-│   └── main.py              # Data generation pipeline (legacy)
-└── data/
+│   ├── vllm_server.py       # Modal vLLM server (Qwen3-235B)
+│   ├── modal_datagen.py     # Modal data generation functions
+│   └── main.py              # Legacy local generation (OpenAI API)
+└── data/                    # Local data (also on Modal volume)
     ├── topics.json          # Generated topics
     ├── topic_detail.json    # Expanded topic details
     ├── tons_of_tables/      # Generated table schemas
     ├── diverse_statements/  # Generated SQL statements
-    └── diverse_training_data/ # Final training data (JSON)
+    └── raw/                 # Final training data (JSON)
 ```
 
 ## Key Concepts
@@ -88,6 +98,24 @@ sqlpilot/
 ```bash
 pip install modal
 modal setup  # Authenticate with Modal
+```
+
+### Data Generation (Modal)
+
+```bash
+# Deploy the vLLM inference server (Qwen3-235B, requires 2x H100)
+modal deploy datagen/vllm_server.py
+# Note the URL from the output (e.g., https://your-app.modal.run)
+
+# Run the full data generation pipeline
+modal run datagen/modal_datagen.py::generate_all --vllm-url https://YOUR-VLLM-URL.modal.run/v1
+
+# Or run individual steps
+modal run datagen/modal_datagen.py::generate_topics --vllm-url YOUR_URL
+modal run datagen/modal_datagen.py::generate_topic_details --vllm-url YOUR_URL
+modal run datagen/modal_datagen.py::generate_schemas --vllm-url YOUR_URL
+modal run datagen/modal_datagen.py::generate_statements --vllm-url YOUR_URL
+modal run datagen/modal_datagen.py::generate_training_data
 ```
 
 ### Training (Modal)
@@ -168,5 +196,6 @@ Remote dependencies are handled via Modal's image definition in `modal_train.py`
 Modal volumes used:
 - `sqlpilot-checkpoints`: Persistent checkpoint storage (survives container restarts)
 - `sqlpilot-data`: Training data, tokenized datasets, and tokenizer storage
+- `sqlpilot-model-cache`: Cached Qwen3 model weights for vLLM server
 
 To use Weights & Biases for tracking, create a Modal secret named `wandb-secret` with your `WANDB_API_KEY`.
